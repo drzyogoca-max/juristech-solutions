@@ -20,6 +20,7 @@ export default function EngineAISearchBar() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [downloadingId, setDownloadingId] = useState<string | null>(null);
+  const [contractLangMap, setContractLangMap] = useState<Record<string, 'ar' | 'en'>>({});
 
   // Close on Escape key
   useEffect(() => {
@@ -50,8 +51,22 @@ export default function EngineAISearchBar() {
     }
   }
 
+  function getContractText(item: SearchResultItem, targetLang?: 'ar' | 'en') {
+    const selectedLang = targetLang || contractLangMap[item.id] || (isRtl ? 'ar' : 'en');
+    if (selectedLang === 'en' && item.templateTextEn) return item.templateTextEn;
+    if (selectedLang === 'ar' && item.templateTextAr) return item.templateTextAr;
+    return item.templateText || item.summary;
+  }
+
+  function getContractTitle(item: SearchResultItem, targetLang?: 'ar' | 'en') {
+    const selectedLang = targetLang || contractLangMap[item.id] || (isRtl ? 'ar' : 'en');
+    if (selectedLang === 'en' && item.titleEn) return item.titleEn;
+    if (selectedLang === 'ar' && item.titleAr) return item.titleAr;
+    return item.title;
+  }
+
   function copyTemplate(item: SearchResultItem) {
-    const text = item.templateText || item.summary;
+    const text = getContractText(item);
     navigator.clipboard.writeText(text).then(() => {
       setCopiedId(item.id);
       setTimeout(() => setCopiedId(null), 2500);
@@ -59,20 +74,22 @@ export default function EngineAISearchBar() {
   }
 
   const handleExport = async (item: SearchResultItem, format: 'docx' | 'pdf') => {
-    const text = item.templateText || item.summary;
-    const targetJur = item.jurisdictions?.[0] || searchResponse?.detectedJurisdiction || (isRtl ? 'EG' : 'US');
-    const partyA = isRtl ? 'الطرف الأول (البائع / المنفذ)' : 'Party A';
-    const partyB = isRtl ? 'الطرف الثاني (المشتري / العميل)' : 'Party B';
+    const curLang = contractLangMap[item.id] || (isRtl ? 'ar' : 'en');
+    const text = getContractText(item, curLang);
+    const title = getContractTitle(item, curLang);
+    const targetJur = item.jurisdictions?.[0] || searchResponse?.detectedJurisdiction || (curLang === 'ar' ? 'EG' : 'US');
+    const partyA = curLang === 'ar' ? 'الطرف الأول (البائع / المنفذ)' : 'Party A (First Party)';
+    const partyB = curLang === 'ar' ? 'الطرف الثاني (المشتري / العميل)' : 'Party B (Second Party)';
 
     setDownloadingId(`${item.id}-${format}`);
     try {
       await exportDocumentMultiFormat(
         text,
-        item.title,
+        title,
         partyA,
         partyB,
         format,
-        isRtl ? 'ar' : 'en',
+        curLang,
         targetJur
       );
     } finally {
@@ -81,8 +98,10 @@ export default function EngineAISearchBar() {
   };
 
   const handlePrint = (item: SearchResultItem) => {
-    const text = item.templateText || item.summary;
-    const jur = item.jurisdictions?.[0] || searchResponse?.detectedJurisdiction || (isRtl ? 'EG' : 'GLOBAL');
+    const curLang = contractLangMap[item.id] || (isRtl ? 'ar' : 'en');
+    const text = getContractText(item, curLang);
+    const title = getContractTitle(item, curLang);
+    const jur = item.jurisdictions?.[0] || searchResponse?.detectedJurisdiction || (curLang === 'ar' ? 'EG' : 'GLOBAL');
     
     const printWindow = window.open('', '_blank', 'width=900,height=750');
     if (!printWindow) {
@@ -92,10 +111,10 @@ export default function EngineAISearchBar() {
 
     printWindow.document.write(`
       <!DOCTYPE html>
-      <html lang="${isRtl ? 'ar' : 'en'}" dir="${isRtl ? 'rtl' : 'ltr'}">
+      <html lang="${curLang}" dir="${curLang === 'ar' ? 'rtl' : 'ltr'}">
       <head>
         <meta charset="UTF-8">
-        <title>${item.title}</title>
+        <title>${title}</title>
         <style>
           @page { size: A4; margin: 20mm; }
           body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #0f172a; line-height: 1.7; padding: 20px; }
@@ -110,12 +129,12 @@ export default function EngineAISearchBar() {
       <body>
         <div class="header">
           <div class="logo">⚖️ JurisTech Solutions</div>
-          <div class="badge">${isRtl ? 'وثيقة قانونية معتمدة' : 'Certified Legal Document'} - ${jur}</div>
+          <div class="badge">${curLang === 'ar' ? 'وثيقة قانونية معتمدة' : 'Certified Legal Document'} - ${jur}</div>
         </div>
-        <h1>${item.title}</h1>
+        <h1>${title}</h1>
         <pre>${text}</pre>
         <div class="footer">
-          ${isRtl ? 'تم إصدار هذه الوثيقة عبر منصة جوريس تك للذكاء الاصطناعي القانوني — https://www.juristech.solutions' : 'Issued via JurisTech AI Legal Platform — https://www.juristech.solutions'}
+          ${curLang === 'ar' ? 'تم إصدار هذه الوثيقة عبر منصة جوريس تك للذكاء الاصطناعي القانوني — https://www.juristech.solutions' : 'Issued via JurisTech AI Legal Platform — https://www.juristech.solutions'}
         </div>
       </body>
       </html>
@@ -126,6 +145,7 @@ export default function EngineAISearchBar() {
       printWindow.print();
     }, 400);
   };
+
 
   const jurisdictionFlag: Record<string, string> = {
     JO: '🇯🇴', SA: '🇸🇦', AE: '🇦🇪', EG: '🇪🇬', QA: '🇶🇦',
@@ -259,7 +279,7 @@ export default function EngineAISearchBar() {
                               <BadgeCheck className="w-4 h-4 text-emerald-500 shrink-0" />
                             )}
                             <span className="font-bold text-xs sm:text-sm text-slate-900 dark:text-slate-100 leading-snug">
-                              {item.title}
+                              {getContractTitle(item)}
                             </span>
                           </div>
                           <span className="text-[10px] font-mono font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 whitespace-nowrap shrink-0">
@@ -358,14 +378,45 @@ export default function EngineAISearchBar() {
                         </div>
                       </div>
 
-                      {/* Full Contract Text Expansion */}
+                      {/* Full Contract Text Expansion & Bilingual Switcher */}
                       {isExpanded && item.templateText && (
                         <div className="border-t border-slate-200 dark:border-slate-800 px-5 pb-5 pt-4 bg-white/50 dark:bg-slate-900/50 space-y-3">
-                          <div className="flex items-center justify-between">
-                            <span className="text-[11px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
-                              <Globe className="w-3.5 h-3.5" />
-                              {isRtl ? 'نص العقد القانوني الكامل والمُحكم من المستودع المليوني:' : 'Full Certified Legal Contract Text from 1M+ Repository:'}
-                            </span>
+                          <div className="flex items-center justify-between flex-wrap gap-2">
+                            <div className="flex items-center gap-2">
+                              <span className="text-[11px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+                                <Globe className="w-3.5 h-3.5" />
+                                {isRtl ? 'نص العقد القانوني المعتمد:' : 'Certified Legal Contract Text:'}
+                              </span>
+
+                              {/* Bilingual Tabs: AR / EN */}
+                              {(item.templateTextAr && item.templateTextEn) && (
+                                <div className="inline-flex rounded-lg bg-slate-200 dark:bg-slate-800 p-0.5 border border-slate-300 dark:border-slate-700 text-[10px] font-bold">
+                                  <button
+                                    type="button"
+                                    onClick={() => setContractLangMap((prev) => ({ ...prev, [item.id]: 'ar' }))}
+                                    className={`px-2 py-0.5 rounded-md transition ${
+                                      (contractLangMap[item.id] || (isRtl ? 'ar' : 'en')) === 'ar'
+                                        ? 'bg-cyan-500 text-slate-950 shadow'
+                                        : 'text-slate-600 dark:text-slate-300 hover:text-white'
+                                    }`}
+                                  >
+                                    🇸🇦 عربي
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => setContractLangMap((prev) => ({ ...prev, [item.id]: 'en' }))}
+                                    className={`px-2 py-0.5 rounded-md transition ${
+                                      (contractLangMap[item.id] || (isRtl ? 'ar' : 'en')) === 'en'
+                                        ? 'bg-cyan-500 text-slate-950 shadow'
+                                        : 'text-slate-600 dark:text-slate-300 hover:text-white'
+                                    }`}
+                                  >
+                                    🇺🇸 English
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+
                             <div className="flex items-center gap-2">
                               <button
                                 type="button"
@@ -384,8 +435,11 @@ export default function EngineAISearchBar() {
                             </div>
                           </div>
 
-                          <pre className="text-xs text-slate-800 dark:text-slate-200 leading-relaxed whitespace-pre-wrap font-mono bg-white dark:bg-slate-950 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 max-h-96 overflow-y-auto select-all">
-                            {item.templateText}
+                          <pre
+                            dir={(contractLangMap[item.id] || (isRtl ? 'ar' : 'en')) === 'ar' ? 'rtl' : 'ltr'}
+                            className="text-xs text-slate-800 dark:text-slate-200 leading-relaxed whitespace-pre-wrap font-mono bg-white dark:bg-slate-950 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 max-h-96 overflow-y-auto select-all"
+                          >
+                            {getContractText(item)}
                           </pre>
                         </div>
                       )}
@@ -393,6 +447,7 @@ export default function EngineAISearchBar() {
                   );
                 })}
               </div>
+
 
               {searchResponse.results.length === 0 && (
                 <div className="text-center py-8 text-slate-500 text-sm">

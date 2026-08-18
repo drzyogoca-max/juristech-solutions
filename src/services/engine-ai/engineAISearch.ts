@@ -5,16 +5,21 @@ import { smartContractDataLake, DataLakeContractRecord } from '../smartContractD
 export interface SearchResultItem {
   id: string;
   title: string;
+  titleAr?: string;
+  titleEn?: string;
   category: 'Statute' | 'Precedent' | 'Contract Clause' | 'Contract Template';
   relevanceScore: number;
   summary: string;
   recommendation: string;
-  templateText?: string;       // Full contract text from data lake
-  jurisdictions?: string[];    // e.g. ['JO', 'SA', 'AE']
+  templateText?: string;
+  templateTextAr?: string;
+  templateTextEn?: string;
+  jurisdictions?: string[];
   accuracyRating?: number;
   isVerified?: boolean;
   downloadsCount?: number;
 }
+
 
 export interface EngineAISearchResponse {
   query: string;
@@ -71,20 +76,25 @@ export async function executeEngineAISearch(
     smartContractDataLake.searchDataLake(query, lang, detectedJurisdiction)
   ]);
 
-  // Map data lake contracts → SearchResultItems with full contract text
+  // Map data lake contracts → SearchResultItems with full contract text in both languages
   const rawResults: SearchResultItem[] = dataLakeResult.contracts.map((record: DataLakeContractRecord) => ({
     id: record.id,
     title: isAr ? record.titleAr : record.titleEn,
+    titleAr: record.titleAr,
+    titleEn: record.titleEn,
     category: 'Contract Template' as const,
     relevanceScore: Math.round(record.similarityScore * 1000) / 10,
     summary: isAr ? record.descriptionAr : record.descriptionEn,
     recommendation: isAr ? (record.riskHighlightsAr[0] || '') : (record.riskHighlightsEn[0] || ''),
     templateText: isAr ? record.templateTextAr : record.templateTextEn,
+    templateTextAr: record.templateTextAr,
+    templateTextEn: record.templateTextEn,
     jurisdictions: record.jurisdictions,
     accuracyRating: record.accuracyRating,
     isVerified: record.isVerified,
     downloadsCount: record.downloadsCount,
   }));
+
 
   // Remove duplicates and return top 4 unique results
   const uniqueResults = deduplicateResults(rawResults).slice(0, 4);
