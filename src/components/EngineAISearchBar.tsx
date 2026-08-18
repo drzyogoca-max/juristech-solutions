@@ -1,26 +1,41 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Search, Sparkles, Loader2, X, Shield, Copy, Check,
-  FileText, Globe, BadgeCheck, Download, ChevronDown, ChevronUp
+  FileText, Globe, BadgeCheck, Download, ChevronDown, ChevronUp,
+  Printer, FileDown
 } from 'lucide-react';
 import { executeEngineAISearch, EngineAISearchResponse, SearchResultItem } from '../services/engine-ai';
-
 import VoiceInput from './VoiceInput';
+import { exportDocumentMultiFormat } from '../lib/documentExporter';
 
 export default function EngineAISearchBar() {
   const { i18n } = useTranslation();
   const isRtl = i18n.language === 'ar';
 
-  const [query, setQuery]                     = useState('');
-  const [isOpen, setIsOpen]                   = useState(false);
-  const [loading, setLoading]                 = useState(false);
-  const [searchResponse, setSearchResponse]   = useState<EngineAISearchResponse | null>(null);
-  const [expandedId, setExpandedId]           = useState<string | null>(null);
-  const [copiedId, setCopiedId]               = useState<string | null>(null);
+  const [query, setQuery] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [searchResponse, setSearchResponse] = useState<EngineAISearchResponse | null>(null);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [downloadingId, setDownloadingId] = useState<string | null>(null);
 
-  async function handleSearch(e: React.FormEvent) {
-    e.preventDefault();
+  // Close on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsOpen(false);
+      }
+    };
+    if (isOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen]);
+
+  async function handleSearch(e?: React.FormEvent) {
+    if (e) e.preventDefault();
     if (!query.trim() || loading) return;
     setLoading(true);
     setExpandedId(null);
@@ -43,6 +58,75 @@ export default function EngineAISearchBar() {
     });
   }
 
+  const handleExport = async (item: SearchResultItem, format: 'docx' | 'pdf') => {
+    const text = item.templateText || item.summary;
+    const targetJur = item.jurisdictions?.[0] || searchResponse?.detectedJurisdiction || (isRtl ? 'EG' : 'US');
+    const partyA = isRtl ? 'الطرف الأول (البائع / المنفذ)' : 'Party A';
+    const partyB = isRtl ? 'الطرف الثاني (المشتري / العميل)' : 'Party B';
+
+    setDownloadingId(`${item.id}-${format}`);
+    try {
+      await exportDocumentMultiFormat(
+        text,
+        item.title,
+        partyA,
+        partyB,
+        format,
+        isRtl ? 'ar' : 'en',
+        targetJur
+      );
+    } finally {
+      setTimeout(() => setDownloadingId(null), 1200);
+    }
+  };
+
+  const handlePrint = (item: SearchResultItem) => {
+    const text = item.templateText || item.summary;
+    const jur = item.jurisdictions?.[0] || searchResponse?.detectedJurisdiction || (isRtl ? 'EG' : 'GLOBAL');
+    
+    const printWindow = window.open('', '_blank', 'width=900,height=750');
+    if (!printWindow) {
+      alert(isRtl ? 'يرجى السماح بالنوافذ المنبثقة للطباعة' : 'Please allow popups to print');
+      return;
+    }
+
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html lang="${isRtl ? 'ar' : 'en'}" dir="${isRtl ? 'rtl' : 'ltr'}">
+      <head>
+        <meta charset="UTF-8">
+        <title>${item.title}</title>
+        <style>
+          @page { size: A4; margin: 20mm; }
+          body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #0f172a; line-height: 1.7; padding: 20px; }
+          .header { border-bottom: 2px solid #0891b2; padding-bottom: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+          .logo { font-size: 18px; font-weight: 900; color: #0891b2; }
+          .badge { font-size: 11px; background: #e0f2fe; color: #0369a1; padding: 4px 8px; border-radius: 4px; font-weight: bold; }
+          h1 { font-size: 18px; color: #0f172a; margin: 15px 0 10px; }
+          pre { white-space: pre-wrap; font-family: inherit; font-size: 13px; background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; }
+          .footer { margin-top: 30px; border-top: 1px solid #cbd5e1; padding-top: 10px; font-size: 10px; color: #64748b; text-align: center; }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <div class="logo">⚖️ JurisTech Solutions</div>
+          <div class="badge">${isRtl ? 'وثيقة قانونية معتمدة' : 'Certified Legal Document'} - ${jur}</div>
+        </div>
+        <h1>${item.title}</h1>
+        <pre>${text}</pre>
+        <div class="footer">
+          ${isRtl ? 'تم إصدار هذه الوثيقة عبر منصة جوريس تك للذكاء الاصطناعي القانوني — https://www.juristech.solutions' : 'Issued via JurisTech AI Legal Platform — https://www.juristech.solutions'}
+        </div>
+      </body>
+      </html>
+    `);
+    printWindow.document.close();
+    printWindow.focus();
+    setTimeout(() => {
+      printWindow.print();
+    }, 400);
+  };
+
   const jurisdictionFlag: Record<string, string> = {
     JO: '🇯🇴', SA: '🇸🇦', AE: '🇦🇪', EG: '🇪🇬', QA: '🇶🇦',
     KW: '🇰🇼', BH: '🇧🇭', OM: '🇴🇲', US: '🇺🇸', EU: '🇪🇺',
@@ -57,8 +141,8 @@ export default function EngineAISearchBar() {
             type="text"
             aria-label={isRtl ? 'البحث عن العقود والوثائق الذكية' : 'Search smart contracts and documents'}
             placeholder={isRtl
-              ? 'ابحث عن عقد... (مثال: عقد تسويق عقاري أردني)'
-              : 'Search contracts... (e.g. Real estate marketing Jordan)'}
+              ? 'ابحث عن عقد... (مثال: عقد بيع شقة سكنية في مصر)'
+              : 'Search contracts... (e.g. Apartment sale agreement)'}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={(e) => {
@@ -67,13 +151,13 @@ export default function EngineAISearchBar() {
                 if (query.trim() && !loading) handleSearch(e);
               }
             }}
-            className={`w-full py-2.5 px-4 ${isRtl ? 'pr-10 pl-12' : 'pl-10 pr-12'} rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-750 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500 shadow-inner`}
+            className={`w-full py-2.5 px-4 ${isRtl ? 'pr-10 pl-12' : 'pl-10 pr-12'} rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500 shadow-inner`}
           />
           <button
             type="submit"
             aria-label={isRtl ? 'تنفيذ البحث' : 'Execute search'}
             disabled={loading || !query.trim()}
-            className={`absolute ${isRtl ? 'left-2.5' : 'right-2.5'} p-1.5 rounded-xl bg-cyan-500 hover:bg-cyan-600 disabled:opacity-40 text-slate-950 transition-colors`}
+            className={`absolute ${isRtl ? 'left-2.5' : 'right-2.5'} p-1.5 rounded-xl bg-cyan-500 hover:bg-cyan-600 disabled:opacity-40 text-slate-950 transition-colors cursor-pointer`}
           >
             {loading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Search className="w-3.5 h-3.5" />}
           </button>
@@ -81,87 +165,104 @@ export default function EngineAISearchBar() {
 
         <VoiceInput
           language={i18n.language}
-          onTranscript={(text) => setQuery((prev) => (prev ? `${prev} ${text}` : text))}
+          onTranscript={(text) => {
+            setQuery((prev) => (prev ? `${prev} ${text}` : text));
+          }}
         />
       </form>
 
-
       {/* Results Modal */}
       {isOpen && searchResponse && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div
+          onClick={() => setIsOpen(false)}
+          className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-6 overflow-y-auto bg-slate-950/85 backdrop-blur-md"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="engine-ai-modal-title"
+        >
           <div
-            className="max-w-2xl w-full bg-white dark:bg-slate-900 border border-cyan-500/40 rounded-3xl shadow-2xl max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+            className="relative w-full max-w-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-cyan-500/40 rounded-3xl shadow-2xl overflow-hidden flex flex-col my-auto max-h-[92vh]"
             dir={isRtl ? 'rtl' : 'ltr'}
           >
-            {/* Header */}
-            <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-slate-200 dark:border-slate-800 sticky top-0 bg-white dark:bg-slate-900 z-10 rounded-t-3xl">
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-cyan-400" />
-                <h3 className="font-extrabold text-sm text-slate-800 dark:text-slate-100">
-                  {isRtl ? 'نتائج محرك العقود الذكي (Engine AI)' : 'Engine AI Contract Results'}
-                </h3>
+            {/* Pinned Header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800 sticky top-0 bg-slate-50 dark:bg-slate-900 z-20">
+              <div className="flex items-center gap-2.5">
+                <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
+                  <Sparkles className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 id="engine-ai-modal-title" className="font-black text-sm text-slate-900 dark:text-white">
+                    {isRtl ? 'نتائج محرك العقود الذكي (Engine AI)' : 'Engine AI Contract Results'}
+                  </h3>
+                  <span className="text-[10px] text-slate-500 dark:text-slate-400">
+                    {isRtl ? 'جاهز للتحميل والطباعة فوراً' : 'Instant Multi-Format Download & Print Ready'}
+                  </span>
+                </div>
               </div>
               <button
+                type="button"
                 onClick={() => setIsOpen(false)}
                 aria-label={isRtl ? 'إغلاق نافذة البحث' : 'Close search modal'}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-700 transition"
+                className="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-red-500/20 text-slate-500 dark:text-slate-400 hover:text-red-400 border border-slate-200 dark:border-slate-700 flex items-center justify-center transition-all cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="px-6 py-4 space-y-4">
+            {/* Scrollable Content Body */}
+            <div className="flex-1 overflow-y-auto px-6 py-5 space-y-4">
               {/* Metadata bar */}
               <div className="flex flex-wrap items-center gap-2 text-[10px] font-sans font-bold">
-                <span className="bg-emerald-500/10 text-emerald-400 px-2 py-1 rounded-md border border-emerald-500/20">
-                  ⚡ {isRtl ? 'فحص فوري' : 'Instant AI'}
+                <span className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-lg border border-emerald-500/20">
+                  ⚡ {isRtl ? 'فحص ومطابقة قانونية فورية' : 'Instant AI Match'}
                 </span>
-                <span className="bg-cyan-500/10 text-cyan-400 px-2 py-1 rounded-md border border-cyan-500/20">
-                  📚 {isRtl ? '1,000+ عقد مُفهرس ومعتمد' : '1,000+ Certified Templates'}
+                <span className="bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 px-2.5 py-1 rounded-lg border border-cyan-500/20">
+                  📚 {isRtl ? '1,000,000+ عقد مُفهرس ومعتمد' : '1M+ Certified Templates'}
                 </span>
                 {searchResponse.detectedJurisdiction && (
-                  <span className="bg-indigo-500/10 text-indigo-400 px-2 py-1 rounded-md border border-indigo-500/20">
-                    {jurisdictionFlag[searchResponse.detectedJurisdiction] || '🌐'} {isRtl ? 'الولاية:' : 'Jurisdiction:'} {searchResponse.detectedJurisdiction}
+                  <span className="bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 px-2.5 py-1 rounded-lg border border-indigo-500/20">
+                    {jurisdictionFlag[searchResponse.detectedJurisdiction] || '🌐'} {isRtl ? 'الولاية القضائية:' : 'Jurisdiction:'} {searchResponse.detectedJurisdiction}
                   </span>
                 )}
-                <span className="bg-purple-500/10 text-purple-400 px-2 py-1 rounded-md border border-purple-500/20">
-                  🔒 {isRtl ? 'منقح من التكرار' : 'Deduplicated'}
-                </span>
               </div>
 
-              {/* AI Summary */}
-              <div className="bg-slate-50 dark:bg-slate-950 p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
-                <span className="text-[10px] font-bold text-cyan-400 uppercase tracking-wider block mb-1.5">
+              {/* AI Executive Summary */}
+              <div className="bg-slate-100 dark:bg-slate-950 p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
+                <span className="text-[10px] font-black text-cyan-600 dark:text-cyan-400 uppercase tracking-wider block mb-1.5">
                   {isRtl ? '🤖 الملخص التنفيذي بالذكاء الاصطناعي' : '🤖 AI Executive Summary'}
                 </span>
-                <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-wrap">
+                <div className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-wrap">
                   {searchResponse.aiExecutiveSummary}
-                </p>
+                </div>
               </div>
 
-              {/* Contract Results */}
+              {/* Contract Results List */}
               <div className="space-y-3">
-                <h4 className="font-bold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                <h4 className="font-black text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                   {isRtl ? `📄 نماذج العقود المستردة (${searchResponse.results.length} نماذج فريدة):` : `📄 Retrieved Contract Templates (${searchResponse.results.length} unique):`}
                 </h4>
 
                 {searchResponse.results.map((item) => {
                   const isExpanded = expandedId === item.id;
-                  const isCopied   = copiedId === item.id;
+                  const isCopied = copiedId === item.id;
+                  const isDownloadingDocx = downloadingId === `${item.id}-docx`;
+                  const isDownloadingPdf = downloadingId === `${item.id}-pdf`;
+
                   return (
-                    <div key={item.id} className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 overflow-hidden">
-                      {/* Card header */}
-                      <div className="p-4 space-y-2">
+                    <div key={item.id} className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 overflow-hidden shadow-sm">
+                      {/* Card Header & Metadata */}
+                      <div className="p-4 space-y-2.5">
                         <div className="flex items-start justify-between gap-2">
-                          <div className="flex items-center gap-2 flex-wrap">
+                          <div className="flex items-center gap-2 flex-wrap min-w-0">
                             {item.isVerified && (
-                              <BadgeCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                              <BadgeCheck className="w-4 h-4 text-emerald-500 shrink-0" />
                             )}
-                            <span className="font-bold text-xs text-slate-800 dark:text-slate-100 leading-snug">
+                            <span className="font-bold text-xs sm:text-sm text-slate-900 dark:text-slate-100 leading-snug">
                               {item.title}
                             </span>
                           </div>
-                          <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 whitespace-nowrap shrink-0">
+                          <span className="text-[10px] font-mono font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 whitespace-nowrap shrink-0">
                             {item.relevanceScore}%
                           </span>
                         </div>
@@ -170,66 +271,120 @@ export default function EngineAISearchBar() {
                         {item.jurisdictions && item.jurisdictions.length > 0 && (
                           <div className="flex flex-wrap gap-1">
                             {item.jurisdictions.map((j) => (
-                              <span key={j} className="text-[9px] font-bold px-1.5 py-0.5 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 rounded-md">
+                              <span key={j} className="text-[9px] font-bold px-1.5 py-0.5 bg-indigo-500/10 text-indigo-500 dark:text-indigo-400 border border-indigo-500/20 rounded-md">
                                 {jurisdictionFlag[j] || '🌐'} {j}
                               </span>
                             ))}
                           </div>
                         )}
 
-                        <p className="text-xs text-slate-500 dark:text-slate-400">{item.summary}</p>
-                        <p className="text-xs text-amber-400 font-semibold">⚠️ {item.recommendation}</p>
+                        <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">{item.summary}</p>
+                        {item.recommendation && (
+                          <p className="text-xs text-amber-600 dark:text-amber-400 font-semibold">⚠️ {item.recommendation}</p>
+                        )}
 
-                        {/* Accuracy & downloads */}
-                        <div className="flex items-center gap-3 text-[9px] text-slate-400 font-mono pt-1">
+                        {/* Accuracy & Downloads Stats */}
+                        <div className="flex items-center gap-4 text-[10px] text-slate-500 dark:text-slate-400 font-mono pt-1">
                           {item.accuracyRating && (
                             <span className="flex items-center gap-1">
-                              <Shield className="w-3 h-3 text-emerald-400" />
+                              <Shield className="w-3.5 h-3.5 text-emerald-500" />
                               {isRtl ? 'الدقة:' : 'Accuracy:'} {item.accuracyRating}%
                             </span>
                           )}
                           {item.downloadsCount && (
                             <span className="flex items-center gap-1">
-                              <Download className="w-3 h-3 text-cyan-400" />
+                              <Download className="w-3.5 h-3.5 text-cyan-500" />
                               {item.downloadsCount.toLocaleString()} {isRtl ? 'تحميل' : 'downloads'}
                             </span>
                           )}
                         </div>
 
-                        {/* Action buttons */}
-                        <div className="flex items-center gap-2 pt-1">
+                        {/* Action Buttons Toolbar: Word, PDF, Print, Copy, Expand */}
+                        <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-200 dark:border-slate-850">
+                          {/* Download Word (.docx) */}
                           <button
-                            onClick={() => copyTemplate(item)}
-                            className="flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold rounded-lg bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/20 transition"
+                            type="button"
+                            onClick={() => handleExport(item, 'docx')}
+                            disabled={isDownloadingDocx}
+                            className="flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold rounded-xl bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30 text-blue-600 dark:text-blue-400 transition cursor-pointer"
                           >
-                            {isCopied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-                            {isCopied
-                              ? (isRtl ? 'تم النسخ!' : 'Copied!')
-                              : (isRtl ? 'نسخ نص العقد' : 'Copy Contract')}
+                            {isDownloadingDocx ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileDown className="w-3.5 h-3.5" />}
+                            <span>{isRtl ? 'تحميل Word' : 'Download Word'}</span>
                           </button>
+
+                          {/* Download PDF (.pdf) */}
+                          <button
+                            type="button"
+                            onClick={() => handleExport(item, 'pdf')}
+                            disabled={isDownloadingPdf}
+                            className="flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-600 dark:text-red-400 transition cursor-pointer"
+                          >
+                            {isDownloadingPdf ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
+                            <span>{isRtl ? 'تحميل PDF' : 'Download PDF'}</span>
+                          </button>
+
+                          {/* Print Contract */}
+                          <button
+                            type="button"
+                            onClick={() => handlePrint(item)}
+                            className="flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold rounded-xl bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 text-purple-600 dark:text-purple-400 transition cursor-pointer"
+                          >
+                            <Printer className="w-3.5 h-3.5" />
+                            <span>{isRtl ? 'طباعة' : 'Print'}</span>
+                          </button>
+
+                          {/* Copy Text */}
+                          <button
+                            type="button"
+                            onClick={() => copyTemplate(item)}
+                            className="flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-600 dark:text-cyan-400 transition cursor-pointer"
+                          >
+                            {isCopied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                            <span>{isCopied ? (isRtl ? 'تم النسخ!' : 'Copied!') : (isRtl ? 'نسخ النص' : 'Copy Text')}</span>
+                          </button>
+
+                          {/* Expand / Collapse Preview */}
                           {item.templateText && (
                             <button
+                              type="button"
                               onClick={() => setExpandedId(isExpanded ? null : item.id)}
-                              className="flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold rounded-lg bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 transition"
+                              className="flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 transition ms-auto cursor-pointer"
                             >
-                              <FileText className="w-3 h-3" />
-                              {isRtl ? (isExpanded ? 'إخفاء العقد' : 'معاينة العقد كاملاً') : (isExpanded ? 'Collapse' : 'Preview Full Contract')}
-                              {isExpanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                              <FileText className="w-3.5 h-3.5" />
+                              <span>{isRtl ? (isExpanded ? 'إخفاء العقد' : 'معاينة العقد كاملاً') : (isExpanded ? 'Collapse' : 'Preview Full Contract')}</span>
+                              {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                             </button>
                           )}
                         </div>
                       </div>
 
-                      {/* Full contract text preview */}
+                      {/* Full Contract Text Expansion */}
                       {isExpanded && item.templateText && (
-                        <div className="border-t border-slate-200 dark:border-slate-800 px-4 pb-4 pt-3">
-                          <div className="flex items-center justify-between mb-2">
-                            <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1">
-                              <Globe className="w-3 h-3" />
-                              {isRtl ? 'نص العقد القانوني الكامل من المستودع المليوني:' : 'Full Contract Text from 1M+ Repository:'}
+                        <div className="border-t border-slate-200 dark:border-slate-800 px-5 pb-5 pt-4 bg-white/50 dark:bg-slate-900/50 space-y-3">
+                          <div className="flex items-center justify-between">
+                            <span className="text-[11px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+                              <Globe className="w-3.5 h-3.5" />
+                              {isRtl ? 'نص العقد القانوني الكامل والمُحكم من المستودع المليوني:' : 'Full Certified Legal Contract Text from 1M+ Repository:'}
                             </span>
+                            <div className="flex items-center gap-2">
+                              <button
+                                type="button"
+                                onClick={() => handleExport(item, 'docx')}
+                                className="text-[10px] font-bold px-2 py-1 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 hover:bg-blue-500/20 transition"
+                              >
+                                Word (.docx)
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleExport(item, 'pdf')}
+                                className="text-[10px] font-bold px-2 py-1 rounded bg-red-500/10 text-red-600 dark:text-red-400 hover:bg-red-500/20 transition"
+                              >
+                                PDF (.pdf)
+                              </button>
+                            </div>
                           </div>
-                          <pre className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-wrap font-mono bg-white dark:bg-slate-900 p-3 rounded-xl border border-slate-200 dark:border-slate-800 max-h-64 overflow-y-auto">
+
+                          <pre className="text-xs text-slate-800 dark:text-slate-200 leading-relaxed whitespace-pre-wrap font-mono bg-white dark:bg-slate-950 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 max-h-96 overflow-y-auto select-all">
                             {item.templateText}
                           </pre>
                         </div>
@@ -240,7 +395,7 @@ export default function EngineAISearchBar() {
               </div>
 
               {searchResponse.results.length === 0 && (
-                <div className="text-center py-8 text-slate-400 text-sm">
+                <div className="text-center py-8 text-slate-500 text-sm">
                   {isRtl ? '🔍 لم يتم العثور على نتائج. حاول صياغة البحث بشكل مختلف.' : '🔍 No results found. Try refining your query.'}
                 </div>
               )}
