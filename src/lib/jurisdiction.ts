@@ -1,0 +1,669 @@
+export interface JurisdictionInfo {
+  countryCode: string;
+  countryName: string;
+  countryNameAr: string;
+  legalFramework: string;
+  legalFrameworkAr: string;
+  governingLaws: string[];
+  arbitrationVenue: string;
+  arbitrationVenueAr: string;
+  flagEmoji?: string;
+  isBlocked?: boolean;
+  currencyCode?: string;
+  currencySymbol?: string;
+  currencyNameAr?: string;
+  usdRate?: number;
+}
+
+export const JURISDICTIONS: Record<string, JurisdictionInfo> = {
+  LY: {
+    countryCode: 'LY',
+    countryName: 'Libya (Restricted)',
+    countryNameAr: 'ليبيا (نطاق محظور)',
+    legalFramework: 'Access Restricted',
+    legalFrameworkAr: 'الوصول محظور من هذا النطاق',
+    governingLaws: [],
+    arbitrationVenue: 'None',
+    arbitrationVenueAr: 'غير متاح',
+    flagEmoji: '🇱🇾',
+    isBlocked: true,
+    currencyCode: 'LYD',
+    currencySymbol: 'د.ل',
+    currencyNameAr: 'دينار ليبي',
+    usdRate: 4.85,
+  },
+  GLOBAL: {
+    countryCode: 'GLOBAL',
+    countryName: 'International (Global Standards)',
+    countryNameAr: 'دولياً (معايير الأمم المتحدة وغرفة التجارة الدولية)',
+    legalFramework: 'UN CISG 1980, UNCITRAL Model Law, & ICC Paris Incoterms 2020',
+    legalFrameworkAr: 'اتفاقية الأمم المتحدة (CISG 1980)، قانون الأونسيترال النموذجي، وقواعد غرفة التجارة الدولية (ICC Paris Incoterms 2020)',
+    governingLaws: [
+      'UN CISG 1980 (Vienna Convention on International Sales)',
+      'UNCITRAL Model Law on International Commercial Arbitration',
+      'ICC Paris Force Majeure & Hardship Clause 2020 & Incoterms 2020',
+    ],
+    arbitrationVenue: 'International Court of Arbitration of the ICC Paris / Geneva',
+    arbitrationVenueAr: 'محكمة التحكيم الدولية التابعة لغرفة التجارة الدولية (ICC باريس / جنيف)',
+    flagEmoji: '🌐',
+    currencyCode: 'USD',
+    currencySymbol: '$',
+    currencyNameAr: 'دولار أمريكي',
+    usdRate: 1.0,
+  },
+  SA: {
+    countryCode: 'SA',
+    countryName: 'Saudi Arabia',
+    countryNameAr: 'المملكة العربية السعودية',
+    legalFramework: 'Saudi Civil Transactions Law (M/191), New Companies Law (M/132), & Labor Code',
+    legalFrameworkAr: 'نظام المعاملات المدنية السعودي، نظام الشركات الجديد (مرسوم ملكي م/132)، ونظام العمل والنظام التجاري',
+    governingLaws: ['نظام المعاملات المدنية السعودي', 'نظام الشركات الجديد (م/132)', 'نظام العمل والتجارة الإلكترونية بالمملكة'],
+    arbitrationVenue: 'Saudi Center for Commercial Arbitration (SCCA) / Commercial Courts in Riyadh',
+    arbitrationVenueAr: 'المركز السعودي للتحكيم التجاري (SCCA) أو المحاكم التجارية بالرياض',
+    flagEmoji: '🇸🇦',
+    currencyCode: 'SAR',
+    currencySymbol: 'ر.س',
+    currencyNameAr: 'ريال سعودي',
+    usdRate: 3.75,
+  },
+  AE: {
+    countryCode: 'AE',
+    countryName: 'United Arab Emirates',
+    countryNameAr: 'الإمارات العربية المتحدة',
+    legalFramework: 'UAE Commercial Transactions (Federal Decree-Law 50/2022) & Civil Code 5/1985',
+    legalFrameworkAr: 'قانون المعاملات التجارية الإماراتي (مرسوم بقانون إتحادي 50 لسنة 2022) وقانون الشركات الإتحادي وقوانين DIFC/ADGM',
+    governingLaws: ['القانون الاتحادي للمعاملات التجارية', 'قانون العمل الإماراتي', 'تشريعات دبي المالي DIFC / ADGM'],
+    arbitrationVenue: 'Dubai International Arbitration Centre (DIAC) / Dubai Courts',
+    arbitrationVenueAr: 'مركز دبي للتحكيم الدولي (DIAC) أو محاكم دبي',
+    flagEmoji: '🇦🇪',
+    currencyCode: 'AED',
+    currencySymbol: 'د.إ',
+    currencyNameAr: 'درهم إماراتي',
+    usdRate: 3.67,
+  },
+  EG: {
+    countryCode: 'EG',
+    countryName: 'Egypt',
+    countryNameAr: 'جمهورية مصر العربية',
+    legalFramework: 'Egyptian Civil Code Law No. 131/1948, Companies Law 159/1981, & Labor Law 12/2003',
+    legalFrameworkAr: 'القانون المدني المصري رقم 131 لسنة 1948، قانون الشركات 159 لسنة 1981، قانون العمل 12 لسنة 2003، والتوقيع الإلكتروني 15/2004',
+    governingLaws: [
+      'القانون المدني المصري (مادة 165 قوة قاهرة - مادة 147 ظروف طارئة)',
+      'قانون العمل المصري رقم 12 لسنة 2003',
+      'قانون تنظيم التوقيع الإلكتروني وتكنولوجيا المعلومات 15/2004',
+    ],
+    arbitrationVenue: 'Cairo Regional Centre for International Commercial Arbitration (CRCICA)',
+    arbitrationVenueAr: 'مركز القاهرة الإقليمي للتحكيم التجاري الدولي (CRCICA) أو المحاكم الاقتصادية بالقاهرة',
+    flagEmoji: '🇪🇬',
+    currencyCode: 'EGP',
+    currencySymbol: 'ج.م',
+    currencyNameAr: 'جنيه مصري',
+    usdRate: 48.5,
+  },
+  KW: {
+    countryCode: 'KW',
+    countryName: 'Kuwait',
+    countryNameAr: 'دولة الكويت',
+    legalFramework: 'Kuwaiti Civil Code (Decree 67/1980), Commercial Code 68/1980, & Companies Law 1/2016',
+    legalFrameworkAr: 'القانون المدني الكويتي (مرسوم بقانون رقم 67 لسنة 1980)، قانون التجارة، وقانون الشركات رقم 1 لسنة 2016',
+    governingLaws: ['القانون المدني الكويتي', 'قانون التجارة الكويتي رقم 68 لسنة 1980', 'قانون العمل في القطاع الأهلي 6/2010'],
+    arbitrationVenue: 'Kuwait Commercial Arbitration Centre (KCAC)',
+    arbitrationVenueAr: 'مركز الكويت للتحكيم التجاري (KCAC) أو المحاكم التجارية بالكويت',
+    flagEmoji: '🇰🇼',
+    currencyCode: 'KWD',
+    currencySymbol: 'د.ك',
+    currencyNameAr: 'دينار كويتي',
+    usdRate: 0.31,
+  },
+  QA: {
+    countryCode: 'QA',
+    countryName: 'Qatar',
+    countryNameAr: 'دولة قطر',
+    legalFramework: 'Qatari Civil Code (Law 22/2004), Commercial Companies Law 11/2015, & QICCA Arbitration',
+    legalFrameworkAr: 'القانون المدني القطري (قانون رقم 22 لسنة 2004)، قانون الشركات التجاري، ومحكمة قطر الدولية (QICCA)',
+    governingLaws: ['القانون المدني القطري رقم 22 لسنة 2004', 'قانون الشركات التجارية القطري 11/2015', 'قانون التجارة الإلكترونية 16/2010'],
+    arbitrationVenue: 'Qatar International Center for Conciliation and Arbitration (QICCA) / QICDRC',
+    arbitrationVenueAr: 'مركز قطر الدولي للتوفيق والتحكيم (QICCA) ومحكمة قطر الدولية',
+    flagEmoji: '🇶🇦',
+    currencyCode: 'QAR',
+    currencySymbol: 'ر.ق',
+    currencyNameAr: 'ريال قطري',
+    usdRate: 3.64,
+  },
+  BH: {
+    countryCode: 'BH',
+    countryName: 'Bahrain',
+    countryNameAr: 'مملكة البحرين',
+    legalFramework: 'Bahraini Civil Code (Decree 19/2001), Commercial Code 55/2002, & BCDR-AAA',
+    legalFrameworkAr: 'القانون المدني البحريني (مرسوم بقانون رقم 19 لسنة 2001)، قانون التجارة، وغرفة البحرين للمنازعات الاقتصادية',
+    governingLaws: ['القانون المدني البحريني', 'قانون الشركات التجارية البحريني', 'تشريعات مصرف البحرين المركزي'],
+    arbitrationVenue: 'Bahrain Chamber for Dispute Resolution (BCDR-AAA) / BDIAM',
+    arbitrationVenueAr: 'غرفة البحرين للمنازعات الاقتصادية والمالية (BCDR) ومحكمة البحرين الدولية للوساطة والتحكيم',
+    flagEmoji: '🇧🇭',
+    currencyCode: 'BHD',
+    currencySymbol: 'د.ب',
+    currencyNameAr: 'دينار بحريني',
+    usdRate: 0.376,
+  },
+  OM: {
+    countryCode: 'OM',
+    countryName: 'Oman',
+    countryNameAr: 'سلطنة عمان',
+    legalFramework: 'Omani Civil Transactions (Royal Decree 29/2013) & Commercial Companies Law 18/2019',
+    legalFrameworkAr: 'قانون المعاملات المدنية العماني (مرسوم سلطاني 29/2013)، قانون الشركات التجارية، ومحاكم الاستثمار',
+    governingLaws: ['قانون المعاملات المدنية العماني', 'قانون الشركات التجارية العماني (18/2019)', 'قانون استثمار رأس المال الأجنبي'],
+    arbitrationVenue: 'Oman Commercial Arbitration Centre (OAC)',
+    arbitrationVenueAr: 'مركز عمان للتحكيم التجاري (OAC) والمحاكم التجارية بمسقط',
+    flagEmoji: '🇴🇲',
+    currencyCode: 'OMR',
+    currencySymbol: 'ر.ع',
+    currencyNameAr: 'ريال عماني',
+    usdRate: 0.385,
+  },
+  JO: {
+    countryCode: 'JO',
+    countryName: 'Jordan',
+    countryNameAr: 'المملكة الأردنية الهاشمية',
+    legalFramework: 'Jordanian Civil Code (Law No. 43/1976), Commercial Law, & Amman Economic Courts',
+    legalFrameworkAr: 'القانون المدني الأردني (قانون رقم 43 لسنة 1976)، قانون التجارة، قانون العمل الأردني، ومحاكم بداية عمان الاقتصادية',
+    governingLaws: ['القانون المدني الأردني رقم 43 لسنة 1976', 'قانون التجارة وقانون الشركات الأردني 22/1997', 'قانون العمل الأردني'],
+    arbitrationVenue: 'Amman Court of First Instance (Economic Division) / Jordan Arbitration Center',
+    arbitrationVenueAr: 'محاكم بداية عمان الاقتصادية أو مركز التحكيم الأردني الدولي',
+    flagEmoji: '🇯🇴',
+    currencyCode: 'JOD',
+    currencySymbol: 'د.أ',
+    currencyNameAr: 'دينار أردني',
+    usdRate: 0.71,
+  },
+  IQ: {
+    countryCode: 'IQ',
+    countryName: 'Iraq',
+    countryNameAr: 'جمهورية العراق',
+    legalFramework: 'Iraqi Civil Code (Law No. 40/1951), Commercial Code 30/1984, & National Investment Law',
+    legalFrameworkAr: 'القانون المدني العراقي (قانون رقم 40 لسنة 1951)، قانون التجارة العراقي، وقانون الاستثمار رقم 13 لسنة 2006',
+    governingLaws: ['القانون المدني العراقي رقم 40 لسنة 1951', 'قانون التجارة وقانون الشركات العراقي', 'قانون الاستثمار العراقي رقم 13 لسنة 2006'],
+    arbitrationVenue: 'Baghdad Commercial Court / Iraqi Arbitration Centre',
+    arbitrationVenueAr: 'محكمة البداءة المختصة بنظر الدعاوى التجارية ببغداد أو هيئة التحكيم العراقية',
+    flagEmoji: '🇮🇶',
+    currencyCode: 'IQD',
+    currencySymbol: 'د.ع',
+    currencyNameAr: 'دينار عراقي',
+    usdRate: 1310.0,
+  },
+  MA: {
+    countryCode: 'MA',
+    countryName: 'Morocco',
+    countryNameAr: 'المملكة المغربية',
+    legalFramework: 'Moroccan Dahir of Obligations & Contracts (DOC) & Commercial Code Law 15-95',
+    legalFrameworkAr: 'ظهير الالتزامات والعقود المغربي (DOC)، مدونة التجارة المغربية (قانون 15-95)، ومحاكم التجارة بالدار البيضاء',
+    governingLaws: ['ظهير الالتزامات والعقود المغربي (DOC)', 'مدونة التجارة المغربية قانون 15-95', 'قانون الشركات المساهمة بالمغرب'],
+    arbitrationVenue: 'Casablanca International Arbitration Centre (CIMC) / Commercial Courts',
+    arbitrationVenueAr: 'مركز الدار البيضاء الدولي للتحكيم (CIMC) أو المحاكم التجارية بالدار البيضاء',
+    flagEmoji: '🇲🇦',
+    currencyCode: 'MAD',
+    currencySymbol: 'د.م.',
+    currencyNameAr: 'درهم مغربي',
+    usdRate: 9.85,
+  },
+  DZ: {
+    countryCode: 'DZ',
+    countryName: 'Algeria',
+    countryNameAr: 'الجمهورية الجزائرية',
+    legalFramework: 'Algerian Civil Code (Ordinance 75-58), Commercial Code, & New Investment Law 22-18',
+    legalFrameworkAr: 'القانون المدني الجزائري (أمر 75-58)، القانون التجاري الجزائري، وقانون الاستثمار الجديد 22-18',
+    governingLaws: ['القانون المدني الجزائري أمر 75-58', 'القانون التجاري الجزائري', 'قانون الاستثمار الجزائري رقم 22-18'],
+    arbitrationVenue: 'Algerian Center for Conciliation and Arbitration (CACA) / Algiers Commercial Courts',
+    arbitrationVenueAr: 'المركز الجزائري للتوفيق والتحكيم (CACA) والمحاكم التجارية بالجزائر العاصمة',
+    flagEmoji: '🇩🇿',
+    currencyCode: 'DZD',
+    currencySymbol: 'د.ج',
+    currencyNameAr: 'دينار جزائري',
+    usdRate: 134.5,
+  },
+  TN: {
+    countryCode: 'TN',
+    countryName: 'Tunisia',
+    countryNameAr: 'الجمهورية التونسية',
+    legalFramework: 'Tunisian Code of Obligations & Contracts (COC) & Code of Commercial Companies',
+    legalFrameworkAr: 'مجلة الالتزامات والعقود التونسية (COC)، مجلة الشركات التجارية، ومركز تونس للتحكيم',
+    governingLaws: ['مجلة الالتزامات والعقود التونسية', 'مجلة الشركات التجارية التونسية', 'قانون الاستثمار التونسي'],
+    arbitrationVenue: 'Tunis Centre for Conciliation and Arbitration (CCA)',
+    arbitrationVenueAr: 'مركز تونس للتوفيق والتحكيم (CCA) والمحاكم الابتدائية الاقتصادية بتونس',
+    flagEmoji: '🇹🇳',
+    currencyCode: 'TND',
+    currencySymbol: 'د.ت',
+    currencyNameAr: 'دينار تونسي',
+    usdRate: 3.12,
+  },
+  LB: {
+    countryCode: 'LB',
+    countryName: 'Lebanon',
+    countryNameAr: 'الجمهورية اللبنانية',
+    legalFramework: 'Lebanese Code of Obligations & Contracts (COC) & Commercial Code',
+    legalFrameworkAr: 'قانون الموجبات والعقود اللبناني (COC)، قانون التجارة اللبناني، ومركز التحكيم لدى غرفة بيروت',
+    governingLaws: ['قانون الموجبات والعقود اللبناني', 'قانون التجارة اللبناني وقانون الشركات'],
+    arbitrationVenue: 'Chamber of Commerce, Industry & Agriculture of Beirut & Mount Lebanon (CCIABML)',
+    arbitrationVenueAr: 'مركز التحكيم التابع لغرفة التجارة والصناعة والزراعة في بيروت وجبل لبنان',
+    flagEmoji: '🇱🇧',
+    currencyCode: 'LBP',
+    currencySymbol: 'ل.ل',
+    currencyNameAr: 'ليرة لبنانية',
+    usdRate: 89500.0,
+  },
+  SD: {
+    countryCode: 'SD',
+    countryName: 'Sudan',
+    countryNameAr: 'جمهورية السودان',
+    legalFramework: 'Sudanese Civil Transactions Act 1984 & Companies Act 2015',
+    legalFrameworkAr: 'قانون المعاملات المدنية السوداني لسنة 1984 وقانون الشركات السوداني لسنة 2015',
+    governingLaws: ['قانون المعاملات المدنية السوداني 1984', 'قانون الشركات السوداني 2015'],
+    arbitrationVenue: 'Khartoum Commercial Court / Sudanese Arbitration Centre',
+    arbitrationVenueAr: 'محكمة الخرطوم التجارية أو مركز التحكيم السوداني',
+    flagEmoji: '🇸🇩',
+    currencyCode: 'SDG',
+    currencySymbol: 'ج.س',
+    currencyNameAr: 'جنيه سوداني',
+    usdRate: 600.0,
+  },
+  US: {
+    countryCode: 'US',
+    countryName: 'United States',
+    countryNameAr: 'الولايات المتحدة الأمريكية',
+    legalFramework: 'US Uniform Commercial Code (UCC), Delaware DGCL, & Federal Trade Law',
+    legalFrameworkAr: 'القانون التجاري الموحد الأمريكي (UCC)، قانون شركات ديلاوير (DGCL)، وتوافق Federal Trade Commission',
+    governingLaws: ['Uniform Commercial Code (UCC)', 'Delaware General Corporation Law (DGCL)', 'US Defend Trade Secrets Act (DTSA)'],
+    arbitrationVenue: 'American Arbitration Association (AAA) / Delaware Court of Chancery',
+    arbitrationVenueAr: 'جمعية التحكيم الأمريكية (AAA) أو محاكم ولاية ديلاوير',
+    flagEmoji: '🇺🇸',
+    currencyCode: 'USD',
+    currencySymbol: '$',
+    currencyNameAr: 'دولار أمريكي',
+    usdRate: 1.0,
+  },
+  GB: {
+    countryCode: 'GB',
+    countryName: 'United Kingdom',
+    countryNameAr: 'المملكة المتحدة',
+    legalFramework: 'UK Common Law, Companies Act 2006, & Data Protection Act 2018 (UK GDPR)',
+    legalFrameworkAr: 'القانون العام البريطاني (UK Common Law)، قانون الشركات لعام 2006، وحماية البيانات UK GDPR',
+    governingLaws: ['UK Common Law of Contract', 'Companies Act 2006', 'UK GDPR & Employment Rights Act'],
+    arbitrationVenue: 'London Court of International Arbitration (LCIA)',
+    arbitrationVenueAr: 'محكمة لندن للتحكيم الدولي (LCIA)',
+    flagEmoji: '🇬🇧',
+    currencyCode: 'GBP',
+    currencySymbol: '£',
+    currencyNameAr: 'جنيه إسترليني',
+    usdRate: 0.78,
+  },
+  EU: {
+    countryCode: 'EU',
+    countryName: 'European Union',
+    countryNameAr: 'الاتحاد الأوروبي',
+    legalFramework: 'EU GDPR (Regulation 2016/679), EU Digital Services Act (DSA), & SCCs',
+    legalFrameworkAr: 'اللائحة العامة لحماية البيانات في الاتحاد الأوروبي (GDPR 2016/679)، قانون الخدمات الرقمية DSA، والشروط القياسية SCCs',
+    governingLaws: ['EU GDPR Regulation 2016/679', 'EU Standard Contractual Clauses (SCCs)', 'EU Digital Services Act'],
+    arbitrationVenue: 'Brussels International Dispute Resolution Centre / ICC Paris',
+    arbitrationVenueAr: 'مركز بروكسل الدولي لفض المنازعات أو غرف التحكيم الأوروبية',
+    flagEmoji: '🇪🇺',
+    currencyCode: 'EUR',
+    currencySymbol: '€',
+    currencyNameAr: 'يورو',
+    usdRate: 0.92,
+  },
+  FR: {
+    countryCode: 'FR',
+    countryName: 'France',
+    countryNameAr: 'جمهورية فرنسا',
+    legalFramework: 'French Civil Code (Code Civil), Commercial Code (Code de Commerce), & GDPR',
+    legalFrameworkAr: 'القانون المدني الفرنسي (Code Civil)، القانون التجاري الفرنسي (Code de Commerce)، وتشريعات الاتحاد الأوروبي',
+    governingLaws: ['Code Civil Français (Droit des Contrats)', 'Code de Commerce', 'Règlement Général sur la Protection des Données (RGPD)'],
+    arbitrationVenue: 'International Court of Arbitration of the ICC Paris / Paris Commercial Court',
+    arbitrationVenueAr: 'محكمة التحكيم الدولية التابعة لغرفة التجارة الدولية (ICC باريس) أو المحكمة التجارية بباريس',
+    flagEmoji: '🇫🇷',
+    currencyCode: 'EUR',
+    currencySymbol: '€',
+    currencyNameAr: 'يورو',
+    usdRate: 0.92,
+  },
+  DE: {
+    countryCode: 'DE',
+    countryName: 'Germany',
+    countryNameAr: 'جمهورية ألمانيا الاتحادية',
+    legalFramework: 'German Civil Code (BGB), Commercial Code (HGB), & AktG/GmbHG',
+    legalFrameworkAr: 'القانون المدني الألماني (BGB)، القانون التجاري (HGB)، وقانون الشركات ذات المسؤولية المحدودة (GmbHG)',
+    governingLaws: ['Bürgerliches Gesetzbuch (BGB - Contract Law)', 'Handelsgesetzbuch (HGB - Commercial Code)', 'GmbH-Gesetz (GmbHG)'],
+    arbitrationVenue: 'German Institution of Arbitration (DIS) / Frankfurt Commercial Court',
+    arbitrationVenueAr: 'مؤسسة التحكيم الألمانية (DIS) أو المحكمة التجارية بفرانكفورت',
+    flagEmoji: '🇩🇪',
+    currencyCode: 'EUR',
+    currencySymbol: '€',
+    currencyNameAr: 'يورو',
+    usdRate: 0.92,
+  },
+  CH: {
+    countryCode: 'CH',
+    countryName: 'Switzerland',
+    countryNameAr: 'الاتحاد السويسري',
+    legalFramework: 'Swiss Code of Obligations (OR / CO) & Swiss Private International Law Act (PILA)',
+    legalFrameworkAr: 'قانون الالتزامات السويسري (OR/CO)، وقانون القانون الدولي الخاص السويسري (PILA)',
+    governingLaws: ['Swiss Code of Obligations (OR / Code des Obligations)', 'Swiss Federal Act on Private International Law (PILA)'],
+    arbitrationVenue: 'Swiss Arbitration Centre (Swiss Rules) / Zurich & Geneva International Arbitration',
+    arbitrationVenueAr: 'مركز التحكيم السويسري (Swiss Rules) أو هيئات التحكيم بجنيف وزيورخ',
+    flagEmoji: '🇨🇭',
+    currencyCode: 'CHF',
+    currencySymbol: 'CHF',
+    currencyNameAr: 'فرنك سويسري',
+    usdRate: 0.89,
+  },
+  SG: {
+    countryCode: 'SG',
+    countryName: 'Singapore',
+    countryNameAr: 'جمهورية سنغافورة',
+    legalFramework: 'Singapore Common Law, Companies Act (Cap. 50), & SIAC Rules',
+    legalFrameworkAr: 'القانون العام لسنغافورة (Singapore Common Law)، قانون الشركات، وقواعد مركز سنغافورة للتحكيم الدولي SIAC',
+    governingLaws: ['Singapore Contract Law', 'Singapore Companies Act (Cap. 50)', 'Personal Data Protection Act (PDPA)'],
+    arbitrationVenue: 'Singapore International Arbitration Centre (SIAC)',
+    arbitrationVenueAr: 'مركز سنغافورة للتحكيم الدولي (SIAC)',
+    flagEmoji: '🇸🇬',
+    currencyCode: 'SGD',
+    currencySymbol: 'S$',
+    currencyNameAr: 'دولار سنغافوري',
+    usdRate: 1.34,
+  },
+  JP: {
+    countryCode: 'JP',
+    countryName: 'Japan',
+    countryNameAr: 'اليابان',
+    legalFramework: 'Japanese Civil Code (Minpō Act No. 89/1896) & Companies Act (Kaishahō)',
+    legalFrameworkAr: 'القانون المدني الياباني (Minpō)، قانون الشركات الياباني (Kaishahō)، ومركز التحكيم التجاري الياباني (JCAA)',
+    governingLaws: ['Japanese Civil Code (Minpō Act 89/1896)', 'Companies Act of Japan (Kaishahō Act 86/2005)', 'APPI Data Protection Law'],
+    arbitrationVenue: 'Japan Commercial Arbitration Association (JCAA) / Tokyo District Court',
+    arbitrationVenueAr: 'جمعية التحكيم التجاري اليابانية (JCAA) أو محكمة طوكيو الابتدائية',
+    flagEmoji: '🇯🇵',
+    currencyCode: 'JPY',
+    currencySymbol: '¥',
+    currencyNameAr: 'ين ياباني',
+    usdRate: 155.0,
+  },
+  CN: {
+    countryCode: 'CN',
+    countryName: 'China',
+    countryNameAr: 'جمهورية الصين الشعبية',
+    legalFramework: 'PRC Civil Code 2021, PRC Company Law, & CIETAC Arbitration Rules',
+    legalFrameworkAr: 'القانون المدني لجمهورية الصين الشعبية (2021)، قانون الشركات الصيني، وقواعد مركز التحكيم الدولي CIETAC',
+    governingLaws: ['PRC Civil Code 2021 (Contract Division)', 'PRC Company Law 2024 Revision', 'PRC Personal Information Protection Law (PIPL)'],
+    arbitrationVenue: 'China International Economic and Trade Arbitration Commission (CIETAC)',
+    arbitrationVenueAr: 'لجنة التحكيم الاقتصادي والتجاري الدولي الصينية (CIETAC)',
+    flagEmoji: '🇨🇳',
+    currencyCode: 'CNY',
+    currencySymbol: '¥',
+    currencyNameAr: 'يوان صيني',
+    usdRate: 7.23,
+  },
+  CA: {
+    countryCode: 'CA',
+    countryName: 'Canada',
+    countryNameAr: 'كندا',
+    legalFramework: 'Canadian Common Law / Quebec Civil Code & Canada Business Corporations Act (CBCA)',
+    legalFrameworkAr: 'القانون العام الكندي / القانون المدني لكيبيك، وقانون الشركات التجارية الكندي (CBCA)',
+    governingLaws: ['Canada Business Corporations Act (CBCA)', 'Canadian Common Law of Contract', 'PIPEDA Privacy Regulations'],
+    arbitrationVenue: 'ICDR Canada / Vancouver International Arbitration Centre (VanIAC)',
+    arbitrationVenueAr: 'مركز فانكوفر الدولي للتحكيم (VanIAC) أو هيئة التحكيم الكندية',
+    flagEmoji: '🇨🇦',
+    currencyCode: 'CAD',
+    currencySymbol: 'CA$',
+    currencyNameAr: 'دولار كندي',
+    usdRate: 1.36,
+  },
+  AU: {
+    countryCode: 'AU',
+    countryName: 'Australia',
+    countryNameAr: 'أستراليا',
+    legalFramework: 'Australian Contract Law, Corporations Act 2001 (Cth), & ACICA Rules',
+    legalFrameworkAr: 'قانون العقود الأسترالي، قانون الشركات لعام 2001 (Corporations Act 2001)، ومركز التحكيم ACICA',
+    governingLaws: ['Corporations Act 2001 (Cth)', 'Australian Consumer Law (ACL)', 'Privacy Act 1988'],
+    arbitrationVenue: 'Australian Centre for International Commercial Arbitration (ACICA)',
+    arbitrationVenueAr: 'المركز الأسترالي للتحكيم التجاري الدولي (ACICA)',
+    flagEmoji: '🇦🇺',
+    currencyCode: 'AUD',
+    currencySymbol: 'A$',
+    currencyNameAr: 'دولار أسترالي',
+    usdRate: 1.52,
+  },
+  IN: {
+    countryCode: 'IN',
+    countryName: 'India',
+    countryNameAr: 'جمهورية الهند',
+    legalFramework: 'Indian Contract Act 1872, Companies Act 2013, & MCIA Arbitration',
+    legalFrameworkAr: 'قانون العقود الهندي لعام 1872، قانون الشركات لعام 2013، ومركز مومباي للتحكيم الدولي (MCIA)',
+    governingLaws: ['Indian Contract Act 1872', 'Companies Act 2013', 'Digital Personal Data Protection Act 2023'],
+    arbitrationVenue: 'Mumbai Centre for International Arbitration (MCIA) / Delhi High Court',
+    arbitrationVenueAr: 'مركز مومباي للتحكيم الدولي (MCIA) أو المحكمة العليا بنيودلهي',
+    flagEmoji: '🇮🇳',
+    currencyCode: 'INR',
+    currencySymbol: '₹',
+    currencyNameAr: 'روبية هندية',
+    usdRate: 83.5,
+  },
+  MY: {
+    countryCode: 'MY',
+    countryName: 'Malaysia',
+    countryNameAr: 'ماليزيا',
+    legalFramework: 'Malaysian Contracts Act 1950, Companies Act 2016, & AIAC Rules',
+    legalFrameworkAr: 'قانون العقود الماليزي لعام 1950، قانون الشركات لعام 2016، ومركز أسيان للتحكيم (AIAC)',
+    governingLaws: ['Contracts Act 1950 (Act 136)', 'Companies Act 2016 (Act 777)', 'Personal Data Protection Act 2010'],
+    arbitrationVenue: 'Asian International Arbitration Centre (AIAC Kuala Lumpur)',
+    arbitrationVenueAr: 'المركز الآسيوي الدولي للتحكيم (AIAC كوالالمبور)',
+    flagEmoji: '🇲🇾',
+    currencyCode: 'MYR',
+    currencySymbol: 'RM',
+    currencyNameAr: 'رينغيت ماليزي',
+    usdRate: 4.70,
+  },
+  BR: {
+    countryCode: 'BR',
+    countryName: 'Brazil',
+    countryNameAr: 'جمهورية البرازيل الاتحادية',
+    legalFramework: 'Brazilian Civil Code (Law 10.406/2002), Corporate Law (Law 6.404/76), & LGPD',
+    legalFrameworkAr: 'القانون المدني البرازيلي (قانون 10.406)، قانون الشركات، وحماية البيانات البرازيلية LGPD',
+    governingLaws: ['Código Civil Brasileiro (Lei 10.406/2002)', 'Lei das Sociedades por Ações (Lei 6.404/76)', 'Lei Geral de Proteção de Dados (LGPD)'],
+    arbitrationVenue: 'Center for Arbitration and Mediation of the Chamber of Commerce of Brazil-Canada (CAM-CCBC)',
+    arbitrationVenueAr: 'مركز التحكيم والوساطة بغرفة التجارة (CAM-CCBC ساو باولو)',
+    flagEmoji: '🇧🇷',
+    currencyCode: 'BRL',
+    currencySymbol: 'R$',
+    currencyNameAr: 'ريال برازيلي',
+    usdRate: 5.55,
+  },
+  ZA: {
+    countryCode: 'ZA',
+    countryName: 'South Africa',
+    countryNameAr: 'جمهورية جنوب أفريقيا',
+    legalFramework: 'South African Law of Contract, Companies Act 71 of 2008, & POPIA',
+    legalFrameworkAr: 'قانون العقود لجنوب أفريقيا، قانون الشركات رقم 71 لسنة 2008، وحماية المعلومات الشخصية POPIA',
+    governingLaws: ['South African Common Law of Contract', 'Companies Act 71 of 2008', 'Protection of Personal Information Act (POPIA)'],
+    arbitrationVenue: 'Arbitration Foundation of Southern Africa (AFSA) / High Court of South Africa',
+    arbitrationVenueAr: 'مؤسسة التحكيم لجنوب أفريقيا (AFSA) أو المحكمة العليا بجوهانسبرغ',
+    flagEmoji: '🇿🇦',
+    currencyCode: 'ZAR',
+    currencySymbol: 'R',
+    currencyNameAr: 'راند جنوب أفريقي',
+    usdRate: 18.2,
+  },
+  SE: {
+    countryCode: 'SE',
+    countryName: 'Sweden',
+    countryNameAr: 'مملكة السويد',
+    legalFramework: 'Swedish Contracts Act (Avtalslagen 1915:218) & Arbitration Institute of Stockholm (SCC)',
+    legalFrameworkAr: 'قانون العقود السويدي (Avtalslagen)، قانون الشركات، ومعهد ستوكهولم للتحكيم الدولي (SCC)',
+    governingLaws: ['Swedish Contracts Act (Lag om avtal 1915:218)', 'Swedish Companies Act (Aktiebolagslag 2005:551)', 'EU GDPR'],
+    arbitrationVenue: 'Arbitration Institute of the Stockholm Chamber of Commerce (SCC)',
+    arbitrationVenueAr: 'معهد التحكيم التابع لغرفة تجارة ستوكهولم (SCC)',
+    flagEmoji: '🇸🇪',
+    currencyCode: 'SEK',
+    currencySymbol: 'kr',
+    currencyNameAr: 'كرونة سويدية',
+    usdRate: 10.6,
+  },
+  NL: {
+    countryCode: 'NL',
+    countryName: 'Netherlands',
+    countryNameAr: 'مملكة هولندا',
+    legalFramework: 'Dutch Civil Code (Burgerlijk Wetboek), NAI Arbitration Rules, & GDPR',
+    legalFrameworkAr: 'القانون المدني الهولندي (Burgerlijk Wetboek)، قواعد معهد التحكيم الهولندي NAI، وتوافق GDPR',
+    governingLaws: ['Dutch Civil Code (Burgerlijk Wetboek Boek 3 & 6)', 'Dutch Corporate Law (Boek 2 BW)', 'EU GDPR'],
+    arbitrationVenue: 'Netherlands Arbitration Institute (NAI) / Amsterdam District Court (NCC)',
+    arbitrationVenueAr: 'معهد التحكيم الهولندي (NAI) أو محكمة المحيط التجاري بأمستردام',
+    flagEmoji: '🇳🇱',
+    currencyCode: 'EUR',
+    currencySymbol: '€',
+    currencyNameAr: 'يورو',
+    usdRate: 0.92,
+  },
+  ES: {
+    countryCode: 'ES',
+    countryName: 'Spain',
+    countryNameAr: 'مملكة إسبانيا',
+    legalFramework: 'Spanish Civil Code (Código Civil), Capital Companies Act (LSC), & CAM Arbitration',
+    legalFrameworkAr: 'القانون المدني الإسباني (Código Civil)، قانون شركات رأس المال (LSC)، ومحكمة التحكيم بمدريد',
+    governingLaws: ['Código Civil Español (Contratos y Obligaciones)', 'Ley de Sociedades de Capital (LSC)', 'Ley Orgánica de Protección de Datos (LOPDGDD)'],
+    arbitrationVenue: 'Madrid Arbitration Court (CAM) / Tribunal Superior de Justicia',
+    arbitrationVenueAr: 'محكمة مدريد للتحكيم (CAM) أو المحاكم التجارية بإسبانيا',
+    flagEmoji: '🇪🇸',
+    currencyCode: 'EUR',
+    currencySymbol: '€',
+    currencyNameAr: 'يورو',
+    usdRate: 0.92,
+  },
+  IT: {
+    countryCode: 'IT',
+    countryName: 'Italy',
+    countryNameAr: 'الجمهورية الإيطالية',
+    legalFramework: 'Italian Civil Code (Codice Civile Law 1669/1942) & Milan Chamber of Arbitration (CAM)',
+    legalFrameworkAr: 'القانون المدني الإيطالي (Codice Civile 1942)، قانون التجارة، وغرفة التحكيم بميلانو (CAM)',
+    governingLaws: ['Codice Civile Italiano (Libro IV delle Obbligazioni)', 'Codice della Proprietà Industriale', 'EU GDPR Privacy Code'],
+    arbitrationVenue: 'Chamber of Arbitration of Milan (CAM) / Commercial Courts of Milan',
+    arbitrationVenueAr: 'غرفة التحكيم بميلانو (CAM) أو المحاكم التجارية بميلانو',
+    flagEmoji: '🇮🇹',
+    currencyCode: 'EUR',
+    currencySymbol: '€',
+    currencyNameAr: 'يورو',
+    usdRate: 0.92,
+  },
+  KR: {
+    countryCode: 'KR',
+    countryName: 'South Korea',
+    countryNameAr: 'جمهورية كوريا الجنوبية',
+    legalFramework: 'Korean Civil Code (Act No. 471/1958), Commercial Code, & KCAB Rules',
+    legalFrameworkAr: 'القانون المدني الكوري (Minbeop)، القانون التجاري الكوري، ومجلس التحكيم التجاري الكوري (KCAB)',
+    governingLaws: ['Korean Civil Code (Act 471/1958)', 'Korean Commercial Code (Sangbeop)', 'Personal Information Protection Act (PIPA)'],
+    arbitrationVenue: 'Korean Commercial Arbitration Board (KCAB International) / Seoul Central District Court',
+    arbitrationVenueAr: 'مجلس التحكيم التجاري الكوري (KCAB الدولي) أو محكمة سيؤول',
+    flagEmoji: '🇰🇷',
+    currencyCode: 'KRW',
+    currencySymbol: '₩',
+    currencyNameAr: 'وون كوري',
+    usdRate: 1380.0,
+  },
+  RU: {
+    countryCode: 'RU',
+    countryName: 'Russia',
+    countryNameAr: 'الاتحاد الروسي',
+    legalFramework: 'Russian Civil Code (GK RF Parts I-IV) & ICAC International Commercial Arbitration',
+    legalFrameworkAr: 'القانون المدني للاتحاد الروسي (GK RF)، وقواعد محكمة التحكيم التجاري الدولي بموسكو (ICAC)',
+    governingLaws: ['Russian Civil Code (Grazhdansky Kodeks GK RF)', 'Federal Law on Joint Stock Companies (No. 208-FZ)', 'Federal Law on Personal Data (No. 152-FZ)'],
+    arbitrationVenue: 'International Commercial Arbitration Court at the RF Chamber of Commerce (ICAC Moscow)',
+    arbitrationVenueAr: 'محكمة التحكيم التجاري الدولي لدى غرفة التجارة والصناعة (ICAC موسكو)',
+    flagEmoji: '🇷🇺',
+    currencyCode: 'RUB',
+    currencySymbol: '₽',
+    currencyNameAr: 'روبل روسي',
+    usdRate: 88.0,
+  },
+};
+
+const DEFAULT_JURISDICTION: JurisdictionInfo = JURISDICTIONS.JO;
+
+let cachedJurisdiction: JurisdictionInfo | null = null;
+
+export function setSelectedJurisdiction(code: string): JurisdictionInfo {
+  const target = JURISDICTIONS[code] || JURISDICTIONS.GLOBAL;
+  cachedJurisdiction = target;
+  try {
+    localStorage.setItem('juristech_jurisdiction', JSON.stringify(target));
+  } catch (e) {
+    console.warn('Failed to store jurisdiction selection:', e);
+  }
+  return target;
+}
+
+export async function detectVisitorJurisdiction(): Promise<JurisdictionInfo> {
+  if (cachedJurisdiction) return cachedJurisdiction;
+
+  try {
+    const saved = localStorage.getItem('juristech_jurisdiction');
+    if (saved) {
+      cachedJurisdiction = JSON.parse(saved);
+      if (cachedJurisdiction && cachedJurisdiction.countryCode === 'LY') {
+        cachedJurisdiction.isBlocked = true;
+      }
+      return cachedJurisdiction!;
+    }
+  } catch {
+    // Ignore storage read error
+  }
+
+  // Non-blocking 1.5s fast timeout to prevent page hangs on desktop browsers
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 1500);
+
+    const res = await fetch('https://ipapi.co/json/', { signal: controller.signal });
+    clearTimeout(timer);
+
+    if (res.ok) {
+      const data = await res.json();
+      const code = (data.country_code || '').toUpperCase() as string;
+
+      if (code === 'LY') {
+        cachedJurisdiction = JURISDICTIONS.LY;
+      } else if (code && JURISDICTIONS[code]) {
+        cachedJurisdiction = JURISDICTIONS[code];
+      } else if (code) {
+        cachedJurisdiction = {
+          countryCode: code,
+          countryName: data.country_name || 'International (Global Standards)',
+          countryNameAr: data.country_name || 'دولياً (معايير الأمم المتحدة والغرفة الدولية)',
+          legalFramework: `Applicable statutory rules, UNCITRAL CISG 1980 standards, & commercial statutes of ${data.country_name || 'Jurisdiction'}`,
+          legalFrameworkAr: `القوانين والأنظمة التجارية المعيارية الدولية في ${data.country_name || 'الدولة المحددة'}`,
+          governingLaws: [`قوانين والمعايير التجارية الدولية في ${data.country_name || 'الدولة'}`],
+          arbitrationVenue: `Commercial Arbitration Venue of ${data.country_name || 'Jurisdiction'} / ICC Paris`,
+          arbitrationVenueAr: `المحاكم التجارية وهيئات التحكيم المعتمدة في ${data.country_name || 'الدولة'} / غرف التحكيم الدولية`,
+          flagEmoji: '🌐',
+        };
+      }
+    }
+  } catch (err) {
+    console.warn('GeoIP detection fallback to Jordan/Default:', err);
+  }
+
+  if (!cachedJurisdiction) {
+    cachedJurisdiction = DEFAULT_JURISDICTION; // Defaults to Jordan (JO)
+  }
+
+  try {
+    localStorage.setItem('juristech_jurisdiction', JSON.stringify(cachedJurisdiction));
+  } catch {
+    // Ignore storage write error
+  }
+
+  return cachedJurisdiction;
+}
+
+/** Injects dynamic jurisdiction rules & statutory articles into prompt for AI call */
+export function wrapPromptWithJurisdiction(prompt: string, jurisdiction: JurisdictionInfo, isRtl: boolean = true): string {
+  if (isRtl) {
+    return `[النظام التشريعي النافذ: ${jurisdiction.countryNameAr} (${jurisdiction.legalFrameworkAr})]\nمقر التحكيم والتنازع القضائي المعتمد: ${jurisdiction.arbitrationVenueAr}\nتنبيه هام جداً: يجب إعداد ومطابقة جميع بنود العقد وتحليلات الأسئلة لتكون متوافقة تماماً وبشكل حازم ومؤصل استناداً إلى القوانين والأنظمة والتشريعات النافذة في ${jurisdiction.countryNameAr} (${jurisdiction.governingLaws.join(' - ')}).\n\n${prompt}`;
+  }
+  return `[Jurisdiction Context: ${jurisdiction.countryName} (${jurisdiction.legalFramework})]\nArbitration & Dispute Venue: ${jurisdiction.arbitrationVenue}\nIMPORTANT: All generated contract clauses & AI advice MUST strictly comply with the governing statutory rules of ${jurisdiction.countryName} (${jurisdiction.governingLaws.join(', ')}).\n\n${prompt}`;
+}

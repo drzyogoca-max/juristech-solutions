@@ -1,0 +1,31 @@
+name: LegalShield Quality Assurance & Security Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  quality-audit:
+    name: Build & Security Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-[# Setup Node.js]: 20.x
+          cache: 'npm'
+
+      - name: Install Project Dependencies
+        run: npm ci
+
+      - name: Run TypeScript & Production Build Checks
+        run: npm run build
+
+      - name: Security & Dependency Audit
+        run: npm audit --audit-level=high || true

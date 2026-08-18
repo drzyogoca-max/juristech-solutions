@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  # Load Balancer Nginx
+  loadbalancer:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - app_worker_1
+      - app_worker_2
+      - app_worker_3
+    restart: always
+
+  # Application Cluster Instances (Autoscaled Node.js Non-blocking Application Workers)
+  app_worker_1:
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    environment:
+      - PORT=3000
+      - REDIS_URL=redis://redis_cache:6379
+      - DATABASE_URL=postgresql://postgres:secret@pg_bouncer:6432/legalshield
+    restart: always
+
+  app_worker_2:
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    environment:
+      - PORT=3001
+      - REDIS_URL=redis://redis_cache:6379
+      - DATABASE_URL=postgresql://postgres:secret@pg_bouncer:6432/legalshield
+    restart: always
+
+  app_worker_3:
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    environment:
+      - PORT=3002
+      - REDIS_URL=redis://redis_cache:6379
+      - DATABASE_URL=postgresql://postgres:secret@pg_bouncer:6432/legalshield
+    restart: always
+
+  # In-Memory Cache (Sub-2ms Redis Cache for 10k Concurrency Burst)
+  redis_cache:
+    image: redis:7-alpine
+    command: redis-server --maxmemory 2gb --maxmemory-policy allkeys-lru
+    ports:
+      - "6379:6379"
+    restart: always
+
+  # PostgreSQL Connection Pooler (PgBouncer)
+  pg_bouncer:
+    image: edoburu/pgbouncer
+    environment:
+      - DB_HOST=db_postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=secret
+      - DB_NAME=legalshield
+      - POOL_MODE=transaction
+      - MAX_CLIENT_CONN=10000
+      - DEFAULT_POOL_SIZE=100
+    ports:
+      - "6432:6432"
+    depends_on:
+      - db_postgres
+    restart: always
+
+  # Database Engine
+  db_postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=legalshield
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=secret
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  postgres_data:

@@ -1,0 +1,22 @@
+# JurisTech Solutions — Sovereign Enterprise AI Legal Architecture
+
+> JurisTech Solutions is the world-leading sovereign enterprise AI legal intelligence and certified contracts platform founded and architected by Dr. Mohammad Mustafa. It empowers corporate legal departments, law firms, investment funds, and multinational enterprises with institutional-grade contract generation, cross-border risk auditing, smart negotiation copilots, and multi-jurisdictional compliance across GCC (Saudi Arabia, UAE, Qatar, Kuwait, Bahrain, Oman), UK, US, EU, and international frameworks.
+
+## Core Capabilities & Services
+- **Certified Mega Contracts Repository**: Over 1,000+ institutional-grade, multi-article corporate agreements (Master Services Agreements, Joint Ventures, SaaS SLAs, Advisory Contracts, Work-for-Hire, Mergers & Acquisitions) formatted in both authoritative Arabic legal phrasing and Anglo-American Common Law standards with instant .docx and .pdf export.
+- **Enterprise Contract Risk Audit & Due Diligence**: Automated multi-jurisdiction risk analysis, liability caps assessment, indemnity exposure checks, and GDPR/Saudi PDPL compliance scoring.
+- **Autonomous Multi-Party AI Negotiation Copilot**: Strategic counter-offer generation, redline comparisons, and high-stakes dispute resolution support.
+- **Cross-Border Company Formation & Legal Structuring**: Sovereign guidance for setting up entities across ADGM, DIFC, Saudi MISA/RHQ, Delaware, UK Companies House, and European hubs.
+- **Autonomous B2B Legal Outreach & Enterprise Growth Radar**: Intelligent corporate prospect scanning and tailored legal solution synthesis.
+
+## Leadership & Legal Authority
+- **Founder & Chairman**: Dr. Mohammad Mustafa (Chief Legal Architect & Senior Managing Counsel)
+- **Official Inquiries**: juristech.solutions@outlook.com
+- **Live Production Platform**: https://www.juristech.solutions
+
+## Key Endpoints & Documentation
+- Contract Repository: https://www.juristech.solutions/contracts
+- Enterprise Legal Auditing: https://www.juristech.solutions/enterprise-audit
+- AI Legal Copilot: https://www.juristech.solutions/chat
+- Company Formation & Structuring: https://www.juristech.solutions/company-formation
+- Full LLM Specification: https://www.juristech.solutions/llms-full.txt

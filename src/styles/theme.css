@@ -1,0 +1,109 @@
+/* Global Design Tokens & High-Contrast Accessibility System (LawTech Professional System) */
+:root {
+  /* Light Mode Default Color System (LawTech Professional Palette) */
+  --bg-main: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-surface-elevated: #f1f5f9;
+  --border-color: #e2e8f0;
+  --border-color-focus: #0f172a;
+
+  /* LawTech Brand Accents (Deep Navy Blue & Muted Gold) */
+  --color-primary: #0f172a;
+  --color-primary-hover: #1e293b;
+  --color-navy: #1e3e62;
+  --color-accent-gold: #d4af37;
+  --color-accent-gold-hover: #c5a880;
+  --color-success: #059669;
+  --color-danger: #dc2626;
+  --color-warning: #d97706;
+
+  /* High-Contrast Typography Colors for Light Mode */
+  --text-primary: #1e293b;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --text-inverse: #ffffff;
+
+  /* Typography Scales */
+  --font-family-arabic: 'Cairo', system-ui, -apple-system, sans-serif;
+  --font-family-english: 'Inter', 'Outfit', system-ui, sans-serif;
+  --font-family-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Radii & Shadows */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --shadow-lawtech: 0 4px 20px -2px rgba(15, 23, 42, 0.06);
+  --shadow-glass: 0 8px 32px 0 rgba(15, 23, 42, 0.08);
+}
+
+/* Dark Mode Overrides */
+.dark {
+  --bg-main: #0b192c;
+  --bg-surface: #0f172a;
+  --bg-surface-elevated: #1e293b;
+  --border-color: rgba(51, 65, 85, 0.6);
+  --border-color-focus: #38bdf8;
+
+  --color-primary: #38bdf8;
+  --color-primary-hover: #0284c7;
+  --color-navy: #1e3e62;
+  --color-accent-gold: #d4af37;
+  --color-accent-gold-hover: #f59e0b;
+  --color-success: #10b981;
+  --color-danger: #ef4444;
+  --color-warning: #f59e0b;
+
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-inverse: #0f172a;
+  --shadow-lawtech: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
+  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* Default Root Application Styling */
+body {
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  font-family: var(--font-family-arabic);
+}
+
+/* High Contrast & WCAG 2.1 AA Focus Rings */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Direction Support */
+[dir="rtl"] {
+  text-align: right;
+  font-family: var(--font-family-arabic);
+}
+
+[dir="ltr"] {
+  text-align: left;
+  font-family: var(--font-family-english);
+}
+
+/* Accessible Touch Targets (Minimum 44x44px for WCAG 2.1 AA) */
+button, a, input, select, textarea {
+  min-height: 44px;
+}
+
+button:active, a:active {
+  transform: scale(0.98);
+  transition: transform 0.1s ease;
+}
+
+/* Print Stylesheet for Official PDF/Word Exports */
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  nav, footer, .no-print {
+    display: none !important;
+  }
+}
