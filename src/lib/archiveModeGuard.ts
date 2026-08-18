@@ -11,58 +11,32 @@
  * ═══════════════════════════════════════════════════════════════════════════════
  */
 
-export const ARCHIVE_MODE_REDIRECT_URL = 'https://juristech.solutions';
+export const ARCHIVE_MODE_REDIRECT_URL = 'https://www.juristech.solutions';
 
 /**
- * Returns true when running on legalshieldsolution.online domain
- * (archive / legacy node)
+ * Returns true when running on legalshieldsolution.online or legalsolution domains
  */
 export function isArchiveDomain(): boolean {
   if (typeof window === 'undefined') return false;
-  return window.location.hostname.toLowerCase().includes('legalshield');
+  const host = window.location.hostname.toLowerCase();
+  return host.includes('legalshield') || host.includes('legalsolution') || host === 'juristech.solutions';
 }
 
 /**
- * Routes blocked on archive domain — any match triggers redirect to juristech.solutions
- */
-const BLOCKED_ARCHIVE_ROUTES = [
-  '/payment',
-  '/subscribe',
-  '/plans',
-  '/checkout',
-  '/register',
-  '/signup',
-];
-
-/**
- * Call on app boot — silently redirects new-user flows to juristech.solutions
- * if running on legalshieldsolution.online
+ * Call on app boot — immediately redirects all visitors from Legal Solution / legacy domains
+ * directly to the primary active platform: https://www.juristech.solutions
  */
 export function enforceArchiveModeGuard(): void {
   if (!isArchiveDomain()) return;
 
-  const currentPath = window.location.pathname.toLowerCase();
+  const currentPath = window.location.pathname;
+  const currentSearch = window.location.search;
+  const currentHash = window.location.hash;
 
-  const isBlockedRoute = BLOCKED_ARCHIVE_ROUTES.some((route) =>
-    currentPath.startsWith(route)
-  );
-
-  if (isBlockedRoute) {
-    // Hard redirect to active platform for new subscriptions
-    window.location.href = `${ARCHIVE_MODE_REDIRECT_URL}${currentPath}`;
-  }
-
-  // Stamp the domain tag in localStorage so all financial reads scope correctly
-  try {
-    localStorage.setItem('active_platform_domain', 'legalshieldsolution.online');
-    localStorage.setItem('archive_mode_active', 'true');
-  } catch {}
-
-  console.info(
-    '[ArchiveModeGuard] ℹ️ Running in archive/legacy mode on legalshieldsolution.online. ' +
-    'New subscriptions → juristech.solutions'
-  );
+  // Immediate permanent seamless redirection
+  window.location.replace(`${ARCHIVE_MODE_REDIRECT_URL}${currentPath}${currentSearch}${currentHash}`);
 }
+
 
 /**
  * Strips legalshieldsolution.online brand references from a text string.

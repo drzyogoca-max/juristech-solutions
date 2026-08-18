@@ -2,6 +2,41 @@
   "framework": "vite",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "legalshieldsolution.online"
+        }
+      ],
+      "destination": "https://www.juristech.solutions/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.legalshieldsolution.online"
+        }
+      ],
+      "destination": "https://www.juristech.solutions/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "juristech.solutions"
+        }
+      ],
+      "destination": "https://www.juristech.solutions/:path*",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/version.json",
