@@ -239,11 +239,15 @@ export default function AdminMarketingCRMPage() {
                 ></textarea>
               </div>
 
-              <div className="pt-2 flex items-center justify-between">
+              <div className="pt-2 flex items-center justify-between flex-wrap gap-2">
                 <div className="flex items-center gap-2 text-xs font-bold text-slate-500">
                   <ShieldCheck className="w-4 h-4 text-emerald-400" />
                   Sending as: <span className="text-slate-900 dark:text-white">juristech.solutions@outlook.com</span>
+                  <span className="text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20">
+                    BCC: drzygo.ca@gmail.com
+                  </span>
                 </div>
+
                 <button
                   onClick={handleSendEmail}
                   disabled={isSending || !selectedLeadId || !emailSubject || !emailBody}

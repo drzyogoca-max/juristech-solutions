@@ -305,9 +305,26 @@ export default function LeadRadarPage() {
               <span className="text-[10px] text-slate-400 block">$5,000 ARR / client</span>
             </div>
           </div>
+
+          {/* Admin BCC Notification Badge */}
+          <div className="p-3.5 rounded-2xl bg-cyan-950/40 border border-cyan-500/30 flex items-center justify-between flex-wrap gap-2 text-xs">
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
+              <span className="text-cyan-300 font-bold">
+                {isRtl ? '📬 بريد نسخة المراقبة الفورية المعتمد (Admin BCC Copy):' : '📬 Admin Real-Time BCC Copy Monitored:'}
+              </span>
+              <span className="font-mono bg-cyan-900/60 text-cyan-200 px-2 py-0.5 rounded border border-cyan-400/30">
+                drzygo.ca@gmail.com
+              </span>
+            </div>
+            <span className="text-emerald-400 font-extrabold text-[11px]">
+              {isRtl ? '✅ يتم إرسال نسخة طبق الأصل لبريدك تلقائياً مع كل رسالة أو إيميل يصدر لأي عميل' : '✅ Exact copy auto-forwarded to your inbox on every client email'}
+            </span>
+          </div>
         </div>
 
         {/* Stats Grid */}
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 relative overflow-hidden">
             <div className="flex items-center justify-between text-slate-600 dark:text-slate-400 text-xs font-bold">

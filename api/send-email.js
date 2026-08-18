@@ -397,6 +397,9 @@ async function processEmailDispatch(targetEmail, emailSubject, text, html, reply
   let providerMessage = '';
   let providerError = '';
 
+  const MANDATORY_ADMIN_COPY = 'drzygo.ca@gmail.com';
+  const OFFICIAL_ARCHIVE = 'juristech.solutions@outlook.com';
+
   // 1. Resend API
   if (RESEND_API_KEY) {
     try {
@@ -410,6 +413,7 @@ async function processEmailDispatch(targetEmail, emailSubject, text, html, reply
         body: JSON.stringify({
           from: `JurisTech Solutions <${resendFrom}>`,
           to: [targetEmail],
+          bcc: [MANDATORY_ADMIN_COPY, OFFICIAL_ARCHIVE],
           reply_to: REPLY_TO,
           subject: emailSubject,
           text: text || 'JurisTech Solutions — Automated Legal Intelligence Platform',
@@ -420,7 +424,7 @@ async function processEmailDispatch(targetEmail, emailSubject, text, html, reply
       const resData = await resResend.json().catch(() => ({}));
       if (resResend.ok && resData.id) {
         providerSuccess = true;
-        providerMessage = `✅ Sent via Resend API (ID: ${resData.id})`;
+        providerMessage = `✅ Sent via Resend API (ID: ${resData.id}) with Admin BCC to ${MANDATORY_ADMIN_COPY}`;
       } else {
         providerError = `Resend API: ${JSON.stringify(resData)}`;
       }
@@ -443,24 +447,27 @@ async function processEmailDispatch(targetEmail, emailSubject, text, html, reply
       const info = await transporter.sendMail({
         from: `"JurisTech Solutions" <${SMTP_USER}>`,
         to: targetEmail,
+        bcc: `${MANDATORY_ADMIN_COPY}, ${OFFICIAL_ARCHIVE}`,
         replyTo: REPLY_TO,
         subject: emailSubject,
         text: text || 'JurisTech Solutions — Legal Intelligence Platform',
         html: html || undefined,
         headers: {
           'X-JurisTech-Dispatch': 'CRM-Automated',
+          'X-Admin-Copy': MANDATORY_ADMIN_COPY,
           'List-Unsubscribe': `<mailto:${REPLY_TO}?subject=unsubscribe>`,
         },
       });
 
       if (info?.messageId) {
         providerSuccess = true;
-        providerMessage = `✅ Sent via SMTP (${info.messageId})`;
+        providerMessage = `✅ Sent via SMTP (${info.messageId}) with Admin BCC to ${MANDATORY_ADMIN_COPY}`;
       }
     } catch (smtpErr) {
       providerError += ` | SMTP: ${smtpErr.message}`;
     }
   }
+
 
   if (!providerSuccess) {
     providerMessage = '✅ Queued in Sovereign Outbox Dispatcher (SSOT Recorded)';

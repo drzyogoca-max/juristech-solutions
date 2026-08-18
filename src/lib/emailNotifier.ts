@@ -22,9 +22,10 @@ export interface ConsultationBookingPayload {
 }
 
 const OFFICIAL_ADMIN_EMAIL = 'juristech.solutions@outlook.com';
+const MANDATORY_ADMIN_COPY = 'drzygo.ca@gmail.com';
 
 export async function dispatchReceiptEmail(payload: ReceiptNotificationPayload): Promise<{ success: boolean; message: string }> {
-  console.log('[Real Email Automation] Dispatching live email via /api/send-email:', payload);
+  console.log('[Real Email Automation] Dispatching live email via /api/send-email with Admin BCC:', payload);
 
   try {
     const res = await fetch('/api/send-email', {
@@ -32,6 +33,8 @@ export async function dispatchReceiptEmail(payload: ReceiptNotificationPayload):
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         to: payload.clientEmail,
+        bcc: [MANDATORY_ADMIN_COPY, OFFICIAL_ADMIN_EMAIL],
+        adminCopy: MANDATORY_ADMIN_COPY,
         officialAdminCopy: OFFICIAL_ADMIN_EMAIL,
         subject: `[JurisTech Solutions] ${payload.planName} — إشعار رسمي (${payload.transactionId})`,
         text: `العميل: ${payload.clientRef} | المعاملة: ${payload.transactionId} | المبلغ: ${payload.amount} USD | الباقة: ${payload.planName}`,
@@ -46,7 +49,7 @@ export async function dispatchReceiptEmail(payload: ReceiptNotificationPayload):
             <p><strong>التاريخ والوقت:</strong> ${payload.timestamp}</p>
             <hr style="border: 0; border-top: 1px solid #334155; margin: 20px 0;" />
             <p style="font-size: 13px; color: #94a3b8;">
-              تم الإرسال التلقائي والفعلي عبر النظام الذكي للمنصة.<br />
+              تم الإرسال التلقائي والفعلي عبر النظام الذكي للمنصة مع إشعار نسخة المسؤول (${MANDATORY_ADMIN_COPY}).<br />
               البريد الرسمي المعتمد: <strong>${OFFICIAL_ADMIN_EMAIL}</strong>
             </p>
           </div>
@@ -54,6 +57,7 @@ export async function dispatchReceiptEmail(payload: ReceiptNotificationPayload):
         payload,
       }),
     });
+
 
     if (res.ok) {
       const data = await res.json();

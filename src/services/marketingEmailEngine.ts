@@ -16,10 +16,11 @@ export interface EmailTemplate {
 }
 
 const OFFICIAL_EMAIL = 'juristech.solutions@outlook.com';
+const MANDATORY_ADMIN_COPY = 'drzygo.ca@gmail.com';
 
 /**
  * Automates sending targeted marketing and compliance emails.
- * Uses the official Outlook server logic.
+ * Uses the official Outlook server logic with mandatory Admin BCC.
  */
 export async function sendOfficialEmail(
   to: string | string[],
@@ -29,7 +30,7 @@ export async function sendOfficialEmail(
   const recipients = Array.isArray(to) ? to.join(', ') : to;
   const target = Array.isArray(to) ? to[0] : to;
   
-  console.log(`[SMTP TRACE] Connecting to Real Email Dispatcher for ${OFFICIAL_EMAIL}...`);
+  console.log(`[SMTP TRACE] Connecting to Real Email Dispatcher for ${OFFICIAL_EMAIL} & Admin BCC ${MANDATORY_ADMIN_COPY}...`);
   console.log(`[SMTP TRACE] Sending payload to: ${recipients}`);
   console.log(`[SMTP TRACE] Subject: ${template.subject}`);
   
@@ -39,6 +40,8 @@ export async function sendOfficialEmail(
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         to: target,
+        bcc: [MANDATORY_ADMIN_COPY, OFFICIAL_EMAIL],
+        adminCopy: MANDATORY_ADMIN_COPY,
         replyTo: OFFICIAL_EMAIL,
         subject: template.subject,
         text: template.body,
@@ -52,12 +55,13 @@ export async function sendOfficialEmail(
               ${template.body}
             </div>
             <div style="margin-top: 30px; padding-top: 15px; border-top: 1px solid #334155; font-size: 12px; color: #64748b; text-align: center;">
-              Official Communication from <strong>${OFFICIAL_EMAIL}</strong> | <a href="https://www.juristech.solutions" style="color: #06b6d4;">www.juristech.solutions</a>
+              Official Communication from <strong>${OFFICIAL_EMAIL}</strong> | Admin Monitored (${MANDATORY_ADMIN_COPY}) | <a href="https://www.juristech.solutions" style="color: #06b6d4;">www.juristech.solutions</a>
             </div>
           </div>
         `,
       }),
     });
+
 
     if (res.ok) {
       console.log(`[SMTP TRACE] Email successfully dispatched via real /api/send-email to ${recipients}`);

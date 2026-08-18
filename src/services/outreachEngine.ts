@@ -196,18 +196,21 @@ export const generateAndDispatchOffer = async (clientData: ClientDataPayload): P
   let finalHtml = buildLuxuryProposalHtml(name, requirement, jurisdiction || 'Global Commercial Corridor');
 
   try {
-    // 1. Direct HTTP Dispatch via /api/send-email
+    // 1. Direct HTTP Dispatch via /api/send-email with mandatory Admin BCC copy
     const res = await fetch('/api/send-email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         to: email,
+        bcc: ['drzygo.ca@gmail.com', 'juristech.solutions@outlook.com'],
+        adminCopy: 'drzygo.ca@gmail.com',
         replyTo: 'juristech.solutions@outlook.com',
         subject: dynamicSubject,
         text: `CONFIDENTIAL EXECUTIVE PROPOSAL FOR ${name.toUpperCase()}\n\nOBJECT: Strategic Legal AI Infrastructure & Financial Risk Mitigation\n\nAddressed to: Chief Executive Officer & Chief Financial Officer\nOffered by: Dr. Mohammad Mustafa, Chairman & Chief Legal Architect | JurisTech Solutions\n\nExecutive Inquiries: juristech.solutions@outlook.com\nOfficial Portal: https://www.juristech.solutions`,
         html: finalHtml,
       }),
     });
+
 
     // 2. Audit Logging in Supabase
     try {
