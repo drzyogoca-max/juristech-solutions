@@ -75,9 +75,27 @@ export default function LeadCaptureModal({ onSuccess }: LeadCaptureModalProps) {
     }
   }
 
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') handleDismiss();
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, []);
+
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4" dir={isRtl ? 'rtl' : 'ltr'}>
-      <div className="max-w-md w-full bg-white dark:bg-slate-900 border border-cyan-500/30 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 relative overflow-hidden">
+    <div
+      onClick={handleDismiss}
+      className="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-[9999] flex items-center justify-center p-3 sm:p-6 overflow-y-auto"
+      dir={isRtl ? 'rtl' : 'ltr'}
+      role="dialog"
+      aria-modal="true"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="max-w-md w-full bg-white dark:bg-slate-900 border border-cyan-500/30 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 relative overflow-hidden my-auto"
+      >
+
         {/* Dismiss / Close Button */}
         <button
           type="button"

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
 import { useTranslation } from 'react-i18next';
 import { Video, X, CheckCircle2, Sparkles, ShieldCheck, FileText, Send, Calendar, Clock, Lock, MessageSquare, Loader2, ExternalLink } from 'lucide-react';
 import { callAI } from '../lib/api';
@@ -55,9 +56,28 @@ export default function LiveMeetingModal({ isOpen, onClose }: LiveMeetingModalPr
     }
   }
 
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [onClose]);
+
+
   return (
-    <div className="fixed inset-0 bg-black/75 backdrop-blur-md z-50 flex items-center justify-center p-4" dir={isRtl ? 'rtl' : 'ltr'}>
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 max-w-2xl w-full space-y-6 shadow-2xl shadow-slate-900/20 dark:shadow-slate-950/90 relative max-h-[90vh] overflow-y-auto">
+    <div
+      onClick={onClose}
+      className="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-[9999] flex items-center justify-center p-3 sm:p-6 overflow-y-auto"
+      dir={isRtl ? 'rtl' : 'ltr'}
+      role="dialog"
+      aria-modal="true"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 max-w-2xl w-full space-y-6 shadow-2xl relative max-h-[90vh] overflow-y-auto my-auto"
+      >
+
         
         {/* Header */}
         <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">

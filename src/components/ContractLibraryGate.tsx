@@ -83,23 +83,23 @@ export default function ContractLibraryGate({ contract, isOpen, onClose }: Contr
   return (
     // ── Overlay: fixed full-screen, flex center ──────────────────────────────
     <div
-      ref={overlayRef}
-      onClick={handleOverlayClick}
-      className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6"
-      style={{ backgroundColor: 'rgba(2, 6, 23, 0.85)', backdropFilter: 'blur(8px)' }}
+      onClick={onClose}
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6 overflow-y-auto bg-slate-950/85 backdrop-blur-md"
       role="dialog"
       aria-modal="true"
       aria-labelledby="contract-modal-title"
     >
       {/* ── Modal Box ──────────────────────────────────────────────────────── */}
       <div
-        className="relative w-full max-w-2xl bg-slate-900 border border-slate-700/80 rounded-3xl shadow-2xl overflow-hidden flex flex-col"
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-2xl bg-slate-900 border border-slate-700/80 rounded-3xl shadow-2xl overflow-hidden flex flex-col my-auto"
         dir={isRtl ? 'rtl' : 'ltr'}
         style={{
           maxHeight: '90vh',
           animation: 'modalFadeIn 0.25s ease-out forwards',
         }}
       >
+
         <style>{`
           @keyframes modalFadeIn {
             from { opacity: 0; transform: translateY(-12px) scale(0.98); }

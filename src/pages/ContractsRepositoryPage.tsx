@@ -191,18 +191,19 @@ function QuickDownloadModal({ contract, isOpen, onClose, isRtl, onTriggerPaywall
 
   return (
     <div
-      ref={overlayRef}
-      onClick={handleOverlayClick}
-      className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
-      style={{ backgroundColor: 'rgba(2,6,23,0.88)', backdropFilter: 'blur(10px)' }}
-      role="dialog" aria-modal="true"
+      onClick={onClose}
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6 overflow-y-auto bg-slate-950/85 backdrop-blur-md"
+      role="dialog"
+      aria-modal="true"
     >
       <div
-        className="w-full max-w-lg bg-slate-900 border border-slate-700/60 rounded-3xl shadow-2xl overflow-hidden flex flex-col"
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-lg bg-slate-900 border border-slate-700/80 rounded-3xl shadow-2xl overflow-hidden flex flex-col my-auto"
         dir={isRtl ? 'rtl' : 'ltr'}
         style={{ maxHeight: '92vh', animation: 'qModalIn 0.22s ease-out' }}
       >
         <style>{`@keyframes qModalIn{from{opacity:0;transform:translateY(-10px) scale(0.97)}to{opacity:1;transform:none}}`}</style>
+
 
         {/* Header */}
         <div className="flex items-start justify-between gap-3 p-5 bg-gradient-to-r from-cyan-950/70 via-slate-900 to-indigo-950/60 border-b border-slate-800">
@@ -444,13 +445,20 @@ function PreviewModal({ contract, isOpen, onClose, isRtl, onDownload }: {
   const previewText = (isRtl ? contract.templateAr : contract.templateEn).slice(0, 900) + '...';
 
   return (
-    <div ref={overlayRef} onClick={handleOverlayClick}
-      className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
-      style={{ backgroundColor: 'rgba(2,6,23,0.88)', backdropFilter: 'blur(10px)' }}>
-      <div className="w-full max-w-2xl bg-slate-900 border border-slate-700 rounded-3xl shadow-2xl overflow-hidden flex flex-col"
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6 overflow-y-auto bg-slate-950/85 backdrop-blur-md"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-2xl bg-slate-900 border border-slate-700/80 rounded-3xl shadow-2xl overflow-hidden flex flex-col my-auto"
         dir={isRtl ? 'rtl' : 'ltr'}
-        style={{ maxHeight: '90vh', animation: 'qModalIn 0.22s ease-out' }}>
+        style={{ maxHeight: '90vh', animation: 'qModalIn 0.22s ease-out' }}
+      >
         <style>{`@keyframes qModalIn{from{opacity:0;transform:translateY(-10px) scale(0.97)}to{opacity:1;transform:none}}`}</style>
+
 
         <div className="flex items-start justify-between gap-3 p-5 border-b border-slate-800">
           <div>

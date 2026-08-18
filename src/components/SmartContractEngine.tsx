@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import VoiceInput from './VoiceInput';
 import { extractPDFTextMultiStage } from '../lib/pdfExtractor';
 import { GLOBAL_CURRENCIES, ARBITRATION_VENUES } from '../lib/contracts/globalMatrix';
 import { JURISDICTION_PROFILES, getJurisdictionProfile } from '../lib/jurisdictionResolver';
+
 
 interface JurisdictionOption {
   code: string;
@@ -259,22 +261,25 @@ export default function SmartContractEngine() {
         </div>
 
         <div className="flex items-end gap-2">
+          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-slate-900 border border-slate-700">
+            <VoiceInput
+              onTranscript={(text) => setPartiesData((prev) => prev ? `${prev} ${text}` : text)}
+              language={isRtl ? 'ar' : 'en'}
+            />
+            <span className="text-xs font-bold text-slate-300 pr-1 pl-1">
+              {isRtl ? 'إدخال صوتي ذكي' : 'Voice Dictation'}
+            </span>
+          </div>
           <button
-            onClick={startSmartMicrophone}
-            className={`flex-1 p-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-1 transition ${
-              isListening ? 'bg-red-600 animate-pulse text-white' : 'bg-blue-600 hover:bg-blue-700 text-white'
-            }`}
-          >
-            🎤 {isListening ? (isRtl ? 'جاري الاستماع...' : 'Listening...') : (isRtl ? 'إدخال صوتي' : 'Voice Input')}
-          </button>
-          <button
+            type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="bg-slate-800 hover:bg-slate-700 p-2.5 rounded-xl text-sm font-medium text-slate-200 border border-slate-700"
+            className="flex-1 bg-slate-800 hover:bg-slate-700 p-2.5 rounded-xl text-sm font-medium text-slate-200 border border-slate-700 transition flex items-center justify-center gap-1"
           >
             📥 {t('Common.upload')} (PDF/Word)
           </button>
           <input type="file" ref={fileInputRef} accept=".pdf,.doc,.docx,.txt" onChange={handleFileUpload} className="hidden" />
         </div>
+
       </div>
 
       {/* Parties & Custom Requirements Data */}
