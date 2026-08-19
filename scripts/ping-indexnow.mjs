@@ -1,7 +1,8 @@
 import https from 'https';
 
-const HOSTS = ['www.juristech.solutions', 'legalshieldsolution.online'];
+const HOSTS = ['www.juristech.solutions'];
 const KEY = 'e150aa89123c4cd6347c50daa068323be9b523a7ac68930ac50c81bd7d4219ed2258d952fb83a7ed6e5fef505ed6cc5811fd08bcc883ba57acacf49a55261b80';
+
 
 const PATHS = [
   '/',
