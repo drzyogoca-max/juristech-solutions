@@ -383,8 +383,23 @@ async function handleEdgeRequest(req) {
   }
 }
 
+// In-memory recipient deduplication set to block duplicate email spam
+const dispatchedRecipientsRegistry = new Set();
+
 // ── Shared Email Processing & Dispatch Cascade ────────────────────────────────
 async function processEmailDispatch(targetEmail, emailSubject, text, html, replyTo) {
+  const cleanEmail = targetEmail?.toLowerCase()?.trim();
+  if (cleanEmail && dispatchedRecipientsRegistry.has(cleanEmail)) {
+    console.log(`[Deduplication Guard] Skipping duplicate dispatch to ${cleanEmail}`);
+    return {
+      success: true,
+      status: 'SKIPPED_DUPLICATE',
+      recipient: cleanEmail,
+      message: `✅ Skipped duplicate dispatch to ${cleanEmail} (Already contacted).`,
+      timestamp: new Date().toISOString(),
+    };
+  }
+
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
   const EMAIL_FROM = process.env.EMAIL_FROM || 'noreply@juristech.solutions';
   const SMTP_HOST = process.env.SMTP_HOST || 'smtp.gmail.com';
@@ -399,6 +414,9 @@ async function processEmailDispatch(targetEmail, emailSubject, text, html, reply
 
   const MANDATORY_ADMIN_COPY = 'drzygo.ca@gmail.com';
   const OFFICIAL_ARCHIVE = 'juristech.solutions@outlook.com';
+
+  // Add to deduplication registry
+  if (cleanEmail) dispatchedRecipientsRegistry.add(cleanEmail);
 
   // 1. Resend API
   if (RESEND_API_KEY) {
