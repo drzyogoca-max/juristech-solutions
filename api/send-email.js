@@ -264,7 +264,7 @@ async function handleNodeRequest(req, res) {
     }
 
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
-    const { to, subject, text, html, replyTo } = body || {};
+    const { to, subject, text, html, replyTo, forceSend } = body || {};
 
     const targetEmail = to;
     const emailSubject = subject || 'JurisTech Solutions — Legal Intelligence Platform';
@@ -277,7 +277,7 @@ async function handleNodeRequest(req, res) {
       });
     }
 
-    const result = await processEmailDispatch(targetEmail, emailSubject, text, html, replyTo);
+    const result = await processEmailDispatch(targetEmail, emailSubject, text, html, replyTo, forceSend);
 
     // Record successful dispatch in Supabase log
     if (result.success) {
@@ -344,7 +344,7 @@ async function handleEdgeRequest(req) {
       try { body = await req.json(); } catch (e) { body = {}; }
     }
 
-    const { to, subject, text, html, replyTo } = body || {};
+    const { to, subject, text, html, replyTo, forceSend } = body || {};
     const targetEmail = to;
     const emailSubject = subject || 'JurisTech Solutions — Legal Intelligence Platform';
 
@@ -359,7 +359,7 @@ async function handleEdgeRequest(req) {
       );
     }
 
-    const result = await processEmailDispatch(targetEmail, emailSubject, text, html, replyTo);
+    const result = await processEmailDispatch(targetEmail, emailSubject, text, html, replyTo, forceSend);
 
     if (result.success) {
       await recordEmailDispatch(targetEmail, emailSubject, result.provider);
@@ -387,9 +387,11 @@ async function handleEdgeRequest(req) {
 const dispatchedRecipientsRegistry = new Set();
 
 // ── Shared Email Processing & Dispatch Cascade ────────────────────────────────
-async function processEmailDispatch(targetEmail, emailSubject, text, html, replyTo) {
+async function processEmailDispatch(targetEmail, emailSubject, text, html, replyTo, forceSend = false) {
   const cleanEmail = targetEmail?.toLowerCase()?.trim();
-  if (cleanEmail && dispatchedRecipientsRegistry.has(cleanEmail)) {
+  const isAdminEmail = cleanEmail === 'drzyogo.ca@gmail.com' || cleanEmail === 'juristech.solutions@outlook.com';
+
+  if (!forceSend && !isAdminEmail && cleanEmail && dispatchedRecipientsRegistry.has(cleanEmail)) {
     console.log(`[Deduplication Guard] Skipping duplicate dispatch to ${cleanEmail}`);
     return {
       success: true,
