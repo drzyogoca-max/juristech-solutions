@@ -62,7 +62,6 @@ Allow: /
 User-agent: cohere-ai
 Allow: /
 
-
 # ─── International Search Engines ────────────────────────────────
 User-agent: Baiduspider
 Allow: /
@@ -90,4 +89,3 @@ Allow: /
 
 # ─── Sitemaps ─────────────────────────────────────────────────────
 Sitemap: https://www.juristech.solutions/sitemap.xml
-Sitemap: https://juristech.solutions/sitemap.xml
