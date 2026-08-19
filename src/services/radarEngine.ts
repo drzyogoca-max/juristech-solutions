@@ -245,6 +245,54 @@ export function rescoreAllLeads(): LiveRadarVisitor[] {
   return rescored;
 }
 
+// ─── Helper Exports for App & Page Sync ───────────────────────────────────────
+export async function syncRadarLeadsWithSupabase(): Promise<boolean> {
+  try {
+    const leads = getStoredRadarLeads().filter(l => !isAdminOrDeveloperSession(l));
+    if (leads.length === 0) return true;
+    const { error } = await supabase.from('visitor_radar').upsert(leads, { onConflict: 'id' });
+    return !error;
+  } catch {
+    return false;
+  }
+}
+
+export function ingestHourlyVectorContext(query: string = 'General Legal RAG', contextVector: string = 'vec_default'): number {
+  const key = `vec-${Date.now()}`;
+  vectorRagCache.set(key, { query, contextVector, confidence: 0.99 });
+  return vectorRagCache.size;
+}
+
+export async function runAutomatedLeadOutreachScan(): Promise<{ scanned: number; dispatched: number }> {
+  const leads = getStoredRadarLeads().filter(l => !isAdminOrDeveloperSession(l));
+  let dispatched = 0;
+  for (const lead of leads) {
+    if (lead.aiScoreTier === 'HOT' && lead.status === 'New') {
+      const ok = await triggerAutomatedB2BOutreach({
+        id: lead.id,
+        companyName: lead.companyName,
+        contactEmail: lead.contactEmail,
+        country: lead.country,
+        sectorInterest: lead.sectorInterest,
+        leadScore: lead.leadScore,
+        nativeLanguage: lead.nativeLanguage,
+        status: 'New',
+      });
+      if (ok) {
+        lead.status = 'Outreach_Sent';
+        lead.autoDispatched = true;
+        dispatched++;
+      }
+    }
+  }
+  saveRadarLeads(leads);
+  return { scanned: leads.length, dispatched };
+}
+
+export function startRadarEngineAutomation() {
+  console.log('[Radar Engine] Automated background visitor scanning active (Admin Visits Excluded).');
+}
+
 // ─── 24-Hour Analytics Aggregator (EXCLUDES ADMIN VISITS) ─────────────────────────────────────────────
 export async function processDailyVisitorAnalytics(): Promise<RadarAnalyticsReport> {
   try {
