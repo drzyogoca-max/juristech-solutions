@@ -57,6 +57,39 @@ export function getLocalizedValue<T extends Record<string, any>>(
   return '';
 }
 
+export type MultiLangMap = {
+  ar?: string;
+  en?: string;
+  fr?: string;
+  de?: string;
+  es?: string;
+  zh?: string;
+  tr?: string;
+  [key: string]: string | undefined;
+};
+
+/**
+ * Universal 7-Language Text Resolver
+ * Returns the exact translation for ar, en, fr, de, es, zh, tr with smart fallbacks.
+ */
+export function getMultiLangText(
+  textMap: MultiLangMap | { ar?: string; en?: string },
+  lang?: string
+): string {
+  const currentLang = normalizeLanguage(lang || (typeof window !== 'undefined' ? localStorage.getItem('locale') || 'ar' : 'ar'));
+  
+  if (textMap[currentLang as keyof typeof textMap]) {
+    return textMap[currentLang as keyof typeof textMap]!;
+  }
+  
+  if (currentLang !== 'ar' && textMap.en) return textMap.en;
+  if (textMap.ar) return textMap.ar;
+  if (textMap.en) return textMap.en;
+  
+  return '';
+}
+
+
 /**
  * Strict 7-Language System Context Directives for AI Engine Calls
  */

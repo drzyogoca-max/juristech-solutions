@@ -193,7 +193,8 @@ export default function AIChatbotConcierge() {
     removeAttachedFile();
 
     const displayUserMsg = userText || (fileName ? (isRtl ? `مستند: ${fileName}` : `File: ${fileName}`) : '');
-    const activePromptLang = selectedLang === 'auto' ? detectPromptLanguage(userText || currentAttachedText) : selectedLang;
+    const activePromptLang = selectedLang === 'auto' ? platformLang : selectedLang;
+
 
     // 1. Instantly append User Message to state
     const userMsgId = `user_${Date.now()}`;
