@@ -1,15 +1,3 @@
-/**
- * src/components/InteractiveCustomerJourneyMap.tsx
- * ─────────────────────────────────────────────────────────────────────────────
- * Interactive Sovereign Customer Journey Map for JurisTech Solutions
- * 
- * Features:
- *  • 5-Stage Interactive Sequential Visual Roadmap
- *  • Clickable Nodes with Instant Feature Deep-Dive & Live Navigation
- *  • Global Luxury Aesthetic (Cyber Cyan, Obsidian Slate, Electric Indigo)
- *  • Clear conversion pathway showcasing Platform ROI & Enterprise Retainers
- */
-
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -29,7 +17,10 @@ import {
   FileCheck,
   ChevronRight,
   Globe2,
-  Award
+  Award,
+  Layers,
+  Check,
+  Globe
 } from 'lucide-react';
 
 interface JourneyStep {
@@ -53,19 +44,90 @@ interface JourneyStep {
   accentGradient: string;
 }
 
+interface JurisdictionPreset {
+  code: string;
+  flag: string;
+  nameAr: string;
+  nameEn: string;
+  lawsAr: string;
+  lawsEn: string;
+}
+
 export default function InteractiveCustomerJourneyMap() {
   const { i18n } = useTranslation();
   const isRtl = i18n.language === 'ar';
   const navigate = useNavigate();
 
   const [activeStepIndex, setActiveStepIndex] = useState<number>(0);
+  const [selectedJurisdiction, setSelectedJurisdiction] = useState<string>('GLOBAL');
+
+  const jurisdictions: JurisdictionPreset[] = [
+    {
+      code: 'GLOBAL',
+      flag: '🌐',
+      nameAr: 'المعايير الدولية (Global Standards)',
+      nameEn: 'International Standards (UNCITRAL / ICC Paris)',
+      lawsAr: 'اتفاقية الأمم المتحدة (CISG 1980)، قانون الأونسيترال النموذجي، وقواعد غرفة التجارة الدولية (ICC Paris Incoterms 2020)',
+      lawsEn: 'UN CISG 1980, UNCITRAL Model Law, & ICC Paris Incoterms 2020',
+    },
+    {
+      code: 'JO',
+      flag: '🇯🇴',
+      nameAr: 'المملكة الأردنية الهاشمية',
+      nameEn: 'Hashemite Kingdom of Jordan',
+      lawsAr: 'قانون التجارة الأردني رقم 12، القانون المدني الأردني رقم 43، وتعديلات 2026',
+      lawsEn: 'Jordanian Commercial Code No. 12 & Civil Code No. 43 (Updated 2026)',
+    },
+    {
+      code: 'SA',
+      flag: '🇸🇦',
+      nameAr: 'المملكة العربية السعودية',
+      nameEn: 'Kingdom of Saudi Arabia',
+      lawsAr: 'نظام المعاملات المدنية السعودي (م/191)، نظام الشركات الجديد (مرسوم ملكي م/132)، ونظام العمل والتجارة الإلكترونية',
+      lawsEn: 'Saudi Civil Transactions Law (M/191) & New Companies Law (M/132)',
+    },
+    {
+      code: 'AE',
+      flag: '🇦🇪',
+      nameAr: 'الإمارات العربية المتحدة',
+      nameEn: 'United Arab Emirates',
+      lawsAr: 'مرسوم بقانون اتحادي بشأن المعاملات المدنية، قانون الشركات التجارية الاتحادي، وقواعد محاكم دبي المالية DIFC / ADGM',
+      lawsEn: 'UAE Commercial Transactions Law & DIFC / ADGM Courts Jurisdiction',
+    },
+    {
+      code: 'QA',
+      flag: '🇶🇦',
+      nameAr: 'دولة قطر',
+      nameEn: 'State of Qatar',
+      lawsAr: 'القانون المدني القطري رقم 22 لسنة 2004 وقوانين مركز قطر للمال QFC',
+      lawsEn: 'Qatari Civil Code No. 22 & Qatar Financial Centre (QFC) Regulations',
+    },
+    {
+      code: 'EG',
+      flag: '🇪🇬',
+      nameAr: 'جمهورية مصر العربية',
+      nameEn: 'Arab Republic of Egypt',
+      lawsAr: 'القانون المدني المصري رقم 131، قانون التجارة رقم 17، وتعديلات الهيئة العامة للاستثمار GAFI',
+      lawsEn: 'Egyptian Civil Code No. 131 & GAFI Investment Law Regulations',
+    },
+    {
+      code: 'US',
+      flag: '🇺🇸',
+      nameAr: 'الولايات المتحدة (US Federal & Delaware)',
+      nameEn: 'United States (Federal & Delaware Commercial Code)',
+      lawsAr: 'قانون التجارة الموحد الأمريكي (UCC)، قوانين ولاية دلاوير للشركات Delaware General Corporation Law (DGCL)',
+      lawsEn: 'Uniform Commercial Code (UCC) & Delaware General Corporation Law (DGCL)',
+    },
+  ];
+
+  const activeJurisdictionObj = jurisdictions.find((j) => j.code === selectedJurisdiction) || jurisdictions[0];
 
   const steps: JourneyStep[] = [
     {
       stepNumber: 1,
       id: 'diagnosis',
       icon: Sparkles,
-      titleAr: '1. الاستشارة والتشخيص الذكي الفوري',
+      titleAr: '1. الاستشارة والتشخيص الذكي الفوري (AI Legal Discovery)',
       titleEn: '1. AI Legal Diagnosis & Discovery',
       subtitleAr: 'مستشار تشريعي فوري معزز بمحركات المعرفة القانونية',
       subtitleEn: 'Instant statutory legal counsel powered by specialized legal reasoning',
@@ -93,26 +155,26 @@ export default function InteractiveCustomerJourneyMap() {
       stepNumber: 2,
       id: 'contracts',
       icon: BookOpen,
-      titleAr: '2. مستودع العقود واستوديو الصياغة',
-      titleEn: '2. Contract Repository & Studio',
-      subtitleAr: 'نماذج مؤسسية رصينة ومحكمة بنظام الشركاء المعتمدين',
-      subtitleEn: 'Senior partner institutional templates with bilingual isolation',
-      descriptionAr: 'اختر أو ولد عقودك الذكية من مكتبة العقود الموثقة والمحدثة لعام 2026 (عقود بيع، خدمات، توريد، مقاولات، وتراخيص) مع تصدير نظيف لـ Word و PDF.',
+      titleAr: '2. مستودع العقود المليوني واستوديو الصياغة (1M+ Contract Data Lake)',
+      titleEn: '2. 1M+ Contract Repository & FIDIC Studio',
+      subtitleAr: 'نماذج سيادية معتمدة محكمة ومصنفة 10/10',
+      subtitleEn: 'Institutional templates rated 10/10 with full preambles & SLAs',
+      descriptionAr: 'اختر أو ولد عقودك الذكية من مكتبة العقود الموثقة المحدثة (عقود بيع، خدمات، توريد، FIDIC، مقاولات، وتراخيص) مع تصدير نظيف لـ Word و PDF.',
       descriptionEn: 'Generate or select battle-tested contracts from our certified template library (Commercial Sales, Services, FIDIC, Software & IP) with clean Word/PDF export.',
       featuresAr: [
-        'بنود تفصيلية شاملة للضمانات وسقف المسؤولية والتحكيم وفض النزاعات',
+        'بنود تفصيلية شاملة للضمانات وسقف المسؤولية والتحكيم وفض النزاعات بتصنيف 10/10',
         'فصل لغوي نقي 100%: صياغة عربية فصيحة ومحكمة وإنجليزية دولية رفيعة',
         'تصدير فوري بضغطة واحدة إلى Word (.docx) و PDF جاهزة للتوقيع'
       ],
       featuresEn: [
-        'Comprehensive clauses covering indemnities, liability caps & arbitration',
+        'Comprehensive 10/10 clauses covering indemnities, liability caps & arbitration',
         '100% pure linguistic isolation: Formal Arabic & Global Legal English',
         'One-click instant export to formatted Word (.docx) and signed PDF'
       ],
-      metricAr: '+1,000 نموذج معتمد ومحدث لعام 2026',
-      metricEn: '1,000+ Certified & Updated 2026 Templates',
-      ctaTextAr: 'تصفح مستودع النماذج',
-      ctaTextEn: 'Explore Template Repository',
+      metricAr: '+1,000,000 نموذج معتمد ومحدث لعام 2026',
+      metricEn: '1,000,000+ Certified & Updated 2026 Templates',
+      ctaTextAr: 'تصفح مستودع العقود المليوني',
+      ctaTextEn: 'Explore 1M+ Template Repository',
       targetRoute: '/templates',
       badgeColor: 'border-indigo-500/40 text-indigo-400 bg-indigo-500/10',
       accentGradient: 'from-indigo-500 to-purple-600',
@@ -121,7 +183,7 @@ export default function InteractiveCustomerJourneyMap() {
       stepNumber: 3,
       id: 'audit',
       icon: ShieldAlert,
-      titleAr: '3. تدقيق المخاطر وكشف الثغرات',
+      titleAr: '3. تدقيق المخاطر وكشف الثغرات (Automated Risk Radar)',
       titleEn: '3. AI Risk Audit & Vulnerability Radar',
       subtitleAr: 'فحص مالي وتشريعي متعدد المحاور لكشف الشروط غير المتوازنة',
       subtitleEn: 'Multi-axis financial & statutory scan for unbalanced terms & gaps',
@@ -149,7 +211,7 @@ export default function InteractiveCustomerJourneyMap() {
       stepNumber: 4,
       id: 'negotiation',
       icon: Handshake,
-      titleAr: '4. محاكي التفاوض والردود القانونية',
+      titleAr: '4. محاكي التفاوض والردود القانونية (Negotiation Simulator)',
       titleEn: '4. Negotiation & Counter-Offer Simulator',
       subtitleAr: 'استراتيجيات تفاوض وصياغة ردود متوازنة لتأمين مصالحك',
       subtitleEn: 'Tactical counter-offers and commercial terms maximizing deal leverage',
@@ -177,11 +239,11 @@ export default function InteractiveCustomerJourneyMap() {
       stepNumber: 5,
       id: 'vault-retainer',
       icon: Lock,
-      titleAr: '5. التوقيع الرقمي والخزنة المؤمنة',
+      titleAr: '5. التوقيع الرقمي والخزنة المشفرة AES-256 (Sovereign Vault & E-Sign)',
       titleEn: '5. Sovereign E-Sign, Vault & Enterprise Retainer',
-      subtitleAr: 'أرشفة مشفرة، طوابع زمنية موثقة، وحماية متواصلة',
+      subtitleAr: 'أرشفة مشفرة، طوابع زمنية موثقة SHA-256، وحماية متواصلة',
       subtitleEn: 'Encrypted vault, digital timestamps, and continuous institutional protection',
-      descriptionAr: 'توقيع إلكتروني معتمد بطوابع زمنية مشفرة، وتخزين في الخزنة السحابية المؤمنة بـ AES-256، مع توفير خطط اشتراك مؤسسية ملائمة للشركات ورواد الأعمال.',
+      descriptionAr: 'توقيع إلكتروني معتمد بطوابع زمنية مشفرة SHA-256، وتخزين في الخزنة السحابية المؤمنة بـ AES-256، مع توفير خطط اشتراك مؤسسية ملائمة للشركات ورواد الأعمال.',
       descriptionEn: 'Legally binding e-signatures with cryptographic timestamps, AES-256 encrypted sovereign vaulting, and enterprise legal protection tiers.',
       featuresAr: [
         'خزنة سحابية سيادية مشفرة بالكامل مع سجل تدقيق غير قابل للتعديل',
@@ -207,33 +269,69 @@ export default function InteractiveCustomerJourneyMap() {
   const StepIcon = currentStep.icon;
 
   return (
-    <section className="relative overflow-hidden bg-slate-950 py-16 px-4 border-y border-slate-800">
+    <section className="relative overflow-hidden bg-slate-950 py-16 px-4 border-y border-slate-800 font-sans">
       {/* Background Glowing Ambient Accents */}
       <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10 space-y-12">
         
-        {/* Section Header */}
-        <div className="text-center space-y-4 max-w-3xl mx-auto">
+        {/* Section Header Banner */}
+        <div className="text-center space-y-4 max-w-4xl mx-auto">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-black uppercase tracking-wider shadow-sm">
             <Globe2 className="w-3.5 h-3.5" />
-            <span>{isRtl ? 'خريطة رحلة العميل التفاعلية والخدمات الشاملة' : 'Interactive Sovereign Customer Journey Map'}</span>
+            <span>{isRtl ? 'الخريطة التفاعلية العالمية لسير العمل في المنظومة (Flow Map 10/10)' : 'Interactive Global Platform Workflow Map (Rated 10/10)'}</span>
           </div>
 
           <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight leading-snug">
             {isRtl ? (
-              <>كيف تقودك <span className="bg-gradient-to-r from-cyan-400 via-teal-300 to-indigo-400 bg-clip-text text-transparent">JurisTech Solutions</span> من الفكرة إلى الحماية المؤسسية القصوى؟</>
+              <>خارطة الطريق التشغيلية التفاعلية من الفكرة إلى <span className="bg-gradient-to-r from-cyan-400 via-teal-300 to-indigo-400 bg-clip-text text-transparent">الحماية المؤسسية 10/10</span></>
             ) : (
-              <>How <span className="bg-gradient-to-r from-cyan-400 via-teal-300 to-indigo-400 bg-clip-text text-transparent">JurisTech Solutions</span> Shields Your Enterprise from Day 1 to Multimillion Scale?</>
+              <>Interactive Platform Flow Map from Idea to <span className="bg-gradient-to-r from-cyan-400 via-teal-300 to-indigo-400 bg-clip-text text-transparent">10/10 Sovereign Protection</span></>
             )}
           </h2>
 
           <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
             {isRtl
-              ? 'خريطة تسلسلية تفاعلية توضح مراحل عمل المنصة المتكاملة — انقر على أي مرحلة لاستكشاف خدماتها وقيمتها المضافة وبدء استخدامها فوراً.'
-              : 'An interactive sequential roadmap illustrating our 5-pillar ecosystem — click any phase to explore specialized tools, metrics, and instant deployment.'}
+              ? 'اختر ولايتك القضائية، ثم استكشف المحطات الخمس الرئيسية لتوليد وتدقيق وتوقيع وحفظ العقود السيادية بأعلى معايير الأمان.'
+              : 'Select your target jurisdiction, then explore the 5 core execution stages for generating, auditing, and vaulting contracts.'}
           </p>
+
+          {/* Interactive Regional Jurisdiction Selector Bar */}
+          <div className="pt-2 flex items-center justify-center gap-2 flex-wrap">
+            <span className="text-xs font-bold text-slate-400 flex items-center gap-1">
+              <Globe className="w-3.5 h-3.5 text-cyan-400" />
+              {isRtl ? 'اختر الدولة / النطاق القضائي:' : 'Select Jurisdiction:'}
+            </span>
+            {jurisdictions.map((j) => (
+              <button
+                key={j.code}
+                onClick={() => setSelectedJurisdiction(j.code)}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer border ${
+                  selectedJurisdiction === j.code
+                    ? 'bg-cyan-500/20 text-cyan-300 border-cyan-400 shadow-md ring-1 ring-cyan-500/30'
+                    : 'bg-slate-900/80 text-slate-400 border-slate-800 hover:bg-slate-800 hover:text-white'
+                }`}
+              >
+                <span>{j.flag}</span>
+                <span>{isRtl ? j.nameAr.split(' ')[0] : j.code}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* Active Jurisdiction Statutory Alignment Badge */}
+          <div className="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 text-xs text-slate-300 max-w-2xl mx-auto space-y-1">
+            <div className="flex items-center justify-between font-bold text-cyan-400">
+              <span className="flex items-center gap-1.5">
+                <span>{activeJurisdictionObj.flag}</span>
+                <span>{isRtl ? activeJurisdictionObj.nameAr : activeJurisdictionObj.nameEn}</span>
+              </span>
+              <span className="text-[10px] bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20 text-cyan-300">STATUTORY ALIGNED</span>
+            </div>
+            <p className="text-[11px] text-slate-400 font-mono text-center">
+              {isRtl ? activeJurisdictionObj.lawsAr : activeJurisdictionObj.lawsEn}
+            </p>
+          </div>
         </div>
 
         {/* ── Interactive Sequential Roadmap Progress Bar ── */}
@@ -326,7 +424,7 @@ export default function InteractiveCustomerJourneyMap() {
             {/* Direct CTA Action Button */}
             <button
               onClick={() => navigate(currentStep.targetRoute)}
-              className={`px-6 py-3.5 rounded-2xl bg-gradient-to-r ${currentStep.accentGradient} hover:brightness-110 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-lg active:scale-98`}
+              className={`px-6 py-3.5 rounded-2xl bg-gradient-to-r ${currentStep.accentGradient} hover:brightness-110 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-lg active:scale-98 cursor-pointer`}
             >
               <span>{isRtl ? currentStep.ctaTextAr : currentStep.ctaTextEn}</span>
               {isRtl ? <ArrowLeft className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
@@ -386,7 +484,7 @@ export default function InteractiveCustomerJourneyMap() {
             <button
               onClick={() => setActiveStepIndex((prev) => Math.max(0, prev - 1))}
               disabled={activeStepIndex === 0}
-              className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-1.5 transition-colors"
+              className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-1.5 transition-colors cursor-pointer"
             >
               {isRtl ? <ArrowRight className="w-3.5 h-3.5" /> : <ArrowLeft className="w-3.5 h-3.5" />}
               <span>{isRtl ? 'المرحلة السابقة' : 'Previous Phase'}</span>
@@ -397,7 +495,7 @@ export default function InteractiveCustomerJourneyMap() {
                 <button
                   key={dotIdx}
                   onClick={() => setActiveStepIndex(dotIdx)}
-                  className={`h-2 rounded-full transition-all ${
+                  className={`h-2 rounded-full transition-all cursor-pointer ${
                     dotIdx === activeStepIndex ? 'w-6 bg-cyan-400' : 'w-2 bg-slate-700 hover:bg-slate-500'
                   }`}
                 />
@@ -407,7 +505,7 @@ export default function InteractiveCustomerJourneyMap() {
             <button
               onClick={() => setActiveStepIndex((prev) => Math.min(steps.length - 1, prev + 1))}
               disabled={activeStepIndex === steps.length - 1}
-              className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-1.5 transition-colors"
+              className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-1.5 transition-colors cursor-pointer"
             >
               <span>{isRtl ? 'المرحلة التالية' : 'Next Phase'}</span>
               {isRtl ? <ArrowLeft className="w-3.5 h-3.5" /> : <ArrowRight className="w-3.5 h-3.5" />}
