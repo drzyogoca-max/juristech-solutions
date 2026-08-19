@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next';
 import {
   FileText, AlertTriangle, Zap, Loader2, ArrowRight, Globe, Users, Shield, ShieldCheck,
   Sparkles, Building2, Activity, Cpu, Upload, CheckCircle2, ShieldAlert,
-  Download, Filter, RefreshCw, X, Radio, Crown, Handshake, Search, BarChart3, CreditCard, Library, MessageSquare, Lock, Scale
+  Download, Filter, RefreshCw, X, Radio, Crown, Handshake, Search, BarChart3, CreditCard, Library, MessageSquare, Lock, Scale,
+  Video, Share2, Headphones, Briefcase, Award
 } from 'lucide-react';
 import { supabase } from '../lib/supabaseClient';
 import { Link, useNavigate } from 'react-router-dom';
@@ -940,6 +941,306 @@ export default function Dashboard() {
                 </p>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* ──────────────────────────────────────────────────────────────────── */}
+        {/* ALL PLATFORM SERVICES & TOOLS DIRECTORY (COMPLETE 18 SERVICES HUB)   */}
+        {/* ──────────────────────────────────────────────────────────────────── */}
+        <section className="bg-slate-900/90 backdrop-blur-xl p-6 sm:p-10 rounded-3xl border border-cyan-500/30 space-y-8 font-sans">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+            <div className="space-y-2">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                <span>{isRtl ? 'دليل المنظومة الشامل وجميع الخدمات والحلول' : 'Complete 18-Service Ecosystem & Tools Hub'}</span>
+              </div>
+              <h2 className="text-xl sm:text-3xl font-black text-white tracking-tight">
+                {isRtl
+                  ? 'دليل جميع خدمات وحلول منصة JurisTech Solutions'
+                  : 'All JurisTech Platform Services & Legal Engineering Tools'}
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-300 max-w-3xl leading-relaxed">
+                {isRtl
+                  ? 'استكشف جميع الأدوات، المستودعات، والحلول الذكية المتاحة في المنصة للانتقال المباشر لأي خدمة بضغطة واحدة.'
+                  : 'Explore our complete suite of 18 legal AI tools, repositories, and enterprise compliance modules.'}
+              </p>
+            </div>
+            
+            <div className="text-xs font-mono px-4 py-2 rounded-xl bg-slate-950 border border-slate-800 text-cyan-400 font-bold shrink-0 text-center">
+              18 {isRtl ? 'خدمة سيادية مفعلة' : 'Active Sovereign Tools'}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {/* Service 1: AI Advisor */}
+            <Link to="/chat" className="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-cyan-500/50 transition-all group flex items-start gap-3.5">
+              <div className="p-2.5 rounded-xl bg-cyan-500/10 text-cyan-400 group-hover:scale-110 transition-transform shrink-0">
+                <MessageSquare className="w-5 h-5" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors">
+                  {isRtl ? '1. المستشار التشريعي الذكي المباشر' : '1. AI Legal Concierge Advisor'}
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  {isRtl ? 'استشارات قانونية فورية وتأصيل تشريعي شامل عبر 35+ اختصاص قضائي.' : 'Instant legal counsel and statutory code mapping across 35+ jurisdictions.'}
+                </p>
+              </div>
+            </Link>
+
+            {/* Service 2: 1M+ Data Lake Repository */}
+            <Link to="/repository" className="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-indigo-500/50 transition-all group flex items-start gap-3.5">
+              <div className="p-2.5 rounded-xl bg-indigo-500/10 text-indigo-400 group-hover:scale-110 transition-transform shrink-0">
+                <Library className="w-5 h-5" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-sm font-bold text-white group-hover:text-indigo-300 transition-colors">
+                  {isRtl ? '2. مستودع العقود والنماذج المليوني' : '2. 1M+ Smart Contracts Data Lake'}
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  {isRtl ? 'مكتبة شاملة تضم أكثر من 1,000,000 عقد موثق ومحدث لعام 2026.' : 'Comprehensive database of 1,000,000+ updated 2026 legal templates.'}
+                </p>
+              </div>
+            </Link>
+
+            {/* Service 3: Interactive Templates Studio */}
+            <Link to="/templates" className="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-purple-500/50 transition-all group flex items-start gap-3.5">
+              <div className="p-2.5 rounded-xl bg-purple-500/10 text-purple-400 group-hover:scale-110 transition-transform shrink-0">
+                <FileText className="w-5 h-5" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-sm font-bold text-white group-hover:text-purple-300 transition-colors">
+                  {isRtl ? '3. استوديو الصياغة والنماذج التفاعلية' : '3. Interactive Templates Studio'}
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  {isRtl ? 'نماذج مؤسسية رصينة بنظام الشركاء المعتمدين وتصدير نظيف لـ Word و PDF.' : 'Certified institutional templates with clean Word & PDF export.'}
+                </p>
+              </div>
+            </Link>
+
+            {/* Service 4: Contract Generator */}
+            <Link to="/contracts" className="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-teal-500/50 transition-all group flex items-start gap-3.5">
+              <div className="p-2.5 rounded-xl bg-teal-500/10 text-teal-400 group-hover:scale-110 transition-transform shrink-0">
+                <Sparkles className="w-5 h-5" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-sm font-bold text-white group-hover:text-teal-300 transition-colors">
+                  {isRtl ? '4. محرك توليد وصانع العقود السيادية' : '4. Sovereign Contract Generator'}
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  {isRtl ? 'توليد عقود تجارية تفاعلية محكمة مع فصل لغوي نقي بنسبة 100%.' : 'Generate custom commercial agreements with 100% linguistic isolation.'}
+                </p>
+              </div>
+            </Link>
+
+            {/* Service 5: Smart Risk Audit */}
+            <Link to="/risk" className="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-amber-500/50 transition-all group flex items-start gap-3.5">
+              <div className="p-2.5 rounded-xl bg-amber-500/10 text-amber-400 group-hover:scale-110 transition-transform shrink-0">
+                <AlertTriangle className="w-5 h-5" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-sm font-bold text-white group-hover:text-amber-300 transition-colors">
+                  {isRtl ? '5. مدقق المخاطر وكشف الثغرات' : '5. Smart AI Risk Radar'}
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  {isRtl ? 'فحص استباقي كاشف للشروط الجزائية والمسؤوليات غير المحدودة.' : 'Proactive scanning for hidden liabilities and punitive damage clauses.'}
+                </p>
+              </div>
+            </Link>
+
+            {/* Service 6: Enterprise M&A Audit */}
+            <Link to="/enterprise-audit" className="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-emerald-500/50 transition-all group flex items-start gap-3.5">
+              <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400 group-hover:scale-110 transition-transform shrink-0">
+                <Building2 className="w-5 h-5" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors">
+                  {isRtl ? '6. تدقيق الشركات والاندماج والاستحواذ' : '6. Enterprise M&A & Due Diligence'}
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  {isRtl ? 'فحص نافي للجهالة وحوكمة الصفقات الكبرى لبيوت الاستثمار.' : 'Automated M&A due diligence & transaction risk governance.'}
+                </p>
+              </div>
+            </Link>
+
+            {/* Service 7: Negotiation Simulator */}
+            <Link to="/negotiation" className="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-cyan-500/50 transition-all group flex items-start gap-3.5">
+              <div className="p-2.5 rounded-xl bg-cyan-500/10 text-cyan-400 group-hover:scale-110 transition-transform shrink-0">
+                <Handshake className="w-5 h-5" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors">
+                  {isRtl ? '7. محاكي التفاوض والردود القانونية' : '7. Negotiation Simulator'}
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  {isRtl ? 'صياغة ردود تفاوضية متوازنة وتبريرات قانونية لحسم الصفقات.' : 'Tactical counter-offer generator & persuasive legal justifications.'}
+                </p>
+              </div>
+            </Link>
+
+            {/* Service 8: Sovereign Encrypted Vault */}
+            <Link to="/vault" className="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-purple-500/50 transition-all group flex items-start gap-3.5">
+              <div className="p-2.5 rounded-xl bg-purple-500/10 text-purple-400 group-hover:scale-110 transition-transform shrink-0">
+                <Lock className="w-5 h-5" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-sm font-bold text-white group-hover:text-purple-300 transition-colors">
+                  {isRtl ? '8. الخزنة المشفرة AES-256 والتوقيع' : '8. Sovereign Encrypted Vault & E-Sign'}
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  {isRtl ? 'توقيع إلكتروني معتمد وطوابع زمنية موثقة SHA-256 وأرشفة آمنة.' : 'AES-256 encrypted vault with SHA-256 verified digital signatures.'}
+                </p>
+              </div>
+            </Link>
+
+            {/* Service 9: Document Inspector */}
+            <Link to="/investigate" className="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-blue-500/50 transition-all group flex items-start gap-3.5">
+              <div className="p-2.5 rounded-xl bg-blue-500/10 text-blue-400 group-hover:scale-110 transition-transform shrink-0">
+                <Search className="w-5 h-5" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-sm font-bold text-white group-hover:text-blue-300 transition-colors">
+                  {isRtl ? '9. مفتش ومحقق المستندات والتحري' : '9. AI Legal Document Inspector'}
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  {isRtl ? 'فحص أدلة ومستندات وتحديد التعارضات في العقود المعقدة.' : 'In-depth forensic audit & document conflict detection.'}
+                </p>
+              </div>
+            </Link>
+
+            {/* Service 10: Corporate Formation */}
+            <Link to="/company-formation" className="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-emerald-500/50 transition-all group flex items-start gap-3.5">
+              <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400 group-hover:scale-110 transition-transform shrink-0">
+                <Building2 className="w-5 h-5" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors">
+                  {isRtl ? '10. تأسيس المنشآت والشركات' : '10. Corporate Formation & Licensing'}
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  {isRtl ? 'صياغة عقود التأسيس والأنظمة الأساسية وفق قوانين الاستثمار.' : 'Articles of Association & corporate formation packages.'}
+                </p>
+              </div>
+            </Link>
+
+            {/* Service 11: International M&A */}
+            <Link to="/acquisition" className="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-amber-500/50 transition-all group flex items-start gap-3.5">
+              <div className="p-2.5 rounded-xl bg-amber-500/10 text-amber-400 group-hover:scale-110 transition-transform shrink-0">
+                <Briefcase className="w-5 h-5" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-sm font-bold text-white group-hover:text-amber-300 transition-colors">
+                  {isRtl ? '11. منصة الاستحواذ والتراخيص الدولية' : '11. International M&A Platform'}
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  {isRtl ? 'صفقات الاستحواذ وعقود النقل والتراخيص الدولية الموثوقة.' : 'Cross-border acquisitions, IP licensing, and transfer deals.'}
+                </p>
+              </div>
+            </Link>
+
+            {/* Service 12: Lead Radar */}
+            <Link to="/lead-radar" className="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-indigo-500/50 transition-all group flex items-start gap-3.5">
+              <div className="p-2.5 rounded-xl bg-indigo-500/10 text-indigo-400 group-hover:scale-110 transition-transform shrink-0">
+                <Users className="w-5 h-5" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-sm font-bold text-white group-hover:text-indigo-300 transition-colors">
+                  {isRtl ? '12. مرصد رادار استقطاب العملاء والجذب' : '12. Live Smart Lead Radar'}
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  {isRtl ? 'تتبع وتحليل تفاعلات العملاء المحتملين والجذب التلقائي.' : 'Automated visitor tracking & intent-based lead conversion.'}
+                </p>
+              </div>
+            </Link>
+
+            {/* Service 13: Video Hub */}
+            <Link to="/video-hub" className="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-cyan-500/50 transition-all group flex items-start gap-3.5">
+              <div className="p-2.5 rounded-xl bg-cyan-500/10 text-cyan-400 group-hover:scale-110 transition-transform shrink-0">
+                <Video className="w-5 h-5" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors">
+                  {isRtl ? '13. المركز المرئي والأكاديمية القانونية' : '13. Legal Video Hub & Academy'}
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  {isRtl ? 'شروحات مرئية ودليلك الفني لصياغة وتدقيق العقود.' : 'Video guides and legal engineering masterclasses.'}
+                </p>
+              </div>
+            </Link>
+
+            {/* Service 14: Analytics & Reports */}
+            <Link to="/reports" className="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-emerald-500/50 transition-all group flex items-start gap-3.5">
+              <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400 group-hover:scale-110 transition-transform shrink-0">
+                <BarChart3 className="w-5 h-5" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors">
+                  {isRtl ? '14. تقارير الأداء والمخاطر المؤسسية' : '14. Corporate Analytics & Reports'}
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  {isRtl ? 'تحليلات الميزانيات والامتثال وسجل العمليات القانونية.' : 'Compliance metrics & statutory risk reports.'}
+                </p>
+              </div>
+            </Link>
+
+            {/* Service 15: Digital Legal Marketing */}
+            <Link to="/social-marketing" className="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-amber-500/50 transition-all group flex items-start gap-3.5">
+              <div className="p-2.5 rounded-xl bg-amber-500/10 text-amber-400 group-hover:scale-110 transition-transform shrink-0">
+                <Share2 className="w-5 h-5" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-sm font-bold text-white group-hover:text-amber-300 transition-colors">
+                  {isRtl ? '15. التسويق الرقمي القانوني والشراكات' : '15. Digital Legal Marketing & Ads'}
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  {isRtl ? 'حملات التوعية والشراكات الاستراتيجية لبيوت الخبرة.' : 'Law firm branding & institutional marketing partnerships.'}
+                </p>
+              </div>
+            </Link>
+
+            {/* Service 16: Pricing & Retainers */}
+            <Link to="/payment" className="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-purple-500/50 transition-all group flex items-start gap-3.5">
+              <div className="p-2.5 rounded-xl bg-purple-500/10 text-purple-400 group-hover:scale-110 transition-transform shrink-0">
+                <CreditCard className="w-5 h-5" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-sm font-bold text-white group-hover:text-purple-300 transition-colors">
+                  {isRtl ? '16. باقات الاشتراك والاحتفاظ المؤسسي' : '16. Pricing & Enterprise Retainers'}
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  {isRtl ? 'خطط مرنة للشركات والمؤسسات ورواد الأعمال.' : 'Scalable retainer plans for startups & corporate entities.'}
+                </p>
+              </div>
+            </Link>
+
+            {/* Service 17: Legal Compliance */}
+            <Link to="/legal-compliance" className="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-teal-500/50 transition-all group flex items-start gap-3.5">
+              <div className="p-2.5 rounded-xl bg-teal-500/10 text-teal-400 group-hover:scale-110 transition-transform shrink-0">
+                <Scale className="w-5 h-5" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-sm font-bold text-white group-hover:text-teal-300 transition-colors">
+                  {isRtl ? '17. الامتثال التشريعي والقواعد القضائية' : '17. Legal Compliance & Statutory Codes'}
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  {isRtl ? 'دليل القوانين النافذة ومراكز التحكيم الدولية المعتمدة.' : 'Statutory law references & certified arbitration frameworks.'}
+                </p>
+              </div>
+            </Link>
+
+            {/* Service 18: Support Desk */}
+            <Link to="/support" className="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-cyan-500/50 transition-all group flex items-start gap-3.5">
+              <div className="p-2.5 rounded-xl bg-cyan-500/10 text-cyan-400 group-hover:scale-110 transition-transform shrink-0">
+                <Headphones className="w-5 h-5" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors">
+                  {isRtl ? '18. مركز الدعم الفني والتذاكر 24/7' : '18. 24/7 Support Desk & Tickets'}
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  {isRtl ? 'فريق دعم مشفر ومتاح على مدار الساعة للمساعدة المباشرة.' : 'Encrypted technical support & ticket resolution 24/7.'}
+                </p>
+              </div>
+            </Link>
           </div>
         </section>
 
