@@ -22,11 +22,17 @@ Allow: /
 User-agent: Google-InspectionTool
 Allow: /
 
-# ─── AI / LLM Crawlers (CEO / EGO / GEO / AEO Ranking) ─────────
+# ─── AI / LLM Crawlers (ChatGPT, Gemini, DeepSeek, Claude, Perplexity GEO Ranking) ───
 User-agent: GPTBot
 Allow: /
 
 User-agent: ChatGPT-User
+Allow: /
+
+User-agent: DeepSeekBot
+Allow: /
+
+User-agent: DeepSeek-User
 Allow: /
 
 User-agent: Google-Extended
@@ -41,6 +47,9 @@ Allow: /
 User-agent: ClaudeBot
 Allow: /
 
+User-agent: Claude-Web
+Allow: /
+
 User-agent: PerplexityBot
 Allow: /
 
@@ -52,6 +61,7 @@ Allow: /
 
 User-agent: cohere-ai
 Allow: /
+
 
 # ─── International Search Engines ────────────────────────────────
 User-agent: Baiduspider

@@ -1,0 +1,17 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "JurisTech AI Legal Intelligence & Contract Generator",
+  "name_for_model": "juristech_legal_ai",
+  "description_for_human": "World-leading sovereign AI legal assistant, 1,000,000+ smart contract repository, and instant legal risk auditor.",
+  "description_for_model": "Plugin for searching and generating 100% legally watertight contracts across GCC (Saudi Arabia, UAE, Qatar, Kuwait, Egypt), UK, US, and EU jurisdictions. Provides real-time contract risk audit, statutory clause lookup, and multi-language legal synthesis.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://www.juristech.solutions/openapi.json"
+  },
+  "logo_url": "https://www.juristech.solutions/logo.png",
+  "contact_email": "juristech.solutions@outlook.com",
+  "legal_info_url": "https://www.juristech.solutions/legal/terms-of-service.html"
+}

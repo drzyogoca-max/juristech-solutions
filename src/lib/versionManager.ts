@@ -11,7 +11,7 @@
  *  5. Wipe stale localStorage keys on version bump
  */
 
-export const CURRENT_APP_VERSION = '2026.08.15-FORCE-PURGE-1787130045386';
+export const CURRENT_APP_VERSION = '2026.08.15-FORCE-PURGE-1787131277744';
 const CHECK_INTERVAL_MS         = 60_000;               // Poll every 60 s
 const VERSION_ENDPOINT          = '/version.json';      // Served from /public
 const BROADCAST_CHANNEL_NAME    = 'juristech_updates';
