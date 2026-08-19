@@ -11,7 +11,10 @@
  *  5. Wipe stale localStorage keys on version bump
  */
 
-export const CURRENT_APP_VERSION = '2026.08.15-FORCE-PURGE-1787131277744';
+import { initDailyAutoUpdater } from './dailyAutoUpdater';
+
+export const CURRENT_APP_VERSION = '2026.08.15-FORCE-PURGE-1787132060133';
+
 const CHECK_INTERVAL_MS         = 60_000;               // Poll every 60 s
 const VERSION_ENDPOINT          = '/version.json';      // Served from /public
 const BROADCAST_CHANNEL_NAME    = 'juristech_updates';
@@ -226,8 +229,12 @@ export function initVersionManager() {
   setTimeout(poll, 10_000);
   setInterval(poll, CHECK_INTERVAL_MS);
 
+  // Initialize Autonomous Daily Self-Updating AI & Legal Engine
+  initDailyAutoUpdater();
+
   console.info(`[VersionManager] Initialized — version ${CURRENT_APP_VERSION}, polling every ${CHECK_INTERVAL_MS / 1000}s`);
 }
+
 
 export async function triggerImmediateUpdate() {
   await commandSWCachePurge();
