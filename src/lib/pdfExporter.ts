@@ -28,19 +28,19 @@ export async function exportLegalContractPDF(
   const hashToDisplay = sha256Hash || `SHA256-${Date.now()}-${Math.random().toString(36).substring(2, 10)}`;
   const dateStr = isRtl ? new Date().toLocaleDateString('ar-EG') : new Date().toLocaleDateString('en-US');
 
-  // Format the text content for HTML, handling line breaks
+  // Format the text content for HTML, handling line breaks with strict direction
   const contentHtml = content
     .replace(/\r/g, '')
     .split('\n')
-    .map((line) => `<p style="margin-bottom: 8px;">${line}</p>`)
+    .map((line) => `<p style="margin-bottom: 8px; direction: ${isRtl ? 'rtl' : 'ltr'}; text-align: ${isRtl ? 'right' : 'left'};">${line}</p>`)
     .join('');
 
   container.innerHTML = `
     <div style="font-family: ${activeFontFamily}; color: #0f172a; padding: 40px; direction: ${isRtl ? 'rtl' : 'ltr'}; text-align: ${isRtl ? 'right' : 'left'};">
       
       <!-- Header Background Banner -->
-      <div style="background-color: #0f172a; color: white; padding: 20px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-        <div>
+      <div style="background-color: #0f172a; color: white; padding: 20px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; direction: ${isRtl ? 'rtl' : 'ltr'};">
+        <div style="text-align: ${isRtl ? 'right' : 'left'};">
           <h1 style="color: ${activeAccentColor}; margin: 0; font-size: 22px;">
             ${isRtl ? 'حلول جوريس تك - المنظومة القانونية' : 'JURISTECH SOLUTIONS'}
           </h1>
@@ -54,8 +54,8 @@ export async function exportLegalContractPDF(
       </div>
 
       <!-- Metadata Box -->
-      <div style="background-color: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 8px; padding: 18px; margin-bottom: 20px; display: flex; justify-content: space-between; font-size: 13px;">
-        <div>
+      <div style="background-color: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 8px; padding: 18px; margin-bottom: 20px; display: flex; justify-content: space-between; font-size: 13px; direction: ${isRtl ? 'rtl' : 'ltr'};">
+        <div style="text-align: ${isRtl ? 'right' : 'left'};">
           <p style="margin: 0 0 8px 0;"><strong>${isRtl ? 'الطرف الأول' : 'Party A'}:</strong> ${partyA || (isRtl ? 'غير محدد' : 'N/A')}</p>
           <p style="margin: 0;"><strong>${isRtl ? 'الطرف الثاني' : 'Party B'}:</strong> ${partyB || (isRtl ? 'غير محدد' : 'N/A')}</p>
         </div>
@@ -66,16 +66,17 @@ export async function exportLegalContractPDF(
       </div>
 
       <!-- Legal Independence Disclaimer Banner -->
-      <div style="background-color: #fffbe0; border: 1px solid #f59e0b; border-radius: 6px; padding: 10px 14px; margin-bottom: 25px; font-size: 11px; color: #78350f; font-weight: bold; line-height: 1.5;">
+      <div style="background-color: #fffbe0; border: 1px solid #f59e0b; border-radius: 6px; padding: 10px 14px; margin-bottom: 25px; font-size: 11px; color: #78350f; font-weight: bold; line-height: 1.5; text-align: ${isRtl ? 'right' : 'left'}; direction: ${isRtl ? 'rtl' : 'ltr'};">
         ${isRtl
           ? 'إشعار استقلالية قانونية: هذه المنصة هي كيان تقني مستقل بذاته، وليست فرعاً أو وكيلاً أو مرتبطة بأي شكل من الأشكال بشركة JurisTech الأمريكية أو أي علامات تجارية عالمية أخرى تحمل أسماء مشابهة.'
           : 'Legal Independence Notice: This platform is an independent technical entity and is not a branch, agent, or affiliated in any way with the American company JurisTech or any other global trademarks.'}
       </div>
 
       <!-- Document Content -->
-      <div style="font-size: 13px; line-height: 1.7; color: #334155; margin-bottom: 40px; min-height: 480px; text-align: justify; text-justify: inter-word;">
+      <div style="font-size: 13px; line-height: 1.8; color: #334155; margin-bottom: 40px; min-height: 480px; direction: ${isRtl ? 'rtl' : 'ltr'}; text-align: ${isRtl ? 'right' : 'left'};">
         ${contentHtml}
       </div>
+
 
       <!-- Signature Block Area -->
       <div style="border-top: 1px solid #cbd5e1; padding-top: 20px; display: flex; justify-content: space-between; margin-bottom: 35px; page-break-inside: avoid;">

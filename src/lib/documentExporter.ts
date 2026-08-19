@@ -139,9 +139,10 @@ ${content}`;
         : `${platformTitleEn} — Official Certified Legal Document\nTitle: ${title}\nParty A: ${partyA || 'N/A'} | Party B: ${partyB || 'N/A'}\nJurisdiction: ${jurProfile.countryEn} (${jurProfile.code})\nGoverning Law: ${jurProfile.governingLawEn}\n--------------------------------------------------------------------------------\n\n`;
 
       const fullContentToExport = headerPrefix + content;
-      generateAndDownloadWordDocument(title, fullContentToExport);
+      generateAndDownloadWordDocument(title, fullContentToExport, langCode || (isRtl ? 'ar' : 'en'));
       return;
     }
+
 
 
   });

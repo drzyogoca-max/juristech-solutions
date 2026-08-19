@@ -10,7 +10,7 @@ function sanitizeXmlText(text: string): string {
     .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, ''); // إزالة رموز ASCII غير القابلة للطباعة
 }
 
-export async function generateAndDownloadWordDocument(title: string, content: string) {
+export async function generateAndDownloadWordDocument(title: string, content: string, langCode?: string) {
   try {
     const isLegalShieldDomain = typeof window !== 'undefined' && window.location.hostname.toLowerCase().includes('legalshield');
     const platformBrand = isLegalShieldDomain ? "JurisTech Solutions & LegalShield Solution" : "JurisTech Solutions";
@@ -19,8 +19,9 @@ export async function generateAndDownloadWordDocument(title: string, content: st
     const cleanTitle = sanitizeXmlText(title) || `${platformBrand} Document`;
     const rawContent = sanitizeXmlText(content) || "No content provided.";
 
-    // فحص اتجاه اللغة (عربي / انجليزي)
-    const isRtl = /[\u0600-\u06FF]/.test(rawContent) || /[\u0600-\u06FF]/.test(cleanTitle);
+    // فحص اتجاه اللغة بدقة تامة (عربي = RTL / لغات أخرى = LTR)
+    const isArabicChar = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFE]/.test(rawContent) || /[\u0600-\u06FF]/.test(cleanTitle);
+    const isRtl = langCode ? langCode === 'ar' : isArabicChar;
 
     // 2. تقسيم المحتوى إلى أسطر نظيفة دون أي \r أو \n داخل الأسطر
     const lines = rawContent.split('\n');
@@ -120,7 +121,7 @@ export async function generateAndDownloadWordDocument(title: string, content: st
 
     paragraphs.push(
       new Paragraph({
-        alignment: isRtl ? AlignmentType.RIGHT : AlignmentType.RIGHT,
+        alignment: isRtl ? AlignmentType.RIGHT : AlignmentType.LEFT,
         bidirectional: isRtl,
         spacing: { before: 120, after: 40 },
         children: [
@@ -137,7 +138,7 @@ export async function generateAndDownloadWordDocument(title: string, content: st
 
     paragraphs.push(
       new Paragraph({
-        alignment: isRtl ? AlignmentType.RIGHT : AlignmentType.RIGHT,
+        alignment: isRtl ? AlignmentType.RIGHT : AlignmentType.LEFT,
         bidirectional: isRtl,
         spacing: { after: 120 },
         children: [
@@ -161,6 +162,7 @@ export async function generateAndDownloadWordDocument(title: string, content: st
         },
       ],
     });
+
 
     // 4. تحويل المستند إلى بايتات OpenXML ثنائية معتمدة وتنزيلها
     const blob = await Packer.toBlob(doc);
