@@ -151,6 +151,143 @@ Article 8: Governing Law & International Arbitration
       '🟢 ICC international arbitration ensures enforceability across jurisdictions.',
     ],
   },
+  // ── 1.1 Commercial & Building Real Estate Lease Suite (عقود تأجير العقارات والمباني التجارية) ──
+  {
+    id: 'dl-lease-commercial-building',
+    vectorId: 'vec_lease_comm_77192',
+    similarityScore: 0.999,
+    titleAr: 'عقد إيجار مبنى ومقر تجاري وإداري متكامل (Commercial & Corporate Building Lease Agreement)',
+    titleEn: 'Commercial Building & Corporate Office Lease Agreement',
+    categoryAr: 'عقود التأجير التجاري والمباني الاستثمارية',
+    categoryEn: 'Commercial & Property Leases',
+    descriptionAr: 'عقد إيجار مبنى تجاري/إداري متكامل مع أحكام مدة الإيجار، القيمة الإيجارية، التأمين، أعمال التجهيز (Fit-Out)، صيانة المرافق، والإخلاء والتراخيص التشغيلية.',
+    descriptionEn: 'Institutional-grade commercial building and office lease agreement covering fit-out works, rent escalation, security deposit, maintenance, operating licenses, and eviction mechanics.',
+    jurisdictions: ['EG', 'SA', 'AE', 'JO', 'US', 'EU', 'GLOBAL'],
+    downloadsCount: 51200,
+    accuracyRating: 99.9,
+    isVerified: true,
+    templateTextAr: `عقد إيجار مبنى ومقر تجاري وإداري
+حرر هذا العقد في يوم [●] الموافق [●] / [●] / 2026م بين كل من:
+
+الطرف الأول (المؤجر): شركة [اسم المؤجر]، سجل تجاري رقم [●]، ويمثلها قانوناً السيد / [اسم الممثل]، بصفته [المدير العام / المكتري الرئيسي].
+(يُشار إليه لاحقاً بـ "المؤجر / الطرف الأول")
+
+الطرف الثاني (المستأجر): شركة [اسم المستأجر]، سجل تجاري رقم [●]، ويمثلها قانوناً السيد / [اسم الممثل]، بصفته [●].
+(يُشار إليه لاحقاً بـ "المستأجر / الطرف الثاني")
+
+التمهيد والصفة القانونية:
+حيث إن المؤجر هو المالك الشرعي والمسجل للمبنى التجاري الإداري الكائن في [المنطقة/المدينة]، قطاع [●]، والمكون من [عدد الأدوار] أدوار ومواقف سيارات بالبدروم، والبالغ مساحته الإجمالية [●] متراً مربعاً (المشار إليه بـ "العين المؤجرة"). وحيث رغب المستأجر في استئجار كامل المبنى لاستعماله مقراً تجارياً وإدارياً لنشاطه المؤسسي، وقبل المؤجر ذلك بالشروط والأحكام الآتية:
+
+البند الأول: موضوع العقد والعين المؤجرة
+أجر المؤجر للمستأجر القابل لذلك كامل المبنى التجاري والإداري الموضح بالتمهيد أعلاه بكافة منافعه وملحقاته وتجهيزاته، مع حظر تغيير الغرض من الإيجار إلا بموافقة كتابية صريحة من المؤجر.
+
+البند الثاني: مدة العقد والتدريج الزمني
+1. مدة هذا العقد هي [عدد السنوات] سنوات ميلادية تبدأ من تاريخ [تاريخ البداية] وتنتهي في تاريخ [تاريخ النهاية].
+2. تمنح للمستأجر مهلة تجهيز وديكورات (Fit-Out Period) مدتها [عدد الأيام] يوماً معفاة من الإيجار الأساسي تبدأ من تاريخ تسليم العين.
+3. يجدد هذا العقد تلقائياً لمدة مماثلة ما لم يشعر أحد الطرفين الآخر برغبته في عدم التجديد قبل نهاية المدة بـ (90) يوماً بموجب كتاب مسجل أو إيميل رسمي.
+
+البند الثالث: القيمة الإيجارية وآلية الدفع والتصاعد الدوري
+1. القيمة الإيجارية السنوية المتفق عليها هي [المبلغ كتابة ورقماً] [العملة] تُسدد على (4) دفعات ربع سنوية متساوية بموجب شيكات بنكية مؤجلة الدفع تسلم للمؤجر عند التوقيع.
+2. تطبق زيادة دورية سنوية على القيمة الإيجارية مقدرها [●]% اعتباراً من بداية السنة الإيجارية الثانية.
+3. يلتزم المستأجر بسداد مبلغ وقدره [●] كوديعة تأمين لضمان سلامة العين يمتنع استردادها إلا بعد الإخلاء وتسليم المبنى بالحالة التي استلم بها.
+
+البند الرابع: التجهيزات والتعديلات الإنشائية (Fit-Out & Alterations)
+1. يحق للمستأجر إجراء الديكورات والتعديلات الداخلية التي يتطلبها نشاطه بشرط عدم المساس بالهيكل الخرساني أو الأحمال الإنشائية للمبنى.
+2. تؤول كافة التحسينات الثابتة والتمديدات الملتصقة بالعين إلى المؤجر عند نهاية مدة العقد دون تعويض، ما لم يطلب المؤجر إزالتها على نفقة المستأجر.
+
+البند الخامس: الصيانة والمرافق العامة
+1. يتحمل المؤجر مصاريف الصيانة الهيكلية والأنظمة الرئيسية (المصاعد، أنظمة التكييف المركزي، مكافحة الحريق).
+2. يتحمل المستأجر مصاريف الصيانة التشغيلية الدورية واستهلاكات الكهرباء، المياه، الاتصالات، ورسوم الأمن والنظافة.
+
+البند السادس: الإخلاء والفسخ عند التأخير
+يعتبر العقد مفسوخاً تلقائياً دون حاجة لإنذار قضائي في حال تأخر المستأجر عن سداد أي دفعة إيجارية لمدة تزيد عن (15) يوماً من تاريخ استحقاقها، مع التزامه بدفع كافة المتأخرات والشرط الجزائي بواقع [●]% عن كل يوم تأخير.
+
+البند السابع: القانون الواجب التطبيق واختصاص المحاكم
+يخضع العقد ويفسر وفقاً لأحكام قانون الإيجارات والمعاملات المدنية النافذة في دولة العين المؤجرة، وتختص المحاكم الواقع في دائرتها المبنى بنظر أي نزاع.
+
+حرر من نسختين بيد كل طرف نسخة.
+الطرف الأول (المؤجر): _______________    الطرف الثاني (المستأجر): _______________`,
+    templateTextEn: `COMMERCIAL BUILDING AND CORPORATE HEADQUARTERS LEASE AGREEMENT
+This Agreement is entered into on [Date] by and between:
+Party A (Lessor): [Company Name], Commercial Registry No. [●], represented by [Name].
+Party B (Lessee): [Company Name], Commercial Registry No. [●], represented by [Name].
+
+Preamble:
+WHEREAS, Lessor is the legal owner of the Commercial Building located at [Address] comprising [●] floors with a total area of [●] sq. meters (the "Leased Premises"); and
+WHEREAS, Lessee desires to lease the Leased Premises for commercial and corporate administration purposes;
+NOW, THEREFORE, the Parties agree as follows:
+
+Article 1: Subject Matter & Permitted Use
+Lessor demises and leases to Lessee the Leased Premises solely for commercial corporate administration. Any alteration of permitted use requires prior written consent.
+
+Article 2: Term & Fit-Out Period
+1. The lease term shall be [●] years commencing on [Start Date] and expiring on [Expiry Date].
+2. A rent-free fit-out period of [●] days is granted commencing upon physical handover.
+3. Automatic renewal applies for a similar term unless non-renewal notice is delivered 90 days prior to expiration.
+
+Article 3: Rent, Escalation & Security Deposit
+1. Annual Rent is agreed at [Amount] [Currency] payable in 4 equal quarterly advance installments secured by post-dated checks.
+2. An annual escalation rate of [●]% shall apply starting from the 2nd lease year.
+3. Lessee deposits a refundable Security Deposit equal to [●] months' rent.
+
+Article 4: Fit-Out Works & Structural Alterations
+Lessee may perform internal partitions and branding provided no structural load-bearing elements are altered. All permanent fixtures revert to Lessor upon expiration.
+
+Article 5: Maintenance & Utilities
+Lessor maintains structural elements, roof, elevators, and main HVAC systems. Lessee pays operational utilities, electricity, water, and routine internal repairs.
+
+Article 6: Default & Eviction Mechanics
+Non-payment of rent within 15 days of due date triggers automatic lease termination and immediate eviction proceedings with contractual interest.
+
+Article 7: Governing Law & Exclusive Jurisdiction
+Governed by statutory commercial landlord and tenant laws of the local jurisdiction.
+
+Lessor Signature: ___________________    Lessee Signature: ___________________`,
+    riskHighlightsAr: [
+      '🔴 نص مهلة التجهيز (Fit-Out Period) المعفاة من الإيجار يضمن عدم تكبد تكاليف قبل التشغيل.',
+      '🟡 بند التصاعد الدوري المحدد يمنع الزيادات المفاجئة أو العشوائية من المؤجر.',
+      '🟢 الفصل الواضح بين الصيانة الهيكلية والتشغيلية يحمي المستأجر من التكاليف الرأسمالية.',
+    ],
+    riskHighlightsEn: [
+      '🔴 Rent-free fit-out clause prevents premature operational expense during renovation.',
+      '🟡 Capped annual escalation protects tenant against arbitrary landlord rent spikes.',
+      '🟢 Clear separation of structural vs. operational maintenance eliminates capital expenditure disputes.',
+    ],
+  },
+  {
+    id: 'dl-lease-triple-net-nnn',
+    vectorId: 'vec_lease_nnn_88291',
+    similarityScore: 0.998,
+    titleAr: 'عقد إيجار عقاري تجاري صافي ثلاثي الشروط (Triple Net Lease Agreement - NNN)',
+    titleEn: 'Triple Net Commercial Property Lease Agreement (NNN Lease)',
+    categoryAr: 'عقود التأجير التجاري والمباني الاستثمارية',
+    categoryEn: 'Commercial & Property Leases',
+    descriptionAr: 'عقد إيجار تجاري صافي (NNN) تحولي يتحمل فيه المستأجر الإيجار الأساسي بالإضافة إلى جميع الضرائب العقارية والتأمين ومصاريف الصيانة والتشغيل الإجمالية.',
+    descriptionEn: 'Institutional Triple Net (NNN) Commercial Lease Agreement transferring real estate taxes, property insurance, and structural/common area maintenance (CAM) to tenant.',
+    jurisdictions: ['US', 'SA', 'AE', 'EG', 'JO', 'GB', 'GLOBAL'],
+    downloadsCount: 39100,
+    accuracyRating: 99.8,
+    isVerified: true,
+    templateTextAr: `عقد إيجار تجاري صافي ثلاثي الشروط (NNN Lease)
+حرر بين: (المؤجر) و (المستأجر).
+بموجب هذا العقد يتكفل المستأجر بسداد:
+1. الإيجار الأساسي الصافي (Base Net Rent).
+2. حصته الكاملة من الضرائب والرسوم العقارية (Property Taxes).
+3. أقساط بوليسة التأمين الشامل على المبنى (Building Insurance).
+4. جميع مصاريف الصيانة التشغيلية والهيكلية والمنافع المشتركة (CAM Expenses).`,
+    templateTextEn: `TRIPLE NET COMMERCIAL LEASE AGREEMENT (NNN LEASE)
+By and between Lessor and Lessee.
+Lessee covenants to pay: (1) Base Net Rent, (2) Real Estate Property Taxes, (3) Property & Casualty Insurance Premiums, and (4) Common Area Maintenance (CAM) & Structural Expenses.`,
+    riskHighlightsAr: [
+      '🔴 عقد NNN يحول كافة تكاليف التشغيل والضرائب والصيانة على المستأجر.',
+      '🟢 يمنح المؤجر عائداً صافياً مستقراً ودون مخاطر تشغيلية مفاجئة.',
+    ],
+    riskHighlightsEn: [
+      '🔴 NNN structure passes all property tax, insurance, and CAM risk to tenant.',
+      '🟢 Provides landlord with stable, predictable net income stream.',
+    ],
+  },
+
   {
     id: 'dl-sale-spa-shares',
     vectorId: 'vec_sale_spa_99182',
@@ -546,11 +683,89 @@ class SmartContractDataLakeService {
     let categoryAr = 'عقود ومعاملات قانونية معتمدة';
     let categoryEn = 'Certified Legal Contracts';
 
-    if (isRealEstate) {
+    if (isLease) {
+      categoryAr = 'عقود التأجير التجاري والمباني الاستثمارية';
+      categoryEn = 'Commercial & Property Leases';
+      titleAr = `عقد إيجار تجاري وإداري متكامل لمبنى / مقر شركـة (${userJurisdiction === 'EG' ? 'القانون المدني المصري رقم 131/1948 والقانون 4/1996' : userJurisdiction === 'SA' ? 'نظام المعاملات المدنية ونظام إيجار 1444هـ' : userJurisdiction === 'AE' ? 'قوانين الإيجارات التجارية ولائحة RERA' : userJurisdiction === 'JO' ? 'قانون المالكين والمستأجرين الأردني' : 'Commercial Lease Statutory Framework'})`;
+      titleEn = `Institutional Commercial Office Building Lease Agreement (${userJurisdiction} Tenancy Framework)`;
+
+      templateTextAr = `عقد إيجار مبنى ومقر تجاري وإداري معتمد
+حرر هذا العقد في يوم [●] الموافق [●] / [●] / 2026م بين كل من:
+
+الطرف الأول (المؤجر): شركة / السيد [اسم المؤجر رباعياً]، الجنسية/السجل التجاري: [●]، بطاقة الرقم القومي / الهوية: [●]، العنوان: [●]، هاتف: [●].
+(يُشار إليه بـ "المؤجر / الطرف الأول")
+
+الطرف الثاني (المستأجر): شركة / السيد [اسم المستأجر رباعياً]، الجنسية/السجل التجاري: [●]، بطاقة الرقم القومي / الهوية: [●]، العنوان: [●]، هاتف: [●].
+(يُشار إليه بـ "المستأجر / الطرف الثاني")
+
+التمهيد والصفة التعاقدية:
+حيث يمتلك المؤجر (الطرف الأول) المبنى/المقر التجاري الإداري الكائن في [المدينة/المنطقة]، شارع [●]، مبنى رقم [●]، المساحة الإجمالية [●] م² (المشار إليه بـ "العين المؤجرة"). وحيث رغب المستأجر في استئجار العين لاستعمالها مقراً إدارياً وتجارياً لنشاطه المعتمد، وبعد أن أقر الطرفان بأهليتهما المعتبرة قانوناً للتعاقد، فقد اتفقا على ما يلي:
+
+البند الأول: موضوع العقد والغرض من الإيجار
+أجر المؤجر للمستأجر العين الموضحة بالتمهيد لاستعمالها حصراً في النشاط التجاري والإداري، ويحظر على المستأجر تغيير غرض الاستعمال أو التنازل عن الإيجار أو التأجير من الباطن إلا بموافقة كتابية مسبقة من المؤجر.
+
+البند الثاني: مدة العقد ومهلة التجهيز (Fit-Out Period)
+1. مدة هذا العقد هي [عدد السنوات] سنوات ميلادية تبدأ من [تاريخ البداية] وتنتهي في [تاريخ النهاية].
+2. تمنح للمستأجر مهلة تجهيز (Fit-Out Period) مدتها [●] يوماً معفاة من الإيجار الأساسي تبدأ من تاريخ تسليم العين لتنفيذ الديكورات والتجهيزات.
+
+البند الثالث: القيمة الإيجارية وآلية السداد والزيادة السنوية
+1. القيمة الإيجارية السنوية المتفق عليها هي [المبلغ كتابة ورقماً] [العملة] تُسدد على (4) دفعات ربع سنوية بموجب شيكات بنكية مؤجلة.
+2. تطبق زيادة دورية سنوية على الإيجار مقدارها [●]% اعتباراً من بداية السنة الإيجارية الثانية.
+3. يلتزم المستأجر بسداد مبلغ وقدره [●] كوديعة تأمين لضمان سلامة العين، تُسترد عند الإخلاء وتسليم العين بحالتها الأولى.
+
+البند الرابع: التجهيزات والتعديلات الإنشائية
+يحق للمستأجر إجراء التعديلات والديكورات الداخلية بشرط عدم المساس بالهيكل الإنشائي أو الأحمال، وتؤول جميع التحسينات الثابتة للمؤجر عند نهاية العقد دون تعويض.
+
+البند الخامس: الصيانة والمرافق العامة
+1. يتحمل المؤجر الصيانة الهيكلية والأنظمة الرئيسية (المصاعد، التكييف المركزي، أنظمة الإطفاء).
+2. يتحمل المستأجر الصيانة التشغيلية واستهلاكات الكهرباء، المياه، الاتصالات، ورسوم النظافة والأمن.
+
+البند السادس: الشرط الفاسخ والإخلاء عند التأخير
+تعتبر هذه الإجارة مفسوخة تلقائياً دون حاجة لإنذار قضائي إذا تأخر المستأجر عن سداد الأجرة لمدة تزيد عن (15) يوماً من تاريخ استحقاقها، مع التزامه بدفع تعويض اتفاقي قدره [●]% عن كل يوم تأخير والإخلاء الفوري.
+
+البند السابع: القانون الواجب التطبيق والاختصاص القضائي
+يخضع هذا العقد ويفسر وفقاً للقوانين والأنظمة العقارية والإيجارية النافذة في (${userJurisdiction})، وتختص محاكم موقع العين المؤجرة بنظر أي نزاع.
+
+الطرف الأول (المؤجر): __________________     الطرف الثاني (المستأجر): __________________`;
+
+      templateTextEn = `COMMERCIAL OFFICE BUILDING LEASE AGREEMENT
+This Commercial Lease Agreement is entered into on [Date] by and between:
+Party A (Lessor): [Lessor Name / Company], ID/Commercial Registry No. [●].
+Party B (Lessee): [Lessee Name / Company], ID/Commercial Registry No. [●].
+
+Preamble:
+WHEREAS, Lessor is the legal owner of the Commercial Building located at [Address] with a total gross area of [●] sq. meters (the "Leased Premises"); and
+WHEREAS, Lessee desires to lease the Leased Premises for commercial corporate administration;
+NOW, THEREFORE, the Parties agree as follows:
+
+Article 1: Lease Subject Matter & Permitted Use
+Lessor leases the Premises to Lessee solely for commercial corporate office operations. Subleasing or altering permitted use without prior written consent is strictly prohibited.
+
+Article 2: Term & Rent-Free Fit-Out Period
+1. The lease term shall be [●] years commencing on [Start Date] and expiring on [Expiry Date].
+2. Lessee is granted a rent-free fit-out period of [●] days to complete interior decoration and partitioning.
+
+Article 3: Rent, Annual Escalation & Security Deposit
+1. Annual Rent is agreed at [Amount] [Currency] payable in 4 equal quarterly advance installments.
+2. Rent shall escalate by [●]% annually starting from the 2nd lease year.
+3. Lessee deposits a refundable Security Deposit equal to [●] months' rent.
+
+Article 4: Structural Maintenance & Utilities
+Lessor maintains main structural components, elevators, and central HVAC. Lessee pays operational utilities, electricity, water, and interior maintenance.
+
+Article 5: Default & Automatic Termination
+Failure to pay rent within 15 days of due date triggers automatic lease termination, immediate eviction, and contractual interest.
+
+Article 6: Governing Law & Exclusive Jurisdiction
+Governed by statutory landlord and tenant laws of (${userJurisdiction}).
+
+Lessor Signature: ___________________    Lessee Signature: ___________________`;
+    } else if (isRealEstate) {
       categoryAr = 'عقود البيع والتملك العقاري';
       categoryEn = 'Real Estate & Property Conveyance';
       titleAr = `عقد بيع وتنازل نهائي لشقة سكنية وحصة بالأرض (${userJurisdiction === 'EG' ? 'جمهورية مصر العربية' : userJurisdiction === 'SA' ? 'المملكة العربية السعودية' : userJurisdiction === 'AE' ? 'دولة الإمارات' : userJurisdiction === 'JO' ? 'الأردن' : 'النظام العقاري المعتمد'})`;
       titleEn = `Residential Apartment Sale and Property Conveyance Deed (${userJurisdiction} Real Estate Framework)`;
+
 
       templateTextAr = `عقد بيع وتنازل نهائي وخالص الثمن لشقة سكنية وحصة شائعة في الأرض
 حرر هذا العقد في يوم [●] الموافق [●] / [●] / [●]20 بين كل من:
