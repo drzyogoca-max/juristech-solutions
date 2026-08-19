@@ -1,35 +1,67 @@
 import React, { useState } from 'react';
-import { Shield, Zap, CheckCircle2, DollarSign, Award, ChevronRight, Scale, Globe, Building2, FileText } from 'lucide-react';
+import { Shield, Zap, CheckCircle2, DollarSign, Award, ChevronRight, Scale, Globe, Building2, FileText, Sparkles, ArrowRight, Flame } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
-export const US_STATES = [
-  { code: 'DE', name: 'Delaware', keyLaw: 'General Corporation Law (DGCL)' },
-  { code: 'CA', name: 'California', keyLaw: 'California Civil Code & CCPA/CPRA' },
-  { code: 'NY', name: 'New York', keyLaw: 'NY General Obligations & Commercial Code' },
-  { code: 'TX', name: 'Texas', keyLaw: 'Texas Business Organizations Code (BOC)' },
-  { code: 'FL', name: 'Florida', keyLaw: 'Florida Business Corporations Act' },
-  { code: 'WY', name: 'Wyoming', keyLaw: 'Wyoming Limited Liability Company Act' },
-  { code: 'IL', name: 'Illinois', keyLaw: 'Illinois Business Corporation Act' },
-  { code: 'WA', name: 'Washington', keyLaw: 'Washington Business Corporation Act' },
+export const TARGET_MARKETS = [
+  { code: 'US', flag: '🇺🇸', nameAr: 'السوق الأمريكي (50 ولاية)', nameEn: 'US Market (50 States)', keyLaw: 'Delaware DGCL, UCC & CCPA', avgHourlyRate: 450, currency: '$' },
+  { code: 'UK', flag: '🇬🇧', nameAr: 'السوق البريطاني (المملكة المتحدة)', nameEn: 'UK Market (London & Wales)', keyLaw: 'UK Companies Act 2006 & LCIA', avgHourlyRate: 380, currency: '£' },
+  { code: 'DE', flag: '🇩🇪', nameAr: 'السوق الألماني (ألمانيا / DACH)', nameEn: 'German Market (DACH Region)', keyLaw: 'BGB, HGB & DSGVO GDPR', avgHourlyRate: 350, currency: '€' },
+  { code: 'TR', flag: '🇹🇷', nameAr: 'السوق التركي (تركيا / ISTAC)', nameEn: 'Turkish Market (Turkey & ISTAC)', keyLaw: 'TTK, TBK & ISTAC Arbitration', avgHourlyRate: 220, currency: '$' },
+  { code: 'CN', flag: '🇨🇳', nameAr: 'السوق الصيني (الصين / CIETAC)', nameEn: 'Chinese Market (China / APAC)', keyLaw: 'PRC Civil Code 2021 & CIETAC', avgHourlyRate: 280, currency: '$' },
+  { code: 'ES', flag: '🇪🇸', nameAr: 'السوق الإسباني (إسبانيا / LATAM)', nameEn: 'Spanish Market (Spain & LATAM)', keyLaw: 'Código Civil Español & LSC', avgHourlyRate: 260, currency: '€' },
+  { code: 'GCC', flag: '🇸🇦🇦🇪🇶🇦', nameAr: 'أسواق الخليج العربي (GCC)', nameEn: 'Gulf & GCC Markets (GCC)', keyLaw: 'Saudi M/191, UAE Commercial & DIFC/ADGM', avgHourlyRate: 400, currency: '$' },
 ];
 
 export default function USCompetitorMatchBanner() {
   const { t, i18n } = useTranslation();
   const isRtl = i18n.dir() === 'rtl';
-  const [selectedState, setSelectedState] = useState(US_STATES[0]);
+  const [selectedMarket, setSelectedMarket] = useState(TARGET_MARKETS[0]);
   const [attorneyHours, setAttorneyHours] = useState(15);
   const [activeTab, setActiveTab] = useState<'comparison' | 'calculator'>('comparison');
 
-  const hourlyRate = 450; // Average US Attorney hourly rate
+  const hourlyRate = selectedMarket.avgHourlyRate;
   const traditionalCost = attorneyHours * hourlyRate;
   const platformCost = 49; // Monthly Pro plan
   const savings = traditionalCost - platformCost;
 
   return (
-    <div className="w-full bg-slate-900/90 backdrop-blur-xl border border-indigo-500/20 rounded-3xl p-6 md:p-8 shadow-2xl mb-8 overflow-hidden relative">
+    <div className="w-full bg-slate-900/90 backdrop-blur-xl border border-cyan-500/30 rounded-3xl p-6 md:p-8 shadow-2xl mb-8 overflow-hidden relative font-sans">
       {/* Glow Effects */}
-      <div className="absolute -top-24 -right-24 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-cyan-600/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -top-24 -right-24 w-96 h-96 bg-cyan-600/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
+
+      {/* 🚀 TODAY HIGH-GROWTH CONVERSION BANNER FOR TOP 7 MARKETS */}
+      <div className="mb-6 p-4 rounded-2xl bg-gradient-to-r from-amber-500/20 via-cyan-500/10 to-indigo-500/20 border border-amber-500/40 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 rounded-xl bg-amber-500 text-slate-950 shrink-0 font-bold">
+            <Flame className="w-5 h-5 fill-current animate-bounce" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-black text-amber-400 uppercase tracking-wider">
+                {isRtl ? 'عرض الانضمام الفوري للعملاء الجدد (خصم 50% اليوم)' : 'TODAY SPECIAL 50% CLIENT ACQUISITION OFFER'}
+              </span>
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-500 text-slate-950">
+                LIMITED TODAY
+              </span>
+            </div>
+            <p className="text-xs sm:text-sm text-slate-200 font-bold mt-0.5">
+              {isRtl
+                ? 'استهدف الأنظمة القانونية في (أمريكا، بريطانيا، ألمانيا، تركيا، الصين، إسبانيا، ودول الخليج) واحصل على باقة المؤسسات بخصم حصري ومباشر!'
+                : 'Targeting US, UK, Germany, Turkey, China, Spain & Gulf markets with institutional legal protection!'}
+            </p>
+          </div>
+        </div>
+
+        <Link
+          to="/payment?plan=pro"
+          className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-xs shrink-0 transition-all shadow-lg active:scale-95 flex items-center gap-1.5"
+        >
+          <Zap className="w-4 h-4 fill-current" />
+          <span>{isRtl ? 'اشترك الآن واحصل على العرض' : 'Claim Today Special Plan'}</span>
+        </Link>
+      </div>
 
       {/* Header Banner */}
       <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 mb-8 border-b border-slate-800 pb-6">
@@ -37,22 +69,22 @@ export default function USCompetitorMatchBanner() {
           <div className="flex items-center gap-3 mb-2 flex-wrap">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
               <Shield className="w-3.5 h-3.5" />
-              {isRtl ? 'حماية طراز 50 ولاية أمريكية' : '50 US States Jurisdiction Shield'}
+              {isRtl ? 'تغطية 7 أسواق دولية ورئيسية' : '7 Global High-Paying Target Markets'}
             </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/30">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
               <Award className="w-3.5 h-3.5" />
-              {isRtl ? 'المطابقة الكاملة مع المنصات الأمريكية' : 'Matched with US Legal Leaders'}
+              {isRtl ? 'مطابقة القوانين والتشريعات المعتمدة' : 'Statutory Code Compliance Certified'}
             </span>
           </div>
           <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
             {isRtl
-              ? 'تفوّق منظومة JurisTech & LegalShield مقارنة بالمنصات الأمريكية'
-              : 'JurisTech & LegalShield vs Leading US Legal Platforms'}
+              ? 'حلول الهندسة القانونية للأسواق العالمية والخليجية'
+              : 'JurisTech Global Legal AI for High-Paying International Markets'}
           </h2>
           <p className="text-slate-400 text-sm mt-1 max-w-3xl">
             {isRtl
-              ? 'مقارنة مباشرة في الكفاءة والسرعة والتكلفة مع LegalZoom و Rocket Lawyer و Ironclad و Clio مع تغطية كاملة لـ 50 ولاية أمريكية.'
-              : 'Direct feature & cost match against LegalZoom, Rocket Lawyer, Ironclad, and Clio with full 50 US States regulatory compliance.'}
+              ? 'منظومة حماية واستشارات وتدقيق عقود متكاملة مخصصة للشركات والمنشآت في أمريكا، بريطانيا، ألمانيا، تركيا، الصين، إسبانيا، ودول الخليج العربي.'
+              : 'Enterprise legal automation tailored for corporate entities across US, UK, Germany, Turkey, China, Spain, and GCC states.'}
           </p>
         </div>
 
@@ -62,49 +94,49 @@ export default function USCompetitorMatchBanner() {
             onClick={() => setActiveTab('comparison')}
             className={`px-4 py-2 text-xs md:text-sm font-semibold rounded-lg transition-all ${
               activeTab === 'comparison'
-                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
+                ? 'bg-cyan-600 text-white shadow-lg shadow-cyan-600/30'
                 : 'text-slate-400 hover:text-white'
             }`}
           >
-            {isRtl ? 'مصفوفة التنافسية' : 'Competitive Matrix'}
+            {isRtl ? 'مصفوفة الأسواق العالمية' : 'Global Market Matrix'}
           </button>
           <button
             onClick={() => setActiveTab('calculator')}
             className={`px-4 py-2 text-xs md:text-sm font-semibold rounded-lg transition-all ${
               activeTab === 'calculator'
-                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
+                ? 'bg-cyan-600 text-white shadow-lg shadow-cyan-600/30'
                 : 'text-slate-400 hover:text-white'
             }`}
           >
-            {isRtl ? 'حاسبة التوفير (USD)' : 'US ROI Calculator ($)'}
+            {isRtl ? 'حاسبة التوفير العالمية ($)' : 'Global ROI Calculator ($)'}
           </button>
         </div>
       </div>
 
-      {/* 50 US States Quick Selector */}
+      {/* 7 Global Markets Quick Selector Bar */}
       <div className="mb-6 bg-slate-800/40 p-4 rounded-2xl border border-slate-700/40">
         <div className="flex items-center justify-between gap-4 mb-3 flex-wrap">
-          <div className="flex items-center gap-2 text-xs text-indigo-400 font-semibold uppercase tracking-wider">
-            <Globe className="w-4 h-4 text-indigo-400" />
-            {isRtl ? 'اختر الولاية الأمريكية لتحديد القانون المباشر:' : 'Select Active US State Jurisdiction:'}
+          <div className="flex items-center gap-2 text-xs text-cyan-400 font-semibold uppercase tracking-wider">
+            <Globe className="w-4 h-4 text-cyan-400" />
+            {isRtl ? 'اختر السوق المستهدف لتحديد النظام القانوني النافذ:' : 'Select Target Market Statutory System:'}
           </div>
-          <span className="text-xs text-slate-400 bg-slate-800 px-2.5 py-1 rounded-md border border-slate-700">
-            {selectedState.keyLaw}
+          <span className="text-xs text-slate-300 font-bold bg-slate-800 px-3 py-1 rounded-lg border border-slate-700">
+            {selectedMarket.keyLaw}
           </span>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2">
-          {US_STATES.map((st) => (
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
+          {TARGET_MARKETS.map((m) => (
             <button
-              key={st.code}
-              onClick={() => setSelectedState(st)}
-              className={`px-3 py-2 rounded-xl text-xs font-semibold transition-all text-center flex items-center justify-center gap-1.5 border ${
-                selectedState.code === st.code
-                  ? 'bg-gradient-to-r from-indigo-600 to-cyan-600 text-white border-indigo-400 shadow-md'
+              key={m.code}
+              onClick={() => setSelectedMarket(m)}
+              className={`px-3 py-2.5 rounded-xl text-xs font-bold transition-all text-center flex items-center justify-center gap-2 border ${
+                selectedMarket.code === m.code
+                  ? 'bg-gradient-to-r from-cyan-600 to-indigo-600 text-white border-cyan-400 shadow-md'
                   : 'bg-slate-800/80 text-slate-300 border-slate-700 hover:border-slate-600 hover:bg-slate-800'
               }`}
             >
-              <span className="font-mono font-bold text-xs text-indigo-300">{st.code}</span>
-              <span className="truncate">{st.name}</span>
+              <span className="text-base">{m.flag}</span>
+              <span className="truncate">{isRtl ? m.nameAr.split(' ')[1] || m.nameAr : m.code}</span>
             </button>
           ))}
         </div>
@@ -113,88 +145,72 @@ export default function USCompetitorMatchBanner() {
       {/* Tab Content: Comparison Matrix */}
       {activeTab === 'comparison' && (
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-slate-300 border-collapse">
+          <table className="w-full text-left text-sm text-slate-300 border-collapse" dir={isRtl ? 'rtl' : 'ltr'}>
             <thead>
               <tr className="border-b border-slate-800 text-xs font-bold uppercase tracking-wider text-slate-400">
-                <th className="py-3 px-4">{isRtl ? 'الميزة / المعيار' : 'Feature / Criterion'}</th>
-                <th className="py-3 px-4 text-indigo-400 font-extrabold bg-indigo-950/30 rounded-t-xl border-x border-t border-indigo-500/30">
-                  JurisTech & LegalShield
+                <th className="py-3 px-4">{isRtl ? 'الميزة / المعيار التشريعي' : 'Feature / Market Standard'}</th>
+                <th className="py-3 px-4 text-cyan-400 font-extrabold bg-cyan-950/40 rounded-t-xl border-x border-t border-cyan-500/40">
+                  JurisTech Solutions ({selectedMarket.flag} {selectedMarket.code})
                 </th>
-                <th className="py-3 px-4">LegalZoom USA</th>
-                <th className="py-3 px-4">Rocket Lawyer USA</th>
-                <th className="py-3 px-4">Ironclad / Clio</th>
+                <th className="py-3 px-4">{isRtl ? 'المكاتب القانونية التقليدية' : 'Traditional Law Firms'}</th>
+                <th className="py-3 px-4">{isRtl ? 'المنصات الأمريكية (Ironclad/LegalZoom)' : 'US Enterprise Legal Tech'}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/60">
               <tr>
                 <td className="py-3.5 px-4 font-semibold text-white">
-                  {isRtl ? 'زمن تدقيق العقود بالذكاء الاصطناعي' : 'AI Contract Audit Speed'}
+                  {isRtl ? 'سرعة فحص العقود وكشف الثغرات' : 'Contract Audit & Redflag Speed'}
                 </td>
-                <td className="py-3.5 px-4 font-bold text-emerald-400 bg-indigo-950/20 border-x border-indigo-500/20">
-                  ⚡ &lt; 1 Second (Instant)
+                <td className="py-3.5 px-4 font-bold text-emerald-400 bg-cyan-950/20 border-x border-cyan-500/20">
+                  ⚡ &lt; 1 Second (Instant AI)
                 </td>
-                <td className="py-3.5 px-4 text-slate-400">Manual / Days</td>
-                <td className="py-3.5 px-4 text-slate-400">Limited AI / Hours</td>
-                <td className="py-3.5 px-4 text-slate-400">Enterprise AI (Minutes)</td>
+                <td className="py-3.5 px-4 text-slate-400">3 - 7 Days</td>
+                <td className="py-3.5 px-4 text-slate-400">Minutes to Hours</td>
               </tr>
               <tr>
                 <td className="py-3.5 px-4 font-semibold text-white">
-                  {isRtl ? 'دعم قوانين الـ 50 ولاية أمريكية' : '50 US States Legal Engine'}
+                  {isRtl ? 'التطابق مع قوانين السوق المختارة' : 'Statutory Code Alignment'}
                 </td>
-                <td className="py-3.5 px-4 font-bold text-emerald-400 bg-indigo-950/20 border-x border-indigo-500/20">
-                  ✓ Full 50 States Built-in
+                <td className="py-3.5 px-4 font-bold text-emerald-400 bg-cyan-950/20 border-x border-cyan-500/20">
+                  ✓ {selectedMarket.keyLaw}
                 </td>
-                <td className="py-3.5 px-4 text-emerald-400">✓ Yes (Extra Cost)</td>
-                <td className="py-3.5 px-4 text-emerald-400">✓ Yes (Subscription)</td>
-                <td className="py-3.5 px-4 text-amber-400">Partial / Custom</td>
+                <td className="py-3.5 px-4 text-emerald-400">✓ Yes (High Fees)</td>
+                <td className="py-3.5 px-4 text-amber-400">Partial US Focus Only</td>
               </tr>
               <tr>
                 <td className="py-3.5 px-4 font-semibold text-white">
-                  {isRtl ? 'المحامي الافتراضي الذكي (24/7 Chatbot)' : '24/7 AI Virtual Lawyer'}
+                  {isRtl ? 'المساعد القانوني التفاعلي 24/7' : '24/7 AI Legal Concierge'}
                 </td>
-                <td className="py-3.5 px-4 font-bold text-emerald-400 bg-indigo-950/20 border-x border-indigo-500/20">
-                  ✓ Juris AI (Unlimited 24/7)
+                <td className="py-3.5 px-4 font-bold text-emerald-400 bg-cyan-950/20 border-x border-cyan-500/20">
+                  ✓ Included 24/7 (7 Languages)
                 </td>
-                <td className="py-3.5 px-4 text-rose-400">✗ Attorney Consultation Only</td>
-                <td className="py-3.5 px-4 text-amber-400">Basic Q&A</td>
+                <td className="py-3.5 px-4 text-rose-400">✗ Billable Hours Only</td>
                 <td className="py-3.5 px-4 text-rose-400">✗ Enterprise Search Only</td>
               </tr>
               <tr>
                 <td className="py-3.5 px-4 font-semibold text-white">
-                  {isRtl ? 'تأسيس الشركات (LLC & C-Corp Wizard)' : 'LLC & Inc Formation Wizard'}
+                  {isRtl ? 'التكلفة الفعالة للمؤسسات' : 'Starting Monthly Price'}
                 </td>
-                <td className="py-3.5 px-4 font-bold text-emerald-400 bg-indigo-950/20 border-x border-indigo-500/20">
-                  ✓ Included Free with AI Forms
+                <td className="py-3.5 px-4 font-bold text-emerald-400 bg-cyan-950/20 border-x border-b border-cyan-500/20">
+                  $49 - $139/mo (Unlimited)
                 </td>
-                <td className="py-3.5 px-4 text-slate-400">$149 + State Fees</td>
-                <td className="py-3.5 px-4 text-slate-400">$99 + State Fees</td>
-                <td className="py-3.5 px-4 text-rose-400">✗ Not Supported</td>
-              </tr>
-              <tr>
-                <td className="py-3.5 px-4 font-semibold text-white">
-                  {isRtl ? 'التكلفة الشهرية الأساسية (USD)' : 'Starting Monthly Price (USD)'}
-                </td>
-                <td className="py-3.5 px-4 font-bold text-emerald-400 bg-indigo-950/20 border-x border-b border-indigo-500/20">
-                  $0 - $49/mo (Unlimited)
-                </td>
-                <td className="py-3.5 px-4 text-rose-400 font-mono">$39 - $299/mo</td>
-                <td className="py-3.5 px-4 text-rose-400 font-mono">$39.99/mo</td>
-                <td className="py-3.5 px-4 text-rose-400 font-mono">$500+/mo (Per Seat)</td>
+                <td className="py-3.5 px-4 text-rose-400 font-mono font-bold">$3,000 - $15,000 / deal</td>
+                <td className="py-3.5 px-4 text-rose-400 font-mono font-bold">$300 - $1,200 / user / mo</td>
               </tr>
             </tbody>
           </table>
         </div>
       )}
 
-      {/* Tab Content: US ROI Calculator */}
+      {/* Tab Content: Global ROI Calculator */}
       {activeTab === 'calculator' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-slate-950/60 p-6 rounded-2xl border border-slate-800">
           <div className="lg:col-span-7 space-y-5">
             <div>
               <label className="block text-sm font-semibold text-slate-300 mb-2">
                 {isRtl
-                  ? `عدد الساعات القانونية المطلوبة شهرياً: (${attorneyHours} ساعة)`
-                  : `Monthly Legal Hours Required: (${attorneyHours} hrs/mo)`}
+                  ? `عدد الساعات القانونية المطلوبة شهرياً في ${selectedMarket.nameAr}: (${attorneyHours} ساعة)`
+                  : `Monthly Legal Hours Required in ${selectedMarket.nameEn}: (${attorneyHours} hrs/mo)`}
               </label>
               <input
                 type="range"
@@ -202,7 +218,7 @@ export default function USCompetitorMatchBanner() {
                 max="50"
                 value={attorneyHours}
                 onChange={(e) => setAttorneyHours(parseInt(e.target.value))}
-                className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500"
+                className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-500"
               />
               <div className="flex justify-between text-xs text-slate-500 mt-1 font-mono">
                 <span>2 hrs</span>
@@ -214,38 +230,38 @@ export default function USCompetitorMatchBanner() {
             <div className="grid grid-cols-2 gap-4">
               <div className="p-4 bg-slate-900/80 rounded-xl border border-slate-800">
                 <span className="text-xs text-slate-400 font-medium">
-                  {isRtl ? 'متوسط أجر المحامي الأمريكي' : 'Avg. US Attorney Hourly Rate'}
+                  {isRtl ? `متوسط ساعة المحامي في ${selectedMarket.nameAr}` : `Hourly Rate in ${selectedMarket.nameEn}`}
                 </span>
-                <p className="text-xl font-bold text-slate-200 mt-1 font-mono">${hourlyRate}/hr</p>
+                <p className="text-xl font-bold text-slate-200 mt-1 font-mono">{selectedMarket.currency}{hourlyRate}/hr</p>
               </div>
               <div className="p-4 bg-slate-900/80 rounded-xl border border-slate-800">
                 <span className="text-xs text-slate-400 font-medium">
-                  {isRtl ? 'الولايات القضائية المشمولة' : 'States Covered'}
+                  {isRtl ? 'النظام التشريعي المعتمد' : 'Governing Law'}
                 </span>
-                <p className="text-xl font-bold text-indigo-400 mt-1">50 US States</p>
+                <p className="text-xs font-bold text-cyan-400 mt-1 truncate">{selectedMarket.keyLaw}</p>
               </div>
             </div>
           </div>
 
-          <div className="lg:col-span-5 bg-gradient-to-br from-indigo-950/80 to-slate-900 p-6 rounded-2xl border border-indigo-500/30 text-center space-y-4 shadow-xl">
-            <div className="text-xs text-indigo-300 font-bold uppercase tracking-wider">
-              {isRtl ? 'وفرة الميزانية القانونية السنوية المقدرة' : 'Estimated Annual Legal Savings'}
+          <div className="lg:col-span-5 bg-gradient-to-br from-cyan-950/80 to-slate-900 p-6 rounded-2xl border border-cyan-500/30 text-center space-y-4 shadow-xl">
+            <div className="text-xs text-cyan-300 font-bold uppercase tracking-wider">
+              {isRtl ? 'المبلغ الموفر سنوياً لمؤسستك' : 'Estimated Annual Enterprise Savings'}
             </div>
             <div className="text-4xl md:text-5xl font-black text-emerald-400 font-mono tracking-tight">
               ${(savings * 12).toLocaleString()}
             </div>
             <p className="text-xs text-slate-400">
               {isRtl
-                ? `تكلفة المحامي التقليدي: $${(traditionalCost * 12).toLocaleString()}/سنة مقابل $${(platformCost * 12).toLocaleString()}/سنة على منصتنا.`
-                : `Traditional US Attorney: $${(traditionalCost * 12).toLocaleString()}/yr vs $${(platformCost * 12).toLocaleString()}/yr with JurisTech & LegalShield.`}
+                ? `تكلفة المحامي التقليدي: $${(traditionalCost * 12).toLocaleString()}/سنة مقابل $${(platformCost * 12).toLocaleString()}/سنة على المنصة.`
+                : `Traditional Law Firm: $${(traditionalCost * 12).toLocaleString()}/yr vs $${(platformCost * 12).toLocaleString()}/yr with JurisTech Solutions.`}
             </p>
-            <a
-              href="/payment"
+            <Link
+              to="/payment?plan=pro"
               className="inline-flex items-center justify-center gap-2 w-full py-3 px-5 rounded-xl font-bold text-sm bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 transition-all shadow-lg shadow-emerald-500/20"
             >
               <Zap className="w-4 h-4 fill-current" />
-              {isRtl ? 'ابدأ الخطة وفّر الميزانية الآن' : 'Claim Your LegalShield Plan'}
-            </a>
+              <span>{isRtl ? 'اشترك الآن واحصل على الحماية الفورية' : 'Claim Your Plan & Protect Enterprise'}</span>
+            </Link>
           </div>
         </div>
       )}

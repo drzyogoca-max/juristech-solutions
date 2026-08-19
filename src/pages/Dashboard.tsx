@@ -666,6 +666,13 @@ export default function Dashboard() {
         )}
 
         {/* ──────────────────────────────────────────────────────────────────── */}
+        {/* GLOBAL 7-TARGET-MARKET HIGH-CONVERSION ENTERPRISE HUB (US, UK, DE, TR, CN, ES, GCC) */}
+        {/* ──────────────────────────────────────────────────────────────────── */}
+        <Suspense fallback={<div className="h-64 bg-slate-900 rounded-3xl border border-slate-800 animate-pulse mb-8" />}>
+          <USCompetitorMatchBanner />
+        </Suspense>
+
+        {/* ──────────────────────────────────────────────────────────────────── */}
         {/* STAGE 3 — SUBSCRIPTIONS & PRICING PACKAGES GATEWAY (30% DISCOUNT)    */}
         {/* ──────────────────────────────────────────────────────────────────── */}
         <div className="bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 p-6 sm:p-10 rounded-3xl border border-cyan-500/30 shadow-2xl space-y-8">
