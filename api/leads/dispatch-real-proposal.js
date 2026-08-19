@@ -51,8 +51,8 @@ export async function POST(req) {
             from: `JurisTech Solutions <${EMAIL_FROM}>`,
             to: [companyEmail],
             reply_to: 'juristech.solutions@outlook.com',
-            subject: `عرض امتثال وحماية العقود المؤسسية لشركة ${companyName || 'المحترمة'}`,
-            text: proposalText,
+            subject: `CONFIDENTIAL: Institutional AI Legal Infrastructure & Contract Risk Proposal for ${companyName || 'Enterprise Client'} | JurisTech Solutions`,
+            text: `${proposalText}\n\n---\nSincerely,\nDr. Mohammad Mustafa\nChief Executive & Chief Financial Officer (CEO / CFO)\nJurisTech Solutions | Sovereign AI Legal & Risk Infrastructure\nExecutive Email: drzyogo.ca@gmail.com | juristech.solutions@outlook.com\nOfficial Portal: https://www.juristech.solutions`,
           }),
         });
 

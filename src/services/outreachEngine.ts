@@ -163,19 +163,19 @@ export const generateAndDispatchOffer = async (clientData: ClientDataPayload): P
               To discuss institutional integration or arrange a private demonstration for your executive committee, you may reply directly to this communication or contact our executive office.
             </p>
 
-            <!-- Formal Executive Signature Block -->
+            <!-- Formal Executive Signature Block signed by Dr. Mohammad CFO -->
             <div class="signature-block">
               <div class="sig-name">Dr. Mohammad Mustafa</div>
-              <div class="sig-title">Chairman & Chief Legal Architect</div>
-              <div class="sig-org">JurisTech Solutions | Sovereign AI Legal Infrastructure</div>
+              <div class="sig-title">Chief Executive & Chief Financial Officer (CEO / CFO)</div>
+              <div class="sig-org">JurisTech Solutions | Sovereign AI Legal & Risk Infrastructure</div>
               <div class="sig-contact">
-                <strong>Executive Inquiries:</strong> <a href="mailto:juristech.solutions@outlook.com" style="color: #38bdf8; text-decoration: none;">juristech.solutions@outlook.com</a><br>
+                <strong>Executive Contact:</strong> <a href="mailto:drzyogo.ca@gmail.com" style="color: #38bdf8; text-decoration: none;">drzyogo.ca@gmail.com</a> | <a href="mailto:juristech.solutions@outlook.com" style="color: #38bdf8; text-decoration: none;">juristech.solutions@outlook.com</a><br>
                 <strong>Official Portal:</strong> <a href="https://www.juristech.solutions" style="color: #38bdf8; text-decoration: none;">https://www.juristech.solutions</a>
               </div>
               
               <div class="seal-box">
-                OFFICIAL DIGITAL CERTIFICATE: JTS-EXEC-AUTH-2026<br>
-                STATUS: DIGITALLY AUTHENTICATED & EXECUTED BY DR. MOHAMMAD MUSTAFA
+                OFFICIAL DIGITAL CERTIFICATE: JTS-CFO-AUTH-2026<br>
+                STATUS: DIGITALLY AUTHENTICATED & SIGNED BY DR. MOHAMMAD MUSTAFA (CFO / CEO)
               </div>
             </div>
 
