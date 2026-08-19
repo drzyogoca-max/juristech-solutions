@@ -30,27 +30,6 @@ const PAGES = [
   { url: '/privacy', priority: '0.80', changefreq: 'monthly' },
   { url: '/terms', priority: '0.80', changefreq: 'monthly' },
 
-  // Categories & Sectors Sitemap URLs
-  { url: '/repository?cat=corporate', priority: '0.90', changefreq: 'daily' },
-  { url: '/repository?cat=employment', priority: '0.90', changefreq: 'daily' },
-  { url: '/repository?cat=ip-tech', priority: '0.90', changefreq: 'daily' },
-  { url: '/repository?cat=investment', priority: '0.90', changefreq: 'daily' },
-  { url: '/repository?cat=commercial', priority: '0.90', changefreq: 'daily' },
-  { url: '/repository?cat=real-estate', priority: '0.90', changefreq: 'daily' },
-  { url: '/repository?cat=finance', priority: '0.90', changefreq: 'daily' },
-  { url: '/repository?cat=healthcare', priority: '0.90', changefreq: 'daily' },
-
-  // Jurisdictions Sitemap URLs
-  { url: '/repository?jur=SA', priority: '0.90', changefreq: 'daily' },
-  { url: '/repository?jur=AE', priority: '0.90', changefreq: 'daily' },
-  { url: '/repository?jur=EG', priority: '0.90', changefreq: 'daily' },
-  { url: '/repository?jur=QA', priority: '0.90', changefreq: 'daily' },
-  { url: '/repository?jur=KW', priority: '0.90', changefreq: 'daily' },
-  { url: '/repository?jur=JO', priority: '0.90', changefreq: 'daily' },
-  { url: '/repository?jur=US', priority: '0.90', changefreq: 'daily' },
-  { url: '/repository?jur=EU', priority: '0.90', changefreq: 'daily' },
-  { url: '/repository?jur=GB', priority: '0.90', changefreq: 'daily' },
-
   // Static Legal HTML Pages
   { url: '/legal/terms-of-service.html', priority: '0.90', changefreq: 'monthly' },
   { url: '/legal/privacy-policy.html', priority: '0.90', changefreq: 'monthly' },
@@ -81,7 +60,7 @@ ${xmlEntries}
 
   const sitemapPath = path.join(process.cwd(), 'public', 'sitemap.xml');
   fs.writeFileSync(sitemapPath, xmlContent, 'utf-8');
-  console.log(`[SEO] Standard sitemap.xml generated successfully with ${PAGES.length} routes at ${new Date().toISOString()}.`);
+  console.log(`[SEO] Standard sitemap.xml generated successfully with ${PAGES.length} clean canonical routes at ${new Date().toISOString()}.`);
 }
 
 generateSitemap();
