@@ -15,14 +15,14 @@ export interface CrmClientLead {
   contactEmail: string;
   jurisdiction: string;
   flag: string;
-  status: 'New' | 'Warm' | 'Negotiating' | 'Converted' | 'Disqualified';
+  status: 'New' | 'Warm' | 'Cold' | 'Negotiating' | 'Converted' | 'Closed' | 'Disqualified';
   lastContactDate: string;
   estimatedValueUSD: number;
   leadScore: number;
   notesAr: string;
   notesEn: string;
-  lastActivityAr: string;
-  lastActivityEn: string;
+  lastActivityAr?: string;
+  lastActivityEn?: string;
   dispatchedAt?: string;
 }
 
@@ -402,6 +402,8 @@ class CrmService {
       ...lead,
       id: `crm-lead-${Date.now()}-${Math.random().toString(36).substring(7)}`,
       leadScore: lead.leadScore || 95,
+      lastActivityAr: lead.lastActivityAr || 'عميل جديد تمت إضافته بنجاح',
+      lastActivityEn: lead.lastActivityEn || 'New client ingested into CRM pipeline',
     };
     this.leads.unshift(newLead);
     this.saveLeads();
