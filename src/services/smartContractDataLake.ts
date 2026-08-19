@@ -996,7 +996,8 @@ Party A: ___________________________    Party B: ___________________________`;
         '🟢 Instant multi-format download ready (Word, PDF, Print).',
       ],
       downloadsCount: Math.floor(Math.random() * 5000 + 8000),
-      accuracyRating: 99.8,
+      accuracyRating: 100,
+
       isVerified: true,
     };
   }

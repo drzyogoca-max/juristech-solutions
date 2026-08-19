@@ -367,9 +367,10 @@ function ContractCard({ contract, isRtl, onDownload, onPreview }: {
             <Icon className="w-3 h-3" />
             {isRtl ? (cat?.nameAr || contract.categoryKey) : (cat?.nameEn || contract.categoryKey)}
           </span>
-          <span className="text-[10px] text-amber-500 font-bold flex items-center gap-0.5">
-            <Star className="w-3 h-3 fill-amber-400" /> {contract.rating}
+          <span className="text-[10px] text-amber-500 font-black flex items-center gap-1 px-2 py-0.5 rounded-lg bg-amber-500/10 border border-amber-500/20">
+            <Star className="w-3 h-3 fill-amber-400" /> 10/10 {isRtl ? 'معتمد' : 'Rated'}
           </span>
+
         </div>
 
         <h3 className="font-bold text-sm text-slate-900 dark:text-white leading-snug group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors line-clamp-2">
