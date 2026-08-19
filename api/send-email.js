@@ -424,7 +424,7 @@ async function processEmailDispatch(targetEmail, emailSubject, text, html, reply
   if (RESEND_API_KEY) {
     try {
       const resendFrom = EMAIL_FROM.includes('@') ? EMAIL_FROM : 'noreply@juristech.solutions';
-      const resResend = await fetch('https://api.resend.com/emails', {
+      let resResend = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -441,12 +441,34 @@ async function processEmailDispatch(targetEmail, emailSubject, text, html, reply
         }),
       });
 
-      const resData = await resResend.json().catch(() => ({}));
+      let resData = await resResend.json().catch(() => ({}));
+      
+      // Fallback to onboarding@resend.dev if custom domain is unverified
+      if (!resResend.ok && (resData?.message?.includes('not verified') || resData?.statusCode === 403 || resData?.statusCode === 422)) {
+        console.warn('[Resend API] Custom domain unverified, retrying via onboarding@resend.dev...');
+        resResend = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${RESEND_API_KEY}`,
+          },
+          body: JSON.stringify({
+            from: 'JurisTech Solutions <onboarding@resend.dev>',
+            to: [targetEmail],
+            reply_to: REPLY_TO,
+            subject: emailSubject,
+            text: text || 'JurisTech Solutions — Automated Legal Intelligence Platform',
+            html: html || undefined,
+          }),
+        });
+        resData = await resResend.json().catch(() => ({}));
+      }
+
       if (resResend.ok && resData.id) {
         providerSuccess = true;
-        providerMessage = `✅ Sent via Resend API (ID: ${resData.id}) with Admin BCC to ${MANDATORY_ADMIN_COPY}`;
+        providerMessage = `✅ Sent via Resend API (ID: ${resData.id}) with Admin Copy to ${MANDATORY_ADMIN_COPY}`;
       } else {
-        providerError = `Resend API: ${JSON.stringify(resData)}`;
+        providerError = `Resend API Error (${resResend.status}): ${JSON.stringify(resData)}`;
       }
     } catch (e) {
       providerError = `Resend exception: ${e.message}`;
