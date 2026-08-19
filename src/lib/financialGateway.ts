@@ -18,6 +18,7 @@ import { sendEmailNotification } from './emailNotifier';
 import { addAlert } from './alertsManager';
 import { getJuristechSubscribers } from './tenantIsolationEngine';
 import { trackPurchaseSuccess } from './marketingTracker';
+import { dispatchSystemNotification } from '../services/engine-ai';
 
 export const OFFICIAL_BANK_ACCOUNT = {
   bankNameAr: 'بنك البركة',
@@ -326,6 +327,17 @@ export async function activateUserSubscription(params: {
     action_url: '/payment',
   });
 
+  // 4. Dispatch Instant Admin WhatsApp & Email Alert to drzygo.ca@gmail.com
+  dispatchSystemNotification({
+    eventType: 'SUBSCRIPTION_PAID',
+    clientName: name,
+    clientEmail: email,
+    amountUSD: params.amountUSD,
+    planOrService: planName,
+    referenceId: invId,
+    details: `طريقة الدفع: ${params.paymentMethod} — التجميع الرقمي: ${sha256Hash}`,
+  }).catch(() => {});
+
   // 5. Track Purchase Conversion Event (GA4 Enhanced Ecommerce, Meta, LinkedIn)
   trackPurchaseSuccess({
     transactionId: invId,
@@ -337,6 +349,7 @@ export async function activateUserSubscription(params: {
 
   console.log('[Billing Engine] Activated subscription successfully:', subscription);
   return { transaction, subscription };
+
 }
 
 /**

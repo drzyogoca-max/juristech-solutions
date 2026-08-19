@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Building2, Sparkles, Download, Copy, Check, DollarSign, Loader2, Shield } from 'lucide-react';
 import { generateEnterpriseProposal, HighTicketProposal } from '../services/stealth-agents';
 import { exportLegalContractPDF } from '../lib/pdfExporter';
+import { dispatchSystemNotification } from '../services/engine-ai';
 import SEO from '../components/SEO';
 
 export default function B2BProposalPage() {
@@ -32,12 +33,24 @@ export default function B2BProposalPage() {
       }, isRtl);
 
       setProposal(prop);
+
+      // Dispatch real-time WhatsApp & Email alert to Admin (drzygo.ca@gmail.com)
+      dispatchSystemNotification({
+        eventType: 'HIGH_TICKET_PROPOSAL',
+        clientName: companyName,
+        planOrService: `${industry || 'Enterprise B2B'} (${jurisdiction})`,
+        amountUSD: prop.recommendedPrice,
+        referenceId: prop.id,
+        details: `حجم العقود: ${contractVolume} شهرياً — فريق العمل: ${teamSize} مستخدمين`,
+      }).catch(() => {});
+
     } catch (err) {
       console.error('Error generating B2B proposal:', err);
     } finally {
       setLoading(false);
     }
   }
+
 
   function copyProposal() {
     if (!proposal) return;

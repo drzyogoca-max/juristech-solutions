@@ -4,8 +4,10 @@ import { useTranslation } from 'react-i18next';
 import { Video, X, CheckCircle2, Sparkles, ShieldCheck, FileText, Send, Calendar, Clock, Lock, MessageSquare, Loader2, ExternalLink } from 'lucide-react';
 import { callAI } from '../lib/api';
 import { useContract } from '../context/ContractContext';
+import { dispatchSystemNotification } from '../services/engine-ai';
 
 interface LiveMeetingModalProps {
+
   isOpen: boolean;
   onClose: () => void;
 }
@@ -173,12 +175,22 @@ export default function LiveMeetingModal({ isOpen, onClose }: LiveMeetingModalPr
               href={meetingLink}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => setIsJoined(true)}
+              onClick={() => {
+                setIsJoined(true);
+                dispatchSystemNotification({
+                  eventType: 'CONSULTATION_BOOKED',
+                  clientName: localStorage.getItem('juristech_user_name') || 'Corporate Executive',
+                  clientEmail: localStorage.getItem('juristech_user_email') || 'client@corporate.com',
+                  planOrService: `جلسة ${platform.toUpperCase()} (${meetingDate} @ ${meetingTime})`,
+                  details: `الموضوع: ${meetingTopic}`,
+                }).catch(() => {});
+              }}
               className="flex-1 py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black text-xs flex items-center justify-center gap-2 shadow-lg transition-all"
             >
               <ExternalLink className="w-4 h-4" />
               <span>{isRtl ? `الانضمام إلى اجتماع ${platform.toUpperCase()} المباشر` : `Join ${platform.toUpperCase()} Meeting`}</span>
             </a>
+
 
             <button
               onClick={handleGenerateAIMinutes}

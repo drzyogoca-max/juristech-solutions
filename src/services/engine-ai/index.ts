@@ -1,13 +1,15 @@
 import { detectPromptLanguage, enforceLanguageMirroringPrompt, SupportedLanguage } from './languageDetector';
 import { executeEngineAISearch, EngineAISearchResponse, SearchResultItem } from './engineAISearch';
-import { dispatchWhatsAppNotification, WhatsAppEventPayload, TARGET_WHATSAPP_NUMBER } from './whatsappNotifier';
+import { dispatchWhatsAppNotification, dispatchSystemNotification, WhatsAppEventPayload, SystemEventPayload, TARGET_WHATSAPP_NUMBER, OFFICIAL_ADMIN_EMAIL } from './whatsappNotifier';
 
 export {
   detectPromptLanguage,
   enforceLanguageMirroringPrompt,
   executeEngineAISearch,
   dispatchWhatsAppNotification,
+  dispatchSystemNotification,
   TARGET_WHATSAPP_NUMBER,
+  OFFICIAL_ADMIN_EMAIL,
 };
 
 export type {
@@ -15,4 +17,6 @@ export type {
   EngineAISearchResponse,
   SearchResultItem,
   WhatsAppEventPayload,
+  SystemEventPayload,
 };
+
