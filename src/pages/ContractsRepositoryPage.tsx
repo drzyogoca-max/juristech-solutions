@@ -605,14 +605,20 @@ export default function ContractsRepositoryPage() {
     return () => { isMounted = false; };
   }, [searchTerm, isRtl, jurisdiction]);
 
+  const resultsGridSectionRef = useRef<HTMLElement>(null);
+
   const executeUnifiedSearch = useCallback(() => {
     setDebouncedSearch(searchTerm);
     smartContractDataLake
       .searchDataLake(searchTerm || 'عقد', isRtl ? 'ar' : 'en', jurisdiction?.countryCode || 'SA')
       .then((res) => {
         setVectorSearchResult(res);
+        setTimeout(() => {
+          resultsGridSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 120);
       });
   }, [searchTerm, isRtl, jurisdiction]);
+
 
   // Update active template editable content
   useEffect(() => {
@@ -1067,7 +1073,8 @@ export default function ContractsRepositoryPage() {
             </section>
 
             {/* Contracts Cards Grid */}
-            <section>
+            <section ref={resultsGridSectionRef} id="search-results-section" className="scroll-mt-6">
+
               <div className="flex items-center justify-between mb-5 flex-wrap gap-3">
                 <div>
                   <h2 className="text-base font-black text-slate-900 dark:text-white">
