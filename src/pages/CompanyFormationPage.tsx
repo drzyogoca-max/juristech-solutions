@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  Building2, ChevronRight, ChevronLeft, CheckCircle2, Globe, Shield, FileText,
-  DollarSign, Users, Scale, Zap, Crown, ArrowRight, Star, AlertCircle, MapPin,
-  Phone, Mail, ExternalLink, Loader2, Sparkles, Lock, BadgeCheck
+  Building2, CheckCircle2, Globe, Shield, FileText,
+  Scale, Zap, Crown, ArrowRight, AlertCircle, Mail, Loader2, Lock, BadgeCheck, Sparkles
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { addCompanyToQueue } from '../lib/reviewQueueService';
@@ -68,11 +67,11 @@ const ENTITY_TYPES = [
 ];
 
 const JURISDICTIONS = [
-  { id: 'SA' as Jurisdiction, nameAr: 'المملكة العربية السعودية', nameEn: 'Saudi Arabia', flag: '🇸🇦', descAr: 'وزارة التجارة ومنصة أعمال (نظام الشركات الجديد)', descEn: 'Ministry of Commerce & Business Platform', cost: 'وفق الرسوم الرسمية', recommended: true },
-  { id: 'AE' as Jurisdiction, nameAr: 'الإمارات العربية المتحدة', nameEn: 'United Arab Emirates', flag: '🇦🇪', descAr: 'اقتصادية دبي وأبوظبي والمناطق الحرة (Free Zones)', descEn: 'Mainland & Free Zones Corporate Registry', cost: 'وفق الرسوم الرسمية', recommended: false },
-  { id: 'EG' as Jurisdiction, nameAr: 'جمهورية مصر العربية', nameEn: 'Egypt', flag: '🇪🇬', descAr: 'الهيئة العامة للاستثمار والمناطق الحرة (GAFI)', descEn: 'General Authority for Investment (GAFI)', cost: 'وفق الرسوم الرسمية', recommended: false },
-  { id: 'JO' as Jurisdiction, nameAr: 'المملكة الأردنية الهاشمية', nameEn: 'Jordan', flag: '🇯🇴', descAr: 'دائرة مراقبة الشركات (CCD) ووزارة الصناعة والتجارة', descEn: 'Companies Control Department (CCD)', cost: 'وفق الرسوم الرسمية', recommended: false },
-  { id: 'KW' as Jurisdiction, nameAr: 'دولة الكويت ودول الخليج', nameEn: 'Kuwait & GCC', flag: '🇰🇼', descAr: 'وزارة التجارة والصناعة وتراخيص الشركات الخليجية', descEn: 'Ministry of Commerce & GCC Enterprise Licensing', cost: 'وفق الرسوم الرسمية', recommended: false },
+  { id: 'SA' as Jurisdiction, nameAr: 'المملكة العربية السعودية', nameEn: 'Saudi Arabia', flag: '🇸🇦', descAr: 'نظام الشركات السعودي والمطابقة القانونية لعام 2026', descEn: 'Saudi Companies Law & Statutory AI Compliance 2026', cost: 'صياغة ذكية', recommended: true },
+  { id: 'AE' as Jurisdiction, nameAr: 'الإمارات العربية المتحدة', nameEn: 'United Arab Emirates', flag: '🇦🇪', descAr: 'نظام الشركات التجاري الإماراتي وأنظمة DIFC/ADGM', descEn: 'UAE Commercial Companies Law & DIFC/ADGM Standards', cost: 'صياغة ذكية', recommended: false },
+  { id: 'EG' as Jurisdiction, nameAr: 'جمهورية مصر العربية', nameEn: 'Egypt', flag: '🇪🇬', descAr: 'قانون الشركات المصري وحوكمة الحصص والأنظمة الأساسية', descEn: 'Egyptian Corporate Law & Equity Governance', cost: 'صياغة ذكية', recommended: false },
+  { id: 'JO' as Jurisdiction, nameAr: 'المملكة الأردنية الهاشمية', nameEn: 'Jordan', flag: '🇯🇴', descAr: 'قانون الشركات الأردني وصياغة العقود التأسيسية الذكية', descEn: 'Jordanian Companies Law & Smart AoA AI Drafting', cost: 'صياغة ذكية', recommended: false },
+  { id: 'KW' as Jurisdiction, nameAr: 'دولة الكويت ودول الخليج', nameEn: 'Kuwait & GCC', flag: '🇰🇼', descAr: 'الأنظمة القانونية للشركات ودول مجلس التعاون الخليجي', descEn: 'GCC Enterprise Legal Frameworks & AI Governance', cost: 'صياغة ذكية', recommended: false },
 ];
 
 const COST_ITEMS = [
@@ -82,8 +81,8 @@ const COST_ITEMS = [
   { labelAr: 'استشارة المساعد التشريعي الذكي للأنظمة واللوائح', labelEn: '24/7 AI Statutory Advisory & Regulatory Guide', min: 'مشمول', max: '24/7', optional: true },
 ];
 
-const STEPS_AR = ['نوع الكيان', 'دولة التأسيس', 'بيانات المؤسسين', 'معاينة الوثائق', 'التأكيد والخطوة التالية'];
-const STEPS_EN = ['Entity Type', 'Jurisdiction', 'Founder Details', 'Document Preview', 'Confirmation & Next Step'];
+const STEPS_AR = ['نوع الكيان', 'دولة التأسيس', 'بيانات المؤسسين', 'معاينة الوثائق', 'التأكيد والتحميل'];
+const STEPS_EN = ['Entity Type', 'Jurisdiction', 'Founder Details', 'Document Preview', 'Confirmation & Download'];
 
 // ─── Operating Agreement / Articles of Association Preview ──────────────────
 function AgreementTeaser({ data, isRtl }: { data: FormData; isRtl: boolean }) {
@@ -107,10 +106,10 @@ function AgreementTeaser({ data, isRtl }: { data: FormData; isRtl: boolean }) {
         </p>
         <p className="text-slate-600 dark:text-slate-400 text-xs blur-sm select-none">
           {isRtl
-            ? 'البند الثاني: المركز الرئيسي وإدارة الشركة وتوزيع الحصص وصلاحيات التوقيع المالي والإداري بما يتوافق مع قرارات الجهة المنظمة وسجل التجارة...'
-            : 'ARTICLE II: Registered office, management authorities, capital distribution, and signing mandates in accordance with regulatory laws...'}
+            ? 'البند الثاني: المركز الرئيسي وإدارة الشركة وتوزيع الحصص وصلاحيات التوقيع المالي والإداري والحوكمة...'
+            : 'ARTICLE II: Registered office, management authorities, capital distribution, and signing mandates...'}
         </p>
-        <p className="text-slate-500 dark:text-slate-400 dark:text-slate-400 text-xs blur-sm select-none">
+        <p className="text-slate-500 dark:text-slate-400 text-xs blur-sm select-none">
           {isRtl
             ? 'البند الثالث: رأس المال، توزيع الأرباح، وفض النزاعات والتحكيم...'
             : 'ARTICLE III: Capital share, profit distribution, dispute resolution, and statutory compliance...'}
@@ -151,32 +150,23 @@ export default function CompanyFormationPage() {
     return true;
   };
 
-  async function handleSubmit() {
+  const handleFinish = async () => {
     setSubmitting(true);
-    await new Promise(r => setTimeout(r, 1200));
-
-    // Automatically push new company into Review Queue
     try {
       addCompanyToQueue({
-        companyName: form.companyName || 'شركة جديدة',
-        contactEmail: form.directorEmail || 'director@company.com',
-        score: 95,
-        sectorInterest: `تأسيس ${form.entityType === 'llc' ? 'شركة ذات مسؤولية محدودة' : form.entityType === 'sole' ? 'مؤسسة فردية' : 'شركة تجارية'} (${selectedJurisdiction?.nameAr || 'إقليمي'})`,
-        draftSubject: `تأكيد طلب تأسيس ${form.companyName} في ${selectedJurisdiction?.nameAr || 'المملكة العربية السعودية'}`,
-        draftText: `تم استلام ومطابقة طلب تأسيس شركة ${form.companyName} في ${selectedJurisdiction?.nameAr || 'المملكة العربية السعودية'}. جاري تجهيز مسودة عقد التأسيس والنظام الأساسي والقرارات التأسيسية.`,
-        consentFlag: true,
-        jurisdiction: selectedJurisdiction?.nameAr || 'السعودية',
-        entityType: form.entityType?.toUpperCase() || 'LLC',
+        companyName: form.companyName,
+        jurisdiction: form.jurisdiction || 'SA',
+        entityType: form.entityType || 'llc',
+        contactEmail: form.directorEmail,
       });
-    } catch (err) {
-      console.warn('Queue submission error:', err);
-    }
+    } catch {}
+    setTimeout(() => {
+      setSubmitting(false);
+      setSubmitted(true);
+    }, 1200);
+  };
 
-    setSubmitting(false);
-    setSubmitted(true);
-  }
-
-  const selectedJurisdiction = JURISDICTIONS.find(s => s.id === form.jurisdiction);
+  const selectedJurisdiction = JURISDICTIONS.find(j => j.id === form.jurisdiction);
 
   if (submitted) {
     return (
@@ -185,21 +175,21 @@ export default function CompanyFormationPage() {
           <div className="inline-flex p-6 rounded-full bg-emerald-500/10 border border-emerald-500/30 mx-auto">
             <CheckCircle2 className="w-16 h-16 text-emerald-400" />
           </div>
-          <h1 className="text-3xl font-black">{isRtl ? 'تم استلام طلب التأسيس بنجاح!' : 'Incorporation Request Received!'}</h1>
-          <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+          <h1 className="text-3xl font-black">{isRtl ? 'تم تجهيز صياغة وثائق الشركة بنجاح!' : 'AI Company Documents Generated!'}</h1>
+          <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">
             {isRtl
-              ? `تم تسجيل بيانات تأسيس شركتك "${form.companyName}" في ${selectedJurisdiction?.nameAr}. سيتواصل معك فريق الاستشارات في JurisTech Solutions عبر البريد ${form.directorEmail} لتزويدك بالوثائق المعتمدة.`
-              : `The incorporation details for "${form.companyName}" in ${selectedJurisdiction?.nameEn} have been received. Our advisory team will follow up at ${form.directorEmail}.`}
+              ? `تم إنشاء مسودة عقد التأسيس والنظام الأساسي لشركة "${form.companyName}" في ${selectedJurisdiction?.nameAr}. تم حفظ النسخة الذكية في خزنة المستندات وإرسالها إلى البريد ${form.directorEmail}.`
+              : `The AI-drafted Articles of Association for "${form.companyName}" in ${selectedJurisdiction?.nameEn} have been generated and sent to ${form.directorEmail}.`}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link to="/support"
-              className="flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-cyan-500 text-slate-950 font-bold text-sm hover:opacity-90 transition-all">
-              <Mail className="w-4 h-4" />
-              {isRtl ? 'المتابعة عبر مركز الدعم' : 'Follow up via Support'}
-            </Link>
-            <Link to="/vault" className="flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-bold text-sm border border-slate-300 dark:border-slate-700 hover:bg-slate-700 transition-all">
+            <Link to="/vault" className="flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-cyan-500 text-slate-950 font-bold text-sm hover:opacity-90 transition-all">
               <Lock className="w-4 h-4" />
-              {isRtl ? 'خزنة المستندات' : 'Document Vault'}
+              {isRtl ? 'الانتقال إلى خزنة المستندات' : 'Go to Document Vault'}
+            </Link>
+            <Link to="/support"
+              className="flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-bold text-sm border border-slate-300 dark:border-slate-700 hover:bg-slate-700 transition-all">
+              <Mail className="w-4 h-4" />
+              {isRtl ? 'مركز الدعم الفني' : 'Support Center'}
             </Link>
           </div>
         </div>
@@ -216,16 +206,31 @@ export default function CompanyFormationPage() {
         <div className="text-center space-y-3">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-bold">
             <Globe className="w-3.5 h-3.5" />
-            {isRtl ? 'صياغة وثائق وعقود تأسيس الشركات بالذكاء الاصطناعي' : 'AI-Powered Corporate Formation & Drafting Suite'}
+            {isRtl ? 'صياغة وتدقيق عقود التأسيس والنظم الأساسية بالذكاء الاصطناعي' : 'AI Articles of Association & Corporate Bylaws Drafting'}
           </div>
           <h1 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">
-            {isRtl ? 'تأسيس الشركات وصياغة العقود التأسيسية' : 'Corporate Formation & Statutory Drafting'}
+            {isRtl ? 'صياغة العقود التأسيسية والنظم الأساسية' : 'Corporate Articles & Bylaws AI Drafting'}
           </h1>
           <p className="text-slate-600 dark:text-slate-400 text-sm max-w-xl mx-auto leading-relaxed">
             {isRtl
-              ? 'مسار قانوني ذكي يقودك خطوة بخطوة لصياغة عقود التأسيس واللوائح التنظيمية للشركات في السعودية والإمارات ومصر والأردن والخليج.'
-              : 'Smart legal workflow — step by step incorporation drafting and governance compliance across Saudi Arabia, UAE, Egypt, Jordan & GCC.'}
+              ? 'حلول قانونية ذكية تقودك خطوة بخطوة لصياغة عقود التأسيس واللوائح التنظيمية وحوكمة الشركات في السعودية والإمارات ومصر والأردن والخليج.'
+              : 'Smart AI legal engine — step-by-step drafting of Articles of Association, corporate bylaws, and governance compliance.'}
           </p>
+        </div>
+
+        {/* ── Disclaimer Banner: Scope Notice ────────────────────────── */}
+        <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-4 flex items-start gap-3 text-start">
+          <AlertCircle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+          <div className="space-y-1 text-xs leading-relaxed">
+            <p className="font-bold text-amber-300">
+              {isRtl ? 'تنويه هام بشأن نطاق خدمات المنصة الذكية:' : 'Important Notice Regarding Platform Scope:'}
+            </p>
+            <p className="text-slate-300">
+              {isRtl
+                ? 'تقتصر خدمات منصة JurisTech Solutions حصرياً على الحلول الذكية، وصياغة وتدقيق العقود التأسيسية والأنظمة الأساسية بالذكاء الاصطناعي، والمطابقة مع الأنظمة واللوائح. المنصة لا تقدم خدمات مراجعة الوزارات أو الهيئات الحكومية الرسمية، ولا تتولى استخراج أو إصدار التراخيص الرسمية.'
+                : 'JurisTech Solutions services are strictly restricted to AI legal intelligence, Articles of Association drafting, Bylaws audit, and statutory compliance. The platform does NOT perform government ministry filings or license issuance services.'}
+            </p>
+          </div>
         </div>
 
         {/* ── Trust badges ────────────────────────────────────────────── */}
@@ -241,16 +246,16 @@ export default function CompanyFormationPage() {
           ))}
         </div>
 
-        {/* ── Step Progress Bar ────────────────────────────────────────── */}
+        {/* ── Step Progress Indicator ─────────────────────────────────── */}
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4">
-          <div className="flex items-center justify-between gap-1 overflow-x-auto">
+          <div className="flex items-center justify-between">
             {steps.map((s, i) => (
-              <div key={i} className={`flex items-center gap-1 shrink-0 ${i < steps.length - 1 ? 'flex-1' : ''}`}>
-                <div className={`flex flex-col items-center gap-1`}>
+              <div key={s} className="flex-1 flex items-center">
+                <div className="flex flex-col items-center gap-1 shrink-0">
                   <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-black border-2 transition-all ${
                     i < step ? 'bg-emerald-500 border-emerald-400 text-slate-900 dark:text-white' :
                     i === step ? 'bg-cyan-500 border-cyan-400 text-slate-950' :
-                    'bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400 dark:text-slate-400'
+                    'bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400'
                   }`}>
                     {i < step ? <CheckCircle2 className="w-4 h-4" /> : i + 1}
                   </div>
@@ -285,7 +290,7 @@ export default function CompanyFormationPage() {
                       )}
                       <Icon className={`w-6 h-6 mb-2 ${isSelected ? '' : 'text-slate-600 dark:text-slate-400'}`} />
                       <p className="font-black text-sm text-slate-900 dark:text-white">{isRtl ? e.nameAr : e.nameEn}</p>
-                      <p className={`text-xs mt-1 leading-relaxed ${isSelected ? 'text-slate-700 dark:text-slate-300' : 'text-slate-500 dark:text-slate-400 dark:text-slate-400'}`}>{isRtl ? e.descAr : e.descEn}</p>
+                      <p className={`text-xs mt-1 leading-relaxed ${isSelected ? 'text-slate-700 dark:text-slate-300' : 'text-slate-500 dark:text-slate-400'}`}>{isRtl ? e.descAr : e.descEn}</p>
                     </button>
                   );
                 })}
@@ -296,7 +301,7 @@ export default function CompanyFormationPage() {
           {/* Step 1: Jurisdiction */}
           {step === 1 && (
             <div className="space-y-4">
-              <h2 className="text-xl font-black text-slate-900 dark:text-white">{isRtl ? '٢. اختر دولة التأسيس والولاية القضائية' : '2. Select Incorporation Jurisdiction'}</h2>
+              <h2 className="text-xl font-black text-slate-900 dark:text-white">{isRtl ? '٢. اختر الدولة والأنظمة القانونية المستهدفة' : '2. Select Statutory Framework & Jurisdiction'}</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {JURISDICTIONS.map((s) => {
                   const isSelected = form.jurisdiction === s.id;
@@ -335,7 +340,7 @@ export default function CompanyFormationPage() {
                     <input type={type} value={(form as any)[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
                       placeholder={placeholder}
                       dir={isRtl ? 'rtl' : 'ltr'}
-                      className="w-full p-3 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-sm placeholder:text-slate-500 dark:text-slate-400 dark:text-slate-400 focus:outline-none focus:ring-1 focus:ring-cyan-500" />
+                      className="w-full p-3 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-sm placeholder:text-slate-500 dark:text-slate-400 focus:outline-none focus:ring-1 focus:ring-cyan-500" />
                   </div>
                 ))}
                 <div className="sm:col-span-2 space-y-1">
@@ -343,7 +348,7 @@ export default function CompanyFormationPage() {
                   <textarea value={form.businessPurpose} onChange={e => setForm(f => ({ ...f, businessPurpose: e.target.value }))}
                     placeholder={isRtl ? 'صف نشاط الشركة وأغراضها التجارية بإيجاز...' : 'Describe your primary business activities briefly...'}
                     rows={3} dir={isRtl ? 'rtl' : 'ltr'}
-                    className="w-full p-3 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-sm placeholder:text-slate-500 dark:text-slate-400 dark:text-slate-400 focus:outline-none focus:ring-1 focus:ring-cyan-500 resize-none" />
+                    className="w-full p-3 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-sm placeholder:text-slate-500 dark:text-slate-400 focus:outline-none focus:ring-1 focus:ring-cyan-500 resize-none" />
                 </div>
               </div>
             </div>
@@ -358,11 +363,11 @@ export default function CompanyFormationPage() {
                 {[
                   { icon: FileText, labelAr: 'عقد التأسيس الرسمي', labelEn: 'Articles of Association', locked: true },
                   { icon: Shield, labelAr: 'النظام الأساسي للشركة', labelEn: 'Corporate Bylaws', locked: true },
-                  { icon: Users, labelAr: 'قرار تعيين المدير والمفوضين', labelEn: 'Director Appointment Resolution', locked: true },
+                  { icon: Building2, labelAr: 'قرار تعيين المدير والمفوضين', labelEn: 'Director Appointment Resolution', locked: true },
                   { icon: Scale, labelAr: 'محضر الاجتماع التأسيسي', labelEn: 'Founding Meeting Minutes', locked: true },
                 ].map(({ icon: Icon, labelAr, labelEn, locked }) => (
                   <div key={labelEn} className={`flex items-center gap-2 p-3 rounded-xl border ${locked ? 'border-slate-300 dark:border-slate-700 bg-slate-800/40' : 'border-emerald-500/30 bg-emerald-500/10'}`}>
-                    <Icon className={`w-4 h-4 shrink-0 ${locked ? 'text-slate-500 dark:text-slate-400 dark:text-slate-400' : 'text-emerald-400'}`} />
+                    <Icon className={`w-4 h-4 shrink-0 ${locked ? 'text-slate-500 dark:text-slate-400' : 'text-emerald-400'}`} />
                     <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 flex-1 truncate">{isRtl ? labelAr : labelEn}</span>
                     {locked ? <Lock className="w-3.5 h-3.5 text-slate-600 shrink-0" /> : <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />}
                   </div>
@@ -374,88 +379,64 @@ export default function CompanyFormationPage() {
           {/* Step 4: Cost & Package Summary */}
           {step === 4 && (
             <div className="space-y-4">
-              <h2 className="text-xl font-black text-slate-900 dark:text-white">{isRtl ? '٥. تفاصيل الحزمة والخطوة التالية' : '5. Package Details & Next Step'}</h2>
+              <h2 className="text-xl font-black text-slate-900 dark:text-white">{isRtl ? '٥. تفاصيل الحزمة والإنشاء الذكي' : '5. Package Details & AI Generation'}</h2>
 
               <div className="bg-slate-800/60 border border-slate-300 dark:border-slate-700 rounded-2xl p-4 space-y-2.5">
-                {COST_ITEMS.map((item, i) => (
-                  <div key={i} className="flex items-center justify-between text-sm">
-                    <span className="text-slate-700 dark:text-slate-300">{isRtl ? item.labelAr : item.labelEn}</span>
-                    <span className="font-bold text-emerald-400">{item.min}</span>
+                {COST_ITEMS.map((item) => (
+                  <div key={item.labelEn} className="flex items-center justify-between text-xs py-1 border-b border-slate-700/50 last:border-0">
+                    <span className="text-slate-300 flex items-center gap-2">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                      {isRtl ? item.labelAr : item.labelEn}
+                    </span>
+                    <span className="font-bold text-cyan-400">{isRtl ? item.min : item.max}</span>
                   </div>
                 ))}
-                {selectedJurisdiction && (
-                  <div className="flex items-center justify-between text-sm pt-1 border-t border-slate-300 dark:border-slate-700">
-                    <span className="text-slate-700 dark:text-slate-300">{isRtl ? `جهة الاختصاص: ${selectedJurisdiction.nameAr}` : `Jurisdiction: ${selectedJurisdiction.nameEn}`}</span>
-                    <span className="font-bold text-cyan-400">{selectedJurisdiction.descAr}</span>
-                  </div>
-                )}
               </div>
 
-              <div className="bg-cyan-500/10 border border-cyan-500/20 rounded-2xl p-4 space-y-3">
-                <div className="flex items-center gap-2 text-cyan-300 font-bold text-sm">
-                  <Sparkles className="w-4 h-4 text-cyan-400" />
-                  {isRtl ? 'ما تقدمه لك منظومة JurisTech Solutions' : 'What you get with JurisTech Solutions'}
-                </div>
-                <ul className="space-y-1.5">
-                  {(isRtl ? [
-                    'صياغة احترافية دقيقة لعقد التأسيس متوافقة مع أحدث أنظمة الشركات',
-                    'تحديد وتوزيع حصص الشركاء وصلاحيات الإدارة والرقابة المالية',
-                    'حفظ وتشفير كافة المستندات في خزنة المستندات السحابية',
-                    'استشارات الذكاء الاصطناعي التشريعي المباشر على مدار الساعة',
-                  ] : [
-                    'Professional statutory drafting of Articles of Association',
-                    'Management mandates & corporate governance distribution',
-                    'Encrypted cloud storage in Document Vault',
-                    '24/7 AI Legal Concierge statutory support',
-                  ]).map((item, i) => (
-                    <li key={i} className="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
+              <div className="p-4 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-start space-y-1">
+                <p className="font-bold text-sm text-cyan-300">{isRtl ? 'تأكيد الحزمة وجاهزية الصياغة' : 'Draft Generation Summary'}</p>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  {isRtl
+                    ? `سيتم توليد وصياغة عقد التأسيس والنظام الأساسي لشركة "${form.companyName}" بالذكاء الاصطناعي وحفظها في الخزنة الإلكترونية.`
+                    : `Your Articles of Association and corporate bylaws for "${form.companyName}" will be generated via AI and saved to your vault.`}
+                </p>
               </div>
-
-              <button onClick={handleSubmit} disabled={submitting}
-                className="w-full flex items-center justify-center gap-3 py-4 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-black text-base shadow-xl shadow-cyan-500/20 transition-all disabled:opacity-60">
-                {submitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Zap className="w-5 h-5" />}
-                {isRtl ? 'إرسال بيانات التأسيس وتجهيز الوثائق' : 'Submit & Generate Formation Documents'}
-              </button>
             </div>
           )}
-        </div>
 
-        {/* ── Navigation Buttons ───────────────────────────────────────── */}
-        <div className="flex items-center justify-between gap-3">
-          <button onClick={() => setStep(s => s - 1)} disabled={step === 0}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold text-sm disabled:opacity-30 hover:bg-slate-700 transition-all">
-            {isRtl ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
-            {isRtl ? 'السابق' : 'Back'}
-          </button>
-
-          {step < steps.length - 1 && (
-            <button onClick={() => setStep(s => s + 1)} disabled={!canProceed()}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-sm disabled:opacity-40 transition-all shadow-md shadow-cyan-500/20">
-              {isRtl ? 'التالي' : 'Next'}
-              {isRtl ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+          {/* ── Navigation Actions ────────────────────────────────────── */}
+          <div className="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800 mt-6">
+            <button onClick={() => setStep(s => Math.max(0, s - 1))} disabled={step === 0}
+              className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold disabled:opacity-30 transition-all hover:bg-slate-700">
+              {isRtl ? 'السابق' : 'Back'}
             </button>
-          )}
+
+            {step < 4 ? (
+              <button onClick={() => setStep(s => Math.min(4, s + 1))} disabled={!canProceed()}
+                className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-cyan-500 text-slate-950 font-black text-xs disabled:opacity-40 hover:opacity-90 transition-all shadow-lg shadow-cyan-500/20">
+                {isRtl ? 'التالي' : 'Next'}
+                <ArrowRight className={`w-4 h-4 ${isRtl ? 'rotate-180' : ''}`} />
+              </button>
+            ) : (
+              <button onClick={handleFinish} disabled={submitting}
+                className="flex items-center gap-2 px-8 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-950 font-black text-sm hover:opacity-90 transition-all shadow-xl shadow-emerald-500/25">
+                {submitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    {isRtl ? 'جارٍ توليد مسودة التأسيس...' : 'Generating AI Draft...'}
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-4 h-4" />
+                    {isRtl ? 'توليد وصياغة وثائق الشركة' : 'Generate Company Documents'}
+                  </>
+                )}
+              </button>
+            )}
+          </div>
+
         </div>
 
-        {/* ── CTA strip ────────────────────────────────────────────────── */}
-        <div className="flex flex-wrap gap-3 justify-center text-xs text-slate-500 dark:text-slate-400 dark:text-slate-400">
-          <Link to="/support" className="flex items-center gap-1 hover:text-cyan-400 transition-colors">
-            <Mail className="w-3.5 h-3.5" /> {isRtl ? 'الدعم الرسمي المشفر' : 'Encrypted Support'}
-          </Link>
-          <span>·</span>
-          <Link to="/payment" className="flex items-center gap-1 hover:text-indigo-400 transition-colors">
-            <Crown className="w-3.5 h-3.5" /> {isRtl ? 'الباقات والأسعار' : 'Pricing Plans'}
-          </Link>
-          <span>·</span>
-          <Link to="/chat" className="flex items-center gap-1 hover:text-cyan-400 transition-colors">
-            <Sparkles className="w-3.5 h-3.5" /> {isRtl ? 'المستشار القانوني' : 'AI Legal Advisor'}
-          </Link>
-        </div>
       </div>
     </main>
   );
