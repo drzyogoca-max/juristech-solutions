@@ -143,6 +143,8 @@ export default function CrmClientManagerModal({ isOpen, onClose }: CrmClientMana
       leadScore: 88,
       notesAr: newRequirements || 'عميل جديد تم إدخاله للأتمتة الفورية',
       notesEn: newRequirements || 'New client added for instant autonomous ingestion',
+      lastActivityAr: 'عميل جديد تمت إضافته في المنظومة',
+      lastActivityEn: 'New client added to the CRM pipeline',
     });
 
     setLeads([...crmService.getLeads()]);
@@ -171,11 +173,11 @@ export default function CrmClientManagerModal({ isOpen, onClose }: CrmClientMana
     switch (status) {
       case 'Warm':
         return 'bg-amber-500/20 text-amber-300 border-amber-500/40';
-      case 'Cold':
+      case 'New':
         return 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40';
       case 'Negotiating':
         return 'bg-indigo-500/20 text-indigo-300 border-indigo-500/40';
-      case 'Closed':
+      case 'Disqualified':
         return 'bg-purple-500/20 text-purple-300 border-purple-500/40';
       case 'Converted':
         return 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40';
