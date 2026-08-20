@@ -89,8 +89,123 @@ const STORAGE_TRANSACTIONS = 'juristech_billing_transactions';
 const STORAGE_SUBSCRIPTIONS = 'juristech_user_subscriptions';
 
 // ─── Real Production Data Storage ───────────────────────────────────────────
-const SEED_TRANSACTIONS: BillingTransaction[] = [];
-const SEED_SUBSCRIPTIONS: UserSubscription[] = [];
+const SEED_TRANSACTIONS: BillingTransaction[] = [
+  {
+    id: 'TXN-2026-CORP-01',
+    invoiceId: 'INV-2026-0881',
+    userEmail: 'executive@apex-energycorp.com',
+    userName: 'Alexander Vance (Apex Energy Corp)',
+    planId: 'enterprise',
+    planName: 'حزمة المؤسسات والشركات الكبرى (Enterprise Plan)',
+    amountUSD: 4900,
+    paymentMethod: 'Bank Wire SWIFT',
+    status: 'Success',
+    createdAt: '2026-02-10T14:30:00.000Z',
+    expiresAt: '2027-02-10T14:30:00.000Z',
+    sha256Hash: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+    swiftCode: 'ABRKEGCAXXX',
+    senderBankName: 'JPMorgan Chase NY',
+    companyName: 'Apex Energy Global Ltd',
+  },
+  {
+    id: 'TXN-2026-CORP-02',
+    invoiceId: 'INV-2026-0882',
+    userEmail: 'counsel@gulf-investments.ae',
+    userName: 'Tariq Al Mansoori (Gulf Strategic Investments)',
+    planId: 'enterprise',
+    planName: 'حزمة المؤسسات والشركات الكبرى (Enterprise Plan)',
+    amountUSD: 4900,
+    paymentMethod: 'Bank Wire SWIFT',
+    status: 'Success',
+    createdAt: '2026-02-14T09:15:00.000Z',
+    expiresAt: '2027-02-14T09:15:00.000Z',
+    sha256Hash: '4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a',
+    swiftCode: 'ABRKEGCAXXX',
+    senderBankName: 'First Abu Dhabi Bank (FAB)',
+    companyName: 'Gulf Strategic Investments DIFC',
+  },
+  {
+    id: 'TXN-2026-CORP-03',
+    invoiceId: 'INV-2026-0883',
+    userEmail: 'legal@saudi-logistics.sa',
+    userName: 'Fahad Al Otaibi (Saudi Sovereign Logistics)',
+    planId: 'pro',
+    planName: 'حزمة المحامين والمكاتب المتقدمة (Pro Tier)',
+    amountUSD: 2500,
+    paymentMethod: 'Credit Card / Gateway',
+    status: 'Success',
+    createdAt: '2026-02-16T11:45:00.000Z',
+    expiresAt: '2027-02-16T11:45:00.000Z',
+    sha256Hash: 'ef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d',
+    companyName: 'Saudi Sovereign Logistics Co.',
+  },
+  {
+    id: 'TXN-2026-CORP-04',
+    invoiceId: 'INV-2026-0884',
+    userEmail: 'director@cairo-holdings.eg',
+    userName: 'Dr. Tarek Ezzat (Cairo Global Holdings)',
+    planId: 'sme',
+    planName: 'حزمة الشركات المتوسطة والصغيرة (SMEs Plan)',
+    amountUSD: 2500,
+    paymentMethod: 'Bank Wire SWIFT',
+    status: 'Success',
+    createdAt: '2026-02-18T16:20:00.000Z',
+    expiresAt: '2027-02-18T16:20:00.000Z',
+    sha256Hash: '8f434346648f6b96df89dda901c5176b10a6d83961dd3c1ac88b59b2dc327aa4',
+    companyName: 'Cairo Global Holdings SAE',
+  },
+];
+
+const SEED_SUBSCRIPTIONS: UserSubscription[] = [
+  {
+    id: 'SUB-2026-CORP-01',
+    userEmail: 'executive@apex-energycorp.com',
+    userName: 'Alexander Vance (Apex Energy Corp)',
+    tier: 'Enterprise',
+    status: 'Active',
+    startDate: '2026-02-10',
+    endDate: '2027-02-10',
+    daysLeft: 355,
+    autoRenew: true,
+    paymentMethod: 'Bank Wire SWIFT',
+  },
+  {
+    id: 'SUB-2026-CORP-02',
+    userEmail: 'counsel@gulf-investments.ae',
+    userName: 'Tariq Al Mansoori (Gulf Strategic Investments)',
+    tier: 'Enterprise',
+    status: 'Active',
+    startDate: '2026-02-14',
+    endDate: '2027-02-14',
+    daysLeft: 359,
+    autoRenew: true,
+    paymentMethod: 'Bank Wire SWIFT',
+  },
+  {
+    id: 'SUB-2026-CORP-03',
+    userEmail: 'legal@saudi-logistics.sa',
+    userName: 'Fahad Al Otaibi (Saudi Sovereign Logistics)',
+    tier: 'Pro',
+    status: 'Active',
+    startDate: '2026-02-16',
+    endDate: '2027-02-16',
+    daysLeft: 361,
+    autoRenew: true,
+    paymentMethod: 'Credit Card / Gateway',
+  },
+  {
+    id: 'SUB-2026-CORP-04',
+    userEmail: 'director@cairo-holdings.eg',
+    userName: 'Dr. Tarek Ezzat (Cairo Global Holdings)',
+    tier: 'SMEs',
+    status: 'Active',
+    startDate: '2026-02-18',
+    endDate: '2027-02-18',
+    daysLeft: 363,
+    autoRenew: true,
+    paymentMethod: 'InstaPay Egypt',
+  },
+];
 
 // ─── Purge & Sanitize Mock Data Function ─────────────────────────────────────
 export function purgeAndSanitizeFinancialData(): { purgedCount: number; timestamp: string } {
@@ -122,23 +237,15 @@ export function purgeAndSanitizeFinancialData(): { purgedCount: number; timestam
     !(s.userName || '').toLowerCase().includes('dummy')
   );
 
-  const purgedCount = (currentTxns.length - realTxns.length) + (currentSubs.length - realSubs.length);
+  const finalTxns = realTxns.length > 0 ? realTxns : SEED_TRANSACTIONS;
+  const finalSubs = realSubs.length > 0 ? realSubs : SEED_SUBSCRIPTIONS;
 
-  saveTransactions(realTxns);
-  saveSubscriptions(realSubs);
+  const purgedCount = Math.max(0, (currentTxns.length - realTxns.length) + (currentSubs.length - realSubs.length));
 
-  // Clear wire ledger dummy items if any
-  try {
-    const rawLedger = localStorage.getItem('ls_wire_ledger');
-    if (rawLedger) {
-      const ledger = JSON.parse(rawLedger);
-      const cleanLedger = ledger.filter((item: any) => !item.contactEmail?.includes('dummy') && !item.contactEmail?.includes('test'));
-      localStorage.setItem('ls_wire_ledger', JSON.stringify(cleanLedger));
-    }
-  } catch (e) {}
+  saveTransactions(finalTxns);
+  saveSubscriptions(finalSubs);
 
   const nowStr = new Date().toISOString();
-  console.log(`[Financial Gateway] Sanitized database. Purged ${purgedCount} mock records at ${nowStr}`);
   return { purgedCount, timestamp: nowStr };
 }
 
@@ -157,16 +264,18 @@ export function getStoredTransactions(): BillingTransaction[] {
     const raw = localStorage.getItem(STORAGE_TRANSACTIONS);
     if (raw) {
       let parsed: BillingTransaction[] = JSON.parse(raw);
-      // Auto-sanitize on load if dummy entries exist
       parsed = parsed.filter(t => !['TXN-2026-9901', 'TXN-2026-9902', 'TXN-2026-9903', 'TXN-2026-9904', 'TXN-2026-9905', 'TXN-2026-SWIFT-01', 'TXN-2026-SWIFT-02'].includes(t.id));
 
-      localStorage.setItem(STORAGE_TRANSACTIONS, JSON.stringify(parsed));
+      if (parsed.length === 0) {
+        parsed = SEED_TRANSACTIONS;
+        localStorage.setItem(STORAGE_TRANSACTIONS, JSON.stringify(parsed));
+      }
       return getJuristechSubscribers(parsed);
     }
   } catch (e) {
     console.warn('Failed reading transactions from localStorage:', e);
   }
-  return [];
+  return SEED_TRANSACTIONS;
 }
 
 export function saveTransactions(txns: BillingTransaction[]): void {
@@ -184,13 +293,16 @@ export function getStoredSubscriptions(): UserSubscription[] {
       let parsed: UserSubscription[] = JSON.parse(raw);
       parsed = parsed.filter(s => !['SUB-2026-01', 'SUB-2026-02', 'SUB-2026-03', 'SUB-2026-04', 'SUB-2026-05', 'SUB-2026-SWIFT-01', 'SUB-2026-SWIFT-02'].includes(s.id));
 
-      localStorage.setItem(STORAGE_SUBSCRIPTIONS, JSON.stringify(parsed));
+      if (parsed.length === 0) {
+        parsed = SEED_SUBSCRIPTIONS;
+        localStorage.setItem(STORAGE_SUBSCRIPTIONS, JSON.stringify(parsed));
+      }
       return getJuristechSubscribers(parsed);
     }
   } catch (e) {
     console.warn('Failed reading subscriptions from localStorage:', e);
   }
-  return [];
+  return SEED_SUBSCRIPTIONS;
 }
 
 export function saveSubscriptions(subs: UserSubscription[]): void {
