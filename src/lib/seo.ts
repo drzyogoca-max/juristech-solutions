@@ -24,35 +24,35 @@ const BRAND_AR = 'JurisTech Solutions';
 export const PAGE_SEO: Record<string, PageSEO> = {
   '/': {
     path: '/',
-    titleEn: `AI Contract Analysis Platform | Corporate Legal Risk Audit & Drafting | JurisTech`,
-    titleAr: `منصة تحليل العقود بالذكاء الاصطناعي | تحليل المخاطر القانونية للشركات | JurisTech`,
+    titleEn: `AI-Powered Contract Risk Scoring & Automated Legal Document Analysis | JurisTech Solutions`,
+    titleAr: `منصة تحليل العقود بالذكاء الاصطناعي | كشف المخاطر وصياغة العقود التجارية | JurisTech`,
     descriptionEn:
-      'Enterprise AI contract analysis and corporate legal risk audit platform. Detect contract loopholes, review indemnities & draft sovereign commercial agreements across GCC, US & EU.',
+      'Enterprise LegalTech platform for AI-powered contract risk scoring and automated legal document analysis. Detect indemnification traps, audit uncapped liabilities, and draft sovereign agreements across US, EU & GCC jurisdictions.',
     descriptionAr:
-      'منصة تحليل العقود بالذكاء الاصطناعي وكشف الثغرات القانونية وإدارة المخاطر للشركات. صياغة وتدقيق العقود التجارية وفحص بنود المسؤولية والتعويض في السعودية والخليج ومصر وأمريكا.',
-    keywords: 'منصة تحليل العقود بالذكاء الاصطناعي, تحليل المخاطر القانونية للشركات, كشف الثغرات القانونية, إدارة المخاطر العقدية, صياغة العقود التجارية, فحص بنود المسؤولية, تأسيس الشركات, AI contract analysis platform, corporate legal risk audit, contract loophole detection, commercial contract review, legal tech GCC',
+      'منصة تحليل العقود بالذكاء الاصطناعي وكشف الثغرات القانونية وإدارة المخاطر للشركات. صياغة وتدقيق العقود التجارية وفحص بنود المسؤولية والتعويض في السعودية والخليج ومصر وأمريكا والدولية.',
+    keywords: 'AI-powered contract risk scoring, automated legal document analysis platform for enterprise law firms, LegalTech, AI contract review software, corporate legal risk audit, Delaware LLC incorporation, Saudi Companies Law 2026, UNCITRAL compliance, منصة تحليل العقود بالذكاء الاصطناعي, كشف الثغرات القانونية',
     schemaType: 'SoftwareApplication',
   },
   '/dashboard': {
     path: '/dashboard',
-    titleEn: `AI Contract Analysis Platform & Corporate Legal Risk Audit | JurisTech & LegalShield`,
-    titleAr: `منصة تحليل العقود بالذكاء الاصطناعي | فحص المخاطر القانونية للشركات | JurisTech`,
+    titleEn: `Automated Legal Document Analysis Platform & AI Contract Risk Scoring | JurisTech`,
+    titleAr: `منصة تحليل العقود بالذكاء الاصطناعي | فحص المخاطر التعاقدية للشركات | JurisTech`,
     descriptionEn:
-      'Premier AI contract review and corporate legal risk detection suite. Instant clause redlining, liability cap analysis, 50 US States compliance, and GCC commercial code audit.',
+      'Premier AI contract review and automated legal document analysis platform for enterprise law firms. Sub-second clause redlining, AI-powered contract risk scoring, 50 US States compliance, and GCC commercial code audit.',
     descriptionAr:
       'المنصة الذكية الأولى لتحليل العقود وكشف الثغرات والبنود التعسفية وإدارة المخاطر القانونية للشركات. صياغة العقود التجارية واستشارات قانونية فورية للشركات ورواد الأعمال.',
-    keywords: 'تحليل المخاطر القانونية للشركات, منصة تحليل العقود بالذكاء الاصطناعي, كشف الثغرات في العقود, تدقيق العقود التجارية, فحص الشرط الجزائي, صياغة العقود الذكية, AI contract review, corporate legal risk audit, contract liability analyzer, AI legal workspace',
+    keywords: 'AI-powered contract risk scoring, automated legal document analysis platform for enterprise law firms, contract liability analyzer, AI contract review software, corporate legal risk audit',
     schemaType: 'SoftwareApplication',
   },
   '/chat': {
     path: '/chat',
-    titleEn: `AI Legal Counsel for Enterprises & 24/7 Virtual Attorney | JurisTech`,
+    titleEn: `24/7 AI Legal Counsel & Enterprise LegalTech Assistant | JurisTech`,
     titleAr: `المستشار القانوني الذكي للشركات | استشارات قانونية وعقدية فورية | JurisTech`,
     descriptionEn:
-      'Ask Juris — 24/7 enterprise AI legal counsel for corporate disputes, commercial contract terms, employment FLSA, Delaware statutes, Saudi Companies Law & GCC regulations.',
+      'Ask Juris — 24/7 enterprise AI legal counsel for corporate disputes, commercial contract terms, Delaware statutes, Saudi Companies Law 2026 & UNCITRAL regulations.',
     descriptionAr:
       'مستشارك القانوني الذكي المتاح 24 ساعة: استشارات قانونية موثوقة لحل النزاعات العقدية، فحص شروط الاتفاقيات، وتدقيق أنظمة العمل والشركات في السعودية والخليج وأمريكا.',
-    keywords: 'مستشار قانوني بالذكاء الاصطناعي, استشارات قانونية للشركات, فحص النزاعات العقدية, استشارة قانونية فورية, AI legal counsel, virtual attorney USA, corporate lawyer AI, GCC legal assistant',
+    keywords: 'AI legal counsel, enterprise LegalTech assistant, automated legal document analysis, virtual attorney USA, corporate lawyer AI, GCC legal assistant',
     schemaType: 'SoftwareApplication',
   },
   '/contracts': {
@@ -60,21 +60,21 @@ export const PAGE_SEO: Record<string, PageSEO> = {
     titleEn: `AI Commercial Contract Drafting & Smart Agreement Builder | JurisTech`,
     titleAr: `صياغة العقود التجارية بالذكاء الاصطناعي وتوليد الاتفاقيات للشركات | JurisTech`,
     descriptionEn:
-      'Generate, draft, and auto-redline commercial contracts for GCC, US States & international jurisdictions. UNCITRAL compliant with automated AI risk verification.',
+      'Generate, draft, and auto-redline commercial contracts for GCC, US States & international jurisdictions. UNCITRAL compliant with automated AI risk verification and zero-whitespace Word DOCX exports.',
     descriptionAr:
       'صياغة العقود التجارية والاتفاقيات الذكية وتدقيقها بالذكاء الاصطناعي — متوافقة مع أنظمة التجارة والاستثمار في السعودية والإمارات والخليج وأمريكا والأونسيترال.',
-    keywords: 'صياغة العقود بالذكاء الاصطناعي, عقود الشركات التجارية, توليد العقود الذكية, اتفاقية عدم إفصاح NDA, عقد توريد وخدمات, عقود المقاولات فيديك, AI contract generator, commercial agreement drafting, smart contract builder',
+    keywords: 'AI commercial contract drafting, smart contract builder, NDA agreement generator, UNCITRAL contract software, AI-powered contract risk scoring',
     schemaType: 'SoftwareApplication',
   },
   '/risk': {
     path: '/risk',
-    titleEn: `Corporate Legal Risk Analysis & Contract Vulnerability Audit | JurisTech`,
+    titleEn: `AI-Powered Contract Risk Scoring & Vulnerability Audit | JurisTech`,
     titleAr: `تحليل المخاطر القانونية للشركات وكشف ثغرات العقود التجارية | JurisTech`,
     descriptionEn:
-      'Instant AI contract risk analysis: detect indemnification traps, uncapped liability, penalty clauses, and statutory compliance gaps across GCC, US Federal & State laws.',
+      'Instant AI-powered contract risk scoring: detect indemnification traps, uncapped liability, penalty clauses, and statutory compliance gaps across GCC, US Federal & State laws.',
     descriptionAr:
       'فحص وتدقيق المخاطر القانونية للشركات وكشف البنود التعسفية وثغرات المسؤولية المالية والشرط الجزائي بالذكاء الاصطناعي مع اقتراح الصياغات البديلة المعتمدة.',
-    keywords: 'تحليل المخاطر القانونية للشركات, كشف ثغرات العقود, فحص بنود التعويض, تدقيق عقود الشركات, الشرط الجزائي في العقود, corporate legal risk analysis, contract liability audit, legal risk score, contract redlining tool',
+    keywords: 'AI-powered contract risk scoring, automated legal document analysis platform for enterprise law firms, contract vulnerability audit, indemnification trap scanner',
     schemaType: 'SoftwareApplication',
   },
   '/company-formation': {

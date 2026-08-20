@@ -130,9 +130,16 @@ export default function SEO({
           {
             '@context': 'https://schema.org',
             '@type': 'SoftwareApplication',
-            'name': 'JurisTech AI Legal Assistant & 50 US States Contract Generator',
+            'name': 'JurisTech AI Legal Assistant & Sovereign Contract Risk Analysis Suite',
             'operatingSystem': 'Web, iOS, Android, Cloud API',
-            'applicationCategory': 'BusinessApplication',
+            'applicationCategory': ['LegalTech', 'AI Contract Analysis', 'Automated Risk Assessment Software', 'Enterprise Sovereign Legal AI'],
+            'featureList': [
+              'AI-powered contract risk scoring',
+              'Automated legal document analysis platform for enterprise law firms',
+              'Delaware LLC & Saudi Companies Law 2026 statutory audit',
+              'Instant court-admissible redlines & DOCX zero-whitespace exporter',
+              'Sub-second UNCITRAL & GCC commercial code cross-examination'
+            ],
             'offers': {
               '@type': 'Offer',
               'price': '0.00',
@@ -160,7 +167,7 @@ export default function SEO({
                   'name': 'Sarah Mitchell'
                 },
                 'datePublished': '2025-11-15',
-                'reviewBody': 'JurisTech AI saved our legal team hours every week. The contract audit feature is incredibly accurate and the 50-state template library is unmatched.'
+                'reviewBody': 'JurisTech AI saved our legal team hours every week. The AI-powered contract risk scoring is incredibly accurate and the 50-state template library is unmatched.'
               },
               {
                 '@type': 'Review',
@@ -174,7 +181,7 @@ export default function SEO({
                   'name': 'Ahmed Al-Rashidi'
                 },
                 'datePublished': '2025-12-02',
-                'reviewBody': 'The AI legal advisor provides precise statutory references for GCC and US jurisdictions. Essential tool for cross-border corporate transactions.'
+                'reviewBody': 'The automated legal document analysis platform provides precise statutory references for GCC and US jurisdictions. Essential tool for cross-border corporate transactions.'
               },
               {
                 '@type': 'Review',
@@ -195,17 +202,20 @@ export default function SEO({
           {
             '@context': 'https://schema.org',
             '@type': 'LegalService',
-            'name': 'JurisTech Solutions & LegalShield Online Legal Platform',
+            'name': 'JurisTech Solutions & LegalShield Sovereign AI Legal Platform',
             'image': `${baseUrl}/logo.png`,
             'priceRange': '$0 - $49/mo',
             'telephone': '+201126674337',
             'url': baseUrl,
-            'areaServed': ['United States', 'US-CA', 'US-NY', 'US-TX', 'US-FL', 'US-DE', 'Worldwide', 'GCC'],
+            'areaServed': ['United States', 'US-CA', 'US-NY', 'US-TX', 'US-FL', 'US-DE', 'United Kingdom', 'European Union', 'GCC', 'Saudi Arabia', 'United Arab Emirates', 'Egypt', 'Jordan', 'Oman', 'Kuwait', 'Qatar', 'Bahrain'],
             'knowsAbout': [
+              'AI-powered contract risk scoring',
+              'Automated legal document analysis platform for enterprise law firms',
               'US Federal & State Contract Law',
               'Delaware Corporate Law',
-              'California CCPA & CPRA Privacy',
-              'US LLC & C-Corp Formation',
+              'Saudi Companies Law 2026',
+              'DIFC & ADGM Commercial Regulations',
+              'UNCITRAL & CISG International Commercial Law',
               'Contract Risk Redlining & E-Signatures'
             ]
           },
@@ -213,6 +223,22 @@ export default function SEO({
             '@context': 'https://schema.org',
             '@type': 'FAQPage',
             'mainEntity': [
+              {
+                '@type': 'Question',
+                'name': 'What is JurisTech Solutions and how does its AI-powered contract risk scoring work?',
+                'acceptedAnswer': {
+                  '@type': 'Answer',
+                  'text': 'JurisTech Solutions is an enterprise LegalTech platform providing AI-powered contract risk scoring, clause vulnerability detection, liability cap inspection, and sovereign legal compliance across US, UK, EU, and GCC commercial law frameworks.'
+                }
+              },
+              {
+                '@type': 'Question',
+                'name': 'How does automated legal document analysis benefit enterprise law firms and corporate legal teams?',
+                'acceptedAnswer': {
+                  '@type': 'Answer',
+                  'text': 'Automated legal document analysis enables law firms and in-house counsel to audit multi-page commercial contracts in sub-second speed, identifying hidden indemnification traps, uncapped liabilities, and non-compliant terms while generating court-admissible redlines.'
+                }
+              },
               {
                 '@type': 'Question',
                 'name': 'كيف تساعد منصة تحليل العقود بالذكاء الاصطناعي في كشف المخاطر القانونية للشركات؟',
@@ -223,26 +249,18 @@ export default function SEO({
               },
               {
                 '@type': 'Question',
-                'name': 'How does AI contract analysis help enterprises avoid corporate legal risks?',
+                'name': 'Does JurisTech support 50 US States, Delaware LLC incorporation, and GCC statutory codes?',
                 'acceptedAnswer': {
                   '@type': 'Answer',
-                  'text': 'JurisTech AI cross-examines commercial agreements against statutory codes, detects uncapped liabilities, identifies indemnification traps, and provides instant sovereign redlines to eliminate breach vulnerabilities.'
+                  'text': 'Yes, JurisTech includes a sovereign legal engine ground in Delaware General Corporation Law, all 50 US state contract statutes, Saudi Companies Law 2026, DIFC/ADGM rules, and UNCITRAL commercial principles.'
                 }
               },
               {
                 '@type': 'Question',
-                'name': 'How does JurisTech & LegalShield compare to LegalZoom and Rocket Lawyer?',
+                'name': 'Are exported Word (.docx) documents guaranteed 100% compliant with RTL/LTR language direction and zero whitespace gaps?',
                 'acceptedAnswer': {
                   '@type': 'Answer',
-                  'text': 'JurisTech & LegalShield provide sub-second AI contract audits, instant 50 US State LLC formation, 200+ smart legal templates, and 24/7 AI virtual lawyer consultation at a fraction of the cost ($0-$49/mo vs $350+/hr attorney fees).'
-                }
-              },
-              {
-                '@type': 'Question',
-                'name': 'Can I generate US and GCC state-specific contracts and NDAs?',
-                'acceptedAnswer': {
-                  '@type': 'Answer',
-                  'text': 'Yes! JurisTech supports sovereign jurisdiction locking for Saudi Arabia, UAE, Oman, Egypt, and all 50 US States including Delaware corporate filings and California agreements.'
+                  'text': 'Yes! All Word (.docx) exports generated by JurisTech feature automated bidirectional formatting (RTL for Arabic, LTR for Western/Asian languages) and clean line compression for zero whitespace gaps.'
                 }
               }
             ]

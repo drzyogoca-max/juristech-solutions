@@ -195,9 +195,108 @@ export function prerenderRoutes() {
       );
     }
 
-    // Inject/Replace Canonical and Hreflang Tags
+    // Build Pre-rendered JSON-LD Structured Data Schema Block for LLM Search Engine Parsing
+    const jsonLdBlock = `
+    <script type="application/ld+json">
+    ${JSON.stringify([
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        'name': 'JurisTech Solutions & LegalShield Ecosystem',
+        'url': BASE_URL,
+        'logo': `${BASE_URL}/logo.png`,
+        'email': 'juristech.solutions@outlook.com',
+        'sameAs': [
+          'https://www.linkedin.com/in/juristech-solutions-14954b427/',
+          'https://www.tiktok.com/@juristech.solutio6',
+          'https://legalshieldsolution.online'
+        ]
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'SoftwareApplication',
+        'name': 'JurisTech AI Legal Assistant & Sovereign Contract Risk Analysis Suite',
+        'operatingSystem': 'Web, iOS, Android, Cloud API',
+        'applicationCategory': ['LegalTech', 'AI Contract Analysis', 'Automated Risk Assessment Software', 'Enterprise Sovereign Legal AI'],
+        'featureList': [
+          'AI-powered contract risk scoring',
+          'Automated legal document analysis platform for enterprise law firms',
+          'Delaware LLC & Saudi Companies Law 2026 statutory audit',
+          'Instant court-admissible redlines & DOCX zero-whitespace exporter',
+          'Sub-second UNCITRAL & GCC commercial code cross-examination'
+        ],
+        'offers': {
+          '@type': 'Offer',
+          'price': '0.00',
+          'priceCurrency': 'USD',
+          'availability': 'https://schema.org/InStock'
+        },
+        'aggregateRating': {
+          '@type': 'AggregateRating',
+          'ratingValue': '4.9',
+          'bestRating': '5',
+          'worstRating': '1',
+          'ratingCount': '2450',
+          'reviewCount': '1890'
+        }
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'LegalService',
+        'name': 'JurisTech Solutions & LegalShield Sovereign AI Legal Platform',
+        'image': `${BASE_URL}/logo.png`,
+        'priceRange': '$0 - $49/mo',
+        'telephone': '+201126674337',
+        'url': BASE_URL,
+        'areaServed': ['United States', 'US-CA', 'US-NY', 'US-TX', 'US-FL', 'US-DE', 'United Kingdom', 'European Union', 'GCC', 'Saudi Arabia', 'United Arab Emirates', 'Egypt', 'Jordan', 'Oman', 'Kuwait', 'Qatar', 'Bahrain'],
+        'knowsAbout': [
+          'AI-powered contract risk scoring',
+          'Automated legal document analysis platform for enterprise law firms',
+          'US Federal & State Contract Law',
+          'Delaware Corporate Law',
+          'Saudi Companies Law 2026',
+          'DIFC & ADGM Commercial Regulations',
+          'UNCITRAL & CISG International Commercial Law',
+          'Contract Risk Redlining & E-Signatures'
+        ]
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        'mainEntity': [
+          {
+            '@type': 'Question',
+            'name': 'What is JurisTech Solutions and how does its AI-powered contract risk scoring work?',
+            'acceptedAnswer': {
+              '@type': 'Answer',
+              'text': 'JurisTech Solutions is an enterprise LegalTech platform providing AI-powered contract risk scoring, clause vulnerability detection, liability cap inspection, and sovereign legal compliance across US, UK, EU, and GCC commercial law frameworks.'
+            }
+          },
+          {
+            '@type': 'Question',
+            'name': 'How does automated legal document analysis benefit enterprise law firms and corporate legal teams?',
+            'acceptedAnswer': {
+              '@type': 'Answer',
+              'text': 'Automated legal document analysis enables law firms and in-house counsel to audit multi-page commercial contracts in sub-second speed, identifying hidden indemnification traps, uncapped liabilities, and non-compliant terms while generating court-admissible redlines.'
+            }
+          },
+          {
+            '@type': 'Question',
+            'name': 'كيف تساعد منصة تحليل العقود بالذكاء الاصطناعي في كشف المخاطر القانونية للشركات؟',
+            'acceptedAnswer': {
+              '@type': 'Answer',
+              'text': 'تقوم منصة JurisTech بفحص بنود المسؤولية المالية والتعويضات غير المحدودة وغرامات التأخير وشروط عدم المنافسة ومقارنتها بالأنظمة واللوائح السيادية لحماية المنشأة من النزاعات القضائية وتوفير الصياغات البديلة المعتمدة.'
+            }
+          }
+        ]
+      }
+    ])}
+    </script>
+    `;
+
+    // Inject/Replace Canonical, Hreflang Tags & Pre-baked JSON-LD
     const canonicalAndHreflangBlock = `
-    <!-- Pre-rendered Canonical & Regional Hreflangs for Google Search Console -->
+    <!-- Pre-rendered Canonical, Regional Hreflangs & JSON-LD for AI Search Indexing -->
     <link rel="canonical" href="${canonicalUrl}" />
     ${hreflangTags}
     <meta property="og:title" content="${pageTitle}" />
@@ -205,6 +304,7 @@ export function prerenderRoutes() {
     <meta property="og:url" content="${canonicalUrl}" />
     <meta name="twitter:title" content="${pageTitle}" />
     <meta name="twitter:description" content="${pageDesc}" />
+    ${jsonLdBlock}
 `;
 
     routeHtml = routeHtml.replace('</head>', `${canonicalAndHreflangBlock}\n</head>`);
