@@ -12,10 +12,11 @@ import { useTranslation } from 'react-i18next';
 import {
   DollarSign, Shield, Zap, Lock, Building2, CheckCircle2, CreditCard,
   Globe, Mail, Sparkles, Star, ArrowRight, Users, TrendingUp, Cpu,
-  ShieldCheck, BarChart3, FileText, Wifi, Crown, Building
+  ShieldCheck, BarChart3, FileText, Wifi, Crown, Building, Smartphone
 } from 'lucide-react';
 import BankWireModal from '../components/BankWireModal';
 import BinancePayModal from '../components/BinancePayModal';
+import InstaPayModal from '../components/InstaPayModal';
 import DigitalInvoiceModal from '../components/DigitalInvoiceModal';
 import { activateUserSubscription, BillingTransaction } from '../lib/financialGateway';
 import SEO from '../components/SEO';
@@ -60,6 +61,7 @@ export default function PaymentPage() {
 
   const [selectedWirePlan, setSelectedWirePlan] = useState<Plan | null>(null);
   const [selectedBinancePlan, setSelectedBinancePlan] = useState<Plan | null>(null);
+  const [selectedInstaPayPlan, setSelectedInstaPayPlan] = useState<Plan | null>(null);
   const [activeInvoice, setActiveInvoice] = useState<BillingTransaction | null>(null);
   const [billingAnnual, setBillingAnnual] = useState(false);
 
@@ -437,6 +439,14 @@ export default function PaymentPage() {
                 </button>
 
                 <button
+                  onClick={() => setSelectedInstaPayPlan(plan)}
+                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-emerald-500/10 hover:bg-emerald-500/20 font-black text-emerald-400 border border-emerald-500/30 transition-all text-xs active:scale-95 cursor-pointer shadow-md"
+                >
+                  <Smartphone className="w-4 h-4 text-emerald-400" />
+                  <span>{isRtl ? `الدفع الفوري عبر InstaPay (+201031222262)` : `Instant Pay via InstaPay (+201031222262)`}</span>
+                </button>
+
+                <button
                   onClick={() => setSelectedWirePlan(plan)}
                   className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-slate-800 hover:bg-slate-700 font-bold text-amber-300 border border-amber-500/20 transition-all text-xs active:scale-95 cursor-pointer"
                 >
@@ -595,6 +605,16 @@ export default function PaymentPage() {
           onClose={() => setSelectedBinancePlan(null)}
           packageName={isRtl ? selectedBinancePlan.nameAr : selectedBinancePlan.nameEn}
           packagePrice={selectedBinancePlan.price}
+        />
+      )}
+
+      {selectedInstaPayPlan && (
+        <InstaPayModal
+          isOpen={!!selectedInstaPayPlan}
+          onClose={() => setSelectedInstaPayPlan(null)}
+          packageName={isRtl ? selectedInstaPayPlan.nameAr : selectedInstaPayPlan.nameEn}
+          packagePrice={selectedInstaPayPlan.price}
+          packageId={selectedInstaPayPlan.id}
         />
       )}
 

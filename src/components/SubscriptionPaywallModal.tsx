@@ -58,8 +58,14 @@ export const SubscriptionPaywallModal: React.FC<SubscriptionPaywallModalProps> =
         </div>
 
         {/* ── Payment Gateways ── */}
-        <div className="my-4">
+        <div className="my-4 space-y-3">
           <BinancePayBox showTonWallet={true} />
+          
+          {/* ── InstaPay Direct Banner ── */}
+          <div className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-center justify-between font-mono">
+            <span className="font-sans font-bold">{isRtl ? '📱 الدفع الفوري عبر إنستا باي (InstaPay):' : '📱 Instant Pay via InstaPay Egypt:'}</span>
+            <span className="font-black text-emerald-400 select-all text-sm">+201031222262</span>
+          </div>
         </div>
 
         {/* ── Action: Go to Subscription Page ── */}
