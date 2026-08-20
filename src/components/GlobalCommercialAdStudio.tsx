@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
-  Play, Pause, Download, Volume2, VolumeX, Sparkles, ShieldCheck,
-  Globe, Video, CheckCircle2, Copy, Check, RotateCcw, Share2,
-  Lock, ArrowRight, Layers, FileText, Cpu, Laptop, Smartphone
+  Play, Pause, Download, Volume2, VolumeX, Sparkles,
+  Shield, Globe, FileText, CheckCircle, RefreshCw,
+  Zap, Star, Lock, Users, Award, ArrowRight
 } from 'lucide-react';
 
 interface CommercialScene {
@@ -501,7 +501,7 @@ On-Screen Text:
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 text-xs font-bold font-mono uppercase tracking-wider mb-1">
-            <Video className="w-3.5 h-3.5" />
+            <Sparkles className="w-3.5 h-3.5" />
             <span>COMMERCIAL AD STUDIO // 90-SECOND PROMO GENERATOR</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-black text-white">
@@ -522,7 +522,7 @@ On-Screen Text:
                 aspectRatio === '16:9' ? 'bg-cyan-500 text-slate-950 font-black' : 'text-slate-400 hover:text-white'
               }`}
             >
-              <Laptop className="w-3.5 h-3.5" />
+              <Globe className="w-3.5 h-3.5" />
               <span>16:9 (YouTube / Ads)</span>
             </button>
             <button
@@ -531,7 +531,7 @@ On-Screen Text:
                 aspectRatio === '9:16' ? 'bg-cyan-500 text-slate-950 font-black' : 'text-slate-400 hover:text-white'
               }`}
             >
-              <Smartphone className="w-3.5 h-3.5" />
+              <Zap className="w-3.5 h-3.5" />
               <span>9:16 (TikTok / Reels)</span>
             </button>
           </div>
@@ -540,7 +540,7 @@ On-Screen Text:
             onClick={copyFullEnglishAdScript}
             className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 flex items-center gap-1.5 border border-slate-700 transition-all cursor-pointer"
           >
-            {copiedScript ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+            {copiedScript ? <CheckCircle className="w-3.5 h-3.5 text-emerald-400" /> : <FileText className="w-3.5 h-3.5" />}
             <span>{copiedScript ? 'Ad Script Copied!' : 'Copy English Ad Script'}</span>
           </button>
         </div>
@@ -574,7 +574,7 @@ On-Screen Text:
               className="p-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition-all cursor-pointer"
               title="Restart Commercial"
             >
-              <RotateCcw className="w-4 h-4" />
+              <RefreshCw className="w-4 h-4" />
             </button>
 
             <button
