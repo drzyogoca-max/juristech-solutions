@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Smartphone, Check, Copy, Lock, ShieldCheck, CheckCircle2, AlertTriangle, ArrowRight, X, Sparkles, Building2 } from 'lucide-react';
+import { Zap, CheckCircle, FileText, Lock, ShieldCheck, CheckCircle2, AlertTriangle, ArrowRight, X, Sparkles, Building2 } from 'lucide-react';
 import { activateUserSubscription } from '../lib/financialGateway';
 
 export interface InstaPayModalProps {
@@ -85,7 +85,7 @@ export default function InstaPayModal({
         <div className="flex items-center justify-between border-b border-slate-800 pb-4">
           <div className="flex items-center gap-3">
             <div className="p-3 rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-              <Smartphone className="w-6 h-6" />
+              <Zap className="w-6 h-6" />
             </div>
             <div>
               <div className="flex items-center gap-2">
@@ -161,7 +161,7 @@ export default function InstaPayModal({
                   onClick={handleCopyNumber}
                   className="px-3 py-2 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 font-bold text-xs flex items-center gap-1.5 transition-all border border-emerald-500/30 cursor-pointer"
                 >
-                  {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                  {copied ? <CheckCircle className="w-4 h-4 text-emerald-400" /> : <FileText className="w-4 h-4" />}
                   <span>{copied ? (isRtl ? 'تم النسخ!' : 'Copied!') : (isRtl ? 'نسخ الرقم' : 'Copy')}</span>
                 </button>
               </div>

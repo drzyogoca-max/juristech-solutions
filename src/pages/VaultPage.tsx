@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import {
   Lock, Upload, FileText, Trash2, Download, Eye, EyeOff, Shield, Calendar,
   Search, Filter, CheckCircle2, AlertTriangle, Clock, Archive, Loader2,
-  Plus, X, Sparkles, Bell, CloudOff, Folder, Key, BadgeCheck
+  Plus, X, Sparkles, Bell, CloudOff, Folder, Key, Award
 } from 'lucide-react';
 import { supabase } from '../lib/supabaseClient';
 import { useContract } from '../context/ContractContext';
@@ -300,7 +300,7 @@ export default function VaultPage() {
           {[
             { icon: Shield, text: isRtl ? 'AES-256 مشفر' : 'AES-256 Encrypted', color: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/20' },
             { icon: Key, text: isRtl ? 'مفتاح خاص لكل مشترك' : 'Per-Session Private Key', color: 'text-indigo-400 bg-indigo-500/10 border-indigo-500/20' },
-            { icon: BadgeCheck, text: isRtl ? 'SHA-256 E-Seal' : 'SHA-256 E-Seal', color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' },
+            { icon: Award, text: isRtl ? 'ختم SHA-256 الرقمي المشفر' : 'SHA-256 E-Seal E2EE', color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' },
           ].map(({ icon: Icon, text, color }) => (
             <div key={text} className={`flex items-center gap-1.5 px-2 py-1.5 rounded-xl border ${color}`}>
               <Icon className="w-3.5 h-3.5 shrink-0" /><span className="truncate">{text}</span>

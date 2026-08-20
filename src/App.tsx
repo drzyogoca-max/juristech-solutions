@@ -9,6 +9,7 @@ import LegalDisclaimerBanner from './components/LegalDisclaimerBanner';
 import ProtectedAdminRoute from './components/ProtectedAdminRoute';
 import ErrorBoundary from './components/ErrorBoundary';
 import Footer from './components/Footer';
+import MobileBottomNav from './components/MobileBottomNav';
 import { AuthProvider, useAuth } from './lib/authContext';
 import { ContractProvider } from './context/ContractContext';
 import { checkLibyaGeoBlock } from './lib/geoBlock';
@@ -353,6 +354,7 @@ function MainAppContent() {
               <GdprPrivacyBanner />
             </Suspense>
           )}
+          <MobileBottomNav />
           <Footer />
           <VercelAnalyticsWrapper />
           <SpeedInsightsWrapper />

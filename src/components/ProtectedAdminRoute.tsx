@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../lib/authContext';
-import { ShieldCheck, Lock, Key, ShieldAlert, Smartphone, Mail, RefreshCw } from 'lucide-react';
+import { ShieldCheck, Lock, Key, ShieldAlert, Mail, RefreshCw, Zap } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { verifyAdminAccess, grantAdminAuth } from '../lib/adminGuard';
 import { dispatch2FAOtpEmail } from '../lib/emailNotifier';
@@ -175,7 +175,7 @@ export default function ProtectedAdminRoute({ children }: { children: React.Reac
           <div className="space-y-6 animate-in fade-in">
             <div className="text-center space-y-2">
               <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mx-auto shadow-lg">
-                <Smartphone className="w-8 h-8" />
+                <ShieldCheck className="w-8 h-8" />
               </div>
               <span className="text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
                 {isRtl ? 'التحقق الثنائي 2FA ACTIVE' : 'TWO-FACTOR 2FA VERIFICATION'}
