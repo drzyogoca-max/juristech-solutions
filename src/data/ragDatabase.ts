@@ -10,6 +10,31 @@ export interface RAGKnowledgeEntry {
 }
 
 export const ACTIVE_RAG_KNOWLEDGE_BASE: RAGKnowledgeEntry[] = [
+  // ─── WORD EXPORT, ENTERPRISE ACTIVATION & FAST LEGAL ROUTING KNOWLEDGE ───
+  {
+    id: 'rag-word-export-rtl-zero-whitespace',
+    category: 'Word DOCX Formatting & RTL/LTR Precision',
+    jurisdiction: 'GLOBAL',
+    queryPattern: 'تنسيق ملفات الورد Word docx الاتجاهات اللغوية RTL LTR الفراغات النصية',
+    statutoryContext: 'جميع المستندات وملفات الورد (Word .docx) المستخرجة من منصة JurisTech مصممة ومعالجة برمجياً بدقة فائقة: يدعم المحرك الاتجاهات اللغوية الذكية (RTL كلي للنصوص العربية والشرقية، و LTR محكم للغات الإنجليزية والأجنبية) مع خلو تام من أي فراغات نصية عشوائية وتنسيق هندسي موحد محمي بالطوابع الرقمية.',
+    confidenceScore: 1.0,
+  },
+  {
+    id: 'rag-enterprise-subscription-activation',
+    category: 'Enterprise Subscriptions & Direct SWIFT/Pay Activation',
+    jurisdiction: 'GLOBAL',
+    queryPattern: 'تفعيل اشتراكات الشركات باقات الاشتراك دفع تحويل بنكي SWIFT WhatsApp',
+    statutoryContext: 'تفعيل باقات اشتراكات الشركات الكبرى والناشئة يتم فورياً عبر بوابات الدفع الإلكتروني المعتمدة، أو إجراء تحويل بنكي مباشر (SWIFT Wire Transfer) لعنوان الحساب الرسمي، أو التنسيق الفوري المباشر مع الرئيس التنفيذي والمستشار الاستراتيجي د. محمد مصطفى عبر الإيميل Drzyogo.ca@gmail.com أو الواتساب المباشر +201126674337.',
+    confidenceScore: 1.0,
+  },
+  {
+    id: 'rag-fast-routing-sovereign-legal',
+    category: 'High-Speed Legal Alignment & Statutory Codes',
+    jurisdiction: 'GLOBAL',
+    queryPattern: 'صياغة العقود مواءمة القوانين المحلية سرعة الاستجابة نظام الشركات السعودي دبي دلاوير',
+    statutoryContext: 'محرك صياغة وتدقيق العقود محدد استباقياً للمواءمة مع نظام الشركات السعودي الجديد 2026، أنظمة دبي ومراكز DIFC/ADGM، وقوانين ولاية دلاوير ومبادئ الأونسيترال الدولية مع زمن استجابة فائق السرعة أقل من ثانية واحدة.',
+    confidenceScore: 1.0,
+  },
   // ─── EGYPTIAN CIVIL & STATUTORY CODES ─────────────────────────────────────
   {
     id: 'rag-eg-civil-165',

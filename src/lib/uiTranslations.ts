@@ -229,6 +229,8 @@ export const UI_TRANSLATIONS: Record<AppLang, ModalTranslations> = {
       qArbitration: 'يرجى مراجعة شرط فض النزاعات والتحكيم والقانون الحاكم وتوافقه مع المعايير الدولية.',
       qRedlines: 'يرجى تزويدي بصياغات بديلة وحمائية للبنود الخطرة في هذا العقد لتعديلها فوراً.',
       pills: [
+        { label: '📄 توافق ملفات Word والاتجاهات', query: 'هل ملفات الورد (Word .docx) المستخرجة متوافقة مع الاتجاهات اللغوية (RTL/LTR) وخالية من الفراغات؟' },
+        { label: '💳 تفعيل اشتراك الشركات SWIFT', query: 'كيف أفعّل اشتراك الشركات الكبرى والتحويل البنكي المباشر SWIFT؟' },
         { label: '🏢 تأسيس شركة LLC', query: 'ما هي المتطلبات القانونية والخطوات لتأسيس شركة ذات مسؤولية محدودة؟' },
         { label: '🛡️ شرط القوة القاهرة', query: 'كيف أصيغ بند القوة القاهرة والظروف الطارئة وفق معايير ICC 2020؟' },
         { label: '💼 إنهاء عقد العمل', query: 'ما هي الإجراءات القانونية الصحيحة لإنهاء عقد العمل دون تعويضات تعسفية؟' },
@@ -370,6 +372,8 @@ export const UI_TRANSLATIONS: Record<AppLang, ModalTranslations> = {
       qArbitration: 'Please review dispute resolution, governing law, and arbitration clauses against international standards.',
       qRedlines: 'Please provide protective alternative redline clauses for all risky provisions in this contract.',
       pills: [
+        { label: '📄 Word Export & RTL/LTR Precision', query: 'Are Word (.docx) file downloads 100% compliant with language direction (RTL/LTR) and zero whitespace gaps?' },
+        { label: '💳 Enterprise Subscriptions & SWIFT', query: 'How do I activate Enterprise subscriptions and direct SWIFT wire transfers?' },
         { label: '🏢 LLC Incorporation', query: 'What are the legal steps and statutory requirements to incorporate an LLC?' },
         { label: '🛡️ Force Majeure Clause', query: 'How do I draft a robust Force Majeure & Hardship clause under ICC 2020 rules?' },
         { label: '💼 Employment Termination', query: 'What are the lawful procedures for employee termination without unjust dismissal liability?' },

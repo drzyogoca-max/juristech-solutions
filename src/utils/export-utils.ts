@@ -19,14 +19,18 @@ export async function generateAndDownloadWordDocument(title: string, content: st
     const cleanTitle = sanitizeXmlText(title) || `${platformBrand} Document`;
     const rawContent = sanitizeXmlText(content) || "No content provided.";
 
+    // 1. الضغط الفائق للفراغات: إزالة الفراغات المكررة المتتالية وضمان خلو الملف تماماً من المسافات العشوائية
+    const normalizedContent = rawContent.replace(/\n\s*\n\s*\n+/g, '\n\n');
+
     // فحص اتجاه اللغة بدقة تامة (عربي = RTL / لغات أخرى = LTR)
-    const isArabicChar = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFE]/.test(rawContent) || /[\u0600-\u06FF]/.test(cleanTitle);
+    const isArabicChar = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFE]/.test(normalizedContent) || /[\u0600-\u06FF]/.test(cleanTitle);
     const isRtl = langCode ? langCode === 'ar' : isArabicChar;
 
     // 2. تقسيم المحتوى إلى أسطر نظيفة دون أي \r أو \n داخل الأسطر
-    const lines = rawContent.split('\n');
+    const lines = normalizedContent.split('\n');
 
     const paragraphs: Paragraph[] = [];
+    let lastWasEmpty = false;
 
     // إضافة عنوان المستند الرئيسي بأعلى المعايير
     paragraphs.push(
@@ -62,19 +66,26 @@ export async function generateAndDownloadWordDocument(title: string, content: st
       })
     );
 
-    // معالجة كل سطر بشكل مستقل كفقرة Word سليمة 100%
+    // معالجة كل سطر بشكل مستقل كفقرة Word سليمة 100% مع ضمان الخلو التام من الفراغات المكررة
     lines.forEach((line) => {
       const cleanLine = sanitizeXmlText(line);
-      if (!cleanLine.trim()) {
-        // سطر فارغ -> مسافة فاصلة بين الفقرات
-        paragraphs.push(
-          new Paragraph({
-            spacing: { after: 80 },
-            children: [],
-          })
-        );
+      const isEmpty = !cleanLine.trim();
+
+      if (isEmpty) {
+        if (!lastWasEmpty) {
+          // سطر فارغ واحد فقط للمسافة الفاصلة النظيفة
+          paragraphs.push(
+            new Paragraph({
+              spacing: { after: 60 },
+              children: [],
+            })
+          );
+          lastWasEmpty = true;
+        }
         return;
       }
+
+      lastWasEmpty = false;
 
       const isHeading = cleanLine.startsWith('البند') ||
                         cleanLine.startsWith('SECTION') ||
@@ -89,11 +100,11 @@ export async function generateAndDownloadWordDocument(title: string, content: st
         new Paragraph({
           alignment: isRtl ? AlignmentType.RIGHT : AlignmentType.LEFT,
           bidirectional: isRtl,
-          spacing: { after: isHeading ? 160 : 120 },
+          spacing: { after: isHeading ? 160 : 100 },
           children: [
             new TextRun({
               text: textWithoutMarkdown,
-              font: "Arial",
+              font: isRtl ? "Arial" : "Calibri",
               size: isHeading ? 26 : 24, // 13pt للعناوين، 12pt للنصوص
               bold: isHeading,
               color: isHeading ? "0F172A" : "333333",
