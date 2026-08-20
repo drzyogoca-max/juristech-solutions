@@ -61,12 +61,12 @@ export default function InstaPayModal({
 
     try {
       // Activate subscription in Financial Gateway
-      activateUserSubscription(
-        subscriberEmail.trim(),
-        packageId === 'enterprise' ? 'enterprise' : packageId === 'sme' ? 'sme' : 'pro',
-        packagePrice,
-        `InstaPay Transfer (${INSTAPAY_PHONE} - Ref: ${senderNameOrReference})`
-      );
+      await activateUserSubscription({
+        userEmail: subscriberEmail.trim(),
+        planId: packageId === 'enterprise' ? 'enterprise' : packageId === 'sme' ? 'sme' : 'startup',
+        paymentMethod: 'Bank Wire SWIFT',
+        amountUSD: packagePrice,
+      });
 
       setSuccess(true);
       if (onSuccess) onSuccess();
