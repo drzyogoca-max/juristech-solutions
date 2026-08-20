@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Mic, MicOff, AlertCircle, Volume2, Sparkles, Sliders, Check, ShieldCheck, Zap } from 'lucide-react';
+import { Mic, MicOff, AlertCircle, Volume2, Sparkles, Sliders, CheckCircle, ShieldCheck, Zap } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 interface VoiceInputProps {
@@ -466,7 +466,7 @@ export default function VoiceInput({
       {isListening && (
         <div
           dir={isRtl ? 'rtl' : 'ltr'}
-          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100000] px-4 py-2.5 rounded-3xl bg-slate-900/95 border border-cyan-500/50 text-white text-xs font-bold shadow-2xl backdrop-blur-xl flex items-center gap-3 animate-in fade-in zoom-in slide-in-from-bottom-4 max-w-[92vw] sm:max-w-lg"
+          className="fixed bottom-20 lg:bottom-8 left-1/2 -translate-x-1/2 z-[100000] px-4 py-2.5 rounded-3xl bg-slate-900/95 border border-cyan-500/50 text-white text-xs font-bold shadow-2xl backdrop-blur-xl flex items-center gap-3 animate-in fade-in zoom-in slide-in-from-bottom-4 max-w-[92vw] sm:max-w-lg"
         >
           {/* Pulsing indicator */}
           <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
@@ -508,9 +508,9 @@ export default function VoiceInput({
           <button
             type="button"
             onClick={toggleListening}
-            className="px-3 py-1 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-black text-xs shrink-0 shadow transition-all active:scale-95 flex items-center gap-1"
+            className="px-3 py-1 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-black text-xs shrink-0 shadow transition-all active:scale-95 flex items-center gap-1 cursor-pointer"
           >
-            <Check className="w-3.5 h-3.5" />
+            <CheckCircle className="w-3.5 h-3.5" />
             <span>{isRtl ? 'إتمام' : 'Done'}</span>
           </button>
         </div>

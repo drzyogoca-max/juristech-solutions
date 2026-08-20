@@ -226,9 +226,17 @@ export default function ContractInspectionRoom() {
 
         {/* Contract Raw Editor Area */}
         <div className="space-y-2">
-          <label className="text-xs font-bold text-slate-300 block">
-            {isRtl ? 'مسودة العقد الشاملة (انقر على أي فقرة أو عدلها مباشرة):' : 'Full Contract Draft (Edit or Select Clauses):'}
-          </label>
+          <div className="flex items-center justify-between">
+            <label className="text-xs font-bold text-slate-300 block">
+              {isRtl ? 'مسودة العقد الشاملة (انقر على أي فقرة أو عدلها مباشرة):' : 'Full Contract Draft (Edit or Select Clauses):'}
+            </label>
+            <div className="flex items-center gap-1.5">
+              <span className="text-[10px] text-slate-400 font-mono hidden sm:inline">
+                {isRtl ? 'إملاء صوتي فائق الحساسية مع عزل الضوضاء:' : 'Voice Dictation + Noise Filter:'}
+              </span>
+              <VoiceInput onTranscript={(t) => setContractText((prev) => (prev ? `${prev}\n${t}` : t))} />
+            </div>
+          </div>
           <textarea
             value={contractText}
             onChange={(e) => setContractText(e.target.value)}
