@@ -17,6 +17,7 @@ import {
 import BankWireModal from '../components/BankWireModal';
 import BinancePayModal from '../components/BinancePayModal';
 import InstaPayModal from '../components/InstaPayModal';
+import ProformaInvoiceModal from '../components/ProformaInvoiceModal';
 import DigitalInvoiceModal from '../components/DigitalInvoiceModal';
 import { activateUserSubscription, BillingTransaction } from '../lib/financialGateway';
 import SEO from '../components/SEO';
@@ -62,6 +63,8 @@ export default function PaymentPage() {
   const [selectedWirePlan, setSelectedWirePlan] = useState<Plan | null>(null);
   const [selectedBinancePlan, setSelectedBinancePlan] = useState<Plan | null>(null);
   const [selectedInstaPayPlan, setSelectedInstaPayPlan] = useState<Plan | null>(null);
+  const [selectedProformaPlan, setSelectedProformaPlan] = useState<Plan | null>(null);
+  const [showProformaModal, setShowProformaModal] = useState(false);
   const [activeInvoice, setActiveInvoice] = useState<BillingTransaction | null>(null);
   const [billingAnnual, setBillingAnnual] = useState(false);
 
@@ -447,6 +450,17 @@ export default function PaymentPage() {
                 </button>
 
                 <button
+                  onClick={() => {
+                    setSelectedProformaPlan(plan);
+                    setShowProformaModal(true);
+                  }}
+                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 font-black text-amber-300 border border-amber-500/30 transition-all text-xs active:scale-95 cursor-pointer shadow-md"
+                >
+                  <FileText className="w-4 h-4 text-amber-400" />
+                  <span>{isRtl ? '🏢 اصدر فاتورة ضريبية رسمية للشركة (Proforma B2B Invoice)' : '🏢 Generate Corporate Proforma B2B Invoice'}</span>
+                </button>
+
+                <button
                   onClick={() => setSelectedWirePlan(plan)}
                   className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-slate-800 hover:bg-slate-700 font-bold text-amber-300 border border-amber-500/20 transition-all text-xs active:scale-95 cursor-pointer"
                 >
@@ -627,6 +641,13 @@ export default function PaymentPage() {
           packageType="subscription"
         />
       )}
+
+      <ProformaInvoiceModal
+        isOpen={showProformaModal}
+        onClose={() => setShowProformaModal(false)}
+        defaultPlanName={selectedProformaPlan ? (isRtl ? selectedProformaPlan.nameAr : selectedProformaPlan.nameEn) : undefined}
+        defaultPlanPrice={selectedProformaPlan?.price}
+      />
 
       {activeInvoice && (
         <DigitalInvoiceModal
