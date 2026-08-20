@@ -24,6 +24,7 @@ import AnimatedScene, { VideoScene } from '../components/AnimatedScene';
 import VideoLanguageSync from '../components/VideoLanguageSync';
 import { aiVoiceSynthesizer } from '../lib/aiVoiceSynthesizer';
 import MultilingualVideoPlayer from '../components/MultilingualVideoPlayer';
+import GlobalCommercialAdStudio from '../components/GlobalCommercialAdStudio';
 
 // Multilingual narration scripts covering ALL 15 platform services across 7 languages
 const MULTILINGUAL_SCRIPTS: Record<number, Record<string, string>> = {
@@ -333,6 +334,10 @@ export default function VideoHubPage() {
   return (
     <main className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans pb-12" dir={isRtl ? 'rtl' : 'ltr'}>
       <SEO />
+
+      {/* ─── 🎬 Global Commercial Ad Studio — TikTok / US / EU / GCC ─── */}
+      <GlobalCommercialAdStudio />
+
       <div className="max-w-6xl mx-auto px-4 pt-8 pb-4">
         
         {/* Header Bar */}
