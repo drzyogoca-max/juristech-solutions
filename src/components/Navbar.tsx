@@ -16,6 +16,8 @@ import LiveMeetingModal from './LiveMeetingModal';
 import ThemeFontSelectorModal from './ThemeFontSelectorModal';
 import CompanyProfileModal from './CompanyProfileModal';
 import LegalConsultationBookingModal from './LegalConsultationBookingModal';
+import TwoFactorAuthModal from './TwoFactorAuthModal';
+import RbacUserManagementModal from './RbacUserManagementModal';
 import { useAuth } from '../lib/authContext';
 import { detectVisitorJurisdiction, JurisdictionInfo } from '../lib/jurisdiction';
 
@@ -69,6 +71,8 @@ export default function Navbar() {
   const [showThemeModal, setShowThemeModal] = useState(false);
   const [showCompanyModal, setShowCompanyModal] = useState(false);
   const [showConsultationModal, setShowConsultationModal] = useState(false);
+  const [show2FAModal, setShow2FAModal] = useState(false);
+  const [showRbacModal, setShowRbacModal] = useState(false);
   const [activeJurisdiction, setActiveJurisdiction] = useState<JurisdictionInfo | null>(null);
   const [scrolled, setScrolled] = useState(false);
 
@@ -227,6 +231,20 @@ export default function Navbar() {
                         >
                           <Video className="w-3.5 h-3.5 text-blue-400 shrink-0" />
                           <span className="leading-snug">{t('Nav.liveOnlineConsultation')}</span>
+                        </button>
+                        <button
+                          onClick={() => { setShowMoreMenu(false); setShow2FAModal(true); }}
+                          className="flex items-center gap-2 text-xs font-semibold px-3 py-2 rounded-xl text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-all text-right"
+                        >
+                          <Lock className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                          <span className="leading-snug">{isRtl ? 'التحقق الثنائي (2FA TOTP)' : '2FA Security'}</span>
+                        </button>
+                        <button
+                          onClick={() => { setShowMoreMenu(false); setShowRbacModal(true); }}
+                          className="flex items-center gap-2 text-xs font-semibold px-3 py-2 rounded-xl text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-all text-right"
+                        >
+                          <Users className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+                          <span className="leading-snug">{isRtl ? 'إدارة الصلاحيات (RBAC)' : 'User Roles (RBAC)'}</span>
                         </button>
                       </div>
                     </div>
@@ -507,6 +525,17 @@ export default function Navbar() {
           </div>
         </div>
       )}
+
+      {/* 🔐 2FA & RBAC Security Modals */}
+      <TwoFactorAuthModal
+        isOpen={show2FAModal}
+        onClose={() => setShow2FAModal(false)}
+      />
+
+      <RbacUserManagementModal
+        isOpen={showRbacModal}
+        onClose={() => setShowRbacModal(false)}
+      />
     </>
   );
 }

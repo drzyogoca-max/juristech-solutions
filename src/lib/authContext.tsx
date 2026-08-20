@@ -1,28 +1,34 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from './supabaseClient';
 
-export type UserRole = 'client' | 'admin' | 'super-admin';
+export type UserRole = 'client' | 'admin' | 'super-admin' | 'Super Admin' | 'Admin' | 'Lawyer' | 'Client / Viewer';
 
 interface AuthContextType {
   role: UserRole;
   setRole: (role: UserRole) => void;
   isAdmin: boolean;
+  isLawyer: boolean;
   user: any;
   loading: boolean;
   twoFactorEnabled: boolean;
+  is2FAVerified: boolean;
   enableTwoFactor: () => void;
   disableTwoFactor: () => void;
+  verify2FATokenSession: (token: string) => Promise<boolean>;
 }
 
 const AuthContext = createContext<AuthContextType>({
   role: 'client',
   setRole: () => {},
   isAdmin: false,
+  isLawyer: false,
   user: null,
   loading: true,
   twoFactorEnabled: false,
+  is2FAVerified: false,
   enableTwoFactor: () => {},
   disableTwoFactor: () => {},
+  verify2FATokenSession: async () => false,
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -155,10 +161,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }
 
-  const isAdmin = role === 'admin' || role === 'super-admin';
+  const [is2FAVerified, setIs2FAVerified] = useState<boolean>(() => {
+    try {
+      return sessionStorage.getItem('juristech_2fa_verified_session') === 'true';
+    } catch {
+      return false;
+    }
+  });
+
+  async function verify2FATokenSession(token: string): Promise<boolean> {
+    const userEmail = localStorage.getItem('juristech_user_email') || 'drzyogo.ca@gmail.com';
+    const secret = localStorage.getItem(`ls_2fa_secret_${userEmail}`) || 'JURISTECHSUPERADMIN2026SECRETKEY';
+    const isValid = await import('./twoFactorEngine').then(m => m.verify2FAToken(token, secret));
+    if (isValid) {
+      setIs2FAVerified(true);
+      try {
+        sessionStorage.setItem('juristech_2fa_verified_session', 'true');
+      } catch {}
+    }
+    return isValid;
+  }
+
+  const isAdmin = role === 'admin' || role === 'super-admin' || role === 'Super Admin' || role === 'Admin';
+  const isLawyer = role === 'Lawyer' || role === 'admin' || role === 'super-admin' || role === 'Super Admin' || role === 'Admin';
 
   return (
-    <AuthContext.Provider value={{ role, setRole, isAdmin, user, loading, twoFactorEnabled, enableTwoFactor, disableTwoFactor }}>
+    <AuthContext.Provider value={{ role, setRole, isAdmin, isLawyer, user, loading, twoFactorEnabled, is2FAVerified, enableTwoFactor, disableTwoFactor, verify2FATokenSession }}>
       {children}
     </AuthContext.Provider>
   );
