@@ -41,8 +41,8 @@ export default function ForensicControlBar({
     setImporting(true);
     try {
       if (file.name.endsWith('.pdf')) {
-        const text = await extractPDFTextMultiStage(file);
-        onImportText(text, file.name);
+        const extraction = await extractPDFTextMultiStage(file);
+        onImportText(extraction.text, file.name);
       } else {
         const reader = new FileReader();
         reader.onload = (event) => {
@@ -65,17 +65,15 @@ export default function ForensicControlBar({
 
     setExporting(true);
     try {
-      await exportDocumentMultiFormat({
-        title: isRtl ? 'مسودة العقد المحصن مع التغييرات المتبعة' : 'Fortified Contract Draft with Track Changes',
-        content: contractText,
-        format: 'docx',
-        jurisdiction: jurisdictionCode,
-        metadata: {
-          auditType: 'Legal-AI Forensic Redline',
-          classification: 'PROTECTED_ATTORNEY_WORK_PRODUCT',
-          timestamp: new Date().toISOString(),
-        }
-      });
+      exportDocumentMultiFormat(
+        contractText,
+        isRtl ? 'مسودة العقد المحصن مع التغييرات المتبعة' : 'Fortified Contract Draft with Track Changes',
+        'الطرف الأول (المزود)',
+        'الطرف الثاني (العميل)',
+        'docx',
+        isRtl ? 'ar' : 'en',
+        jurisdictionCode
+      );
       setExportSuccess(true);
       setTimeout(() => setExportSuccess(false), 3000);
     } catch (err) {
