@@ -23,10 +23,21 @@ export interface ForensicReport {
 }
 
 export const JURISDICTION_MATRIX = [
-  { id: 'GCC', name: 'المملكة العربية السعودية والخليج (KSA / GCC / DIFC)', code: 'GCC' },
-  { id: 'UK', name: 'القانون الإنجليزي العام (English Common Law / UCTA)', code: 'UK' },
-  { id: 'US', name: 'القانون التجاري الأمريكي (US UCC / New York Law)', code: 'US' },
-  { id: 'CISG', name: 'اتفاقية فيينا للبيع الدولي (Vienna CISG / Incoterms)', code: 'CISG' },
+  { id: 'SA', name: '🇸🇦 المملكة العربية السعودية (نظام المعاملات المدنية M/191 والشركات)', code: 'SA' },
+  { id: 'AE', name: '🇦🇪 الإمارات العربية المتحدة (قوانين DIFC / ADGM والمعاملات 50/2022)', code: 'AE' },
+  { id: 'EG', name: '🇪🇬 جمهورية مصر العربية (القانون المدني 131/1948 والمحاكم الاقتصادية)', code: 'EG' },
+  { id: 'QA', name: '🇶🇦 دولة قطر (القانون المدني 22/2004 ومركز قطر للمال QFC)', code: 'QA' },
+  { id: 'KW', name: '🇰🇼 دولة الكويت (القانون المدني 67/1980 وقانون التجارة 68/1980)', code: 'KW' },
+  { id: 'BH', name: '🇧🇭 مملكة البحرين (القانون المدني 19/2001 وقواعد BCDR-AAA)', code: 'BH' },
+  { id: 'OM', name: '🇴🇲 سلطنة عُمان (قانون المعاملات المدنية 29/2013 والمركز العماني OAC)', code: 'OM' },
+  { id: 'JO', name: '🇯🇴 المملكة الأردنية الهاشمية (القانون المدني 43/1976 وقانون التجارة)', code: 'JO' },
+  { id: 'GLOBAL', name: '🌐 المعايير الدولية (UN CISG 1980 / Incoterms 2020 / UNCITRAL)', code: 'GLOBAL' },
+  { id: 'UK', name: '🇬🇧 المملكة المتحدة (English Common Law / UCTA 1977 / LCIA)', code: 'UK' },
+  { id: 'US', name: '🇺🇸 الولايات المتحدة الأمريكية (US UCC / New York / Delaware)', code: 'US' },
+  { id: 'EU', name: '🇪🇺 الاتحاد الأوروبي (EU GDPR / French CC / German BGB § 307)', code: 'EU' },
+  { id: 'SG', name: '🇸🇬 سنغافورة والتحكيم الدولي (SIAC Rules 2024 / Singapore Law)', code: 'SG' },
+  { id: 'TR', name: '🇹🇷 الجمهورية التركية (Turkish Code of Obligations 6098 / ISTAC)', code: 'TR' },
+  { id: 'CN', name: '🇨🇳 الصين وهونغ كونغ (PRC Civil Code 2021 / HKIAC Rules)', code: 'CN' },
 ];
 
 export default function ContractInspectionRoom() {
@@ -50,7 +61,7 @@ export default function ContractInspectionRoom() {
 تخضع هذه الاتفاقية وتفسر وفق أحكام القوانين الخارجية وتختص محاكم ولاية ديلاوير حصرياً بنظر أي نزاع، وتتنازل المؤسسة العميل عن حق التقاضي أمام المحاكم الوطنية.`);
 
   const [selectedClause, setSelectedClause] = useState<string>('البند الثاني: سدد غرامات التأخير غير المحدودة (Unlimited Penalty Trap)');
-  const [selectedJurisdiction, setSelectedJurisdiction] = useState<string>('GCC');
+  const [selectedJurisdiction, setSelectedJurisdiction] = useState<string>('SA');
   const [userQuery, setUserQuery] = useState<string>('');
   const [investigating, setInvestigating] = useState<boolean>(false);
   const [forensicReport, setForensicReport] = useState<ForensicReport | null>(null);
