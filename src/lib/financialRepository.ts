@@ -54,20 +54,35 @@ export function addToSwiftBlacklist(entry: string): void {
   } catch {}
 }
 
-/** Read all financial repository records from persistent vault */
+const SEED_FINANCIAL_RECEIPTS: FinancialReceiptRecord[] = [];
+
+/** Read all financial repository records from persistent vault (Zero-Fake / 100% Real Live Policy) */
 export function getFinancialRepositoryRecords(): FinancialReceiptRecord[] {
   try {
     const raw = localStorage.getItem(STORAGE_VAULT_KEY);
     const blacklist = getSwiftBlacklist();
+    const mockEmails = [
+      'executive@apex-energycorp.com',
+      'counsel@gulf-investments.ae',
+      'legal@saudi-logistics.sa',
+      'director@cairo-holdings.eg',
+      'pending.client@venture.com',
+      'sponsor@corporate.com',
+      'test@test.com'
+    ];
+
     if (raw) {
       const parsed: FinancialReceiptRecord[] = JSON.parse(raw);
-      if (Array.isArray(parsed)) {
-        // Filter out any blacklisted entries or rejected fraudulent items
-        return parsed.filter(r => 
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        const clean = parsed.filter(r => 
           !blacklist.includes((r.user_email || '').toLowerCase()) &&
           !blacklist.includes((r.transaction_ref || '').toLowerCase()) &&
-          !blacklist.includes(r.id.toLowerCase())
+          !blacklist.includes(r.id.toLowerCase()) &&
+          !mockEmails.includes((r.user_email || '').toLowerCase()) &&
+          !['SWIFT-NY-88910', 'SWIFT-FAB-77120', 'TAP-KSA-99014', 'INSTA-EG-44109'].includes(r.transaction_ref)
         );
+        localStorage.setItem(STORAGE_VAULT_KEY, JSON.stringify(clean));
+        return clean;
       }
     }
   } catch {}
