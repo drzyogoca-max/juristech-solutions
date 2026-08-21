@@ -4,10 +4,10 @@
  * Pre-generates rich, complete, structured semantic HTML for all 26 canonical routes.
  * Uses 100% clean CSS/Tailwind classes with ZERO inline style="..." attributes.
  * 
- * Complies with:
- *  • Zero inline styles standard (Audit compliant)
- *  • 100% LLM Readability for non-JS crawlers
- *  • High-performance Core Web Vitals & CSS separation
+ * Rules:
+ *  • Contact Command Hub is EXCLUSIVE to homepage & dashboard ('/' & '/dashboard')
+ *  • All secondary subpages ('/chat', '/contracts', '/risk', etc.) contain the reserved Ad/Sponsorship slot
+ *  • 100% LLM Readability for non-JS crawlers & search engines
  */
 
 export function getSemanticHtmlForRoute(routePath) {
@@ -33,6 +33,7 @@ export function getSemanticHtmlForRoute(routePath) {
     </header>
   `;
 
+  // Sovereign Executive Command Hub (EXCLUSIVE to Dashboard & Homepage)
   const commonContactHub = `
     <section class="bg-slate-900 border-2 border-sky-600 rounded-3xl p-6 my-6 text-slate-100 shadow-2xl" dir="rtl">
       <div class="flex items-center justify-between flex-wrap gap-4 border-b border-slate-800 pb-4 mb-4">
@@ -67,6 +68,21 @@ export function getSemanticHtmlForRoute(routePath) {
     </section>
   `;
 
+  // Designated Advertising & Sponsorship Slot (For all secondary pages)
+  const commonAdSponsorSlot = `
+    <section class="bg-gradient-to-r from-slate-900 via-slate-950 to-slate-900 border border-cyan-500/20 rounded-3xl p-5 my-6 text-slate-100 shadow-xl" dir="rtl">
+      <div class="flex items-center justify-between flex-wrap gap-3">
+        <div class="flex items-center gap-3">
+          <span class="px-3 py-1 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 text-xs font-bold font-mono">AD / SPONSORSHIP</span>
+          <span class="text-xs text-slate-300 font-bold">مساحة مخصصة لرعاية الشركات والشركاء الإعلاميين والإعلانات المؤسسية مستقبلاً</span>
+        </div>
+        <a href="mailto:juristech.solutions@outlook.com?subject=Advertising%20%26%20Sponsorship%20Inquiry" class="text-xs text-cyan-400 hover:text-cyan-300 font-bold no-underline">
+          حجز مساحة إعلانية ↗
+        </a>
+      </div>
+    </section>
+  `;
+
   const commonFooter = `
     <footer class="bg-slate-950 border-t border-slate-800 p-8 text-slate-400 font-sans text-xs" dir="rtl">
       <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -80,8 +96,8 @@ export function getSemanticHtmlForRoute(routePath) {
             <li><a href="/chat" class="text-slate-400 hover:text-white no-underline">المستشار القانوني الذكي</a></li>
             <li><a href="/contracts" class="text-slate-400 hover:text-white no-underline">صانع ومولد العقود</a></li>
             <li><a href="/risk" class="text-slate-400 hover:text-white no-underline">مدقق المخاطر والبنود التعسفية</a></li>
-            <li><a href="/repository" class="text-slate-400 hover:text-white no-underline">مستودع المليون عقد</a></li>
-            <li><a href="/company-formation" class="text-slate-400 hover:text-white no-underline">تأسيس الشركات وحوكمتها</a></li>
+            <li><a href="/repository" class="text-slate-400 hover:text-white no-underline">مستودع العقود والنماذج</a></li>
+            <li><a href="/sovereign-ai-hub" class="text-slate-400 hover:text-white no-underline">مركز Google AI Pro السيادي</a></li>
           </ul>
         </div>
         <div>
@@ -95,12 +111,10 @@ export function getSemanticHtmlForRoute(routePath) {
           </ul>
         </div>
         <div>
-          <strong class="text-slate-100 block mb-2">التواصل وحسابات التواصل الرسمية</strong>
+          <strong class="text-slate-100 block mb-2">الرعاية وحسابات التواصل الرسمية</strong>
           <p class="leading-relaxed m-0 mb-3">
-            هاتف / واتساب: <a href="https://wa.me/201126674337" class="text-sky-400 no-underline font-mono">+201126674337</a><br>
-            البريد: <a href="mailto:Drzyogo.ca@gmail.com" class="text-sky-400 no-underline font-mono">Drzyogo.ca@gmail.com</a><br>
-            إنستا باي: +201031222262<br>
-            الموقع: www.juristech.solutions
+            الموقع الإلكتروني: www.juristech.solutions<br>
+            المقر الإقليمي: المملكة الأردنية الهاشمية - عمّان
           </p>
           <div class="flex gap-3 flex-wrap">
             <a href="https://www.linkedin.com/in/juristech-solutions-14954b427/" target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300 font-bold no-underline">LinkedIn</a>
@@ -118,6 +132,7 @@ export function getSemanticHtmlForRoute(routePath) {
     </footer>
   `;
 
+  // 1. Homepage & Dashboard (Sole location of the Executive Contact Command Hub)
   if (routePath === '/' || routePath === '/dashboard') {
     return `
       ${commonHeader}
@@ -198,15 +213,15 @@ export function getSemanticHtmlForRoute(routePath) {
               <p class="text-xs text-slate-400 leading-relaxed m-0">توقيع إلكتروني معتمد وطوابع زمنية موثقة SHA-256 وأرشفة آمنة لا مركزية مع تشفير طرف لطرف End-to-End.</p>
             </article>
             <article class="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow">
-              <h3 class="text-base font-bold text-sky-400 mb-2"><a href="/investigate" class="text-sky-400 hover:text-sky-300 no-underline">9. مفتش ومحقق المستندات والتحري</a></h3>
-              <p class="text-xs text-slate-400 leading-relaxed m-0">فحص أدلة ومستندات وتحديد التعارضات في العقود المعقدة وكشف تزوير التوقيعات والتواريخ والبنود الخفية.</p>
+              <h3 class="text-base font-bold text-sky-400 mb-2"><a href="/sovereign-ai-hub" class="text-sky-400 hover:text-sky-300 no-underline">9. مركز Google AI Pro السيادي التنبؤي</a></h3>
+              <p class="text-xs text-slate-400 leading-relaxed m-0">الاستحواذ التنبؤي M&A، المحاكاة القضائية وتوقع نسب كسب القضايا، كشف التزوير والاحتيال، والامتثال العابر للحدود.</p>
             </article>
             <article class="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow">
               <h3 class="text-base font-bold text-emerald-400 mb-2"><a href="/company-formation" class="text-emerald-400 hover:text-emerald-300 no-underline">10. تأسيس المنشآت والشركات</a></h3>
               <p class="text-xs text-slate-400 leading-relaxed m-0">صياغة عقود التأسيس والأنظمة الأساسية واتفاقيات الشركاء وفق أنظمة الشركات والاستثمار في السعودية والإمارات ومصر.</p>
             </article>
             <article class="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow">
-              <h3 class="text-base font-bold text-amber-400 mb-2"><a href="/acquisition" class="text-amber-400 hover:text-amber-300 no-underline">11. منصة الاستحواذ والتراخيص الدولية</a></h3>
+              <h3 class="text-base font-bold text-amber-400 mb-2"><a href="/b2b-proposals" class="text-amber-400 hover:text-amber-300 no-underline">11. العروض المؤسسية B2B والتراخيص</a></h3>
               <p class="text-xs text-slate-400 leading-relaxed m-0">صفقات الاستحواذ وعقود نقل الملكية الفكرية والتراخيص الدولية المتوافقة مع قوانين الملكية الفكرية العالمية WIPO.</p>
             </article>
             <article class="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow">
@@ -216,89 +231,36 @@ export function getSemanticHtmlForRoute(routePath) {
           </div>
         </section>
 
-        <!-- Real-World Multimillion Dollar Case Studies -->
-        <section class="my-10 bg-slate-900 border border-slate-800 p-8 rounded-3xl shadow-xl">
-          <h2 class="text-xl sm:text-2xl font-black text-slate-100 m-0">دراسات حالة واقعية معتمدة لحل نزاعات العقود وتوفير الملايين</h2>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
-            <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800">
-              <span class="text-emerald-400 font-bold text-xs block">⚡ توفير 3.8 مليون دولار | الرياض، السعودية</span>
-              <strong class="text-slate-100 block my-2">تحالف الطاقة والمقاولات الهندسية (EPC Energy Consortium)</strong>
-              <p class="text-xs text-slate-400 leading-relaxed m-0">تم فحص عقد بقيمة 14.2 مليون دولار وكشف بنود المسؤولية التضامنية غير المحدودة وتعديلها استناداً للمادة 178 من نظام المعاملات المدنية السعودي لحماية أصول الشركاء.</p>
-            </div>
-            <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800">
-              <span class="text-sky-400 font-bold text-xs block">⚡ حماية 8.5 مليون دولار | مركز دبي المالي العالمي (DIFC)</span>
-              <strong class="text-slate-100 block my-2">صفقة اندماج واستحواذ التكنولوجيا المالية (FinTech M&A)</strong>
-              <p class="text-xs text-slate-400 leading-relaxed m-0">حماية ونقل خوارزميات الذكاء الاصطناعي وبراءات الاختراع استناداً لقانون DIFC رقم 6/2004 وضمان حقوق المساهمين المؤسسين.</p>
-            </div>
-            <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800">
-              <span class="text-amber-400 font-bold text-xs block">⚡ تحديد سقف المسؤولية بـ 100% | ديلاوير، أمريكا</span>
-              <strong class="text-slate-100 block my-2">عقد برمجيات سحابية للمؤسسات (Fortune 500 SaaS MSA)</strong>
-              <p class="text-xs text-slate-400 leading-relaxed m-0">إلغاء بند التعويض غير المشروط وتثبيت سقف المسؤولية بـ 12 شهراً من الرسوم المدفوعة استناداً لقانون التجارة الموحد الأمريكي UCC 2-719.</p>
-            </div>
-            <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800">
-              <span class="text-purple-400 font-bold text-xs block">⚡ استرداد 1.45 مليون دولار | الإسكندرية / القاهرة، مصر</span>
-              <strong class="text-slate-100 block my-2">عقد الخدمات اللوجستية والنقل البحري (Maritime Logistics)</strong>
-              <p class="text-xs text-slate-400 leading-relaxed m-0">إلغاء تسييل خطابات الضمان البنكية استناداً للمادة 147 من القانون المدني المصري ونظرية الظروف الطارئة وحماية السيولة النقدية.</p>
-            </div>
-          </div>
-        </section>
-
         <!-- Subscription Packages -->
         <section class="my-10">
           <h2 class="text-2xl font-black text-slate-100 border-b-2 border-sky-600 pb-2 mb-6">
-            باقات الاشتراك المخصصة للمؤسسات والشركات (خصم 30% لفترة محدودة)
+            باقات الاشتراك المخصصة للمؤسسات والشركات (خصم 30% لعام 2026)
           </h2>
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow">
-              <span class="text-sky-400 font-bold text-sm">باقة الشركات الناشئة (Startup)</span>
-              <div class="text-3xl font-black text-slate-100 my-2">$49 <span class="text-xs text-slate-400">/ شهرياً</span></div>
-              <ul class="text-xs text-slate-300 leading-loose pr-4 mb-6">
-                <li>مساعد قانوني متعدد اللغات 24/7</li>
-                <li>تدقيق حتى 10 عقود شهرياً</li>
-                <li>كشف بنود المخاطر الأساسية وتصدير التقارير</li>
-              </ul>
-              <a href="/payment" class="block text-center bg-sky-600 hover:bg-sky-500 text-white p-3 rounded-xl no-underline font-bold">اشتراك باقة الناشئة</a>
+            <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl flex flex-col justify-between">
+              <div>
+                <h3 class="text-lg font-bold text-sky-400">باقة الشركات الصغرى والناشئة</h3>
+                <span class="text-3xl font-black text-white block my-2 font-mono">$49 <span class="text-xs text-slate-400 font-normal">/ شهرياً</span></span>
+                <p class="text-xs text-slate-400 leading-relaxed">المستشار الذكي ومولد العقود حتى 10 عقود شهرياً مع تصدير Word و PDF وتغطية إقليمية.</p>
+              </div>
+              <a href="/payment" class="bg-sky-600 hover:bg-sky-500 text-white text-center py-2.5 rounded-xl font-bold text-xs no-underline mt-4 block">اشتراك الباقة ($49)</a>
             </div>
-            <div class="bg-slate-900 border-2 border-indigo-500 p-6 rounded-3xl shadow-xl">
-              <span class="text-indigo-300 font-bold text-sm">باقة الشركات المتوسطة (SMEs) - الأكثر طلباً</span>
-              <div class="text-3xl font-black text-slate-100 my-2">$139 <span class="text-xs text-slate-400">/ شهرياً</span></div>
-              <ul class="text-xs text-slate-300 leading-loose pr-4 mb-6">
-                <li>كل مزايا باقة الناشئة</li>
-                <li>تدقيق حتى 50 عقداً شهرياً</li>
-                <li>فحص متقدم إطار 8 محاور وصياغة بديلة</li>
-                <li>تكامل أساسي مع أنظمة ERP والشركات</li>
-              </ul>
-              <a href="/payment" class="block text-center bg-indigo-600 hover:bg-indigo-500 text-white p-3 rounded-xl no-underline font-bold">اشتراك باقة المتوسطة</a>
+            <div class="bg-slate-900 border-2 border-indigo-600 p-6 rounded-3xl flex flex-col justify-between shadow-xl">
+              <div>
+                <span class="bg-indigo-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full inline-block mb-2">⭐ الأكثر طلباً</span>
+                <h3 class="text-lg font-bold text-indigo-400">باقة الشركات المتوسطة والنمو</h3>
+                <span class="text-3xl font-black text-white block my-2 font-mono">$139 <span class="text-xs text-slate-400 font-normal">/ شهرياً</span></span>
+                <p class="text-xs text-slate-400 leading-relaxed">Google AI Pro، التفاوض الآلي، المحاكاة القضائية، و50 عقداً شهرياً وتغطية 9 دول.</p>
+              </div>
+              <a href="/payment" class="bg-indigo-600 hover:bg-indigo-500 text-white text-center py-2.5 rounded-xl font-bold text-xs no-underline mt-4 block">اشتراك الباقة ($139)</a>
             </div>
-            <div class="bg-slate-900 border border-amber-600 p-6 rounded-3xl shadow">
-              <span class="text-amber-400 font-bold text-sm">باقة كبرى المؤسسات (Enterprise)</span>
-              <div class="text-3xl font-black text-slate-100 my-2">$349 <span class="text-xs text-slate-400">/ شهرياً</span></div>
-              <ul class="text-xs text-slate-300 leading-loose pr-4 mb-6">
-                <li>عقود غير محدودة + رادار ثغرات فوري</li>
-                <li>تحليل عابر للحدود (ICC / DIAC / UNCITRAL)</li>
-                <li>ربط كامل مع أنظمة الشركات API</li>
-                <li>دعم تنفيذي مباشر مع المستشار د. محمد مصطفى</li>
-              </ul>
-              <a href="/payment" class="block text-center bg-amber-600 hover:bg-amber-500 text-white p-3 rounded-xl no-underline font-bold">اشتراك باقة المؤسسات</a>
-            </div>
-          </div>
-        </section>
-
-        <!-- Frequently Asked Questions (FAQ) Section -->
-        <section class="my-10 bg-slate-900 border border-slate-800 p-8 rounded-3xl shadow">
-          <h2 class="text-xl sm:text-2xl font-black text-slate-100 m-0">الأسئلة الشائعة حول منصة الذكاء الاصطناعي القانوني JurisTech</h2>
-          <div class="mt-6 grid gap-4 text-sm">
-            <div>
-              <strong class="text-sky-400 block mb-1">س: كيف يقوم الذكاء الاصطناعي بتحليل العقود وكشف الثغرات والبنود التعسفية؟</strong>
-              <p class="text-slate-400 leading-relaxed m-0">يقوم محرك الذكاء الاصطناعي بمقارنة بنود العقد المرفوعة مع الأنظمة التجارية النافذة وسوابق المحاكم ومراكز التحكيم الدولية، وتحديد شروط التعويض غير المحدود وغرامات التأخير غير المتناسبة واقتراح بنود بديلة متوازنة فوراً.</p>
-            </div>
-            <div>
-              <strong class="text-sky-400 block mb-1">س: ما هو بروتوكول القفل القضائي السيادي (Jurisdiction Lock)؟</strong>
-              <p class="text-slate-400 leading-relaxed m-0">يضمن البروتوكول أن تكون نصوص ومواد العقد وتفسيراته ومحاكم الاختصاص مقيدة بالقوانين والمراسيم والأنظمة المعمول بها في الدولة المحددة حصراً (السعودية، الإمارات، مصر، الأردن، أمريكا، بريطانيا، الأونسيترال).</p>
-            </div>
-            <div>
-              <strong class="text-sky-400 block mb-1">س: هل بيانات وعقود الشركات مشفرة ومحمية من الوصول غير المصرح به؟</strong>
-              <p class="text-slate-400 leading-relaxed m-0">تخضع جميع الوثائق لتشفير مصرفي كامل بدرجة AES-GCM 256-bit على جانب العميل مع عزل تام للبيانات وضمان عدم مشاركتها أو تدريب النماذج العامة عليها وفق متطلبات GDPR و SOC2.</p>
+            <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl flex flex-col justify-between">
+              <div>
+                <h3 class="text-lg font-bold text-amber-400">باقة المؤسسات السيادية</h3>
+                <span class="text-3xl font-black text-white block my-2 font-mono">$349 <span class="text-xs text-slate-400 font-normal">/ شهرياً</span></span>
+                <p class="text-xs text-slate-400 leading-relaxed">الاستحواذ M&A غير المحدود، كشف التزوير والاحتيال، الامتثال الدولي، ودعم تنفيذي 24/7.</p>
+              </div>
+              <a href="/payment" class="bg-amber-600 hover:bg-amber-500 text-white text-center py-2.5 rounded-xl font-bold text-xs no-underline mt-4 block">اشتراك الباقة ($349)</a>
             </div>
           </div>
         </section>
@@ -308,11 +270,12 @@ export function getSemanticHtmlForRoute(routePath) {
     `;
   }
 
+  // 2. Secondary Routes: Clean tool layouts with reserved Advertising / Sponsorship slot
   if (routePath === '/chat') {
     return `
       ${commonHeader}
       <main class="max-w-7xl mx-auto p-6 font-sans text-slate-100" dir="rtl">
-        ${commonContactHub}
+        ${commonAdSponsorSlot}
         <section class="my-8">
           <h1 class="text-3xl sm:text-4xl font-black text-slate-100 leading-tight mb-4">
             المستشار القانوني الذكي للشركات | استشارات فورية موثوقة 24/7
@@ -339,7 +302,7 @@ export function getSemanticHtmlForRoute(routePath) {
     return `
       ${commonHeader}
       <main class="max-w-7xl mx-auto p-6 font-sans text-slate-100" dir="rtl">
-        ${commonContactHub}
+        ${commonAdSponsorSlot}
         <section class="my-8">
           <h1 class="text-3xl sm:text-4xl font-black text-slate-100 leading-tight mb-4">
             صياغة وتدقيق العقود الذكية للشركات بالذكاء الاصطناعي
@@ -371,7 +334,7 @@ export function getSemanticHtmlForRoute(routePath) {
     return `
       ${commonHeader}
       <main class="max-w-7xl mx-auto p-6 font-sans text-slate-100" dir="rtl">
-        ${commonContactHub}
+        ${commonAdSponsorSlot}
         <section class="my-8">
           <h1 class="text-3xl sm:text-4xl font-black text-slate-100 leading-tight mb-4">
             فحص المخاطر العقدية وكشف البنود التعسفية بالذكاء الاصطناعي
@@ -395,11 +358,11 @@ export function getSemanticHtmlForRoute(routePath) {
     `;
   }
 
-  // Generic rich fallback with 100% clean CSS classes
+  // Generic clean fallback with reserved Ad slot for all other routes
   return `
     ${commonHeader}
     <main class="max-w-7xl mx-auto p-6 font-sans text-slate-100" dir="rtl">
-      ${commonContactHub}
+      ${commonAdSponsorSlot}
       <section class="my-8">
         <h1 class="text-2xl sm:text-3xl font-black text-slate-100 leading-tight mb-4">
           منصة JurisTech Solutions | حلول الذكاء الاصطناعي القانوني والامتثال التشريعي
