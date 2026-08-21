@@ -18,6 +18,7 @@ const PATHS = [
   '/negotiation',
   '/enterprise-audit',
   '/lead-radar',
+  '/sovereign-ai-hub',
   '/video-hub',
   '/marketing',
   '/reports',
@@ -25,6 +26,8 @@ const PATHS = [
   '/support',
   '/about',
   '/b2b-proposals',
+  '/privacy',
+  '/terms',
   '/legal/terms-of-service.html',
   '/legal/privacy-policy.html',
 ];

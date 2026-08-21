@@ -13,6 +13,7 @@
     "clean": "node -e \"import('fs').then(fs=>fs.rmSync('dist',{recursive:true,force:true}))\"",
     "build": "tsc && vite build && node scripts/prerender-routes.mjs",
     "build:production": "npm run prebuild && tsc && vite build && node scripts/prerender-routes.mjs",
+    "daily:update": "node scripts/daily-autonomous-evolution.mjs",
     "optimize:assets": "echo Asset Optimization and Compression verified (Brotli + Gzip active).",
     "refactor:modules": "echo Monolithic to Modular architecture verified under src/services/",
     "services:split": "echo Decoupled services (aiService, authService, paymentService, contractService) active.",
