@@ -31,6 +31,8 @@ import TwoFactorSecurityModal from '../components/TwoFactorSecurityModal';
 import ExecutiveCommandBar from '../components/ExecutiveCommandBar';
 import InteractiveSassGlobalMap from '../components/InteractiveSassGlobalMap';
 import SovereignServicesCatalog from '../components/SovereignServicesCatalog';
+import ErrorBoundary from '../components/ErrorBoundary';
+
 
 interface ActivityItem {
   id: string;
@@ -321,11 +323,11 @@ export default function Dashboard() {
   };
 
   return (
-    <main className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-950 text-slate-100 font-sans" dir={isRtl ? 'rtl' : 'ltr'}>
+    <main className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-950 text-slate-100 font-sans w-full max-w-full overflow-x-hidden" dir={isRtl ? 'rtl' : 'ltr'}>
       <SEO />
       <HeartbeatBackground />
       
-      <div className="max-w-7xl mx-auto space-y-8 relative z-10">
+      <div className="max-w-7xl mx-auto space-y-8 relative z-10 w-full max-w-full overflow-x-hidden">
 
         {/* 👑 1. CONSOLIDATED EXECUTIVE COMMAND BAR (ONLY AT TOP OF PAGE) */}
         <ExecutiveCommandBar onOpenSecurity={() => setShowSecurityModal(true)} />
@@ -379,12 +381,17 @@ export default function Dashboard() {
         {/* SECTION 1: 🗺️ GLOBAL INTERACTIVE SAAS MAP & CUSTOMER JOURNEY         */}
         {/* ──────────────────────────────────────────────────────────────────── */}
         <section id="sec-map" className="space-y-6 pt-2">
-          {/* World-Class SaaS Interactive Map */}
-          <InteractiveSassGlobalMap />
+          {/* World-Class SaaS Interactive Map — wrapped in ErrorBoundary to prevent page crash */}
+          <ErrorBoundary>
+            <InteractiveSassGlobalMap />
+          </ErrorBoundary>
 
           {/* 5-Stage Customer Journey Roadmap */}
-          <InteractiveCustomerJourneyMap />
+          <ErrorBoundary>
+            <InteractiveCustomerJourneyMap />
+          </ErrorBoundary>
         </section>
+
 
         {/* ──────────────────────────────────────────────────────────────────── */}
         {/* SECTION 2: ⚡ AI CONTRACT STUDIO & INSTANT RISK RADAR WORKSPACE       */}

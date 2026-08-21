@@ -194,9 +194,10 @@ function MainAppContent() {
   return (
     <ErrorBoundary>
       <GlobalForceUpdate />
-      <div className="min-h-screen bg-slate-950 text-white font-sans selection:bg-cyan-500 selection:text-slate-950 flex flex-col justify-between">
-        <div>
+      <div className="min-h-screen bg-slate-950 text-white font-sans selection:bg-cyan-500 selection:text-slate-950 flex flex-col justify-between w-full max-w-full overflow-x-hidden">
+        <div className="w-full max-w-full overflow-x-hidden">
           <Navbar />
+
 
           <Suspense fallback={<RouteFallback />}>
             <Routes>
@@ -342,6 +343,7 @@ function MainAppContent() {
               <VisitorRadar />
               <AIChatbotConcierge />
               <GdprPrivacyBanner />
+              <LeadCaptureModal />
             </Suspense>
           )}
           <MobileBottomNav />
