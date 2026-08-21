@@ -94,7 +94,7 @@ export default function Navbar() {
   useEffect(() => { setIsOpen(false); setShowMoreMenu(false); }, [pathname]);
 
   function navText(key: string) {
-    return t(`Nav.${key}`) || (gt.nav as Record<string, string>)[key] || key;
+    return (gt.nav as Record<string, string>)[key] || t(`Nav.${key}`) || key;
   }
 
   const allLinks = [...VISITOR_LINKS, ...SUBSCRIBER_LINKS.filter(l => !VISITOR_LINKS.some(v => v.to === l.to))];

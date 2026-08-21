@@ -12,8 +12,8 @@
  */
 
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { usePlatformLocale } from '../lib/universalTranslator';
 import {
   Sparkles,
   BookOpen,
@@ -56,8 +56,7 @@ interface JourneyStep {
 }
 
 export default function InteractiveCustomerJourneyMap() {
-  const { i18n } = useTranslation();
-  const isRtl = i18n.language === 'ar';
+  const { l, lArray, isRtl } = usePlatformLocale();
   const navigate = useNavigate();
 
   const [activeStepIndex, setActiveStepIndex] = useState<number>(0);
@@ -260,9 +259,10 @@ export default function InteractiveCustomerJourneyMap() {
           </h2>
 
           <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
-            {isRtl
-              ? 'خريطة تسلسلية تفاعلية توضح مراحل عمل المنصة المتكاملة في 6 مراحل سيادية — انقر على أي مرحلة لاستكشاف خدماتها وقيمتها المضافة وبدء استخدامها فوراً.'
-              : 'An interactive sequential roadmap illustrating our 6-pillar sovereign ecosystem — click any phase to explore specialized tools, metrics, and instant deployment.'}
+            {l(
+              'خريطة تسلسلية تفاعلية توضح مراحل عمل المنصة المتكاملة في 6 مراحل سيادية — انقر على أي مرحلة لاستكشاف خدماتها وقيمتها المضافة وبدء استخدامها فوراً.',
+              'An interactive sequential roadmap illustrating our 6-pillar sovereign ecosystem — click any phase to explore specialized tools, metrics, and instant deployment.'
+            )}
           </p>
         </div>
 
@@ -309,7 +309,7 @@ export default function InteractiveCustomerJourneyMap() {
                     </div>
 
                     <span className="text-[10px] font-sans font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-400">
-                      {isRtl ? 'المرحلة' : 'Step'} {s.stepNumber}
+                      {l('المرحلة', 'Step')} {s.stepNumber}
                     </span>
                   </div>
 
@@ -317,10 +317,10 @@ export default function InteractiveCustomerJourneyMap() {
                     <h4 className={`text-xs font-bold line-clamp-1 transition-colors ${
                       isActive ? 'text-cyan-300' : 'text-slate-200'
                     }`}>
-                      {isRtl ? s.titleAr : s.titleEn}
+                      {l(s.titleAr, s.titleEn)}
                     </h4>
                     <p className="text-[10px] text-slate-400 line-clamp-1 font-sans">
-                      {isRtl ? s.metricAr : s.metricEn}
+                      {l(s.metricAr, s.metricEn)}
                     </p>
                   </div>
                 </button>
@@ -342,13 +342,13 @@ export default function InteractiveCustomerJourneyMap() {
               </div>
               <div className="space-y-1">
                 <span className={`inline-block text-[11px] font-bold uppercase px-3 py-1 rounded-full border ${currentStep.badgeColor}`}>
-                  {isRtl ? `المرحلة 0${currentStep.stepNumber} من 06 • ${currentStep.metricAr}` : `Phase 0${currentStep.stepNumber} of 06 • ${currentStep.metricEn}`}
+                  {l(`المرحلة 0${currentStep.stepNumber} من 06 • ${currentStep.metricAr}`, `Phase 0${currentStep.stepNumber} of 06 • ${currentStep.metricEn}`)}
                 </span>
                 <h3 className="text-xl sm:text-2xl font-bold text-white">
-                  {isRtl ? currentStep.titleAr : currentStep.titleEn}
+                  {l(currentStep.titleAr, currentStep.titleEn)}
                 </h3>
                 <p className="text-xs sm:text-sm text-cyan-300 font-medium">
-                  {isRtl ? currentStep.subtitleAr : currentStep.subtitleEn}
+                  {l(currentStep.subtitleAr, currentStep.subtitleEn)}
                 </p>
               </div>
             </div>
@@ -358,7 +358,7 @@ export default function InteractiveCustomerJourneyMap() {
               onClick={() => navigate(currentStep.targetRoute)}
               className={`px-6 py-3.5 rounded-2xl bg-gradient-to-r ${currentStep.accentGradient} hover:brightness-110 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-lg active:scale-98 cursor-pointer`}
             >
-              <span>{isRtl ? currentStep.ctaTextAr : currentStep.ctaTextEn}</span>
+              <span>{l(currentStep.ctaTextAr, currentStep.ctaTextEn)}</span>
               {isRtl ? <ArrowLeft className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
             </button>
           </div>
@@ -370,17 +370,17 @@ export default function InteractiveCustomerJourneyMap() {
             <div className="lg:col-span-5 space-y-4">
               <h4 className="text-xs font-black text-slate-300 uppercase tracking-wider flex items-center gap-2">
                 <Award className="w-4 h-4 text-cyan-400" />
-                <span>{isRtl ? 'الأثر القانوني والتشغيلي للعميل' : 'Client Commercial & Legal Impact'}</span>
+                <span>{l('الأثر القانوني والتشغيلي للعميل', 'Client Commercial & Legal Impact')}</span>
               </h4>
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                {isRtl ? currentStep.descriptionAr : currentStep.descriptionEn}
+                {l(currentStep.descriptionAr, currentStep.descriptionEn)}
               </p>
 
               <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2">
-                <div className="text-[11px] text-slate-400">{isRtl ? 'القيمة المضافة المعيارية:' : 'Standard Value Metric:'}</div>
+                <div className="text-[11px] text-slate-400">{l('القيمة المضافة المعيارية:', 'Standard Value Metric:')}</div>
                 <div className="text-lg font-black text-emerald-400 font-mono flex items-center gap-2">
                   <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-                  <span>{isRtl ? currentStep.metricAr : currentStep.metricEn}</span>
+                  <span>{l(currentStep.metricAr, currentStep.metricEn)}</span>
                 </div>
               </div>
             </div>
@@ -389,11 +389,11 @@ export default function InteractiveCustomerJourneyMap() {
             <div className="lg:col-span-7 space-y-4">
               <h4 className="text-xs font-black text-slate-300 uppercase tracking-wider flex items-center gap-2">
                 <Zap className="w-4 h-4 text-amber-400" />
-                <span>{isRtl ? 'المزايا الفورية المضمنة في هذه المرحلة' : 'Instant Deliverables Included'}</span>
+                <span>{l('المزايا الفورية المضمنة في هذه المرحلة', 'Instant Deliverables Included')}</span>
               </h4>
 
               <div className="space-y-3">
-                {(isRtl ? currentStep.featuresAr : currentStep.featuresEn).map((feature, fIdx) => (
+                {lArray(currentStep.featuresAr, currentStep.featuresEn).map((feature, fIdx) => (
                   <div
                     key={fIdx}
                     className="p-3.5 rounded-2xl bg-slate-950/60 border border-slate-800/80 flex items-start gap-3 hover:border-slate-700 transition-colors"
@@ -419,7 +419,7 @@ export default function InteractiveCustomerJourneyMap() {
               className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-1.5 transition-colors cursor-pointer"
             >
               {isRtl ? <ArrowRight className="w-3.5 h-3.5" /> : <ArrowLeft className="w-3.5 h-3.5" />}
-              <span>{isRtl ? 'المرحلة السابقة' : 'Previous Phase'}</span>
+              <span>{l('المرحلة السابقة', 'Previous Phase')}</span>
             </button>
 
             <div className="flex items-center gap-1.5">
@@ -439,7 +439,7 @@ export default function InteractiveCustomerJourneyMap() {
               disabled={activeStepIndex === steps.length - 1}
               className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-1.5 transition-colors cursor-pointer"
             >
-              <span>{isRtl ? 'المرحلة التالية' : 'Next Phase'}</span>
+              <span>{l('المرحلة التالية', 'Next Phase')}</span>
               {isRtl ? <ArrowLeft className="w-3.5 h-3.5" /> : <ArrowRight className="w-3.5 h-3.5" />}
             </button>
           </div>

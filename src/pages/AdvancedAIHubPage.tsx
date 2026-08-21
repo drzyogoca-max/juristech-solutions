@@ -10,6 +10,7 @@ import { callAI } from '../lib/api';
 import { extractPDFTextMultiStage } from '../lib/pdfExtractor';
 import { exportDocumentMultiFormat } from '../lib/documentExporter';
 import { recordLawyerRLHFFeedback } from '../services/criticSelfLearningEngine';
+import { usePlatformLocale } from '../lib/universalTranslator';
 import SEO from '../components/SEO';
 
 interface JurisdictionConfig {
@@ -219,8 +220,7 @@ ${input}`
 ];
 
 export default function AdvancedAIHubPage() {
-  const { i18n } = useTranslation();
-  const isRtl = i18n.language === 'ar';
+  const { l, isRtl, gt, i18n } = usePlatformLocale();
 
   const [activeModule, setActiveModule] = useState<ModuleConfig>(MODULES[0]);
   const [selectedJurisdiction, setSelectedJurisdiction] = useState<JurisdictionConfig>(JURISDICTIONS[0]);
@@ -389,7 +389,7 @@ export default function AdvancedAIHubPage() {
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900 border border-cyan-500/30 shadow-lg">
             <Cpu className="w-4 h-4 text-cyan-400 animate-pulse" />
             <span className="text-xs font-black uppercase tracking-widest text-cyan-300">
-              {isRtl ? 'محرك Google Gemini Pro السيادي المتطور 2026' : 'Google Gemini Pro Sovereign AI Core'}
+              {l('محرك Google Gemini Pro السيادي المتطور 2026', 'Google Gemini Pro Sovereign AI Core')}
             </span>
             <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
               ● Live RLHF Self-Learning Active
@@ -397,28 +397,29 @@ export default function AdvancedAIHubPage() {
           </div>
 
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
-            {isRtl ? 'مركز حلول الذكاء الاصطناعي ' : 'Sovereign Multi-Model '}<span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-400">{isRtl ? 'السيادي التنبؤي والتحليلي' : 'AI Predictive & Analytical Hub'}</span>
+            {l('مركز حلول الذكاء الاصطناعي ', 'Sovereign Multi-Model ')}<span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-400">{l('السيادي التنبؤي والتحليلي', 'AI Predictive & Analytical Hub')}</span>
           </h1>
 
           <p className="text-slate-300 max-w-3xl mx-auto text-xs sm:text-sm leading-relaxed font-medium">
-            {isRtl
-              ? '5 وحدات ذكاء اصطناعي سيادية فائقة القدرة تدعم رفع كافة أنواع الملفات (PDF, Word, TXT)، استخراج البنود، محاكاة النزاعات القضائية، وفحص صفقات الاستحواذ مع التوافق التشريعي الكامل لكافة دول المنصة والتعلم الذاتي المستمر.'
-              : '5 enterprise-grade sovereign AI modules supporting multi-format uploads (PDF, DOCX, TXT), court dispute simulation, predictive M&A, cross-border compliance, and continuous self-learning.'}
+            {l(
+              '5 وحدات ذكاء اصطناعي سيادية فائقة القدرة تدعم رفع كافة أنواع الملفات (PDF, Word, TXT)، استخراج البنود، محاكاة النزاعات القضائية، وفحص صفقات الاستحواذ مع التوافق التشريعي الكامل لكافة دول المنصة والتعلم الذاتي المستمر.',
+              '5 enterprise-grade sovereign AI modules supporting multi-format uploads (PDF, DOCX, TXT), court dispute simulation, predictive M&A, cross-border compliance, and continuous self-learning.'
+            )}
           </p>
 
           {/* Real-Time Engine Telemetry Badges */}
           <div className="flex items-center justify-center gap-3 flex-wrap pt-2 text-xs font-mono">
             <span className="px-3 py-1 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-              <span>{isRtl ? 'دقة التنبؤ: 99.4%' : 'Accuracy: 99.4%'}</span>
+              <span>{l('دقة التنبؤ: 99.4%', 'Accuracy: 99.4%')}</span>
             </span>
             <span className="px-3 py-1 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 flex items-center gap-1.5">
               <Shield className="w-3.5 h-3.5 text-emerald-400" />
-              <span>{isRtl ? 'تشفير AES-256 E2EE' : 'AES-256 E2EE'}</span>
+              <span>{l('تشفير AES-256 E2EE', 'AES-256 E2EE')}</span>
             </span>
             <span className="px-3 py-1 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 flex items-center gap-1.5">
               <Globe className="w-3.5 h-3.5 text-sky-400" />
-              <span>{isRtl ? '9 ولايات تشريعية معتمدة' : '9 Supported Jurisdictions'}</span>
+              <span>{l('9 ولايات تشريعية معتمدة', '9 Supported Jurisdictions')}</span>
             </span>
           </div>
 
@@ -432,10 +433,10 @@ export default function AdvancedAIHubPage() {
             <Globe className="w-5 h-5 text-cyan-400 shrink-0" />
             <div>
               <span className="text-xs font-bold text-slate-200 block">
-                {isRtl ? 'حدد النظام التشريعي والقضائي الحاكم للتحليل:' : 'Select Target Governing Legal System:'}
+                {l('حدد النظام التشريعي والقضائي الحاكم للتحليل:', 'Select Target Governing Legal System:')}
               </span>
               <span className="text-[11px] text-slate-400">
-                {isRtl ? selectedJurisdiction.statutesAr : selectedJurisdiction.statutesEn}
+                {l(selectedJurisdiction.statutesAr, selectedJurisdiction.statutesEn)}
               </span>
             </div>
           </div>
@@ -465,7 +466,7 @@ export default function AdvancedAIHubPage() {
         {/* Module Selection Sidebar (5 Windows) */}
         <div className="w-full lg:w-1/3 flex flex-col gap-3">
           <div className="text-xs font-black uppercase text-slate-400 tracking-wider px-1">
-            {isRtl ? 'النوافذ الخمس للذكاء الاصطناعي السيادي:' : '5 Sovereign AI Analytical Modules:'}
+            {l('النوافذ الخمس للذكاء الاصطناعي السيادي:', '5 Sovereign AI Analytical Modules:')}
           </div>
 
           {MODULES.map((mod) => {
@@ -495,11 +496,11 @@ export default function AdvancedAIHubPage() {
                   <div className="space-y-1">
                     <div className="flex items-center justify-between gap-2">
                       <h3 className={`font-black text-xs sm:text-sm ${isActive ? 'text-white' : 'text-slate-200'}`}>
-                        {isRtl ? mod.titleAr : mod.titleEn}
+                        {l(mod.titleAr, mod.titleEn)}
                       </h3>
                     </div>
                     <p className="text-[11px] text-slate-400 leading-relaxed line-clamp-2">
-                      {isRtl ? mod.descAr : mod.descEn}
+                      {l(mod.descAr, mod.descEn)}
                     </p>
                   </div>
                 </div>

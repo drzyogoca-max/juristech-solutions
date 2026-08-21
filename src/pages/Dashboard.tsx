@@ -20,6 +20,7 @@ import { getVisitorAnalyticsSummary } from '../lib/visitorTracker';
 import { crmService } from '../services/crmService';
 import { getReviewQueueItems } from '../lib/reviewQueueService';
 import { getActiveGlobalTranslations } from '../lib/globalTranslations';
+import { usePlatformLocale } from '../lib/universalTranslator';
 
 import InteractiveCustomerJourneyMap from '../components/InteractiveCustomerJourneyMap';
 import WorkflowDashboard from '../components/WorkflowDashboard';
@@ -71,8 +72,7 @@ let dashboardMetricsCache: {
 } | null = null;
 
 export default function Dashboard() {
-  const { t, i18n } = useTranslation();
-  const isRtl = i18n.language === 'ar';
+  const { l, isRtl, gt, t, i18n } = usePlatformLocale();
   const navigate = useNavigate();
   const { isAdmin } = useAuth();
   const { jurisdiction, adaptiveConfig } = useAdaptiveUI();
@@ -300,8 +300,6 @@ export default function Dashboard() {
     }
   }
 
-  const gt = getActiveGlobalTranslations(i18n.language);
-
   const statItems = [
     { label: gt.dashboard.statContracts, value: stats.contracts, color: 'text-cyan-400', icon: FileText, bg: 'bg-cyan-500/10 border-cyan-500/20' },
     { label: gt.dashboard.statVisitorsToday, value: stats.totalVisits, color: 'text-blue-400', icon: Globe, bg: 'bg-blue-500/10 border-blue-500/20' },
@@ -372,7 +370,7 @@ export default function Dashboard() {
               onClick={() => scrollToSection(nav.targetId)}
               className="flex-1 min-w-[170px] sm:min-w-[190px] py-2.5 px-3.5 rounded-xl text-xs font-bold transition-all text-slate-300 hover:text-white hover:bg-slate-800 bg-slate-950/60 border border-slate-800/80 cursor-pointer shadow-sm active:scale-95"
             >
-              <span>{isRtl ? nav.labelAr : nav.labelEn}</span>
+              <span>{l(nav.labelAr, nav.labelEn)}</span>
             </button>
           ))}
         </div>
@@ -407,20 +405,20 @@ export default function Dashboard() {
                 </div>
                 <div>
                   <h2 className="text-base sm:text-lg font-bold text-white">
-                    {isRtl ? 'مستنداتي وعمليات التدقيق في هذه الجلسة' : 'My Session Documents & Recent Audits'}
+                    {l('مستنداتي وعمليات التدقيق في هذه الجلسة', 'My Session Documents & Recent Audits')}
                   </h2>
                   <p className="text-xs text-slate-400">
-                    {isRtl ? 'إدارة المستندات المفحوصة مؤخراً ومتابعة تقارير المخاطر' : 'Manage analyzed contracts and active risk reports'}
+                    {l('إدارة المستندات المفحوصة مؤخراً ومتابعة تقارير المخاطر', 'Manage analyzed contracts and active risk reports')}
                   </p>
                 </div>
               </div>
               {contractState?.fileName && (
                 <button
                   onClick={() => clearContractData()}
-                  aria-label={isRtl ? 'تفريغ الجلسة الحالية' : 'Clear current session'}
+                  aria-label={l('تفريغ الجلسة الحالية', 'Clear current session')}
                   className="text-xs font-bold text-slate-400 hover:text-red-400 transition-colors px-3 py-1.5 rounded-xl bg-slate-800/80 border border-slate-700 cursor-pointer"
                 >
-                  {isRtl ? 'تفريغ الجلسة' : 'Clear Session'}
+                  {l('تفريغ الجلسة', 'Clear Session')}
                 </button>
               )}
             </div>
@@ -434,10 +432,10 @@ export default function Dashboard() {
                   <div>
                     <h3 className="text-sm font-bold text-white">{contractState.fileName}</h3>
                     <div className="flex items-center gap-2 mt-1 text-xs text-slate-400">
-                      <span>{isRtl ? 'تم الرفع:' : 'Uploaded:'} {contractState.uploadedAt ? new Date(contractState.uploadedAt).toLocaleTimeString() : (isRtl ? 'الآن' : 'Just now')}</span>
+                      <span>{l('تم الرفع:', 'Uploaded:')} {contractState.uploadedAt ? new Date(contractState.uploadedAt).toLocaleTimeString() : l('الآن', 'Just now')}</span>
                       {contractState.auditResults && (
                         <span className="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 font-bold border border-emerald-500/30">
-                          {isRtl ? `مؤشر المخاطر: ${contractState.auditResults.riskScore}%` : `Risk: ${contractState.auditResults.riskScore}%`}
+                          {l(`مؤشر المخاطر: ${contractState.auditResults.riskScore}%`, `Risk: ${contractState.auditResults.riskScore}%`)}
                         </span>
                       )}
                     </div>
@@ -447,19 +445,20 @@ export default function Dashboard() {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => navigate('/risk')}
-                    aria-label={isRtl ? 'عرض التقرير التفصيلي' : 'View Full Report'}
+                    aria-label={l('عرض التقرير التفصيلي', 'View Full Report')}
                     className="px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs transition-all shadow-md cursor-pointer"
                   >
-                    {isRtl ? 'عرض التقرير' : 'View Report'}
+                    {l('عرض التقرير', 'View Report')}
                   </button>
                 </div>
               </div>
             ) : (
               <div className="py-6 px-4 text-center space-y-2 rounded-2xl bg-slate-950/60 border border-dashed border-slate-800">
                 <p className="text-xs text-slate-400">
-                  {isRtl
-                    ? 'لا توجد مستندات مفحوصة في الجلسة الحالية. ارفع عقدك عبر الأداة أدناه للبدء الفوري.'
-                    : 'No documents audited in current session yet. Upload contract below to get started.'}
+                  {l(
+                    'لا توجد مستندات مفحوصة في الجلسة الحالية. ارفع عقدك عبر الأداة أدناه للبدء الفوري.',
+                    'No documents audited in current session yet. Upload contract below to get started.'
+                  )}
                 </p>
               </div>
             )}
@@ -473,10 +472,10 @@ export default function Dashboard() {
               <div>
                 <h2 className="text-lg font-bold text-white flex items-center gap-2">
                   <Globe className="w-5 h-5 text-cyan-400" />
-                  <span>{isRtl ? 'مسار رفع العقود والتحليل القانوني الفوري' : 'Contract Upload & Instant Legal Risk Analysis'}</span>
+                  <span>{l('مسار رفع العقود والتحليل القانوني الفوري', 'Contract Upload & Instant Legal Risk Analysis')}</span>
                 </h2>
                 <p className="text-xs text-slate-400 mt-1">
-                  {isRtl ? 'حدد النظام التشريعي المستهدف لإجراء الفحص وصياغة البنود فورياً:' : 'Select governing jurisdiction for localized legal auditing:'}
+                  {l('حدد النظام التشريعي المستهدف لإجراء الفحص وصياغة البنود فورياً:', 'Select governing jurisdiction for localized legal auditing:')}
                 </p>
               </div>
 
@@ -491,14 +490,14 @@ export default function Dashboard() {
                   <button
                     key={reg.id}
                     onClick={() => setSelectedRegion(reg.id as any)}
-                    aria-label={isRtl ? reg.nameAr : reg.nameEn}
+                    aria-label={l(reg.nameAr, reg.nameEn)}
                     className={`px-3 py-2 rounded-xl text-xs font-bold transition-all text-center border cursor-pointer ${
                       selectedRegion === reg.id
                         ? 'bg-cyan-500 text-slate-950 border-cyan-400 shadow-md font-bold scale-105'
                         : 'bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700'
                     }`}
                   >
-                    {isRtl ? reg.nameAr : reg.nameEn}
+                    {l(reg.nameAr, reg.nameEn)}
                   </button>
                 ))}
               </div>
@@ -514,7 +513,7 @@ export default function Dashboard() {
           {/* Dynamic Skeleton Loader during Inline Audit */}
           {auditing && (
             <ContractAnalysisSkeleton
-              stage={isRtl ? 'جاري تحليل بنود العقد واستخراج تقارير المخاطر والبنود البديلة...' : 'Executing sub-second AI contract risk evaluation...'}
+              stage={l('جاري تحليل بنود العقد واستخراج تقارير المخاطر والبنود البديلة...', 'Executing sub-second AI contract risk evaluation...')}
             />
           )}
 
@@ -527,7 +526,7 @@ export default function Dashboard() {
                     <ShieldAlert className="w-8 h-8" />
                   </div>
                   <div>
-                    <span className="text-xs text-slate-400 font-bold uppercase tracking-wider">{isRtl ? 'درجة مخاطر العقد' : 'Contract Risk Index'}</span>
+                    <span className="text-xs text-slate-400 font-bold uppercase tracking-wider">{l('درجة مخاطر العقد', 'Contract Risk Index')}</span>
                     <div className="text-4xl font-black text-white">{auditResult.riskScore}%</div>
                   </div>
                 </div>
@@ -535,10 +534,10 @@ export default function Dashboard() {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => navigate('/risk')}
-                    aria-label={isRtl ? 'فتح التقرير الشامل والتصدير' : 'Open Full Audit & Export Report'}
+                    aria-label={l('فتح التقرير الشامل والتصدير', 'Open Full Audit & Export Report')}
                     className="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center gap-2 transition-all shadow-md cursor-pointer"
                   >
-                    <span>{isRtl ? 'فتح التقرير الشامل والتصدير' : 'Open Full Audit & Export Report'}</span>
+                    <span>{l('فتح التقرير الشامل والتصدير', 'Open Full Audit & Export Report')}</span>
                     <ArrowRight className={`w-3.5 h-3.5 ${isRtl ? 'rotate-180' : ''}`} />
                   </button>
                 </div>

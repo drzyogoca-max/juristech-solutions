@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { usePlatformLocale } from '../lib/universalTranslator';
 import {
   Globe,
   Zap,
@@ -182,8 +182,7 @@ const JURISDICTION_NODES: JurisdictionNode[] = [
 ];
 
 export default function InteractiveSassGlobalMap() {
-  const { i18n } = useTranslation();
-  const isRtl = i18n.language === 'ar';
+  const { l, isRtl } = usePlatformLocale();
   const navigate = useNavigate();
 
   const [selectedNode, setSelectedNode] = useState<JurisdictionNode>(JURISDICTION_NODES[0]);
@@ -204,16 +203,17 @@ export default function InteractiveSassGlobalMap() {
               <Globe className="w-5 h-5 animate-spin-slow" />
             </span>
             <span className="text-xs font-black uppercase tracking-widest text-sky-400">
-              {isRtl ? 'خريطة النفوذ والأنظمة القضائية السيادية' : 'Global Sovereign Legal & Jurisdiction Matrix'}
+              {l('خريطة النفوذ والأنظمة القضائية السيادية', 'Global Sovereign Legal & Jurisdiction Matrix')}
             </span>
           </div>
           <h2 className="text-xl sm:text-2xl font-black text-white">
-            {isRtl ? 'المنظومة التفاعلية لتغطية الأنظمة القانونية الدولية' : 'Interactive Multi-Jurisdiction Intelligence Grid'}
+            {l('المنظومة التفاعلية لتغطية الأنظمة القانونية الدولية', 'Interactive Multi-Jurisdiction Intelligence Grid')}
           </h2>
           <p className="text-xs text-slate-300">
-            {isRtl
-              ? 'انقر على أي عاصمة أو مركز قضائي لاستعراض الأنظمة التشريعية النافذة، سرعة الاستجابة، وتوليد العقود المعتمدة فورياً.'
-              : 'Click any legal capital node to inspect governing statutes, live API response latency, and launch certified drafting.'}
+            {l(
+              'انقر على أي عاصمة أو مركز قضائي لاستعراض الأنظمة التشريعية النافذة، سرعة الاستجابة، وتوليد العقود المعتمدة فورياً.',
+              'Click any legal capital node to inspect governing statutes, live API response latency, and launch certified drafting.'
+            )}
           </p>
         </div>
 
@@ -236,7 +236,7 @@ export default function InteractiveSassGlobalMap() {
                   : 'bg-slate-900/80 text-slate-400 border-slate-800 hover:text-slate-200'
               }`}
             >
-              {isRtl ? f.labelAr : f.labelEn}
+              {l(f.labelAr, f.labelEn)}
             </button>
           ))}
         </div>
@@ -339,7 +339,7 @@ export default function InteractiveSassGlobalMap() {
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
               <span className="font-bold text-slate-200">
-                {isRtl ? 'شبكة الذكاء الاصطناعي السيادي: 7 عقد رئيسية نشطة' : 'Live Sovereign Network: 7 Master Nodes Active'}
+                {l('شبكة الذكاء الاصطناعي السيادي: 7 عقد رئيسية نشطة', 'Live Sovereign Network: 7 Master Nodes Active')}
               </span>
             </div>
             <span className="font-mono text-sky-400 font-bold">Avg Latency: ~18ms | 99.9% Statutory Accuracy</span>
@@ -363,15 +363,15 @@ export default function InteractiveSassGlobalMap() {
               </div>
 
               <h3 className="text-lg sm:text-xl font-black text-white">
-                {isRtl ? selectedNode.nameAr : selectedNode.nameEn}
+                {l(selectedNode.nameAr, selectedNode.nameEn)}
               </h3>
               <p className="text-xs text-sky-400 font-bold">
-                {isRtl ? `المركز القضائي: ${selectedNode.cityAr}` : `Legal Capital: ${selectedNode.cityEn}`}
+                {l(`المركز القضائي: ${selectedNode.cityAr}`, `Legal Capital: ${selectedNode.cityEn}`)}
               </p>
             </div>
 
             <div className="text-right rtl:text-left">
-              <span className="text-[10px] text-slate-400 block font-bold">{isRtl ? 'حجم العقود' : 'Volume'}</span>
+              <span className="text-[10px] text-slate-400 block font-bold">{l('حجم العقود', 'Volume')}</span>
               <span className="text-base font-black text-white font-mono">{selectedNode.contractsVolume}</span>
             </div>
           </div>
@@ -381,27 +381,27 @@ export default function InteractiveSassGlobalMap() {
             <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
               <div className="flex items-center gap-1.5 text-slate-400 font-bold">
                 <Scale className="w-3.5 h-3.5 text-sky-400" />
-                <span>{isRtl ? 'الأنظمة والتشريعات المعتمدة بالمحرك:' : 'Governing Legal Codes:'}</span>
+                <span>{l('الأنظمة والتشريعات المعتمدة بالمحرك:', 'Governing Legal Codes:')}</span>
               </div>
               <p className="text-slate-200 leading-relaxed font-sans text-[11px]">
-                {isRtl ? selectedNode.statutesAr : selectedNode.statutesEn}
+                {l(selectedNode.statutesAr, selectedNode.statutesEn)}
               </p>
             </div>
 
             <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
               <div className="flex items-center gap-1.5 text-slate-400 font-bold">
                 <Building2 className="w-3.5 h-3.5 text-amber-400" />
-                <span>{isRtl ? 'مقر وهيئة التحكيم التجاري المعتمدة:' : 'Recognized Arbitration Seat:'}</span>
+                <span>{l('مقر وهيئة التحكيم التجاري المعتمدة:', 'Recognized Arbitration Seat:')}</span>
               </div>
               <p className="text-slate-200 leading-relaxed font-sans text-[11px]">
-                {isRtl ? selectedNode.arbitrationSeatAr : selectedNode.arbitrationSeatEn}
+                {l(selectedNode.arbitrationSeatAr, selectedNode.arbitrationSeatEn)}
               </p>
             </div>
 
             {/* Popular Contracts */}
             <div className="space-y-1.5 pt-1">
               <span className="text-[11px] font-bold text-slate-400 block">
-                {isRtl ? 'أبرز العقود الأكثر طلباً في هذا النطاق:' : 'Top Requested Contracts in Region:'}
+                {l('أبرز العقود الأكثر طلباً في هذا النطاق:', 'Top Requested Contracts in Region:')}
               </span>
               <div className="space-y-1">
                 {selectedNode.popularContracts.map((c, idx) => (
@@ -421,7 +421,7 @@ export default function InteractiveSassGlobalMap() {
               className="px-3.5 py-3 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-xs flex items-center justify-center gap-1.5 transition-all shadow-md active:scale-95 cursor-pointer"
             >
               <FileText className="w-3.5 h-3.5" />
-              <span>{isRtl ? 'صياغة عقد فوري' : 'Draft Contract'}</span>
+              <span>{l('صياغة عقد فوري', 'Draft Contract')}</span>
             </button>
 
             <button
@@ -429,7 +429,7 @@ export default function InteractiveSassGlobalMap() {
               className="px-3.5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/30 font-bold text-xs flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer"
             >
               <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
-              <span>{isRtl ? 'فحص المخاطر' : 'Risk Audit'}</span>
+              <span>{l('فحص المخاطر', 'Risk Audit')}</span>
             </button>
           </div>
         </div>

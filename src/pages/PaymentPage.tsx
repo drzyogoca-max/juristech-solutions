@@ -21,6 +21,7 @@ import InstaPayModal from '../components/InstaPayModal';
 import ProformaInvoiceModal from '../components/ProformaInvoiceModal';
 import DigitalInvoiceModal from '../components/DigitalInvoiceModal';
 import { activateUserSubscription, BillingTransaction } from '../lib/financialGateway';
+import { usePlatformLocale } from '../lib/universalTranslator';
 import SEO from '../components/SEO';
 
 interface Plan {
@@ -58,8 +59,7 @@ interface Plan {
 const SUPPORT_EMAIL = 'juristech.solutions@outlook.com';
 
 export default function PaymentPage() {
-  const { i18n } = useTranslation();
-  const isRtl = i18n.language === 'ar';
+  const { l, isRtl, gt, i18n } = usePlatformLocale();
 
   const [selectedWirePlan, setSelectedWirePlan] = useState<Plan | null>(null);
   const [selectedBinancePlan, setSelectedBinancePlan] = useState<Plan | null>(null);
@@ -271,24 +271,25 @@ export default function PaymentPage() {
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900 border border-amber-500/30 shadow-lg">
             <Crown className="w-4 h-4 text-amber-400" />
             <span className="text-xs font-black uppercase tracking-widest text-amber-300">
-              {isRtl ? 'حزم الاشتراكات السيادية المخصومة 30% لعام 2026' : '30% Discounted Sovereign Retainer Tiers 2026'}
+              {l('حزم الاشتراكات السيادية المخصومة 30% لعام 2026', '30% Discounted Sovereign Retainer Tiers 2026')}
             </span>
           </div>
 
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
-            {isRtl ? 'باقات الاشتراك وتفعيل ' : 'Sovereign Retainer Plans & '}<span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-400">{isRtl ? 'الخدمات الذكية السيادية' : 'Enterprise Intelligence'}</span>
+            {l('باقات الاشتراك وتفعيل ', 'Sovereign Retainer Plans & ')}<span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-400">{l('الخدمات الذكية السيادية', 'Enterprise Intelligence')}</span>
           </h1>
 
           <p className="text-slate-300 max-w-3xl mx-auto text-xs sm:text-sm leading-relaxed font-medium">
-            {isRtl
-              ? 'اختر الباقة المناسبة لمؤسستك واستفد من محرك Google AI Pro السيادي، الاستحواذ التنبؤي M&A، التفاوض الآلي، والمحاكاة القضائية مع تفعيل فوري عبر Binance Pay، التحويلات البنكية SWIFT، أو إنستا باي.'
-              : 'Empower your enterprise with Google AI Pro Sovereign Core, predictive M&A valuations, autonomous negotiation, and virtual dispute simulation with zero-touch instant activation.'}
+            {l(
+              'اختر الباقة المناسبة لمؤسستك واستفد من محرك Google AI Pro السيادي، الاستحواذ التنبؤي M&A، التفاوض الآلي، والمحاكاة القضائية مع تفعيل فوري عبر Binance Pay، التحويلات البنكية SWIFT، أو إنستا باي.',
+              'Empower your enterprise with Google AI Pro Sovereign Core, predictive M&A valuations, autonomous negotiation, and virtual dispute simulation with zero-touch instant activation.'
+            )}
           </p>
 
           {/* Billing Switcher (Monthly / Annual) */}
           <div className="flex items-center justify-center gap-3 pt-3">
             <span className={`text-xs font-bold ${!billingAnnual ? 'text-cyan-400 font-black' : 'text-slate-400'}`}>
-              {isRtl ? 'فاتورة شهرية' : 'Monthly Billing'}
+              {l('فاتورة شهرية', 'Monthly Billing')}
             </span>
             <button
               onClick={() => setBillingAnnual(!billingAnnual)}
@@ -297,9 +298,9 @@ export default function PaymentPage() {
               <div className={`w-5 h-5 rounded-full bg-cyan-400 transition-transform ${billingAnnual ? (isRtl ? '-translate-x-7' : 'translate-x-7') : 'translate-x-0'}`} />
             </button>
             <span className={`text-xs font-bold flex items-center gap-1.5 ${billingAnnual ? 'text-cyan-400 font-black' : 'text-slate-400'}`}>
-              <span>{isRtl ? 'فاتورة سنوية' : 'Annual Billing'}</span>
+              <span>{l('فاتورة سنوية', 'Annual Billing')}</span>
               <span className="px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-400 text-[10px] font-mono border border-emerald-500/30">
-                {isRtl ? 'وفر 20%' : 'Save 20%'}
+                {l('وفر 20%', 'Save 20%')}
               </span>
             </span>
           </div>
@@ -322,14 +323,14 @@ export default function PaymentPage() {
               >
                 {isHighlighted && (
                   <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-[11px] font-black uppercase px-4 py-1 rounded-full shadow-lg">
-                    {isRtl ? '⭐ الخيار الأكثر طلباً للشركات' : '⭐ Most Popular Enterprise Choice'}
+                    {l('⭐ الخيار الأكثر طلباً للشركات', '⭐ Most Popular Enterprise Choice')}
                   </div>
                 )}
 
                 <div className="space-y-5">
                   <div className="flex items-center justify-between">
                     <span className={`px-3.5 py-1 rounded-full text-[11px] font-black uppercase border ${plan.borderColor} ${plan.bgColor} text-${plan.color}-400`}>
-                      {isRtl ? plan.badgeAr : plan.badge}
+                      {l(plan.badgeAr, plan.badge)}
                     </span>
                     <div className={`p-2.5 rounded-2xl bg-slate-950 border border-slate-800 text-${plan.color}-400`}>
                       {plan.icon}
@@ -338,17 +339,17 @@ export default function PaymentPage() {
 
                   <div>
                     <h3 className="text-xl font-black text-white">
-                      {isRtl ? plan.nameAr : plan.nameEn}
+                      {l(plan.nameAr, plan.nameEn)}
                     </h3>
                     <p className="text-xs text-slate-400 mt-1">
-                      {isRtl ? plan.targetAr : plan.targetEn}
+                      {l(plan.targetAr, plan.targetEn)}
                     </p>
                   </div>
 
                   <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800/80 flex items-baseline justify-between">
                     <div>
                       <span className="text-3xl sm:text-4xl font-black text-white font-mono">${plan.price}</span>
-                      <span className="text-xs text-slate-400 font-medium mr-1">{isRtl ? plan.billingAr : plan.billingEn}</span>
+                      <span className="text-xs text-slate-400 font-medium mr-1">{l(plan.billingAr, plan.billingEn)}</span>
                     </div>
                     <span className="text-xs text-slate-500 line-through font-mono">${plan.globalPrice}</span>
                   </div>
@@ -356,13 +357,13 @@ export default function PaymentPage() {
                   {/* Features List */}
                   <div className="space-y-3 pt-2">
                     <span className="text-[11px] font-black text-slate-400 uppercase tracking-wider block">
-                      {isRtl ? 'المزايا والخدمات المتضمنة:' : 'Included Services & Sovereign Features:'}
+                      {l('المزايا والخدمات المتضمنة:', 'Included Services & Sovereign Features:')}
                     </span>
                     <ul className="space-y-2.5 text-xs text-slate-300">
                       {(isRtl ? plan.featuresAr : plan.featuresEn).map((f, fIdx) => (
                         <li key={fIdx} className="flex items-start gap-2.5 leading-relaxed">
                           <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                          <span className="font-medium text-slate-200">{f}</span>
+                          <span className="font-medium text-slate-200">{l(plan.featuresAr[fIdx] || f, f)}</span>
                         </li>
                       ))}
                     </ul>
@@ -372,7 +373,7 @@ export default function PaymentPage() {
                 {/* Direct Payment Method Launchers */}
                 <div className="space-y-2.5 pt-4 border-t border-slate-800">
                   <span className="text-[10px] font-bold text-slate-400 uppercase block text-center">
-                    {isRtl ? 'اختر وسيلة الدفع والتفعيل الفوري:' : 'Select Instant Payment Gateway:'}
+                    {l('اختر وسيلة الدفع والتفعيل الفوري:', 'Select Instant Payment Gateway:')}
                   </span>
 
                   <div className="grid grid-cols-3 gap-2">
@@ -405,7 +406,7 @@ export default function PaymentPage() {
                     onClick={() => setSelectedProformaPlan(plan)}
                     className="w-full py-2 rounded-xl bg-slate-950 hover:bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 text-[10px] font-bold transition-all cursor-pointer"
                   >
-                    {isRtl ? 'طلب فاتورة شكلية مبدئية (Proforma Invoice)' : 'Request Proforma Invoice'}
+                    {l('طلب فاتورة شكلية مبدئية (Proforma Invoice)', 'Request Proforma Invoice')}
                   </button>
                 </div>
 
@@ -421,12 +422,13 @@ export default function PaymentPage() {
           <div className="space-y-1 text-center md:text-start">
             <h3 className="text-base sm:text-lg font-black text-white flex items-center justify-center md:justify-start gap-2">
               <ShieldCheck className="w-5 h-5 text-cyan-400" />
-              <span>{isRtl ? 'عقود الرعاية والاحتفاظ المؤسسي المخصص (Bespoke Retainers)' : 'Bespoke Institutional Retainers & Custom SLAs'}</span>
+              <span>{l('عقود الرعاية والاحتفاظ المؤسسي المخصص (Bespoke Retainers)', 'Bespoke Institutional Retainers & Custom SLAs')}</span>
             </h3>
             <p className="text-xs text-slate-400 max-w-2xl leading-relaxed">
-              {isRtl
-                ? 'للشركات الكبرى وصناديق الاستثمار التي تتطلب اتفاقيات مستوى خدمة مخصصة (Custom SLA) أو تحليلات سرية خاصة، يمكنك التنسيق المباشر مع رئيس مجلس الإدارة والمستشار الاستراتيجي د. محمد مصطفى.'
-                : 'For large enterprises, sovereign entities, and custom SLAs requiring NDA-isolated deployments, contact Senior Partner Dr. Mohammad Mustafa directly.'}
+              {l(
+                'للشركات الكبرى وصناديق الاستثمار التي تتطلب اتفاقيات مستوى خدمة مخصصة (Custom SLA) أو تحليلات سرية خاصة، يمكنك التنسيق المباشر مع رئيس مجلس الإدارة والمستشار الاستراتيجي د. محمد مصطفى.',
+                'For large enterprises, sovereign entities, and custom SLAs requiring NDA-isolated deployments, contact Senior Partner Dr. Mohammad Mustafa directly.'
+              )}
             </p>
           </div>
 
@@ -435,7 +437,7 @@ export default function PaymentPage() {
             className="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-slate-950 font-black text-xs sm:text-sm flex items-center gap-2 transition-all shadow-lg active:scale-95 shrink-0"
           >
             <Mail className="w-4 h-4 text-slate-950" />
-            <span>{isRtl ? 'مراسلة المستشار الاستراتيجي' : 'Contact Senior Counsel'}</span>
+            <span>{l('مراسلة المستشار الاستراتيجي', 'Contact Senior Counsel')}</span>
           </a>
         </div>
       </div>
