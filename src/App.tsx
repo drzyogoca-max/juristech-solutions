@@ -196,7 +196,6 @@ function MainAppContent() {
       <GlobalForceUpdate />
       <div className="min-h-screen bg-slate-950 text-white font-sans selection:bg-cyan-500 selection:text-slate-950 flex flex-col justify-between">
         <div>
-          <MasterAdminToolbar />
           <Navbar />
 
           <Suspense fallback={<RouteFallback />}>
