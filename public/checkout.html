@@ -92,12 +92,43 @@
       margin-top: 20px;
       box-sizing: border-box;
     }
+    .checkout-title {
+      text-align: center;
+      color: #f0b90b;
+      margin-top: 0;
+    }
+    .checkout-subtitle {
+      text-align: center;
+      color: #94a3b8;
+      font-size: 14px;
+    }
+    .checkout-note {
+      font-size: 12px;
+      color: #848e9c;
+    }
+    .ton-desc {
+      color: #334155;
+      font-size: 14px;
+    }
+    .ton-card {
+      margin-top: 10px;
+      padding: 10px;
+      background: #ffffff;
+      border-radius: 8px;
+      border: 1px solid #bae6fd;
+    }
+    .ton-label {
+      font-size: 12px;
+      color: #64748b;
+      display: block;
+      margin-bottom: 4px;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2 style="text-align: center; color: #f0b90b; margin-top: 0;">⚡ بوابة الدفع المباشرة والآمنة</h2>
-    <p style="text-align: center; color: #94a3b8; font-size: 14px;">JurisTech Solutions & LegalShield Sovereign Tech</p>
+    <h2 class="checkout-title">⚡ بوابة الدفع المباشرة والآمنة</h2>
+    <p class="checkout-subtitle">JurisTech Solutions & LegalShield Sovereign Tech</p>
 
     <!-- Binance Pay Box -->
     <div class="binance-pay-box">
@@ -106,15 +137,15 @@
       <ul>
         <li><strong>حساب بايننس (Binance Email):</strong> <code>Drzyogo.ca@gmail.com</code></li>
       </ul>
-      <span style="font-size: 12px; color: #848e9c;">* سيتم تفعيل اشتراكك تلقائياً وفوراً بمجرد تأكيد عملية التحويل.</span>
+      <span class="checkout-note">* سيتم تفعيل اشتراكك تلقائياً وفوراً بمجرد تأكيد عملية التحويل.</span>
     </div>
 
     <!-- TON / Gram Network Box -->
     <div class="ton-pay-box">
       <h3>💎 الدفع عبر شبكة TON / Gram (DeFi Wallet)</h3>
-      <p style="color: #334155; font-size: 14px;">أرسل Gram (GRAM) والرموز المميزة لشبكة TON إلى عنوان محفظة DeFi المباشرة:</p>
-      <div style="margin-top: 10px; padding: 10px; background: #ffffff; border-radius: 8px; border: 1px solid #bae6fd;">
-        <span style="font-size: 12px; color: #64748b; display: block; margin-bottom: 4px;">عنوان TON الخاص بك:</span>
+      <p class="ton-desc">أرسل Gram (GRAM) والرموز المميزة لشبكة TON إلى عنوان محفظة DeFi المباشرة:</p>
+      <div class="ton-card">
+        <span class="ton-label">عنوان TON الخاص بك:</span>
         <code>UQDK_1mcebs5K2RYB0hD7rFdMY02oAC2CbK2aDWhiWuLJ0H9</code>
       </div>
     </div>
