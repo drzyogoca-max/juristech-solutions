@@ -555,23 +555,23 @@ export default function Dashboard() {
                 <div className="flex items-center justify-between font-bold text-cyan-300">
                   <span className="flex items-center gap-1.5">
                     <Sparkles className="w-4 h-4 text-cyan-400" />
-                    <span>{isRtl ? 'شفافية الذكاء الاصطناعي ومؤشرات الثقة القانونية' : 'Explainable AI & Statutory Trust Layer'}</span>
+                    <span>{l('شفافية الذكاء الاصطناعي ومؤشرات الثقة القانونية', 'Explainable AI & Statutory Trust Layer')}</span>
                   </span>
                   <span className="bg-cyan-500/20 text-cyan-300 px-2.5 py-0.5 rounded-full border border-cyan-500/40 font-sans text-[11px] font-bold">
-                    {isRtl ? 'تأصيل تشريعي معتمد' : 'Verified Statutory Code'}
+                    {l('تأصيل تشريعي معتمد', 'Verified Statutory Code')}
                   </span>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-slate-300 pt-1">
                   <div>
-                    <span className="font-bold text-white block mb-0.5">{isRtl ? '📌 السند التشريعي المعتمد:' : '📌 Source Statutory Reference:'}</span>
+                    <span className="font-bold text-white block mb-0.5">{l('📌 السند التشريعي المعتمد:', '📌 Source Statutory Reference:')}</span>
                     <span className="text-[11px] font-sans text-slate-300">
-                      {isRtl ? 'المواد (223 و224 مدني) والأنظمة التجارية النافذة لدول مجلس التعاون وشمال أفريقيا.' : 'Civil Code Articles & Applicable Commercial Codes for MENA & Regional Statutory Law.'}
+                      {l('المواد (223 و224 مدني) والأنظمة التجارية النافذة لدول مجلس التعاون وشمال أفريقيا.', 'Civil Code Articles & Applicable Commercial Codes for MENA & Regional Statutory Law.')}
                     </span>
                   </div>
                   <div>
-                    <span className="font-bold text-white block mb-0.5">{isRtl ? '💡 الافتراضات الحاكمة للتحليل:' : '💡 Underlying Legal Assumptions:'}</span>
+                    <span className="font-bold text-white block mb-0.5">{l('💡 الافتراضات الحاكمة للتحليل:', '💡 Underlying Legal Assumptions:')}</span>
                     <span className="text-[11px] font-sans text-slate-300">
-                      {isRtl ? 'افتراض النوايا التجارية الحسنة وحماية أطراف الاتفاق ضد البنود التعسفية غير المتكافئة.' : 'Assumes arm-length commercial transaction requiring bilateral liability protection.'}
+                      {l('افتراض النوايا التجارية الحسنة وحماية أطراف الاتفاق ضد البنود التعسفية غير المتكافئة.', 'Assumes arm-length commercial transaction requiring bilateral liability protection.')}
                     </span>
                   </div>
                 </div>
@@ -580,7 +580,7 @@ export default function Dashboard() {
               {/* Vector Filters */}
               <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
                 <span className="text-xs font-bold text-slate-400 shrink-0 ml-1">
-                  {isRtl ? 'تصفية المحاور:' : 'Filter Vectors:'}
+                  {l('تصفية المحاور:', 'Filter Vectors:')}
                 </span>
                 {['All', 'Financial', 'Operational', 'IP', 'Regulatory'].map((vectorKey) => (
                   <button
@@ -593,7 +593,7 @@ export default function Dashboard() {
                         : 'bg-slate-800 text-slate-400 hover:text-slate-200'
                     }`}
                   >
-                    {vectorKey === 'All' ? (isRtl ? 'الكل' : 'All') : vectorKey}
+                    {vectorKey === 'All' ? l('الكل', 'All') : vectorKey}
                   </button>
                 ))}
               </div>
@@ -609,17 +609,18 @@ export default function Dashboard() {
                       </span>
                     </div>
                     <p className="text-xs text-slate-300 leading-relaxed font-sans">
-                      {isRtl ? item.explanationAr : item.explanationEn}
+                      {l(item.explanationAr, item.explanationEn)}
                     </p>
                     <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-300 font-sans">
-                      <span className="font-bold text-emerald-400 block mb-0.5">{isRtl ? 'البند البديل (AI Redline):' : 'Suggested AI Redline:'}</span>
-                      {isRtl ? item.suggestedRedlineAr : item.suggestedRedlineEn}
+                      <span className="font-bold text-emerald-400 block mb-0.5">{l('البند البديل (AI Redline):', 'Suggested AI Redline:')}</span>
+                      {l(item.suggestedRedlineAr, item.suggestedRedlineEn)}
                     </div>
                   </div>
                 ))}
               </div>
             </div>
           )}
+
         </section>
 
         {/* ──────────────────────────────────────────────────────────────────── */}
@@ -645,13 +646,13 @@ export default function Dashboard() {
             <div className="text-center max-w-3xl mx-auto space-y-3">
               <span className="px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest bg-amber-500/15 text-amber-300 border border-amber-500/30 inline-flex items-center gap-1.5">
                 <Crown className="w-4 h-4 text-amber-400" />
-                <span>{isRtl ? 'حزم الاشتراكات المخصومة بنسبة 30%' : '30% Discounted Subscription Packages'}</span>
+                <span>{l('حزم الاشتراكات المخصومة بنسبة 30%', '30% Discounted Subscription Packages')}</span>
               </span>
               <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-                {isRtl ? 'اختر الباقة المناسبة لمؤسستك وابدأ الاستشارة الفورية' : 'Select Your Tier & Unlock Institutional Intelligence'}
+                {l('اختر الباقة المناسبة لمؤسستك وابدأ الاستشارة الفورية', 'Select Your Tier & Unlock Institutional Intelligence')}
               </h2>
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                {isRtl ? 'جميع الباقات مصممة لتوفير أقصى قدر من الكفاءة مع فتح آلي آمن عبر بوابة Binance Pay أو الحوالات المعتمدة أو إنستا باي.' : 'All tiers feature zero-touch automated Binance Pay deployment, SWIFT & InstaPay processing.'}
+                {l('جميع الباقات مصممة لتوفير أقصى قدر من الكفاءة مع فتح آلي آمن عبر بوابة Binance Pay أو الحوالات المعتمدة أو إنستا باي.', 'All tiers feature zero-touch automated Binance Pay deployment, SWIFT & InstaPay processing.')}
               </p>
             </div>
 
@@ -660,32 +661,32 @@ export default function Dashboard() {
               <div className="bg-slate-900/90 p-6 rounded-3xl border border-sky-500/30 flex flex-col justify-between space-y-6 relative hover:border-sky-400 transition-all">
                 <div className="space-y-4">
                   <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase bg-sky-500/10 text-sky-400 border border-sky-500/30 inline-block">
-                    {isRtl ? 'باقة الشركات الصغرى' : 'Startup Tier'}
+                    {l('باقة الشركات الصغرى', 'Startup Tier')}
                   </span>
                   <div>
-                    <h3 className="text-xl font-bold text-white">{isRtl ? 'حزمة الشركات الناشئة' : 'Micro / Startup'}</h3>
+                    <h3 className="text-xl font-bold text-white">{l('حزمة الشركات الناشئة', 'Micro / Startup')}</h3>
                     <div className="mt-2 flex items-baseline gap-1">
                       <span className="text-3xl font-black text-sky-400">$49</span>
-                      <span className="text-xs text-slate-400">{isRtl ? '/ شهرياً' : '/ month'}</span>
+                      <span className="text-xs text-slate-400">{l('/ شهرياً', '/ month')}</span>
                       <span className="text-xs text-slate-500 line-through mr-2">$70</span>
                     </div>
                   </div>
                   <ul className="space-y-2 text-xs text-slate-300">
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-sky-400 shrink-0" />
-                      <span>{isRtl ? 'مستشار Google Gemini Pro السيادي (7 لغات)' : 'Google Gemini Pro Sovereign Advisor'}</span>
+                      <span>{l('مستشار Google Gemini Pro السيادي (7 لغات)', 'Google Gemini Pro Sovereign Advisor')}</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-sky-400 shrink-0" />
-                      <span>{isRtl ? 'رفع وتدقيق حتى 10 عقود شهرياً (PDF, Word)' : 'Up to 10 contract checks (PDF, Word)'}</span>
+                      <span>{l('رفع وتدقيق حتى 10 عقود شهرياً (PDF, Word)', 'Up to 10 contract checks (PDF, Word)')}</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-sky-400 shrink-0" />
-                      <span>{isRtl ? 'تصدير وثائق معتمدة بصيغ Word (.docx) و PDF' : 'Certified Word (.docx) & PDF Export'}</span>
+                      <span>{l('تصدير وثائق معتمدة بصيغ Word (.docx) و PDF', 'Certified Word (.docx) & PDF Export')}</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-sky-400 shrink-0" />
-                      <span>{isRtl ? 'تغطية تشريعية إقليمية (السعودية، الإمارات، مصر، الأردن)' : 'Regional Coverage (KSA, UAE, EG, JO)'}</span>
+                      <span>{l('تغطية تشريعية إقليمية (السعودية، الإمارات، مصر، الأردن)', 'Regional Coverage (KSA, UAE, EG, JO)')}</span>
                     </li>
                   </ul>
                 </div>
@@ -693,47 +694,47 @@ export default function Dashboard() {
                   to="/payment"
                   className="w-full py-3.5 rounded-2xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-xs text-center transition-all shadow-lg active:scale-95 cursor-pointer"
                 >
-                  {isRtl ? 'اشتراك باقة الصغرى ($49)' : 'Subscribe Startup ($49)'}
+                  {l('اشتراك باقة الصغرى ($49)', 'Subscribe Startup ($49)')}
                 </Link>
               </div>
 
               {/* SME Tier ($139) */}
               <div className="bg-slate-900/90 p-6 rounded-3xl border border-indigo-500/50 flex flex-col justify-between space-y-6 relative hover:border-indigo-400 transition-all shadow-xl ring-2 ring-indigo-500/30">
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-indigo-500 text-white text-[10px] font-black uppercase px-3 py-0.5 rounded-full shadow">
-                  {isRtl ? 'الأكثر طلباً' : 'Most Popular'}
+                  {l('الأكثر طلباً', 'Most Popular')}
                 </div>
                 <div className="space-y-4">
                   <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 inline-block">
-                    {isRtl ? 'باقة الشركات المتوسطة والنمو' : 'SME & Growth Tier'}
+                    {l('باقة الشركات المتوسطة والنمو', 'SME & Growth Tier')}
                   </span>
                   <div>
-                    <h3 className="text-xl font-bold text-white">{isRtl ? 'حزمة الشركات المتوسطة' : 'SMEs Package'}</h3>
+                    <h3 className="text-xl font-bold text-white">{l('حزمة الشركات المتوسطة', 'SMEs Package')}</h3>
                     <div className="mt-2 flex items-baseline gap-1">
                       <span className="text-3xl font-black text-indigo-400">$139</span>
-                      <span className="text-xs text-slate-400">{isRtl ? '/ شهرياً' : '/ month'}</span>
+                      <span className="text-xs text-slate-400">{l('/ شهرياً', '/ month')}</span>
                       <span className="text-xs text-slate-500 line-through mr-2">$200</span>
                     </div>
                   </div>
                   <ul className="space-y-2 text-xs text-slate-300">
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-indigo-400 shrink-0" />
-                      <span>{isRtl ? 'محرك Google AI Pro السيادي (Gemini Ultra)' : 'Google AI Pro Sovereign Core (Gemini Ultra)'}</span>
+                      <span>{l('محرك Google AI Pro السيادي (Gemini Ultra)', 'Google AI Pro Sovereign Core (Gemini Ultra)')}</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-indigo-400 shrink-0" />
-                      <span>{isRtl ? 'وكلاء التفاوض الآلي + المحاكاة القضائية للنزاعات' : 'Autonomous AI Negotiation & Court Simulation'}</span>
+                      <span>{l('وكلاء التفاوض الآلي + المحاكاة القضائية للنزاعات', 'Autonomous AI Negotiation & Court Simulation')}</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-indigo-400 shrink-0" />
-                      <span>{isRtl ? 'رفع وتدقيق حتى 50 عقداً شهرياً مع تصدير Word و PDF' : 'Up to 50 contracts/month with Word/PDF export'}</span>
+                      <span>{l('رفع وتدقيق حتى 50 عقداً شهرياً مع تصدير Word و PDF', 'Up to 50 contracts/month with Word/PDF export')}</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-indigo-400 shrink-0" />
-                      <span>{isRtl ? 'تغطية تشريعية لـ 9 دول (الخليج، بريطانيا، أمريكا، والاتحاد الأوروبي)' : 'Full 9-Jurisdiction Statutory Coverage (GCC, UK, US, EU)'}</span>
+                      <span>{l('تغطية تشريعية لـ 9 دول (الخليج، بريطانيا، أمريكا، والاتحاد الأوروبي)', 'Full 9-Jurisdiction Statutory Coverage (GCC, UK, US, EU)')}</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-indigo-400 shrink-0" />
-                      <span>{isRtl ? 'تشفير متقدم AES-256 والمصادقة الثنائية 2FA TOTP' : 'Advanced AES-256 + 2FA TOTP Security'}</span>
+                      <span>{l('تشفير متقدم AES-256 والمصادقة الثنائية 2FA TOTP', 'Advanced AES-256 + 2FA TOTP Security')}</span>
                     </li>
                   </ul>
                 </div>
@@ -741,7 +742,7 @@ export default function Dashboard() {
                   to="/payment"
                   className="w-full py-3.5 rounded-2xl bg-indigo-500 hover:bg-indigo-400 text-white font-black text-xs text-center transition-all shadow-lg active:scale-95 cursor-pointer"
                 >
-                  {isRtl ? 'اشتراك باقة المتوسطة ($139)' : 'Subscribe SME ($139)'}
+                  {l('اشتراك باقة المتوسطة ($139)', 'Subscribe SME ($139)')}
                 </Link>
               </div>
 
@@ -749,36 +750,36 @@ export default function Dashboard() {
               <div className="bg-slate-900/90 p-6 rounded-3xl border border-amber-500/50 flex flex-col justify-between space-y-6 relative hover:border-amber-400 transition-all shadow-xl">
                 <div className="space-y-4">
                   <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase bg-amber-500/10 text-amber-400 border border-amber-500/30 inline-block">
-                    {isRtl ? 'باقة الكبرى والمؤسسات السيادية' : 'Enterprise Sovereign Tier'}
+                    {l('باقة الكبرى والمؤسسات السيادية', 'Enterprise Sovereign Tier')}
                   </span>
                   <div>
-                    <h3 className="text-xl font-bold text-white">{isRtl ? 'حزمة الشركات الكبرى والمؤسسات' : 'Enterprise Package'}</h3>
+                    <h3 className="text-xl font-bold text-white">{l('حزمة الشركات الكبرى والمؤسسات', 'Enterprise Package')}</h3>
                     <div className="mt-2 flex items-baseline gap-1">
                       <span className="text-3xl font-black text-amber-400">$349</span>
-                      <span className="text-xs text-slate-400">{isRtl ? '/ شهرياً' : '/ month'}</span>
+                      <span className="text-xs text-slate-400">{l('/ شهرياً', '/ month')}</span>
                       <span className="text-xs text-slate-500 line-through mr-2">$500</span>
                     </div>
                   </div>
                   <ul className="space-y-2 text-xs text-slate-300">
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
-                      <span>{isRtl ? 'الاستحواذ الذكي التنبؤي M&A وتقييم صفقات EBITDA' : 'Predictive M&A Intelligence & EBITDA Valuations'}</span>
+                      <span>{l('الاستحواذ الذكي التنبؤي M&A وتقييم صفقات EBITDA', 'Predictive M&A Intelligence & EBITDA Valuations')}</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
-                      <span>{isRtl ? 'كشف التزوير والاحتيال بالقياس النصي الحيوي (Forensic Fraud)' : 'Stylometric Fraud & Tampering Forensics'}</span>
+                      <span>{l('كشف التزوير والاحتيال بالقياس النصي الحيوي (Forensic Fraud)', 'Stylometric Fraud & Tampering Forensics')}</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
-                      <span>{isRtl ? 'الامتثال التشريعي العابر للحدود (GDPR, EU AI Act, PDPL)' : 'Cross-Border Statutory Compliance & Sanctions'}</span>
+                      <span>{l('الامتثال التشريعي العابر للحدود (GDPR, EU AI Act, PDPL)', 'Cross-Border Statutory Compliance & Sanctions')}</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
-                      <span>{isRtl ? 'عقود غير محدودة + خزنة E2EE مشفرة + تكامل كامل ERP' : 'Unlimited contracts, E2EE Vault & Full ERP APIs'}</span>
+                      <span>{l('عقود غير محدودة + خزنة E2EE مشفرة + تكامل كامل ERP', 'Unlimited contracts, E2EE Vault & Full ERP APIs')}</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
-                      <span>{isRtl ? 'دعم تنفيذي مباشر 24/7 مع المستشار القانوني د. محمد مصطفى' : '24/7 Dedicated Senior Counsel Concierge (Dr. Mohammad Mustafa)'}</span>
+                      <span>{l('دعم تنفيذي مباشر 24/7 مع المستشار القانوني د. محمد مصطفى', '24/7 Dedicated Senior Counsel Concierge (Dr. Mohammad Mustafa)')}</span>
                     </li>
                   </ul>
                 </div>
@@ -786,12 +787,13 @@ export default function Dashboard() {
                   to="/payment"
                   className="w-full py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs text-center transition-all shadow-lg active:scale-95 cursor-pointer"
                 >
-                  {isRtl ? 'اشتراك باقة المؤسسات ($349)' : 'Subscribe Enterprise ($349)'}
+                  {l('اشتراك باقة المؤسسات ($349)', 'Subscribe Enterprise ($349)')}
                 </Link>
               </div>
             </div>
           </div>
         </section>
+
 
         {/* ──────────────────────────────────────────────────────────────────── */}
         {/* SECTION 5: 🔐 SECURITY GOVERNANCE & ENCRYPTION CERTIFICATIONS       */}
@@ -806,14 +808,14 @@ export default function Dashboard() {
                     <ShieldCheck className="w-5 h-5" />
                   </span>
                   <span className="text-xs font-black uppercase tracking-widest text-emerald-400">
-                    {isRtl ? 'حوكمة الأمان والتشفير البنكي' : 'Bank-Grade E2EE & Statutory Governance'}
+                    {l('حوكمة الأمان والتشفير البنكي', 'Bank-Grade E2EE & Statutory Governance')}
                   </span>
                 </div>
                 <h2 className="text-xl sm:text-2xl font-black text-white">
-                  {isRtl ? 'بروتوكولات حماية بيانات العقود والامتثال العالمي' : 'End-to-End Encryption & Privacy Protocol'}
+                  {l('بروتوكولات حماية بيانات العقود والامتثال العالمي', 'End-to-End Encryption & Privacy Protocol')}
                 </h2>
                 <p className="text-xs text-slate-300">
-                  {isRtl ? 'تشفير كامل على جانب العميل يضمن عدم وصول أي طرف ثالث إلى نصوص ومستندات أعمالك.' : 'Zero-knowledge client-side encryption ensuring total privacy and statutory confidentiality.'}
+                  {l('تشفير كامل على جانب العميل يضمن عدم وصول أي طرف ثالث إلى نصوص ومستندات أعمالك.', 'Zero-knowledge client-side encryption ensuring total privacy and statutory confidentiality.')}
                 </p>
               </div>
 
@@ -822,7 +824,7 @@ export default function Dashboard() {
                 className="px-4 py-2.5 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs flex items-center gap-2 transition-all shadow-lg shadow-emerald-500/20 cursor-pointer"
               >
                 <Key className="w-4 h-4" />
-                <span>{isRtl ? 'إعداد المصادقة الثنائية 2FA' : 'Setup 2FA TOTP'}</span>
+                <span>{l('إعداد المصادقة الثنائية 2FA', 'Setup 2FA TOTP')}</span>
               </button>
             </div>
 
@@ -831,30 +833,30 @@ export default function Dashboard() {
               <div className="p-5 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2">
                 <div className="flex items-center gap-2 text-emerald-400 font-bold text-xs">
                   <Lock className="w-4 h-4" />
-                  <span>{isRtl ? 'تشفير AES-GCM 256-bit' : 'AES-256 Bit Encryption'}</span>
+                  <span>{l('تشفير AES-GCM 256-bit', 'AES-256 Bit Encryption')}</span>
                 </div>
                 <p className="text-xs text-slate-400 leading-relaxed">
-                  {isRtl ? 'تشفير فوري لكافة الملفات والعقود قبل رفعها للخوادم المشفرة.' : 'Military-grade encryption applied to every document prior to secure transit.'}
+                  {l('تشفير فوري لكافة الملفات والعقود قبل رفعها للخوادم المشفرة.', 'Military-grade encryption applied to every document prior to secure transit.')}
                 </p>
               </div>
 
               <div className="p-5 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2">
                 <div className="flex items-center gap-2 text-sky-400 font-bold text-xs">
                   <Shield className="w-4 h-4" />
-                  <span>{isRtl ? 'الامتثال للائحة GDPR & PDPL' : 'GDPR & PDPL Compliance'}</span>
+                  <span>{l('الامتثال للائحة GDPR & PDPL', 'GDPR & PDPL Compliance')}</span>
                 </div>
                 <p className="text-xs text-slate-400 leading-relaxed">
-                  {isRtl ? 'مطابقة تامة لنظام حماية البيانات الشخصية السعودي والأوروبي.' : 'Strict adherence to Saudi PDPL and European GDPR data protection laws.'}
+                  {l('مطابقة تامة لنظام حماية البيانات الشخصية السعودي والأوروبي.', 'Strict adherence to Saudi PDPL and European GDPR data protection laws.')}
                 </p>
               </div>
 
               <div className="p-5 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2">
                 <div className="flex items-center gap-2 text-purple-400 font-bold text-xs">
                   <Cpu className="w-4 h-4" />
-                  <span>{isRtl ? 'عزل نماذج الذكاء الاصطناعي' : 'Isolated AI Processing'}</span>
+                  <span>{l('عزل نماذج الذكاء الاصطناعي', 'Isolated AI Processing')}</span>
                 </div>
                 <p className="text-xs text-slate-400 leading-relaxed">
-                  {isRtl ? 'ضمان عدم تدريب أي نماذج عامة على بيانات أو صفقات أو عقود شركتك.' : 'Zero AI training on proprietary customer data, contracts or business clauses.'}
+                  {l('ضمان عدم تدريب أي نماذج عامة على بيانات أو صفقات أو عقود شركتك.', 'Zero AI training on proprietary customer data, contracts or business clauses.')}
                 </p>
               </div>
             </div>
@@ -864,20 +866,21 @@ export default function Dashboard() {
               <div className="flex items-center gap-3">
                 <Lock className="w-5 h-5 text-sky-400" />
                 <span className="text-xs font-bold text-white">
-                  {isRtl ? 'هل ترغب في حفظ مستنداتك في الخزنة المشفرة؟' : 'Access your encrypted sovereign vault?'}
+                  {l('هل ترغب في حفظ مستنداتك في الخزنة المشفرة؟', 'Access your encrypted sovereign vault?')}
                 </span>
               </div>
               <Link
                 to="/vault"
                 className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-sky-400 border border-sky-500/30 text-xs font-bold transition-all"
               >
-                {isRtl ? 'فتح الخزنة المشفرة' : 'Open Vault'}
+                {l('فتح الخزنة المشفرة', 'Open Vault')}
               </Link>
             </div>
           </div>
 
           {/* Institutional Trust Badges */}
           <InstitutionalTrustBadgeBar />
+
         </section>
 
       </div>

@@ -217,28 +217,31 @@ export default function Footer() {
         <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
           <p>© {currentYear} JurisTech Solutions. {l('جميع الحقوق محفوظة', 'All Rights Reserved')}.</p>
           
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 flex-wrap">
             <a
               href="https://www.linkedin.com/in/juristech-solutions-14954b427/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
-              className="text-slate-400 hover:text-sky-400 transition-colors"
+              className="text-slate-400 hover:text-sky-400 transition-colors flex items-center gap-1.5 font-bold"
             >
-              <Linkedin className="w-4 h-4" />
+              <Linkedin className="w-4 h-4 text-sky-400" />
+              <span>LinkedIn</span>
             </a>
             <a
               href="https://x.com/JurisTechAI"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="X Twitter"
-              className="text-slate-400 hover:text-sky-400 transition-colors font-bold text-xs"
+              className="text-slate-400 hover:text-sky-400 transition-colors font-bold text-xs flex items-center gap-1.5"
             >
-              𝕏
+              <span className="text-white font-black text-sm">𝕏</span>
+              <span>Twitter</span>
             </a>
             <span className="text-emerald-400 font-bold ml-2">● {l('مشفر E2EE', 'E2EE Encrypted')}</span>
             <span className="font-mono text-cyan-400 font-bold">v10.7.0</span>
           </div>
+
         </div>
 
       </div>

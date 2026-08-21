@@ -16,7 +16,11 @@
 import { useTranslation } from 'react-i18next';
 import { useState, useEffect } from 'react';
 import { SupportedLang, normalizeLanguage } from './languageHelper';
+export type { SupportedLang };
+export { normalizeLanguage };
 import { GLOBAL_TRANSLATIONS, GlobalUITexts } from './globalTranslations';
+
+
 import { legalLexiconEngine } from '../services/legalLexiconEvolutionEngine';
 
 // Universal In-Memory Translation Hash Dictionary (Keyed by English and Arabic lowercase phrases)
