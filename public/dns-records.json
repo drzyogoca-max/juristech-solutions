@@ -1,0 +1,36 @@
+{
+  "domain": "juristech.solutions",
+  "dns_configuration": {
+    "spf": {
+      "type": "TXT",
+      "name": "@",
+      "value": "v=spf1 include:spf.protection.outlook.com include:_spf.google.com include:sendgrid.net include:resend.dev ~all",
+      "purpose": "Authorizes Outlook, Google, SendGrid, and Resend to send emails on behalf of @juristech.solutions and prevents email spoofing.",
+      "status": "configured"
+    },
+    "dmarc": {
+      "type": "TXT",
+      "name": "_dmarc",
+      "value": "v=DMARC1; p=quarantine; sp=quarantine; pct=100; rua=mailto:dmarc-reports@juristech.solutions,mailto:Drzyogo.ca@gmail.com; ruf=mailto:dmarc-forensic@juristech.solutions; adkim=r; aspf=r;",
+      "purpose": "Instructs receiving mail servers to quarantine unauthenticated emails claiming to originate from @juristech.solutions.",
+      "status": "configured"
+    },
+    "mx_records": [
+      {
+        "type": "MX",
+        "name": "@",
+        "priority": 10,
+        "value": "juristech-solutions.mail.protection.outlook.com",
+        "service": "Microsoft 365 / Outlook Enterprise Mail"
+      }
+    ],
+    "verification_records": {
+      "google_site_verification": "Csa-WN6QHwEIlH3lycEdcdsy5CznqwYzyJOq-PbjIpg"
+    }
+  },
+  "compliance": {
+    "rfc_7208_spf": true,
+    "rfc_7489_dmarc": true,
+    "rfc_9116_security_txt": true
+  }
+}

@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { getSemanticHtmlForRoute } from './renderRouteSemanticHtml.mjs';
 
 const DIST_DIR = path.join(process.cwd(), 'dist');
 const BASE_URL = 'https://www.juristech.solutions';
@@ -167,14 +168,16 @@ function prerenderRoutes() {
   const baseHtml = fs.readFileSync(templatePath, 'utf-8');
 
   PUBLIC_ROUTES.forEach((routePath) => {
-    if (routePath === '/') return; // base index.html already at root
-    const routeDir = path.join(DIST_DIR, routePath.replace(/^\//, ''));
-    fs.mkdirSync(routeDir, { recursive: true });
+    const isRoot = routePath === '/';
+    const routeDir = isRoot ? DIST_DIR : path.join(DIST_DIR, routePath.replace(/^\//, ''));
+    if (!isRoot) {
+      fs.mkdirSync(routeDir, { recursive: true });
+    }
 
     const metadata = ROUTE_METADATA[routePath] || {};
     const pageTitle = metadata.titleAr || metadata.titleEn || 'منصة تحليل العقود بالذكاء الاصطناعي | JurisTech Solutions';
     const pageDesc = metadata.descriptionAr || metadata.descriptionEn || 'المنصة الذكية لتحليل العقود وكشف الثغرات وإدارة المخاطر القانونية للشركات واستشارات فورية.';
-    const canonicalUrl = `${BASE_URL}${routePath}`;
+    const canonicalUrl = `${BASE_URL}${routePath === '/' ? '/' : routePath}`;
 
     let routeHtml = baseHtml;
 
@@ -231,12 +234,16 @@ function prerenderRoutes() {
 
     routeHtml = routeHtml.replace('</head>', `${cleanHeaderBlock}\n</head>`);
 
+    // 5. Inject Rich Semantic HTML inside <div id="root"></div> for 100% LLM Readability & 0% Rendering Delta
+    const semanticContent = getSemanticHtmlForRoute(routePath);
+    routeHtml = routeHtml.replace(/<div id="root">[\s\S]*?<\/div>/i, `<div id="root">${semanticContent}</div>`);
+
     const targetFilePath = path.join(routeDir, 'index.html');
     fs.writeFileSync(targetFilePath, routeHtml, 'utf-8');
-    console.log(`[Prerender SEO] Created pre-rendered HTML for ${routePath} -> ${targetFilePath}`);
+    console.log(`[Prerender SEO] Created pre-rendered HTML with full semantic content for ${routePath} -> ${targetFilePath}`);
   });
 
-  console.log('[Prerender SEO] All public routes pre-rendered with canonical URLs successfully.');
+  console.log('[Prerender SEO] All public routes pre-rendered with canonical URLs & full semantic HTML successfully.');
 }
 
 prerenderRoutes();
