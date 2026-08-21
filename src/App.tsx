@@ -82,13 +82,7 @@ function MainAppContent() {
   // Auxiliary Widgets Mounted Only Upon User Interaction or Idle Timeout (Sub-500ms FCP/LCP Guarantee)
   const [showAuxWidgets, setShowAuxWidgets] = useState(false);
 
-  const [showLeadGate, setShowLeadGate] = useState(() => {
-    if (typeof window === 'undefined') return false;
-    const registered = localStorage.getItem('juristech_user_registered');
-    const path = window.location.pathname;
-    const isExcluded = path.startsWith('/admin') || path.startsWith('/support') || path.startsWith('/about') || path.startsWith('/privacy') || path.startsWith('/terms') || path.startsWith('/payment') || path.startsWith('/legal-compliance');
-    return !registered && !isExcluded;
-  });
+  const [showLeadGate, setShowLeadGate] = useState(false);
 
   // ── Defer Auxiliary Floating Widgets (Chatbot, Radar) for High Speed Insights ──
   useEffect(() => {

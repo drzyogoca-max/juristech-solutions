@@ -26,16 +26,14 @@ import { getVisitorAnalyticsSummary } from '../lib/visitorTracker';
 import { crmService } from '../services/crmService';
 import { getReviewQueueItems } from '../lib/reviewQueueService';
 
-// ── Lazy Loaded Heavy Sub-Widgets for 95+ Core Web Vitals ──
-const InteractiveCustomerJourneyMap = lazy(() => import('../components/InteractiveCustomerJourneyMap'));
-const WorkflowDashboard = lazy(() => import('../components/WorkflowDashboard'));
-const LegalAlertsFeed = lazy(() => import('../components/LegalAlertsFeed'));
-const DashboardChatbotMagnet = lazy(() => import('../components/DashboardChatbotMagnet'));
-const USCompetitorMatchBanner = lazy(() => import('../components/USCompetitorMatchBanner'));
-const GlobalCDNHubWidget = lazy(() => import('../components/GlobalCDNHubWidget'));
-const AIHeartbeatWidget = lazy(() => import('../components/AIHeartbeatWidget'));
-const CaseStudiesSection = lazy(() => import('../components/CaseStudiesSection'));
-const TwoFactorSecurityModal = lazy(() => import('../components/TwoFactorSecurityModal'));
+import InteractiveCustomerJourneyMap from '../components/InteractiveCustomerJourneyMap';
+import WorkflowDashboard from '../components/WorkflowDashboard';
+import LegalAlertsFeed from '../components/LegalAlertsFeed';
+import DashboardChatbotMagnet from '../components/DashboardChatbotMagnet';
+import USCompetitorMatchBanner from '../components/USCompetitorMatchBanner';
+import CaseStudiesSection from '../components/CaseStudiesSection';
+import TwoFactorSecurityModal from '../components/TwoFactorSecurityModal';
+import PermanentContactAndServicesHub from '../components/PermanentContactAndServicesHub';
 
 
 interface ActivityItem {
@@ -370,6 +368,11 @@ export default function Dashboard() {
       <div className="max-w-7xl mx-auto space-y-8 relative z-10">
 
         {/* ──────────────────────────────────────────────────────────────────── */}
+        {/* 👑 PERMANENT DIRECT CONTACT & CORE SERVICES HUB (ALWAYS VISIBLE)     */}
+        {/* ──────────────────────────────────────────────────────────────────── */}
+        <PermanentContactAndServicesHub />
+
+        {/* ──────────────────────────────────────────────────────────────────── */}
         {/* STAGE 1 — AI LEGAL ASSISTANT HERO & CHATBOT MAGNET (TOP PRIMACY)     */}
         {/* ──────────────────────────────────────────────────────────────────── */}
         <div className="space-y-4">
@@ -490,9 +493,7 @@ export default function Dashboard() {
         <InteractiveCustomerJourneyMap />
 
         {/* ── Real-World Legal Case Studies (دراسات حالة واقعية معتمدة لحل نزاعات العقود) ── */}
-        <Suspense fallback={<div className="h-64 rounded-3xl bg-slate-900 animate-pulse border border-slate-800" />}>
-          <CaseStudiesSection />
-        </Suspense>
+        <CaseStudiesSection />
 
         {/* ──────────────────────────────────────────────────────────────────── */}
         {/* RECENT DOCUMENTS & SAVED AUDITS (TRUE DASHBOARD WORKSPACE)           */}
@@ -739,9 +740,7 @@ export default function Dashboard() {
         {/* ──────────────────────────────────────────────────────────────────── */}
         {/* GLOBAL 7-TARGET-MARKET HIGH-CONVERSION ENTERPRISE HUB (US, UK, DE, TR, CN, ES, GCC) */}
         {/* ──────────────────────────────────────────────────────────────────── */}
-        <Suspense fallback={<div className="h-64 bg-slate-900 rounded-3xl border border-slate-800 animate-pulse mb-8" />}>
-          <USCompetitorMatchBanner />
-        </Suspense>
+        <USCompetitorMatchBanner />
 
         {/* ──────────────────────────────────────────────────────────────────── */}
         {/* STAGE 3 — SUBSCRIPTIONS & PRICING PACKAGES GATEWAY (30% DISCOUNT)    */}
@@ -1389,12 +1388,10 @@ export default function Dashboard() {
         )}
 
         {/* 🔐 Sovereign Two-Factor Authentication & End-to-End Encryption Modal */}
-        <Suspense fallback={null}>
-          <TwoFactorSecurityModal
-            isOpen={showSecurityModal}
-            onClose={() => setShowSecurityModal(false)}
-          />
-        </Suspense>
+        <TwoFactorSecurityModal
+          isOpen={showSecurityModal}
+          onClose={() => setShowSecurityModal(false)}
+        />
 
       </div>
     </main>
