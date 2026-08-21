@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {
   Scale, AlertTriangle, FileText, Globe, Mail,
   Smartphone, Linkedin, CheckCircle2,
@@ -9,6 +9,8 @@ import { usePlatformLocale } from '../lib/universalTranslator';
 
 export default function Footer() {
   const { l, isRtl } = usePlatformLocale();
+  const location = useLocation();
+  const isHomePage = location.pathname === '/' || location.pathname === '/dashboard';
   const currentYear = new Date().getFullYear();
 
   return (
@@ -17,6 +19,7 @@ export default function Footer() {
         
         {/* 1. Full 18 Core Services Grid (Rendered on All Pages so information never disappears) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pt-2">
+
           
           {/* Column 1: Contracts & Templates */}
           <div className="p-5 rounded-2xl bg-slate-900/70 border border-cyan-500/20 space-y-3 shadow-lg">
@@ -180,21 +183,24 @@ export default function Footer() {
 
         </div>
 
-        {/* 2. Direct Executive Contact & Fast Channels */}
-        <div className="p-4 rounded-2xl bg-slate-900/90 border border-sky-500/20 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-300">
-          <div className="flex items-center gap-3">
-            <Mail className="w-4 h-4 text-sky-400 shrink-0" />
-            <span>{l('البريد المعتمد للإدارة:', 'Official Executive Email:')} <code className="text-sky-300 font-mono">Drzyogo.ca@gmail.com</code></span>
+        {/* 2. Direct Executive Contact & Fast Channels (Rendered ONLY on Dashboard) */}
+        {isHomePage && (
+          <div className="p-4 rounded-2xl bg-slate-900/90 border border-sky-500/20 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-300">
+            <div className="flex items-center gap-3">
+              <Mail className="w-4 h-4 text-sky-400 shrink-0" />
+              <span>{l('البريد المعتمد للإدارة:', 'Official Executive Email:')} <code className="text-sky-300 font-mono">Drzyogo.ca@gmail.com</code></span>
+            </div>
+            <div className="flex items-center gap-3">
+              <Smartphone className="w-4 h-4 text-emerald-400 shrink-0" />
+              <span>{l('الواتساب المباشر:', 'Direct WhatsApp:')} <code className="text-emerald-300 font-mono">+201126674337</code></span>
+            </div>
+            <div className="flex items-center gap-3">
+              <Globe className="w-4 h-4 text-purple-400 shrink-0" />
+              <span>{l('إنستا باي مصر:', 'InstaPay Egypt:')} <code className="text-purple-300 font-mono">+201031222262</code></span>
+            </div>
           </div>
-          <div className="flex items-center gap-3">
-            <Smartphone className="w-4 h-4 text-emerald-400 shrink-0" />
-            <span>{l('الواتساب المباشر:', 'Direct WhatsApp:')} <code className="text-emerald-300 font-mono">+201126674337</code></span>
-          </div>
-          <div className="flex items-center gap-3">
-            <Globe className="w-4 h-4 text-purple-400 shrink-0" />
-            <span>{l('إنستا باي مصر:', 'InstaPay Egypt:')} <code className="text-purple-300 font-mono">+201031222262</code></span>
-          </div>
-        </div>
+        )}
+
 
         {/* 3. Mandatory Legal Disclaimer & Sovereign Independence */}
         <div className="p-4 rounded-2xl bg-slate-900/90 border border-amber-500/30 flex items-start gap-3 text-xs text-slate-300">

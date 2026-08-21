@@ -338,14 +338,18 @@ function MainAppContent() {
             </Routes>
           </Suspense>
 
+          <Suspense fallback={null}>
+            <LeadCaptureModal />
+          </Suspense>
+
           {showAuxWidgets && (
             <Suspense fallback={null}>
               <VisitorRadar />
               <AIChatbotConcierge />
               <GdprPrivacyBanner />
-              <LeadCaptureModal />
             </Suspense>
           )}
+
           <MobileBottomNav />
           <Footer />
           <VercelAnalyticsWrapper />

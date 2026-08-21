@@ -600,9 +600,8 @@ Party B (${partyBName}) Position/Doc: ${partyBPosition}`;
             ))}
           </div>
         </div>
-
-        <AdSponsorBanner slotType="in-feed" />
       </div>
     </main>
   );
 }
+

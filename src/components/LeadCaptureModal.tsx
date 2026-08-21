@@ -5,7 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { dispatchWhatsAppNotification } from '../services/engine-ai';
 
 const LS_KEY = 'jt_lead_captured_v2';
-const SHOW_DELAY_MS = 5000;
+const SHOW_DELAY_MS = 2500;
+
 
 const CONTENT: Record<string, {
   headline: string; subline: string; namePlaceholder: string; emailPlaceholder: string;

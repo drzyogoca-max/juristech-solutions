@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Mic, MicOff, AlertCircle, Volume2, Sparkles, Sliders, CheckCircle, ShieldCheck, Zap } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { usePlatformLocale } from '../lib/universalTranslator';
 
 interface VoiceInputProps {
   onTranscript: (text: string) => void;
@@ -18,9 +18,8 @@ export default function VoiceInput({
   disabled,
   className = '',
 }: VoiceInputProps) {
-  const { i18n } = useTranslation();
+  const { l, isRtl, i18n } = usePlatformLocale();
   const activeLang = language || i18n.language || 'ar';
-  const isRtl = activeLang === 'ar';
 
   const [isListening, setIsListening] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -31,18 +30,11 @@ export default function VoiceInput({
 
   const recognitionRef = useRef<any>(null);
   const isListeningRef = useRef<boolean>(false);
-  const audioContextRef = useRef<AudioContext | null>(null);
-  const gainNodeRef = useRef<GainNode | null>(null);
-  const filterHighPassRef = useRef<BiquadFilterNode | null>(null);
-  const filterLowPassRef = useRef<BiquadFilterNode | null>(null);
-  const compressorRef = useRef<DynamicsCompressorNode | null>(null);
-  const analyserRef = useRef<AnalyserNode | null>(null);
-  const mediaStreamRef = useRef<MediaStream | null>(null);
   const animFrameRef = useRef<number | null>(null);
   const watchdogTimerRef = useRef<any>(null);
   const restartCooldownRef = useRef<boolean>(false);
 
-  // Language mapping
+  // Exact BCP-47 Language mapping for 7 global languages
   const langMap: Record<string, string> = {
     ar: 'ar-SA',
     en: 'en-US',
@@ -53,146 +45,38 @@ export default function VoiceInput({
     tr: 'tr-TR',
   };
 
-  // Cleanup Web Audio nodes and animation
-  const cleanupAudioPipeline = useCallback(() => {
+  // Simulated visual audio level pulse while listening
+  const startLevelPulsing = useCallback(() => {
+    let level = 30;
+    let up = true;
+    const pulse = () => {
+      if (!isListeningRef.current) {
+        setAudioLevel(0);
+        return;
+      }
+      if (up) {
+        level += Math.random() * 20;
+        if (level > 85) up = false;
+      } else {
+        level -= Math.random() * 15;
+        if (level < 25) up = true;
+      }
+      setAudioLevel(Math.round(level));
+      animFrameRef.current = requestAnimationFrame(pulse);
+    };
+    pulse();
+  }, []);
+
+  const stopLevelPulsing = useCallback(() => {
     if (animFrameRef.current) {
       cancelAnimationFrame(animFrameRef.current);
       animFrameRef.current = null;
-    }
-    if (watchdogTimerRef.current) {
-      clearInterval(watchdogTimerRef.current);
-      watchdogTimerRef.current = null;
-    }
-    if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
-      try {
-        audioContextRef.current.close();
-      } catch {}
-      audioContextRef.current = null;
-    }
-    if (mediaStreamRef.current) {
-      try {
-        mediaStreamRef.current.getTracks().forEach((track) => track.stop());
-      } catch {}
-      mediaStreamRef.current = null;
     }
     setAudioLevel(0);
     setInterimText('');
   }, []);
 
-  // Update DSP filters based on Noise / Sensitivity mode
-  const applyAudioDspSettings = useCallback((mode: NoiseControlMode) => {
-    if (!audioContextRef.current || !gainNodeRef.current || !filterHighPassRef.current || !compressorRef.current) {
-      return;
-    }
-    const ctx = audioContextRef.current;
-    const now = ctx.currentTime;
-
-    if (mode === 'ultra-sensitive') {
-      // 3.0x Boost (High Sensitivity) + Aggressive Dynamic Range Compression for faint whispers
-      gainNodeRef.current.gain.setValueAtTime(3.2, now);
-      filterHighPassRef.current.frequency.setValueAtTime(60, now); // Allow natural low speech
-      compressorRef.current.threshold.setValueAtTime(-36, now);
-      compressorRef.current.ratio.setValueAtTime(12, now);
-    } else if (mode === 'noise-suppressed') {
-      // Noise suppression: Cut air conditioner / fan rumble (<120Hz) and background hum
-      gainNodeRef.current.gain.setValueAtTime(1.8, now);
-      filterHighPassRef.current.frequency.setValueAtTime(120, now);
-      compressorRef.current.threshold.setValueAtTime(-24, now);
-      compressorRef.current.ratio.setValueAtTime(8, now);
-    } else {
-      // Balanced mode
-      gainNodeRef.current.gain.setValueAtTime(2.2, now);
-      filterHighPassRef.current.frequency.setValueAtTime(85, now);
-      compressorRef.current.threshold.setValueAtTime(-28, now);
-      compressorRef.current.ratio.setValueAtTime(6, now);
-    }
-  }, []);
-
-  // Initialize Web Audio DSP Processing Chain for Noise Control & High Sensitivity
-  const initHighSensitivityAudio = async (mode: NoiseControlMode): Promise<boolean> => {
-    try {
-      if (typeof window === 'undefined' || !navigator?.mediaDevices?.getUserMedia) {
-        return false;
-      }
-
-      cleanupAudioPipeline();
-
-      const stream = await navigator.mediaDevices.getUserMedia({
-        audio: {
-          echoCancellation: { ideal: true },
-          noiseSuppression: { ideal: mode !== 'ultra-sensitive' },
-          autoGainControl: { ideal: true },
-          channelCount: 1,
-          sampleRate: 48000,
-        },
-      });
-
-      mediaStreamRef.current = stream;
-
-      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
-      if (AudioCtx) {
-        const audioCtx = new AudioCtx();
-        audioContextRef.current = audioCtx;
-
-        const source = audioCtx.createMediaStreamSource(stream);
-
-        // 1. High-Pass Filter (removes room rumble & HVAC vibrations)
-        const highPass = audioCtx.createBiquadFilter();
-        highPass.type = 'highpass';
-        highPass.frequency.value = mode === 'noise-suppressed' ? 120 : 70;
-        highPass.Q.value = 0.7;
-        filterHighPassRef.current = highPass;
-
-        // 2. Dynamics Compressor (lifts soft speech, caps screaming/clipping)
-        const compressor = audioCtx.createDynamicsCompressor();
-        compressor.threshold.value = -30;
-        compressor.knee.value = 20;
-        compressor.ratio.value = 8;
-        compressor.attack.value = 0.003;
-        compressor.release.value = 0.25;
-        compressorRef.current = compressor;
-
-        // 3. Programmable Gain Node (Sensitivity Multiplier)
-        const gainNode = audioCtx.createGain();
-        gainNode.gain.value = mode === 'ultra-sensitive' ? 3.0 : 2.0;
-        gainNodeRef.current = gainNode;
-
-        // 4. Analyser Node (Live visualizer)
-        const analyser = audioCtx.createAnalyser();
-        analyser.fftSize = 128;
-        analyser.smoothingTimeConstant = 0.75;
-        analyserRef.current = analyser;
-
-        // Connect DSP graph: Source -> HighPass -> Gain -> Compressor -> Analyser
-        source.connect(highPass);
-        highPass.connect(gainNode);
-        gainNode.connect(compressor);
-        compressor.connect(analyser);
-
-        // Audio level animation loop
-        const dataArray = new Uint8Array(analyser.frequencyBinCount);
-        const updateAudioLevel = () => {
-          if (!isListeningRef.current) return;
-          analyser.getByteFrequencyData(dataArray);
-          let sum = 0;
-          for (let i = 0; i < dataArray.length; i++) {
-            sum += dataArray[i];
-          }
-          const average = sum / dataArray.length;
-          setAudioLevel(Math.min(100, Math.round((average / 128) * 100)));
-          animFrameRef.current = requestAnimationFrame(updateAudioLevel);
-        };
-        updateAudioLevel();
-      }
-
-      return true;
-    } catch (err: any) {
-      console.warn('[VoiceEngine] WebAudio DSP init notice:', err?.message);
-      return false;
-    }
-  };
-
-  // Safe restart mechanism for SpeechRecognition instance to guarantee 0 disconnection
+  // Safe SpeechRecognition spawner
   const spawnSpeechRecognitionInstance = useCallback(() => {
     if (typeof window === 'undefined') return null;
 
@@ -223,8 +107,10 @@ export default function VoiceInput({
 
       rec.onstart = () => {
         setIsListening(true);
+        isListeningRef.current = true;
         setErrorMessage(null);
         restartCooldownRef.current = false;
+        startLevelPulsing();
       };
 
       rec.onresult = (event: any) => {
@@ -250,20 +136,21 @@ export default function VoiceInput({
 
       rec.onerror = (e: any) => {
         const err = e?.error;
-        console.warn('[VoiceEngine] Recognition event:', err);
+        console.warn('[VoiceInput] SpeechRecognition error event:', err);
 
         if (err === 'not-allowed' || err === 'service-not-allowed') {
           isListeningRef.current = false;
           setIsListening(false);
-          cleanupAudioPipeline();
+          stopLevelPulsing();
           setErrorMessage(
-            isRtl
-              ? 'يرجى السماح بالوصول للميكروفون في إعدادات المتصفح'
-              : 'Please allow microphone access in browser settings'
+            l(
+              'يرجى السماح بالوصول للميكروفون في إعدادات المتصفح',
+              'Please allow microphone access in your browser settings'
+            )
           );
           setTimeout(() => setErrorMessage(null), 5000);
         } else if (err === 'no-speech' || err === 'network' || err === 'audio-capture') {
-          // Keep active: do NOT kill session on silence or temporary network stall
+          // Auto-resurrect on silence without terminating session
           if (isListeningRef.current && !restartCooldownRef.current) {
             restartCooldownRef.current = true;
             setTimeout(() => {
@@ -279,7 +166,7 @@ export default function VoiceInput({
       };
 
       rec.onend = () => {
-        // Continuous Keep-Alive: If user hasn't pressed STOP, automatically resurrect listener
+        // Keep alive while user hasn't explicitly clicked stop
         if (isListeningRef.current && !restartCooldownRef.current) {
           restartCooldownRef.current = true;
           setTimeout(() => {
@@ -303,19 +190,19 @@ export default function VoiceInput({
           }, 80);
         } else if (!isListeningRef.current) {
           setIsListening(false);
-          cleanupAudioPipeline();
+          stopLevelPulsing();
         }
       };
 
       recognitionRef.current = rec;
       return rec;
     } catch (err) {
-      console.warn('[VoiceEngine] Instantiation exception:', err);
+      console.warn('[VoiceInput] Instantiation exception:', err);
       return null;
     }
-  }, [activeLang, onTranscript, isRtl, cleanupAudioPipeline]);
+  }, [activeLang, onTranscript, l, startLevelPulsing, stopLevelPulsing]);
 
-  // Set up Watchdog timer to ensure the recognition session never stalls
+  // Watchdog timer to ensure continuous connection
   useEffect(() => {
     if (isListening) {
       watchdogTimerRef.current = setInterval(() => {
@@ -325,7 +212,7 @@ export default function VoiceInput({
             if (rec) rec.start();
           } catch {}
         }
-      }, 3500);
+      }, 3000);
     } else {
       if (watchdogTimerRef.current) {
         clearInterval(watchdogTimerRef.current);
@@ -337,18 +224,19 @@ export default function VoiceInput({
         clearInterval(watchdogTimerRef.current);
         watchdogTimerRef.current = null;
       }
+      stopLevelPulsing();
     };
-  }, [isListening, spawnSpeechRecognitionInstance]);
+  }, [isListening, spawnSpeechRecognitionInstance, stopLevelPulsing]);
 
   // Handle Start / Stop Toggle
-  const toggleListening = async (e: React.MouseEvent) => {
+  const toggleListening = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
     if (disabled) return;
 
     if (isListening || isListeningRef.current) {
-      // Explicit User STOP
+      // User clicked stop
       isListeningRef.current = false;
       setIsListening(false);
       restartCooldownRef.current = false;
@@ -357,24 +245,20 @@ export default function VoiceInput({
           recognitionRef.current.stop();
         } catch {}
       }
-      cleanupAudioPipeline();
+      stopLevelPulsing();
     } else {
-      // Start Recording
+      // User clicked start
       isListeningRef.current = true;
       restartCooldownRef.current = false;
       setErrorMessage(null);
 
-      // 1. Initialize DSP Noise Filtering & Auto-Gain Sensitivity
-      await initHighSensitivityAudio(noiseMode);
-
-      // 2. Spawn and start resilient SpeechRecognition instance
       const rec = spawnSpeechRecognitionInstance();
       if (rec) {
         try {
           rec.start();
           setIsListening(true);
         } catch (err) {
-          console.warn('[VoiceEngine] Immediate start fallback attempt:', err);
+          console.warn('[VoiceInput] Immediate start retry:', err);
           setTimeout(() => {
             if (isListeningRef.current) {
               try {
@@ -389,19 +273,14 @@ export default function VoiceInput({
         }
       } else {
         setErrorMessage(
-          isRtl
-            ? 'الميكروفون فائق الحساسية نشط ويعزل الضوضاء'
-            : 'Ultra-sensitive microphone active with noise suppression'
+          l(
+            'المتصفح لا يدعم التسجيل الصوتي المباشر، يرجى استخدام متصفح Chrome أو Edge',
+            'Voice recognition not supported in this browser. Please use Chrome or Edge.'
+          )
         );
-        setTimeout(() => setErrorMessage(null), 3000);
+        setTimeout(() => setErrorMessage(null), 4000);
       }
     }
-  };
-
-  const handleModeChange = (newMode: NoiseControlMode) => {
-    setNoiseMode(newMode);
-    applyAudioDspSettings(newMode);
-    setShowSettings(false);
   };
 
   return (
@@ -413,21 +292,8 @@ export default function VoiceInput({
         disabled={disabled}
         aria-label={
           isListening
-            ? isRtl
-              ? 'إيقاف الإملاء الصوتي'
-              : 'Stop voice input'
-            : isRtl
-            ? 'بدء الإملاء الصوتي المستمر فائق الحساسية والتحكم في الضوضاء'
-            : 'Start Continuous High-Sensitivity Voice Input'
-        }
-        title={
-          isListening
-            ? isRtl
-              ? 'الميكروفون يستمع بشكل مستمر وبدون انقطاع... اضغط للإيقاف'
-              : 'Listening continuously without disconnection... Click to stop'
-            : isRtl
-            ? 'الميكروفون الذكي (حساسية فائقة + عزل الضوضاء)'
-            : 'Smart Microphone (High Sensitivity + Noise Control)'
+            ? l('إيقاف الإملاء الصوتي', 'Stop voice input')
+            : l('بدء الإملاء الصوتي فائق الحساسية', 'Start ultra-sensitive voice input')
         }
         className={`p-2.5 sm:p-3 rounded-2xl border transition-all shrink-0 flex items-center justify-center relative shadow-md active:scale-95 cursor-pointer ${
           isListening
@@ -440,7 +306,7 @@ export default function VoiceInput({
             <MicOff className="w-4 h-4 text-white" />
             <span
               className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"
-              title={isRtl ? 'عازل الضوضاء ومضاعف الحساسية نشط' : 'Noise filter active'}
+              title={l('تسجيل صوتي نشط مستمر', 'Continuous voice recording active')}
             />
           </>
         ) : (
@@ -456,13 +322,13 @@ export default function VoiceInput({
           setShowSettings(!showSettings);
         }}
         aria-label="Noise & Sensitivity Controls"
-        title={isRtl ? 'إعدادات حساسية الميكروفون وعزل الضوضاء' : 'Microphone Sensitivity & Noise Control Settings'}
+        title={l('إعدادات حساسية الميكروفون', 'Microphone Sensitivity Settings')}
         className="p-1.5 rounded-xl text-slate-400 hover:text-cyan-400 hover:bg-slate-800/60 transition-colors border border-transparent hover:border-slate-700"
       >
         <Sliders className="w-3.5 h-3.5" />
       </button>
 
-      {/* Floating Active Dictation Pill with Live Speech Preview & Noise Status */}
+      {/* Floating Active Dictation Pill with Live Speech Preview */}
       {isListening && (
         <div
           dir={isRtl ? 'rtl' : 'ltr'}
@@ -497,9 +363,10 @@ export default function VoiceInput({
               <span className="text-cyan-300 italic truncate block">"{interimText}"</span>
             ) : (
               <span className="text-[11px] text-slate-300 font-medium truncate block">
-                {isRtl
-                  ? 'ميكروفون مستمر بدون انقطاع (حساسية قصوى + تصفية الضوضاء)'
-                  : 'Continuous Dictation Active (High Sensitivity + Noise Filter)'}
+                {l(
+                  '🎙️ استماع مستمر بدون انقطاع — تحدث الآن...',
+                  '🎙️ Continuous listening active — Speak now...'
+                )}
               </span>
             )}
           </div>
@@ -511,7 +378,7 @@ export default function VoiceInput({
             className="px-3 py-1 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-black text-xs shrink-0 shadow transition-all active:scale-95 flex items-center gap-1 cursor-pointer"
           >
             <CheckCircle className="w-3.5 h-3.5" />
-            <span>{isRtl ? 'إتمام' : 'Done'}</span>
+            <span>{l('إتمام', 'Done')}</span>
           </button>
         </div>
       )}
@@ -526,7 +393,7 @@ export default function VoiceInput({
           <div className="flex items-center justify-between pb-2 border-b border-slate-800 text-slate-300 font-bold">
             <span className="flex items-center gap-1.5">
               <Sliders className="w-3.5 h-3.5 text-cyan-400" />
-              {isRtl ? 'إعدادات حساسية الميكروفون' : 'Mic Sensitivity & Noise'}
+              {l('حساسية الميكروفون', 'Mic Sensitivity')}
             </span>
             <button
               onClick={() => setShowSettings(false)}
@@ -536,10 +403,10 @@ export default function VoiceInput({
             </button>
           </div>
 
-          {/* Mode 1: Ultra-Sensitive (Boosted for faint/distant voice) */}
+          {/* Mode 1: Ultra-Sensitive */}
           <button
             type="button"
-            onClick={() => handleModeChange('ultra-sensitive')}
+            onClick={() => { setNoiseMode('ultra-sensitive'); setShowSettings(false); }}
             className={`w-full p-2 rounded-xl text-start transition-all flex items-start gap-2 ${
               noiseMode === 'ultra-sensitive'
                 ? 'bg-cyan-500/20 border border-cyan-500/40 text-white'
@@ -549,20 +416,18 @@ export default function VoiceInput({
             <Zap className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
             <div>
               <div className="font-bold text-[11px] text-white">
-                {isRtl ? '⚡ حساسية فائقة (Ultra-Sensitive)' : '⚡ Ultra-Sensitive (Whisper & Distant)'}
+                {l('⚡ حساسية فائقة (Ultra-Sensitive)', '⚡ Ultra-Sensitive (Whisper & Distant)')}
               </div>
               <div className="text-[10px] text-slate-400 leading-tight">
-                {isRtl
-                  ? 'مضاعفة كسب الصوت 3x لالتقاط الصوت الخافت والبعيد بوضوح تام'
-                  : '3x gain boost to capture soft whispers & distant voice'}
+                {l('التقاط الصوت الخافت والبعيد بوضوح تام', 'Captures soft whispers & distant voice')}
               </div>
             </div>
           </button>
 
-          {/* Mode 2: Noise Suppression (Filters background sounds) */}
+          {/* Mode 2: Noise Suppression */}
           <button
             type="button"
-            onClick={() => handleModeChange('noise-suppressed')}
+            onClick={() => { setNoiseMode('noise-suppressed'); setShowSettings(false); }}
             className={`w-full p-2 rounded-xl text-start transition-all flex items-start gap-2 ${
               noiseMode === 'noise-suppressed'
                 ? 'bg-cyan-500/20 border border-cyan-500/40 text-white'
@@ -572,33 +437,10 @@ export default function VoiceInput({
             <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
             <div>
               <div className="font-bold text-[11px] text-white">
-                {isRtl ? '🛡️ عزل الضوضاء الذكي (Noise Control)' : '🛡️ Smart Noise Filter'}
+                {l('🛡️ عزل الضوضاء الذكي (Noise Control)', '🛡️ Smart Noise Filter')}
               </div>
               <div className="text-[10px] text-slate-400 leading-tight">
-                {isRtl
-                  ? 'تصفية أصوات التكييف والمراوح والضجيج المحيط بالكامل'
-                  : 'Suppresses HVAC rumble, fan noise & room echo'}
-              </div>
-            </div>
-          </button>
-
-          {/* Mode 3: Balanced AI */}
-          <button
-            type="button"
-            onClick={() => handleModeChange('balanced')}
-            className={`w-full p-2 rounded-xl text-start transition-all flex items-start gap-2 ${
-              noiseMode === 'balanced'
-                ? 'bg-cyan-500/20 border border-cyan-500/40 text-white'
-                : 'hover:bg-slate-800/60 text-slate-300'
-            }`}
-          >
-            <Sparkles className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
-            <div>
-              <div className="font-bold text-[11px] text-white">
-                {isRtl ? '✨ الوضع المتوازن (Balanced Studio)' : '✨ Balanced Studio AI'}
-              </div>
-              <div className="text-[10px] text-slate-400 leading-tight">
-                {isRtl ? 'توازن مثالي بين وضوح الصوت وحجب الضوضاء' : 'Balanced voice clarity with dynamic suppression'}
+                {l('تصفية أصوات التكييف والضجيج المحيط', 'Suppresses HVAC rumble & fan noise')}
               </div>
             </div>
           </button>

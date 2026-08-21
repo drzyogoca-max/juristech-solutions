@@ -1591,9 +1591,8 @@ export default function ContractsRepositoryPage() {
 
           </div>
         )}
-
-        <AdSponsorBanner slotType="in-feed" />
       </div>
+
 
       {/* ── MODALS ─────────────────────────────────────────────────────────── */}
       <QuickDownloadModal

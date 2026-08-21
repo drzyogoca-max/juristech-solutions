@@ -491,6 +491,44 @@ const DICTIONARY: Record<string, Record<SupportedLang, string>> = {
   },
 };
 
+// Pre-indexed reverse lookup map from GLOBAL_TRANSLATIONS for instant O(1) multi-language resolution
+const REVERSE_GLOBAL_MAP: Map<string, Record<SupportedLang, string>> = new Map();
+
+// Build reverse index from GLOBAL_TRANSLATIONS at module load
+(function initGlobalTranslationIndex() {
+  try {
+    const allLangs: SupportedLang[] = ['ar', 'en', 'de', 'fr', 'es', 'zh', 'tr'];
+    const baseAr = GLOBAL_TRANSLATIONS.ar;
+    const baseEn = GLOBAL_TRANSLATIONS.en;
+
+    const traverse = (objAr: any, objEn: any, path: string[] = []) => {
+      if (!objAr || typeof objAr !== 'object') return;
+      for (const k of Object.keys(objAr)) {
+        const valAr = objAr[k];
+        const valEn = objEn?.[k];
+        if (typeof valAr === 'string') {
+          const entry: Record<SupportedLang, string> = {} as any;
+          allLangs.forEach(lang => {
+            let cur = GLOBAL_TRANSLATIONS[lang];
+            for (const p of path) { cur = cur?.[p]; }
+            entry[lang] = cur?.[k] || (lang === 'ar' ? valAr : valEn || valAr);
+          });
+
+          const normAr = valAr.trim().toLowerCase();
+          const normEn = (valEn || '').trim().toLowerCase();
+          if (normAr) REVERSE_GLOBAL_MAP.set(normAr, entry);
+          if (normEn) REVERSE_GLOBAL_MAP.set(normEn, entry);
+        } else if (typeof valAr === 'object') {
+          traverse(valAr, objEn?.[k], [...path, k]);
+        }
+      }
+    };
+    traverse(baseAr, baseEn, []);
+  } catch (e) {
+    console.warn('[Translator] Reverse index init bypassed:', e);
+  }
+})();
+
 /**
  * Universal Dual-String Translation Resolver
  * Dynamically resolves any (Arabic, English) pair into the exact active language:
@@ -499,37 +537,45 @@ const DICTIONARY: Record<string, Record<SupportedLang, string>> = {
 export function loc(arText: string, enText: string, lang?: string): string {
   const targetLang = normalizeLanguage(lang || (typeof window !== 'undefined' ? localStorage.getItem('locale') || 'ar' : 'ar'));
 
-  if (targetLang === 'ar') return arText;
-  if (targetLang === 'en') return enText;
+  if (targetLang === 'ar') return arText || enText || '';
+  if (targetLang === 'en') return enText || arText || '';
 
-  // 1. Check in Dynamic Legal Lexicon & Terminology Engine
-  const cleanEnKey = (enText || '').toLowerCase().replace(/[\s\W]+/g, '_').trim();
-  const legalTermByEn = legalLexiconEngine.getTerm(cleanEnKey, targetLang);
-  if (legalTermByEn && legalTermByEn !== cleanEnKey) {
-    return legalTermByEn;
-  }
+  const cleanEn = (enText || '').trim().toLowerCase();
+  const cleanAr = (arText || '').trim().toLowerCase();
 
-  const cleanArKey = (arText || '').toLowerCase().replace(/[\s\W]+/g, '_').trim();
-  const legalTermByAr = legalLexiconEngine.getTerm(cleanArKey, targetLang);
-  if (legalTermByAr && legalTermByAr !== cleanArKey) {
-    return legalTermByAr;
-  }
-
-  // 2. Check in in-memory UI hash dictionary by English key
-  const cleanEn = (enText || '').toLowerCase().trim();
-  if (DICTIONARY[cleanEn] && DICTIONARY[cleanEn][targetLang]) {
+  // 1. Check in in-memory UI hash dictionary by English key
+  if (cleanEn && DICTIONARY[cleanEn] && DICTIONARY[cleanEn][targetLang]) {
     return DICTIONARY[cleanEn][targetLang];
   }
 
-  // 3. Check in in-memory UI hash dictionary by Arabic key
-  const cleanAr = (arText || '').toLowerCase().trim();
-  if (DICTIONARY[cleanAr] && DICTIONARY[cleanAr][targetLang]) {
+  // 2. Check in in-memory UI hash dictionary by Arabic key
+  if (cleanAr && DICTIONARY[cleanAr] && DICTIONARY[cleanAr][targetLang]) {
     return DICTIONARY[cleanAr][targetLang];
   }
 
-  // 4. Return English fallback if no direct translation exists
-  return enText || arText;
+  // 3. Check in Reverse Global Translation Matrix
+  if (cleanAr && REVERSE_GLOBAL_MAP.has(cleanAr)) {
+    const mapped = REVERSE_GLOBAL_MAP.get(cleanAr);
+    if (mapped?.[targetLang]) return mapped[targetLang];
+  }
+  if (cleanEn && REVERSE_GLOBAL_MAP.has(cleanEn)) {
+    const mapped = REVERSE_GLOBAL_MAP.get(cleanEn);
+    if (mapped?.[targetLang]) return mapped[targetLang];
+  }
+
+  // 4. Check in Dynamic Legal Lexicon & Terminology Engine (Unicode-safe)
+  const cleanEnKey = (enText || '').toLowerCase().replace(/[^a-zA-Z0-9]+/g, '_').replace(/^_+|_+$/g, '');
+  if (cleanEnKey) {
+    const legalTermByEn = legalLexiconEngine.getTerm(cleanEnKey, targetLang);
+    if (legalTermByEn && legalTermByEn !== cleanEnKey) {
+      return legalTermByEn;
+    }
+  }
+
+  // 5. Return English fallback if no direct translation exists (never empty)
+  return enText || arText || '';
 }
+
 
 /**
  * Universal React Hook for 100% Reactive Multi-Language Support

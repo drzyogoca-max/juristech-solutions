@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import {
   FileText, Download, Loader2, Globe, Sparkles, MessageSquare, ShieldCheck,
   Building2, Users, Briefcase, Code2, DollarSign, Lock, AlertTriangle, ChevronRight, CheckCircle2, Send,
-  Upload, File, Shield, Check, Cpu, Sparkle
+  Upload, File, Shield, Check, Cpu, Sparkle, Edit3
 } from 'lucide-react';
 import { extractPDFTextMultiStage } from '../lib/pdfExtractor';
 import { callAI } from '../lib/api';
@@ -18,11 +18,12 @@ import VoiceInput from '../components/VoiceInput';
 import ESignaturePad from '../components/ESignaturePad';
 import { incrementTrialUsage, isTrialLimitReached } from '../lib/trialLimits';
 import TrialUpgradeModal from '../components/TrialUpgradeModal';
-import AdSponsorBanner from '../components/AdSponsorBanner';
 import { analyzeContractGaps, ContractGapAnalysisResult } from '../lib/contractGapDetector';
 import SEO from '../components/SEO';
 import DigitalSignatureModal from '../components/DigitalSignatureModal';
+import ContractEditorModal from '../components/ContractEditorModal';
 import { SignatureResult } from '../services/eSignatureService';
+
 
 import { getContractStoreEntry, CONTRACT_STORE_DATABASE } from '../data/contractStore';
 import { MEGA_CONTRACT_TEMPLATES, MEGA_CATEGORIES, generateContractFromTemplate } from '../data/contractsMegaRepository';
@@ -159,6 +160,8 @@ export default function ContractsPage() {
   const [showPaywall, setShowPaywall] = useState(false);
   const [isRiskApproved, setIsRiskApproved] = useState(false);
   const [isEsignatureOpen, setIsEsignatureOpen] = useState(false);
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
+
 
   // Smart Upload & Native OCR Extraction State
   const [ocrFile, setOcrFile] = useState<File | null>(null);
@@ -1142,6 +1145,13 @@ Draft the complete contract in pristine professional legal ${
 
               <div className="flex flex-wrap items-center gap-2">
                 <button
+                  onClick={() => setIsEditorOpen(true)}
+                  className="bg-gradient-to-r from-cyan-500 to-indigo-600 hover:brightness-110 px-4 py-2.5 rounded-xl font-black flex items-center gap-2 text-xs text-white shadow-lg shadow-cyan-500/25 active:scale-95 border border-cyan-400/40 cursor-pointer"
+                >
+                  <Edit3 className="w-4 h-4 text-cyan-200" />
+                  <span>{isRtl ? '✏️ نافذة تعديل وتخصيص العقد (Full Editor)' : '✏️ Open Contract Customizer / Editor'}</span>
+                </button>
+                <button
                   onClick={() =>
                     exportLegalContractPDF(
                       generatedContract,
@@ -1163,7 +1173,7 @@ Draft the complete contract in pristine professional legal ${
                   className="bg-gradient-to-r from-blue-600 via-cyan-600 to-blue-500 hover:brightness-110 px-4 py-2.5 rounded-xl font-black flex items-center gap-2 text-xs text-white shadow-lg shadow-cyan-500/25 active:scale-95 border border-cyan-400/40"
                 >
                   <Download className="w-4 h-4 text-cyan-200" />
-                  <span>{isRtl ? 'تحميل Word (.docx) المنسق المعتمد — ⭐ الخيار الأفضل والعملي' : 'Download Word (.docx) — ⭐ Best & Practical Choice'}</span>
+                  <span>{isRtl ? 'Word (.docx)' : 'Word (.docx)'}</span>
                 </button>
 
                 <button
@@ -1173,6 +1183,7 @@ Draft the complete contract in pristine professional legal ${
                   <Download className="w-3.5 h-3.5" /> Text (.txt)
                 </button>
               </div>
+
             </div>
 
             {/* Contract Textarea */}
@@ -1277,8 +1288,18 @@ Draft the complete contract in pristine professional legal ${
           </div>
         )}
 
-        <AdSponsorBanner slotType="in-feed" />
+        {/* Live Contract Customization & Clause Editor Modal */}
+        <ContractEditorModal
+          isOpen={isEditorOpen}
+          onClose={() => setIsEditorOpen(false)}
+          contractText={generatedContract}
+          onSave={(updated) => setGeneratedContract(updated)}
+          contractTitle={selectedType}
+          partyA={partyA}
+          partyB={partyB}
+        />
       </div>
     </main>
   );
 }
+

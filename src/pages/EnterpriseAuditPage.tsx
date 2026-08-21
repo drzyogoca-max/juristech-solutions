@@ -436,9 +436,8 @@ export default function EnterpriseAuditPage() {
             })}
           </div>
         </div>
-
-        <AdSponsorBanner slotType="in-feed" />
       </div>
     </main>
   );
 }
+

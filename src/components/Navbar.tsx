@@ -20,7 +20,7 @@ import TwoFactorAuthModal from './TwoFactorAuthModal';
 import RbacUserManagementModal from './RbacUserManagementModal';
 import { useAuth } from '../lib/authContext';
 import { detectVisitorJurisdiction, JurisdictionInfo } from '../lib/jurisdiction';
-import { getActiveGlobalTranslations } from '../lib/globalTranslations';
+import { usePlatformLocale } from '../lib/universalTranslator';
 
 // ─── Nav link groups (Visitor & Subscriber separated) ────────────────────────
 const VISITOR_LINKS = [
@@ -60,10 +60,11 @@ const TOP_NAV = [
 ];
 
 export default function Navbar() {
-  const { t, i18n } = useTranslation();
+  const { l, isRtl, gt, t, i18n } = usePlatformLocale();
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { isAdmin } = useAuth();
+
 
   const [isOpen, setIsOpen] = useState(false);
   const [showMoreMenu, setShowMoreMenu] = useState(false);
@@ -76,9 +77,6 @@ export default function Navbar() {
   const [showRbacModal, setShowRbacModal] = useState(false);
   const [activeJurisdiction, setActiveJurisdiction] = useState<JurisdictionInfo | null>(null);
   const [scrolled, setScrolled] = useState(false);
-
-  const gt = getActiveGlobalTranslations(i18n.language);
-  const isRtl = i18n.language === 'ar';
 
   useEffect(() => {
     detectVisitorJurisdiction().then(setActiveJurisdiction);
