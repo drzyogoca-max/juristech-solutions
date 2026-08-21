@@ -20,12 +20,12 @@ html {
 }
 
 :root {
-  --user-font-size: 16px;
+  --user-font-size: 14px;
 }
 
 @layer base {
   html {
-    font-size: var(--user-font-size, 16px);
+    font-size: var(--user-font-size, 14px);
     scroll-behavior: smooth;
     overflow-x: hidden;
   }

@@ -39,9 +39,9 @@
 
 /* Dark Mode Overrides */
 .dark {
-  --bg-main: #0b192c;
+  --bg-main: #0A192F;
   --bg-surface: #0f172a;
-  --bg-surface-elevated: #1e293b;
+  --bg-surface-elevated: #132238;
   --border-color: rgba(51, 65, 85, 0.6);
   --border-color-focus: #38bdf8;
 
