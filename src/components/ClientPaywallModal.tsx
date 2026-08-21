@@ -61,22 +61,6 @@ export default function ClientPaywallModal({
     }, 1000);
   };
 
-  const handleActivateAdminPass = () => {
-    setRole('super-admin');
-    localStorage.setItem('juristech_user_role', 'super-admin');
-    localStorage.setItem('juristech_user_email', 'drzyogo.ca@gmail.com');
-    localStorage.setItem('juristech_subscription_tier', 'enterprise');
-    const subData = {
-      status: 'Active',
-      tier: 'Enterprise Super Admin',
-      expiresAt: new Date(Date.now() + 365 * 86400000).toISOString(),
-    };
-    localStorage.setItem('ls_subscription_status', JSON.stringify(subData));
-    localStorage.setItem('juristech_client_paid', 'true');
-    onPaymentSuccess();
-    onClose();
-  };
-
   return (
     <div
       className="fixed inset-0 z-[10000] flex items-center justify-center p-4 sm:p-6"
@@ -119,24 +103,6 @@ export default function ClientPaywallModal({
 
         {/* ── Content ──────────────────────────────────────────────────────── */}
         <div className="p-5 space-y-4 overflow-y-auto flex-1">
-
-          {/* Admin Free Notice */}
-          <div className="p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-xs text-emerald-300 flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
-              <Crown className="w-4 h-4 text-amber-400 shrink-0" />
-              <span>
-                {isRtl
-                  ? 'وضع الأدمن مجاني بالكامل — يمكنك تفعيل وضع الأدمن لفتح التحميل الفوري بدون سداد!'
-                  : 'Open & Gratis for Admin — Activate Admin mode for 100% free access!'}
-              </span>
-            </div>
-            <button
-              onClick={handleActivateAdminPass}
-              className="px-2.5 py-1 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-[10px] shrink-0 transition-all shadow-md"
-            >
-              {isRtl ? '👑 تفعيل الأدمن مجاناً' : '👑 Admin Free'}
-            </button>
-          </div>
 
           {/* Currency Selector */}
           <div className="flex items-center justify-between gap-2 text-xs">
@@ -270,14 +236,8 @@ export default function ClientPaywallModal({
             </button>
           )}
 
-          <div className="flex items-center justify-between text-[10px] text-slate-400 font-mono pt-1">
+          <div className="flex items-center justify-center text-[10px] text-slate-400 font-mono pt-1">
             <span>🛡️ SSL 256-bit Encrypted Checkout</span>
-            <button
-              onClick={handleActivateAdminPass}
-              className="text-amber-400 hover:underline font-bold"
-            >
-              {isRtl ? 'حساب أدمن؟ فتح التحميل مجاناً' : 'Admin Account? Free Download'}
-            </button>
           </div>
         </div>
       </div>

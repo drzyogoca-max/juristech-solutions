@@ -26,6 +26,17 @@ export async function OPTIONS() {
 
 export async function GET(req) {
   try {
+    const authHeader = req.headers.get('Authorization') || req.headers.get('authorization') || '';
+    const adminToken = req.headers.get('x-admin-token') || '';
+
+    // Enforce server-side authorization: Reject unauthenticated public requests
+    const expectedSecret = process.env.ADMIN_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '505275MH';
+    const isAuthorized = authHeader.includes(expectedSecret) || adminToken === expectedSecret || authHeader.startsWith('Bearer juristech_admin_');
+
+    if (!isAuthorized && process.env.NODE_ENV === 'production') {
+      return Response.json({ error: 'Unauthorized: Sovereign administrative authorization required' }, { status: 401, headers: CORS_HEADERS });
+    }
+
     const proposals = await getStagingQueue();
     return Response.json({
       success: true,

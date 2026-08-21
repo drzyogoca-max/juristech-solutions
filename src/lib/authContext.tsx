@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from './supabaseClient';
-import { isAuthorizedAdminEmail, verifyAdminAccess } from './adminGuard';
+import { isAuthorizedAdminEmail, verifyAdminAccess, grantAdminAuth, revokeAdminAuth } from './adminGuard';
 
 export type UserRole = 'client' | 'admin' | 'super-admin' | 'Super Admin' | 'Admin' | 'Lawyer' | 'Client / Viewer';
 
@@ -16,6 +16,7 @@ interface AuthContextType {
   enableTwoFactor: () => void;
   disableTwoFactor: () => void;
   verify2FATokenSession: (token: string) => Promise<boolean>;
+  logoutAdmin: () => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -30,31 +31,27 @@ const AuthContext = createContext<AuthContextType>({
   enableTwoFactor: () => {},
   disableTwoFactor: () => {},
   verify2FATokenSession: async () => false,
+  logoutAdmin: () => {},
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // Baseline: 100% of unauthenticated visitors/guests start as 'client'
   const [role, setRoleState] = useState<UserRole>(() => {
     if (typeof window === 'undefined') return 'client';
-    const savedRole = (localStorage.getItem('juristech_user_role') as UserRole) || 'client';
-    const savedEmail = localStorage.getItem('juristech_user_email');
-    const isAdminAuthed = verifyAdminAccess();
-
-    if (isAuthorizedAdminEmail(savedEmail) || isAdminAuthed) {
+    const isSessionAuthed = verifyAdminAccess();
+    if (isSessionAuthed) {
       return 'super-admin';
     }
-
-    if ((savedRole === 'super-admin' || savedRole === 'admin') && !isAuthorizedAdminEmail(savedEmail) && !isAdminAuthed) {
-      localStorage.setItem('juristech_user_role', 'client');
-      return 'client';
-    }
-    return savedRole;
+    return 'client';
   });
 
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [twoFactorEnabled, setTwoFactorEnabled] = useState<boolean>(() => {
+  const [twoFactorEnabled, setTwoFactorEnabled] = useState<boolean>(false);
+
+  const [is2FAVerified, setIs2FAVerified] = useState<boolean>(() => {
     try {
-      return localStorage.getItem('juristech_2fa_enabled') === 'true';
+      return sessionStorage.getItem('juristech_2fa_verified_session') === 'true' && verifyAdminAccess();
     } catch {
       return false;
     }
@@ -62,15 +59,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   function enableTwoFactor() {
     setTwoFactorEnabled(true);
-    try {
-      localStorage.setItem('juristech_2fa_enabled', 'true');
-    } catch {}
   }
 
   function disableTwoFactor() {
     setTwoFactorEnabled(false);
+  }
+
+  function logoutAdmin() {
+    revokeAdminAuth();
+    setIs2FAVerified(false);
+    setRoleState('client');
+    setUser(null);
     try {
-      localStorage.setItem('juristech_2fa_enabled', 'false');
+      supabase.auth.signOut();
     } catch {}
   }
 
@@ -84,9 +85,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           
           if (isAuthorizedAdminEmail(email)) {
             setRoleState('super-admin');
-            localStorage.setItem('juristech_user_role', 'super-admin');
-            localStorage.setItem('juristech_user_email', session.user.email);
-            localStorage.setItem('juristech_admin_authenticated', 'true');
           } else {
             // Check role from profiles table in Supabase
             const { data: profile } = await supabase
@@ -97,21 +95,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
             if (profile?.role === 'admin' || profile?.role === 'super-admin') {
               setRoleState(profile.role as UserRole);
-              localStorage.setItem('juristech_user_role', profile.role);
             } else {
               setRoleState('client');
-              localStorage.setItem('juristech_user_role', 'client');
             }
           }
         } else {
-          // If local email is official admin, retain super-admin
-          const localEmail = localStorage.getItem('juristech_user_email');
-          if (isAuthorizedAdminEmail(localEmail) || verifyAdminAccess()) {
+          // Unauthenticated: Verify if active session token exists in sessionStorage
+          if (verifyAdminAccess()) {
             setRoleState('super-admin');
+            setIs2FAVerified(true);
+          } else {
+            setRoleState('client');
+            setIs2FAVerified(false);
+            setUser(null);
           }
         }
       } catch (err) {
-        console.warn('AuthContext profile check error:', err);
+        console.warn('AuthContext check:', err);
+        setRoleState('client');
       } finally {
         setLoading(false);
       }
@@ -126,9 +127,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         
         if (isAuthorizedAdminEmail(email)) {
           setRoleState('super-admin');
-          localStorage.setItem('juristech_user_role', 'super-admin');
-          localStorage.setItem('juristech_user_email', session.user.email);
-          localStorage.setItem('juristech_admin_authenticated', 'true');
         } else {
           const { data: profile } = await supabase
             .from('profiles')
@@ -138,16 +136,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
           if (profile?.role === 'admin' || profile?.role === 'super-admin') {
             setRoleState(profile.role as UserRole);
-            localStorage.setItem('juristech_user_role', profile.role);
           } else {
             setRoleState('client');
-            localStorage.setItem('juristech_user_role', 'client');
           }
         }
       } else {
-        const localEmail = localStorage.getItem('juristech_user_email');
-        if (!isAuthorizedAdminEmail(localEmail) && !verifyAdminAccess()) {
+        if (!verifyAdminAccess()) {
           setUser(null);
+          setRoleState('client');
+          setIs2FAVerified(false);
         }
       }
     });
@@ -158,50 +155,41 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   function setRole(newRole: UserRole) {
-    const savedEmail = typeof window !== 'undefined' ? localStorage.getItem('juristech_user_email') : null;
-    const isAdminAuthed = verifyAdminAccess();
+    const isSessionAuthed = verifyAdminAccess();
+    const isUserAdmin = user && isAuthorizedAdminEmail(user.email);
 
-    if ((newRole === 'super-admin' || newRole === 'admin') && !isAuthorizedAdminEmail(savedEmail) && !isAdminAuthed) {
-      console.warn('Security Guard: Rejecting unauthorized admin role assignment.');
+    if ((newRole === 'super-admin' || newRole === 'admin') && !isUserAdmin && !isSessionAuthed) {
+      console.warn('Security Guard: Blocked unauthorized role privilege escalation attempt.');
       setRoleState('client');
-      try {
-        localStorage.setItem('juristech_user_role', 'client');
-      } catch {}
       return;
     }
 
     setRoleState(newRole);
-    try {
-      localStorage.setItem('juristech_user_role', newRole);
-    } catch {}
   }
 
-  const [is2FAVerified, setIs2FAVerified] = useState<boolean>(() => {
-    try {
-      return sessionStorage.getItem('juristech_2fa_verified_session') === 'true';
-    } catch {
+  async function verify2FATokenSession(token: string): Promise<boolean> {
+    const targetEmail = user?.email || sessionStorage.getItem('juristech_admin_email') || 'drzyogo.ca@gmail.com';
+    if (!isAuthorizedAdminEmail(targetEmail)) {
       return false;
     }
-  });
-
-  async function verify2FATokenSession(token: string): Promise<boolean> {
-    const userEmail = localStorage.getItem('juristech_user_email') || 'drzyogo.ca@gmail.com';
-    const secret = localStorage.getItem(`ls_2fa_secret_${userEmail}`) || 'JURISTECHSUPERADMIN2026SECRETKEY';
+    const secret = localStorage.getItem(`ls_2fa_secret_${targetEmail}`) || 'JURISTECHSUPERADMIN2026SECRETKEY';
     const isValid = await import('./twoFactorEngine').then(m => m.verify2FAToken(token, secret));
     if (isValid) {
       setIs2FAVerified(true);
-      try {
-        sessionStorage.setItem('juristech_2fa_verified_session', 'true');
-      } catch {}
+      grantAdminAuth(targetEmail);
+      setRoleState('super-admin');
     }
     return isValid;
   }
 
-  const isAdmin = role === 'admin' || role === 'super-admin' || role === 'Super Admin' || role === 'Admin' || verifyAdminAccess();
+  // Strict Evaluation: User is ADMIN ONLY IF actively authenticated with authorized email OR valid session token
+  const isSessionAdmin = verifyAdminAccess();
+  const isSupabaseAdmin = user !== null && isAuthorizedAdminEmail(user?.email) && (role === 'super-admin' || role === 'admin');
+  const isAdmin = isSessionAdmin || isSupabaseAdmin;
   const isLawyer = role === 'Lawyer' || isAdmin;
 
   return (
-    <AuthContext.Provider value={{ role, setRole, isAdmin, isLawyer, user, loading, twoFactorEnabled, is2FAVerified, enableTwoFactor, disableTwoFactor, verify2FATokenSession }}>
+    <AuthContext.Provider value={{ role, setRole, isAdmin, isLawyer, user, loading, twoFactorEnabled, is2FAVerified, enableTwoFactor, disableTwoFactor, verify2FATokenSession, logoutAdmin }}>
       {children}
     </AuthContext.Provider>
   );

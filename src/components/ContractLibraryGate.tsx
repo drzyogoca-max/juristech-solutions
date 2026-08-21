@@ -3,6 +3,9 @@ import { Lock, Eye, CheckCircle2, Sparkles, ArrowRight, X, FileText, Download, S
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
+import { useAuth } from '../lib/authContext';
+import { isPaidSubscriber } from '../lib/freemiumManager';
+
 export interface TemplateContractItem {
   id: string;
   titleAr: string;
@@ -28,6 +31,7 @@ export default function ContractLibraryGate({ contract, isOpen, onClose }: Contr
   const { i18n } = useTranslation();
   const isRtl = i18n.language === 'ar';
   const navigate = useNavigate();
+  const { isAdmin } = useAuth();
   const overlayRef = useRef<HTMLDivElement>(null);
 
   // Lock body scroll when modal is open
@@ -68,11 +72,8 @@ export default function ContractLibraryGate({ contract, isOpen, onClose }: Contr
     }
   }
 
-  // Check if User is Admin or Subscribed
-  const role = localStorage.getItem('juristech_user_role');
-  const userEmail = localStorage.getItem('juristech_user_email');
-  const subTier = localStorage.getItem('juristech_subscription_tier');
-  const isSuperAdminOrSubscriber = role === 'super-admin' || role === 'admin' || userEmail === 'drzyogo.ca@gmail.com' || (subTier && subTier !== 'free');
+  // Check if User is Verified Admin or Subscribed
+  const isSuperAdminOrSubscriber = isAdmin || isPaidSubscriber();
 
   const handleDownloadFormat = async (format: 'pdf' | 'docx') => {
     const textToExport = isRtl ? (contract.fullContentSnippetAr || contract.previewSnippetAr) : (contract.fullContentSnippetEn || contract.previewSnippetEn);

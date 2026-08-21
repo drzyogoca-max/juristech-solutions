@@ -9,7 +9,7 @@ interface TwoFactorAuthModalProps {
   userEmail?: string;
 }
 
-export default function TwoFactorAuthModal({ isOpen, onClose, userEmail = 'drzyogo.ca@gmail.com' }: TwoFactorAuthModalProps) {
+export default function TwoFactorAuthModal({ isOpen, onClose, userEmail = '' }: TwoFactorAuthModalProps) {
   const { i18n } = useTranslation();
   const isRtl = i18n.language === 'ar';
 

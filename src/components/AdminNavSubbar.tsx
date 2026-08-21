@@ -6,19 +6,17 @@ import {
 } from 'lucide-react';
 
 import { useAuth } from '../lib/authContext';
-import { verifyAdminAccess } from '../lib/adminGuard';
-
-const OFFICIAL_ADMIN_EMAIL = 'drzyogo.ca@gmail.com';
+import { verifyAdminAccess, isAuthorizedAdminEmail } from '../lib/adminGuard';
 
 export default function AdminNavSubbar() {
   const { i18n } = useTranslation();
-  const { role, user, isAdmin } = useAuth();
+  const { user, isAdmin } = useAuth();
   const isRtl = i18n.language === 'ar';
   const location = useLocation();
 
-  const currentUserEmail = user?.email || (typeof window !== 'undefined' ? localStorage.getItem('juristech_user_email') : null);
-  const isLocallyAuthed = verifyAdminAccess();
-  const isOfficialAdmin = currentUserEmail === OFFICIAL_ADMIN_EMAIL || isLocallyAuthed || isAdmin || role === 'super-admin';
+  const isSessionAuthed = verifyAdminAccess();
+  const isSupabaseAdmin = user && isAuthorizedAdminEmail(user?.email);
+  const isOfficialAdmin = isAdmin && (isSessionAuthed || isSupabaseAdmin);
 
   // STRICT ISOLATION: Hide completely for regular customers/subscribers
   if (!isOfficialAdmin) {

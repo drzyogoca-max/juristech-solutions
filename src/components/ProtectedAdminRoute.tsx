@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../lib/authContext';
 import { ShieldCheck, Lock, Key, ShieldAlert, Mail, RefreshCw, Zap } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { verifyAdminAccess, grantAdminAuth } from '../lib/adminGuard';
+import { verifyAdminAccess, grantAdminAuth, isAuthorizedAdminEmail } from '../lib/adminGuard';
 import { dispatch2FAOtpEmail } from '../lib/emailNotifier';
 
 // Pre-computed SHA-256 cryptographic hashes for authorized Chairman passcodes
@@ -13,7 +13,7 @@ const AUTHORIZED_PASSCODE_HASHES = [
   'fed693e31aa9d3d851868ac3c65cad2371c4a3bc0d5ac5167d19306d36a60b88', // SHA-256 of mh505275
 ];
 
-const TARGET_OFFICIAL_EMAIL = 'Drzyogo.ca@gmail.com';
+const TARGET_OFFICIAL_EMAIL = 'drzyogo.ca@gmail.com';
 
 async function hashSHA256(text: string): Promise<string> {
   const encoder = new TextEncoder();
@@ -24,7 +24,7 @@ async function hashSHA256(text: string): Promise<string> {
 }
 
 export default function ProtectedAdminRoute({ children }: { children: React.ReactNode }) {
-  const { isAdmin, setRole } = useAuth();
+  const { isAdmin, user, setRole } = useAuth();
   const { i18n } = useTranslation();
   const isRtl = i18n.language === 'ar';
 
@@ -41,8 +41,9 @@ export default function ProtectedAdminRoute({ children }: { children: React.Reac
   const [emailStatusMsg, setEmailStatusMsg] = useState('');
 
   const isLocallyAuthed = verifyAdminAccess();
+  const isSupabaseAdmin = user && isAuthorizedAdminEmail(user?.email);
 
-  if (isAdmin || isLocallyAuthed) {
+  if (isLocallyAuthed || (isAdmin && isSupabaseAdmin)) {
     return <>{children}</>;
   }
 

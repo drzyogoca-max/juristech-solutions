@@ -6,18 +6,16 @@ import AutonomousQaAnalyticsModal from './AutonomousQaAnalyticsModal';
 import CrmClientManagerModal from './CrmClientManagerModal';
 
 import { useAuth } from '../lib/authContext';
-import { verifyAdminAccess } from '../lib/adminGuard';
-
-const OFFICIAL_ADMIN_EMAIL = 'drzyogo.ca@gmail.com';
+import { verifyAdminAccess, isAuthorizedAdminEmail } from '../lib/adminGuard';
 
 export default function GlobalTrafficGrowthBanner() {
   const { i18n } = useTranslation();
-  const { user, role, isAdmin } = useAuth();
+  const { user, isAdmin } = useAuth();
   const isRtl = i18n.language === 'ar';
 
-  const currentUserEmail = user?.email || (typeof window !== 'undefined' ? localStorage.getItem('juristech_user_email') : null);
-  const isLocallyAuthed = verifyAdminAccess();
-  const isOfficialAdmin = currentUserEmail === OFFICIAL_ADMIN_EMAIL || isLocallyAuthed || isAdmin || role === 'super-admin';
+  const isSessionAuthed = verifyAdminAccess();
+  const isSupabaseAdmin = user && isAuthorizedAdminEmail(user?.email);
+  const isOfficialAdmin = isAdmin && (isSessionAuthed || isSupabaseAdmin);
 
   const [metrics, setMetrics] = useState<TrafficGrowthMetrics>(aiTrafficGrowthEngine.getMetrics());
   const [copiedLink, setCopiedLink] = useState(false);

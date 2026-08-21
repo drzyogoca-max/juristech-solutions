@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ExternalLink, ShieldCheck, Sparkles, Building2 } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { ExternalLink, ShieldCheck, Building2 } from 'lucide-react';
+import { usePlatformLocale } from '../lib/universalTranslator';
 
 export interface AdSponsorProps {
   slotType: 'top-banner' | 'in-feed' | 'sponsor-footer';
@@ -24,8 +24,7 @@ export default function AdSponsorBanner({
   customSponsorName,
   customSponsorUrl,
 }: AdSponsorProps) {
-  const { i18n } = useTranslation();
-  const isRtl = i18n.language === 'ar';
+  const { isRtl, l } = usePlatformLocale();
   const navigate = useNavigate();
 
   const [sponsorData, setSponsorData] = useState<ActiveSponsorData>({
@@ -41,13 +40,11 @@ export default function AdSponsorBanner({
   const [hasVerifiedSponsor, setHasVerifiedSponsor] = useState(false);
 
   useEffect(() => {
-    // Check if an active verified sponsorship exists in localStorage
     const saved = localStorage.getItem('juristech_active_sponsorship');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
         if (parsed.sponsorName) {
-          // Verify if the status is Approved/Paid/Completed
           const ledgerRaw = localStorage.getItem('ls_wire_ledger');
           let isVerified = false;
           if (ledgerRaw) {
@@ -64,7 +61,7 @@ export default function AdSponsorBanner({
               headlineAr: `رعاية رسمية معتمدة من ${parsed.sponsorName}`,
               headlineEn: `Official Corporate Sponsorship by ${parsed.sponsorName}`,
               ctaTextAr: 'زيارة موقع الراعي',
-              ctaTextEn: 'Visit Sponsor',
+              ctaTextEn: 'Visit Official Sponsor',
               sponsorUrl: customSponsorUrl || parsed.website || '/sponsors-ads',
               isOfficialPaid: true,
             });
@@ -98,10 +95,10 @@ export default function AdSponsorBanner({
       <div className="w-full bg-slate-900/95 border-b border-amber-500/20 px-4 py-2 flex items-center justify-between gap-4 text-xs font-sans shadow-md" dir={isRtl ? 'rtl' : 'ltr'}>
         <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300 truncate">
           <span className="font-extrabold uppercase tracking-wider text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 shrink-0">
-            {sponsorData.isOfficialPaid ? 'Official Sponsor' : 'Ad Slot'}
+            {sponsorData.isOfficialPaid ? l('راعي رسمي معتمد', 'Official Corporate Sponsor') : l('مساحة إعلانية', 'Ad Slot')}
           </span>
           <span className="truncate font-bold text-slate-800 dark:text-slate-200">
-            {isRtl ? sponsorData.headlineAr : sponsorData.headlineEn}
+            {l(sponsorData.headlineAr, sponsorData.headlineEn)}
           </span>
         </div>
 
@@ -110,7 +107,7 @@ export default function AdSponsorBanner({
             onClick={handleAdClick}
             className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold transition-all text-xs shadow-md shadow-amber-500/20 active:scale-95 whitespace-nowrap"
           >
-            <span>{isRtl ? sponsorData.ctaTextAr : sponsorData.ctaTextEn}</span>
+            <span>{l(sponsorData.ctaTextAr, sponsorData.ctaTextEn)}</span>
             <ExternalLink className="w-3.5 h-3.5" />
           </button>
         </div>
@@ -128,19 +125,22 @@ export default function AdSponsorBanner({
           <div className="space-y-1">
             <div className="flex items-center gap-2 flex-wrap">
               <span className="text-[10px] font-black uppercase px-2.5 py-0.5 rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                {sponsorData.isOfficialPaid ? 'PAID CORPORATE SPONSOR' : 'SPONSORSHIP SLOT AVAILABLE'}
+                {sponsorData.isOfficialPaid
+                  ? l('الراعي المعتمد لصفقات الاندماج والاستحواذ', 'Verified Corporate M&A Sponsor')
+                  : l('مساحة إعلانية ورعاية رسمية متاحة للمؤسسات والشركات', 'Official Corporate Sponsorship & Ad Slot Available')}
               </span>
               {sponsorData.sponsorName && (
                 <span className="text-xs font-bold text-slate-900 dark:text-white">{sponsorData.sponsorName}</span>
               )}
             </div>
             <p className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200 leading-relaxed max-w-3xl">
-              {isRtl ? sponsorData.headlineAr : sponsorData.headlineEn}
+              {l(sponsorData.headlineAr, sponsorData.headlineEn)}
             </p>
             <p className="text-[11px] text-slate-600 dark:text-slate-400 font-mono">
-              {isRtl
-                ? 'متاح لجميع الشركات والمؤسسات القانونية والمالية للاستهداف المباشر عبر التحويل البنكي SWIFT'
-                : 'Available for direct corporate targeting via SWIFT Bank Wire Remittance'}
+              {l(
+                'متاح لجميع الشركات والمؤسسات القانونية والمالية للاستهداف المباشر عبر التحويل البنكي SWIFT',
+                'Available for institutional and corporate targeting via SWIFT Bank Wire Remittance'
+              )}
             </p>
           </div>
         </div>
@@ -150,7 +150,7 @@ export default function AdSponsorBanner({
           className="w-full md:w-auto px-5 py-3 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs sm:text-sm transition-all shadow-xl shadow-amber-500/20 whitespace-nowrap active:scale-95 shrink-0 flex items-center justify-center gap-2"
         >
           <Building2 className="w-4 h-4" />
-          <span>{isRtl ? sponsorData.ctaTextAr : sponsorData.ctaTextEn}</span>
+          <span>{l(sponsorData.ctaTextAr, sponsorData.ctaTextEn)}</span>
         </button>
       </div>
     );
@@ -164,11 +164,11 @@ export default function AdSponsorBanner({
           <span>
             {sponsorData.isOfficialPaid ? (
               <>
-                {isRtl ? 'مدعوم برعاية رسمية من:' : 'Powered & Sponsored By:'}{' '}
+                {l('مدعوم برعاية رسمية من:', 'Powered & Sponsored By:')}{' '}
                 <strong className="text-slate-800 dark:text-slate-200">{sponsorData.sponsorName}</strong>
               </>
             ) : (
-              <span>{isRtl ? 'مساحة إعلانية ورعاية رسمية متاحة للمؤسسات والشركات' : 'Official Corporate Sponsorship Slot Available'}</span>
+              <span>{l('مساحة إعلانية ورعاية رسمية متاحة للمؤسسات والشركات', 'Official Corporate Sponsorship & Ad Slot Available')}</span>
             )}
           </span>
         </div>
@@ -176,7 +176,7 @@ export default function AdSponsorBanner({
           onClick={() => navigate('/sponsors-ads')}
           className="text-[11px] text-amber-400 hover:underline font-bold"
         >
-          {isRtl ? 'حجز مساحة الإعلان والرعاية عبر التحويل البنكي' : 'Reserve Sponsorship Slot via Bank Wire'}
+          {l('حجز المساحة والإعلان عبر التحويل البنكي', 'Reserve Slot via Direct Bank Wire Transfer')}
         </button>
       </div>
     </footer>

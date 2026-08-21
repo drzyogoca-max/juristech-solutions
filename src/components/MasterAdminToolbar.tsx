@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShieldCheck, Sparkles, CheckCircle2, Lock, Zap, Key, ArrowLeft, ArrowRight, ExternalLink, Settings, Users, DollarSign } from 'lucide-react';
+import { ShieldCheck, CheckCircle2, Settings, Users, LogOut } from 'lucide-react';
 import { useAuth } from '../lib/authContext';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -7,21 +7,22 @@ import { verifyAdminAccess, isAuthorizedAdminEmail } from '../lib/adminGuard';
 import RbacUserManagementModal from './RbacUserManagementModal';
 
 export default function MasterAdminToolbar() {
-  const { setRole, role, user, isAdmin } = useAuth();
+  const { user, isAdmin, is2FAVerified, logoutAdmin } = useAuth();
   const { i18n } = useTranslation();
   const isRtl = i18n.language === 'ar';
   const [showRbac, setShowRbac] = useState(false);
 
-  const currentUserEmail = user?.email || (typeof window !== 'undefined' ? localStorage.getItem('juristech_user_email') : null);
-  const isLocallyAuthed = verifyAdminAccess();
-  const isOfficialAdmin = isAuthorizedAdminEmail(currentUserEmail) || isLocallyAuthed || isAdmin;
+  // STRICT ISOLATION GUARD:
+  // Must be verified admin with active session (never render for guest / unauthenticated visits)
+  const isSessionAuthed = verifyAdminAccess();
+  const isSupabaseAdmin = user && isAuthorizedAdminEmail(user?.email);
+  const isVerifiedAdmin = isAdmin && (isSessionAuthed || (isSupabaseAdmin && is2FAVerified));
 
-  // SECURITY ENFORCEMENT:
-  // If the visitor is NOT logged in as Super Admin and NOT authed with Chairman passcode,
-  // do NOT render this toolbar at all! Keeps the window 100% invisible for regular visitors & other emails.
-  if (!isOfficialAdmin) {
+  if (!isVerifiedAdmin) {
     return null;
   }
+
+  const displayEmail = user?.email || (typeof window !== 'undefined' ? sessionStorage.getItem('juristech_admin_email') : null) || 'drzyogo.ca@gmail.com';
 
   return (
     <>
@@ -38,7 +39,7 @@ export default function MasterAdminToolbar() {
             </span>
             <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded font-black flex items-center gap-1">
               <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-              <span>SUPER ADMIN — {currentUserEmail || 'drzyogo.ca@gmail.com'} (ALL SITES & SERVICES UNLOCKED)</span>
+              <span>SUPER ADMIN — {displayEmail} (ACTIVE AUTH)</span>
             </span>
           </div>
 
@@ -60,6 +61,16 @@ export default function MasterAdminToolbar() {
               <Settings className="w-3 h-3 text-slate-950" />
               <span>{isRtl ? 'لوحة التحكم المركزية' : 'Admin Control Panel'}</span>
             </Link>
+
+            {/* Logout Admin Session */}
+            <button
+              onClick={logoutAdmin}
+              className="px-2.5 py-1 rounded-lg bg-red-950/80 hover:bg-red-900 text-red-300 border border-red-500/40 font-bold flex items-center gap-1 transition-all cursor-pointer"
+              title={isRtl ? 'إنهاء جلسة الأدمن وقفل اللوحة' : 'Lock & End Admin Session'}
+            >
+              <LogOut className="w-3 h-3 text-red-400" />
+              <span>{isRtl ? 'قفل الجلسة' : 'Lock'}</span>
+            </button>
           </div>
 
         </div>
