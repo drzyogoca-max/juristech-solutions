@@ -4,7 +4,8 @@
  * Interactive Sovereign Customer Journey Map for JurisTech Solutions
  * 
  * Features:
- *  • 5-Stage Interactive Sequential Visual Roadmap
+ *  • 6-Stage Interactive Sequential Visual Roadmap
+ *  • Incorporates Google AI Pro Sovereign Core as Step 1
  *  • Clickable Nodes with Instant Feature Deep-Dive & Live Navigation
  *  • Global Luxury Aesthetic (Cyber Cyan, Obsidian Slate, Electric Indigo)
  *  • Clear conversion pathway showcasing Platform ROI & Enterprise Retainers
@@ -29,7 +30,8 @@ import {
   FileCheck,
   ChevronRight,
   Globe2,
-  Award
+  Award,
+  BrainCircuit
 } from 'lucide-react';
 
 interface JourneyStep {
@@ -63,10 +65,38 @@ export default function InteractiveCustomerJourneyMap() {
   const steps: JourneyStep[] = [
     {
       stepNumber: 1,
+      id: 'google-ai-pro',
+      icon: BrainCircuit,
+      titleAr: '1. محرك Google AI Pro السيادي',
+      titleEn: '1. Google AI Pro Sovereign Core',
+      subtitleAr: 'الاستحواذ التنبؤي M&A، المحاكاة القضائية، والتفاوض الآلي 2026',
+      subtitleEn: 'Predictive M&A Valuation, Courtroom Simulation & Autonomous Agents',
+      descriptionAr: 'المحرك الذكي السيادي المدعوم بنموذج Google Gemini Pro Ultra لتوليد التنبؤات القضائية، تقييم صفقات الاستحواذ، اكتشاف الاحتيال بالقياس النصي الحيوي، والامتثال التشريعي العابر للحدود مع التعلم والتدريب الذاتي المستمر.',
+      descriptionEn: 'Sovereign intelligence core powered by Google Gemini Pro Ultra for predictive M&A valuations, courtroom dispute simulation, stylometric fraud forensics, and cross-border compliance with continuous RLHF self-learning.',
+      featuresAr: [
+        'تحليل القوائم المالية واتفاقيات الاستحواذ M&A وتوقع احتمالية نجاح الصفقات',
+        'محاكاة افتراضية للنزاعات القضائية أمام محاكم الخليج والتحكيم الدولي',
+        'دعم كامل لرفع وتفريغ وتصدير مستندات متعددة الأنواع (PDF, Word, TXT) والتوافق مع 9 دول'
+      ],
+      featuresEn: [
+        'Predictive M&A intelligence forecasting deal success & EBITDA multiples',
+        'Virtual litigation and court simulation forecasting win/loss probability',
+        'Multi-format file upload/export (PDF, DOCX, TXT) across 9 regional jurisdictions'
+      ],
+      metricAr: 'دقة تنبؤية 99.4% مع تعلم ذاتي',
+      metricEn: '99.4% Predictive AI Accuracy',
+      ctaTextAr: 'إطلاق Google AI Pro',
+      ctaTextEn: 'Launch Google AI Pro',
+      targetRoute: '/sovereign-ai-hub',
+      badgeColor: 'border-cyan-500/40 text-cyan-400 bg-cyan-500/10',
+      accentGradient: 'from-cyan-400 via-sky-500 to-indigo-600',
+    },
+    {
+      stepNumber: 2,
       id: 'diagnosis',
       icon: Sparkles,
-      titleAr: '1. الاستشارة والتشخيص الذكي الفوري',
-      titleEn: '1. AI Legal Diagnosis & Discovery',
+      titleAr: '2. الاستشارة والتشخيص الذكي',
+      titleEn: '2. AI Legal Diagnosis & Discovery',
       subtitleAr: 'مستشار تشريعي فوري معزز بمحركات المعرفة القانونية',
       subtitleEn: 'Instant statutory legal counsel powered by specialized legal reasoning',
       descriptionAr: 'اطرح أي استفسار قانوني أو أرفق مستنداتك مباشرة للمستشار الذكي ليقوم بتحديد الولاية القضائية والقوانين الحاكمة بدقة وتأصيل مباشر.',
@@ -86,15 +116,15 @@ export default function InteractiveCustomerJourneyMap() {
       ctaTextAr: 'بدء الاستشارة الفورية',
       ctaTextEn: 'Start Live AI Counsel',
       targetRoute: '/chat',
-      badgeColor: 'border-cyan-500/40 text-cyan-400 bg-cyan-500/10',
-      accentGradient: 'from-cyan-500 to-blue-600',
+      badgeColor: 'border-blue-500/40 text-blue-400 bg-blue-500/10',
+      accentGradient: 'from-blue-500 to-cyan-600',
     },
     {
-      stepNumber: 2,
+      stepNumber: 3,
       id: 'contracts',
       icon: BookOpen,
-      titleAr: '2. مستودع العقود واستوديو الصياغة',
-      titleEn: '2. Contract Repository & Studio',
+      titleAr: '3. مستودع العقود واستوديو الصياغة',
+      titleEn: '3. Contract Repository & Studio',
       subtitleAr: 'نماذج مؤسسية رصينة ومحكمة بنظام الشركاء المعتمدين',
       subtitleEn: 'Senior partner institutional templates with bilingual isolation',
       descriptionAr: 'اختر أو ولد عقودك الذكية من مكتبة العقود الموثقة والمحدثة لعام 2026 (عقود بيع، خدمات، توريد، مقاولات، وتراخيص) مع تصدير نظيف لـ Word و PDF.',
@@ -118,11 +148,11 @@ export default function InteractiveCustomerJourneyMap() {
       accentGradient: 'from-indigo-500 to-purple-600',
     },
     {
-      stepNumber: 3,
+      stepNumber: 4,
       id: 'audit',
       icon: ShieldAlert,
-      titleAr: '3. تدقيق المخاطر وكشف الثغرات',
-      titleEn: '3. AI Risk Audit & Vulnerability Radar',
+      titleAr: '4. تدقيق المخاطر وكشف الثغرات',
+      titleEn: '4. AI Risk Audit & Vulnerability Radar',
       subtitleAr: 'فحص مالي وتشريعي متعدد المحاور لكشف الشروط غير المتوازنة',
       subtitleEn: 'Multi-axis financial & statutory scan for unbalanced terms & gaps',
       descriptionAr: 'يقوم المحرك بفحص العقد بنداً بنداً لكشف تفاوت الالتزامات، والشروط الجزائية المرتفعة، وسقوف المسؤولية المنقوصة مع تقديم صياغات بديلة حمائية.',
@@ -146,11 +176,11 @@ export default function InteractiveCustomerJourneyMap() {
       accentGradient: 'from-amber-500 to-orange-600',
     },
     {
-      stepNumber: 4,
+      stepNumber: 5,
       id: 'negotiation',
       icon: Handshake,
-      titleAr: '4. محاكي التفاوض والردود القانونية',
-      titleEn: '4. Negotiation & Counter-Offer Simulator',
+      titleAr: '5. محاكي التفاوض والردود القانونية',
+      titleEn: '5. Negotiation & Counter-Offer Simulator',
       subtitleAr: 'استراتيجيات تفاوض وصياغة ردود متوازنة لتأمين مصالحك',
       subtitleEn: 'Tactical counter-offers and commercial terms maximizing deal leverage',
       descriptionAr: 'محاكي تفاوض ذكي يصوغ ردوداً قانونية دبلوماسية وحازمة لمواجهة الشروط الصعبة للطرف الآخر والوصول إلى أفضل شروط تعاقدية بأسرع وقت.',
@@ -174,11 +204,11 @@ export default function InteractiveCustomerJourneyMap() {
       accentGradient: 'from-emerald-500 to-teal-600',
     },
     {
-      stepNumber: 5,
+      stepNumber: 6,
       id: 'vault-retainer',
       icon: Lock,
-      titleAr: '5. التوقيع الرقمي والخزنة المؤمنة',
-      titleEn: '5. Sovereign E-Sign, Vault & Enterprise Retainer',
+      titleAr: '6. التوقيع الرقمي والخزنة المؤمنة',
+      titleEn: '6. Sovereign E-Sign, Vault & Enterprise Retainer',
       subtitleAr: 'أرشفة مشفرة، طوابع زمنية موثقة، وحماية متواصلة',
       subtitleEn: 'Encrypted vault, digital timestamps, and continuous institutional protection',
       descriptionAr: 'توقيع إلكتروني معتمد بطوابع زمنية مشفرة، وتخزين في الخزنة السحابية المؤمنة بـ AES-256، مع توفير خطط اشتراك مؤسسية ملائمة للشركات ورواد الأعمال.',
@@ -231,23 +261,23 @@ export default function InteractiveCustomerJourneyMap() {
 
           <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
             {isRtl
-              ? 'خريطة تسلسلية تفاعلية توضح مراحل عمل المنصة المتكاملة — انقر على أي مرحلة لاستكشاف خدماتها وقيمتها المضافة وبدء استخدامها فوراً.'
-              : 'An interactive sequential roadmap illustrating our 5-pillar ecosystem — click any phase to explore specialized tools, metrics, and instant deployment.'}
+              ? 'خريطة تسلسلية تفاعلية توضح مراحل عمل المنصة المتكاملة في 6 مراحل سيادية — انقر على أي مرحلة لاستكشاف خدماتها وقيمتها المضافة وبدء استخدامها فوراً.'
+              : 'An interactive sequential roadmap illustrating our 6-pillar sovereign ecosystem — click any phase to explore specialized tools, metrics, and instant deployment.'}
           </p>
         </div>
 
         {/* ── Interactive Sequential Roadmap Progress Bar ── */}
         <div className="relative">
           {/* Connector Line (Desktop) */}
-          <div className="hidden md:block absolute top-7 left-12 right-12 h-1 bg-slate-800 rounded-full z-0">
+          <div className="hidden lg:block absolute top-7 left-12 right-12 h-1 bg-slate-800 rounded-full z-0">
             <div
-              className="h-full bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-500 transition-all duration-500 rounded-full"
+              className="h-full bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 transition-all duration-500 rounded-full"
               style={{ width: `${(activeStepIndex / (steps.length - 1)) * 100}%` }}
             />
           </div>
 
-          {/* 5 Sequential Step Buttons */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 relative z-10">
+          {/* 6 Sequential Step Buttons */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 relative z-10">
             {steps.map((s, idx) => {
               const Icon = s.icon;
               const isActive = idx === activeStepIndex;
@@ -312,7 +342,7 @@ export default function InteractiveCustomerJourneyMap() {
               </div>
               <div className="space-y-1">
                 <span className={`inline-block text-[11px] font-bold uppercase px-3 py-1 rounded-full border ${currentStep.badgeColor}`}>
-                  {isRtl ? `المرحلة 0${currentStep.stepNumber} من 05 • ${currentStep.metricAr}` : `Phase 0${currentStep.stepNumber} of 05 • ${currentStep.metricEn}`}
+                  {isRtl ? `المرحلة 0${currentStep.stepNumber} من 06 • ${currentStep.metricAr}` : `Phase 0${currentStep.stepNumber} of 06 • ${currentStep.metricEn}`}
                 </span>
                 <h3 className="text-xl sm:text-2xl font-bold text-white">
                   {isRtl ? currentStep.titleAr : currentStep.titleEn}
@@ -326,7 +356,7 @@ export default function InteractiveCustomerJourneyMap() {
             {/* Direct CTA Action Button */}
             <button
               onClick={() => navigate(currentStep.targetRoute)}
-              className={`px-6 py-3.5 rounded-2xl bg-gradient-to-r ${currentStep.accentGradient} hover:brightness-110 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-lg active:scale-98`}
+              className={`px-6 py-3.5 rounded-2xl bg-gradient-to-r ${currentStep.accentGradient} hover:brightness-110 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-lg active:scale-98 cursor-pointer`}
             >
               <span>{isRtl ? currentStep.ctaTextAr : currentStep.ctaTextEn}</span>
               {isRtl ? <ArrowLeft className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
@@ -386,7 +416,7 @@ export default function InteractiveCustomerJourneyMap() {
             <button
               onClick={() => setActiveStepIndex((prev) => Math.max(0, prev - 1))}
               disabled={activeStepIndex === 0}
-              className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-1.5 transition-colors"
+              className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-1.5 transition-colors cursor-pointer"
             >
               {isRtl ? <ArrowRight className="w-3.5 h-3.5" /> : <ArrowLeft className="w-3.5 h-3.5" />}
               <span>{isRtl ? 'المرحلة السابقة' : 'Previous Phase'}</span>
@@ -397,7 +427,7 @@ export default function InteractiveCustomerJourneyMap() {
                 <button
                   key={dotIdx}
                   onClick={() => setActiveStepIndex(dotIdx)}
-                  className={`h-2 rounded-full transition-all ${
+                  className={`h-2 rounded-full transition-all cursor-pointer ${
                     dotIdx === activeStepIndex ? 'w-6 bg-cyan-400' : 'w-2 bg-slate-700 hover:bg-slate-500'
                   }`}
                 />
@@ -407,7 +437,7 @@ export default function InteractiveCustomerJourneyMap() {
             <button
               onClick={() => setActiveStepIndex((prev) => Math.min(steps.length - 1, prev + 1))}
               disabled={activeStepIndex === steps.length - 1}
-              className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-1.5 transition-colors"
+              className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-1.5 transition-colors cursor-pointer"
             >
               <span>{isRtl ? 'المرحلة التالية' : 'Next Phase'}</span>
               {isRtl ? <ArrowLeft className="w-3.5 h-3.5" /> : <ArrowRight className="w-3.5 h-3.5" />}
