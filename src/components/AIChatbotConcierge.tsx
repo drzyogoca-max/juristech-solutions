@@ -25,8 +25,7 @@ import { searchRAGDatabase } from '../data/ragDatabase';
 import { trackChatInteraction } from '../lib/marketingTracker';
 import { smartContractDataLake } from '../services/smartContractDataLake';
 import { getSystemContextForLanguage } from '../lib/languageHelper';
-
-
+import { findFastSemanticMatch, recordAndLearnQuery } from '../lib/aiSelfLearningEngine';
 import { getUITranslations } from '../lib/uiTranslations';
 
 const FREE_QUERY_LIMIT = 5;
@@ -227,6 +226,23 @@ export default function AIChatbotConcierge() {
     } catch {}
 
     try {
+      // 0. Fast-Path Statutory Semantic Cache Lookup (<50ms zero-latency response)
+      if (!currentAttachedText && userText) {
+        const fastMatch = findFastSemanticMatch(userText, activePromptLang === 'ar');
+        if (fastMatch && fastMatch.synthesizedResponse) {
+          trackChatInteraction('analysis_completed', { fastCacheHit: true, topic: fastMatch.topicKey });
+          const botMsg: ChatMessage = {
+            id: `bot_fast_${Date.now()}`,
+            sender: 'bot',
+            text: fastMatch.synthesizedResponse,
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          };
+          setMessages((prev) => [...prev, botMsg]);
+          setLoading(false);
+          return;
+        }
+      }
+
       // High-speed parallel RAG & DataLake lookup with 600ms ultra-fast fallback timeout
       const queryForRag = userText || currentAttachedText || 'قانون التجارة والعقود';
       
@@ -305,6 +321,9 @@ ${currentAttachedText.slice(0, 4500)}
 
       // 3. Render Dynamic AI Response & Track Event
       trackChatInteraction('analysis_completed', { responseLength: aiReply.length });
+      if (userText && aiReply) {
+        recordAndLearnQuery(userText, aiReply, activePromptLang === 'ar' ? 'ar' : 'en');
+      }
 
       const botMsg: ChatMessage = {
         id: `bot_${Date.now()}`,

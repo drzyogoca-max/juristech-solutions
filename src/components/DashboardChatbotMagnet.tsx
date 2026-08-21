@@ -8,6 +8,7 @@ import { callAI } from '../lib/api';
 import VoiceInput from './VoiceInput';
 import { extractPDFTextMultiStage } from '../lib/pdfExtractor';
 import { useContract } from '../context/ContractContext';
+import { findFastSemanticMatch, recordAndLearnQuery } from '../lib/aiSelfLearningEngine';
 
 interface DashboardChatbotMagnetProps {
   onContractUploaded?: (text: string, filename: string) => void;
@@ -28,24 +29,34 @@ export default function DashboardChatbotMagnet({ onContractUploaded }: Dashboard
 
   const quickPrompts = [
     {
-      labelAr: '⚖️ فحص بند عدم المنافسة في عقد العمل',
-      labelEn: '⚖️ Audit Non-Compete Clause in Employment Contract',
-      query: 'ما هي معايير نظام العمل السعودي للتحقق من صحة بند عدم المنافسة في عقد العمل؟'
+      labelAr: '📜 توليد العقود وقفل الاختصاص (Jurisdiction Lock)',
+      labelEn: '📜 Million+ Contracts & Jurisdiction Lock',
+      query: 'ما هي آلية توليد العقود المليونية المتخصصة والتحقق من التوافق القانوني الجغرافي Jurisdiction Lock؟'
+    },
+    {
+      labelAr: '📄 دقة تصدير Word والاتجاهات RTL/LTR',
+      labelEn: '📄 Word DOCX & RTL/LTR Precision',
+      query: 'هل ملفات الورد (Word .docx) المستخرجة متوافقة مع الاتجاهات اللغوية (RTL/LTR) وخالية من الفراغات؟'
+    },
+    {
+      labelAr: '🏢 ربط الحسابات المؤسسية وباقات الشركات',
+      labelEn: '🏢 Enterprise Corporate Linking & Retainers',
+      query: 'ما هي خطوات ربط الحسابات المؤسسية الكبرى وباقات الشركات المخصصة؟'
+    },
+    {
+      labelAr: '⚖️ غرفة التفاوض الرقمية وفض النزاعات',
+      labelEn: '⚖️ Digital Negotiation Chambers',
+      query: 'ما هي آلية الاستفادة القصوى من غرف التفاوض الرقمية الذكية وحل النزاعات التعاقدية؟'
     },
     {
       labelAr: '🔒 إنشاء اتفاقية عدم إفصاح NDA تجارية',
       labelEn: '🔒 Draft B2B Non-Disclosure Agreement',
-      query: 'كيف يمكن صياغة اتفاقية عدم إفصاح تجارية لحماية الأسرار التجارية وفق الأنظمة الخليجية؟'
+      query: 'ما هي البنود الجوهرية في اتفاقية عدم الإفصاح وحماية الأسرار التجارية؟'
     },
     {
       labelAr: '💼 كشف البنود التعسفية في عقود التوريد',
       labelEn: '💼 Detect Arbitrary Terms in Supply Agreements',
       query: 'ما هي البنود التعسفية والمسؤولية غير المحدودة التي يجب تجنبها في عقود التوريد والخدمات؟'
-    },
-    {
-      labelAr: '🏢 تأسيس وحوكمة الشركات',
-      labelEn: '🏢 Enterprise Governance & Setup',
-      query: 'ما هي المتطلبات الأساسية لحوكمة الشركات وتوزيع حصص الشركاء في نظام الشركات الجديد؟'
     }
   ];
 
@@ -57,9 +68,20 @@ export default function DashboardChatbotMagnet({ onContractUploaded }: Dashboard
     setAiResponse(null);
 
     try {
-      const prompt = `You are Juris, an elite senior AI legal consultant. Provide a concise, highly authoritative legal answer with statutory references for GCC/MENA and international commercial law.\n\nUser Question:\n${textToSubmit}`;
+      // 0. Fast-Path Statutory Semantic Cache Lookup
+      const fastMatch = findFastSemanticMatch(textToSubmit, isRtl);
+      if (fastMatch && fastMatch.synthesizedResponse) {
+        setAiResponse(fastMatch.synthesizedResponse);
+        setLoading(false);
+        return;
+      }
+
+      const prompt = `You are Juris, an elite senior AI legal consultant for JurisTech Solutions. Provide a concise, highly authoritative legal answer with statutory references for GCC/MENA and international commercial law.\n\nUser Question:\n${textToSubmit}`;
       const res = await callAI(prompt);
       setAiResponse(res);
+      if (res && res.length > 50) {
+        recordAndLearnQuery(textToSubmit, res, isRtl ? 'ar' : 'en');
+      }
     } catch (err) {
       console.error('Chatbot Magnet AI Error:', err);
       setAiResponse(
