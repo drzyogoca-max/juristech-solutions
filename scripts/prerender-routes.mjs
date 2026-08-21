@@ -15,288 +15,210 @@ const LANGS = [
 ];
 
 const ROUTE_METADATA = {
+  '/': {
+    titleAr: 'منصة تحليل العقود بالذكاء الاصطناعي | JurisTech Solutions',
+    titleEn: 'AI Contract Analysis & Risk Audit | JurisTech Solutions',
+    descriptionAr: 'منصة JurisTech لتحليل العقود بالذكاء الاصطناعي وكشف الثغرات والبنود التعسفية وإدارة المخاطر القانونية للشركات وصياغة الاتفاقيات واستشارات فورية.',
+    descriptionEn: 'Premier AI contract review and automated legal document analysis platform. Detect liability traps, audit clauses, and draft sovereign agreements.',
+  },
   '/dashboard': {
-    titleAr: 'منصة تحليل العقود بالذكاء الاصطناعي | فحص المخاطر القانونية للشركات | JurisTech',
-    titleEn: 'AI Contract Analysis Platform & Corporate Legal Risk Audit | JurisTech & LegalShield',
+    titleAr: 'لوحة تحليل العقود وإدارة المخاطر | JurisTech Solutions',
+    titleEn: 'Legal AI Dashboard & Risk Intelligence | JurisTech',
     descriptionAr: 'المنصة الذكية الأولى لتحليل العقود وكشف الثغرات والبنود التعسفية وإدارة المخاطر القانونية للشركات. صياغة العقود التجارية واستشارات قانونية فورية.',
-    descriptionEn: 'Premier AI contract review and corporate legal risk detection suite. Instant clause redlining, liability cap analysis, and GCC commercial code audit.',
+    descriptionEn: 'Enterprise AI contract review dashboard. Instant clause redlining, liability cap analysis, and multi-jurisdictional compliance across US & GCC.',
   },
   '/chat': {
-    titleAr: 'المستشار القانوني الذكي للشركات | استشارات قانونية وعقدية فورية | JurisTech',
-    titleEn: 'AI Legal Counsel for Enterprises & 24/7 Virtual Attorney | JurisTech',
-    descriptionAr: 'مستشارك القانوني الذكي المتاح 24 ساعة: استشارات قانونية موثوقة لحل النزاعات العقدية، فحص شروط الاتفاقيات، وتدقيق أنظمة العمل والشركات.',
+    titleAr: 'المستشار القانوني الذكي للشركات | JurisTech Solutions',
+    titleEn: '24/7 AI Legal Counsel & Virtual Attorney | JurisTech',
+    descriptionAr: 'مستشارك القانوني الذكي المتاح 24 ساعة: استشارات قانونية موثوقة لحل النزاعات العقدية، فحص شروط الاتفاقيات، وتدقيق أنظمة الشركات والعمل بالسعودية والخليج.',
     descriptionEn: 'Ask Juris — 24/7 enterprise AI legal counsel for corporate disputes, commercial contract terms, Delaware statutes, Saudi Companies Law & GCC regulations.',
   },
   '/contracts': {
-    titleAr: 'صياغة العقود التجارية بالذكاء الاصطناعي وتوليد الاتفاقيات للشركات | JurisTech',
-    titleEn: 'AI Commercial Contract Drafting & Smart Agreement Builder | JurisTech',
+    titleAr: 'صياغة وتدقيق العقود الذكية للشركات | JurisTech',
+    titleEn: 'AI Commercial Contract Drafting Studio | JurisTech',
     descriptionAr: 'صياغة العقود التجارية والاتفاقيات الذكية وتدقيقها بالذكاء الاصطناعي — متوافقة مع أنظمة التجارة والاستثمار في السعودية والإمارات والخليج وأمريكا والأونسيترال.',
-    descriptionEn: 'Generate, draft, and auto-redline commercial contracts for GCC, US States & international jurisdictions. UNCITRAL compliant with automated AI risk verification.',
+    descriptionEn: 'Generate, draft, and auto-redline commercial contracts for GCC, US & international jurisdictions. UNCITRAL compliant with instant Word exports.',
   },
   '/risk': {
-    titleAr: 'تحليل المخاطر القانونية للشركات وكشف ثغرات العقود التجارية | JurisTech',
-    titleEn: 'Corporate Legal Risk Analysis & Contract Vulnerability Audit | JurisTech',
+    titleAr: 'فحص المخاطر التعاقدية للشركات | JurisTech Solutions',
+    titleEn: 'AI Contract Risk Scoring & Vulnerability Audit | JurisTech',
     descriptionAr: 'فحص وتدقيق المخاطر القانونية للشركات وكشف البنود التعسفية وثغرات المسؤولية المالية والشرط الجزائي بالذكاء الاصطناعي مع اقتراح الصياغات البديلة المعتمدة.',
-    descriptionEn: 'Instant AI contract risk analysis: detect indemnification traps, uncapped liability, penalty clauses, and statutory compliance gaps across GCC & US laws.',
+    descriptionEn: 'Instant AI contract risk scoring: detect indemnification traps, uncapped liabilities, penalty clauses, and statutory compliance gaps.',
   },
   '/company-formation': {
-    titleAr: 'تأسيس الشركات وحوكمة الشركاء وصياغة الأنظمة الأساسية | JurisTech Solutions',
-    titleEn: 'Corporate Formation & Statutory Governance Suite | JurisTech Solutions',
+    titleAr: 'تأسيس الشركات وحوكمة الشركاء | JurisTech Solutions',
+    titleEn: 'Corporate Formation & Statutory Governance | JurisTech',
     descriptionAr: 'تأسيس الشركات وصياغة عقود التأسيس والأنظمة الأساسية وحوكمة الشركاء بالذكاء الاصطناعي في السعودية والإمارات ومصر والأردن ودول الخليج وفق أحدث أنظمة الشركات.',
-    descriptionEn: 'AI-powered corporate formation, Articles of Association drafting, partner governance mandates, and statutory compliance across Saudi Arabia, UAE, Egypt, Jordan & GCC.',
+    descriptionEn: 'AI-powered corporate formation, Articles of Association drafting, partner governance mandates, and statutory compliance across Saudi Arabia & UAE.',
   },
   '/vault': {
-    titleAr: 'خزينة المستندات المشفّرة والوثائق | JurisTech & LegalShield',
+    titleAr: 'خزينة المستندات المشفّرة والوثائق | JurisTech',
     titleEn: 'Encrypted AI Legal Vault & Document Management | JurisTech',
-    descriptionAr: 'خزّن مستنداتك القانونية وتتبعها في خزينة مشفّرة آمنة مع تنبيهات انتهاء الصلاحية والبحث الذكي بالمستندات.',
+    descriptionAr: 'خزّن مستنداتك القانونية وتتبعها في خزينة مشفّرة آمنة مع تنبيهات انتهاء الصلاحية والبحث الذكي بالمستندات وفق معايير الأمان والتشفير السيادي.',
     descriptionEn: 'Bank-grade encrypted legal document repository with automated expiry alerts, OCR search, and multi-jurisdictional compliance tracking.',
   },
   '/repository': {
-    titleAr: 'مستودع وخزينة العقود والنماذج الذكية الموحدة (1,000,000+ عقد معتمد) | JurisTech',
-    titleEn: '1,000,000+ Certified Smart Legal Contracts & Templates Vault | JurisTech',
-    descriptionAr: 'أضخم مستودع وخزينة عقود ونماذج قانونية بالشرق الأوسط والعالم: تصفح أكثر من 1,000,000 عقد وتوليد وتدقيق فوري بالذكاء الاصطناعي مطابق للسعودية والإمارات ومصر والدولية.',
-    descriptionEn: 'Explore 1,000,000+ certified legal contracts, corporate templates, M&A agreements, employment contracts, and SaaS SLAs fully ground in international laws.',
+    titleAr: 'مستودع العقود والنماذج الذكية المعتمدة | JurisTech',
+    titleEn: '1,000,000+ Certified Smart Legal Templates | JurisTech',
+    descriptionAr: 'أضخم مستودع وخزينة عقود ونماذج قانونية بالشرق الأوسط والعالم: تصفح أكثر من 1,000,000 عقد وتوليد وتدقيق فوري بالذكاء الاصطناعي مطابق للأنظمة الدولية.',
+    descriptionEn: 'Explore 1,000,000+ certified legal contracts, corporate templates, M&A agreements, employment contracts, and SaaS SLAs grounded in global laws.',
   },
   '/templates': {
-    titleAr: 'استوديو النماذج والتوليد والتدقيق القانوني بالذكاء الاصطناعي | JurisTech',
-    titleEn: 'Smart Legal Templates Studio & AI Contract Generator | JurisTech',
-    descriptionAr: 'استوديو النماذج القانونية التفاعلي: صياغة وتخصيص وتدقيق المخاطر بالذكاء الاصطناعي وتصدير فورية بصيغة Word و PDF.',
+    titleAr: 'استوديو النماذج والتوليد القانوني | JurisTech',
+    titleEn: 'Smart Legal Templates Studio & AI Generator | JurisTech',
+    descriptionAr: 'استوديو النماذج القانونية التفاعلي: صياغة وتخصيص وتدقيق المخاطر بالذكاء الاصطناعي وتصدير فوري بصيغة Word و PDF خالٍ من الفراغات وبدقة لغوية.',
     descriptionEn: 'Interactive Smart Legal Templates Studio with AI customizer, risk audit score, voice drafting, and instant PDF/Word exports for 50+ jurisdictions.',
   },
   '/negotiation': {
-    titleAr: 'التفاوض التعاقدي والتوقيع الرقمي المعتمد | JurisTech & LegalShield',
-    titleEn: 'AI Contract Negotiation & Digital E-Signature Studio | JurisTech',
-    descriptionAr: 'التفاوض على العقود وتعليم التعديلات والتوقيع الإلكتروني بالذكاء الاصطناعي — تسريع اتفاقيات الأعمال عالمياً ومحلياً.',
+    titleAr: 'غرف التفاوض والتوقيع الرقمي المشفر | JurisTech',
+    titleEn: 'AI Contract Negotiation & Digital E-Signature | JurisTech',
+    descriptionAr: 'غرف التفاوض الرقمية الذكية وتعليم التعديلات والتوقيع الإلكتروني المشفر بشهادات SHA-256 المعتمدة لتسريع إبرام الصفقات وحل النزاعات.',
     descriptionEn: 'Automate contract redlining, counter-offer recommendations, and court-admissible e-signatures for US & international commercial deals.',
   },
   '/enterprise-audit': {
-    titleAr: 'تدقيق المؤسسات والامتثال التنظيمي الشامل | JurisTech & LegalShield',
-    titleEn: 'Enterprise AI Compliance & Regulatory Audit Studio | JurisTech',
-    descriptionAr: 'تدقيق شامل للامتثال القانوني على مستوى المؤسسات بالذكاء الاصطناعي — تحديد الثغرات والمخاطر التنظيمية وخطط المعالجة.',
+    titleAr: 'تدقيق المؤسسات والامتثال التنظيمي | JurisTech',
+    titleEn: 'Enterprise AI Compliance & Regulatory Audit | JurisTech',
+    descriptionAr: 'تدقيق شامل للامتثال القانوني على مستوى المؤسسات والشركات بالذكاء الاصطناعي — تحديد الثغرات والمخاطر التنظيمية وخطط المعالجة الاستباقية.',
     descriptionEn: 'Enterprise-grade compliance audits for US SEC, GDPR, HIPAA, CCPA/CPRA, and UNCITRAL frameworks powered by sovereign legal AI.',
   },
   '/legal-compliance': {
-    titleAr: 'مركز الامتثال واللوائح التنفيذية | JurisTech & LegalShield',
-    titleEn: 'Global & US Regulatory Compliance Knowledge Hub | LegalShield',
-    descriptionAr: 'بقَ ممتثلاً للأنظمة العالمية — الأنظمة الأمريكية، GDPR، أونكيترال، CISG، وقوانين البيانات الخليجية.',
-    descriptionEn: 'Comprehensive guide to US Federal regulations, state privacy mandates (CCPA/CPRA, NY SHIELD), GDPR, and international trade laws.',
+    titleAr: 'دليل الامتثال واللوائح التشريعية | JurisTech',
+    titleEn: 'Global & US Regulatory Compliance Knowledge Hub | JurisTech',
+    descriptionAr: 'دليل الامتثال القانوني الشامل — الأنظمة واللوائح السعودية، القوانين الاتحادية الإماراتية، تشريعات الشركات الأمريكية، وحوكمة حماية البيانات.',
+    descriptionEn: 'Comprehensive guide to US Federal regulations, state privacy mandates, GDPR, and international commercial trade frameworks.',
   },
   '/lead-radar': {
     titleAr: 'رادار التحليلات الذكي واستكشاف الفرص | JurisTech',
     titleEn: 'B2B Legal Prospecting & Corporate Risk Intelligence | JurisTech',
-    descriptionAr: 'رادار استكشاف الفرص والمخاطر العقدية للشركات بالذكاء الاصطناعي — تحليل سلوك الزوار والتحويل الآلي.',
+    descriptionAr: 'رادار استكشاف الفرص والمخاطر العقدية للشركات بالذكاء الاصطناعي — تحليل سلوك الزوار والتحويل الآلي للشركات ورواد الأعمال.',
     descriptionEn: 'AI-driven B2B legal prospecting and corporate risk intelligence for enterprise deal flow automation.',
   },
   '/sovereign-ai-hub': {
     titleAr: 'مركز حلول الذكاء الاصطناعي السيادي | JurisTech',
     titleEn: 'Sovereign AI Legal Infrastructure Hub | JurisTech Solutions',
-    descriptionAr: 'بنية تحتية سيادية للذكاء الاصطناعي القانوني — نماذج LLM خاصة بحوكمة وتدقيق العقود الحساسة.',
+    descriptionAr: 'بنية تحتية سيادية للذكاء الاصطناعي القانوني — نماذج LLM خاصة بحوكمة وتدقيق العقود الحساسة وأسرار الشركات.',
     descriptionEn: 'Sovereign AI legal infrastructure hub powered by self-hosted LLM models for high-security corporate governance.',
   },
   '/b2b-proposals': {
-    titleAr: 'منصة العروض التنافسية للشركات والمؤسسات | JurisTech',
+    titleAr: 'منصة العروض التنافسية للشركات | JurisTech',
     titleEn: 'Enterprise B2B Proposal Engine & AI RFP Hub | JurisTech',
-    descriptionAr: 'استخراج وتجهيز العروض الفنية والمالية للشركات الكبرى بالذكاء الاصطناعي مع تدقيق الالتزامات.',
+    descriptionAr: 'استخراج وتجهيز العروض الفنية والمالية للشركات الكبرى بالذكاء الاصطناعي مع تدقيق الالتزامات والشروط التعاقدية.',
     descriptionEn: 'Automated C-Suite B2B proposal generation and RFP compliance auditing for global enterprise clients.',
   },
   '/payment': {
-    titleAr: 'اشتراكات الباقات وبوابات الدفع الإلكتروني المشفّرة | JurisTech',
-    titleEn: 'Enterprise Subscription & Encrypted Payment Portal | JurisTech',
-    descriptionAr: 'اشترك الآن في منصة JurisTech Solutions — باقات الشركات، التحويل البنكي المباشر SWIFT، وPayPal.',
-    descriptionEn: 'Upgrade your corporate legal operations. Secure checkout via PayPal, Credit Card, and Direct Bank Wire (SWIFT).',
+    titleAr: 'خطط الاشتراك وباقات الشركات | JurisTech Solutions',
+    titleEn: 'Enterprise Subscriptions & Secure Payments | JurisTech',
+    descriptionAr: 'اشترك الآن في باقات منصة JurisTech Solutions للشركات والمكاتب القانونية — دفع آمن عبر البطاقات الائتمانية والتحويل البنكي المباشر SWIFT و InstaPay.',
+    descriptionEn: 'Upgrade your corporate legal operations. Secure checkout via PayPal, Credit Card, InstaPay Egypt, and Direct Bank Wire (SWIFT).',
   },
   '/support': {
-    titleAr: 'مركز الدعم الفني وتذاكر المساعدة المشفّرة | JurisTech',
-    titleEn: 'Encrypted Support Desk & Client Service Portal | JurisTech',
-    descriptionAr: 'فريق الدعم الاستشاري والفني متاح 24/7 للإجابة على جميع الاستفسارات الفنية والعقدية.',
-    descriptionEn: '24/7 technical and legal support desk for enterprise clients and platform subscribers.',
+    titleAr: 'الدعم الفني والاستشارات الفورية | JurisTech',
+    titleEn: '24/7 Client Support & Advisory Helpdesk | JurisTech',
+    descriptionAr: 'فريق الدعم الاستشاري والفني متاح 24 ساعة طوال أيام الأسبوع للإجابة على كافة الاستفسارات التعاقدية وتقديم المساندة الفنية الفورية للعملاء.',
+    descriptionEn: '24/7 technical and legal support desk for enterprise clients and platform subscribers with instant advisory response.',
   },
   '/about': {
-    titleAr: 'عن المنصة ورؤية الذكاء الاصطناعي القانوني | JurisTech Solutions',
-    titleEn: 'About JurisTech Solutions & LegalShield Ecosystem',
-    descriptionAr: 'تعرّف على منصة JurisTech Solutions — الرائدة عالمياً وإقليمياً في حلول الذكاء الاصطناعي القانوني للشركات.',
+    titleAr: 'عن المنصة والريادة التشريعية | JurisTech Solutions',
+    titleEn: 'About JurisTech Solutions & Sovereign AI Legal Ecosystem',
+    descriptionAr: 'تعرّف على منصة JurisTech Solutions — الرائدة إقليمياً وعالمياً في حلول الذكاء الاصطناعي القانوني للشركات وتدقيق العقود المليونية.',
     descriptionEn: 'Learn about JurisTech Solutions — pioneering sovereign legal AI infrastructure and automated contract governance globally.',
   },
   '/video-hub': {
-    titleAr: 'مركز الشروحات المرئية والبرامج التعليمية | JurisTech',
+    titleAr: 'مركز الشروحات المرئية والتدريبية | JurisTech',
     titleEn: 'Video Knowledge Hub & Platform Tutorials | JurisTech',
-    descriptionAr: 'شروحات مرئية تفاعلية تشرح كيفية صياغة العقود وتدقيق المخاطر بالذكاء الاصطناعي.',
+    descriptionAr: 'شروحات مرئية تفاعلية تشرح كيفية صياغة العقود وتدقيق المخاطر بالذكاء الاصطناعي واستخراج التقارير القانونية المعتمدة.',
     descriptionEn: 'Interactive video tutorials and practical demonstrations of AI contract audit and risk analysis.',
   },
   '/marketing': {
     titleAr: 'شراكات النمو والتوسع المؤسسي | JurisTech',
     titleEn: 'Global Growth & Strategic Enterprise Partnerships | JurisTech',
-    descriptionAr: 'حلول الشراكات والنمو المؤسسي وبرامج التسويق والانتشار لمنصة JurisTech Solutions.',
+    descriptionAr: 'حلول الشراكات والنمو المؤسسي وبرامج التسويق والانتشار لمنصة JurisTech Solutions لقطاعات الأعمال والشركات الاستثمارية.',
     descriptionEn: 'Strategic enterprise growth, B2B partnerships, and institutional rollout programs.',
   },
   '/reports': {
-    titleAr: 'مركز التقارير والتحليلات الإستراتيجية | JurisTech',
+    titleAr: 'التقارير الإستراتيجية وتحليلات المخاطر | JurisTech',
     titleEn: 'Strategic Legal Intelligence & Analytics Reports | JurisTech',
-    descriptionAr: 'تقارير دورية شاملة عن مؤشرات المخاطر العقدية وتوجهات التشريعات التجارية للشركات.',
-    descriptionEn: 'Comprehensive corporate legal risk metrics and legislative trend analysis reports.',
+    descriptionAr: 'تقارير دورية شاملة ومؤشرات حية لتحليل المخاطر العقدية، رصد النزاعات التجارية، واتجاهات التشريعات واللوائح للشركات والمدراء التنفيذيين.',
+    descriptionEn: 'Comprehensive corporate legal risk metrics, contract dispute analytics, and legislative trend reports for C-Suite executives.',
   },
   '/privacy': {
     titleAr: 'سياسة الخصوصية وحماية البيانات | JurisTech Solutions',
-    titleEn: 'Privacy Policy & Data Governance Mandate | JurisTech Solutions',
-    descriptionAr: 'التزامنا الكامل بحماية بياناتك وخصوصية مستنداتك وفق أسرار المهنة وتشفير AES-256 وحوكمة GDPR.',
-    descriptionEn: 'Our ironclad commitment to data privacy, document encryption, SOC2 compliance, and GDPR data protection.',
+    titleEn: 'Privacy Policy & Data Governance Mandate | JurisTech',
+    descriptionAr: 'التزامنا الصارم بحماية سرية بياناتك وخصوصية مستنداتك القانونية وفق أعلى معايير التشفير العسكري AES-256 وحوكمة البيانات العالمية GDPR.',
+    descriptionEn: 'Our commitment to client confidentiality, AES-256 encryption, Zero-Knowledge document security, and GDPR compliance.',
   },
   '/terms': {
     titleAr: 'شروط وأحكام الاستخدام الرسمية | JurisTech Solutions',
-    titleEn: 'Terms of Service & Platform Usage Agreement | JurisTech Solutions',
-    descriptionAr: 'الشروط والأحكام الرسمية الحاكمة لاستخدام منصة JurisTech Solutions وحلول الذكاء الاصطناعي القانوني.',
-    descriptionEn: 'Official Terms of Service governing platform usage, SLA commitments, and AI legal advisory terms.',
+    titleEn: 'Terms of Service & Usage Agreement | JurisTech Solutions',
+    descriptionAr: 'الشروط والأحكام الرسمية الحاكمة لاستخدام منصة JurisTech Solutions وحلول الذكاء الاصطناعي القانوني واتفاقيات مستوى الخدمة (SLA).',
+    descriptionEn: 'Official Terms of Service governing platform usage, enterprise SLAs, and AI legal advisory standards for JurisTech Solutions.',
   },
 };
 
-export function prerenderRoutes() {
-  const indexHtmlPath = path.join(DIST_DIR, 'index.html');
-  if (!fs.existsSync(indexHtmlPath)) {
-    console.error('[Prerender SEO] Error: dist/index.html does not exist.');
+const PUBLIC_ROUTES = Object.keys(ROUTE_METADATA);
+
+function prerenderRoutes() {
+  const templatePath = path.join(DIST_DIR, 'index.html');
+  if (!fs.existsSync(templatePath)) {
+    console.error('[Prerender SEO] Error: dist/index.html not found. Run build first.');
     return;
   }
 
-  const baseHtml = fs.readFileSync(indexHtmlPath, 'utf-8');
+  const baseHtml = fs.readFileSync(templatePath, 'utf-8');
 
-  Object.entries(ROUTE_METADATA).forEach(([routePath, seo]) => {
-    const cleanRoute = routePath.replace(/^\//, '');
-    const routeDir = path.join(DIST_DIR, cleanRoute);
-    if (!fs.existsSync(routeDir)) {
-      fs.mkdirSync(routeDir, { recursive: true });
-    }
+  PUBLIC_ROUTES.forEach((routePath) => {
+    if (routePath === '/') return; // base index.html already at root
+    const routeDir = path.join(DIST_DIR, routePath.replace(/^\//, ''));
+    fs.mkdirSync(routeDir, { recursive: true });
 
+    const metadata = ROUTE_METADATA[routePath] || {};
+    const pageTitle = metadata.titleAr || metadata.titleEn || 'منصة تحليل العقود بالذكاء الاصطناعي | JurisTech Solutions';
+    const pageDesc = metadata.descriptionAr || metadata.descriptionEn || 'المنصة الذكية لتحليل العقود وكشف الثغرات وإدارة المخاطر القانونية للشركات واستشارات فورية.';
     const canonicalUrl = `${BASE_URL}${routePath}`;
-    const pageTitle = `${seo.titleAr} | ${seo.titleEn}`;
-    const pageDesc = `${seo.descriptionAr} ${seo.descriptionEn}`;
-
-    // Build hreflang tags
-    const hreflangTags = LANGS.map(
-      (lang) => `<link rel="alternate" hreflang="${lang}" href="${canonicalUrl}" />`
-    ).join('\n    ');
 
     let routeHtml = baseHtml;
 
-    // Replace Title
-    routeHtml = routeHtml.replace(
-      /<title>.*?<\/title>/gi,
-      `<title>${pageTitle}</title>`
-    );
+    // 1. Strip all previous Title, Meta Description, and Canonical Tags to prevent duplicates
+    routeHtml = routeHtml.replace(/<title>[\s\S]*?<\/title>/gi, '');
+    routeHtml = routeHtml.replace(/<meta\s+name=["']description["'][^>]*>/gi, '');
+    routeHtml = routeHtml.replace(/<link\s+rel=["']canonical["'][^>]*>/gi, '');
+    routeHtml = routeHtml.replace(/<meta\s+property=["']og:title["'][^>]*>/gi, '');
+    routeHtml = routeHtml.replace(/<meta\s+property=["']og:description["'][^>]*>/gi, '');
+    routeHtml = routeHtml.replace(/<meta\s+property=["']og:url["'][^>]*>/gi, '');
+    routeHtml = routeHtml.replace(/<meta\s+name=["']twitter:title["'][^>]*>/gi, '');
+    routeHtml = routeHtml.replace(/<meta\s+name=["']twitter:description["'][^>]*>/gi, '');
+    routeHtml = routeHtml.replace(/<link\s+rel=["']alternate["']\s+hreflang=[^>]*>/gi, '');
 
-    // Replace Description
-    if (routeHtml.includes('<meta name="description"')) {
-      routeHtml = routeHtml.replace(
-        /<meta name="description".*?>/gi,
-        `<meta name="description" content="${pageDesc}" />`
-      );
-    } else {
-      routeHtml = routeHtml.replace(
-        '</head>',
-        `  <meta name="description" content="${pageDesc}" />\n</head>`
-      );
-    }
+    // 2. Generate canonical and hreflangs
+    const hreflangTags = LANGS.map(lang => {
+      return `<link rel="alternate" hreflang="${lang}" href="${canonicalUrl}" />`;
+    }).join('\n    ');
 
-    // Build Pre-rendered JSON-LD Structured Data Schema Block for LLM Search Engine Parsing
+    // 3. Schema.org JSON-LD structured data
     const jsonLdBlock = `
     <script type="application/ld+json">
     ${JSON.stringify([
       {
         '@context': 'https://schema.org',
-        '@type': 'Organization',
-        'name': 'JurisTech Solutions & LegalShield Ecosystem',
-        'url': BASE_URL,
-        'logo': `${BASE_URL}/logo.png`,
-        'email': 'juristech.solutions@outlook.com',
-        'sameAs': [
-          'https://www.linkedin.com/in/juristech-solutions-14954b427/',
-          'https://www.tiktok.com/@juristech.solutio6',
-          'https://legalshieldsolution.online'
-        ]
-      },
-      {
-        '@context': 'https://schema.org',
-        '@type': 'SoftwareApplication',
-        'name': 'JurisTech AI Legal Assistant & Sovereign Contract Risk Analysis Suite',
-        'operatingSystem': 'Web, iOS, Android, Cloud API',
-        'applicationCategory': ['LegalTech', 'AI Contract Analysis', 'Automated Risk Assessment Software', 'Enterprise Sovereign Legal AI'],
-        'featureList': [
-          'AI-powered contract risk scoring',
-          'Automated legal document analysis platform for enterprise law firms',
-          'Delaware LLC & Saudi Companies Law 2026 statutory audit',
-          'Instant court-admissible redlines & DOCX zero-whitespace exporter',
-          'Sub-second UNCITRAL & GCC commercial code cross-examination'
-        ],
-        'offers': {
-          '@type': 'Offer',
-          'price': '0.00',
-          'priceCurrency': 'USD',
-          'availability': 'https://schema.org/InStock'
-        },
-        'aggregateRating': {
-          '@type': 'AggregateRating',
-          'ratingValue': '4.9',
-          'bestRating': '5',
-          'worstRating': '1',
-          'ratingCount': '2450',
-          'reviewCount': '1890'
+        '@type': 'WebPage',
+        'name': pageTitle,
+        'description': pageDesc,
+        'url': canonicalUrl,
+        'inLanguage': ['ar', 'en'],
+        'isPartOf': {
+          '@type': 'WebSite',
+          'name': 'JurisTech Solutions',
+          'url': BASE_URL
         }
-      },
-      {
-        '@context': 'https://schema.org',
-        '@type': 'LegalService',
-        'name': 'JurisTech Solutions & LegalShield Sovereign AI Legal Platform',
-        'image': `${BASE_URL}/logo.png`,
-        'priceRange': '$0 - $49/mo',
-        'telephone': '+201126674337',
-        'url': BASE_URL,
-        'areaServed': ['United States', 'US-CA', 'US-NY', 'US-TX', 'US-FL', 'US-DE', 'United Kingdom', 'European Union', 'GCC', 'Saudi Arabia', 'United Arab Emirates', 'Egypt', 'Jordan', 'Oman', 'Kuwait', 'Qatar', 'Bahrain'],
-        'knowsAbout': [
-          'AI-powered contract risk scoring',
-          'Automated legal document analysis platform for enterprise law firms',
-          'US Federal & State Contract Law',
-          'Delaware Corporate Law',
-          'Saudi Companies Law 2026',
-          'DIFC & ADGM Commercial Regulations',
-          'UNCITRAL & CISG International Commercial Law',
-          'Contract Risk Redlining & E-Signatures'
-        ]
-      },
-      {
-        '@context': 'https://schema.org',
-        '@type': 'FAQPage',
-        'mainEntity': [
-          {
-            '@type': 'Question',
-            'name': 'What is JurisTech Solutions and how does its AI-powered contract risk scoring work?',
-            'acceptedAnswer': {
-              '@type': 'Answer',
-              'text': 'JurisTech Solutions is an enterprise LegalTech platform providing AI-powered contract risk scoring, clause vulnerability detection, liability cap inspection, and sovereign legal compliance across US, UK, EU, and GCC commercial law frameworks.'
-            }
-          },
-          {
-            '@type': 'Question',
-            'name': 'How does automated legal document analysis benefit enterprise law firms and corporate legal teams?',
-            'acceptedAnswer': {
-              '@type': 'Answer',
-              'text': 'Automated legal document analysis enables law firms and in-house counsel to audit multi-page commercial contracts in sub-second speed, identifying hidden indemnification traps, uncapped liabilities, and non-compliant terms while generating court-admissible redlines.'
-            }
-          },
-          {
-            '@type': 'Question',
-            'name': 'كيف تساعد منصة تحليل العقود بالذكاء الاصطناعي في كشف المخاطر القانونية للشركات؟',
-            'acceptedAnswer': {
-              '@type': 'Answer',
-              'text': 'تقوم منصة JurisTech بفحص بنود المسؤولية المالية والتعويضات غير المحدودة وغرامات التأخير وشروط عدم المنافسة ومقارنتها بالأنظمة واللوائح السيادية لحماية المنشأة من النزاعات القضائية وتوفير الصياغات البديلة المعتمدة.'
-            }
-          }
-        ]
       }
     ])}
     </script>
     `;
 
-    // Inject/Replace Canonical, Hreflang Tags & Pre-baked JSON-LD
-    const canonicalAndHreflangBlock = `
-    <!-- Pre-rendered Canonical, Regional Hreflangs & JSON-LD for AI Search Indexing -->
+    // 4. Inject clean singular header block
+    const cleanHeaderBlock = `
+    <title>${pageTitle}</title>
+    <meta name="description" content="${pageDesc}" />
     <link rel="canonical" href="${canonicalUrl}" />
     ${hreflangTags}
     <meta property="og:title" content="${pageTitle}" />
@@ -307,7 +229,7 @@ export function prerenderRoutes() {
     ${jsonLdBlock}
 `;
 
-    routeHtml = routeHtml.replace('</head>', `${canonicalAndHreflangBlock}\n</head>`);
+    routeHtml = routeHtml.replace('</head>', `${cleanHeaderBlock}\n</head>`);
 
     const targetFilePath = path.join(routeDir, 'index.html');
     fs.writeFileSync(targetFilePath, routeHtml, 'utf-8');

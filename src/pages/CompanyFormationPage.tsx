@@ -175,7 +175,7 @@ export default function CompanyFormationPage() {
           <div className="inline-flex p-6 rounded-full bg-emerald-500/10 border border-emerald-500/30 mx-auto">
             <CheckCircle2 className="w-16 h-16 text-emerald-400" />
           </div>
-          <h1 className="text-3xl font-black">{isRtl ? 'تم تجهيز صياغة وثائق الشركة بنجاح!' : 'AI Company Documents Generated!'}</h1>
+          <h2 className="text-3xl font-black">{isRtl ? 'تم تجهيز صياغة وثائق الشركة بنجاح!' : 'AI Company Documents Generated!'}</h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">
             {isRtl
               ? `تم إنشاء مسودة عقد التأسيس والنظام الأساسي لشركة "${form.companyName}" في ${selectedJurisdiction?.nameAr}. تم حفظ النسخة الذكية في خزنة المستندات وإرسالها إلى البريد ${form.directorEmail}.`
