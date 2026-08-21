@@ -9,6 +9,8 @@ import { supabase } from '../lib/supabaseClient';
 import { useContract } from '../context/ContractContext';
 import { extractPDFTextMultiStage } from '../lib/pdfExtractor';
 import SEO from '../components/SEO';
+import TwoFactorSecurityModal from '../components/TwoFactorSecurityModal';
+import { E2EEncryptionService } from '../services/e2eEncryptionService';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 interface VaultDocument {
@@ -119,6 +121,7 @@ export default function VaultPage() {
   const [filterType, setFilterType] = useState<DocType>('all');
   const [viewingDoc, setViewingDoc] = useState<VaultDocument | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showSecurityModal, setShowSecurityModal] = useState(false);
   const [addForm, setAddForm] = useState({ file_name: '', doc_type: 'contract' as DocType, expiry_date: '', content: '' });
   const [extracting, setExtracting] = useState(false);
 
@@ -281,7 +284,14 @@ export default function VaultPage() {
                 : 'Secure storage for your analyzed contracts and digitally signed meeting minutes'}
             </p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
+            <button
+              onClick={() => setShowSecurityModal(true)}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold hover:bg-emerald-500/20 transition-all cursor-pointer"
+            >
+              <Key className="w-4 h-4" />
+              <span>{isRtl ? 'الأمان وتشفير 2FA' : '2FA & E2EE Keys'}</span>
+            </button>
             <label className={`flex items-center gap-2 px-3 py-2 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-bold cursor-pointer hover:bg-cyan-500/20 transition-all ${uploading ? 'opacity-60 cursor-not-allowed' : ''}`}>
               {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
               {isRtl ? 'رفع مستند' : 'Upload Document'}
@@ -456,6 +466,12 @@ export default function VaultPage() {
           </div>
         </div>
       )}
+
+      {/* 🔐 Sovereign Two-Factor Authentication & End-to-End Encryption Modal */}
+      <TwoFactorSecurityModal
+        isOpen={showSecurityModal}
+        onClose={() => setShowSecurityModal(false)}
+      />
     </main>
   );
 }

@@ -4,7 +4,7 @@ import {
   FileText, AlertTriangle, Zap, Loader2, ArrowRight, Globe, Users, Shield, ShieldCheck,
   Sparkles, Building2, Activity, Cpu, Upload, CheckCircle2, ShieldAlert,
   Download, Filter, RefreshCw, X, Radio, Crown, Handshake, Search, BarChart3, CreditCard, Library, MessageSquare, Lock, Scale,
-  Video, Share2, Headphones, Briefcase, Award
+  Video, Share2, Headphones, Briefcase, Award, Key
 } from 'lucide-react';
 import { supabase } from '../lib/supabaseClient';
 import { Link, useNavigate } from 'react-router-dom';
@@ -34,6 +34,8 @@ const DashboardChatbotMagnet = lazy(() => import('../components/DashboardChatbot
 const USCompetitorMatchBanner = lazy(() => import('../components/USCompetitorMatchBanner'));
 const GlobalCDNHubWidget = lazy(() => import('../components/GlobalCDNHubWidget'));
 const AIHeartbeatWidget = lazy(() => import('../components/AIHeartbeatWidget'));
+const CaseStudiesSection = lazy(() => import('../components/CaseStudiesSection'));
+const TwoFactorSecurityModal = lazy(() => import('../components/TwoFactorSecurityModal'));
 
 
 interface ActivityItem {
@@ -95,6 +97,7 @@ export default function Dashboard() {
   const [auditResult, setAuditResult] = useState<QuickAuditResult | null>(null);
   const [activeVectorFilter, setActiveVectorFilter] = useState<'All' | 'Financial' | 'Operational' | 'IP' | 'Regulatory'>('All');
   const [errorMsg, setErrorMsg] = useState('');
+  const [showSecurityModal, setShowSecurityModal] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -417,10 +420,18 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <span className="px-3 py-1 rounded-full text-xs font-sans font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
               {isRtl ? '● محرك الفحص التشريعي نشط' : '● Legal Analysis Engine Active'}
             </span>
+            <button
+              onClick={() => setShowSecurityModal(true)}
+              aria-label={isRtl ? 'الأمان وتشفير 2FA' : '2FA Security Hub'}
+              className="px-4 py-2 rounded-2xl bg-emerald-500/10 hover:bg-emerald-500/20 text-xs font-bold text-emerald-400 transition-all border border-emerald-500/30 flex items-center gap-1.5 cursor-pointer"
+            >
+              <Key className="w-3.5 h-3.5" />
+              <span>{isRtl ? '🔐 الأمان وتشفير 2FA' : '🔐 2FA & E2EE'}</span>
+            </button>
             <Link
               to="/vault"
               aria-label={isRtl ? 'الانتقال إلى خزنة المستندات' : 'Go to Encrypted Vault'}
@@ -477,6 +488,11 @@ export default function Dashboard() {
 
         {/* ── Interactive Sovereign Customer Journey Map (خريطة رحلة العميل التفاعلية) ── */}
         <InteractiveCustomerJourneyMap />
+
+        {/* ── Real-World Legal Case Studies (دراسات حالة واقعية معتمدة لحل نزاعات العقود) ── */}
+        <Suspense fallback={<div className="h-64 rounded-3xl bg-slate-900 animate-pulse border border-slate-800" />}>
+          <CaseStudiesSection />
+        </Suspense>
 
         {/* ──────────────────────────────────────────────────────────────────── */}
         {/* RECENT DOCUMENTS & SAVED AUDITS (TRUE DASHBOARD WORKSPACE)           */}
@@ -1371,6 +1387,14 @@ export default function Dashboard() {
             </div>
           </div>
         )}
+
+        {/* 🔐 Sovereign Two-Factor Authentication & End-to-End Encryption Modal */}
+        <Suspense fallback={null}>
+          <TwoFactorSecurityModal
+            isOpen={showSecurityModal}
+            onClose={() => setShowSecurityModal(false)}
+          />
+        </Suspense>
 
       </div>
     </main>
