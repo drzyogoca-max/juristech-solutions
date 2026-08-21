@@ -479,10 +479,28 @@ ${contractText}`;
   }
 
   const [activeLang, setActiveLang] = useState<SupportedLanguage>(
-    (i18n.language as SupportedLanguage) in LANGUAGE_NAMES
-      ? (i18n.language as SupportedLanguage)
+    (i18n.language?.slice(0, 2) as SupportedLanguage) in LANGUAGE_NAMES
+      ? (i18n.language?.slice(0, 2) as SupportedLanguage)
       : 'ar'
   );
+
+  useEffect(() => {
+    const current = (i18n.language?.slice(0, 2) as SupportedLanguage) || 'ar';
+    if (SUPPORTED_LANGS.includes(current)) {
+      setActiveLang(current);
+    }
+  }, [i18n.language]);
+
+  useEffect(() => {
+    const handleLangEvent = (e: Event) => {
+      const customEvent = e as CustomEvent<{ lang: SupportedLanguage }>;
+      if (customEvent.detail?.lang && SUPPORTED_LANGS.includes(customEvent.detail.lang)) {
+        setActiveLang(customEvent.detail.lang);
+      }
+    };
+    window.addEventListener('juristech_lang_change', handleLangEvent);
+    return () => window.removeEventListener('juristech_lang_change', handleLangEvent);
+  }, []);
 
   // File upload states
   const [uploadingFile, setUploadingFile] = useState(false);
@@ -513,9 +531,9 @@ ${contractText}`;
     }
   };
 
-  const labels = CHAT_LABELS[activeLang];
+  const labels = CHAT_LABELS[activeLang] || CHAT_LABELS.en;
   const isRtl = activeLang === 'ar';
-  const cta = CTA_LABELS[activeLang];
+  const cta = CTA_LABELS[activeLang] || CTA_LABELS.en;
 
   const [prompt, setPrompt] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);

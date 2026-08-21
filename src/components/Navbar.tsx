@@ -20,6 +20,7 @@ import TwoFactorAuthModal from './TwoFactorAuthModal';
 import RbacUserManagementModal from './RbacUserManagementModal';
 import { useAuth } from '../lib/authContext';
 import { detectVisitorJurisdiction, JurisdictionInfo } from '../lib/jurisdiction';
+import { getActiveGlobalTranslations } from '../lib/globalTranslations';
 
 // ─── Nav link groups (Visitor & Subscriber separated) ────────────────────────
 const VISITOR_LINKS = [
@@ -76,6 +77,7 @@ export default function Navbar() {
   const [activeJurisdiction, setActiveJurisdiction] = useState<JurisdictionInfo | null>(null);
   const [scrolled, setScrolled] = useState(false);
 
+  const gt = getActiveGlobalTranslations(i18n.language);
   const isRtl = i18n.language === 'ar';
 
   useEffect(() => {
@@ -92,7 +94,7 @@ export default function Navbar() {
   useEffect(() => { setIsOpen(false); setShowMoreMenu(false); }, [pathname]);
 
   function navText(key: string) {
-    return t(`Nav.${key}`);
+    return t(`Nav.${key}`) || (gt.nav as Record<string, string>)[key] || key;
   }
 
   const allLinks = [...VISITOR_LINKS, ...SUBSCRIBER_LINKS.filter(l => !VISITOR_LINKS.some(v => v.to === l.to))];
@@ -237,14 +239,14 @@ export default function Navbar() {
                           className="flex items-center gap-2 text-xs font-semibold px-3 py-2 rounded-xl text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-all text-right"
                         >
                           <Lock className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                          <span className="leading-snug">{isRtl ? 'التحقق الثنائي (2FA TOTP)' : '2FA Security'}</span>
+                          <span className="leading-snug">{gt.nav.security2FA}</span>
                         </button>
                         <button
                           onClick={() => { setShowMoreMenu(false); setShowRbacModal(true); }}
                           className="flex items-center gap-2 text-xs font-semibold px-3 py-2 rounded-xl text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-all text-right"
                         >
                           <Users className="w-3.5 h-3.5 text-purple-400 shrink-0" />
-                          <span className="leading-snug">{isRtl ? 'إدارة الصلاحيات (RBAC)' : 'User Roles (RBAC)'}</span>
+                          <span className="leading-snug">{gt.nav.rbacRoles}</span>
                         </button>
                       </div>
                     </div>
@@ -361,7 +363,7 @@ export default function Navbar() {
               <Link to="/admin"
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-xs font-black transition-all shadow-md cursor-pointer">
                 <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
-                <span>{isRtl ? '👑 لوحة الأدمن' : '👑 Admin Panel'}</span>
+                <span>{gt.nav.adminPanel}</span>
               </Link>
             )}
 

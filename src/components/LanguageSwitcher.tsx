@@ -25,6 +25,10 @@ export default function LanguageSwitcher() {
       document.documentElement.lang = code;
       document.documentElement.dir = code === 'ar' ? 'rtl' : 'ltr';
     }
+
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('juristech_lang_change', { detail: { lang: code } }));
+    }
   };
 
   return (

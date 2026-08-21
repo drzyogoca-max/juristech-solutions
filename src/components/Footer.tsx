@@ -6,10 +6,12 @@ import {
   MessageCircle, Smartphone, ExternalLink, Linkedin, CheckCircle2,
   Building2, Briefcase, Cpu, Award, Key
 } from 'lucide-react';
+import { getActiveGlobalTranslations } from '../lib/globalTranslations';
 
 export default function Footer() {
   const { t, i18n } = useTranslation();
   const location = useLocation();
+  const gt = getActiveGlobalTranslations(i18n.language);
   const isRtl = i18n.language === 'ar';
   const currentYear = new Date().getFullYear();
 
@@ -25,17 +27,13 @@ export default function Footer() {
             <div className="absolute top-0 right-1/4 w-72 h-16 bg-sky-500/5 blur-3xl pointer-events-none rounded-full" />
             <div className="relative z-10 space-y-2">
               <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-sky-500/10 text-sky-400 border border-sky-500/20 inline-block">
-                {isRtl ? 'مساحة مخصصة للإعلانات والشراكات الإستراتيجية' : 'Reserved Enterprise Sponsorship & Ad Space'}
+                {gt.dashboard.adSponsorHeadline}
               </span>
               <h3 className="text-base sm:text-lg font-black text-white">
-                {isRtl
-                  ? 'مساحة مخصصة لرعايات الشركات وإعلانات الحلول الرقمية والتقنية القانونية'
-                  : 'Premium Showcase Reserved for Certified Legal Tech & Enterprise Sponsors'}
+                {gt.dashboard.adSponsorHeadline}
               </h3>
               <p className="text-xs text-slate-400 max-w-2xl mx-auto leading-relaxed">
-                {isRtl
-                  ? 'لحجز مساحات إعلانية وشراكات استراتيجية لشركات الدعاية والإعلان، يرجى التواصل مع إدارة المنصة عبر: juristech.solutions@outlook.com'
-                  : 'For enterprise advertising, sponsored placements & media partnerships, reach out to: juristech.solutions@outlook.com'}
+                {gt.dashboard.adSponsorSub}: juristech.solutions@outlook.com
               </p>
             </div>
           </div>
@@ -231,21 +229,13 @@ export default function Footer() {
         <div className="p-4 rounded-2xl bg-slate-900/90 border border-amber-500/30 flex items-start gap-3 text-xs text-slate-300">
           <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
           <p className="leading-relaxed m-0 font-medium">
-            {isRtl ? (
-              <>
-                إشعار واستقلالية قانونية رسمية: منصة <strong>JurisTech Solutions</strong> (حلول جوريس تك) هي كيان تقني ومؤسسي مستقل بذاته 100% يدار ومسجل في المملكة الأردنية الهاشمية (عمّان). المنصة ليست فرعاً أو وكيلاً أو مرتبطة بأي شكل من الأشكال بشركة LegalShield USA الأمريكية أو أي علامات تجارية أخرى تحمل أسماء مشابهة.
-              </>
-            ) : (
-              <>
-                Official Notice & Trademark Independence: <strong>JurisTech Solutions</strong> is a 100% sovereign, independent software platform headquartered in Amman, Jordan. Not affiliated with LegalShield USA or third-party trademark entities.
-              </>
-            )}
+            {gt.footer.independenceDisclaimer}
           </p>
         </div>
 
         {/* 5. Bottom Copyright, Social Links & Security Status */}
         <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
-          <p>© {currentYear} JurisTech Solutions Sovereign Tech. {isRtl ? 'جميع الحقوق محفوظة قانونياً — المقر الرئيسي: عمّان، الأردن.' : 'All Rights Reserved — Global HQ: Amman, Jordan.'}</p>
+          <p>© {currentYear} JurisTech Solutions. {gt.footer.copyright} ({gt.footer.ammanHq})</p>
           
           <div className="flex items-center gap-3">
             <a

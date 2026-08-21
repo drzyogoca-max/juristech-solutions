@@ -19,6 +19,7 @@ import { useAuth } from '../lib/authContext';
 import { getVisitorAnalyticsSummary } from '../lib/visitorTracker';
 import { crmService } from '../services/crmService';
 import { getReviewQueueItems } from '../lib/reviewQueueService';
+import { getActiveGlobalTranslations } from '../lib/globalTranslations';
 
 import InteractiveCustomerJourneyMap from '../components/InteractiveCustomerJourneyMap';
 import WorkflowDashboard from '../components/WorkflowDashboard';
@@ -299,13 +300,15 @@ export default function Dashboard() {
     }
   }
 
+  const gt = getActiveGlobalTranslations(i18n.language);
+
   const statItems = [
-    { label: isRtl ? 'إجمالي العقود بالنظام' : 'Total Contracts', value: stats.contracts, color: 'text-cyan-400', icon: FileText, bg: 'bg-cyan-500/10 border-cyan-500/20' },
-    { label: isRtl ? 'الزوار الفعليون اليوم' : 'Real Visitors Today', value: stats.totalVisits, color: 'text-blue-400', icon: Globe, bg: 'bg-blue-500/10 border-blue-500/20' },
-    { label: isRtl ? 'المشتركون والعملاء' : 'Active Subscribers', value: stats.activeUsers, color: 'text-purple-400', icon: Users, bg: 'bg-purple-500/10 border-purple-500/20' },
-    { label: isRtl ? 'العملاء والشركات المرخصة' : 'Paying Entities', value: stats.payingCustomers || 8, color: 'text-emerald-400', icon: CreditCard, bg: 'bg-emerald-500/10 border-emerald-500/20' },
-    { label: isRtl ? 'تقارير المخاطر' : 'Risk Reports', value: stats.riskReports, color: 'text-amber-400', icon: AlertTriangle, bg: 'bg-amber-500/10 border-amber-500/20' },
-    { label: isRtl ? 'استشارات الذكاء الاصطناعي' : 'AI Queries', value: stats.aiRequests, color: 'text-indigo-400', icon: Zap, bg: 'bg-indigo-500/10 border-indigo-500/20' },
+    { label: gt.dashboard.statContracts, value: stats.contracts, color: 'text-cyan-400', icon: FileText, bg: 'bg-cyan-500/10 border-cyan-500/20' },
+    { label: gt.dashboard.statVisitorsToday, value: stats.totalVisits, color: 'text-blue-400', icon: Globe, bg: 'bg-blue-500/10 border-blue-500/20' },
+    { label: gt.dashboard.statSubscribers, value: stats.activeUsers, color: 'text-purple-400', icon: Users, bg: 'bg-purple-500/10 border-purple-500/20' },
+    { label: gt.dashboard.statLicensedEntities, value: stats.payingCustomers || 8, color: 'text-emerald-400', icon: CreditCard, bg: 'bg-emerald-500/10 border-emerald-500/20' },
+    { label: gt.dashboard.statRiskReports, value: stats.riskReports, color: 'text-amber-400', icon: AlertTriangle, bg: 'bg-amber-500/10 border-amber-500/20' },
+    { label: gt.dashboard.statAiQueries, value: stats.aiRequests, color: 'text-indigo-400', icon: Zap, bg: 'bg-indigo-500/10 border-indigo-500/20' },
   ];
 
   const filteredItems = auditResult

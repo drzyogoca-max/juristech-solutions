@@ -277,7 +277,7 @@ const ALL_18_SERVICES: ServiceItem[] = [
 ];
 
 export default function SovereignServicesCatalog() {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const isRtl = i18n.language === 'ar';
   const navigate = useNavigate();
 
@@ -374,7 +374,7 @@ export default function SovereignServicesCatalog() {
 
                 <div>
                   <h3 className="text-sm font-bold text-white group-hover:text-sky-300 transition-colors">
-                    {isRtl ? service.titleAr : service.titleEn}
+                    {t(`Nav.${service.id}`) !== `Nav.${service.id}` ? t(`Nav.${service.id}`) : (isRtl ? service.titleAr : service.titleEn)}
                   </h3>
                   <p className="text-xs text-slate-400 mt-1 leading-relaxed line-clamp-2">
                     {isRtl ? service.descAr : service.descEn}
