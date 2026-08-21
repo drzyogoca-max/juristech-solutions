@@ -164,18 +164,27 @@ function MainAppContent() {
     }
   }, []);
 
-  // ── 2. Route Trackers ───────────────────────────────────────────────────────
+  // ── 2. Route Trackers & Google Analytics 4 (GA4) Page Views ───────────────
   useEffect(() => {
     const registered = localStorage.getItem('juristech_user_registered');
     const path = location.pathname;
-    const isExcluded = path.startsWith('/admin') || path.startsWith('/support') || path.startsWith('/about') || path.startsWith('/privacy') || path.startsWith('/terms') || path.startsWith('/payment') || path.startsWith('/legal-compliance');
+
+    // GA4 Real-time SPA Route Tracking
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      try {
+        (window as any).gtag('config', 'G-311560459', {
+          page_path: location.pathname + (location.search || ''),
+          page_title: document.title,
+        });
+      } catch {}
+    }
 
     if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
       (window as any).requestIdleCallback(() => logVisitorSession(location.pathname));
     } else {
       setTimeout(() => logVisitorSession(location.pathname), 100);
     }
-  }, [isAdmin, location.pathname]);
+  }, [isAdmin, location.pathname, location.search]);
 
 
   if (isBlocked) {
