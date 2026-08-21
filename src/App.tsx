@@ -194,29 +194,15 @@ function MainAppContent() {
   return (
     <ErrorBoundary>
       <GlobalForceUpdate />
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white font-sans selection:bg-cyan-500 selection:text-slate-950 flex flex-col justify-between">
+      <div className="min-h-screen bg-slate-950 text-white font-sans selection:bg-cyan-500 selection:text-slate-950 flex flex-col justify-between">
         <div>
           <MasterAdminToolbar />
-          <GlobalTrafficGrowthBanner />
-          {showAuxWidgets && (
-            <Suspense fallback={null}>
-              <AdSponsorBanner slotType="top-banner" />
-            </Suspense>
-          )}
-          {showLeadGate && !isAdmin && showAuxWidgets && (
-            <Suspense fallback={null}>
-              <LeadCaptureModal onSuccess={() => setShowLeadGate(false)} />
-            </Suspense>
-          )}
           <Navbar />
-          <LegalDisclaimerBanner />
-          {showWorkflowBanner && <StepWorkflowBanner />}
-          <UpdateBanner />
 
           <Suspense fallback={<RouteFallback />}>
             <Routes>
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
-              <Route path="/dashboard" element={<><Dashboard /><HowItWorks /></>} />
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/chat" element={<ChatPage />} />
               <Route path="/contracts" element={<ContractsPage />} />
               <Route path="/contract-generator" element={<Navigate to="/contracts" replace />} />
@@ -364,11 +350,6 @@ function MainAppContent() {
           <VercelAnalyticsWrapper />
           <SpeedInsightsWrapper />
         </div>
-        {showAuxWidgets && (
-          <Suspense fallback={null}>
-            <AdSponsorBanner slotType="sponsor-footer" />
-          </Suspense>
-        )}
       </div>
     </ErrorBoundary>
   );

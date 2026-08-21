@@ -881,6 +881,61 @@ export default function Dashboard() {
           </div>
         )}
 
+        {/* 🌟 ALWAYS-VISIBLE CORE SERVICES & DIRECT ASSISTANCE HUB (PERMANENT BOTTOM STRIP) */}
+        <div className="card-lawtech-lux rounded-3xl p-6 border border-slate-800 space-y-4">
+          <div className="flex items-center justify-between flex-wrap gap-4 border-b border-slate-800/80 pb-4">
+            <div className="flex items-center gap-2.5">
+              <div className="p-2 rounded-xl bg-sky-500/10 text-sky-400 border border-sky-500/20">
+                <Sparkles className="w-4 h-4" />
+              </div>
+              <div>
+                <h3 className="text-sm sm:text-base font-bold text-white">
+                  {isRtl ? 'الوصول السريع لكافة الخدمات القانونية والذكاء الاصطناعي' : 'Direct Quick Access to All AI & Legal Services'}
+                </h3>
+                <p className="text-xs text-slate-400">
+                  {isRtl ? 'اختر الخدمة المطلوبة للانتقال المباشر أو ابدأ استشارة فورية 24/7' : 'Select any service for direct launch or start instant 24/7 advisory'}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 flex-wrap">
+              <a
+                href="https://wa.me/201126674337"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3.5 py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
+              >
+                <span>💬 {isRtl ? 'واتساب المستشار: +201126674337' : 'WhatsApp'}</span>
+              </a>
+              <Link
+                to="/payment"
+                className="px-3.5 py-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 text-xs font-bold transition-all flex items-center gap-1.5"
+              >
+                <span>💳 {isRtl ? 'الاشتراكات المخصومة (30%)' : 'Pricing & Tiers'}</span>
+              </Link>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2.5 pt-1 text-xs">
+            {[
+              { labelAr: '📜 صانع العقود', labelEn: 'Contracts Builder', route: '/contracts', color: 'hover:text-cyan-400 hover:border-cyan-500/40' },
+              { labelAr: '🔍 فحص المخاطر', labelEn: 'Risk Audit', route: '/risk', color: 'hover:text-amber-400 hover:border-amber-500/40' },
+              { labelAr: '🏢 تأسيس الشركات', labelEn: 'Company Setup', route: '/company-formation', color: 'hover:text-emerald-400 hover:border-emerald-500/40' },
+              { labelAr: '📚 مستودع المليون عقد', labelEn: '1M+ Repository', route: '/repository', color: 'hover:text-indigo-400 hover:border-indigo-500/40' },
+              { labelAr: '⚖️ التحكيم وفض النزاعات', labelEn: 'Arbitration & Disputes', route: '/negotiation', color: 'hover:text-purple-400 hover:border-purple-500/40' },
+              { labelAr: '💬 المستشار الذكي 24/7', labelEn: 'AI Copilot 24/7', route: '/chat', color: 'hover:text-sky-400 hover:border-sky-500/40' },
+            ].map((srv, idx) => (
+              <Link
+                key={idx}
+                to={srv.route}
+                className={`p-3 rounded-xl bg-slate-900/80 border border-slate-800/90 text-slate-300 font-bold transition-all text-center block truncate ${srv.color}`}
+              >
+                {isRtl ? srv.labelAr : srv.labelEn}
+              </Link>
+            ))}
+          </div>
+        </div>
+
       </div>
 
       {/* 2FA Security Modal */}
