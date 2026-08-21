@@ -16,59 +16,23 @@ export default function Footer() {
     <footer dir={isRtl ? 'rtl' : 'ltr'} className="bg-slate-950 text-slate-300 border-t border-slate-800/80 pt-12 pb-8 px-4 sm:px-6 lg:px-8 mt-auto font-sans">
       <div className="max-w-7xl mx-auto space-y-10">
         
-        {/* 1. Permanent Executive Direct Contact Hub (Always Visible on Every Page) */}
-        <div className="card-lawtech-lux rounded-3xl p-6 border border-sky-500/30 shadow-2xl relative overflow-hidden">
-          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
-            
-            <div className="space-y-1.5 max-w-xl">
-              <div className="flex items-center gap-2">
-                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500/15 text-amber-400 border border-amber-500/30">
-                  {isRtl ? 'قنوات التواصل والتعاقد المباشر' : 'Direct Executive & Retainer Channels'}
-                </span>
-                <span className="text-[11px] text-emerald-400 font-bold flex items-center gap-1 font-mono">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                  <span>24/7 Live</span>
-                </span>
-              </div>
-
-              <h3 className="text-base sm:text-lg font-black text-white">
-                {isRtl ? 'تواصل مباشرة مع المستشار د. محمد مصطفى وفريق الخبراء' : 'Connect Directly with Senior Managing Counsel Dr. Mohammad Mustafa'}
-              </h3>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                {isRtl
-                  ? 'استشارات فورية، صياغة وتدقيق العقود المخصصة، وتأسيس الشركات والتحكيم التجاري عبر قنواتنا المعتمدة.'
-                  : 'Instant legal advisory, custom contract drafting, corporate structuring & international arbitration.'}
-              </p>
-            </div>
-
-            <div className="flex items-center gap-2.5 flex-wrap w-full lg:w-auto">
-              <a
-                href="https://wa.me/201126674337?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%20%D9%85%D9%86%D8%B5%D8%A9%20JurisTech%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A9%20%D9%82%D8%A7%D9%86%D9%88%D9%86%D9%8A%D8%A9%20%D9%88%D8%AA%D8%A3%D8%B3%D9%8A%D8%B3%20%D8%B9%D9%82%D8%AF"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 sm:flex-initial px-4 py-3 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs flex items-center justify-center gap-2 transition-all shadow-lg shadow-emerald-500/20 active:scale-95 cursor-pointer"
-              >
-                <MessageCircle className="w-4 h-4 shrink-0 fill-current" />
-                <span>💬 {isRtl ? 'واتساب: +201126674337' : 'WhatsApp'}</span>
-              </a>
-
-              <a
-                href="mailto:Drzyogo.ca@gmail.com?cc=juristech.solutions@outlook.com&subject=Legal%20Advisory%20Inquiry%20-%20JurisTech"
-                className="flex-1 sm:flex-initial px-4 py-3 rounded-2xl bg-sky-600 hover:bg-sky-500 text-white font-black text-xs flex items-center justify-center gap-2 transition-all shadow-lg shadow-sky-600/20 active:scale-95 cursor-pointer"
-              >
-                <Mail className="w-4 h-4 shrink-0" />
-                <span>📧 {isRtl ? 'Drzyogo.ca@gmail.com' : 'Email'}</span>
-              </a>
-
-              <Link
-                to="/payment"
-                className="flex-1 sm:flex-initial px-4 py-3 rounded-2xl bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 border border-purple-500/30 font-bold text-xs flex items-center justify-center gap-2 transition-all active:scale-95"
-              >
-                <Smartphone className="w-4 h-4 shrink-0 text-purple-400" />
-                <span>📱 {isRtl ? 'إنستا باي: +201031222262' : 'InstaPay'}</span>
-              </Link>
-            </div>
-
+        {/* 1. Reserved Space for Future Advertising & Corporate Sponsors (مساحة مخصصة للإعلانات المستقبلية) */}
+        <div className="rounded-3xl p-6 sm:p-8 bg-gradient-to-r from-slate-900 via-slate-950 to-slate-900 border border-dashed border-sky-500/30 text-center space-y-3 shadow-xl relative overflow-hidden">
+          <div className="absolute top-0 right-1/4 w-72 h-16 bg-sky-500/5 blur-3xl pointer-events-none rounded-full" />
+          <div className="relative z-10 space-y-2">
+            <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-sky-500/10 text-sky-400 border border-sky-500/20 inline-block">
+              {isRtl ? 'مساحة مخصصة للإعلانات والشراكات الإستراتيجية' : 'Reserved Enterprise Sponsorship & Ad Space'}
+            </span>
+            <h3 className="text-base sm:text-lg font-black text-white">
+              {isRtl
+                ? 'مساحة مخصصة لرعايات الشركات وإعلانات الحلول الرقمية والتقنية القانونية'
+                : 'Premium Showcase Reserved for Certified Legal Tech & Enterprise Sponsors'}
+            </h3>
+            <p className="text-xs text-slate-400 max-w-2xl mx-auto leading-relaxed">
+              {isRtl
+                ? 'لحجز مساحات إعلانية وشراكات استراتيجية لشركات الدعاية والإعلان، يرجى التواصل مع إدارة المنصة عبر: juristech.solutions@outlook.com'
+                : 'For enterprise advertising, sponsored placements & media partnerships, reach out to: juristech.solutions@outlook.com'}
+            </p>
           </div>
         </div>
 
