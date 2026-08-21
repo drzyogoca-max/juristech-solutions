@@ -134,6 +134,7 @@ function MainAppContent() {
         const { initGlobalScalingEngine } = await import('./lib/globalScalingEngine');
         const { runSWIFTWireCrossAudit } = await import('./services/wireTransferAuditor');
         const { scheduleDailyAudit } = await import('./services/dailyAuditReportEngine');
+        const { autonomousCSuiteOutreachEngine } = await import('./services/autonomousCSuiteOutreachEngine');
 
         initVersionManager();
         enforceArchiveModeGuard();
@@ -150,6 +151,7 @@ function MainAppContent() {
         initGlobalScalingEngine();
         runSWIFTWireCrossAudit();
         scheduleDailyAudit();
+        autonomousCSuiteOutreachEngine.autoRunDailyBatch();
       } catch (e) {
         console.warn('[Performance Boot] Background engine deferred init:', e);
       }

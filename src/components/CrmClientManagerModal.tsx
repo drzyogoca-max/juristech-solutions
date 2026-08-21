@@ -3,6 +3,7 @@ import { Users, Building, Mail, Globe, Calendar, CheckCircle2, Search, Plus, Tra
 import { useTranslation } from 'react-i18next';
 import { crmService, CrmClientLead, CrmAuditLogEntry } from '../services/crmService';
 import { automatedClientAcquisitionEngine } from '../services/automatedClientAcquisitionEngine';
+import { autonomousCSuiteOutreachEngine, AutoMachineState } from '../services/autonomousCSuiteOutreachEngine';
 import { exportDocumentMultiFormat } from '../lib/documentExporter';
 
 interface CrmClientManagerModalProps {
@@ -19,6 +20,8 @@ export default function CrmClientManagerModal({ isOpen, onClose }: CrmClientMana
   const [archivedLeads, setArchivedLeads] = useState<CrmClientLead[]>(crmService.getArchivedLeads());
   const [auditLogs, setAuditLogs] = useState<CrmAuditLogEntry[]>(crmService.getAuditLogs());
   const [isAutoMode, setIsAutoMode] = useState<boolean>(crmService.isAutonomousMode());
+  const [csuiteState, setCsuiteState] = useState<AutoMachineState>(autonomousCSuiteOutreachEngine.getState());
+  const [isLaunching20, setIsLaunching20] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('All');
   const [isLaunching1000, setIsLaunching1000] = useState(false);
@@ -57,6 +60,24 @@ export default function CrmClientManagerModal({ isOpen, onClose }: CrmClientMana
     const nextState = !isAutoMode;
     crmService.toggleAutonomousMode(nextState);
     setIsAutoMode(nextState);
+  }
+
+  async function handleLaunch20CSuiteCampaign() {
+    setIsLaunching20(true);
+    try {
+      const result = await autonomousCSuiteOutreachEngine.autoRunDailyBatch();
+      setCsuiteState(autonomousCSuiteOutreachEngine.getState());
+      setLeads([...crmService.getLeads()]);
+      setArchivedLeads([...crmService.getArchivedLeads()]);
+      setAuditLogs([...crmService.getAuditLogs()]);
+      alert(
+        isRtl
+          ? `🚀 ماكينة الإرسال الآلي للإدارة العليا (20 إيميل / اليوم):\n• تم إرسال ${result.successCount} عروض تنفيذية للـ CEO والـ CFO بنجاح!\n• المتبقي من حصة اليوم: ${result.remainingQuota}/20\n• التوقيع والاعتماد: د. محمد مصطفى (Chairman)\n• تم التسجيل في سجل التدقيق ومستودع عدم التكرار.`
+          : `🚀 Autonomous C-Suite Machine (20 Emails / Day):\n• Dispatched ${result.successCount} high-ticket executive proposals to CEOs & CFOs!\n• Remaining quota today: ${result.remainingQuota}/20\n• Signed by: Dr. Mohammad Mustafa (Chairman)\n• Logged in CRM Audit Trail with Zero Duplicate guarantee.`
+      );
+    } finally {
+      setIsLaunching20(false);
+    }
   }
 
   async function handleLaunch1000Campaign() {
@@ -308,6 +329,53 @@ export default function CrmClientManagerModal({ isOpen, onClose }: CrmClientMana
               >
                 <Plus className="w-4 h-4" />
                 <span>{isRtl ? 'إضافة عميل' : 'Add Lead'}</span>
+              </button>
+            </div>
+          </div>
+
+          {/* ── Autonomous 20-Email Daily C-Suite Auto-Machine Banner ── */}
+          <div className="p-4 rounded-2xl bg-gradient-to-r from-indigo-950 via-slate-900 to-slate-950 border border-indigo-500/40 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="p-3 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-400">
+                <Bot className="w-6 h-6 animate-pulse" />
+              </div>
+              <div className="space-y-0.5">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="font-black text-white text-sm">
+                    {isRtl ? '🤖 ماكينة الإرسال والتسويق المؤتمتة ذاتياً (20 إيميل / اليوم للإدارة العليا)' : '🤖 20 Daily C-Suite Autonomous Outreach Machine'}
+                  </span>
+                  <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-black uppercase">
+                    {isRtl ? 'بدون أي تدخل يدوي (Autopilot)' : 'Zero Human Effort'}
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-400">
+                  {isRtl
+                    ? `تحديد وإرسال 20 عرضاً استراتيجياً يومياً للرؤساء التنفيذيين (CEO) والمدراء الماليين (CFO) في كبرى الشركات العالمية والخليجية وموقعة باسم د. محمد مصطفى.`
+                    : `Dispatches 20 tailored legal AI infrastructure proposals daily to enterprise CEOs & CFOs worldwide signed by Dr. Mohammad Mustafa.`}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 shrink-0">
+              <div className="text-right px-3 py-1.5 rounded-xl bg-slate-950/80 border border-slate-800">
+                <span className="text-[10px] text-slate-400 block font-mono">{isRtl ? 'إرساليات اليوم' : 'Sent Today'}</span>
+                <span className="text-sm font-black text-cyan-300 font-mono">
+                  {csuiteState.dispatchedTodayCount} / {csuiteState.dailyQuota}
+                </span>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleLaunch20CSuiteCampaign}
+                disabled={isLaunching20}
+                className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-black text-xs flex items-center gap-2 transition-all shadow-lg shadow-cyan-500/20 active:scale-95 cursor-pointer disabled:opacity-50"
+              >
+                <Zap className={`w-4 h-4 ${isLaunching20 ? 'animate-spin' : ''}`} />
+                <span>
+                  {isLaunching20
+                    ? (isRtl ? 'جاري الإرسال التلقائي...' : 'Dispatching 20 Emails...')
+                    : (isRtl ? 'تشغيل دفعة اليوم الآن (20 CEO/CFO)' : 'Run Daily 20 C-Suite Batch')}
+                </span>
               </button>
             </div>
           </div>

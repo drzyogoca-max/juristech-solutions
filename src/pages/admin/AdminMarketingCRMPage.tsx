@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Mail, Users, Target, Send, ShieldCheck, FileText, Download, CheckCircle, Clock } from 'lucide-react';
+import { Mail, Users, Target, Send, ShieldCheck, FileText, Download, CheckCircle, Clock, Bot, Zap } from 'lucide-react';
 import { useAuth } from '../../lib/authContext';
 import Forbidden403Page from '../Forbidden403Page';
 import AdminNavSubbar from '../../components/AdminNavSubbar';
 import { CRM_LEADS, sendOfficialEmail, EmailLead, EmailTemplate } from '../../services/marketingEmailEngine';
+import { autonomousCSuiteOutreachEngine, AutoMachineState } from '../../services/autonomousCSuiteOutreachEngine';
 import { callAI } from '../../lib/api';
 
 export interface AuditLog {
@@ -45,10 +46,27 @@ export default function AdminMarketingCRMPage() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedContent, setGeneratedContent] = useState<string>('');
 
-  // Audit Logs State
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>(INITIAL_AUDIT_LOGS);
   const [timeFilter, setTimeFilter] = useState<'all' | '24h' | '7d'>('all');
   const [typeFilter, setTypeFilter] = useState<'all' | 'Email Campaign' | 'System Alert' | 'Payment Receipt' | 'Lead Generation'>('all');
+  
+  const [csuiteState, setCsuiteState] = useState<AutoMachineState>(autonomousCSuiteOutreachEngine.getState());
+  const [isLaunching20, setIsLaunching20] = useState(false);
+
+  const handleTrigger20Batch = async () => {
+    setIsLaunching20(true);
+    try {
+      const result = await autonomousCSuiteOutreachEngine.autoRunDailyBatch();
+      setCsuiteState(autonomousCSuiteOutreachEngine.getState());
+      alert(
+        isRtl
+          ? `🚀 تم إرسال ${result.successCount} عروض تنفيذية للـ CEO والـ CFO بنجاح!\nالمتبقي اليوم: ${result.remainingQuota}/20\nالمرسل الرسمي: juristech.solutions@outlook.com بتوقيع د. محمد مصطفى.`
+          : `🚀 Dispatched ${result.successCount} executive proposals to CEOs & CFOs!\nRemaining today: ${result.remainingQuota}/20\nOfficial Sender: juristech.solutions@outlook.com signed by Dr. Mohammad Mustafa.`
+      );
+    } finally {
+      setIsLaunching20(false);
+    }
+  };
 
   if (!isAdmin) {
     return <Forbidden403Page />;
@@ -104,6 +122,53 @@ export default function AdminMarketingCRMPage() {
               <ShieldCheck className="w-4 h-4 text-emerald-400" />
               {isRtl ? 'قناة الاتصال الرسمية: juristech.solutions@outlook.com' : 'Official Channel: juristech.solutions@outlook.com'}
             </p>
+          </div>
+        </div>
+
+        {/* ── 20 Daily C-Suite Auto-Machine Banner ── */}
+        <div className="mb-8 p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-indigo-950 via-slate-900 to-slate-950 border border-indigo-500/40 shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="flex items-center gap-4">
+            <div className="p-3.5 rounded-2xl bg-indigo-500/15 border border-indigo-500/30 text-indigo-400">
+              <Bot className="w-8 h-8 animate-pulse" />
+            </div>
+            <div className="space-y-1">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h2 className="font-black text-white text-base sm:text-lg">
+                  {isRtl ? '🤖 ماكينة الإرسال المؤتمتة للإدارة العليا (20 إيميل / اليوم لـ CEO و CFO)' : '🤖 20 Daily C-Suite Autonomous Outreach Machine'}
+                </h2>
+                <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-black uppercase">
+                  {isRtl ? 'بدون أي مجهود يدوي (Autopilot: ON)' : 'Autopilot: 100% Active'}
+                </span>
+              </div>
+              <p className="text-xs text-slate-300 max-w-2xl leading-relaxed">
+                {isRtl
+                  ? `تقوم الماكينة آلياً باختيار وتدقيق وإرسال 20 عرضاً استراتيجياً يومياً للرؤساء التنفيذيين (CEOs) والمدراء الماليين (CFOs) في كبرى الشركات العالمية والخليجية بتوقيع واعتماد د. محمد مصطفى.`
+                  : `Fully autonomous pipeline that selects and dispatches 20 tailored legal AI infrastructure proposals daily to global & GCC CEOs & CFOs signed by Dr. Mohammad Mustafa.`}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 shrink-0">
+            <div className="px-4 py-2 rounded-2xl bg-slate-950/90 border border-slate-800 text-center">
+              <span className="text-[10px] font-bold text-slate-400 block font-mono">{isRtl ? 'إرساليات اليوم' : 'Sent Today'}</span>
+              <span className="text-base font-black text-cyan-300 font-mono">
+                {csuiteState.dispatchedTodayCount} / {csuiteState.dailyQuota}
+              </span>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleTrigger20Batch}
+              disabled={isLaunching20}
+              className="px-5 py-3 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-black text-xs flex items-center gap-2 transition-all shadow-xl shadow-cyan-500/25 active:scale-95 cursor-pointer disabled:opacity-50"
+            >
+              <Zap className={`w-4 h-4 ${isLaunching20 ? 'animate-spin' : ''}`} />
+              <span>
+                {isLaunching20
+                  ? (isRtl ? 'جاري الإرسال التلقائي...' : 'Dispatching 20 Emails...')
+                  : (isRtl ? 'تشغيل دفعة اليوم الآن (20 إيميل)' : 'Run Daily 20 C-Suite Batch')}
+              </span>
+            </button>
           </div>
         </div>
 

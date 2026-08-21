@@ -38,7 +38,7 @@ export interface CrmAuditLogEntry {
   status: 'SUCCESS' | 'QUEUED' | 'FAILED';
 }
 
-export const DAILY_CRM_DISPATCH_LIMIT = 25;
+export const DAILY_CRM_DISPATCH_LIMIT = 20;
 
 const CRM_STORAGE_KEY = 'juristech_crm_clients_v4';
 const CRM_ARCHIVE_STORAGE_KEY = 'juristech_crm_archived_dispatched_v4';
