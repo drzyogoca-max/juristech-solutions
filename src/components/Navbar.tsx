@@ -356,6 +356,15 @@ export default function Navbar() {
             <ThemeSwitcher />
             <LanguageSwitcher />
 
+            {/* Admin Panel Quick Pill */}
+            {isAdmin && (
+              <Link to="/admin"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-xs font-black transition-all shadow-md cursor-pointer">
+                <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
+                <span>{isRtl ? '👑 لوحة الأدمن' : '👑 Admin Panel'}</span>
+              </Link>
+            )}
+
             {/* Subscribe CTA pill */}
             <Link to="/payment"
               className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-500 text-slate-900 dark:text-white text-xs font-black hover:opacity-90 transition-all shadow-md shadow-indigo-500/20">

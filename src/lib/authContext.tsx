@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from './supabaseClient';
+import { isAuthorizedAdminEmail, verifyAdminAccess } from './adminGuard';
 
 export type UserRole = 'client' | 'admin' | 'super-admin' | 'Super Admin' | 'Admin' | 'Lawyer' | 'Client / Viewer';
 
@@ -36,14 +37,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (typeof window === 'undefined') return 'client';
     const savedRole = (localStorage.getItem('juristech_user_role') as UserRole) || 'client';
     const savedEmail = localStorage.getItem('juristech_user_email');
-    const isAdminAuthed = localStorage.getItem('juristech_admin_authenticated') === 'true';
+    const isAdminAuthed = verifyAdminAccess();
 
-    if ((savedRole === 'super-admin' || savedRole === 'admin') && savedEmail !== 'drzyogo.ca@gmail.com' && !isAdminAuthed) {
+    if (isAuthorizedAdminEmail(savedEmail) || isAdminAuthed) {
+      return 'super-admin';
+    }
+
+    if ((savedRole === 'super-admin' || savedRole === 'admin') && !isAuthorizedAdminEmail(savedEmail) && !isAdminAuthed) {
       localStorage.setItem('juristech_user_role', 'client');
       return 'client';
     }
     return savedRole;
   });
+
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [twoFactorEnabled, setTwoFactorEnabled] = useState<boolean>(() => {
@@ -58,18 +64,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setTwoFactorEnabled(true);
     try {
       localStorage.setItem('juristech_2fa_enabled', 'true');
-    } catch {
-      // ignore
-    }
+    } catch {}
   }
 
   function disableTwoFactor() {
     setTwoFactorEnabled(false);
     try {
       localStorage.setItem('juristech_2fa_enabled', 'false');
-    } catch {
-      // ignore
-    }
+    } catch {}
   }
 
   useEffect(() => {
@@ -78,10 +80,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const { data: { session } } = await supabase.auth.getSession();
         if (session?.user) {
           setUser(session.user);
-          if (session.user.email === 'drzyogo.ca@gmail.com') {
+          const email = session.user.email?.toLowerCase();
+          
+          if (isAuthorizedAdminEmail(email)) {
             setRoleState('super-admin');
             localStorage.setItem('juristech_user_role', 'super-admin');
             localStorage.setItem('juristech_user_email', session.user.email);
+            localStorage.setItem('juristech_admin_authenticated', 'true');
           } else {
             // Check role from profiles table in Supabase
             const { data: profile } = await supabase
@@ -98,6 +103,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
               localStorage.setItem('juristech_user_role', 'client');
             }
           }
+        } else {
+          // If local email is official admin, retain super-admin
+          const localEmail = localStorage.getItem('juristech_user_email');
+          if (isAuthorizedAdminEmail(localEmail) || verifyAdminAccess()) {
+            setRoleState('super-admin');
+          }
         }
       } catch (err) {
         console.warn('AuthContext profile check error:', err);
@@ -111,10 +122,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const { data: authListener } = supabase.auth.onAuthStateChange(async (_event, session) => {
       if (session?.user) {
         setUser(session.user);
-        if (session.user.email === 'drzyogo.ca@gmail.com') {
+        const email = session.user.email?.toLowerCase();
+        
+        if (isAuthorizedAdminEmail(email)) {
           setRoleState('super-admin');
           localStorage.setItem('juristech_user_role', 'super-admin');
           localStorage.setItem('juristech_user_email', session.user.email);
+          localStorage.setItem('juristech_admin_authenticated', 'true');
         } else {
           const { data: profile } = await supabase
             .from('profiles')
@@ -131,7 +145,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           }
         }
       } else {
-        setUser(null);
+        const localEmail = localStorage.getItem('juristech_user_email');
+        if (!isAuthorizedAdminEmail(localEmail) && !verifyAdminAccess()) {
+          setUser(null);
+        }
       }
     });
 
@@ -142,9 +159,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   function setRole(newRole: UserRole) {
     const savedEmail = typeof window !== 'undefined' ? localStorage.getItem('juristech_user_email') : null;
-    const isAdminAuthed = typeof window !== 'undefined' ? localStorage.getItem('juristech_admin_authenticated') === 'true' : false;
+    const isAdminAuthed = verifyAdminAccess();
 
-    if ((newRole === 'super-admin' || newRole === 'admin') && savedEmail !== 'drzyogo.ca@gmail.com' && !isAdminAuthed) {
+    if ((newRole === 'super-admin' || newRole === 'admin') && !isAuthorizedAdminEmail(savedEmail) && !isAdminAuthed) {
       console.warn('Security Guard: Rejecting unauthorized admin role assignment.');
       setRoleState('client');
       try {
@@ -156,9 +173,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setRoleState(newRole);
     try {
       localStorage.setItem('juristech_user_role', newRole);
-    } catch {
-      // Ignore storage error
-    }
+    } catch {}
   }
 
   const [is2FAVerified, setIs2FAVerified] = useState<boolean>(() => {
@@ -182,8 +197,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return isValid;
   }
 
-  const isAdmin = role === 'admin' || role === 'super-admin' || role === 'Super Admin' || role === 'Admin';
-  const isLawyer = role === 'Lawyer' || role === 'admin' || role === 'super-admin' || role === 'Super Admin' || role === 'Admin';
+  const isAdmin = role === 'admin' || role === 'super-admin' || role === 'Super Admin' || role === 'Admin' || verifyAdminAccess();
+  const isLawyer = role === 'Lawyer' || isAdmin;
 
   return (
     <AuthContext.Provider value={{ role, setRole, isAdmin, isLawyer, user, loading, twoFactorEnabled, is2FAVerified, enableTwoFactor, disableTwoFactor, verify2FATokenSession }}>

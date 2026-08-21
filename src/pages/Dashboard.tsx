@@ -664,21 +664,25 @@ export default function Dashboard() {
                   <ul className="space-y-2 text-xs text-slate-300">
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-sky-400 shrink-0" />
-                      <span>{isRtl ? 'مساعد قانوني متعدد اللغات (7 لغات)' : 'Multilingual AI Chatbot'}</span>
+                      <span>{isRtl ? 'مستشار Google Gemini Pro السيادي (7 لغات)' : 'Google Gemini Pro Sovereign Advisor'}</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-sky-400 shrink-0" />
-                      <span>{isRtl ? 'رفع وتدقيق حتى 10 عقود شهرياً' : 'Up to 10 contract checks/mo'}</span>
+                      <span>{isRtl ? 'رفع وتدقيق حتى 10 عقود شهرياً (PDF, Word)' : 'Up to 10 contract checks (PDF, Word)'}</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-sky-400 shrink-0" />
-                      <span>{isRtl ? 'كشف علامات المخاطر الأساسية' : 'Standard risk flags'}</span>
+                      <span>{isRtl ? 'تصدير وثائق معتمدة بصيغ Word (.docx) و PDF' : 'Certified Word (.docx) & PDF Export'}</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-sky-400 shrink-0" />
+                      <span>{isRtl ? 'تغطية تشريعية إقليمية (السعودية، الإمارات، مصر، الأردن)' : 'Regional Coverage (KSA, UAE, EG, JO)'}</span>
                     </li>
                   </ul>
                 </div>
                 <Link
                   to="/payment"
-                  className="w-full py-3.5 rounded-2xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-xs text-center transition-all shadow-lg active:scale-95"
+                  className="w-full py-3.5 rounded-2xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-xs text-center transition-all shadow-lg active:scale-95 cursor-pointer"
                 >
                   {isRtl ? 'اشتراك باقة الصغرى ($49)' : 'Subscribe Startup ($49)'}
                 </Link>
@@ -691,7 +695,7 @@ export default function Dashboard() {
                 </div>
                 <div className="space-y-4">
                   <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 inline-block">
-                    {isRtl ? 'باقة الشركات المتوسطة' : 'SME Tier'}
+                    {isRtl ? 'باقة الشركات المتوسطة والنمو' : 'SME & Growth Tier'}
                   </span>
                   <div>
                     <h3 className="text-xl font-bold text-white">{isRtl ? 'حزمة الشركات المتوسطة' : 'SMEs Package'}</h3>
@@ -704,25 +708,29 @@ export default function Dashboard() {
                   <ul className="space-y-2 text-xs text-slate-300">
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-indigo-400 shrink-0" />
-                      <span>{isRtl ? 'كل مزايا الحزمة الناشئة' : 'Everything in Startup'}</span>
+                      <span>{isRtl ? 'محرك Google AI Pro السيادي (Gemini Ultra)' : 'Google AI Pro Sovereign Core (Gemini Ultra)'}</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-indigo-400 shrink-0" />
-                      <span>{isRtl ? 'رفع وتدقيق حتى 50 عقداً شهرياً' : 'Up to 50 contracts/month'}</span>
+                      <span>{isRtl ? 'وكلاء التفاوض الآلي + المحاكاة القضائية للنزاعات' : 'Autonomous AI Negotiation & Court Simulation'}</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-indigo-400 shrink-0" />
-                      <span>{isRtl ? 'فحص متقدم إطار 8 محاور وصياغة بديلة' : '8-Axis risk framework'}</span>
+                      <span>{isRtl ? 'رفع وتدقيق حتى 50 عقداً شهرياً مع تصدير Word و PDF' : 'Up to 50 contracts/month with Word/PDF export'}</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-indigo-400 shrink-0" />
-                      <span>{isRtl ? 'تكامل أساسي مع أنظمة ERP' : 'Basic ERP API integration'}</span>
+                      <span>{isRtl ? 'تغطية تشريعية لـ 9 دول (الخليج، بريطانيا، أمريكا، والاتحاد الأوروبي)' : 'Full 9-Jurisdiction Statutory Coverage (GCC, UK, US, EU)'}</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-indigo-400 shrink-0" />
+                      <span>{isRtl ? 'تشفير متقدم AES-256 والمصادقة الثنائية 2FA TOTP' : 'Advanced AES-256 + 2FA TOTP Security'}</span>
                     </li>
                   </ul>
                 </div>
                 <Link
                   to="/payment"
-                  className="w-full py-3.5 rounded-2xl bg-indigo-500 hover:bg-indigo-400 text-white font-black text-xs text-center transition-all shadow-lg active:scale-95"
+                  className="w-full py-3.5 rounded-2xl bg-indigo-500 hover:bg-indigo-400 text-white font-black text-xs text-center transition-all shadow-lg active:scale-95 cursor-pointer"
                 >
                   {isRtl ? 'اشتراك باقة المتوسطة ($139)' : 'Subscribe SME ($139)'}
                 </Link>
@@ -732,10 +740,10 @@ export default function Dashboard() {
               <div className="bg-slate-900/90 p-6 rounded-3xl border border-amber-500/50 flex flex-col justify-between space-y-6 relative hover:border-amber-400 transition-all shadow-xl">
                 <div className="space-y-4">
                   <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase bg-amber-500/10 text-amber-400 border border-amber-500/30 inline-block">
-                    {isRtl ? 'باقة الكبرى والمؤسسات' : 'Enterprise Tier'}
+                    {isRtl ? 'باقة الكبرى والمؤسسات السيادية' : 'Enterprise Sovereign Tier'}
                   </span>
                   <div>
-                    <h3 className="text-xl font-bold text-white">{isRtl ? 'حزمة الكبرى والمؤسسات' : 'Enterprise Package'}</h3>
+                    <h3 className="text-xl font-bold text-white">{isRtl ? 'حزمة الشركات الكبرى والمؤسسات' : 'Enterprise Package'}</h3>
                     <div className="mt-2 flex items-baseline gap-1">
                       <span className="text-3xl font-black text-amber-400">$349</span>
                       <span className="text-xs text-slate-400">{isRtl ? '/ شهرياً' : '/ month'}</span>
@@ -745,25 +753,29 @@ export default function Dashboard() {
                   <ul className="space-y-2 text-xs text-slate-300">
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
-                      <span>{isRtl ? 'عقود غير محدودة + رادار ثغرات فوري' : 'Unlimited contract audits'}</span>
+                      <span>{isRtl ? 'الاستحواذ الذكي التنبؤي M&A وتقييم صفقات EBITDA' : 'Predictive M&A Intelligence & EBITDA Valuations'}</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
-                      <span>{isRtl ? 'تحليل عابر للحدود (ICC / DIAC)' : 'Cross-border ICC/DIAC rules'}</span>
+                      <span>{isRtl ? 'كشف التزوير والاحتيال بالقياس النصي الحيوي (Forensic Fraud)' : 'Stylometric Fraud & Tampering Forensics'}</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
-                      <span>{isRtl ? 'تكامل كامل مع ERP وأنظمة الشركات' : 'Full ERP system connectors'}</span>
+                      <span>{isRtl ? 'الامتثال التشريعي العابر للحدود (GDPR, EU AI Act, PDPL)' : 'Cross-Border Statutory Compliance & Sanctions'}</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
-                      <span>{isRtl ? 'دعم تنفيذي فوري على مدار الساعة' : '24/7 Priority support'}</span>
+                      <span>{isRtl ? 'عقود غير محدودة + خزنة E2EE مشفرة + تكامل كامل ERP' : 'Unlimited contracts, E2EE Vault & Full ERP APIs'}</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
+                      <span>{isRtl ? 'دعم تنفيذي مباشر 24/7 مع المستشار القانوني د. محمد مصطفى' : '24/7 Dedicated Senior Counsel Concierge (Dr. Mohammad Mustafa)'}</span>
                     </li>
                   </ul>
                 </div>
                 <Link
                   to="/payment"
-                  className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-xs text-center transition-all shadow-lg active:scale-95"
+                  className="w-full py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs text-center transition-all shadow-lg active:scale-95 cursor-pointer"
                 >
                   {isRtl ? 'اشتراك باقة المؤسسات ($349)' : 'Subscribe Enterprise ($349)'}
                 </Link>
