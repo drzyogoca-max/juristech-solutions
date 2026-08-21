@@ -24,23 +24,27 @@ console.log(`🚀 [JurisTech APES] Starting Autonomous Daily Update Pipeline @ $
 console.log('═════════════════════════════════════════════════════════════════════\n');
 
 try {
-  // Step 1: Generate Clean Sitemap with Live Timestamps
-  console.log('📍 [Step 1/5] Generating fresh standard sitemap with all 26 routes...');
+  // Step 1: Execute Legal Lexicon & Terminology Evolution Audit
+  console.log('⚖️ [Step 1/6] Running 7-language legal lexicon evolution & statutory harmonization...');
+  execSync('node scripts/evolve-legal-lexicon.mjs', { stdio: 'inherit' });
+
+  // Step 2: Generate Clean Sitemap with Live Timestamps
+  console.log('\n📍 [Step 2/6] Generating fresh standard sitemap with all 26 routes...');
   execSync('node scripts/generate-sitemap.mjs', { stdio: 'inherit' });
 
-  // Step 2: Global Cache Purge Version Bump
-  console.log('\n🔄 [Step 2/5] Stamping new global application cache version...');
+  // Step 3: Global Cache Purge Version Bump
+  console.log('\n🔄 [Step 3/6] Stamping new global application cache version...');
   execSync('node bump-version.mjs', { stdio: 'inherit' });
 
-  // Step 3: IndexNow Search Engines Instant Notification
-  console.log('\n📡 [Step 3/5] Publishing live URLs to Bing, Yandex, and Global Search Engines via IndexNow...');
+  // Step 4: IndexNow Search Engines Instant Notification
+  console.log('\n📡 [Step 4/6] Publishing live URLs to Bing, Yandex, and Global Search Engines via IndexNow...');
   execSync('node scripts/ping-indexnow.mjs', { stdio: 'inherit' });
 
-  // Step 4: Compile & Pre-render All Routes with Full Semantic HTML
-  console.log('\n🛠️ [Step 4/5] Executing TypeScript compile & Vite build...');
+  // Step 5: Compile & Pre-render All Routes with Full Semantic HTML
+  console.log('\n🛠️ [Step 5/6] Executing TypeScript compile & Vite build...');
   execSync('npx tsc && npx vite build', { stdio: 'inherit' });
 
-  console.log('\n📄 [Step 5/5] Pre-rendering static semantic HTML for all 26 canonical routes...');
+  console.log('\n📄 [Step 6/6] Pre-rendering static semantic HTML for all 26 canonical routes...');
   execSync('node scripts/prerender-routes.mjs', { stdio: 'inherit' });
 
   console.log('\n═════════════════════════════════════════════════════════════════════');

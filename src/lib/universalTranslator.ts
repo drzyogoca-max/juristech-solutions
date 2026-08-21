@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next';
 import { useState, useEffect } from 'react';
 import { SupportedLang, normalizeLanguage } from './languageHelper';
 import { GLOBAL_TRANSLATIONS, GlobalUITexts } from './globalTranslations';
+import { legalLexiconEngine } from '../services/legalLexiconEvolutionEngine';
 
 // Universal In-Memory Translation Hash Dictionary (Keyed by English and Arabic lowercase phrases)
 const DICTIONARY: Record<string, Record<SupportedLang, string>> = {
@@ -411,22 +412,32 @@ export function loc(arText: string, enText: string, lang?: string): string {
   if (targetLang === 'ar') return arText;
   if (targetLang === 'en') return enText;
 
-  // Check in dictionary by English key
+  // 1. Check in Dynamic Legal Lexicon & Terminology Engine
+  const cleanEnKey = (enText || '').toLowerCase().replace(/[\s\W]+/g, '_').trim();
+  const legalTermByEn = legalLexiconEngine.getTerm(cleanEnKey, targetLang);
+  if (legalTermByEn && legalTermByEn !== cleanEnKey) {
+    return legalTermByEn;
+  }
+
+  const cleanArKey = (arText || '').toLowerCase().replace(/[\s\W]+/g, '_').trim();
+  const legalTermByAr = legalLexiconEngine.getTerm(cleanArKey, targetLang);
+  if (legalTermByAr && legalTermByAr !== cleanArKey) {
+    return legalTermByAr;
+  }
+
+  // 2. Check in in-memory UI hash dictionary by English key
   const cleanEn = (enText || '').toLowerCase().trim();
   if (DICTIONARY[cleanEn] && DICTIONARY[cleanEn][targetLang]) {
     return DICTIONARY[cleanEn][targetLang];
   }
 
-  // Check in dictionary by Arabic key
+  // 3. Check in in-memory UI hash dictionary by Arabic key
   const cleanAr = (arText || '').toLowerCase().trim();
   if (DICTIONARY[cleanAr] && DICTIONARY[cleanAr][targetLang]) {
     return DICTIONARY[cleanAr][targetLang];
   }
 
-  // Suffix matching in Global Translations
-  const gt = GLOBAL_TRANSLATIONS[targetLang] || GLOBAL_TRANSLATIONS.en;
-  
-  // Return English fallback if no direct translation exists
+  // 4. Return English fallback if no direct translation exists
   return enText || arText;
 }
 
@@ -465,6 +476,13 @@ export function usePlatformLocale() {
     return enArr.map((item, idx) => l(arArr[idx] || item, item));
   };
 
+  /**
+   * Feed new client/visitor statutory interactions into legal language self-learning
+   */
+  const learnFromClientInteraction = (rawQuery: string) => {
+    legalLexiconEngine.harvestClientQuery(rawQuery, currentLang);
+  };
+
   return {
     lang: currentLang,
     isRtl,
@@ -473,5 +491,7 @@ export function usePlatformLocale() {
     lArray,
     t,
     i18n,
+    learnFromClientInteraction,
+    legalLexiconEngine,
   };
 }
