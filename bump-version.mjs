@@ -12,7 +12,8 @@ const versionFile = resolve(__dirname, 'public', 'version.json');
 const vmFile = resolve(__dirname, 'src', 'lib', 'versionManager.ts');
 const swFile = resolve(__dirname, 'public', 'sw.js');
 
-const newVersion = `2026.08.15-FORCE-PURGE-${Date.now()}`;
+const todayDateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '.');
+const newVersion = `${todayDateStr}-LIVE-${Date.now()}`;
 const buildTime = new Date().toISOString();
 
 // 1. Update versionManager.ts

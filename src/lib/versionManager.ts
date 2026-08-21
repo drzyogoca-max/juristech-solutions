@@ -13,7 +13,7 @@
 
 import { initDailyAutoUpdater } from './dailyAutoUpdater';
 
-export const CURRENT_APP_VERSION = '2026.08.15-FORCE-PURGE-1787259586060';
+export const CURRENT_APP_VERSION = '2026.08.21-LIVE-1787297352834';
 
 const CHECK_INTERVAL_MS         = 60_000;               // Poll every 60 s
 const VERSION_ENDPOINT          = '/version.json';      // Served from /public
