@@ -95,17 +95,25 @@ export function getSemanticHtmlForRoute(routePath) {
           </ul>
         </div>
         <div>
-          <strong class="text-slate-100 block mb-2">التواصل المباشر 24/7</strong>
-          <p class="leading-relaxed m-0">
+          <strong class="text-slate-100 block mb-2">التواصل وحسابات التواصل الرسمية</strong>
+          <p class="leading-relaxed m-0 mb-3">
             هاتف / واتساب: <a href="https://wa.me/201126674337" class="text-sky-400 no-underline font-mono">+201126674337</a><br>
             البريد: <a href="mailto:Drzyogo.ca@gmail.com" class="text-sky-400 no-underline font-mono">Drzyogo.ca@gmail.com</a><br>
             إنستا باي: +201031222262<br>
             الموقع: www.juristech.solutions
           </p>
+          <div class="flex gap-3 flex-wrap">
+            <a href="https://www.linkedin.com/in/juristech-solutions-14954b427/" target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300 font-bold no-underline">LinkedIn</a>
+            <span class="text-slate-600">|</span>
+            <a href="https://x.com/JurisTechAI" target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300 font-bold no-underline">X (Twitter)</a>
+            <span class="text-slate-600">|</span>
+            <a href="https://facebook.com/JurisTechSolutions" target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300 font-bold no-underline">Facebook</a>
+          </div>
         </div>
       </div>
-      <div class="max-w-7xl mx-auto mt-8 pt-4 border-t border-slate-800 text-center text-xs text-slate-500">
-        © 2026 JurisTech Solutions Sovereign Tech. جميع الحقوق محفوظة قانونياً.
+      <div class="max-w-7xl mx-auto mt-8 pt-4 border-t border-slate-800 flex justify-between items-center flex-wrap gap-2 text-xs text-slate-500">
+        <span>© 2026 JurisTech Solutions Sovereign Tech. جميع الحقوق محفوظة قانونياً.</span>
+        <span class="text-emerald-400 font-mono">آخر تحديث للنظام: 21 أغسطس 2026 (إصدار معتمد وحي)</span>
       </div>
     </footer>
   `;

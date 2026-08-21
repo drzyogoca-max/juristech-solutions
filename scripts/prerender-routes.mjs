@@ -197,7 +197,7 @@ function prerenderRoutes() {
       return `<link rel="alternate" hreflang="${lang}" href="${canonicalUrl}" />`;
     }).join('\n    ');
 
-    // 3. Schema.org JSON-LD structured data
+    // 3. Schema.org JSON-LD structured data with full Organization, Identity, LocalBusiness, and FAQ graph
     const jsonLdBlock = `
     <script type="application/ld+json">
     ${JSON.stringify([
@@ -207,12 +207,123 @@ function prerenderRoutes() {
         'name': pageTitle,
         'description': pageDesc,
         'url': canonicalUrl,
+        'dateModified': '2026-08-21T18:30:00Z',
         'inLanguage': ['ar', 'en'],
         'isPartOf': {
           '@type': 'WebSite',
           'name': 'JurisTech Solutions',
           'url': BASE_URL
         }
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        'name': 'JurisTech Solutions',
+        'alternateName': 'JurisTech Sovereign Legal AI',
+        'url': BASE_URL,
+        'logo': `${BASE_URL}/logo.png`,
+        'image': `${BASE_URL}/og-image.jpg`,
+        'founder': {
+          '@type': 'Person',
+          'name': 'Dr. Mohammed Mostafa',
+          'jobTitle': 'Chief Legal Architect & Senior Counsel',
+          'email': 'Drzyogo.ca@gmail.com',
+          'telephone': '+201126674337'
+        },
+        'sameAs': [
+          'https://x.com/JurisTechAI',
+          'https://www.linkedin.com/in/juristech-solutions-14954b427/',
+          'https://facebook.com/JurisTechSolutions',
+          'https://instagram.com/juristech.solutions'
+        ],
+        'contactPoint': [
+          {
+            '@type': 'ContactPoint',
+            'telephone': '+201126674337',
+            'contactType': 'customer support',
+            'email': 'Drzyogo.ca@gmail.com',
+            'availableLanguage': ['Arabic', 'English'],
+            'areaServed': ['SA', 'AE', 'EG', 'QA', 'KW', 'BH', 'OM', 'JO', 'US', 'GB', 'EU']
+          }
+        ]
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Person',
+        'name': 'د. محمد مصطفى | Dr. Mohammed Mostafa',
+        'jobTitle': 'Senior Legal Counsel & Chief AI Architect',
+        'worksFor': {
+          '@type': 'Organization',
+          'name': 'JurisTech Solutions'
+        },
+        'telephone': '+201126674337',
+        'email': 'Drzyogo.ca@gmail.com',
+        'sameAs': [
+          'https://www.linkedin.com/in/juristech-solutions-14954b427/',
+          'https://x.com/JurisTechAI'
+        ]
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'LegalService',
+        'name': 'JurisTech Solutions - Sovereign AI Legal Tech',
+        'url': BASE_URL,
+        'logo': `${BASE_URL}/favicon.ico`,
+        'image': `${BASE_URL}/og-image.jpg`,
+        'priceRange': '$$$',
+        'telephone': '+201126674337',
+        'email': 'Drzyogo.ca@gmail.com',
+        'address': {
+          '@type': 'PostalAddress',
+          'streetAddress': 'King Fahd Road, Al Olaya',
+          'addressLocality': 'Riyadh',
+          'addressRegion': 'Riyadh Region',
+          'postalCode': '12211',
+          'addressCountry': 'SA'
+        },
+        'geo': {
+          '@type': 'GeoCoordinates',
+          'latitude': 24.7136,
+          'longitude': 46.6753
+        },
+        'openingHoursSpecification': {
+          '@type': 'OpeningHoursSpecification',
+          'dayOfWeek': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+          'opens': '00:00',
+          'closes': '23:59'
+        },
+        'areaServed': ['SA', 'AE', 'EG', 'QA', 'KW', 'JO', 'BH', 'OM', 'IQ', 'DE', 'FR', 'ES', 'GB', 'CN', 'IN', 'ZA'],
+        'serviceType': 'صياغة العقود بالذكاء الاصطناعي, تأسيس الشركات والامتثال التشريعي, فحص وتدقيق مخاطر العقود, المستشار القانوني الذكي الفوري'
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        'mainEntity': [
+          {
+            '@type': 'Question',
+            'name': 'كيف يقوم الذكاء الاصطناعي بتحليل العقود وكشف الثغرات والبنود التعسفية في JurisTech؟',
+            'acceptedAnswer': {
+              '@type': 'Answer',
+              'text': 'يقوم المحرك الذكي بتحليل نصوص ومواد العقد بمقارنتها مع الأنظمة واللوائح المعتمدة وسوابق المحاكم التجارية، وتحديد شروط المسؤولية غير المحدودة والتعويضات الجائرة واقتراح صياغات بديلة متوازنة فوراً.'
+            }
+          },
+          {
+            '@type': 'Question',
+            'name': 'ما هي الدول والأنظمة القانونية التي تدعمها منصة JurisTech Solutions؟',
+            'acceptedAnswer': {
+              '@type': 'Answer',
+              'text': 'تدعم المنصة أنظمة المملكة العربية السعودية (نظام المعاملات المدنية والشركات)، الإمارات (DIFC / ADGM والقوانين الاتحادية)، مصر، دول الخليج، الولايات المتحدة (Delaware / UCC)، والمملكة المتحدة وقواعد التجارة الدولية UNCITRAL.'
+            }
+          },
+          {
+            '@type': 'Question',
+            'name': 'هل مستندات وبيانات الشركات مشفرة ومحمية من الاطلاع؟',
+            'acceptedAnswer': {
+              '@type': 'Answer',
+              'text': 'تخضع جميع الوثائق لتشفير مصرفي AES-GCM 256-bit على جانب العميل مع عزل كامل للبيانات وضمان عدم تدريب النماذج العامة عليها وفق متطلبات GDPR و SOC2.'
+            }
+          }
+        ]
       }
     ])}
     </script>
