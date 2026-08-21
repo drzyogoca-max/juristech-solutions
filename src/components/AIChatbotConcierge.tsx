@@ -307,9 +307,25 @@ ${currentAttachedText.slice(0, 4500)}
 
       const systemPromptCombined = `${systemContext}${fileContextPrompt}${ragDirective}`;
 
+      // ── CONTEXT BLEEDING PREVENTION ──────────────────────────────────────
+      // Topic-drift detection: if user changed topic, reset history window
+      const recentChatHistory = messages.slice(-6);
+      const lastUserTexts = recentChatHistory.filter(m => m.sender === 'user').map(m => m.text).join(' ');
+      const isTopicDrift = !currentAttachedText && lastUserTexts.length > 0 && !(userText || '')
+        .split(' ')
+        .slice(0, 5)
+        .some(word => word.length > 3 && lastUserTexts.toLowerCase().includes(word.toLowerCase()));
+
+      const contextIsolationPrefix = isTopicDrift
+        ? `\n\n⚠️ [SYSTEM: STRICT CONTEXT ISOLATION] The user has switched to a completely new topic. Ignore all prior conversation context and contract references. Answer ONLY the current question: "${userText || ''}", with zero reference to previous messages.`
+        : '';
+
+      const finalSystemPrompt = systemPromptCombined + contextIsolationPrefix;
+
       const historyPayload: AIMessagePayload[] = [
-        { role: 'system', content: systemPromptCombined },
-        ...messages.slice(-6).map((m) => ({
+        { role: 'system', content: finalSystemPrompt },
+        // Only inject last 4 messages (not 6+) and NONE if topic drifted
+        ...(isTopicDrift ? [] : recentChatHistory.slice(-4)).map((m) => ({
           role: (m.sender === 'bot' ? 'assistant' : 'user') as 'assistant' | 'user',
           content: m.text,
         })),
@@ -317,7 +333,7 @@ ${currentAttachedText.slice(0, 4500)}
       ];
 
       // 2. Execute Async Live API Call to Gemini AI Service
-      const aiReply = await callAIWithHistory(historyPayload, activePromptLang, systemPromptCombined);
+      const aiReply = await callAIWithHistory(historyPayload, activePromptLang, finalSystemPrompt);
 
       // 3. Render Dynamic AI Response & Track Event
       trackChatInteraction('analysis_completed', { responseLength: aiReply.length });
