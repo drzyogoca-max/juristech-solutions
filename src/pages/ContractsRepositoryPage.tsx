@@ -20,6 +20,7 @@ import { smartContractDataLake, DataLakeSearchResult } from '../services/smartCo
 import { exportDocumentMultiFormat } from '../lib/documentExporter';
 import { detectVisitorJurisdiction, JurisdictionInfo, wrapPromptWithJurisdiction } from '../lib/jurisdiction';
 import { callAI } from '../lib/api';
+import { usePlatformLocale, formatNumber } from '../lib/universalTranslator';
 import VoiceInput from '../components/VoiceInput';
 import { getLocalizedValue } from '../lib/languageHelper';
 
@@ -384,7 +385,7 @@ function ContractCard({ contract, isRtl, onDownload, onPreview }: {
         <div className="flex items-center gap-3 text-[10px] text-slate-400 font-mono">
           <span className="flex items-center gap-1"><FileText className="w-2.5 h-2.5" />{contract.pagesCount}p</span>
           <span className="flex items-center gap-1"><Shield className="w-2.5 h-2.5 text-emerald-400" />{contract.clausesCount} {isRtl ? 'بند' : 'cls'}</span>
-          <span className="flex items-center gap-1"><Download className="w-2.5 h-2.5 text-cyan-400" />{contract.downloads.toLocaleString()}</span>
+          <span className="flex items-center gap-1"><Download className="w-2.5 h-2.5 text-cyan-400" />{formatNumber(contract.downloads, isRtl ? 'ar' : 'en')}</span>
         </div>
 
         <div className="flex flex-wrap gap-1">
@@ -502,8 +503,7 @@ function PreviewModal({ contract, isOpen, onClose, isRtl, onDownload }: {
 
 // ── MAIN UNIFIED PAGE ────────────────────────────────────────────────────────
 export default function ContractsRepositoryPage() {
-  const { i18n } = useTranslation();
-  const isRtl = i18n.language === 'ar';
+  const { isRtl, formatNum, l, i18n } = usePlatformLocale();
   const { isAdmin, role } = useAuth();
 
   // Paywall & Access Gate State
@@ -848,14 +848,14 @@ export default function ContractsRepositoryPage() {
                 {isRtl ? (
                   <>
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-indigo-300 to-emerald-400">
-                      {countDisplay >= 1000000 ? '1,000,000+' : countDisplay.toLocaleString()}
+                      {countDisplay >= 1000000 ? (isRtl ? '١٬٠٠٠٬٠٠٠+' : '1,000,000+') : formatNum(countDisplay)}
                     </span>
                     {' '}عقد ونموذج قانوني معتمد
                   </>
                 ) : (
                   <>
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-indigo-300 to-emerald-400">
-                      {countDisplay >= 1000000 ? '1,000,000+' : countDisplay.toLocaleString()}
+                      {countDisplay >= 1000000 ? '1,000,000+' : formatNum(countDisplay)}
                     </span>
                     {' '}Certified Legal Contracts & Templates
                   </>

@@ -28,9 +28,10 @@ const JURISDICTIONS = [
   { id: 'global', nameAr: 'القانون الدولي المشترك (ICC)', nameEn: 'Global Common Law', descAr: 'معايير غرفة التجارة الدولية للتجارة العابرة للحدود.', descEn: 'ICC rules for multi-jurisdictional transnational transactions.' }
 ];
 
+import { usePlatformLocale } from '../lib/universalTranslator';
+
 export default function AcquisitionPage() {
-  const { i18n } = useTranslation();
-  const isRtl = i18n.language === 'ar';
+  const { isRtl, formatNum, l } = usePlatformLocale();
 
   const [step, setStep] = useState(0);
   const [submitting, setSubmitting] = useState(false);
@@ -70,7 +71,7 @@ export default function AcquisitionPage() {
     - Acquirer: ${formData.acquirerName}
     - Target: ${formData.targetName}
     - Sector: ${formData.industry}
-    - Deal Value: $${formData.dealValueUSD.toLocaleString()} USD
+    - Deal Value: $${formatNum(formData.dealValueUSD)} USD
     - Structure: ${formData.dealType.toUpperCase()}
     - Governing Law: ${formData.governingLaw}
     - Escrow: ${formData.escrowRequired ? 'Required via JurisTech Smart Escrow' : 'Direct payment'}
@@ -100,7 +101,7 @@ GOVERNING JURISDICTION: ${formData.jurisdiction.toUpperCase()} (${formData.gover
 
 2. TRANSACTION STRUCTURE & VALUE (هيكل القيمة المالية والمعاملة)
 - Purchase Type: ${formData.dealType === 'share_purchase' ? 'Share Purchase Agreement (SPA)' : formData.dealType === 'asset_purchase' ? 'Asset Purchase Agreement (APA)' : 'Statutory Merger'}
-- Transaction Value (قيمة الصفقة): $${formData.dealValueUSD.toLocaleString()} USD
+- Transaction Value (قيمة الصفقة): $${formatNum(formData.dealValueUSD)} USD
 - Smart Escrow Layer: ${formData.escrowRequired ? 'ACTIVE (مفعّل عبر حساب الضمان القانوني لـ JurisTech)' : 'DIRECT BANK WIRE'}
 
 3. CONDITIONS PRECEDENT & DUE DILIGENCE (شروط الفحص والتدقيق النافي للجهالة)
@@ -109,7 +110,7 @@ GOVERNING JURISDICTION: ${formData.jurisdiction.toUpperCase()} (${formData.gover
 
 4. COVENANTS & BREAK-UP FEES (شروط الخصوصية ورسوم إنهاء الصفقة)
 - Exclusivity: 45 Days (حصرية تامة لمدة 45 يوماً)
-- Break-up Fee: 3% of Transaction Value ($${(formData.dealValueUSD * 0.03).toLocaleString()} USD) payable by the breaching party.
+- Break-up Fee: 3% of Transaction Value ($${formatNum(formData.dealValueUSD * 0.03)} USD) payable by the breaching party.
 
 5. SIGNATURE & VERIFICATION SEAL (التواقيع والأختام الرقمية الرسمية)
 - Acquirer Representative Signature: ______________________

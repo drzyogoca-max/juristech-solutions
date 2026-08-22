@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Globe, Users, TrendingUp, Sparkles, Share2, MessageSquare, CheckCircle2, Activity, ShieldCheck, Briefcase } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { usePlatformLocale } from '../lib/universalTranslator';
 import { aiTrafficGrowthEngine, TrafficGrowthMetrics } from '../services/aiTrafficGrowthEngine';
 import AutonomousQaAnalyticsModal from './AutonomousQaAnalyticsModal';
 import CrmClientManagerModal from './CrmClientManagerModal';
@@ -9,9 +9,8 @@ import { useAuth } from '../lib/authContext';
 import { verifyAdminAccess, isAuthorizedAdminEmail } from '../lib/adminGuard';
 
 export default function GlobalTrafficGrowthBanner() {
-  const { i18n } = useTranslation();
+  const { isRtl, formatNum, l } = usePlatformLocale();
   const { user, isAdmin } = useAuth();
-  const isRtl = i18n.language === 'ar';
 
   const isSessionAuthed = verifyAdminAccess();
   const isSupabaseAdmin = user && isAuthorizedAdminEmail(user?.email);
@@ -68,19 +67,19 @@ export default function GlobalTrafficGrowthBanner() {
             <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-300">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
               <Users className="w-3.5 h-3.5 text-cyan-400" />
-              <span className="font-extrabold">{metrics.activeGlobalVisitors.toLocaleString()}</span>
+              <span className="font-extrabold">{formatNum(metrics.activeGlobalVisitors)}</span>
               <span className="text-[10px] text-slate-300">{isRtl ? 'عميل وزائر نشط الآن' : 'Active Global Clients'}</span>
             </div>
 
             <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-300">
               <Globe className="w-3.5 h-3.5 text-indigo-400" />
-              <span className="font-extrabold">{metrics.totalIndexedPages.toLocaleString()}</span>
+              <span className="font-extrabold">{formatNum(metrics.totalIndexedPages)}</span>
               <span className="text-[10px] text-slate-300">{isRtl ? 'عقد مفهرس بجوجل وبينج' : 'Indexed Contracts'}</span>
             </div>
 
             <div className="hidden lg:flex items-center gap-1.5 px-3 py-1 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300">
               <TrendingUp className="w-3.5 h-3.5 text-amber-400" />
-              <span className="font-extrabold">+{metrics.convertedClientsToday}</span>
+              <span className="font-extrabold">+{formatNum(metrics.convertedClientsToday)}</span>
               <span className="text-[10px] text-slate-300">{isRtl ? 'عميل جديد اليوم' : 'New Clients Today'}</span>
             </div>
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Shield, Zap, CheckCircle2, DollarSign, Award, ChevronRight, Scale, Globe, Building2, FileText, Sparkles, ArrowRight, Flame } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { usePlatformLocale } from '../lib/universalTranslator';
 import { Link } from 'react-router-dom';
 
 export const TARGET_MARKETS = [
@@ -14,8 +14,7 @@ export const TARGET_MARKETS = [
 ];
 
 export default function USCompetitorMatchBanner() {
-  const { t, i18n } = useTranslation();
-  const isRtl = i18n.dir() === 'rtl';
+  const { isRtl, formatNum } = usePlatformLocale();
   const [selectedMarket, setSelectedMarket] = useState(TARGET_MARKETS[0]);
   const [attorneyHours, setAttorneyHours] = useState(15);
   const [activeTab, setActiveTab] = useState<'comparison' | 'calculator'>('comparison');
@@ -248,12 +247,12 @@ export default function USCompetitorMatchBanner() {
               {isRtl ? 'المبلغ الموفر سنوياً لمؤسستك' : 'Estimated Annual Enterprise Savings'}
             </div>
             <div className="text-4xl md:text-5xl font-black text-emerald-400 font-mono tracking-tight">
-              ${(savings * 12).toLocaleString()}
+              ${formatNum(savings * 12)}
             </div>
             <p className="text-xs text-slate-400">
               {isRtl
-                ? `تكلفة المحامي التقليدي: $${(traditionalCost * 12).toLocaleString()}/سنة مقابل $${(platformCost * 12).toLocaleString()}/سنة على المنصة.`
-                : `Traditional Law Firm: $${(traditionalCost * 12).toLocaleString()}/yr vs $${(platformCost * 12).toLocaleString()}/yr with JurisTech Solutions.`}
+                ? `تكلفة المحامي التقليدي: $${formatNum(traditionalCost * 12)}/سنة مقابل $${formatNum(platformCost * 12)}/سنة على المنصة.`
+                : `Traditional Law Firm: $${formatNum(traditionalCost * 12)}/yr vs $${formatNum(platformCost * 12)}/yr with JurisTech Solutions.`}
             </p>
             <Link
               to="/payment?plan=pro"

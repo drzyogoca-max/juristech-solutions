@@ -220,7 +220,7 @@ ${input}`
 ];
 
 export default function AdvancedAIHubPage() {
-  const { l, isRtl, gt, i18n } = usePlatformLocale();
+  const { l, isRtl, gt, i18n, formatNum } = usePlatformLocale();
 
   const [activeModule, setActiveModule] = useState<ModuleConfig>(MODULES[0]);
   const [selectedJurisdiction, setSelectedJurisdiction] = useState<JurisdictionConfig>(JURISDICTIONS[0]);
@@ -588,7 +588,7 @@ export default function AdvancedAIHubPage() {
                 <span>{isRtl ? 'نصوص العقد / البيانات المالية / بنود النزاع:' : 'Contract Clauses / Financial Statement / Dispute Details:'}</span>
                 {inputText && (
                   <span className="text-slate-500 font-mono text-[11px]">
-                    {inputText.length.toLocaleString()} {isRtl ? 'حرف' : 'chars'}
+                    {formatNum(inputText.length)} {isRtl ? 'حرف' : 'chars'}
                   </span>
                 )}
               </div>

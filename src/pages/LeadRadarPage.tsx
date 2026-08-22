@@ -14,10 +14,10 @@ import {
 } from '../services/radarEngine';
 import SmartRadarDashboard from '../components/SmartRadarDashboard';
 import SEO from '../components/SEO';
+import { usePlatformLocale } from '../lib/universalTranslator';
 
 export default function LeadRadarPage() {
-  const { i18n } = useTranslation();
-  const isRtl = i18n.language === 'ar';
+  const { isRtl, formatNum, formatCurr, l } = usePlatformLocale();
 
   const [visitors, setVisitors] = useState<LiveRadarVisitor[]>([]);
   const [report, setReport] = useState<RadarAnalyticsReport | null>(null);
@@ -301,7 +301,7 @@ export default function LeadRadarPage() {
 
             <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-1">
               <span className="text-slate-500 text-[10px] block font-sans">{isRtl ? 'عوائد الاشتراكات المتوقعة:' : 'Projected Revenue ARR:'}</span>
-              <span className="text-emerald-400 font-extrabold text-lg block font-mono">${growthCampaignState.projectedARRUSD.toLocaleString()} USD</span>
+              <span className="text-emerald-400 font-extrabold text-lg block font-mono">${formatNum(growthCampaignState.projectedARRUSD)} USD</span>
               <span className="text-[10px] text-slate-400 block">$5,000 ARR / client</span>
             </div>
           </div>

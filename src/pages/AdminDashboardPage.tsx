@@ -18,6 +18,7 @@ import {
 } from '../lib/financialGateway';
 import DigitalInvoiceModal from '../components/DigitalInvoiceModal';
 import SwiftReceiptUploaderModal from '../components/SwiftReceiptUploaderModal';
+import { usePlatformLocale } from '../lib/universalTranslator';
 
 interface WireLedgerEntry {
   id: string;
@@ -32,9 +33,8 @@ interface WireLedgerEntry {
 }
 
 export default function AdminDashboardPage() {
-  const { i18n } = useTranslation();
+  const { isRtl, formatNum, formatCurr, l } = usePlatformLocale();
   const { isAdmin } = useAuth();
-  const isRtl = i18n.language === 'ar';
 
   const [timeframe, setTimeframe] = useState<'Daily' | 'Weekly' | 'Monthly' | 'Yearly'>('Monthly');
   const [wireEntries, setWireEntries] = useState<WireLedgerEntry[]>([]);
@@ -323,7 +323,7 @@ export default function AdminDashboardPage() {
                 <DollarSign className="w-5 h-5 text-emerald-400" />
               </div>
               <div className="text-3xl font-black text-emerald-400 font-mono">
-                ${totalRevenueUSD.toLocaleString(undefined, { minimumFractionDigits: 2 })} USD
+                ${formatNum(totalRevenueUSD)} USD
               </div>
               <span className="text-[10px] text-slate-500 block font-mono">SWIFT Ledger & Instant Gateways</span>
             </div>
@@ -334,7 +334,7 @@ export default function AdminDashboardPage() {
                 <Users className="w-5 h-5 text-cyan-400" />
               </div>
               <div className="text-3xl font-black text-cyan-400 font-mono">
-                {subscribersCount}
+                {formatNum(subscribersCount)}
               </div>
               <span className="text-[10px] text-emerald-400 block font-mono">Enterprise & Pro Tier Accounts</span>
             </div>
@@ -345,7 +345,7 @@ export default function AdminDashboardPage() {
                 <Landmark className="w-5 h-5 text-amber-400" />
               </div>
               <div className="text-3xl font-black text-amber-400 font-mono">
-                {pendingWireCount}
+                {formatNum(pendingWireCount)}
               </div>
               <span className="text-[10px] text-slate-500 block font-mono">Requires Chairman Verification</span>
             </div>
@@ -383,7 +383,7 @@ export default function AdminDashboardPage() {
                       {isRtl ? 'مسار الإيرادات الشهرية' : 'Monthly Revenue Trend'}
                     </p>
                     <p className="text-2xl font-black text-emerald-400 font-mono">
-                      ${totalRevenueUSD.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                      ${formatNum(totalRevenueUSD)}
                     </p>
                   </div>
                   <div className="p-2.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/20">

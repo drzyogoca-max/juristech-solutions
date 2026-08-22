@@ -74,7 +74,7 @@ let dashboardMetricsCache: {
 } | null = null;
 
 export default function Dashboard() {
-  const { l, isRtl, gt, t, i18n } = usePlatformLocale();
+  const { l, isRtl, gt, t, i18n, formatNum, formatCurr } = usePlatformLocale();
   const navigate = useNavigate();
   const { isAdmin } = useAuth();
   const { jurisdiction, adaptiveConfig } = useAdaptiveUI();
@@ -329,10 +329,7 @@ export default function Dashboard() {
       
       <div className="max-w-7xl mx-auto space-y-8 relative z-10 w-full max-w-full overflow-x-hidden">
 
-        {/* 👑 1. CONSOLIDATED EXECUTIVE COMMAND BAR (ONLY AT TOP OF PAGE) */}
-        <ExecutiveCommandBar onOpenSecurity={() => setShowSecurityModal(true)} />
-
-        {/* 📊 2. TELEMETRY & LIVE PERFORMANCE METRICS STRIP */}
+        {/* 📊 1. TELEMETRY & LIVE PERFORMANCE METRICS STRIP */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 font-sans">
           {statItems.map((item, idx) => {
             const Icon = item.icon;
@@ -346,7 +343,7 @@ export default function Dashboard() {
                 </div>
                 <div className="flex items-baseline justify-between">
                   <span className={`text-lg sm:text-xl font-black ${item.color}`}>
-                    {typeof item.value === 'number' ? item.value.toLocaleString() : item.value}
+                    {formatNum(item.value)}
                   </span>
                   <span className="flex h-2 w-2 relative">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -876,6 +873,11 @@ export default function Dashboard() {
                 {l('فتح الخزنة المشفرة', 'Open Vault')}
               </Link>
             </div>
+          </div>
+
+          {/* 👑 EXECUTIVE COMMAND BAR & DIRECT ADVISORY CHANNELS (ANCHORED AT BOTTOM) */}
+          <div className="pt-4">
+            <ExecutiveCommandBar onOpenSecurity={() => setShowSecurityModal(true)} />
           </div>
 
           {/* Institutional Trust Badges */}

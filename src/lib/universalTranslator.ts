@@ -580,6 +580,52 @@ export function loc(arText: string, enText: string, lang?: string): string {
   return enText || arText || '';
 }
 
+const LOCALE_MAP: Record<SupportedLang, string> = {
+  ar: 'ar-EG',
+  en: 'en-US',
+  de: 'de-DE',
+  fr: 'fr-FR',
+  es: 'es-ES',
+  zh: 'zh-CN',
+  tr: 'tr-TR',
+};
+
+/**
+ * Universally formats numbers strictly adapting to the active platform language.
+ * (e.g. 1000000 in EN -> "1,000,000", in DE -> "1.000.000", in AR -> "١٬٠٠٠٬٠٠٠" or localized standard)
+ */
+export function formatNumber(value: number | string | undefined | null, lang: SupportedLang = 'ar'): string {
+  if (value === undefined || value === null || value === '') return '0';
+  const num = typeof value === 'string' ? parseFloat(value.replace(/[^0-9.-]/g, '')) : value;
+  if (isNaN(num)) return String(value);
+
+  const locale = LOCALE_MAP[lang] || 'en-US';
+  return new Intl.NumberFormat(locale).format(num);
+}
+
+/**
+ * Universally formats currency amounts adapting to active language and currency symbol.
+ */
+export function formatCurrency(
+  amount: number | string | undefined | null,
+  currency: string = 'USD',
+  lang: SupportedLang = 'ar'
+): string {
+  if (amount === undefined || amount === null || amount === '') return '$0';
+  const num = typeof amount === 'string' ? parseFloat(amount.replace(/[^0-9.-]/g, '')) : amount;
+  if (isNaN(num)) return `${currency} ${amount}`;
+
+  const locale = LOCALE_MAP[lang] || 'en-US';
+  try {
+    return new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency: currency || 'USD',
+      maximumFractionDigits: 0,
+    }).format(num);
+  } catch {
+    return `${currency} ${new Intl.NumberFormat(locale).format(num)}`;
+  }
+}
 
 /**
  * Universal React Hook for 100% Reactive Multi-Language Support
@@ -616,6 +662,14 @@ export function usePlatformLocale() {
     return enArr.map((item, idx) => l(arArr[idx] || item, item));
   };
 
+  const formatNum = (value: number | string | undefined | null): string => {
+    return formatNumber(value, currentLang);
+  };
+
+  const formatCurr = (amount: number | string | undefined | null, currency: string = 'USD'): string => {
+    return formatCurrency(amount, currency, currentLang);
+  };
+
   /**
    * Feed new client/visitor statutory interactions into legal language self-learning
    */
@@ -629,6 +683,8 @@ export function usePlatformLocale() {
     gt,
     l,
     lArray,
+    formatNum,
+    formatCurr,
     t,
     i18n,
     learnFromClientInteraction,
