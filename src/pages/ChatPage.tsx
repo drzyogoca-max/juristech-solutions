@@ -674,19 +674,16 @@ ${contractText}`;
       ? `\n\n[ACTIVE CONTRACT CONTEXT — "${contractState.fileName}"]\n${contractState.extractedText.slice(0, 1200)}\n`
       : '';
 
-    // ── TOPIC-DRIFT DETECTION: Limit history to last 4 message pairs MAX ──
-    // If the new query is about a completely different subject, inject a 
-    // context-reset instruction to prevent the AI from bleeding prior topics.
-    const recentHistory = messages.slice(-6); // max 3 pairs (6 messages)
-    const lastUserMessages = recentHistory.filter(m => m.role === 'user').map(m => m.content).join(' ');
-    const topicDriftDetected = lastUserMessages.length > 0 && !content
-      .split(' ')
-      .slice(0, 5)
-      .some(word => word.length > 3 && lastUserMessages.toLowerCase().includes(word.toLowerCase()));
+    // ── MULTI-TURN CONVERSATIONAL INTELLIGENCE ───────────────────────────
+    // Maintain conversational continuity while preventing stale document bleeding.
+    // If the user asks for a new contract or switches subject, the system instructs
+    // the model to draft the new contract cleanly without mixing up previous facts.
+    const recentHistory = messages.slice(-6); // last 3 turns
 
-    const contextResetInstruction = topicDriftDetected
-      ? `\n\n⚠️ [SYSTEM: STRICT CONTEXT ISOLATION] The user has changed the topic. DISCARD all prior document context, contract references, and previous discussion. Focus EXCLUSIVELY on the current user request: "${content}". Do NOT reference, analyze, or mention any previous contract, document, or topic from the conversation history.`
-      : '';
+    const multiTurnDirectives = `\n\n[MULTI-TURN CONVERSATIONAL INTELLIGENCE]:
+1. NEW CONTRACT / TOPIC SWITCH: If the user asks for a new or different contract (e.g., Car Sale -> NDA -> Lease -> Employment), immediately acknowledge and draft the NEW contract fully with all formal clauses, without confusing it with previous terms.
+2. CONTRACT AMENDMENT & REVISION: If the user requests modifications, clause additions (penalty clause, installment schedule, arbitration), or custom edits, formulate the revised clause or amended agreement cleanly.
+3. PROCEDURAL & STATUTORY GUIDANCE: If the user asks procedural or follow-up legal questions (notarization, land registry, traffic department, taxes, litigation), provide a step-by-step statutory execution roadmap.`;
 
     const jurisdictionContext = activeJurisdiction
       ? `\n[${isRtl ? 'الاختصاص القضائي' : 'Jurisdiction'}: ${isRtl ? activeJurisdiction.countryNameAr : activeJurisdiction.countryName}]`
@@ -694,14 +691,12 @@ ${contractText}`;
 
     const arReminderSuffix = activeLang === 'ar' ? '\nالتذكير النهائي: لا كلمة إنجليزية واحدة في الرد — العربية الفصحى القانونية حصراً بلا استثناء.' : '';
     const langLabel = activeLang === 'ar' ? 'Arabic (العربية الفصحى القانونية حصراً)' : activeLang === 'fr' ? 'French (français exclusivement)' : activeLang === 'de' ? 'German (Deutsch ausschließlich)' : activeLang === 'es' ? 'Spanish (español exclusivamente)' : activeLang === 'zh' ? 'Chinese (纯中文)' : activeLang === 'tr' ? 'Turkish (yalnızca Türkçe)' : 'English (exclusively, zero Arabic or other languages)';
-    const systemPromptCombined = `${sysInstruction}${jurisdictionContext}${contractContext}${ragDirective}${contextResetInstruction}\n\n⚠️ CRITICAL LANGUAGE ENFORCEMENT — NON-NEGOTIABLE:\nRespond STRICTLY and EXCLUSIVELY in ${activeLang.toUpperCase()} language.\nDO NOT mix languages, produce bilingual output, or include any text in any other language.\nThis instruction OVERRIDES all other directives. Language: ${langLabel}.${arReminderSuffix}\nMandatory: Cite relevant statutory articles and legal provisions explicitly. Use 8-Axis Contract Analysis Framework when reviewing any contract or document.`;
+    const systemPromptCombined = `${sysInstruction}${jurisdictionContext}${contractContext}${ragDirective}${multiTurnDirectives}\n\n⚠️ CRITICAL LANGUAGE ENFORCEMENT — NON-NEGOTIABLE:\nRespond STRICTLY and EXCLUSIVELY in ${activeLang.toUpperCase()} language.\nDO NOT mix languages, produce bilingual output, or include any text in any other language.\nThis instruction OVERRIDES all other directives. Language: ${langLabel}.${arReminderSuffix}\nMandatory: Cite relevant statutory articles and legal provisions explicitly. Use 8-Axis Contract Analysis Framework when reviewing any contract or document.`;
 
     // Construct conversation history payload (recent messages + current user query)
-    // IMPORTANT: Only include recent relevant history, NOT full conversation to prevent context bleeding
     const historyPayload: AIMessagePayload[] = [
       { role: 'system', content: systemPromptCombined },
-      // Only inject last 4 messages (2 user + 2 assistant) to avoid stale context bleeding
-      ...(topicDriftDetected ? [] : recentHistory.slice(-4)).map(m => ({
+      ...recentHistory.map(m => ({
         role: (m.role === 'assistant' ? 'assistant' : 'user') as 'assistant' | 'user',
         content: m.content
       })),

@@ -349,6 +349,18 @@ async function executeGeminiOrSynthesis(userMessage, messages, history, activeLa
     contents.unshift({ role: 'user', parts: [{ text: `[SYSTEM INSTRUCTION]: ${systemInstruction}` }] });
     contents.splice(1, 0, { role: 'model', parts: [{ text: modelConfirm }] });
 
+    // Sanitize to guarantee alternating user/model roles
+    const sanitizedContents = [];
+    for (const item of contents) {
+      const text = item.parts?.[0]?.text?.trim() || '';
+      if (!text) continue;
+      if (sanitizedContents.length > 0 && sanitizedContents[sanitizedContents.length - 1].role === item.role) {
+        sanitizedContents[sanitizedContents.length - 1].parts[0].text += `\n\n${text}`;
+      } else {
+        sanitizedContents.push({ role: item.role, parts: [{ text }] });
+      }
+    }
+
     try {
       const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
       const timeoutId = controller ? setTimeout(() => controller.abort(), 8000) : null;
@@ -359,7 +371,7 @@ async function executeGeminiOrSynthesis(userMessage, messages, history, activeLa
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            contents,
+            contents: sanitizedContents,
             generationConfig: {
               temperature: 0.2,
               maxOutputTokens: 3072,
@@ -702,64 +714,235 @@ Governed by the statutory labor laws of [Jurisdiction].
 | **Signature:** [....................] | **Signature:** [....................] |`;
   }
 
-  // 4. Real Estate / Tenancy Lease Agreement (عقد إيجار عقاري سكني وتجاري)
-  if (/(rent|lease|tenant|landlord|apartment|property|real estate|إيجار|ايجار|عقار|شقة|فيلا|أرض)/i.test(p)) {
+  // 5. Commercial Goods Supply & Procurement Agreement (عقد توريد تجاري)
+  if (/(supply|procurement|goods|materials|vendor|supplier|توريد|شراء بضاعة|مورد|بضائع|توريدات)/i.test(p)) {
     if (isAr) {
-      return `## ⚖️ عقد إيجار عقاري (سكني / تجاري) موثق وملزم
+      return `## ⚖️ عقد توريد بضائع ومواد تجارية رسمي وملزم
 
-**أُبرم هذا العقد في يوم [........] الموافق [..../..../2026م] بين:**
-* **الطرف الأول (المؤجر):** [اسم المؤجر الكامل] - هوية / سجل: [................]
-* **الطرف الثاني (المستأجر):** [اسم المستأجر الكامل] - هوية / سجل: [................]
+**تم إبرام هذا العقد في يوم [........] الموافق [..../..../2026م] بين:**
+* **الطرف الأول (المشتري / صاحب المشروع):** [الاسم / الشركة] | س.ت: [................] | العنوان: [................]
+* **الطرف الثاني (المورد):** [الاسم / الشركة الموردة] | س.ت: [................] | العنوان: [................]
 
-### 1️⃣ موضوع الإيجار وبيانات العقار:
-أجّر الطرف الأول إلى الطرف الثاني العقار الكائن في: [العنوان بالتفصيل: المدينة، الحي، رقم المبنى، رقم الشقة/المعرض].
+### 📦 1. موضوع التوريد والمواصفات:
+يلتزم الطرف الثاني بتوريد البضائع والمنتجات المحددة في جدول المواصفات (الكميات، الجودة، شهادات المنشأ والمطابقة القياسية ISO/SASO).
 
-### 2️⃣ مدة الإيجار والتجديد:
-- مدة الإيجار: **[سنة واحدة ميلادية]** تبدأ من [..../..../2026] وتنتهي في [..../..../2027].
-- يتجدد العقد لمدد مماثلة باتفاق الطرفين وموافقة خطية قبل نهاية المدة بـ [60 يوماً].
+### 🚚 2. مواعيد وشروط التسليم (Incoterms):
+- **مكان التسليم:** [مستودعات المشتري / موقع المشروع في: ................].
+- **الجدول الزمني:** يتم التوريد خلال مدة أقصاها **[........ يوماً]** من تاريخ استلام الدفعة المقدمة.
+- **شرط الفحص والاستلام:** يحق للمشتري فحص البضاعة ورفض أي بنود غير مطابقة للمواصفات خلال [7 أيام عمل].
 
-### 3️⃣ القيمة الإيجارية وطريقة السداد:
-- القيمة الإيجارية السنوية: **[المبلغ]** تُسدد على **[دفعات ربع سنوية / نصف سنوية]** بموجب شيكات مصرفية / تحويل معتمد.
-- مبلغ التأمين المسترد: **[المبلغ]** يُرد للمستأجر عند إخلاء العقار وتسليمه بحالته الأصلية.
+### 💰 3. القيمة الإجمالية وجدول الدفعات:
+- **القيمة الإجمالية للعقد:** **[المبلغ رقماً وكتابة شامل ضريبة القيمة المضافة]**.
+- **الدفعات:** [30% دفعة مقدمة | 50% عند وصول وفحص الشحنة | 20% متبقي بعد الاعتماد النهائي].
 
-### 4️⃣ التزامات المستأجر والصيانة:
-- يلتزم المستأجر بسداد فواتير الكهرباء والمياه والغاز ورسوم الخدمات بانتظام.
-- يلتزم المستأجر بإجراء الصيانة الاستهلاكية البسيطة، بينما يتحمل المؤجر الصيانة الإنشائية والهيكلية للعقار.
+### 🚨 4. غرامات التأخير والشرط الجزائي:
+في حال تأخر المورد عن موعد التسليم المتفق عليه، يلتزم بسداد غرامة تأخير قدرها **[1% عن كل أسبوع تأخير]** بحد أقصى **[10%]** من إجمالي قيمة العقد.
 
-### 5️⃣ الإخلاء وفسخ العقد:
-في حال تأخر المستأجر عن سداد الإيجار لمدة تتجاوز [15 يوماً] من تاريخ الاستحقاق، يعتبر العقد مفسوخاً تلقائياً ويحق للمؤجر استرداد الحيازة.
+### 🛡️ 5. ضمان الجودة وخدمة ما بعد البيع:
+يضمن المورد خلو البضاعة الموردة من كافة عيوب الصناعة لمدة **[12 شهراً]** مع استبدال أي قطع معيبة على نفقته الخاصة فوراً.
 
-| توقيع المؤجر | توقيع المستأجر |
+| الطرف الأول (المشتري) | الطرف الثاني (المورد) |
 | :--- | :--- |
-| **الاسم:** [....................] | **الاسم:** [....................] |`;
+| **التوقيع والختم:** [................] | **التوقيع والختم:** [................] |`;
     }
+    return `## ⚖️ COMMERCIAL GOODS SUPPLY & PROCUREMENT AGREEMENT
+* **BUYER:** [Company Name], CR/Tax ID: [................]
+* **SUPPLIER:** [Supplier Name], CR/Tax ID: [................]
 
-    return `## ⚖️ COMMERCIAL & RESIDENTIAL PROPERTY LEASE AGREEMENT
+### 1. SCOPE OF SUPPLY:
+Supply of verified products/materials as per agreed Technical Specifications and ISO conformity.
 
-**DATE:** [Date: ...../...../2026]  
-**PARTIES:**  
-* **Landlord:** [Landlord Full Name / Entity] (ID/Reg: [................])
-* **Tenant:** [Tenant Full Name / Entity] (ID/Reg: [................])
+### 2. DELIVERY TERMS (DDP):
+Delivered Duty Paid to designated facility within [Timeline: ..... days]. Inspection period: 7 business days.
 
-### 1. PREMISES:
-The real property located at [Full Property Address / Unit Number].
+### 3. PRICE & PAYMENT:
+Total Consideration: **$[Amount]** (30% advance, 50% upon inspection, 20% final acceptance).
 
-### 2. LEASE TERM:
-Initial term of **[One (1) Year]** commencing on [Start Date] and expiring on [End Date].
+### 4. DELAY LIQUIDATED DAMAGES:
+Late delivery penalty of 1% per week of delay up to a maximum cap of 10% of total contract value.
 
-### 3. RENT & SECURITY DEPOSIT:
-- **Annual Rent:** $[Amount], payable in [Monthly / Quarterly] installments.
-- **Security Deposit:** $[Amount], refundable upon verified move-out inspection.
-
-### 4. MAINTENANCE & UTILITIES:
-Tenant shall be responsible for routine consumable maintenance and utility charges. Structural repairs remain Landlord's statutory obligation.
-
-### 5. GOVERNING LAW:
-Governed by the tenancy statutes of [Jurisdiction].
-
-| LANDLORD | TENANT |
+| BUYER SIGNATURE | SUPPLIER SIGNATURE |
 | :--- | :--- |
-| **Signature:** [....................] | **Signature:** [....................] |`;
+| **Signature:** [................] | **Signature:** [................] |`;
+  }
+
+  // 6. Software Development & Tech Agreement (عقد تطوير برمجيات)
+  if (/(software|app|application|developer|code|saas|api|source code|programming|it services|برمجة|تطبيق|موقع|تطوير برمجيات|منصة|سورس كود)/i.test(p)) {
+    if (isAr) {
+      return `## ⚖️ عقد تطوير برمجيات ومنصات رقمية ونقل حقوق الملكية الفكرية
+
+**تم الاتفاق في يوم [........] الموافق [..../..../2026م] بين:**
+* **الطرف الأول (العميل):** [اسم الشركة / الفرد] | س.ت: [................]
+* **الطرف الثاني (المطور / شركة البرمجيات):** [اسم المطور / الشركة] | س.ت: [................]
+
+### 💻 1. نطاق العمل والتسليمات (Deliverables):
+يلتزم المطور بتصميم وتطوير واختبار وإطلاق منصة / تطبيق: **[اسم المشروع البرمجي: ................]** شاملاً (تطبيقات الهاتف، لوحة التحكم Backend، واجهات الـ API، وسورس كود كامل).
+
+### 📅 2. خطة المراحل ومواعيد الإنجاز (Milestones):
+- **المرحلة الأولى (UI/UX Design):** التسليم خلال [.... أسبوع] — دفعة [25%].
+- **المرحلة الثانية (Backend & Architecture):** التسليم خلال [.... أسبوع] — دفعة [35%].
+- **المرحلة الثالثة (Frontend & Testing):** التسليم خلال [.... أسبوع] — دفعة [25%].
+- **المرحلة الرابعة (Deployment & Handover):** النشر وتسليم السورس كود — دفعة [15%].
+
+### 🧠 3. الملكية الفكرية والسورس كود (IP Ownership):
+بمجرد سداد الأتعاب المتفق عليها، تنتقل كافة حقوق الملكية الفكرية وحقوق النشر والسورس كود المصدري للعميل حصراً.
+
+### 🛠️ 4. فترة الضمان والدعم الفني:
+يلتزم المطور بتقديم دعم فني وضمان مجاني لمدة **[6 أشهر]** من تاريخ الإطلاق لإصلاح أي ثغرات برمجية (Bugs).
+
+| الطرف الأول (العميل) | الطرف الثاني (المطور) |
+| :--- | :--- |
+| **التوقيع:** [................] | **التوقيع:** [................] |`;
+    }
+    return `## ⚖️ SOFTWARE DEVELOPMENT & IP TRANSFER AGREEMENT
+* **CLIENT:** [Client Legal Entity], ID/CR: [................]
+* **DEVELOPER:** [Developer / IT Firm], ID/CR: [................]
+
+### 1. SCOPE OF WORK:
+Full-stack architecture, design, development, and deployment of **[Project Name]** including source code handover.
+
+### 2. MILESTONES (25% / 35% / 25% / 15%):
+Sequential deliverables with formal milestone acceptance sign-offs.
+
+### 3. IP ASSIGNMENT (WORK-FOR-HIRE):
+100% of all Intellectual Property, copyright, and source code vest exclusively in Client upon payment.
+
+| CLIENT SIGNATURE | DEVELOPER SIGNATURE |
+| :--- | :--- |
+| **Signature:** [................] | **Signature:** [................] |`;
+  }
+
+  // 7. Partnership & Shareholders Contract (عقد شراكة)
+  if (/(partnership|partner|shareholder|joint venture|equity|شراكة|تأسيس شركة|شركاء|مساهمين|حصص|أرباح)/i.test(p)) {
+    if (isAr) {
+      return `## ⚖️ عقد شراكة تجارية وتوزيع الحصص والأرباح
+
+**تم تحرير هذا العقد في يوم [........] الموافق [..../..../2026م] بين:**
+* **الشريك الأول:** [الاسم] | هوية: [................] | نسبة الحصة: **[....%]**
+* **الشريك الثاني:** [الاسم] | هوية: [................] | نسبة الحصة: **[....%]**
+
+### 🤝 1. الغرض من الشراكة:
+تأسيس وتشغيل مشروع تجاري بمسمى **[اسم المشروع: ................]** في قطاع [................].
+
+### 💵 2. رأس المال وتوزيع الأرباح:
+- **رأس المال الإجمالي:** **[المبلغ رقماً وكتابة]**.
+- **توزيع الأرباح:** توزع الأرباح الصافية بنسبة حصة كل شريك دورياً كل [3 أشهر / سنوياً].
+
+### 🏛️ 3. الإدارة وحق الشفعة (ROFR):
+- يتولى الإدارة التنفيذية: **[اسم الشريك المدير]**.
+- يحق للشريك الراغب في التخارج عرض حصته على الشركاء الآخرين أولاً بحق الشفعة خلال [30 يوماً].
+
+| الشريك الأول | الشريك الثاني |
+| :--- | :--- |
+| **التوقيع:** [................] | **التوقيع:** [................] |`;
+    }
+    return `## ⚖️ COMMERCIAL PARTNERSHIP & SHAREHOLDERS AGREEMENT
+* **PARTNER A:** [Name], Equity Stake: [....%]
+* **PARTNER B:** [Name], Equity Stake: [....%]
+
+### 1. CAPITAL & PROFIT SHARING:
+Net profits distributed pro-rata based on equity holdings.
+
+### 2. RIGHT OF FIRST REFUSAL (ROFR):
+Mandatory 30-day ROFR period prior to any third-party equity transfer.
+
+| PARTNER A | PARTNER B |
+| :--- | :--- |
+| **Signature:** [................] | **Signature:** [................] |`;
+  }
+
+  // 8. Loan & Debt Acknowledgment Contract (إقرار دين وقرض)
+  if (/(loan|debt|promissory|borrow|lender|قرض|سلف|دين|سند لأمر|مديونية|تسوية ديون|كمبيالة|إقرار دين|اقرار دين)/i.test(p)) {
+    if (isAr) {
+      return `## ⚖️ إقرار دين وسند مديونية والتزام بالسداد رسمي
+
+**أقر أنا الموقع أدناه بكامل أهليتي القانونية والشرعية النافية لكل جهالة:**
+* **المدين (المقر بالدين):** [الاسم الكامل] | هوية: [................] | هاتف: [................]
+* **الدائن (المستحق للدين):** [الاسم الكامل] | هوية: [................]
+
+### 💰 1. الإقرار بالمديونية:
+أقر وأعترف بأن في ذمتي للدائن المذكور ديناً ثابتاً ومستحق الأداء قدره: **[المبلغ رقماً وكتابة بالعملة المحلية]** استلمته نقداً / تحويلاً على سبيل القرض الحسن / معاملة تجارية.
+
+### 📅 2. جدول ومواعيد السداد:
+ألتزم بسداد كامل المبلغ في موعد أقصاه تاريخ: [..../..../2026م] (أو بأقساط شهرية قدرها [........]).
+
+### 🚨 3. حلول الأجل والإلزام التنفيذي:
+في حال تخلفي عن السداد، يحل باقي الدين كاملاً فوراً ويكون لهذا الإقرار قوة السند التنفيذي للمطالبة به أمام قضاء التنفيذ.
+
+| المقر بالمديونية (المدين) | شاهد أول | شاهد ثانٍ |
+| :--- | :--- | :--- |
+| **الاسم والتوقيع والبصمة:** [................] | **الاسم والتوقيع:** [................] | **الاسم والتوقيع:** [................] |`;
+    }
+    return `## ⚖️ PROMISSORY NOTE & ACKNOWLEDGMENT OF DEBT
+* **DEBTOR:** [Full Legal Name], ID/Passport: [................]
+* **CREDITOR:** [Full Legal Name], ID/Passport: [................]
+
+### 1. PRINCIPAL DEBT:
+The Debtor unconditionally acknowledges indebtedness in the sum of: **$[Amount]** ([Amount in words]).
+
+### 2. REPAYMENT DUE DATE:
+Payable on or before [Date: ..../..../2026]. Default accelerates full balance immediately.
+
+| DEBTOR SIGNATURE | WITNESS 1 | WITNESS 2 |
+| :--- | :--- | :--- |
+| **Signature:** [................] | **Signature:** [............] | **Signature:** [............] |`;
+  }
+
+  // 9. Contract Amendment / Custom Clause Formulation (تعديل البنود)
+  if (/(تعديل|عدل|غير|اضف|أضف|احذف|بند إضافي|بند جديد|شرط جزائي|غرامة|دفعات|اقساط|أقساط|amend|modify|revise|add clause|edit clause|penalty clause)/i.test(p)) {
+    if (isAr) {
+      return `### ✍️ الصياغة القانونية المعدلة للبنود المطلوبة
+
+بناءً على طلب التعديل: **"${userMessage.slice(0, 100)}"**، نورد الصياغة القانونية التشريعية المعتمدة لإدراجها في العقد:
+
+---
+
+#### 📌 البند المعدل / المضاف (جاهز للاقتباس والإدراج الفوري):
+
+> **"البند [....] — التعديل التعاقدي المتفق عليه:**
+> 1. اتفق الطرفان على تعديل أحكام البند الأصلي ليكون نصه كالتالي: [........ نص التعديل المطلوب بدقة ........].
+> 2. يسري هذا التعديل من تاريخ توقيعه ويعد جزءاً لا يتجزأ من العقد ومكملاً ومعدلاً له.
+> 3. تظل سائر بنود وشروط العقد الأصلي الأخرى غير المعدلة سارية ونافذة بكامل قوتها القانونية."
+
+---
+
+💡 *هل ترغب في دمج هذا البند ضمن النص الكامل للعقد وتوليد النسخة النهائية المحدثة؟*`;
+    }
+    return `### ✍️ Executive Contract Amendment & Clause Formulation
+
+Based on your amendment request: **"${userMessage.slice(0, 100)}"**, here is the binding legal clause:
+
+> **"ARTICLE [....] — CONTRACT AMENDMENT:**
+> 1. The parties mutually agree to amend the original contract terms as requested.
+> 2. This amendment takes effect immediately upon execution and constitutes an integral part of the Principal Agreement.
+> 3. All other terms and conditions remain in full force and effect."`;
+  }
+
+  // 10. Procedural Guidance / Registration (التوثيق والشهر العقاري)
+  if (/(توثيق|شهر عقاري|تسجيل|مرور|محكمة|رفع دعوى|إجراءات|اوراق|أوراق|رسوم|ضريبة|شروط صحة|نقل ملكية|notarize|notarization|land registry|traffic department|court filing|procedure|requirements)/i.test(p)) {
+    if (isAr) {
+      return `### 🏛️ الدليل الإجرائي والخطوات النظامية للتوثيق ونقل الملكية
+
+بخصوص استفسارك حول الإجراءات: **"${userMessage.slice(0, 100)}"**، نورد خارطة الطريق التنفيذية:
+
+---
+
+#### 1️⃣ **المستندات المطلوبة:**
+* أصل الهويات الوطنية / السجلات التجارية سارية المفعول لجميع الأطراف.
+* أصل العقد المحرر والموقع (نسختين على الأقل).
+* شهادة براءة الذمة / المخالصة المالية / شهادة الفحص الفني الدوري.
+* إيصال سداد الرسوم الحكومية أو الضريبية المقررة.
+
+#### 2️⃣ **الجهات وقنوات التوثيق الرسمية:**
+* 🚗 **نقل ملكية المركبات:** إدارة المرور / منصة أبشر أو تم أو مكاتب الشهر العقاري.
+* 🏢 **العقارات والإيجارات:** منصة إيجار / مصلحة الشهر العقاري والتسجيل العيني / دائرة الأراضي.
+* 💼 **الشركات والعمل:** منصات وزارة التجارة / قوى / مصلحة الضرائب.
+
+💡 *هل تود صياغة العقد أو الإشعار القانوني المخصص فوراً؟ اذكر التفاصيل لبدء التوليد!*`;
+    }
+    return `### 🏛️ Procedural Execution & Statutory Registration Roadmap
+- **Documentation**: Valid Government IDs, executed contract, technical inspection, and tax clearance proof.
+- **Authorities**: Traffic Department (Vehicles), Land Registry / Ejar (Real Estate), Ministry of Commerce (Corporate).`;
   }
 
   // 5. Intelligent Deep Legal Consultation (Specific Advice)

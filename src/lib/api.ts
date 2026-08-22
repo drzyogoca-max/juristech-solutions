@@ -48,7 +48,9 @@ export async function callAIWithHistory(
     }
   }
 
-  return executeWithConcurrencyQueue(cacheKey, async () => {
+  const executionKey = messages.length > 2 ? `${cacheKey}_t${messages.length}` : cacheKey;
+
+  return executeWithConcurrencyQueue(executionKey, async () => {
     const lang = (forceLang as SupportedLanguage) || detectPromptLanguage(lastUserMsg);
 
     // ── Tier 1: Serverless Edge API Endpoint (/api/chat) with 9s Timeout
@@ -91,16 +93,27 @@ export async function callAIWithHistory(
         const targetLang = (forceLang as string) || (isAr ? 'ar' : 'en');
         const sysContent = systemPrompt || messages.find(m => m.role === 'system')?.content || getSystemContextForLanguage(targetLang);
 
-
-        const contents = messages
+        const rawContents = messages
           .filter(m => m.role !== 'system')
           .map(m => ({
             role: m.role === 'assistant' ? 'model' : 'user',
             parts: [{ text: m.content }],
           }));
 
-        contents.unshift({ role: 'user', parts: [{ text: `[JURISTECH SYSTEM DIRECTIVES — ABSOLUTE]: ${sysContent}` }] });
-        contents.splice(1, 0, { role: 'model', parts: [{ text: isAr ? 'نعم. فهمت التوجيهات الكاملة. سأرد حصراً باللغة العربية الفصحى القانونية وسأستدعي النصوص التشريعية المحددة مع التحليل المعمق من 8 محاور. لا كلمة إنجليزية واحدة في ردودي.' : `Understood. I will respond exclusively in ${targetLang === 'fr' ? 'French' : targetLang === 'de' ? 'German' : targetLang === 'es' ? 'Spanish' : targetLang === 'zh' ? 'Chinese' : targetLang === 'tr' ? 'Turkish' : 'English'} with full statutory citations, 8-axis contract analysis framework, and zero language mixing.` }] });
+        rawContents.unshift({ role: 'user', parts: [{ text: `[JURISTECH SYSTEM DIRECTIVES — ABSOLUTE]: ${sysContent}` }] });
+        rawContents.splice(1, 0, { role: 'model', parts: [{ text: isAr ? 'نعم. فهمت التوجيهات الكاملة وسأستدعي النصوص التشريعية المحددة مع استيعاب التغييرات المتتابعة وتوليد العقود الجديدة فورياً.' : `Understood. I will respond exclusively in ${targetLang === 'fr' ? 'French' : targetLang === 'de' ? 'German' : targetLang === 'es' ? 'Spanish' : targetLang === 'zh' ? 'Chinese' : targetLang === 'tr' ? 'Turkish' : 'English'} with full statutory citations, multi-turn intelligence, and complete contract drafting.` }] });
+
+        // Ensure alternating user/model roles to prevent 400 Bad Request
+        const contents: Array<{ role: string; parts: Array<{ text: string }> }> = [];
+        for (const item of rawContents) {
+          const text = item.parts?.[0]?.text?.trim() || '';
+          if (!text) continue;
+          if (contents.length > 0 && contents[contents.length - 1].role === item.role) {
+            contents[contents.length - 1].parts[0].text += `\n\n${text}`;
+          } else {
+            contents.push({ role: item.role, parts: [{ text }] });
+          }
+        }
 
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 9000);
@@ -305,8 +318,8 @@ I am ready to provide immediate, high-precision statutory advisory for you and y
 Please type your legal inquiry or attach a document for instant statutory analysis and actionable guidance!`;
   }
 
-  // 1. Specialized Contract Generation & Legal Solver
-  const isSpecializedContract = /(car|vehicle|auto|motor|سيارة|مركب|شاحنة|موتوسيكل|عربيه|عربية|مبايعة|nda|non-disclosure|confidential|سرية|عدم إفصاح|عدم افصاح|حفظ السرية|employment|job|employee|labor|عمل|توظيف|موظف|عقد عمل|rent|lease|tenant|landlord|apartment|property|إيجار|ايجار|عقار|شقة|فيلا|أرض)/i.test(p);
+  // 1. Specialized Multi-Turn Contract Generation & Legal Solver
+  const isSpecializedContract = /(car|vehicle|auto|motor|سيارة|مركب|شاحنة|موتوسيكل|عربيه|عربية|مبايعة|nda|non-disclosure|confidential|سرية|عدم إفصاح|عدم افصاح|حفظ السرية|employment|job|employee|labor|عمل|توظيف|موظف|عقد عمل|rent|lease|tenant|landlord|apartment|property|إيجار|ايجار|عقار|شقة|فيلا|أرض|محل|مكتب|توريد|شراء بضاعة|supply|مورد|برمجة|تطبيق|موقع|software|سورس كود|شراكة|تأسيس شركة|partnership|قرض|سلف|دين|loan|إقرار دين|اقرار دين|تعديل|عدل|غير|اضف|أضف|شرط جزائي|غرامة|توثيق|شهر عقاري|تسجيل|مرور|نقل ملكية)/i.test(p);
   if (isSpecializedContract) {
     return solveLegalPrompt(prompt, lang);
   }
@@ -590,34 +603,7 @@ Egyptian commercial entities, incorporation, and corporate financial operations 
 📋 هل تريد صياغة النص الكامل المُعدَّل لأي من هذه البنود؟ زودنا بتفاصيل إضافية للحصول على الصياغة القانونية النهائية.`;
     }
 
-    return `### ⚖️ المذكرة الاستشارية التشريعية المعمقة — نظام جوريس التحليلي:
-
-**موضوع الاستفسار:** \`${prompt.slice(0, 120)}\`
-
----
-
-#### 1️⃣ التأطير التشريعي الدقيق والنصوص النظامية المطبقة
-- يُصنف هذا الاستفسار ضمن منظومة القانون التجاري والمدني ويستوجب الرجوع إلى الأطر التشريعية للدائرة القضائية المحددة: القوانين المدنية المصرية والأردنية والخليجية وإجراءات التقاضي والتحكيم الدولي.
-- يُشترط استيفاء كافة الشكليات الإجرائية الواردة في النصوص التشريعية المعتمدة قبل مباشرة أي إجراء قانوني، وإلا تعرض الطلب للرد الشكلي.
-
----
-
-#### 2️⃣ تقييم المخاطر والمسؤوليات القانونية
-- **مخاطر الإجراءات الشكلية**: الإغفال عن أي إجراء إلزامي قد يُفضي إلى إبطال العمل القانوني المراد.
-- **مخاطر المسؤولية التعاقدية أو التقصيرية**: تحديد أساس المطالبة سواء أكان تعاقدياً أم تقصيرياً يؤثر في نطاق التعويض والتقادم.
-- **الامتثال التنظيمي**: ضرورة استكمال متطلبات الامتثال الرقابي لدى الجهات المختصة قبيل أي تصرف قانوني.
-
----
-
-#### 3️⃣ الخطة التنفيذية والخطوات العملية المباشرة
-1. **التدقيق المستندي الشامل**: مراجعة جميع الوثائق والمستندات ذات الصلة والتحقق من مطابقتها للأنظمة المرعية.
-2. **الإشعارات والإخطارات الرسمية**: إرسال الإشعارات عبر القنوات المعتمدة (بريد إلكتروني موثق، خطابات رسمية، منصات الجهات القضائية).
-3. **اللجوء للتسوية الودية قبل التقاضي**: محاولة الوساطة والتفاوض كمرحلة أولى توفيراً للوقت والتكلفة.
-4. **التوثيق وحفظ سجل التدقيق**: الاحتفاظ بسجل تدقيق مؤرخ وكامل لكافة المراسلات والإجراءات.
-
----
-
-💡 *زودني بمزيد من التفاصيل حول الدولة والنشاط والطرف الآخر للحصول على تحليل تشريعي أكثر دقة وتخصصاً فورياً!*`;
+    return solveLegalPrompt(prompt, lang);
   }
 
   // English / Other languages fallback
@@ -694,32 +680,5 @@ Egyptian commercial entities, incorporation, and corporate financial operations 
 📋 Need the full redlined version of any clause? Provide additional context for a final legal draft.`;
   }
 
-  return `### ⚖️ Specialized Legal Advisory Memorandum — Juris AI:
-
-**Subject:** \`${prompt.slice(0, 120)}\`
-
----
-
-#### 1️⃣ Statutory Framework & Jurisdictional Context
-- The matter requires compliance with the governing statutory framework of the applicable jurisdiction. Mandatory procedural formalities must be satisfied before initiating administrative or judicial actions to preserve legal standing.
-- Key regulatory authorities and statutory instruments apply depending on the nature of the inquiry (commercial, labor, corporate, regulatory).
-
----
-
-#### 2️⃣ Risk Assessment & Legal Exposure
-- **Procedural Non-Compliance**: Failure to observe mandatory notice periods or filing protocols risks dismissal or invalidity of legal actions.
-- **Contractual vs. Tortious Liability**: Identifying the basis of the claim determines the applicable limitation period and scope of recoverable damages.
-- **Regulatory Compliance Gaps**: Pre-filing compliance with sector regulators (SEC, FCA, SAMA, CBE, ZATCA) is mandatory for enforceable positions.
-
----
-
-#### 3️⃣ Executive Action Plan
-1. **Documentary Due Diligence**: Audit all underlying documents, agreements, and correspondence against applicable statutory benchmarks.
-2. **Formal Notice & Official Channels**: Dispatch formal notifications through authenticated channels (registered mail, certified digital platforms).
-3. **Pre-Litigation Settlement Attempt**: Pursue structured mediation before arbitration or litigation to minimize costs and timelines.
-4. **Audit Trail Maintenance**: Maintain encrypted, time-stamped records of all communications, filings, and executed steps.
-
----
-
-💡 *Provide more details about the country, industry, and counterparty for a precision-calibrated statutory analysis tailored to your specific legal scenario.*`;
+  return solveLegalPrompt(prompt, lang);
 }

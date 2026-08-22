@@ -143,14 +143,26 @@ async function executeGeminiAI(userText, messages, activeLang, isAr, systemPromp
     }
 
     try {
-      const nativeContents = chatMessages
+      const rawNativeContents = chatMessages
         .filter(m => m.role !== 'system')
         .map(m => ({
           role: m.role === 'assistant' ? 'model' : 'user',
           parts: [{ text: m.content }],
         }));
 
-      nativeContents.unshift({ role: 'user', parts: [{ text: `[INSTRUCTIONS]: ${sysInstruction}` }] });
+      rawNativeContents.unshift({ role: 'user', parts: [{ text: `[INSTRUCTIONS]: ${sysInstruction}` }] });
+
+      // Sanitize to guarantee alternating user/model roles
+      const nativeContents = [];
+      for (const item of rawNativeContents) {
+        const text = item.parts?.[0]?.text?.trim() || '';
+        if (!text) continue;
+        if (nativeContents.length > 0 && nativeContents[nativeContents.length - 1].role === item.role) {
+          nativeContents[nativeContents.length - 1].parts[0].text += `\n\n${text}`;
+        } else {
+          nativeContents.push({ role: item.role, parts: [{ text }] });
+        }
+      }
 
       const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
       const timeoutId = controller ? setTimeout(() => controller.abort(), 8000) : null;
@@ -519,7 +531,136 @@ Governed by the statutory labor laws of [Jurisdiction].
 | **Signature:** [....................] | **Signature:** [....................] |`;
   }
 
-  // 4. Default dynamic consultation
+  // 4. Real Estate Lease (عقد إيجار)
+  if (/(rent|lease|tenant|landlord|apartment|property|real estate|إيجار|ايجار|عقار|شقة|فيلا|أرض)/i.test(p)) {
+    if (isAr) {
+      return `## ⚖️ عقد إيجار عقاري (سكني / تجاري) موثق وملزم
+
+**أُبرم هذا العقد في يوم [........] الموافق [..../..../2026م] بين:**
+* **الطرف الأول (المؤجر):** [اسم المؤجر] - هوية / سجل: [................]
+* **الطرف الثاني (المستأجر):** [اسم المستأجر] - هوية / سجل: [................]
+
+### 1️⃣ موضوع الإيجار وبيانات العقار:
+أجّر الطرف الأول إلى الطرف الثاني العقار الكائن في: [العنوان: المدينة، الحي، رقم المبنى، رقم الوحدة].
+
+### 2️⃣ مدة الإيجار والأجرة:
+- المدة: [سنة واحدة ميلادية] تبدأ من [..../..../2026] وتنتهي في [..../..../2027].
+- القيمة الإيجارية السنوية: **[المبلغ رقماً وكتابة]** تُسدد على [4 دفعات ربع سنوية].
+- التأمين المسترد: **[المبلغ]** يُرد عند إخلاء وتسليم العين بحالتها الأصلية.
+
+### 3️⃣ الصيانة والتوثيق الرسمي:
+- يتحمل المؤجر الصيانة الهيكلية الأساسية، ويتحمل المستأجر الصيانة الاستهلاكية وفواتير الخدمات.
+- يخضع العقد للتوثيق عبر المنصة الرقمية المعتمدة (إيجار / الشهر العقاري).
+
+| توقيع المؤجر | توقيع المستأجر |
+| :--- | :--- |
+| **الاسم:** [....................] | **الاسم:** [....................] |`;
+    }
+    return `## ⚖️ COMMERCIAL & RESIDENTIAL PROPERTY LEASE AGREEMENT
+* **Landlord:** [Landlord Full Legal Name] (ID/Reg: [................])
+* **Tenant:** [Tenant Full Legal Name] (ID/Reg: [................])
+### 1. PREMISES: [Full Address / Unit Number]
+### 2. TERM & RENT: [1 Year], $[Amount] per annum.
+### 3. GOVERNING LAW: Governed by local tenancy statutes and official registry.`;
+  }
+
+  // 5. Commercial Supply
+  if (/(supply|procurement|goods|materials|vendor|supplier|توريد|شراء بضاعة|مورد|بضائع|توريدات)/i.test(p)) {
+    if (isAr) {
+      return `## ⚖️ عقد توريد بضائع ومواد تجارية رسمي وملزم
+* **المشتري:** [الاسم / الشركة] | س.ت: [................]
+* **المورد:** [الاسم / الشركة] | س.ت: [................]
+### 📦 موضوع التوريد والجدول الزمني:
+توريد البضائع والمنتجات المحددة في جدول المواصفات (ISO/SASO) خلال [........ يوماً].
+### 💰 القيمة والدفعات:
+القيمة الإجمالية: [المبلغ] (30% مقدم | 50% بعد الفحص | 20% اعتماد نهائي).
+### 🚨 غرامات التأخير والضمان:
+غرامة 1% أسبوعياً بحد أقصى 10%، مع ضمان جودة شامل لمدة 12 شهراً.`;
+    }
+    return `## ⚖️ COMMERCIAL GOODS SUPPLY & PROCUREMENT AGREEMENT
+* **BUYER:** [Company Name] | **SUPPLIER:** [Supplier Name]
+### 1. SCOPE & INCOTERMS: DDP Delivery per Technical Specifications.
+### 2. PRICE: $[Amount] (30% advance, 50% inspection, 20% final acceptance).
+### 3. PENALTY: 1% weekly delay penalty capped at 10% max.`;
+  }
+
+  // 6. Software Development
+  if (/(software|app|application|developer|code|saas|api|source code|programming|it services|برمجة|تطبيق|موقع|تطوير برمجيات|منصة|سورس كود)/i.test(p)) {
+    if (isAr) {
+      return `## ⚖️ عقد تطوير برمجيات ونقل حقوق الملكية الفكرية
+* **العميل:** [اسم الشركة / الفرد] | **المطور:** [اسم المطور / الشركة]
+### 💻 نطاق العمل والمراحل:
+تطوير وإطلاق المنصة / التطبيق شاملاً السورس كود الكامل وواجهات الـ API على 4 مراحل (UI/UX 25%, Backend 35%, Testing 25%, Deployment 15%).
+### 🧠 الملكية الفكرية والضمان:
+تنتقل كامل حقوق الملكية الفكرية والسورس كود للعميل حصراً فور السداد، مع 6 أشهر دعم فني وضمان مجاني.`;
+    }
+    return `## ⚖️ SOFTWARE DEVELOPMENT & IP TRANSFER AGREEMENT
+* **CLIENT:** [Client Legal Entity] | **DEVELOPER:** [Developer / IT Firm]
+### 1. SCOPE: Full architecture, development, QA, and source code handover.
+### 2. IP OWNERSHIP: 100% IP & source code assigned to Client upon payment.
+### 3. WARRANTY: 6-month defect remediation warranty included.`;
+  }
+
+  // 7. Partnership & Shareholders
+  if (/(partnership|partner|shareholder|joint venture|equity|شراكة|تأسيس شركة|شركاء|مساهمين|حصص|أرباح)/i.test(p)) {
+    if (isAr) {
+      return `## ⚖️ عقد شراكة تجارية وتوزيع الحصص والأرباح
+* **الشريك الأول:** [الاسم] (حصة: ....%) | **الشريك الثاني:** [الاسم] (حصة: ....%)
+### 🤝 رأس المال والأرباح:
+رأس المال الإجمالي: [المبلغ]، وتوزع الأرباح الصافية بنسبة الحصص دورياً.
+### 🏛️ الإدارة وحق الشفعة:
+الإدارة التنفيذية لـ [اسم المدير]، وحق شفعة 30 يوماً للشركاء قبل أي تخارج للغير.`;
+    }
+    return `## ⚖️ COMMERCIAL PARTNERSHIP & SHAREHOLDERS AGREEMENT
+* **PARTNER A:** [Name] (....%) | **PARTNER B:** [Name] (....%)
+### 1. PROFIT/LOSS: Pro-rata allocation based on equity shares.
+### 2. ROFR: 30-day Right of First Refusal prior to third-party share transfers.`;
+  }
+
+  // 8. Loan & Debt Acknowledgment
+  if (/(loan|debt|promissory|borrow|lender|قرض|سلف|دين|سند لأمر|مديونية|تسوية ديون|كمبيالة|إقرار دين|اقرار دين)/i.test(p)) {
+    if (isAr) {
+      return `## ⚖️ إقرار دين وسند مديونية والتزام بالسداد رسمي
+* **المدين (المقر بالدين):** [الاسم الكامل] - هوية: [................]
+* **الدائن (المستحق للدين):** [الاسم الكامل] - هوية: [................]
+### 💰 الإقرار والالتزام:
+أقر بأن في ذمتي للدائن ديناً قدره: [المبلغ رقماً وكتابة]، والتزم بسداده كاملاً في موعد أقصاه [..../..../2026] ويكون لهذا الإقرار قوة السند التنفيذي.`;
+    }
+    return `## ⚖️ PROMISSORY NOTE & ACKNOWLEDGMENT OF DEBT
+* **DEBTOR:** [Full Legal Name] | **CREDITOR:** [Full Legal Name]
+### 1. DEBT ACKNOWLEDGMENT: Indebtedness of $[Amount] payable on or before [Due Date].
+### 2. ENFORCEMENT: Enforceable as an executive debt instrument upon default.`;
+  }
+
+  // 9. Contract Amendment / Custom Clause Formulation
+  if (/(تعديل|عدل|غير|اضف|أضف|احذف|بند إضافي|بند جديد|شرط جزائي|غرامة|دفعات|اقساط|أقساط|amend|modify|revise|add clause|edit clause|penalty clause)/i.test(p)) {
+    if (isAr) {
+      return `### ✍️ الصياغة القانونية المعدلة للبنود المطلوبة
+بناءً على طلب التعديل: **"${prompt.slice(0, 100)}"**، نورد نص البند المعدل للإدراج الفوري:
+> **"البند [....] — التعديل التعاقدي المتفق عليه:**
+> 1. اتفق الطرفان على تعديل أحكام البند الأصلي ليكون نصه كالتالي: [........ نص التعديل المطلوب بدقة ........].
+> 2. يسري هذا التعديل من تاريخ توقيعه ويعد جزءاً لا يتجزأ من العقد ومكملاً له."`;
+    }
+    return `### ✍️ Executive Contract Amendment & Clause Formulation
+> **"ARTICLE [....] — CONTRACT AMENDMENT:**
+> 1. The parties mutually agree to amend the specified contract terms.
+> 2. This amendment takes effect immediately upon execution and forms an integral part of the Principal Agreement."`;
+  }
+
+  // 10. Procedural Guidance / Registration
+  if (/(توثيق|شهر عقاري|تسجيل|مرور|محكمة|رفع دعوى|إجراءات|اوراق|أوراق|رسوم|ضريبة|شروط صحة|نقل ملكية|notarize|notarization|land registry|traffic department|court filing|procedure|requirements)/i.test(p)) {
+    if (isAr) {
+      return `### 🏛️ الدليل الإجرائي والخطوات النظامية للتوثيق ونقل الملكية
+بخصوص استفسارك حول الإجراءات: **"${prompt.slice(0, 100)}"**
+1. **المستندات المطلوبة:** أصل الهويات/السجلات التجارية، أصل العقد (نسختين)، شهادة الفحص/براءة الذمة، وإيصال سداد الرسوم.
+2. **الجهات الرسمية:** المرور / أبشر للمركبات، الشهر العقاري / إيجار للعقارات، ووزارة التجارة للشركات.`;
+    }
+    return `### 🏛️ Procedural Execution & Statutory Registration Roadmap
+- **Checklist**: Valid IDs/CRs, executed contract copies, technical inspection, and tax/fee receipts.
+- **Authorities**: Traffic Dept (Vehicles), Land Registry / Ejar (Real Estate), Ministry of Commerce (Corporate).`;
+  }
+
+  // 11. Default dynamic consultation
   if (isAr) {
     return `### ⚖️ الرأي القانوني والتحليل التشريعي التخصصي
 

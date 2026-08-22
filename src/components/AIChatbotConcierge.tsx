@@ -307,25 +307,19 @@ ${currentAttachedText.slice(0, 4500)}
 
       const systemPromptCombined = `${systemContext}${fileContextPrompt}${ragDirective}`;
 
-      // ── CONTEXT BLEEDING PREVENTION ──────────────────────────────────────
-      // Topic-drift detection: if user changed topic, reset history window
+      // ── MULTI-TURN CONVERSATIONAL INTELLIGENCE ──────────────────────────
       const recentChatHistory = messages.slice(-6);
-      const lastUserTexts = recentChatHistory.filter(m => m.sender === 'user').map(m => m.text).join(' ');
-      const isTopicDrift = !currentAttachedText && lastUserTexts.length > 0 && !(userText || '')
-        .split(' ')
-        .slice(0, 5)
-        .some(word => word.length > 3 && lastUserTexts.toLowerCase().includes(word.toLowerCase()));
 
-      const contextIsolationPrefix = isTopicDrift
-        ? `\n\n⚠️ [SYSTEM: STRICT CONTEXT ISOLATION] The user has switched to a completely new topic. Ignore all prior conversation context and contract references. Answer ONLY the current question: "${userText || ''}", with zero reference to previous messages.`
-        : '';
+      const multiTurnDirective = `\n\n[MULTI-TURN CONVERSATIONAL INTELLIGENCE]:
+1. NEW CONTRACT / TOPIC SWITCH: If the user asks for a new or different contract (e.g. Car Sale -> NDA -> Lease -> Employment), immediately acknowledge and draft the NEW contract fully with all formal clauses, without confusing it with previous terms.
+2. CONTRACT AMENDMENT & REVISION: If the user requests modifications, clause additions (penalty clause, installment schedule, arbitration), or custom edits, formulate the revised clause or amended agreement cleanly.
+3. PROCEDURAL & STATUTORY GUIDANCE: If the user asks procedural or follow-up legal questions (notarization, land registry, traffic department, taxes, litigation), provide a step-by-step statutory execution roadmap.`;
 
-      const finalSystemPrompt = systemPromptCombined + contextIsolationPrefix;
+      const finalSystemPrompt = systemPromptCombined + multiTurnDirective;
 
       const historyPayload: AIMessagePayload[] = [
         { role: 'system', content: finalSystemPrompt },
-        // Only inject last 4 messages (not 6+) and NONE if topic drifted
-        ...(isTopicDrift ? [] : recentChatHistory.slice(-4)).map((m) => ({
+        ...recentChatHistory.map((m) => ({
           role: (m.sender === 'bot' ? 'assistant' : 'user') as 'assistant' | 'user',
           content: m.text,
         })),
