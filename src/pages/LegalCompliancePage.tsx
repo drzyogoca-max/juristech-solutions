@@ -42,7 +42,7 @@ const ComplianceSection: React.FC<ComplianceSectionProps> = ({
     <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden mb-4 transition-all duration-300 hover:border-cyan-500/40 shadow-lg">
       <button 
         onClick={toggleOpen}
-        className="w-full flex items-center justify-between p-6 bg-slate-50 dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-right"
+        className="w-full flex items-center justify-between p-6 bg-slate-50 dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-start"
       >
         <div className="flex items-center gap-4">
           <div className="p-3 bg-cyan-500/10 dark:bg-slate-950 rounded-xl text-cyan-400 border border-cyan-500/30">

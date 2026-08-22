@@ -144,7 +144,7 @@ export default function EnterpriseAuditPage() {
             <button
               key={tier}
               onClick={() => setAuditTier(tier as any)}
-              className={`p-5 rounded-3xl border text-right transition-all flex flex-col justify-between relative overflow-hidden group ${
+              className={`p-5 rounded-3xl border text-start transition-all flex flex-col justify-between relative overflow-hidden group ${
                 auditTier === tier
                   ? 'bg-gradient-to-b from-amber-950/50 via-slate-900 to-slate-900 border-amber-500 text-amber-400 shadow-2xl shadow-amber-950/40 scale-102'
                   : 'bg-slate-900/90 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-slate-300 dark:border-slate-700 hover:bg-white dark:bg-slate-900'

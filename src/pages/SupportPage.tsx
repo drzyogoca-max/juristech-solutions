@@ -127,7 +127,7 @@ export default function SupportPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <button
             onClick={() => setIsMessengerOpen(true)}
-            className="p-5 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 flex items-center justify-between hover:bg-cyan-500/20 transition-all text-right"
+            className="p-5 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 flex items-center justify-between hover:bg-cyan-500/20 transition-all text-start"
           >
             <div className="flex items-center gap-3">
               <Lock className="w-6 h-6 shrink-0" />
@@ -178,7 +178,7 @@ export default function SupportPage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
             <Link
               to="/chat"
-              className="p-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800/80 border border-slate-800 text-right transition-all group"
+              className="p-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800/80 border border-slate-800 text-start transition-all group"
             >
               <span className="text-xs font-bold text-white block group-hover:text-cyan-300 transition-colors">
                 {isRtl ? '🤖 المستشار الذكي (10 رسائل مجاناً)' : '🤖 AI Legal Chatbot (10 Free Messages)'}
@@ -190,7 +190,7 @@ export default function SupportPage() {
 
             <Link
               to="/contracts"
-              className="p-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800/80 border border-slate-800 text-right transition-all group"
+              className="p-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800/80 border border-slate-800 text-start transition-all group"
             >
               <span className="text-xs font-bold text-white block group-hover:text-indigo-300 transition-colors">
                 {isRtl ? '📋 فحص ثغرات وتدقيق العقد' : '📋 AI Contract Gap Audit'}
@@ -202,7 +202,7 @@ export default function SupportPage() {
 
             <button
               onClick={() => setIsMessengerOpen(true)}
-              className="p-3.5 rounded-2xl bg-cyan-950/40 hover:bg-cyan-900/40 border border-cyan-500/30 text-right transition-all group"
+              className="p-3.5 rounded-2xl bg-cyan-950/40 hover:bg-cyan-900/40 border border-cyan-500/30 text-start transition-all group"
             >
               <span className="text-xs font-bold text-cyan-400 block group-hover:text-cyan-300 transition-colors">
                 {isRtl ? '🔒 استشارة مشفرة وتصعيد تذكرة عاجلة' : '🔒 Encrypted Counsel & Urgent Ticket'}
@@ -283,7 +283,7 @@ export default function SupportPage() {
               <div key={i} className="bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
                 <button
                   onClick={() => setExpandedFaq(expandedFaq === i ? null : i)}
-                  className="w-full p-4 text-right flex items-center justify-between text-sm font-bold text-slate-800 dark:text-slate-200 hover:text-cyan-400 transition-colors"
+                  className="w-full p-4 text-start flex items-center justify-between text-sm font-bold text-slate-800 dark:text-slate-200 hover:text-cyan-400 transition-colors"
                 >
                   <span>{isRtl ? faq.qAr : faq.qEn}</span>
                   {expandedFaq === i ? <ChevronUp className="w-4 h-4 text-cyan-400" /> : <ChevronDown className="w-4 h-4 text-slate-500 dark:text-slate-400 dark:text-slate-400" />}
