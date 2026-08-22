@@ -1,4 +1,5 @@
 import { detectPromptLanguage, SupportedLanguage } from '../services/engine-ai/languageDetector';
+import { solveLegalPrompt } from '../services/engine-ai/legalIntelligenceEngine';
 import { executeWithConcurrencyQueue } from './concurrencyManager';
 import { findFastSemanticMatch, recordAndLearnQuery } from './aiSelfLearningEngine';
 import { getSystemContextForLanguage } from './languageHelper';
@@ -302,6 +303,12 @@ I am ready to provide immediate, high-precision statutory advisory for you and y
 - 🔍 **Risk Inspection, Commercial Dispute Resolution & Regulatory Compliance**.
 
 Please type your legal inquiry or attach a document for instant statutory analysis and actionable guidance!`;
+  }
+
+  // 1. Specialized Contract Generation & Legal Solver
+  const isSpecializedContract = /(car|vehicle|auto|motor|سيارة|مركب|شاحنة|موتوسيكل|عربيه|عربية|مبايعة|nda|non-disclosure|confidential|سرية|عدم إفصاح|عدم افصاح|حفظ السرية|employment|job|employee|labor|عمل|توظيف|موظف|عقد عمل|rent|lease|tenant|landlord|apartment|property|إيجار|ايجار|عقار|شقة|فيلا|أرض)/i.test(p);
+  if (isSpecializedContract) {
+    return solveLegalPrompt(prompt, lang);
   }
 
   // 1. Egyptian Company & Financial Laws Framework (مصر / قوانين الشركات والمالية)

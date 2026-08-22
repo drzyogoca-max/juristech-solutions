@@ -388,87 +388,7 @@ async function executeGeminiOrSynthesis(userMessage, messages, history, activeLa
 
 function generateHighPrecisionStatutorySynthesis(userMessage, lang) {
   const p = userMessage.toLowerCase().trim();
-  const isAr = lang === 'ar';
-
-  // 0. Attached Document Audit & File Reports
-  const isDocAudit = p.includes('[attached contract document:') ||
-                     p.includes('مستند:') ||
-                     p.includes('file:') ||
-                     p.includes('.pdf') ||
-                     p.includes('.docx') ||
-                     p.includes('check it') ||
-                     p.includes('reports') ||
-                     p.includes('تدقيق') ||
-                     p.includes('فحص') ||
-                     (p.includes('عقد') && p.length < 150);
-
-  if (isDocAudit) {
-    const filenameMatch = userMessage.match(/\[ATTACHED CONTRACT DOCUMENT:\s*"([^"]+)"\]/i) ||
-                          userMessage.match(/([a-zA-Z0-9_\-\u0600-\u06FF]+\.(pdf|docx|txt))/i) ||
-                          userMessage.match(/"([^"]+)"/i);
-    let docTitle = filenameMatch ? filenameMatch[1] : 'عقد وقود القاهرة للاستثمار والتنمية العقارية - سيرا للتعليم';
-    docTitle = docTitle.replace(/_/g, ' ').replace(/\.pdf|\.docx|\.txt/gi, '').trim();
-
-    if (isAr) {
-      return `### 📋 تقرير التدقيق والتحليل التشريعي التخصصي للمستند المرفق:
-**عنوان المستند المراجع:** \`${docTitle}\`
-**الجهة المعنية / الأطراف:** شركة القاهرة للاستثمار والتنمية العقارية (سيرا للتعليم - CIRA Education) & شركة توريد الوقود والمنتجات البترولية.
-
----
-
-#### 1️⃣ **نطاق الالتزامات والهيكل التعاقدي (Contract Structure & Obligations)**
-- **موضوع التعاقد والأهلية**: توريد المنتجات البترولية والوقود اللازم لتشغيل المنشآت والمؤسسات التعليمية والتطوير العقاري التابعة لـ (CIRA Education).
-- **التزامات التسليم والمواصفات**: الالتزام بالمواصفات القياسية للهيئة المصرية العامة للبترول، مع وضع آلية معايرة دورية لخزانات الوقود.
-- **الشروط المالية وآلية التسعير**: خضوع أسعار الوقود لنشرة التسعير التلقائي الصادرة عن وزارة البترول المصرية، مع اشتراط فترة سماح للسداد لا تقل عن 30 يوماً من تاريخ الفاتورة الإلكترونية المعتمدة.
-
----
-
-#### 2️⃣ **تقييم الثغرات والمخاطر التشريعية (Risk & Vulnerability Audit)**
-- 🚨 **مخاطر تذبذب الأسعار وحظر التوقف عن التوريد**: وجوب النص صراحة على عدم جواز وقف التوريد أثناء فترة إعادة النظر في الأسعار لمنع تعطل الأنشطة التعليمية.
-- ⚠️ **سقف المسؤولية المالية (Liability Limitation Cap)**: تحديد الحد الأقصى للمسؤولية المالية بـ 100% من قيمة الفاتورة الشهرية السابقة لحماية أصول شركة القاهرة للاستثمار.
-- 🛡️ **القوة القاهرة والظروف الطارئة (Force Majeure & Hardship)**: إعادة الصياغة طبقاً للقانون المدني المصري (م/147) ومعايير ICC 2020 لضمان منح فترة إمهال عند حدوث أزمات عالمية في سلاسل الإمداد.
-- ⚖️ **الامتثال الضريبي ونظام الفاتورة الإلكترونية**: اشتراط تسليم الفواتير عبر منظومة الفاتورة الإلكترونية التابعة لمصلحة الضرائب المصرية (ETA) وفق القانون رقم 91 لسنة 2005.
-
----
-
-#### 3️⃣ **التعديلات الحمائية الموصى بها (Executive AI Redlines & Approved Clauses)**
-1. **بند التحرر من الأضرار التبعية**:
-   > *"لا يتحمل المستثمر (شركة القاهرة للاستثمار) أي مسؤولية عن الأضرار التبعية أو الخسائر غير المباشرة أو توقف الأنشطة التعليمية والتطويرية."*
-2. **بند القانون المطبق وهيئة التحكيم**:
-   > *"خضوع هذا العقد وتفسيره لقوانين جمهورية مصر العربية (قانون الشركات 159/1981 وقانون الاستثمار 72/2017)، وتختص هيئة التحكيم بـ (مركز القاهرة الإقليمي للتحكيم التجاري الدولي CRCICA) بنظر أي نزاع."*
-
----
-
-💡 *هل ترغب في صياغة العقد الموثق بالكامل أو تحميل نسخة PDF/Word معتمدة بخاتم الشفرة القانونية؟ أبلغني بذلك فوراً!*`;
-    }
-
-    return `### 📋 Executive Legal Audit Report for Attached Document:
-**Audited Document Title:** \`${docTitle}\`
-**Entities / Parties Involved:** Cairo Investment & Real Estate Development (CIRA Education) & Petroleum Fuel Supply Contractor.
-
----
-
-#### 1️⃣ **Contract Scope & Party Obligations**
-- **Capacity & Deliverables**: Fuel & petroleum supply management for educational campuses and real estate assets managed by CIRA Education.
-- **Performance Benchmarks**: Mandatory adherence to Egyptian General Petroleum Corporation (EGPC) standards, with automated tank calibration protocols.
-- **Financial Terms & Price Adjustments**: Pricing structured according to Egyptian Petroleum Automatic Pricing Committee decrees, with a 30-day post-invoicing credit window.
-
----
-
-#### 2️⃣ **Critical Risk Assessment & Vulnerability Audit**
-- 🚨 **Supply Interruption Risk**: Strict prohibition against unilateral supply suspension during price recalculation intervals to safeguard educational operations.
-- ⚠️ **Aggregate Liability Cap**: Capping total monetary liability at 100% of the preceding monthly invoice value to protect enterprise assets.
-- 🛡️ **Force Majeure & Hardship Relief**: Standardized under Egyptian Civil Code (Art. 147) and ICC 2020 Force Majeure standards to account for global energy supply chain disruptions.
-- ⚖️ **ETA E-Invoicing Compliance**: Mandatory invoice submission through the Egyptian Tax Authority (ETA) e-invoicing portal per Law No. 91/2005.
-
----
-
-#### 3️⃣ **Executive AI Redlines & Recommended Clauses**
-1. **Consequential Damage Exclusion**:
-   > *"In no event shall Cairo Investment & Real Estate Development be liable for indirect, incidental, or consequential commercial losses."*
-2. **Governing Law & Institutional Arbitration**:
-   > *"This agreement is governed by the laws of the Arab Republic of Egypt (Companies Law 159/1981 & Investment Law 72/2017). Disputes shall be exclusively resolved via arbitration at CRCICA (Cairo Regional Centre for International Commercial Arbitration)."*`;
-  }
+  const isAr = lang === 'ar' || /[\u0600-\u06FF]/.test(userMessage);
 
   // 0. Greetings
   const isGreeting = /^(hello|hi|hey|greetings|good\s*(morning|afternoon|evening)|مرحبا|مرحباً|أهلا|أهلاً|السلام\s*عليكم|سلام|كيفك|كيف\s*الحال)$/i.test(p);
@@ -476,134 +396,417 @@ function generateHighPrecisionStatutorySynthesis(userMessage, lang) {
     return getGreetingFallback(lang);
   }
 
-  // 1. Egyptian Company & Financial Laws Framework (مصر / قوانين الشركات والمالية)
-  if (p.includes('egypt') || p.includes('egypet') || p.includes('مصر') || p.includes('مصري') || p.includes('القاهرة') || p.includes('جافي') || p.includes('gafi')) {
-    if (p.includes('financ') || p.includes('مالي') || p.includes('ضرائب') || p.includes('بنك') || p.includes('سوق') || p.includes('تأسيس') || p.includes('تاسيس') || p.includes('شركة') || p.includes('شركات') || p.includes('law') || p.includes('قانون')) {
-      if (isAr) {
-        return `### 🏛️ المذكرة الاستشارية: الأطر والأنظمة التشريعية لشركات والقوانين المالية في جمهورية مصر العربية
-
-تخضع المنشآت التجارية والمعاملات المالية للشركات في مصر لمنظومة تشريعية وتنفيذية متعددة الأركان:
-
----
-
-#### 1️⃣ **التأطير التشريعي والتأسيس المؤسسي (GAFI & Corporate Structure)**
-- **قانون الشركات رقم 159 لسنة 1981 وتعديلاته**: يُنظم تأسيس الشركات ذات المسؤولية المحدودة (ذ.م.م)، وشركات الشخص الواحد، والشركات المساهمة (ش.م.م)، وفروع الشركات الأجنبية.
-- **الهيئة العامة للاستثمار والمناطق الحرة (GAFI)**: البوابة التنفيذية المعتمدة لتوثيق عقود التأسيس والنظم الأساسية واستخراج السجل التجاري والبطاقة الضريبية وفق أحكام **قانون الاستثمار رقم 72 لسنة 2017**.
-
----
-
-#### 2️⃣ **الأنظمة المالية وسوق رأس المال والبنك المركزي (Financial & Banking Regulations)**
-- **قانون سوق رأس المال رقم 95 لسنة 1992**: يُنظم إصدارات الأسهم والتصكيك والسندات تحت رقابة **الهيئة العامة للرقابة المالية (FRA)**.
-- **قانون البنك المركزي والجهاز المصرفي رقم 194 لسنة 2020**: يحدد ضوابط التعامل بالتحويلات النقدية الأجنبية وإيداعات رأس المال وحركة الحسابات المصرفية التجارية.
-- **معايير المحاسبة المصرية (EAS / IFRS)**: إلزام الشركات بإعداد قوائم مالية سنوية مدققة ومصادق عليها من محاسب قانوني مقيد بسجل المحاسبين والمراجعين.
-
----
-
-#### 3️⃣ **الامتثال الضريبي ونظام الفوترة الإلكترونية (Taxation & E-Invoicing)**
-- **قانون الضريبة على الدخل رقم 91 لسنة 2005**: تبلغ نسبة ضريبة أرباح الأشخاص الاعتبارية (الشركات) 22.5% على صافي الأرباح الخاضعة للضريبة.
-- **قانون الضريبة على القيمة المضافة رقم 67 لسنة 2016**: النسبة العامة 14% على السلع والخدمات التجارية.
-- **الفاتورة الإلكترونية (مصلحة الضرائب المصرية ETA)**: التزام جَسيم بالتسجيل والربط الإلكتروني الفوري للفواتير والإيصالات.
-
----
-
-💡 *خطوات تنفيذية*: هل ترغب في إعداد ملف التأسيس لدى GAFI أو مراجعة الاتفاقيات المالية وضوابط الأرباح والضرائب؟ زودني بالتفاصيل فوراً!`;
-      }
-
-      return `### 🏛️ Executive Advisory: Egyptian Company & Financial Laws Framework
-
-Egyptian commercial entities, incorporation, and corporate financial operations are governed by a robust, multi-tiered statutory framework:
-
----
-
-#### 1️⃣ **Primary Corporate Legislation & Entity Incorporation**
-- **Companies Law No. 159 of 1981 (and Amendments)**: Governs Limited Liability Companies (LLC / ذ.م.م), Single Person Companies (SPC), Joint Stock Companies (JSC / ش.م.م), and Foreign Branch Offices.
-- **General Authority for Investment and Free Zones (GAFI / الهيئة العامة للاستثمار)**: The primary regulatory gateway for commercial incorporation, Articles of Association authentication, and investor licensing under **Investment Law No. 72 of 2017**.
-
----
-
-#### 2️⃣ **Financial Regulations, Capital Markets & Banking Controls**
-- **Capital Market Law No. 95 of 1992**: Regulates public offerings, corporate bonds, asset management, and financial disclosures monitored by the **Financial Regulatory Authority (FRA / الهيئة العامة للرقابة المالية)**.
-- **Central Bank of Egypt (CBE) & Banking Law No. 194 of 2020**: Controls foreign currency transfers, corporate capital deposits, cross-border remittance, and credit facility approvals.
-- **Financial Reporting & Auditing Standards**: Egyptian Companies must adhere to **Egyptian Accounting Standards (EAS)**, harmonized with **IFRS**, requiring annual audited financial statements certified by a registered Chartered Accountant (المحاسب القانوني المقيد).
-
----
-
-#### 3️⃣ **Taxation & E-Invoicing Compliance**
-- **Income Tax Law No. 91 of 2005**: Standard corporate income tax rate is 22.5% on net taxable profits.
-- **VAT Law No. 67 of 2016**: Standard Value Added Tax (VAT) rate of 14% applied on commercial goods and service supplies.
-- **ETA E-Invoicing & E-Receipt System (الفاتورة الإلكترونية)**: Mandatory registration with the Egyptian Tax Authority (ETA) for real-time electronic tax invoice clearance.
-
----
-
-💡 *Next Steps*: Do you need step-by-step assistance with GAFI incorporation documents, drafting shareholder agreements, or reviewing Egyptian tax & financial compliance? Ask right away!`;
-    }
-  }
-
-  // Criminal Fraud & Penal Procedures in Riyadh / Saudi Arabia
-  if (p.includes('احتيال') || p.includes('جزائي') || p.includes('رياض') || p.includes('نصاب') || p.includes('شرطة') || p.includes('نيابة') || p.includes('fraud') || p.includes('penal')) {
+  // 1. Car / Vehicle Sale Agreement (عقد بيع وتنازل عن سيارة / مركبة)
+  if (/(car|vehicle|auto|automobile|motor|سيارة|مركب|شاحنة|موتوسيكل|عربيه|عربية|بيع سيارة|شراء سيارة|مبايعة)/i.test(p)) {
     if (isAr) {
-      return `### ⚖️ الإجراءات الجزائية والآلية التشريعية لمكافحة الاحتيال المالي (منطقة الرياض / المملكة العربية السعودية):
+      return `## ⚖️ عقد بيع وتنازل عن مركبة / سيارة رسمي وموثق
 
-استناداً إلى **نظام مكافحة الاحتيال المالي وخيانة الأمانة** (المرسوم الملكي رقم **م/79**) و**نظام الإجراءات الجزائية** (المرسوم الملكي رقم **م/2**):
+**بعون الله وتوفيقه، تم إبرام هذا العقد في يوم [........] الموافق [..../..../2026م] بين كل من:**
 
----
+### 👥 طرفي العقد:
+* **الطرف الأول (البائع):**
+  - **الاسم الثلاثي / الرباعي:** [اسم البائع الكامل]
+  - **رقم الهوية الوطنية / الإقامة / جواز السفر:** [................................]
+  - **الجنسية:** [....................] | **العنوان:** [................................]
+  - **رقم الهاتف:** [....................] | **البريد الإلكتروني:** [....................]
 
-#### 1️⃣ **التأطير التشريعي والنصوص النظامية المطبقة**
-- **الجريمة والعقوبة (المادة 1 من نظام مكافحة الاحتيال المالي)**: يُعاقب بالسجن مدة لا تتجاوز (7) سنوات، وبغرامة مالية لا تزيد على (5) ملايين ريال، أو بإحدى هاتين العقوبتين، كل من استولى على مال غيره دون وجه حق بارتكاب أي من طرق الاحتيال أو الخداع.
-- **الاختصاص القضائي بالرياض**: تتركز اختصاصات التحقيق لدى **النيابة العامة بمنطقة الرياض** (دائرة قضايا الاحتيال المالي والجرائم الاقتصادية)، وتتولى **المحكمة الجزائية بالرياض** النظر في الدعوى العامة والحق الخاص.
-
----
-
-#### 2️⃣ **الخطوات الإجرائية والتنفيذية المباشرة لرفع البلاغ بالرياض**
-1. **تقديم البلاغ الأولي (منصة كلنا أمن / أبشر)**:
-   - تقديم بلاغ احتيال مالي إلكتروني فورياً عبر تطبيق "كلنا أمن" (قسم الجرائم الإلكترونية) أو الحضور لمركز الشرطة المختص بمكان وقوع الجريمة في الرياض.
-   - إرفاق كشوف الحسابات المصرفية، الحوالات المالية، الحسابات البنكية للمحتال، والمراسلات.
-2. **إحالة الملف للنيابة العامة بالرياض (Investigation Phase)**:
-   - يُحال البلاغ إلكترونياً إلى النيابة العامة بالرياض لمباشرة الاستجابة واستدعاء أو توقيف المتهم وفق المادة (112) من نظام الإجراءات الجزائية.
-   - مخاطبة البنك المركزي السعودي (**SAMA**) عبر النيابة لتجميد الحسابات البنكية المشتبه بها وتتبع حركة الأموال (Stop-Payment Order).
-3. **مباشرة الدعوى أمام المحكمة الجزائية بالرياض (Court Trial)**:
-   - المطالبة بالحق العام (إيقاع العقوبة التعزيرية والسجن على الجاني).
-   - إقامة دعوى الحق الخاص المباشرة أمام الدائرة الجزائية للمطالبة باسترداد كامل المبالغ المحتال عليها والتعويض عن الأضرار.
+* **الطرف الثاني (المشتري):**
+  - **الاسم الثلاثي / الرباعي:** [اسم المشتري الكامل]
+  - **رقم الهوية الوطنية / الإقامة / جواز السفر:** [................................]
+  - **الجنسية:** [....................] | **العنوان:** [................................]
+  - **رقم الهاتف:** [....................] | **البريد الإلكتروني:** [....................]
 
 ---
 
-🏛️ *توصية تنفيذية للمستثمرين والأفراد*: يُنصح بإصدار مذكرة ادعاء مباشر ومخاطبة البنك المركزي فورياً لضمان عدم تهريب الأموال الخارجة من الحسابات المصرفية.`;
+### 📋 تمهيد:
+يمتلك الطرف الأول المركبة المبينة مواصفاتها تفصيلاً في البند الأول من هذا العقد، ولديه الأهلية القانونية والصفة المعتبرة شرعاً للتصرف فيها ونقل ملكيتها. ورغبة من الطرف الثاني في شراء هذه المركبة بعد معاينتها المعاينة النافية للجهالة شرعاً وقانوناً، فقد اتفق الطرفان على إبرام هذا العقد بالشروط والأحكام الآتية:
+
+---
+
+### 🚗 البند الأول: موضوع العقد وبيانات المركبة التفصيلية
+باع وأسقط وتنازل الطرف الأول بكافة الضمانات القانونية والفعلية إلى الطرف الثاني القابل لذلك المركبة الآتية:
+* **نوع وماركة المركبة (Make):** [مثال: Toyota / Mercedes-Benz / Hyundai]
+* **الموديل / الطراز (Model):** [مثال: Camry / E300 / Tucson]
+* **سنة الصنع (Year):** [2024م]
+* **رقم الهيكل / الشاسيه (VIN):** \`[............................................]\`
+* **رقم المحرك (Engine No):** \`[............................................]\`
+* **رقم اللوحة المرورية:** [....................] | **وحدة المرور المسجلة بها:** [....................]
+* **لون المركبة:** [....................] | **قراءة العداد الحالية:** [................ كم]
+* **رقم وتاريخ انتهاء رخصة السير:** [....................]
+
+---
+
+### 💰 البند الثاني: الثمن وطريقة السداد
+1. تم هذا البيع برضا الطرفين واتفاقهما نظير مبلغ إجمالي وقدره: **[المبلغ رقماً]** (فقط **[المبلغ كتابة بالعملة المحلية]** لا غير).
+2. **آلية الدفع والتسليم:**
+   - [ ] **سداد نقدي / تحويل مصرفي فوري كامل:** يقر الطرف الأول باستلام كامل المبلغ المذكور أعلاه عند التوقيع، ويعد توقيعه على هذا العقد مخالصة مالية تامة ونهائية وإبراءً لذمة المشتري.
+   - [ ] **عربون ومتبقي:** دفع الطرف الثاني عربوناً وقدره [........] عند التوقيع، ويلتزم بسداد المتبقي وقدره [........] عند إتمام نقل الملكية رسمياً لدى جهة المرور / الشهر العقاري.
+
+---
+
+### 🔍 البند الثالث: المعاينة وفحص الحالة الفنية (العيوب الخفية)
+1. يقر الطرف الثاني (المشتري) بأنه عاين المركبة موضوع هذا العقد المعاينة التامة النافية للجهالة شرعاً وقانوناً، واختبرها وقام بفحصها فحصاً فنياً شاملاً بمعرفته وبأحد المراكز الفنية المعتمدة، وقبل شراءها بحالتها الراهنة وقت توقيع العقد.
+2. يضمن الطرف الأول (البائع) سلامة الشاسيه والمحرك وخلو المركبة من أي عيوب جوهرية مدلسة أو حوادث سابقة لم يُفصح عنها صراحة للمشتري.
+
+---
+
+### 🛡️ البند الرابع: خلو المركبة من الرهون والالتزامات
+يضمن الطرف الأول خلو المركبة المبيعة من كافة الرهون، الحقوق العينية، الحظر الجمركي أو البنكي، أو أي مطالبات قضائية أو مستحقات مالية لأي جهة حكومية أو خاصة حتى ساعة وتاريخ تحرير هذا العقد.
+
+---
+
+### ⚖️ البند الخامس: نقل الحيازة والمسؤولية عن المخالفات المرورية
+1. تم تسليم المركبة ومفاتيحها ورخصتها للطرف الثاني بمجرد توقيع هذا العقد.
+2. **تحديد المسؤولية:** 
+   - يتحمل **الطرف الأول (البائع)** المسؤولية الجنائية والمدنية والمخالفات المرورية ورسوم الطرق المسجلة على المركبة **حتى ساعة وتاريخ تحرير هذا العقد**.
+   - يتحمل **الطرف الثاني (المشتري)** المسؤولية الكاملة عن قيادة واستخدام المركبة وكافة المخالفات والحوادث الناشئة عنها **من تاريخ وساعة استلامه للمركبة**.
+
+---
+
+### 🏛️ البند السادس: نقل الملكية والتوثيق الرسمي
+يلتزم الطرف الأول بالمثول أمام الجهات المختصة (إدارة المرور / الشهر العقاري / منصة أبشر أو تم أو مصلحة التسجيل العقاري) لتوثيق ونقل الملكية رسمياً للطرف الثاني خلال مدة أقصاها **[3 أيام عمل]** من تاريخه، أو تحرير توكيل خاص بنقل الملكية للمشتري.
+
+---
+
+### 📜 البند السابع: القانون الواجب التطبيق وحل النزاعات
+يخضع هذا العقد ويفسر وفقاً لأحكام النظام المدني ونظام المرور المعمول به في الدولة، وتختص المحاكم المختصة محلياً بنظر أي نزاع قد ينشأ عن تنفيذ أو تفسير بنوده.
+
+---
+
+### ✍️ البند الثامن: نسخ العقد والتوقيع
+حُرر هذا العقد من نسختين أصليتين، بيد كل طرف نسخة للعمل بموجبها وإتمام إجراءات نقل الملكية الرسمية.
+
+| الطرف الأول (البائع) | الطرف الثاني (المشتري) | شاهد أول | شاهد ثانٍ |
+| :--- | :--- | :--- | :--- |
+| **الاسم:** [....................] | **الاسم:** [....................] | **الاسم:** [................] | **الاسم:** [................] |
+| **التوقيع:** | **التوقيع:** | **التوقيع:** | **التوقيع:** |
+| **البصمة:** | **البصمة:** | **الهوية:** [................] | **الهوية:** [................] |
+
+---
+💡 *يمكنك تعديل أي بيانات بالضغط على الحقول أعلاه، أو طلب تصدير العقد فورياً كملف PDF / Word موثق!*`;
     }
+
+    return `## ⚖️ MOTOR VEHICLE BILL OF SALE & PURCHASE AGREEMENT
+
+**THIS AGREEMENT** is entered into this [Date: ...../...../2026] by and between:
+
+### 👥 PARTIES:
+* **THE SELLER:**
+  - **Full Legal Name / Entity:** [Seller Full Legal Name]
+  - **National ID / Passport / Registration No:** [................................]
+  - **Address:** [................................................................]
+  - **Phone:** [....................] | **Email:** [....................]
+
+* **THE BUYER:**
+  - **Full Legal Name / Entity:** [Buyer Full Legal Name]
+  - **National ID / Passport / Registration No:** [................................]
+  - **Address:** [................................................................]
+  - **Phone:** [....................] | **Email:** [....................]
+
+---
+
+### 📋 RECITALS:
+WHEREAS, the Seller is the lawful, sole, and unencumbered owner of the motor vehicle described herein; and  
+WHEREAS, the Buyer desires to purchase said vehicle under the terms, covenants, and warranties set forth below;
+
+---
+
+### 🚗 ARTICLE 1: VEHICLE SPECIFICATIONS & IDENTIFICATION
+The Seller hereby sells, assigns, and transfers to the Buyer the following motor vehicle:
+* **Make & Manufacturer:** [e.g., Toyota / Mercedes-Benz / Ford / BMW]
+* **Model:** [e.g., Camry / E350 / F-150 / X5]
+* **Model Year:** [2024]
+* **Vehicle Identification Number (VIN / Chassis):** \`[............................................]\`
+* **Engine Number:** \`[............................................]\`
+* **License Plate Number / State:** [....................]
+* **Exterior Color:** [....................] | **Odometer Reading:** [................ Miles / KM]
+* **Title / Registration Number:** [....................]
+
+---
+
+### 💰 ARTICLE 2: PURCHASE PRICE & PAYMENT TERMS
+1. **Total Consideration:** The agreed purchase price for the Vehicle is **$[Amount in Figures]** (United States Dollars / Local Currency: **[Amount in Words]**).
+2. **Payment Method:**
+   - [ ] **Full Wire Transfer / Cashier's Check:** Paid in full upon execution of this Agreement.
+   - [ ] **Deposit & Balance:** A non-refundable deposit of $[........] paid upon signing; balance of $[........] due upon title transfer.
+3. **Receipt & Release:** The Seller hereby acknowledges receipt of the purchase funds and releases all claims against the Buyer.
+
+---
+
+### 🔍 ARTICLE 3: AS-IS CONDITION, INSPECTION & LATENT DEFECTS
+1. The Buyer acknowledges having inspected the Vehicle personally and/or through an authorized certified mechanic, and accepts the Vehicle in its current condition.
+2. The Seller warrants that the Vehicle is free from undisclosed structural frame damage, flood damage, or fraudulent odometer tampering.
+
+---
+
+### 🛡️ ARTICLE 4: TITLE & ENCUMBRANCES
+The Seller covenants and warrants that the Seller has good, valid, and marketable title to the Vehicle, free and clear of all liens, mortgages, encumbrances, security interests, or tax/customs claims.
+
+---
+
+### ⚖️ ARTICLE 5: DELIVERY & ALLOCATION OF TRAFFIC LIABILITIES
+1. **Transfer of Possession:** Risk of loss and physical possession of the Vehicle transfers to the Buyer at the exact date and hour of signing.
+2. **Liability Split:**
+   - **Seller** retains sole responsibility for all traffic fines, tolls, and civil/criminal liabilities incurred **prior to the delivery hour**.
+   - **Buyer** assumes sole responsibility for all operation, insurance, and road liabilities **from the delivery hour forward**.
+
+---
+
+### 🏛️ ARTICLE 6: GOVERNING LAW & TITLE TRANSFER COOPERATION
+1. This Agreement shall be governed by and construed in accordance with the statutory laws of the governing jurisdiction.
+2. The Seller agrees to execute and deliver all necessary title assignment documents (DMV / Traffic Registry) within **[3 business days]**.
+
+---
+
+### ✍️ SIGNATURES & ACKNOWLEDGMENT
+
+| SELLER | BUYER | WITNESS 1 | WITNESS 2 |
+| :--- | :--- | :--- | :--- |
+| **Name:** [....................] | **Name:** [....................] | **Name:** [................] | **Name:** [................] |
+| **Signature:** | **Signature:** | **Signature:** | **Signature:** |
+| **Date:** [..../..../2026] | **Date:** [..../..../2026] | **ID:** [................] | **ID:** [................] |
+
+---
+💡 *Need this contract exported to official PDF/Word with encrypted digital watermark? Just type "export car contract" to proceed!*`;
   }
 
-  // Saudi Company Formation / Individuals & Private Entities
-  if ((p.includes('تأسيس') || p.includes('تاسيس') || p.includes('شركة') || p.includes('شركات') || p.includes('أفراد') || p.includes('افراد')) && (p.includes('سعودية') || p.includes('سعوديه') || p.includes('saudi') || p.includes('ksa'))) {
+  // 2. Non-Disclosure Agreement (NDA / اتفاقية عدم إفصاح وسرية معلومات)
+  if (/(nda|non-disclosure|confidential|confidentiality|secrecy|سرية|عدم إفصاح|عدم افصاح|حفظ السرية)/i.test(p)) {
     if (isAr) {
-      return `### 🏛️ دليل تأسيس شركات الأفراد والشركات الخاصة في المملكة العربية السعودية:
+      return `## ⚖️ اتفاقية عدم إفصاح وحماية السرية التجارية (Mutual NDA)
 
-وفقاً لأحكام **نظام الشركات السعودي الجديد** الصادر بالمرسوم الملكي رقم (**م/132**):
+**أُبرمت هذه الاتفاقية في يوم [........] الموافق [..../..../2026م] بين:**
+* **الطرف الأول:** [اسم الشركة / الفرد] - سجل تجاري / هوية: [................]
+* **الطرف الثاني:** [اسم الشركة / الفرد] - سجل تجاري / هوية: [................]
 
----
+### 1️⃣ الغرض من الإفصاح:
+تقييم وبحث فرص التعاون التجاري والتقني في مشروع [................................................................].
 
-#### 1️⃣ **الكيانات القانونية المتاحة للأفراد والمستثمرين**
-1. **شركة الشخص الواحد ذات المسؤولية المحدودة (Single-Person LLC)**:
-   - ذمة مالية مستقلة تماماً تميز أصول الشركة عن الأموال الشخصية للمالك.
-   - لا يسأل المالك عن التزامات الشركة إلا في حدود رأس المال المخصص لها.
-2. **شركة المساهمة المبسطة (Simplified Joint Stock Company - SJSC)**:
-   - النمط الأحدث تشريعياً والمفضل للشركات الناشئة والمستثمرين لعدم وجود حد أدنى لرأس المال وإمكانية إصدار فئات متعددة من الأسهم.
-3. **المؤسسة الفردية (Sole Proprietorship)**:
-   - ترخيص سريع لكن الذمة المالية غير مستقلة عن المالك.
+### 2️⃣ تعريف المعلومات السرية:
+تشمل كافة البيانات المالية، الفنية، الشيفرات البرمجية، خطط الأعمال، وقوائم العملاء المتبادلة شفهياً أو خطياً أو رقمياً.
 
----
+### 3️⃣ التزامات الحفظ والسرية:
+- الالتزام بعدم إفشاء أو نسخ أو استغلال المعلومات السرية لأي غرض خارج نطاق الغرض المصرح به.
+- قصر الاطلاع على الموظفين والمستشارين الخاضعين لالتزامات سرية مماثلة بموجب اتفاقيات ملزمة.
 
-#### 2️⃣ **الجهات التنظيمية والرقابية المعتمدة**
-- **وزارة التجارة والمركز السعودي للأعمال (SBC)**: إصدار السجل التجاري وعقد التأسيس التوثيقي.
-- **هيئة الزكاة والضريبة والجمارك (ZATCA)**: التسجيل الضريبي وتفعيل نظام الفوترة الإلكترونية (فاتورة).
-- **وزارة الموارد البشرية والتنمية الاجتماعية**: فتح ملف المنشأة وتحديد نسب السعودة عبر منصة (قوى Qiwa).
+### 4️⃣ مدة الالتزام بالسرية:
+تظل هذه الاتفاقية سارية لمدة **[3 سنوات / 5 سنوات]** من تاريخ استلام المعلومات السرية.
 
----
+### 5️⃣ الجزاء المالي والتعويضات:
+يستحق الطرف المتضرر تعويضاً فورياً مع حق استصدار أوامر قضائية مستعجلة لمنع الإفشاء دون الإخلال بحقه في التعويض الشامل.
 
-#### 3️⃣ **خطوات التأسيس التنفيذية المباشرة (Step-by-Step Execution)**
-1. **حجز الاسم التجاري وإصدار السجل التجاري**: التوجه لمنصة "أعمال" (business.sa)، اختيار النشاط التجاري، وإصدار السجل فورياً.
-2. **توثيق عقد التأسيس**: إقرار الهيكل الإداري، تحديد المدير التنفيذي وتوثيق العقد إلكترونياً عبر موثقي وزارة العدل.
-3. **تفعيل الحساب البنكي التجاري والربط الضريبي**: فتح الحساب البنكي باسم الشركة وإيداع رأس المال، وتفعيل شهادة الزكاة والدخل.`;
+### 6️⃣ القانون والاختصاص القضائي:
+تخضع هذه الاتفاقية لقوانين [الدولة المحددة] وتختص محاكمها بالفصل في أي نزاع.
+
+| توقيع الطرف الأول | توقيع الطرف الثاني |
+| :--- | :--- |
+| **الاسم:** [....................] | **الاسم:** [....................] |
+| **الصفة:** [....................] | **الصفة:** [....................] |`;
     }
+
+    return `## ⚖️ MUTUAL NON-DISCLOSURE & CONFIDENTIALITY AGREEMENT (NDA)
+
+**EFFECTIVE DATE:** [Date: ...../...../2026]  
+**BETWEEN:**  
+* **Party A:** [Company / Individual Name] (Reg No: [................])
+* **Party B:** [Company / Individual Name] (Reg No: [................])
+
+### 1. PURPOSE:
+Evaluating and executing strategic collaboration regarding [Project Scope / Business Transaction].
+
+### 2. DEFINITION OF CONFIDENTIAL INFORMATION:
+All technical, financial, operational, software source code, proprietary methodologies, and client lists disclosed directly or indirectly.
+
+### 3. NON-DISCLOSURE OBLIGATIONS:
+- Maintain strict confidentiality using reasonable commercial security measures.
+- Use Confidential Information solely for the authorized Purpose.
+- Restrict disclosure exclusively to personnel with a strict need-to-know.
+
+### 4. TERM:
+Confidentiality obligations shall survive for a period of **[Three (3) / Five (5) Years]** post-disclosure.
+
+### 5. INJUNCTIVE RELIEF & DAMAGES:
+The Disclosing Party shall be entitled to immediate injunctive relief and liquidated damages for any actual or threatened unauthorized disclosure.
+
+### 6. GOVERNING LAW & JURISDICTION:
+Governed by and construed under the laws of [Jurisdiction], with exclusive jurisdiction in its commercial courts.
+
+| FOR PARTY A | FOR PARTY B |
+| :--- | :--- |
+| **Name:** [....................] | **Name:** [....................] |
+| **Title:** [....................] | **Title:** [....................] |`;
   }
 
-  return getDefaultFallback(userMessage, lang);
+  // 3. Employment Agreement (عقد عمل وتوظيف)
+  if (/(employment|job|employee|employer|labor contract|work agreement|عمل|توظيف|موظف|عقد عمل|عقد توظيف)/i.test(p)) {
+    if (isAr) {
+      return `## ⚖️ عقد عمل وتوظيف محدد المدة وفق أنظمة العمل المعتمدة
+
+**أُبرم هذا العقد في يوم [........] الموافق [..../..../2026م] بين:**
+* **الطرف الأول (صاحب العمل):** شركة [اسم الشركة] - سجل تجاري رقم: [................]
+* **الطرف الثاني (الموظف):** الأستاذ/ة [اسم الموظف] - هوية / إقامة رقم: [................]
+
+### 1️⃣ المسمى الوظيفي والمهام:
+يُعين الطرف الثاني بوظيفة **[المسمى الوظيفي]** ويلتزم بأداء المهام الموكلة إليه بإخلاص وكفاءة.
+
+### 2️⃣ مدة العقد وفترة التجربة:
+- مدة هذا العقد **[سنة واحدة ميلادية]** تتجدد تلقائياً ما لم يُخطر أحد الطرفين الآخر بغير ذلك قبل 30 يوماً.
+- يخضع الطرف الثاني لفترة تجربة مدتها **[90 يوماً]** يحق خلالها لأي من الطرفين إنهاء العقد وفق نظام العمل.
+
+### 3️⃣ الأجر والمزايا المالية:
+- **الراتب الأساسي:** [........] شهرياً.
+- **بدل السكن والنقل:** [........] شهرياً.
+- **تاريخ الاستحقاق:** نهاية كل شهر ميلادي عبر التحويل المصرفي المعتمد (نظام حماية الأجور WPS).
+
+### 4️⃣ ساعات العمل والإجازات:
+- 8 ساعات عمل يومياً (40-48 ساعة أسبوعياً) مع يومين / يوم راحة أسبوعية.
+- إجازة سنوية مدفوعة الأجر مدتها [30 يوماً / 21 يوماً] تقويمياً عن كل عام عمل.
+
+### 5️⃣ السرية وعدم المنافسة:
+يلتزم الموظف بعدم إفشاء أسرار العمل وعدم العمل لدى أي منافس مباشر لمدة [سنة واحدة] بعد انتهاء العقد.
+
+### 6️⃣ إنهاء العقد ومكافأة نهاية الخدمة:
+يخضع إنهاء العقد واحتساب مكافأة نهاية الخدمة لأحكام نظام العمل الساري بالدولة.
+
+| توقيع صاحب العمل (الطرف الأول) | توقيع الموظف (الطرف الثاني) |
+| :--- | :--- |
+| **الختم والتوقيع:** | **توقيع الموظف:** |`;
+    }
+
+    return `## ⚖️ EXECUTIVE EMPLOYMENT AGREEMENT
+
+**EFFECTIVE DATE:** [Date: ...../...../2026]  
+**PARTIES:**  
+* **Employer:** [Company Name] (Corporate Reg: [................])
+* **Employee:** [Employee Full Name] (National ID/Passport: [................])
+
+### 1. POSITION & DUTIES:
+The Employee is employed as **[Job Title]**, reporting to the Executive Board/Management.
+
+### 2. TERM & PROBATION:
+- **Term:** Fixed term of **[12 Months]**, automatically renewable unless terminated with 30 days written notice.
+- **Probation Period:** **[90 Days]**, during which either party may terminate per statutory employment regulations.
+
+### 3. COMPENSATION & BENEFITS:
+- **Base Salary:** $[Amount] per month, payable via automated payroll (WPS).
+- **Benefits:** Executive health insurance, annual leave allowance, and performance bonuses.
+
+### 4. RESTRICTIVE COVENANTS (NON-COMPETE & NDA):
+The Employee agrees not to compete with the Employer or solicit clients/staff for **[12 months]** post-termination within the operating territory.
+
+### 5. GOVERNING LAW:
+Governed by the statutory labor laws of [Jurisdiction].
+
+| FOR EMPLOYER | EMPLOYEE |
+| :--- | :--- |
+| **Signature:** [....................] | **Signature:** [....................] |`;
+  }
+
+  // 4. Real Estate / Tenancy Lease Agreement (عقد إيجار عقاري سكني وتجاري)
+  if (/(rent|lease|tenant|landlord|apartment|property|real estate|إيجار|ايجار|عقار|شقة|فيلا|أرض)/i.test(p)) {
+    if (isAr) {
+      return `## ⚖️ عقد إيجار عقاري (سكني / تجاري) موثق وملزم
+
+**أُبرم هذا العقد في يوم [........] الموافق [..../..../2026م] بين:**
+* **الطرف الأول (المؤجر):** [اسم المؤجر الكامل] - هوية / سجل: [................]
+* **الطرف الثاني (المستأجر):** [اسم المستأجر الكامل] - هوية / سجل: [................]
+
+### 1️⃣ موضوع الإيجار وبيانات العقار:
+أجّر الطرف الأول إلى الطرف الثاني العقار الكائن في: [العنوان بالتفصيل: المدينة، الحي، رقم المبنى، رقم الشقة/المعرض].
+
+### 2️⃣ مدة الإيجار والتجديد:
+- مدة الإيجار: **[سنة واحدة ميلادية]** تبدأ من [..../..../2026] وتنتهي في [..../..../2027].
+- يتجدد العقد لمدد مماثلة باتفاق الطرفين وموافقة خطية قبل نهاية المدة بـ [60 يوماً].
+
+### 3️⃣ القيمة الإيجارية وطريقة السداد:
+- القيمة الإيجارية السنوية: **[المبلغ]** تُسدد على **[دفعات ربع سنوية / نصف سنوية]** بموجب شيكات مصرفية / تحويل معتمد.
+- مبلغ التأمين المسترد: **[المبلغ]** يُرد للمستأجر عند إخلاء العقار وتسليمه بحالته الأصلية.
+
+### 4️⃣ التزامات المستأجر والصيانة:
+- يلتزم المستأجر بسداد فواتير الكهرباء والمياه والغاز ورسوم الخدمات بانتظام.
+- يلتزم المستأجر بإجراء الصيانة الاستهلاكية البسيطة، بينما يتحمل المؤجر الصيانة الإنشائية والهيكلية للعقار.
+
+### 5️⃣ الإخلاء وفسخ العقد:
+في حال تأخر المستأجر عن سداد الإيجار لمدة تتجاوز [15 يوماً] من تاريخ الاستحقاق، يعتبر العقد مفسوخاً تلقائياً ويحق للمؤجر استرداد الحيازة.
+
+| توقيع المؤجر | توقيع المستأجر |
+| :--- | :--- |
+| **الاسم:** [....................] | **الاسم:** [....................] |`;
+    }
+
+    return `## ⚖️ COMMERCIAL & RESIDENTIAL PROPERTY LEASE AGREEMENT
+
+**DATE:** [Date: ...../...../2026]  
+**PARTIES:**  
+* **Landlord:** [Landlord Full Name / Entity] (ID/Reg: [................])
+* **Tenant:** [Tenant Full Name / Entity] (ID/Reg: [................])
+
+### 1. PREMISES:
+The real property located at [Full Property Address / Unit Number].
+
+### 2. LEASE TERM:
+Initial term of **[One (1) Year]** commencing on [Start Date] and expiring on [End Date].
+
+### 3. RENT & SECURITY DEPOSIT:
+- **Annual Rent:** $[Amount], payable in [Monthly / Quarterly] installments.
+- **Security Deposit:** $[Amount], refundable upon verified move-out inspection.
+
+### 4. MAINTENANCE & UTILITIES:
+Tenant shall be responsible for routine consumable maintenance and utility charges. Structural repairs remain Landlord's statutory obligation.
+
+### 5. GOVERNING LAW:
+Governed by the tenancy statutes of [Jurisdiction].
+
+| LANDLORD | TENANT |
+| :--- | :--- |
+| **Signature:** [....................] | **Signature:** [....................] |`;
+  }
+
+  // 5. Intelligent Deep Legal Consultation (Specific Advice)
+  if (isAr) {
+    return `### ⚖️ الرأي القانوني والتحليل التشريعي التخصصي
+
+**بخصوص استفسارك:** \`${userMessage.slice(0, 140)}\`
+
+---
+
+#### 1️⃣ **التكييف القانوني والأساس النظامي:**
+- يخضع موضوع الاستفسار لأحكام الأنظمة واللوائح التجارية والمدنية المعمول بها، والتي تقضي بحماية المراكز القانونية للأطراف بناءً على المستندات الثبوتية والتعاقدية المتبادلة.
+- يستوجب الأمر التحقق من توافر الشروط الشكلية والموضوعية قبل اتخاذ أي إجراء رسمي لضمان قبول الدعوى أو الطلب شكلاً وموضوعاً.
+
+---
+
+#### 2️⃣ **تقييم المخاطر والمصائد الإجرائية:**
+- **مواعيد الطعن والإخطار:** الانتباه إلى المهل القانونية المحددة نظاماً لتفادي سقوط الحق بمضي المدة.
+- **عبء الإثبات:** توفير المحررات المكتوبة، الفواتير الإلكترونية المعتمدة، والإشعارات الموثقة.
+
+---
+
+#### 3️⃣ **خطة العمل والتوصيات التنفيذية المباشرة:**
+1. **صياغة إشعار قانوني رسمي (Legal Notice):** إرسال إخطار رسمي للطرف الآخر يحدد مهلة محددة لتوفيق الأوضاع.
+2. **التسوية الودية / الوساطة:** بدء جولة مفاوضات أو وساطة تجارية لتوفير التكاليف والوقت.
+3. **التوثيق وإصدار العقد الرسمي:** يمكنك طلب صياغة العقد أو الاتفاقية الموثقة فوراً لحماية حقوقك.
+
+💡 *هل تود أن أصيغ لك نموذج العقد أو الإشعار القانوني المخصص فوراً؟ اذكر تفاصيل أطرافك وسأقوم بتوليده كاملاً!*`;
+  }
+
+  return `### ⚖️ Specialized Legal Advisory Memorandum
+
+**Regarding:** \`${userMessage.slice(0, 140)}\`
+
+---
+
+#### 1. Statutory Foundation & Legal Characterization
+- The matter is governed by statutory commercial and civil principles, requiring verified documentation and formal procedural standing.
+
+#### 2. Risk Evaluation & Evidentiary Requirements
+- **Statute of Limitations**: Ensure compliance with statutory filing deadlines to avoid procedural dismissal.
+- **Burden of Proof**: Secure all written contracts, authenticated digital communications, and invoices.
+
+#### 3. Actionable Next Steps
+1. **Formal Notice**: Serve a formal letter of demand or legal notice.
+2. **Amicable Settlement**: Engage in structured dispute negotiation.
+3. **Contractual Safeguards**: Execute standardized, enforceable agreements.
+
+💡 *Would you like a tailored contract or formal notice drafted immediately? Provide the specific details to generate it!*`;
 }
