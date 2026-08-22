@@ -183,14 +183,14 @@ function prerenderRoutes() {
 
     // 1. Strip all previous Title, Meta Description, and Canonical Tags to prevent duplicates
     routeHtml = routeHtml.replace(/<title>[\s\S]*?<\/title>/gi, '');
-    routeHtml = routeHtml.replace(/<meta\s+name=["']description["'][^>]*>/gi, '');
-    routeHtml = routeHtml.replace(/<link\s+rel=["']canonical["'][^>]*>/gi, '');
-    routeHtml = routeHtml.replace(/<meta\s+property=["']og:title["'][^>]*>/gi, '');
-    routeHtml = routeHtml.replace(/<meta\s+property=["']og:description["'][^>]*>/gi, '');
-    routeHtml = routeHtml.replace(/<meta\s+property=["']og:url["'][^>]*>/gi, '');
-    routeHtml = routeHtml.replace(/<meta\s+name=["']twitter:title["'][^>]*>/gi, '');
-    routeHtml = routeHtml.replace(/<meta\s+name=["']twitter:description["'][^>]*>/gi, '');
-    routeHtml = routeHtml.replace(/<link\s+rel=["']alternate["']\s+hreflang=[^>]*>/gi, '');
+    routeHtml = routeHtml.replace(/<meta\s+[^>]*name=["']description["'][^>]*>/gi, '');
+    routeHtml = routeHtml.replace(/<link\s+[^>]*rel=["']canonical["'][^>]*\/?>/gi, '');
+    routeHtml = routeHtml.replace(/<meta\s+[^>]*property=["']og:title["'][^>]*>/gi, '');
+    routeHtml = routeHtml.replace(/<meta\s+[^>]*property=["']og:description["'][^>]*>/gi, '');
+    routeHtml = routeHtml.replace(/<meta\s+[^>]*property=["']og:url["'][^>]*>/gi, '');
+    routeHtml = routeHtml.replace(/<meta\s+[^>]*name=["']twitter:title["'][^>]*>/gi, '');
+    routeHtml = routeHtml.replace(/<meta\s+[^>]*name=["']twitter:description["'][^>]*>/gi, '');
+    routeHtml = routeHtml.replace(/<link\s+[^>]*rel=["']alternate["'][^>]*>/gi, '');
 
     // 2. Generate canonical and hreflangs
     const hreflangTags = LANGS.map(lang => {

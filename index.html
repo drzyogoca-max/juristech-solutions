@@ -3,12 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
+    <!-- Global CDN Acceleration & DNS Pre-fetching -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+
     <meta name="google-site-verification" content="Csa-WN6QHwEIlH3lycEdcdsy5CznqwYzyJOq-PbjIpg" />
     <title>منصة تحليل العقود بالذكاء الاصطناعي | JurisTech Solutions</title>
-    <link rel="canonical" href="https://www.juristech.solutions/" />
+    <link rel="canonical" href="https://www.juristech.solutions/" id="canonical-url" />
 
     <!-- 👑 Sovereign Official Favicon & App Icons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -211,30 +216,29 @@
       })();
     </script>
 
-    <!-- PWA Web Manifest & Theme -->
-    <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#06b6d4" />
-    
-    <!-- Dynamic Canonical URL Script -->
+    <!-- Dynamic Canonical URL Synchronizer (Guarantees Exactly ONE Canonical Tag in DOM) -->
     <script>
       (function() {
         try {
           var targetDomain = 'https://www.juristech.solutions';
           var cleanPath = window.location.pathname.replace(/\/$/, '') || '/';
           var fullCanonical = targetDomain + cleanPath;
-          var canonical = document.querySelector("link[rel='canonical']");
-          if (canonical) {
-            canonical.setAttribute('href', fullCanonical);
+          var canonicals = document.querySelectorAll("link[rel='canonical']");
+          if (canonicals.length > 0) {
+            canonicals[0].setAttribute('href', fullCanonical);
+            for (var i = 1; i < canonicals.length; i++) {
+              canonicals[i].remove();
+            }
           } else {
             var link = document.createElement('link');
             link.rel = 'canonical';
+            link.id = 'canonical-url';
             link.href = fullCanonical;
             document.head.appendChild(link);
           }
         } catch (e) {}
       })();
     </script>
-    <link rel="canonical" href="https://www.juristech.solutions/" />
 
     <!-- Open Graph & Twitter Cards -->
     <meta property="og:type" content="website" />

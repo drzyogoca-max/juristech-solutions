@@ -36,6 +36,22 @@ export default function SEO({
   const cleanPath = location.pathname.replace(/\/$/, '') || '/';
   const pageUrl = `${baseUrl}${cleanPath}`;
 
+  // Enforce single canonical tag in DOM to prevent duplicate canonical warnings from search engines
+  React.useEffect(() => {
+    try {
+      const canonicals = document.querySelectorAll("link[rel='canonical']");
+      if (canonicals.length > 1) {
+        canonicals.forEach((el, index) => {
+          if (index > 0) el.remove();
+        });
+      }
+      const primary = document.querySelector("link[rel='canonical']");
+      if (primary && primary.getAttribute('href') !== pageUrl) {
+        primary.setAttribute('href', pageUrl);
+      }
+    } catch (e) {}
+  }, [pageUrl]);
+
   return (
     <Helmet>
       {/* Standard Meta */}
