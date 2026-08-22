@@ -4,8 +4,8 @@
  * Provides: retryWithBackoff, checkSupabaseHealth, checkAIHealth
  */
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
+const SUPABASE_URL = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_URL) || '';
+const SUPABASE_ANON_KEY = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_ANON_KEY) || '';
 
 // ─── Retry with Exponential Back-off ─────────────────────────────────────────
 export async function retryWithBackoff<T>(

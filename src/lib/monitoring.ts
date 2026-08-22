@@ -16,8 +16,8 @@ export interface ErrorReport {
 
 class MonitoringEngine {
   private isInitialized = false;
-  private sentryDsn = import.meta.env.VITE_SENTRY_DSN || '';
-  private logrocketAppId = import.meta.env.VITE_LOGROCKET_APP_ID || '';
+  private sentryDsn = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SENTRY_DSN) || '';
+  private logrocketAppId = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_LOGROCKET_APP_ID) || '';
   private errorLog: ErrorReport[] = [];
 
   public init() {
