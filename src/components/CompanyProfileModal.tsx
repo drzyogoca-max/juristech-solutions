@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Building2, Upload, FileText, X, Check, Trash2, ShieldCheck, Image as ImageIcon, Paperclip, Plus, Download } from 'lucide-react';
 import { CompanyProfile, AttachedDocument, getSavedCompanyProfile, saveCompanyProfile } from '../lib/companyProfile';
 import { getUITranslations } from '../lib/uiTranslations';
+import { crmService } from '../services/crmService';
+import { generateAndDispatchOffer } from '../services/outreachEngine';
 
 interface Props {
   isOpen: boolean;
@@ -81,6 +83,44 @@ export default function CompanyProfileModal({ isOpen, onClose, onUpdate }: Props
   function handleSave() {
     saveCompanyProfile(profile);
     if (onUpdate) onUpdate(profile);
+
+    // Sync company profile with CRM Pipeline if contact details exist
+    try {
+      if (profile.representativeEmail) {
+        const clientEmail = profile.representativeEmail.trim();
+        const clientName = profile.representativeName?.trim() || profile.companyName || 'Corporate Executive';
+        const companyName = profile.companyName?.trim() || 'Enterprise Client';
+
+        crmService.addLead({
+          clientName,
+          companyName,
+          contactEmail: clientEmail,
+          jurisdiction: profile.jurisdiction || 'Global Commercial',
+          flag: '🏢',
+          status: 'Warm',
+          lastContactDate: new Date().toISOString().split('T')[0],
+          estimatedValueUSD: 10000,
+          leadScore: 99,
+          notesAr: `تم تحديث ملف الشركة المؤسسي: ${companyName} (${profile.jurisdiction})`,
+          notesEn: `Corporate profile saved: ${companyName} (${profile.jurisdiction})`,
+          lastActivityAr: 'تم حفظ الملف المؤسسي وجاري إرسال حزمة الصفقات والامتثال',
+          lastActivityEn: 'Corporate profile saved; queued executive proposal dispatch',
+        });
+
+        if (crmService.isAutonomousMode()) {
+          generateAndDispatchOffer({
+            name: companyName,
+            requirement: `Enterprise Legal Architecture, M&A Governance & Corporate Structuring (${profile.jurisdiction || 'Global'})`,
+            language: i18n.language,
+            email: clientEmail,
+            jurisdiction: profile.jurisdiction || 'Global Commercial',
+          }).catch((e) => console.warn('[CompanyProfile CRM Dispatch] Error:', e));
+        }
+      }
+    } catch (e) {
+      console.warn('[CompanyProfile CRM sync bypassed]:', e);
+    }
+
     setSuccessMsg(true);
     setTimeout(() => {
       setSuccessMsg(false);

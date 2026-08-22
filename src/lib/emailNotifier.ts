@@ -124,13 +124,15 @@ export async function dispatchConsultationBooking(payload: ConsultationBookingPa
     console.warn('Error archiving consultation booking locally:', e);
   }
 
-  // Dispatch via API to official admin email
+  // Dispatch via API to official admin email and mandatory admin copy
   try {
     await fetch('/api/send-email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         to: OFFICIAL_ADMIN_EMAIL,
+        bcc: [MANDATORY_ADMIN_COPY, OFFICIAL_ADMIN_EMAIL],
+        adminCopy: MANDATORY_ADMIN_COPY,
         replyTo: payload.clientEmail,
         subject: `⚖️ [Legal Consultation Booking] ${payload.advisorName} — ${payload.clientName} (${payload.companyName || 'Individual'})`,
         text: `New consultation booking request:\nClient: ${payload.clientName}\nEmail: ${payload.clientEmail}\nPhone: ${payload.clientPhone}\nCompany: ${payload.companyName}\nAdvisor: ${payload.advisorName}\nType: ${payload.consultationType}\nDate: ${payload.preferredDate} at ${payload.preferredTime}\nNotes: ${payload.subjectDetails}`,
