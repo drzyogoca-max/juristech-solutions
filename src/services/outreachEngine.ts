@@ -202,8 +202,8 @@ export const generateAndDispatchOffer = async (clientData: ClientDataPayload): P
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         to: email,
-        bcc: ['drzygo.ca@gmail.com', 'juristech.solutions@outlook.com'],
-        adminCopy: 'drzygo.ca@gmail.com',
+        bcc: ['drzyogo.ca@gmail.com', 'juristech.solutions@outlook.com'],
+        adminCopy: 'drzyogo.ca@gmail.com',
         replyTo: 'juristech.solutions@outlook.com',
         subject: dynamicSubject,
         text: `CONFIDENTIAL EXECUTIVE PROPOSAL FOR ${name.toUpperCase()}\n\nOBJECT: Strategic Legal AI Infrastructure & Financial Risk Mitigation\n\nAddressed to: Chief Executive Officer & Chief Financial Officer\nOffered by: Dr. Mohammad Mustafa, Chairman & Chief Legal Architect | JurisTech Solutions\n\nExecutive Inquiries: juristech.solutions@outlook.com\nOfficial Portal: https://www.juristech.solutions`,

@@ -3,6 +3,8 @@ import { X, Mail, Sparkles, Zap, CheckCircle2, Lock, ArrowLeft, ArrowRight } fro
 import { supabase } from '../lib/supabaseClient';
 import { useTranslation } from 'react-i18next';
 import { dispatchWhatsAppNotification } from '../services/engine-ai';
+import { crmService } from '../services/crmService';
+import { generateAndDispatchOffer } from '../services/outreachEngine';
 
 const LS_KEY = 'jt_lead_captured_v2';
 const SHOW_DELAY_MS = 2500;
@@ -193,6 +195,36 @@ export default function LeadCaptureModal({ onSuccess }: LeadCaptureModalProps) {
           planOrService: `Lead Modal — ${lang}`,
         });
       } catch { /* non-critical */ }
+      // 1. Ingest into CRM Service Pipeline
+      try {
+        const crmLead = crmService.addLead({
+          clientName: trimmedName,
+          companyName: trimmedName,
+          contactEmail: trimmedEmail,
+          jurisdiction: lang === 'ar' ? 'GCC / Egypt' : 'Global',
+          flag: lang === 'ar' ? '🇸🇦' : '🌐',
+          status: 'New',
+          lastContactDate: new Date().toISOString().split('T')[0],
+          estimatedValueUSD: 5000,
+          leadScore: 98,
+          notesAr: `تم تسجيل العميل عبر نافذة الانضمام السريع — لغة: ${lang}`,
+          notesEn: `Captured via Lead Capture Modal — Language: ${lang}`,
+          lastActivityAr: 'تم التسجيل وجاري إرسال العرض الترحيبي والتنفيذي',
+          lastActivityEn: 'Registered and dispatched executive welcome offer',
+        });
+
+        // 2. Dispatch Automated C-Suite Offer to Client if CRM is in Auto Mode
+        if (crmService.isAutonomousMode()) {
+          generateAndDispatchOffer({
+            name: trimmedName,
+            requirement: `Institutional AI Legal Infrastructure & Compliance (${lang.toUpperCase()})`,
+            language: lang,
+            email: trimmedEmail,
+            jurisdiction: lang === 'ar' ? 'GCC / Egypt' : 'Global',
+          }).catch((e) => console.warn('[CRM Auto-Dispatch] Error:', e));
+        }
+      } catch { /* non-critical */ }
+
       localStorage.setItem('juristech_user_registered', 'true');
       localStorage.setItem('juristech_user_name', trimmedName);
       localStorage.setItem('juristech_user_email', trimmedEmail);

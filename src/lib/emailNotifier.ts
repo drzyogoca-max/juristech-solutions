@@ -22,7 +22,7 @@ export interface ConsultationBookingPayload {
 }
 
 const OFFICIAL_ADMIN_EMAIL = 'juristech.solutions@outlook.com';
-const MANDATORY_ADMIN_COPY = 'drzygo.ca@gmail.com';
+const MANDATORY_ADMIN_COPY = 'drzyogo.ca@gmail.com';
 
 export async function dispatchReceiptEmail(payload: ReceiptNotificationPayload): Promise<{ success: boolean; message: string }> {
   console.log('[Real Email Automation] Dispatching live email via /api/send-email with Admin BCC:', payload);

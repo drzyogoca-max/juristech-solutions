@@ -332,7 +332,7 @@ export async function activateUserSubscription(params: {
     action_url: '/payment',
   });
 
-  // 4. Dispatch Instant Admin WhatsApp & Email Alert to drzygo.ca@gmail.com
+  // 4. Dispatch Instant Admin WhatsApp & Email Alert to drzyogo.ca@gmail.com
   dispatchSystemNotification({
     eventType: 'SUBSCRIPTION_PAID',
     clientName: name,

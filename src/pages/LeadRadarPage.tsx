@@ -314,7 +314,7 @@ export default function LeadRadarPage() {
                 {isRtl ? '📬 بريد نسخة المراقبة الفورية المعتمد (Admin BCC Copy):' : '📬 Admin Real-Time BCC Copy Monitored:'}
               </span>
               <span className="font-mono bg-cyan-900/60 text-cyan-200 px-2 py-0.5 rounded border border-cyan-400/30">
-                drzygo.ca@gmail.com
+                drzyogo.ca@gmail.com
               </span>
             </div>
             <span className="text-emerald-400 font-extrabold text-[11px]">

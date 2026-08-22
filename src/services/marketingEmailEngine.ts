@@ -16,7 +16,7 @@ export interface EmailTemplate {
 }
 
 const OFFICIAL_EMAIL = 'juristech.solutions@outlook.com';
-const MANDATORY_ADMIN_COPY = 'drzygo.ca@gmail.com';
+const MANDATORY_ADMIN_COPY = 'drzyogo.ca@gmail.com';
 
 /**
  * Automates sending targeted marketing and compliance emails.

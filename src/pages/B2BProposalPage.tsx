@@ -34,7 +34,7 @@ export default function B2BProposalPage() {
 
       setProposal(prop);
 
-      // Dispatch real-time WhatsApp & Email alert to Admin (drzygo.ca@gmail.com)
+      // Dispatch real-time WhatsApp & Email alert to Admin (drzyogo.ca@gmail.com)
       dispatchSystemNotification({
         eventType: 'HIGH_TICKET_PROPOSAL',
         clientName: companyName,

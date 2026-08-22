@@ -414,7 +414,7 @@ async function processEmailDispatch(targetEmail, emailSubject, text, html, reply
   let providerMessage = '';
   let providerError = '';
 
-  const MANDATORY_ADMIN_COPY = 'drzygo.ca@gmail.com';
+  const MANDATORY_ADMIN_COPY = 'drzyogo.ca@gmail.com';
   const OFFICIAL_ARCHIVE = 'juristech.solutions@outlook.com';
 
   // Add to deduplication registry
