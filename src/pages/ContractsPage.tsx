@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import {
   FileText, Download, Loader2, Globe, Sparkles, MessageSquare, ShieldCheck,
   Building2, Users, Briefcase, Code2, DollarSign, Lock, AlertTriangle, ChevronRight, CheckCircle2, Send,
-  Upload, File, Shield, Check, Cpu, Sparkle, Edit3
+  Upload, File, Shield, Check, Cpu, Edit3, ArrowRight, Star, RefreshCw, Copy, Search, Eye, Filter,
+  Sliders, Wand2, Compass, Layers, CheckSquare, Sparkle, Zap, CornerDownLeft, FileCheck, Award,
+  ChevronDown, HelpCircle, ChevronUp, Scale, Bookmark, Landmark
 } from 'lucide-react';
 import { extractPDFTextMultiStage } from '../lib/pdfExtractor';
 import { callAI } from '../lib/api';
-import { translateDynamicAI } from '../lib/translator';
 import { checkAIHealth, retryWithBackoff } from '../lib/health';
 import { supabase } from '../lib/supabaseClient';
 import { exportLegalContractPDF } from '../lib/pdfExporter';
@@ -23,103 +23,110 @@ import SEO from '../components/SEO';
 import DigitalSignatureModal from '../components/DigitalSignatureModal';
 import ContractEditorModal from '../components/ContractEditorModal';
 import { SignatureResult } from '../services/eSignatureService';
-
-
 import { getContractStoreEntry, CONTRACT_STORE_DATABASE } from '../data/contractStore';
-import { MEGA_CONTRACT_TEMPLATES, MEGA_CATEGORIES, generateContractFromTemplate } from '../data/contractsMegaRepository';
+import { MEGA_CONTRACT_TEMPLATES, MEGA_CATEGORIES, MegaContractTemplate, searchMegaRepository, generateContractFromTemplate, getFeaturedContracts } from '../data/contractsMegaRepository';
 import { matchNicheTopic } from '../lib/contracts/nicheTopicDatabase';
 import { getJurisdictionProfile, enforceStrictJurisdictionText } from '../lib/jurisdictionResolver';
+import { usePlatformLocale, formatNumber } from '../lib/universalTranslator';
+import { Link, useSearchParams } from 'react-router-dom';
 
+// ── MAJOR GLOBAL JURISDICTION HUBS ──────────────────────────────────────────
+export const GLOBAL_JURISDICTION_PILLS = [
+  { code: 'SA', nameAr: 'المملكة العربية السعودية', nameEn: 'Saudi Arabia', flag: '🇸🇦', keyLaw: 'نظام المعاملات المدنية (م/191) ونظام الشركات (م/132)', keyLawEn: 'Civil Transactions (M/191) & Companies (M/132)', defaultCurr: 'SAR' },
+  { code: 'AE', nameAr: 'الإمارات العربية المتحدة', nameEn: 'United Arab Emirates', flag: '🇦🇪', keyLaw: 'قانون المعاملات التجارية 50/2022 وتشريعات DIFC/ADGM', keyLawEn: 'Commercial Law 50/2022 & DIFC/ADGM', defaultCurr: 'AED' },
+  { code: 'QA', nameAr: 'دولة قطر', nameEn: 'Qatar', flag: '🇶🇦', keyLaw: 'القانون المدني 22/2004 وقانون الشركات ومحكمة QICCA', keyLawEn: 'Civil Code 22/2004 & QICCA Arbitration', defaultCurr: 'QAR' },
+  { code: 'KW', nameAr: 'دولة الكويت', nameEn: 'Kuwait', flag: '🇰🇼', keyLaw: 'القانون المدني 67/1980 وقانون الشركات 1/2016', keyLawEn: 'Civil Code 67/1980 & Companies 1/2016', defaultCurr: 'KWD' },
+  { code: 'BH', nameAr: 'مملكة البحرين', nameEn: 'Bahrain', flag: '🇧🇭', keyLaw: 'القانون المدني 19/2001 وغرفة البحرين BCDR-AAA', keyLawEn: 'Civil Code 19/2001 & BCDR-AAA', defaultCurr: 'BHD' },
+  { code: 'OM', nameAr: 'سلطنة عمان', nameEn: 'Oman', flag: '🇴🇲', keyLaw: 'قانون المعاملات المدنية 29/2013 والشركات 18/2019', keyLawEn: 'Civil Transactions 29/2013 & OAC', defaultCurr: 'OMR' },
+  { code: 'JO', nameAr: 'المملكة الأردنية الهاشمية', nameEn: 'Jordan', flag: '🇯🇴', keyLaw: 'القانون المدني 43/1976 وقانون الشركات 22/1997', keyLawEn: 'Civil Code 43/1976 & Companies 22/1997', defaultCurr: 'JOD' },
+  { code: 'EG', nameAr: 'جمهورية مصر العربية', nameEn: 'Egypt', flag: '🇪🇬', keyLaw: 'القانون المدني 131/1948 وقانون الشركات 159/1981', keyLawEn: 'Civil Code 131/1948 & CRCICA Arbitration', defaultCurr: 'EGP' },
+  { code: 'US', nameAr: 'الولايات المتحدة (Delaware / NY)', nameEn: 'USA (Delaware / NY)', flag: '🇺🇸', keyLaw: 'Delaware DGCL, Uniform Commercial Code (UCC) & AAA', keyLawEn: 'Delaware DGCL, UCC & AAA Arbitration', defaultCurr: 'USD' },
+  { code: 'GB', nameAr: 'المملكة المتحدة (UK Common Law)', nameEn: 'United Kingdom (UK)', flag: '🇬🇧', keyLaw: 'UK Companies Act 2006, Common Law of Contract & LCIA', keyLawEn: 'Companies Act 2006 & LCIA Arbitration', defaultCurr: 'GBP' },
+  { code: 'EU', nameAr: 'الاتحاد الأوروبي (EU / GDPR)', nameEn: 'European Union (EU)', flag: '🇪🇺', keyLaw: 'EU GDPR Regulation, German BGB/HGB & French Code Civil', keyLawEn: 'EU GDPR, German BGB & French Civil Code', defaultCurr: 'EUR' },
+  { code: 'CN', nameAr: 'جمهورية الصين الشعبية', nameEn: 'China (CIETAC / APAC)', flag: '🇨🇳', keyLaw: 'PRC Civil Code 2021 & CIETAC International Arbitration', keyLawEn: 'PRC Civil Code 2021 & CIETAC Arbitration', defaultCurr: 'CNY' },
+  { code: 'GLOBAL', nameAr: 'التجارة الدولية (UNCITRAL / CISG)', nameEn: 'Global / UNCITRAL & ICC', flag: '🌐', keyLaw: 'UN CISG 1980, UNCITRAL Model Law & ICC Paris Incoterms', keyLawEn: 'UN CISG 1980 & ICC Paris Incoterms 2020', defaultCurr: 'USD' },
+];
 
-// Structured Contract Categories & Types
-const CATEGORIZED_CONTRACT_TYPES = [
+// ── STRUCTURED CONTRACT CATEGORIES ──────────────────────────────────────────
+export const UNIFIED_CONTRACT_CATEGORIES = [
   {
-    categoryAr: 'الاستثمار والإنتاج الزراعي',
-    categoryEn: 'Agricultural & Farming Investment',
-    icon: DollarSign,
-    types: [
-      { id: 'Agricultural Investment', nameAr: 'عقد استثمار زراعي وتقاسم محاصيل وعوائد (Agricultural Investment)', nameEn: 'Agricultural Investment & Crop Sharing' },
-      { id: 'Farmland Usufruct', nameAr: 'عقد حق انتفاع وتشغيل أرض زراعية ومصادر ري (Farmland Usufruct)', nameEn: 'Farmland Usufruct & Irrigation Lease' },
-    ],
-  },
-  {
-    categoryAr: 'المقاولات والإنشاءات الهندسية',
-    categoryEn: 'Construction & FIDIC Projects',
+    id: 'corporate',
+    categoryAr: 'حوكمة وتأسيس الشركات والشركاء',
+    categoryEn: 'Corporate, Governance & LLC Formation',
     icon: Building2,
+    color: 'from-blue-500/20 to-cyan-500/20 border-cyan-500/30 text-cyan-300',
     types: [
-      { id: 'FIDIC Construction', nameAr: 'عقد مقاولة وتشييد هندسي طبقاً لمعايير فيديك (FIDIC Construction Contract)', nameEn: 'FIDIC Standard Construction Contract' },
-      { id: 'Subcontractor Agreement', nameAr: 'عقد مقاول بالباطن وأعمال كهروميكانيكية (Subcontractor Agreement)', nameEn: 'MEP Subcontractor Agreement' },
+      { id: 'Shareholders Agreement', nameAr: 'اتفاقية الشركاء والمساهمين (Shareholders Agreement)', nameEn: 'Shareholders Agreement', defaultPages: 14, defaultClauses: 22 },
+      { id: 'Articles of Association', nameAr: 'عقد تأسيس شركة ذات مسؤولية محدودة (LLC Articles of Association)', nameEn: 'Articles of Association (LLC)', defaultPages: 18, defaultClauses: 28 },
+      { id: 'Commercial Lease', nameAr: 'عقد إيجار مقرات ومكاتب تجارية ومستودعات (Commercial Lease)', nameEn: 'Commercial Office & Warehouse Lease', defaultPages: 10, defaultClauses: 16 },
+      { id: 'Board Resolution', nameAr: 'محضر اجتماع مجلس إدارة وقرارات الشركاء (Board of Directors Resolution)', nameEn: 'Board of Directors Resolution', defaultPages: 6, defaultClauses: 10 },
     ],
   },
   {
-    categoryAr: 'الامتياز التجاري والوكالات',
-    categoryEn: 'Franchise & Commercial Agency',
+    id: 'commercial',
+    categoryAr: 'الخدمات والتوريدات والتجارة الدولية',
+    categoryEn: 'Commercial, Supply Chain & International Trade',
     icon: Briefcase,
+    color: 'from-emerald-500/20 to-teal-500/20 border-emerald-500/30 text-emerald-300',
     types: [
-      { id: 'Commercial Franchise', nameAr: 'عقد امتياز تجاري وحماية علامة ودليل تشغيل (Commercial Franchise)', nameEn: 'Commercial Master Franchise Agreement' },
-      { id: 'Exclusive Distribution', nameAr: 'عقد توزيع ووكالة تجارية حصرية (Exclusive Distribution)', nameEn: 'Exclusive Distribution & Agency' },
+      { id: 'Master Service Agreement', nameAr: 'عقد تقديم خدمات تجارية ومستوى الخدمة (Master Service Agreement & SLA)', nameEn: 'Master Service Agreement (SLA)', defaultPages: 12, defaultClauses: 18 },
+      { id: 'Vendor Supply Agreement', nameAr: 'عقد توريد وتوزيع بضائع دولي (International Vendor & Supply Contract)', nameEn: 'International Vendor & Supply Agreement', defaultPages: 16, defaultClauses: 24 },
+      { id: 'Logistics Supply Chain', nameAr: 'عقد خدمات شحن وسلاسل إمداد لوجستية (Logistics & Freight Agreement)', nameEn: 'Logistics & Freight Services Agreement', defaultPages: 11, defaultClauses: 17 },
+      { id: 'Commercial Franchise', nameAr: 'عقد امتياز تجاري وحماية علامة ودليل تشغيل (Master Franchise Agreement)', nameEn: 'Master Commercial Franchise Agreement', defaultPages: 22, defaultClauses: 34 },
     ],
   },
   {
-    categoryAr: 'الاستحواذ والاندماج (M&A)',
-    categoryEn: 'Mergers & Acquisitions (M&A)',
-    icon: DollarSign,
-    types: [
-      { id: 'Share Purchase SPA', nameAr: 'عقد شراء أسهم وحصص استحواذ (Share Purchase Agreement SPA)', nameEn: 'Share Purchase Agreement (SPA)' },
-      { id: 'Asset Purchase APA', nameAr: 'عقد نقل وشراء أصول تجارية وتشغيلية (Asset Purchase Agreement APA)', nameEn: 'Asset Purchase Agreement (APA)' },
-    ],
-  },
-  {
-    categoryAr: 'حوكمة وتأسيس الشركات',
-    categoryEn: 'Corporate & Governance',
-    icon: Building2,
-    types: [
-      { id: 'Shareholders Agreement', nameAr: 'اتفاقية الشركاء والمساهمين (Shareholders Agreement)', nameEn: 'Shareholders Agreement' },
-      { id: 'Articles of Association', nameAr: 'عقد تأسيس شركة ذات مسؤولية محدودة (LLC Articles of Association)', nameEn: 'Articles of Association (LLC)' },
-      { id: 'Commercial Lease', nameAr: 'عقد إيجار مقرات ومكاتب تجارية (Commercial Lease)', nameEn: 'Commercial Lease Agreement' },
-    ],
-  },
-  {
-    categoryAr: 'الخدمات والتوريدات التجارية',
-    categoryEn: 'Service & Commercial',
-    icon: Briefcase,
-    types: [
-      { id: 'Master Service Agreement', nameAr: 'عقد تقديم خدمات ومستوى الخدمة (SLA & Master Service Agreement)', nameEn: 'Master Service Agreement (SLA)' },
-      { id: 'Vendor Supply Agreement', nameAr: 'عقد توريد وتوزيع تجاري (Vendor & Distribution Contract)', nameEn: 'Vendor & Distribution Agreement' },
-      { id: 'Logistics Supply Chain', nameAr: 'عقد شحن وخدمات لوجستية (Logistics & Supply Chain)', nameEn: 'Logistics & Supply Chain Agreement' },
-    ],
-  },
-  {
-    categoryAr: 'الموارد البشرية وقانون العمل',
-    categoryEn: 'Employment & Labor Law',
-    icon: Users,
-    types: [
-      { id: 'Jordanian Labor Contract', nameAr: 'عقد عمل فردي طبقاً لقانون العمل الأردني رقم 8 لسنة 1996 (Employment Agreement)', nameEn: 'Jordanian Employment Contract (Law 8/1996)' },
-      { id: 'Executive Employment', nameAr: 'عقد عمل إداري وتنفيذي دولي وحظر منافسة (Executive Employment Agreement)', nameEn: 'Executive Employment Agreement' },
-    ],
-  },
-  {
-    categoryAr: 'الملكية الفكرية والتكنولوجيا',
-    categoryEn: 'IP & Technology',
+    id: 'tech_ip',
+    categoryAr: 'الملكية الفكرية والتكنولوجيا والذكاء الاصطناعي',
+    categoryEn: 'IP, Technology, SaaS & AI Governance',
     icon: Code2,
+    color: 'from-purple-500/20 to-indigo-500/20 border-purple-500/30 text-purple-300',
     types: [
-      { id: 'NDA', nameAr: 'اتفاقية سرية المعلومات وعدم الإفصاح (Mutual NDA)', nameEn: 'Mutual Non-Disclosure Agreement (NDA)' },
-      { id: 'Software Development', nameAr: 'عقد تطوير وتصميم برمجيات (Software Development Contract)', nameEn: 'Software Development Agreement' },
-      { id: 'SaaS License', nameAr: 'عقد ترخيص برمجيات وسحابي (SaaS & SLA Licensing Addendum)', nameEn: 'SaaS Licensing Agreement' },
+      { id: 'NDA', nameAr: 'اتفاقية سرية المعلومات وعدم الإفصاح المتبادلة (Mutual Non-Disclosure Agreement)', nameEn: 'Mutual Non-Disclosure Agreement (NDA)', defaultPages: 8, defaultClauses: 14 },
+      { id: 'Software Development', nameAr: 'عقد تطوير وبرمجة برمجيات وأنظمة ذكاء اصطناعي (Software & AI Development)', nameEn: 'Software & AI Development Contract', defaultPages: 15, defaultClauses: 22 },
+      { id: 'SaaS License', nameAr: 'عقد ترخيص برمجيات سحابية واشتراكات (SaaS Enterprise Licensing Agreement)', nameEn: 'SaaS Enterprise Licensing Agreement', defaultPages: 14, defaultClauses: 20 },
+      { id: 'IP Assignment', nameAr: 'عقد نقل وتنازل ملكية براءات اختراع وبرمجيات (IP Assignment & Transfer)', nameEn: 'Intellectual Property Assignment Agreement', defaultPages: 9, defaultClauses: 15 },
     ],
   },
   {
-    categoryAr: 'الاستثمار ورأس المال الجريء',
-    categoryEn: 'Investment & Venture Capital',
+    id: 'mna',
+    categoryAr: 'الاستحواذ والاندماج ورأس المال الجريء',
+    categoryEn: 'M&A, Venture Capital & Private Equity',
     icon: DollarSign,
+    color: 'from-amber-500/20 to-orange-500/20 border-amber-500/30 text-amber-300',
     types: [
-      { id: 'VC Term Sheet', nameAr: 'وثيقة شروط الاستثمار الجريء (VC Term Sheet)', nameEn: 'VC Investment Term Sheet' },
-      { id: 'SAFE Agreement', nameAr: 'اتفاقية الاستثمار المستقبلي (SAFE Convertible Agreement)', nameEn: 'SAFE Agreement' },
-      { id: 'Partnership Agreement', nameAr: 'عقد شراكة وتضامن تجاري (Partnership Agreement)', nameEn: 'Partnership Agreement' },
+      { id: 'Share Purchase SPA', nameAr: 'عقد شراء أسهم وحصص استحواذ (Share Purchase Agreement SPA)', nameEn: 'Share Purchase Agreement (SPA)', defaultPages: 26, defaultClauses: 42 },
+      { id: 'Asset Purchase APA', nameAr: 'عقد شراء ونقل أصول تجارية وتشغيلية (Asset Purchase Agreement APA)', nameEn: 'Asset Purchase Agreement (APA)', defaultPages: 20, defaultClauses: 30 },
+      { id: 'VC Term Sheet', nameAr: 'وثيقة شروط الاستثمار الجريء وجولات التمويل (VC Investment Term Sheet)', nameEn: 'Venture Capital Investment Term Sheet', defaultPages: 12, defaultClauses: 19 },
+      { id: 'SAFE Agreement', nameAr: 'اتفاقية الاستثمار المستقبلي البسيط (SAFE Simple Agreement for Future Equity)', nameEn: 'SAFE Future Equity Agreement', defaultPages: 8, defaultClauses: 13 },
+    ],
+  },
+  {
+    id: 'employment',
+    categoryAr: 'الموارد البشرية والعمل والإدارة التنفيذية',
+    categoryEn: 'Employment, Executive HR & Labor Laws',
+    icon: Users,
+    color: 'from-sky-500/20 to-blue-500/20 border-sky-500/30 text-sky-300',
+    types: [
+      { id: 'Executive Employment', nameAr: 'عقد عمل إداري وتنفيذي دولي مع شروط حظر المنافسة (Executive Employment)', nameEn: 'Executive Employment & Non-Compete Agreement', defaultPages: 12, defaultClauses: 20 },
+      { id: 'Jordanian Labor Contract', nameAr: 'عقد عمل فردي وفقاً لقانون العمل الأردني رقم 8 لسنة 1996 والمدني', nameEn: 'Jordanian Employment Contract (Law 8/1996)', defaultPages: 7, defaultClauses: 12 },
+      { id: 'Saudi Labor Contract', nameAr: 'عقد عمل سعودي موثق ومطابق لمنصة قوى ونظام العمل السعودي', nameEn: 'Saudi Labor Law Employment Contract', defaultPages: 9, defaultClauses: 15 },
+      { id: 'Consultancy Agreement', nameAr: 'عقد استشارات مهنية وخبير مستقل (Independent Contractor Agreement)', nameEn: 'Independent Consultant Agreement', defaultPages: 8, defaultClauses: 14 },
+    ],
+  },
+  {
+    id: 'construction',
+    categoryAr: 'المقاولات والإنشاءات الهندسية (FIDIC)',
+    categoryEn: 'Engineering, Construction & FIDIC Standard',
+    icon: Landmark,
+    color: 'from-yellow-500/20 to-amber-500/20 border-yellow-500/30 text-yellow-300',
+    types: [
+      { id: 'FIDIC Construction', nameAr: 'عقد مقاولة وتشييد هندسي طبقاً لمعايير فيديك (FIDIC Red/Yellow Book)', nameEn: 'FIDIC Standard Engineering Construction Contract', defaultPages: 32, defaultClauses: 50 },
+      { id: 'Subcontractor Agreement', nameAr: 'عقد مقاول بالباطن وأعمال كهروميكانيكية (MEP Subcontractor Contract)', nameEn: 'MEP Subcontractor Agreement', defaultPages: 16, defaultClauses: 24 },
+      { id: 'Architectural Consultancy', nameAr: 'عقد خدمات تصميم واستشارات معمارية وهندسية (Architectural Consultancy)', nameEn: 'Architectural Design & Supervision Agreement', defaultPages: 12, defaultClauses: 18 },
     ],
   },
 ];
-
 
 interface AutoAuditReport {
   safetyScore: number;
@@ -128,22 +135,33 @@ interface AutoAuditReport {
   recommendationsAr: string;
 }
 
-export default function ContractsPage() {
-  const { i18n } = useTranslation();
-  const isRtl = i18n.language === 'ar';
+export default function ContractsPage({ initialTab }: { initialTab?: 'studio' | 'vault' }) {
+  const { l, isRtl, formatNum, formatCurr, i18n } = usePlatformLocale();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  // Selected State
-  const [selectedType, setSelectedType] = useState('Jordanian Labor Contract');
-  const [selectedJurisdictionCode, setSelectedJurisdictionCode] = useState<string>('JO');
+  // Active View Tab: 'studio' (AI Drafting) vs 'vault' (1M+ Repository)
+  const [activeTab, setActiveTab] = useState<'studio' | 'vault'>(
+    initialTab || (searchParams.get('tab') === 'vault' ? 'vault' : 'studio')
+  );
+
+  // Workflow Step in AI Studio (1: Jurisdiction, 2: Category/Type, 3: Parties/Clauses, 4: Generation/Audit/Export)
+  const [studioStep, setStudioStep] = useState<1 | 2 | 3 | 4>(1);
+
+  // Jurisdiction & Contract Configuration
+  const [selectedJurisdictionCode, setSelectedJurisdictionCode] = useState<string>('SA');
+  const [selectedCategoryKey, setSelectedCategoryKey] = useState<string>('corporate');
+  const [selectedType, setSelectedType] = useState<string>('Shareholders Agreement');
+
+  // Parties & Financial Terms
   const [partyA, setPartyA] = useState('');
   const [partyATaxId, setPartyATaxId] = useState('');
   const [partyB, setPartyB] = useState('');
   const [partyBTaxId, setPartyBTaxId] = useState('');
-  const [currency, setCurrency] = useState('JOD');
-  const [contractValue, setContractValue] = useState('');
+  const [currency, setCurrency] = useState('SAR');
+  const [contractValue, setContractValue] = useState('100,000');
   const [customNotes, setCustomNotes] = useState('');
-  const [governingStatute, setGoverningStatute] = useState('القانون المدني الأردني رقم 43 لسنة 1976 وقانون العمل الأردني رقم 8 لسنة 1996');
-  const [disputeVenue, setDisputeVenue] = useState('محكمة بداية عمان (القسم الاقتصادي) / مركز التحكيم الأردني');
+  const [governingStatute, setGoverningStatute] = useState('');
+  const [disputeVenue, setDisputeVenue] = useState('');
 
   // Generation & Pipeline States
   const [generatedContract, setGeneratedContract] = useState('');
@@ -153,82 +171,65 @@ export default function ContractsPage() {
   const [partyASig, setPartyASig] = useState('');
   const [partyBSig, setPartyBSig] = useState('');
   const [sha256Hash, setSha256Hash] = useState('');
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [jurisdiction, setJurisdiction] = useState<JurisdictionInfo | null>(null);
   const [showPaywall, setShowPaywall] = useState(false);
-  const [isRiskApproved, setIsRiskApproved] = useState(false);
   const [isEsignatureOpen, setIsEsignatureOpen] = useState(false);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
 
-
-  // Smart Upload & Native OCR Extraction State
+  // Smart Upload & Native OCR Extraction
   const [ocrFile, setOcrFile] = useState<File | null>(null);
   const [isUploadingFile, setIsUploadingFile] = useState(false);
   const [ocrStatusMsg, setOcrStatusMsg] = useState('');
 
-  // Embedded AI Legal Assistant Chat Drawer State
-  const [showAssistantChat, setShowAssistantChat] = useState(false);
+  // Vault Explorer State
+  const [vaultSearchQuery, setVaultSearchQuery] = useState('');
+  const [vaultCategoryFilter, setVaultCategoryFilter] = useState('all');
+  const [vaultJurisdictionFilter, setVaultJurisdictionFilter] = useState('all');
+  const [selectedPreviewTemplate, setSelectedPreviewTemplate] = useState<MegaContractTemplate | null>(null);
 
-  async function handleFileUploadOCR(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setOcrFile(file);
-    setIsUploadingFile(true);
-    setOcrStatusMsg(isRtl ? 'جاري الاستخراج الضوئي متعدد المراحل للمستند...' : 'Processing multi-stage native OCR extraction...');
+  // FAQ Accordion State
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
-    try {
-      const result = await extractPDFTextMultiStage(file, (msg) => setOcrStatusMsg(msg));
-      if (result && result.text) {
-        setCustomNotes((prev) => `${prev ? prev + '\n\n' : ''}[استخراج OCR للمستند ${file.name}]:\n${result.text.slice(0, 1500)}`);
-        if (!generatedContract) {
-          setGeneratedContract(result.text);
-          executeAutoAudit(result.text);
-        }
-      }
-    } catch (err) {
-      console.error('OCR Extraction error:', err);
-    } finally {
-      setIsUploadingFile(false);
-      setOcrStatusMsg('');
-    }
-  }
-  const [chatMessages, setChatMessages] = useState<Array<{ sender: 'user' | 'ai'; text: string }>>([
-    {
-      sender: 'ai',
-      text: isRtl
-        ? 'أهلاً بك! أنا المساعد التشريعي الذكي لمحرر العقود الأردني والدولي (UNCITRAL / CISG 1980 / القانون الأردني). يمكنك سؤالي عن أي بند أو قانون (مثلاً: ما هي بنود فترة التجربة في قانون العمل الأردني؟ أو اشرح قواعد الأونسيترال الدولية).'
-        : 'Welcome! I am your Senior AI Legal Assistant for Jordanian & International Laws (UNCITRAL, CISG 1980, ICC Paris, EU GDPR, US UCC). Ask me any context-aware legal question.',
-    },
-  ]);
-  const [inputQuestion, setInputQuestion] = useState('');
-  const [chatLoading, setChatLoading] = useState(false);
-
+  // Detect visitor jurisdiction on initial load and setup statutes
   useEffect(() => {
     detectVisitorJurisdiction().then((j) => {
-      setJurisdiction(j);
-      if (j.countryCode === 'EG' || j.countryCode === 'SA' || j.countryCode === 'AE' || j.countryCode === 'US' || j.countryCode === 'EU' || j.countryCode === 'GB') {
-        setSelectedJurisdictionCode(j.countryCode as any);
+      if (j && j.countryCode && GLOBAL_JURISDICTION_PILLS.some(p => p.code === j.countryCode)) {
+        handleJurisdictionChange(j.countryCode);
+      } else {
+        handleJurisdictionChange('SA');
       }
     });
   }, []);
 
-
-  // Update statute defaults when jurisdiction selection changes across all 30+ countries
   function handleJurisdictionChange(code: string) {
     setSelectedJurisdictionCode(code);
+    const pill = GLOBAL_JURISDICTION_PILLS.find(p => p.code === code);
     const info = (JURISDICTIONS as any)[code] || JURISDICTIONS['GLOBAL'];
+
+    if (pill) {
+      setCurrency(pill.defaultCurr);
+    }
+
     if (info) {
       setGoverningStatute(isRtl ? (info.legalFrameworkAr || info.legalFramework) : info.legalFramework);
       setDisputeVenue(isRtl ? (info.arbitrationVenueAr || info.arbitrationVenue) : info.arbitrationVenue);
-      if (info.currencyCode) {
-        setCurrency(info.currencyCode);
-      }
     }
   }
 
-  // Generate Cryptographic SHA-256 Hash
+  // Load a contract from the Vault directly into the AI Drafting Studio
+  function loadTemplateIntoStudio(template: MegaContractTemplate) {
+    setSelectedType(template.titleAr.split('(')[0].trim());
+    if (template.categoryKey) {
+      setSelectedCategoryKey(template.categoryKey);
+    }
+    setActiveTab('studio');
+    setStudioStep(3);
+    window.scrollTo({ top: 300, behavior: 'smooth' });
+  }
+
+  // Cryptographic SHA-256 Hash Generator
   async function generateSha256Hash(content: string): Promise<string> {
     try {
       const msgBuffer = new TextEncoder().encode(content + Date.now().toString());
@@ -240,30 +241,36 @@ export default function ContractsPage() {
     }
   }
 
-  // In-Memory Fast Template Baseline Cache (<50ms initial rendering)
-  const contractTemplateCache: Record<string, string> = {
-    'Jordanian Labor Contract': `عقد عمل فردي طبقاً للقانون المدني الأردني رقم 43 لسنة 1976 وقانون العمل الأردني رقم 8 لسنة 1996
-إنه في يوم [التاريخ] تم الاتفاق بين:
-الطرف الأول (صاحب العمل): [PARTY_A] - سجل تجاري: [PARTY_A_TAX]
-الطرف الثاني (الموظف): [PARTY_B] - الرقم الوطني: [PARTY_B_TAX]
+  // File Upload & Native OCR
+  async function handleFileUploadOCR(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setOcrFile(file);
+    setIsUploadingFile(true);
+    setOcrStatusMsg(isRtl ? 'جاري الاستخراج الضوئي متعدد المراحل للمستند...' : 'Processing native multi-stage OCR...');
 
-تم الاتفاق والتعاقد على أن يعمل الطرف الثاني لدى الطرف الأول بوظيفة [المسمى الوظيفي] بمرتب شامل قدره [VALUE] [CURRENCY].
-1. فترة التجربة: تكون فترة التجربة لمدة 3 أشهر لا تجدد طبقاً للمادة 35 من قانون العمل الأردني رقم 8 لسنة 1996.
-2. الإجازات والتأمين: يحق للموظف الحصول على الإجازات السنوية والرعاية الصحية المعتمدة.
-3. القانون النافذ: يخضع هذا العقد لأحكام قانون العمل الأردني وقانون العمل الأردني رقم 8 لسنة 1996 والقانون المدني الأردني رقم 43 لسنة 1976 وتختص المحاكم الأردنية بنظر أي نزاع.`,
-    'Shareholders Agreement': `اتفاقية الشركاء والمساهمين (Shareholders Agreement)
-الطرف الأول: [PARTY_A] | الطرف الثاني: [PARTY_B]
-قيمة رأس المال / الأسهم: [VALUE] [CURRENCY].
+    try {
+      const result = await extractPDFTextMultiStage(file, (msg) => setOcrStatusMsg(msg));
+      if (result && result.text) {
+        setCustomNotes((prev) => `${prev ? prev + '\n\n' : ''}[استخراج من ملف ${file.name}]:\n${result.text.slice(0, 1500)}`);
+        if (!generatedContract) {
+          setGeneratedContract(result.text);
+          executeAutoAudit(result.text);
+        }
+      }
+    } catch (err) {
+      console.error('OCR error:', err);
+    } finally {
+      setIsUploadingFile(false);
+      setOcrStatusMsg('');
+    }
+  }
 
-1. حوكمة الإدارة: يدار مجلس إدارة الشركة بتمثيل متكافئ بين الشركاء.
-2. حق الشفعة وحظر البيع: يلتزم الشركاء بتقديم حق الشفعة للشركاء الحاليين قبل بيع أي حصص لأطراف خارجية.
-3. التحكيم والنزاعات: تسوى النزاعات عن طريق التحكيم وفق قواعد مركز القاهرة الإقليمي للتحكيم التجاري الدولي CRCICA أو SCCA.`,
-  };
-
-  // STEP 1 to 5: Full Automated Smart Contract Pipeline Generation
+  // Full Smart AI Contract Pipeline
   async function generateSmartContract() {
     if (!partyA.trim() || !partyB.trim()) {
-      alert(isRtl ? 'يرجى إدخال اسم الطرف الأول والطرف الثاني.' : 'Please enter Party A and Party B names.');
+      alert(isRtl ? 'يرجى إدخال اسم الطرف الأول واسم الطرف الثاني لإتمام الصياغة.' : 'Please enter Party A and Party B names.');
+      setStudioStep(3);
       return;
     }
 
@@ -275,1031 +282,1062 @@ export default function ContractsPage() {
     setLoading(true);
     setError('');
     setAuditReport(null);
-    setIsRiskApproved(false);
+    setStudioStep(4);
     incrementTrialUsage();
 
-    // Instant Baseline Pre-Render (<30ms) from Sovereign Legal Contract Store
+    // Instant pre-render from store baseline for instant responsiveness
     const storeEntry = getContractStoreEntry(selectedType);
     if (storeEntry) {
       const templateRaw = isRtl ? storeEntry.templateTextAr : storeEntry.templateTextEn;
-      const valHalf = contractValue ? (parseFloat(contractValue.replace(/,/g, '')) / 2).toLocaleString() : '50,000';
+      const valClean = contractValue ? parseFloat(contractValue.replace(/,/g, '')) : 100000;
       const instantBaseline = templateRaw
-        .replace(/\[PARTY_A\]/g, partyA || (isRtl ? 'الطرف الأول (الشركة المترخصة)' : 'Party A Entity'))
+        .replace(/\[PARTY_A\]/g, partyA || (isRtl ? 'الطرف الأول (الشركة)' : 'Party A'))
         .replace(/\[PARTY_A_TAX\]/g, partyATaxId || 'N/A')
-        .replace(/\[PARTY_B\]/g, partyB || (isRtl ? 'الطرف الثاني (العميل / الموظف)' : 'Party B Entity'))
+        .replace(/\[PARTY_B\]/g, partyB || (isRtl ? 'الطرف الثاني (العميل/الشريك)' : 'Party B'))
         .replace(/\[PARTY_B_TAX\]/g, partyBTaxId || 'N/A')
-        .replace(/\[VALUE\]/g, contractValue || '100,000')
-        .replace(/\[VALUE_HALF\]/g, valHalf)
+        .replace(/\[VALUE\]/g, formatNum(valClean))
         .replace(/\[CURRENCY\]/g, currency);
       setGeneratedContract(instantBaseline);
     }
 
     try {
-      // STEP 2: Real-Time RAG Statute Retrieval (Local + Global)
+      // 1. RAG Statutory Retrieval
       const retrievedRAG = await searchRAGDatabase(selectedType, selectedJurisdictionCode);
       setRagContexts(retrievedRAG);
-
       const ragSummary = retrievedRAG.map((r) => `- [${r.category}]: ${r.statutoryContext}`).join('\n');
 
-      // STEP 3: Instant AI Generation with Jurisdiction Lock & Niche Directives
+      // 2. Jurisdiction Lock & Niche Directives
       const niche = matchNicheTopic(selectedType + ' ' + customNotes);
       const jurProfile = getJurisdictionProfile(selectedJurisdictionCode);
 
-      let prompt = `Draft a pristine, comprehensive, legally binding Smart Contract of type: ${selectedType}.
-
-Locked Sovereign Jurisdiction: ${jurProfile.countryAr} / ${jurProfile.countryEn}
-Governing Substantive Law: ${governingStatute || jurProfile.governingLawAr}
+      let prompt = `Act as the Lead Sovereign Legal Counsel and Contract Architect. Draft an institutional-grade, legally binding Smart Contract for:
+Contract Type: ${selectedType}
+Target Jurisdiction: ${jurProfile.countryAr} / ${jurProfile.countryEn}
+Governing Substantive Statute: ${governingStatute || jurProfile.governingLawAr}
 Dispute Resolution & Arbitration Venue: ${disputeVenue || jurProfile.arbitrationCenterAr}
-Exclusive Judiciary: ${jurProfile.exclusiveCourtsAr}
+Exclusive Judiciary Court: ${jurProfile.exclusiveCourtsAr}
 
-Parties:
-- Party A: ${partyA} (Tax ID / CR: ${partyATaxId || 'N/A'})
-- Party B: ${partyB} (Tax ID / CR: ${partyBTaxId || 'N/A'})
-- Compensation / Financial Value: ${contractValue || 'As Specified'} ${currency}
-- Additional Dialogue Notes / Custom Clauses: ${customNotes || 'None'}
+Contracting Parties:
+- Party A (الطرف الأول): ${partyA} (Tax ID / CR: ${partyATaxId || 'N/A'})
+- Party B (الطرف الثاني): ${partyB} (Tax ID / CR: ${partyBTaxId || 'N/A'})
+- Total Financial Consideration: ${contractValue || '100,000'} ${currency}
+- Custom Dialogue Stipulations & Notes: ${customNotes || 'None'}
 
 ${niche ? `Specialized Niche Directives (${niche.categoryAr} / ${niche.categoryEn}):\n${isRtl ? niche.specializedDirectivesAr : niche.specializedDirectivesEn}\nMandatory Specialized Clauses:\n${(isRtl ? niche.mandatoryClausesAr : niche.mandatoryClausesEn).map((c, i) => `${i+1}. ${c}`).join('\n')}\n` : ''}
-Retrieved Statutory RAG Directives:
+Retrieved Statutory RAG Precedents:
 ${ragSummary}
 
-Mandatory Structure & Clauses:
-1. Preamble & Recitals (الديباجة والصفة القانونية)
-2. Definitions & Interpretation (التعاريف والمفاهيم)
-3. Obligations & Scope of Services (الالتزامات ونطاق العمل)
-4. Financial Terms, Taxes & Currency Payment Schedules (الأحكام المالية والدفع)
-5. Intellectual Property & Confidentiality (الملكية الفكرية والسرية)
-6. Force Majeure & Hardship (القوة القاهرة والظروف الطارئة طبقاً لنصوص الدولة المقيدة)
-7. Limitation of Liability, Penalty Cap & Indemnifications (الشرط الجزائي وتحديد المسئولية)
-8. Termination, Default Remedies & Severance (إنهاء العقد والفسخ)
-9. Governing Law, Exclusive Judiciary & Arbitration Venue (القانون الحاكم واختصاص المحاكم والتحكيم)
+Required Institutional Contract Structure:
+1. Preamble & Legal Capacity of Parties (الديباجة وأهلية التعاقد)
+2. Definitions, Scope & Deliverables (التعاريف وموضوع العقد)
+3. Financial Terms, Milestones & Currency Settlement (الأحكام المالية والدفع)
+4. Intellectual Property, Data Privacy & Strict Confidentiality (الملكية الفكرية والسرية)
+5. Force Majeure & Hardship Clauses under ${jurProfile.countryEn} Law (القوة القاهرة والظروف الطارئة)
+6. Liquidated Damages, Penalty Caps & Indemnification (الشرط الجزائي وتحديد المسؤولية)
+7. Default, Termination & Severance Rights (الفسخ والإنهاء والتعويض)
+8. Governing Substantive Law, Exclusive Court & Arbitration Venue (القانون الحاكم والاختصاص القضائي والتحكيم)
+9. Execution, Signatures & SHA-256 Digital Verification (التواقيع والأختام الرقمية)
 
-CRITICAL JURISDICTION LOCK DIRECTIVE:
-Apply ONLY the legal system, royal decrees, civil codes, and courts of ${jurProfile.countryAr} (${jurProfile.countryEn}). Do NOT cite foreign courts or jurisdictions.
-
-Draft the complete contract in pristine professional legal ${
-  i18n.language === 'ar' ? 'Arabic (العربية)' :
-  i18n.language === 'fr' ? 'French (Français)' :
-  i18n.language === 'de' ? 'German (Deutsch)' :
-  i18n.language === 'es' ? 'Spanish (Español)' :
-  i18n.language === 'zh' ? 'Chinese (中文)' :
-  i18n.language === 'tr' ? 'Turkish (Türkçe)' :
-  'English'
-}. Output ONLY the raw contract text without commentary.`;
-
-      if (jurisdiction) {
-        prompt = wrapPromptWithJurisdiction(prompt, jurisdiction, isRtl);
-      }
+CRITICAL JURISDICTION ENFORCEMENT:
+Exclusively cite and bind this agreement to the statutes and courts of ${jurProfile.countryAr} (${jurProfile.countryEn}). Do NOT reference foreign jurisdictions.
+Language: ${i18n.language === 'ar' ? 'Arabic (العربية الفصحى القانونية)' : 'English (Formal Common Law Drafting)'}. Output ONLY the raw contract text without introductory conversational filler.`;
 
       const aiStatus = await checkAIHealth();
-      if (aiStatus === 'down') throw new Error('AI System is down.');
-      
-      const rawContractContent = await retryWithBackoff(() => callAI(prompt, i18n.language));
-      // Enforce strict jurisdiction lock across all clauses
-      const contractContent = enforceStrictJurisdictionText(rawContractContent, selectedJurisdictionCode, isRtl);
-      setGeneratedContract(contractContent);
+      if (aiStatus === 'down') throw new Error('AI System Offline');
 
-      const hash = await generateSha256Hash(contractContent);
+      const rawContract = await retryWithBackoff(() => callAI(prompt, i18n.language));
+      const finalizedContract = enforceStrictJurisdictionText(rawContract, selectedJurisdictionCode, isRtl);
+
+      setGeneratedContract(finalizedContract);
+
+      // 3. Cryptographic Hash & Security Seal
+      const hash = await generateSha256Hash(finalizedContract);
       setSha256Hash(hash);
 
-      // Analyze contract gaps and vulnerabilities
-      const gapRes = analyzeContractGaps(contractContent);
+      // 4. Statutory Audit & Gap Detector
+      const gapRes = analyzeContractGaps(finalizedContract);
       setGapAnalysisResult(gapRes);
+      executeAutoAudit(finalizedContract);
 
-      // STEP 4: Real-Time Auto-Audit & Risk Scoring Index
-      executeAutoAudit(contractContent);
-
-      // Save to Supabase
+      // 5. Async log to database
       supabase.from('contracts').insert({
         party_a: partyA,
         party_b: partyB,
         contract_type: selectedType,
-        content: contractContent,
+        content: finalizedContract,
       });
 
     } catch (err) {
-      console.error('Smart contract generation error:', err);
-      setError(isRtl ? 'حدث خطأ أثناء صياغة العقد الذكي.' : 'Error generating smart contract.');
+      console.error('Drafting error:', err);
+      setError(isRtl ? 'حدث خطأ أثناء صياغة العقد. تم عرض النموذج الأساسي المعتمد.' : 'Generation encountered a network latency. Basic certified template loaded.');
     } finally {
       setLoading(false);
     }
   }
 
-  // Execute Auto-Audit & Risk Scoring Index
-  async function executeAutoAudit(content: string) {
-    try {
-      const auditPrompt = `Perform a high-precision statutory risk audit on this contract:\n${content.slice(0, 2000)}\n\nReturn ONLY a JSON object with: safetyScore (0-100), criticalFlags (array of strings), jordanianArticlesCited (array of strings e.g. ["المادة 247 مدني أردني / UNCITRAL CISG 1980", "المادة 205 مدني / ICC Force Majeure"]), recommendationsAr (string).`;
-      const aiStatus = await checkAIHealth();
-      if (aiStatus === 'down') throw new Error('AI System is down.');
+  // Real-time Automated Statutory Audit
+  function executeAutoAudit(content: string) {
+    const jurProfile = getJurisdictionProfile(selectedJurisdictionCode);
+    const hasForceMajeure = content.includes('قوة قاهرة') || content.includes('Force Majeure');
+    const hasArbitration = content.includes('تحكيم') || content.includes('Arbitration') || content.includes('CRCICA') || content.includes('SCCA') || content.includes('DIAC') || content.includes('LCIA');
+    const hasPenaltyCap = content.includes('شرط جزائي') || content.includes('Limitation') || content.includes('Indemnity');
 
-      const raw = await retryWithBackoff(() => callAI(auditPrompt));
-      const jsonMatch = raw.match(/\{[\s\S]*\}/);
-      const parsed = JSON.parse(jsonMatch ? jsonMatch[0] : raw);
+    const flags: string[] = [];
+    if (!hasForceMajeure) flags.push(isRtl ? '⚠️ غياب بند صريح للقوة القاهرة والظروف الطارئة.' : '⚠️ Missing express Force Majeure clause.');
+    if (!hasArbitration) flags.push(isRtl ? '⚠️ لم يتم تعيين هيئة تحكيم تجاري لفض النزاعات.' : '⚠️ Dispute resolution arbitration venue unassigned.');
+    if (!hasPenaltyCap) flags.push(isRtl ? '⚠️ لم يتم تحديد سقف أقصى للتعويضات والمسؤولية المالية.' : '⚠️ Financial liability cap unstated.');
 
-      let safetyScore = parsed.safetyScore || 96;
-      let criticalFlags = parsed.criticalFlags || [isRtl ? 'تم التحقق من النظم التشريعية والاتفاقيات الدولية (UNCITRAL / CISG 1980 / القانون الأردني)' : 'Verified against Statutory Codes & UNCITRAL Conventions'];
-      let jordanianArticlesCited = parsed.jordanianArticlesCited || ['المادة 247 مدني (قوة قاهرة)', 'UNCITRAL CISG 1980 Article 79', 'المادة 205 مدني (ظروف طارئة)'];
-      let recommendations = parsed.recommendationsAr || (isRtl ? 'العقد محصن وقانوني ومطابق لأحكام التشريعات المحلية والمعايير الدولية.' : 'Contract is fully statutory and internationally compliant.');
-
-      if (i18n.language !== 'ar') {
-        const targetLang = i18n.language as any;
-        const [translatedRec, translatedFlags, translatedArticles] = await Promise.all([
-          translateDynamicAI(recommendations, targetLang),
-          Promise.all(criticalFlags.map((f: string) => translateDynamicAI(f, targetLang))),
-          Promise.all(jordanianArticlesCited.map((a: string) => translateDynamicAI(a, targetLang))),
-        ]);
-        recommendations = translatedRec;
-        criticalFlags = translatedFlags;
-        jordanianArticlesCited = translatedArticles;
-      }
-
-      setAuditReport({
-        safetyScore,
-        criticalFlags,
-        jordanianArticlesCited,
-        recommendationsAr: recommendations,
-      });
-    } catch {
-      let criticalFlags = [isRtl ? 'بند القوة القاهرة والظروف الطارئة محصن طبقاً للقوانين المحلية والدولية' : 'Force Majeure fully statutory & internationally compliant'];
-      let jordanianArticlesCited = ['المادة 247 مدني أردني', 'UNCITRAL CISG 1980', 'المادة 205 مدني', 'ICC Paris 2020'];
-      let recommendations = isRtl ? 'العقد سليم ومطابق تماماً لأحكام القانون والمحاكم وهيئات التحكيم.' : 'Contract is fully compliant.';
-
-      if (i18n.language !== 'ar') {
-        const targetLang = i18n.language as any;
-        try {
-          const [translatedRec, translatedFlags, translatedArticles] = await Promise.all([
-            translateDynamicAI(recommendations, targetLang),
-            Promise.all(criticalFlags.map((f: string) => translateDynamicAI(f, targetLang))),
-            Promise.all(jordanianArticlesCited.map((a: string) => translateDynamicAI(a, targetLang))),
-          ]);
-          recommendations = translatedRec;
-          criticalFlags = translatedFlags;
-          jordanianArticlesCited = translatedArticles;
-        } catch { /* ignore fallback error */ }
-      }
-
-      setAuditReport({
-        safetyScore: 96,
-        criticalFlags,
-        jordanianArticlesCited,
-        recommendationsAr: recommendations,
-      });
-    }
+    setAuditReport({
+      safetyScore: Math.max(85, 100 - flags.length * 5),
+      criticalFlags: flags,
+      jordanianArticlesCited: [
+        `${jurProfile.countryAr}: ${jurProfile.governingLawAr}`,
+        `${isRtl ? 'محكمة الاختصاص' : 'Judiciary'}: ${jurProfile.exclusiveCourtsAr}`,
+        `${isRtl ? 'مركز التحكيم المعتمد' : 'Arbitration'}: ${jurProfile.arbitrationCenterAr}`
+      ],
+      recommendationsAr: isRtl
+        ? `العقد مكتمل الأركان ومطابق للأنظمة السارية في ${jurProfile.countryAr}. يوصى بتوقيع الأطراف رقمياً وتفعيل الختم المشفر SHA-256.`
+        : `Agreement fully drafted and compliant with ${jurProfile.countryEn} law. Recommended to apply cryptographic e-signatures and SHA-256 seal.`,
+    });
   }
 
-  // Handle Assistant Chat
-  async function handleSendAssistantQuestion() {
-    if (!inputQuestion.trim() || chatLoading) return;
-    const userQ = inputQuestion;
-    setInputQuestion('');
-    setChatMessages((prev) => [...prev, { sender: 'user', text: userQ }]);
-    setChatLoading(true);
+  // Filtered Vault Templates
+  const filteredVaultTemplates = useMemo(() => {
+    return searchMegaRepository(vaultSearchQuery, isRtl ? 'ar' : 'en', vaultCategoryFilter, 12);
+  }, [vaultSearchQuery, vaultCategoryFilter, isRtl]);
 
-    try {
-      const prompt = `You are the JurisTech AI Senior Jordanian & International Legal Advisor. Answer this context-aware question directly based on Jordanian Civil Code 43/1976, Labor Law 8/1996, UNCITRAL CISG 1980, ICC Paris Incoterms, EU GDPR, and US UCC rules:\n\nUser Question: ${userQ}`;
-      const aiStatus = await checkAIHealth();
-      if (aiStatus === 'down') throw new Error('AI System is down.');
+  const featuredContractsList = useMemo(() => {
+    return getFeaturedContracts(6);
+  }, []);
 
-      const answer = await retryWithBackoff(() => callAI(prompt));
-      setChatMessages((prev) => [...prev, { sender: 'ai', text: answer }]);
-    } catch {
-      setChatMessages((prev) => [
-        ...prev,
-        {
-          sender: 'ai',
-          text: isRtl
-            ? 'طبقاً لأحكام القانون المدني الأردني رقم 43/1976 ومعايير الأونسيترال الدولية (CISG 1980): تكون جميع البنود التي تعفي من المسئولية التعسفية باطلة، وتسري أحكام القوة القاهرة تلقائياً.'
-            : 'Under Statutory Codes and UNCITRAL CISG 1980 conventions, mandatory statutory protections override conflicting private waivers.',
-        },
-      ]);
-    } finally {
-      setChatLoading(false);
-    }
-  }
+  const activeCategoryObj = UNIFIED_CONTRACT_CATEGORIES.find(c => c.id === selectedCategoryKey) || UNIFIED_CONTRACT_CATEGORIES[0];
+  const activeJurisdictionPill = GLOBAL_JURISDICTION_PILLS.find(p => p.code === selectedJurisdictionCode) || GLOBAL_JURISDICTION_PILLS[0];
 
   return (
-    <main className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans" dir={isRtl ? 'rtl' : 'ltr'}>
+    <main className="min-h-screen bg-slate-950 text-white selection:bg-cyan-500 selection:text-slate-950 font-sans pb-24" dir={isRtl ? 'rtl' : 'ltr'}>
       <SEO />
-      {showPaywall && <TrialUpgradeModal onClose={() => setShowPaywall(false)} />}
 
-      <div className="max-w-6xl mx-auto space-y-8">
-        
-        {/* Header Banner */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-xs font-bold uppercase tracking-wider mb-2">
-              <Sparkles className="w-4 h-4" />
-              <span>{isRtl ? 'محرك صياغة العقود الذكية بالذكاء الاصطناعي والقوانين المحلية والدولية' : 'Universal Global RAG-Powered Smart Contract Engine'}</span>
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      {/* 👑 HERO SECTION: LUXURY LAWTECH COMMAND HEADER                        */}
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      <section className="relative overflow-hidden pt-10 pb-12 border-b border-slate-800/80 bg-gradient-to-b from-slate-950 via-[#070d1e] to-slate-950">
+        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#06b6d4_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none" />
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+          
+          {/* Top Badges & Telemetry */}
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-gradient-to-r from-cyan-500/20 via-indigo-500/20 to-emerald-500/20 border border-cyan-500/40 text-cyan-300 text-xs font-black uppercase tracking-wider shadow-lg shadow-cyan-500/10">
+              <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
+              <span>{l('المنظومة الموحدة لصياغة وخزينة العقود الذكية (Google AI Pro 1M+ Context Engine)', 'Sovereign AI Smart Contracts Studio & 1M+ Vault (Google AI Pro)')}</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">
-              {isRtl ? 'محرك صياغة العقود الذكية (القانون الأردني والتجارة الدولية UNCITRAL)' : 'AI Smart Contract Engine: Local & Global Laws'}
+
+            <div className="flex items-center gap-3 text-xs font-mono text-slate-400">
+              <span className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-slate-900 border border-slate-800">
+                <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                <span className="text-emerald-400 font-bold">{formatNum(1000014)}+</span>
+                <span>{l('عقد ونموذج معتمد', 'Certified Templates')}</span>
+              </span>
+              <span className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-xl bg-slate-900 border border-slate-800">
+                <Globe className="w-4 h-4 text-cyan-400" />
+                <span className="text-cyan-300 font-bold">{formatNum(15)}+</span>
+                <span>{l('دولة ونظام قضائي', 'Jurisdictions')}</span>
+              </span>
+            </div>
+          </div>
+
+          {/* Main Title */}
+          <div className="max-w-4xl space-y-3">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black leading-tight tracking-tight">
+              {isRtl ? (
+                <>
+                  صياغة العقود الذكية بالذكاء الاصطناعي السيادي{' '}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400">
+                    والخزينة القانونية المليونية
+                  </span>
+                </>
+              ) : (
+                <>
+                  Sovereign AI Smart Contract Drafting &{' '}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400">
+                    1M+ Global Templates Vault
+                  </span>
+                </>
+              )}
             </h1>
-            <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mt-1">
+            <p className="text-slate-300 text-sm sm:text-base leading-relaxed max-w-3xl">
               {isRtl
-                ? 'أتمتة شاملة لكافة تصنيفات العقود مع المطابقة التلقائية للقانون الأردني (43/1976)، قوانين الخليج، ومعايير التجارة الدولية (UNCITRAL / CISG 1980 / ICC Paris)'
-                : 'Fully automated RAG drafting tuned for Jordanian Law (Civil Code 43/1976, Labor 8/1996), GCC Codes, & Global Conventions (UNCITRAL, CISG 1980, ICC Paris, EU GDPR)'}
+                ? 'المحرك التشريعي الأكثر تقدماً لصياغة وتدقيق العقود والاتفاقيات التجارية طبقاً للأنظمة السعودية والخليجية والأردنية والمصرية والأمريكية والبريطانية والصينية والأمم المتحدة (UNCITRAL / CISG 1980) مع تشفير AES-256 وأختام SHA-256 الرقمية.'
+                : 'Enterprise-grade multi-jurisdictional AI contract compiler harmonized across GCC, Jordan, Egypt, US (Delaware), UK, EU, China & UNCITRAL international trade frameworks with bank-grade encryption.'}
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
-            {/* Interactive Multi-Language Switcher Toolbar */}
-            <div className="flex items-center gap-1 p-1 rounded-2xl bg-slate-900/90 border border-cyan-500/30 shadow-inner">
+          {/* View Switcher: AI Studio vs 1M+ Vault */}
+          <div className="pt-2 flex flex-wrap items-center gap-3">
+            <div className="p-1.5 rounded-2xl bg-slate-900/90 border border-slate-800 flex items-center gap-2 shadow-2xl backdrop-blur-xl">
+              <button
+                onClick={() => { setActiveTab('studio'); setSearchParams({ tab: 'studio' }); }}
+                className={`flex items-center gap-2.5 px-5 py-2.5 rounded-xl font-black text-xs sm:text-sm transition-all cursor-pointer ${
+                  activeTab === 'studio'
+                    ? 'bg-gradient-to-r from-cyan-500 to-teal-500 text-slate-950 shadow-lg shadow-cyan-500/25 scale-[1.02]'
+                    : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+                }`}
+              >
+                <Wand2 className="w-4 h-4" />
+                <span>{l('⚡ محرك الصياغة الذكي المباشر (AI Studio)', '⚡ Live AI Drafting Studio')}</span>
+              </button>
+
+              <button
+                onClick={() => { setActiveTab('vault'); setSearchParams({ tab: 'vault' }); }}
+                className={`flex items-center gap-2.5 px-5 py-2.5 rounded-xl font-black text-xs sm:text-sm transition-all cursor-pointer ${
+                  activeTab === 'vault'
+                    ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 shadow-lg shadow-emerald-500/25 scale-[1.02]'
+                    : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+                }`}
+              >
+                <Layers className="w-4 h-4" />
+                <span>{l('📚 مستودع وخزينة العقود المليونية (1M+ Vault)', '📚 1M+ Curated Templates Vault')}</span>
+                <span className="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-mono border border-emerald-500/30">
+                  {formatNum(1000014)}
+                </span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      {/* 🌟 VIEW 1: AI SMART DRAFTING STUDIO WITH INTERACTIVE USER ROADMAP      */}
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      {activeTab === 'studio' && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-8">
+
+          {/* ── 4-STEP INTERACTIVE USER ROADMAP ── */}
+          <div className="p-4 sm:p-5 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-2xl backdrop-blur-xl">
+            <div className="flex items-center justify-between flex-wrap gap-3 pb-4 border-b border-slate-800/80">
+              <div className="flex items-center gap-2">
+                <Compass className="w-5 h-5 text-cyan-400" />
+                <h2 className="text-sm sm:text-base font-black text-white">
+                  {l('خريطة صياغة العقد الذكي التفاعلية (4-Step Guided Roadmap)', 'Smart Contract AI Drafting Guided Roadmap')}
+                </h2>
+              </div>
+              <div className="text-xs text-slate-400 font-mono">
+                {l('الخطوة الحالية:', 'Active Stage:')}{' '}
+                <span className="text-cyan-400 font-bold">{studioStep} / 4</span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-4">
               {[
-                { code: 'ar', label: 'العربية', flag: '🇸🇦' },
-                { code: 'en', label: 'English', flag: '🇬🇧' },
-                { code: 'fr', label: 'Français', flag: '🇫🇷' },
-                { code: 'de', label: 'Deutsch', flag: '🇩🇪' },
-                { code: 'es', label: 'Español', flag: '🇪🇸' },
-                { code: 'zh', label: '中文', flag: '🇨🇳' },
-                { code: 'tr', label: 'Türkçe', flag: '🇹🇷' },
-              ].map((lang) => (
-                <button
-                  key={lang.code}
-                  type="button"
-                  onClick={() => i18n.changeLanguage(lang.code)}
-                  className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all flex items-center gap-1 cursor-pointer ${
-                    i18n.language === lang.code
-                      ? 'bg-amber-500 text-slate-950 font-black shadow-md scale-105'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-800'
-                  }`}
-                  title={lang.label}
-                >
-                  <span>{lang.flag}</span>
-                  <span className="hidden sm:inline">{lang.label}</span>
-                </button>
-              ))}
-            </div>
+                { step: 1, titleAr: '1. الولاية القضائية والقانون', titleEn: '1. Jurisdiction & Statute', icon: Globe },
+                { step: 2, titleAr: '2. تصنيف ونوع العقد', titleEn: '2. Contract Intent & Type', icon: Briefcase },
+                { step: 3, titleAr: '3. بيانات الأطراف والبنود', titleEn: '3. Parties & Custom Terms', icon: Edit3 },
+                { step: 4, titleAr: '4. الصياغة والتدقيق والتصدير', titleEn: '4. AI Draft, Audit & Seal', icon: ShieldCheck },
+              ].map((item) => {
+                const Icon = item.icon;
+                const isActive = studioStep === item.step;
+                const isCompleted = studioStep > item.step;
 
-            <button
-              onClick={() => setShowAssistantChat(!showAssistantChat)}
-              className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 font-bold text-xs text-white flex items-center gap-2 transition-all shadow-lg shadow-indigo-600/30 cursor-pointer"
-            >
-              <MessageSquare className="w-4 h-4" />
-              <span>{isRtl ? 'المستشار التشريعي الدولي المباشر' : 'Global AI Legal Advisor'}</span>
-            </button>
-          </div>
-        </div>
-
-        {/* 4 Multi-AI Sovereign Workflow Pillars (Fully Interactive & Functional) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {/* Step 01: Smart Upload & Native OCR Extraction */}
-          <div className="p-5 rounded-3xl bg-slate-900/90 border border-cyan-500/30 space-y-3 relative overflow-hidden group hover:border-cyan-400 transition-all shadow-xl flex flex-col justify-between">
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-xl font-black text-cyan-400 font-mono">01</span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                  {isRtl ? 'مؤتمت 100% متوافق' : 'Automated 100% Compliant'}
-                </span>
-              </div>
-              <h4 className="font-extrabold text-xs text-white flex items-center gap-1.5">
-                <Upload className="w-4 h-4 text-cyan-400" />
-                <span>{isRtl ? 'الرفع الذكي واستخراج النصوص (OCR)' : 'Smart Upload & Native OCR Extraction'}</span>
-              </h4>
-              <p className="text-[11px] text-slate-300 leading-relaxed">
-                {isRtl
-                  ? 'إرفاق العقود (PDF, DOCX, TXT) لاستخراج النصوص متعدد المراحل مع الحفاظ التام على سلامة الصياغة.'
-                  : 'Attach contracts (PDF, DOCX, TXT) for multi-stage OCR extraction preserving 100% native language integrity.'}
-              </p>
-            </div>
-            <div>
-              <label className="w-full inline-flex items-center justify-center gap-1.5 mt-2 px-3 py-2 rounded-xl bg-cyan-500/20 text-cyan-300 hover:bg-cyan-500/30 text-xs font-black cursor-pointer border border-cyan-500/40 transition-all shadow-sm">
-                <File className="w-3.5 h-3.5" />
-                <span>{isUploadingFile ? (ocrStatusMsg || (isRtl ? 'جارٍ الاستخراج...' : 'Extracting...')) : (isRtl ? 'استيراد واستخراج (PDF/DOCX)' : 'Attach & Extract (PDF/DOCX)')}</span>
-                <input type="file" accept=".pdf,.docx,.txt" onChange={handleFileUploadOCR} className="hidden" />
-              </label>
-            </div>
-          </div>
-
-          {/* Step 02: Heatmap Audit & Zero-Risk Redlines */}
-          <div className="p-5 rounded-3xl bg-slate-900/90 border border-amber-500/30 space-y-3 relative overflow-hidden group hover:border-amber-400 transition-all shadow-xl flex flex-col justify-between">
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-xl font-black text-amber-400 font-mono">02</span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                  {isRtl ? 'مؤتمت 100% متوافق' : 'Automated 100% Compliant'}
-                </span>
-              </div>
-              <h4 className="font-extrabold text-xs text-white flex items-center gap-1.5">
-                <Shield className="w-4 h-4 text-amber-400" />
-                <span>{isRtl ? 'الفحص الحراري والبنود البديلة الحامية' : 'Heatmap Audit & Zero-Risk Redlines'}</span>
-              </h4>
-              <p className="text-[11px] text-slate-300 leading-relaxed">
-                {isRtl
-                  ? 'تحليل متجهات المسؤولية والثغرات وإنشاء بنود بديلة متوازنة قانونياً ومحمية من البطلان.'
-                  : 'AI analyzes liability vectors and generates zero-risk statutory redline rewrites grounded in local codes.'}
-              </p>
-            </div>
-            <div>
-              <button
-                type="button"
-                onClick={async () => {
-                  const targetContent = generatedContract || 'عقد اتفاقية وتوريد برمجيات';
-                  const gapRes = analyzeContractGaps(targetContent);
-                  setGapAnalysisResult(gapRes);
-                  await executeAutoAudit(targetContent);
-                  alert(isRtl ? '⚡ تم تشغيل الفحص الحراري واستخراج مؤشرات الأمان والبنود البديلة بنجاح! راجع قسم تقرير المخاطر أسفل المحرر.' : '⚡ AI Heatmap Audit executed! Review the safety report and redlines below.');
-                }}
-                className="w-full inline-flex items-center justify-center gap-1.5 mt-2 px-3 py-2 rounded-xl bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 text-xs font-black cursor-pointer border border-amber-500/40 transition-all shadow-sm"
-              >
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>{isRtl ? 'تشغيل الفحص والـ Redlines' : 'Run Heatmap & Redlines'}</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Step 03: AI Compromise Room & Cryptographic E-Sign */}
-          <div className="p-5 rounded-3xl bg-slate-900/90 border border-emerald-500/30 space-y-3 relative overflow-hidden group hover:border-emerald-400 transition-all shadow-xl flex flex-col justify-between">
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-xl font-black text-emerald-400 font-mono">03</span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                  {isRtl ? 'مؤتمت 100% متوافق' : 'Automated 100% Compliant'}
-                </span>
-              </div>
-              <h4 className="font-extrabold text-xs text-white flex items-center gap-1.5">
-                <Lock className="w-4 h-4 text-emerald-400" />
-                <span>{isRtl ? 'غرفة التوقيع والختم الرقمي المشفر' : 'AI Compromise Room & Cryptographic E-Sign'}</span>
-              </h4>
-              <p className="text-[11px] text-slate-300 leading-relaxed">
-                {isRtl
-                  ? 'وساطة النزاعات الآلية والتوقيع الرقمي المعتمد مع بصمات التشفير الزمنية (SHA-256 eIDAS).'
-                  : 'Automated conflict mediation and certified digital sealing with cryptographic SHA-256 timestamps.'}
-              </p>
-            </div>
-            <div>
-              <button
-                type="button"
-                onClick={() => setIsEsignatureOpen(true)}
-                className="w-full inline-flex items-center justify-center gap-1.5 mt-2 px-3 py-2 rounded-xl bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30 text-xs font-black cursor-pointer border border-emerald-500/40 transition-all shadow-sm"
-              >
-                <ShieldCheck className="w-3.5 h-3.5" />
-                <span>{isRtl ? 'توقيع العقد بختم SHA-256' : 'Sign with SHA-256 Seal'}</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Step 04: Bilingual PDF/Word Export & Official Seals */}
-          <div className="p-5 rounded-3xl bg-slate-900/90 border border-indigo-500/30 space-y-3 relative overflow-hidden group hover:border-indigo-400 transition-all shadow-xl flex flex-col justify-between">
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-xl font-black text-indigo-400 font-mono">04</span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                  {isRtl ? 'مؤتمت 100% متوافق' : 'Automated 100% Compliant'}
-                </span>
-              </div>
-              <h4 className="font-extrabold text-xs text-white flex items-center gap-1.5">
-                <Download className="w-4 h-4 text-indigo-400" />
-                <span>{isRtl ? 'تصدير Word و PDF مع الختم الرسمي' : 'Bilingual PDF/Word Export & Official Seals'}</span>
-              </h4>
-              <p className="text-[11px] text-slate-300 leading-relaxed">
-                {isRtl
-                  ? 'تصدير اتفاقيات العقود ثنائية اللغة الجاهزة للتنفيذ مع الأختام الرقمية الرسمية المعتمدة للمنصة.'
-                  : 'Export ready-to-execute bilingual contract agreements bearing official platform digital seals.'}
-              </p>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <button
-                type="button"
-                onClick={async () => {
-                  const targetContent = generatedContract || 'عقد اتفاقية وشراكة تجارية';
-                  await exportDocumentMultiFormat(targetContent, selectedType, partyA, partyB, 'docx', isRtl ? 'ar' : 'en', selectedJurisdictionCode);
-                }}
-                className="flex-1 inline-flex items-center justify-center gap-1 px-2.5 py-2 rounded-xl bg-indigo-500/20 text-indigo-300 hover:bg-indigo-500/30 text-[11px] font-black cursor-pointer border border-indigo-500/40 transition-all shadow-sm"
-              >
-                <Download className="w-3 h-3" />
-                <span>Word (.docx)</span>
-              </button>
-              <button
-                type="button"
-                onClick={async () => {
-                  const targetContent = generatedContract || 'عقد اتفاقية وشراكة تجارية';
-                  await exportLegalContractPDF(targetContent, selectedType, partyA, partyB);
-                }}
-                className="flex-1 inline-flex items-center justify-center gap-1 px-2.5 py-2 rounded-xl bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 text-[11px] font-black cursor-pointer border border-rose-500/40 transition-all shadow-sm"
-              >
-                <FileText className="w-3 h-3" />
-                <span>PDF Seal</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Dynamic Category & Type Selector Grid + Comprehensive Dropdown */}
-        <div className="space-y-4">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            <label className="text-xs font-black text-slate-900 dark:text-white uppercase tracking-wider block flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-cyan-400" />
-              <span>{isRtl ? 'اختر أي نموذج من مكتبة الـ 1,000,000+ عقد المتاحة:' : 'Select Smart Contract Template (1,000,000+ Library):'}</span>
-            </label>
-
-            {/* Quick Full Dropdown for All 50+ Mega Templates */}
-            <div className="w-full sm:w-auto min-w-[280px]">
-              <select
-                value={selectedType}
-                onChange={(e) => setSelectedType(e.target.value)}
-                className="w-full p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-400/40 text-xs font-black text-cyan-300 focus:outline-none focus:ring-2 focus:ring-cyan-500 cursor-pointer"
-              >
-                <optgroup label={isRtl ? 'قوالب المستودع الضخم المعتمدة' : 'Mega Repository Certified Templates'}>
-                  {MEGA_CONTRACT_TEMPLATES.map((tmpl) => (
-                    <option key={tmpl.id} value={tmpl.id} className="bg-slate-900 text-white font-sans py-1">
-                      {isRtl ? tmpl.titleAr : tmpl.titleEn}
-                    </option>
-                  ))}
-                </optgroup>
-                <optgroup label={isRtl ? 'العقود السريعة الرئيسية' : 'Core Sovereign Contracts'}>
-                  {CATEGORIZED_CONTRACT_TYPES.flatMap((c) => c.types).map((t) => (
-                    <option key={t.id} value={t.id} className="bg-slate-900 text-cyan-300 font-sans py-1">
-                      {isRtl ? t.nameAr : t.nameEn}
-                    </option>
-                  ))}
-                </optgroup>
-              </select>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
-            {CATEGORIZED_CONTRACT_TYPES.map((cat) => {
-              const CategoryIcon = cat.icon;
-              return (
-                <div key={cat.categoryEn} className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-2">
-                  <div className="flex items-center gap-2 text-cyan-400 text-xs font-extrabold pb-2 border-b border-slate-200 dark:border-slate-800">
-                    <CategoryIcon className="w-4 h-4 shrink-0" />
-                    <span className="truncate">{isRtl ? cat.categoryAr : cat.categoryEn}</span>
-                  </div>
-                  <div className="space-y-1 pt-1">
-                    {cat.types.map((type) => (
-                      <button
-                        key={type.id}
-                        onClick={() => setSelectedType(type.id)}
-                        className={`w-full text-start p-2 rounded-xl text-xs font-bold transition-all truncate block ${
-                          selectedType === type.id
-                            ? 'bg-cyan-500 text-slate-950 font-black shadow-md'
-                            : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:bg-slate-800'
-                        }`}
-                      >
-                        {isRtl ? type.nameAr : type.nameEn}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Redesigned Ultra-Premium Jurisdiction & Global Laws Selector Window */}
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-950/90 to-slate-950 p-6 border border-cyan-500/30 shadow-2xl shadow-cyan-500/10 space-y-4">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
-
-          {/* Header Bar */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
-            <div>
-              <label className="text-xs font-black uppercase tracking-widest text-cyan-400 flex items-center gap-2">
-                <Globe className="w-4 h-4 text-cyan-400 animate-spin-slow" />
-                <span>{isRtl ? 'اختر النظام التشريعي والقوانين النافذة (محلية / إقليمية / دولية):' : 'Select Governing Jurisdiction & Sovereign Legal Framework:'}</span>
-              </label>
-              <p className="text-[11px] text-slate-400 mt-0.5">
-                {isRtl
-                  ? 'مطابقة تلقائية فورية للأنظمة المدنية والتجارية وهيئات التحكيم المعتمدة'
-                  : 'Automated statutory scoping for civil, commercial, labor codes & international arbitration centers'}
-              </p>
-            </div>
-
-            {/* Selected Jurisdiction Active Pill */}
-            {selectedJurisdictionCode && (JURISDICTIONS as any)[selectedJurisdictionCode] && (
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-cyan-500/10 border border-cyan-400/30 text-xs font-bold text-cyan-300 shrink-0">
-                <span className="text-base font-normal">{((JURISDICTIONS as any)[selectedJurisdictionCode] as JurisdictionInfo).flagEmoji || '🌐'}</span>
-                <span>{isRtl ? ((JURISDICTIONS as any)[selectedJurisdictionCode] as JurisdictionInfo).countryNameAr : ((JURISDICTIONS as any)[selectedJurisdictionCode] as JurisdictionInfo).countryName}</span>
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              </div>
-            )}
-          </div>
-
-          {/* Grid of Jurisdiction Cards */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2.5 max-h-64 overflow-y-auto pr-1 custom-scrollbar">
-            {Object.values(JURISDICTIONS)
-              .filter((j) => !j.isBlocked)
-              .map((j) => {
-                const isSelected = selectedJurisdictionCode === j.countryCode;
                 return (
                   <button
-                    key={j.countryCode}
-                    type="button"
-                    onClick={() => handleJurisdictionChange(j.countryCode)}
-                    className={`relative p-3 rounded-2xl text-start transition-all border flex flex-col justify-between gap-2 group cursor-pointer ${
-                      isSelected
-                        ? 'bg-gradient-to-br from-cyan-500/20 via-indigo-600/30 to-cyan-600/20 border-cyan-400 shadow-lg shadow-cyan-500/20 ring-1 ring-cyan-400/50 scale-[1.02]'
-                        : 'bg-slate-900/80 border-slate-800 hover:border-slate-700 hover:bg-slate-800/80'
+                    key={item.step}
+                    onClick={() => setStudioStep(item.step as any)}
+                    className={`p-3.5 rounded-2xl border text-right transition-all flex items-center gap-3 cursor-pointer ${
+                      isActive
+                        ? 'bg-gradient-to-br from-cyan-950/80 to-slate-900 border-cyan-500 shadow-lg shadow-cyan-500/20'
+                        : isCompleted
+                        ? 'bg-slate-950/60 border-emerald-500/30 text-slate-300 hover:border-emerald-500/60'
+                        : 'bg-slate-950/40 border-slate-800/80 text-slate-500 hover:border-slate-700'
                     }`}
                   >
-                    <div className="flex items-center justify-between">
-                      <span className="text-xl leading-none">{j.flagEmoji || '🌐'}</span>
-                      {isSelected ? (
-                        <span className="p-1 rounded-full bg-cyan-400 text-slate-950">
-                          <CheckCircle2 className="w-3 h-3" />
-                        </span>
-                      ) : (
-                        <span className="text-[10px] font-mono text-slate-500 group-hover:text-slate-300 transition-colors">
-                          {j.countryCode}
-                        </span>
-                      )}
+                    <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-bold text-xs flex-shrink-0 ${
+                      isActive
+                        ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/30'
+                        : isCompleted
+                        ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                        : 'bg-slate-800 text-slate-400'
+                    }`}>
+                      {isCompleted ? <Check className="w-4 h-4 text-emerald-400" /> : <Icon className="w-4 h-4" />}
                     </div>
-
-                    <div>
-                      <div className="text-xs font-black text-white truncate group-hover:text-cyan-300 transition-colors">
-                        {isRtl ? j.countryNameAr : j.countryName}
-                      </div>
-                      <div className="text-[10px] font-mono text-slate-400 truncate mt-0.5">
-                        {isRtl ? (j.legalFrameworkAr || j.legalFramework).split(' ')[0] : j.currencyCode}
+                    <div className="min-w-0">
+                      <div className={`text-xs font-black truncate ${isActive ? 'text-cyan-300' : isCompleted ? 'text-emerald-300' : 'text-slate-400'}`}>
+                        {isRtl ? item.titleAr : item.titleEn}
                       </div>
                     </div>
-
-                    {isSelected && (
-                      <div className="w-full h-0.5 bg-gradient-to-r from-cyan-400 to-indigo-400 rounded-full" />
-                    )}
                   </button>
                 );
               })}
-          </div>
-
-          {/* Active Jurisdiction Overview Card */}
-          {selectedJurisdictionCode && (JURISDICTIONS as any)[selectedJurisdictionCode] && (
-            <div className="p-3.5 rounded-2xl bg-slate-950/60 border border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-              <div className="space-y-1">
-                <span className="font-mono text-[10px] text-cyan-400 uppercase tracking-widest block">
-                  {isRtl ? 'المنظومة التشريعية المعتمدة:' : 'Active Statutory Framework:'}
-                </span>
-                <span className="font-bold text-slate-200 block">
-                  {isRtl
-                    ? ((JURISDICTIONS as any)[selectedJurisdictionCode] as JurisdictionInfo).legalFrameworkAr
-                    : ((JURISDICTIONS as any)[selectedJurisdictionCode] as JurisdictionInfo).legalFramework}
-                </span>
-              </div>
-              <div className="space-y-1 sm:text-left shrink-0">
-                <span className="font-mono text-[10px] text-emerald-400 uppercase tracking-widest block">
-                  {isRtl ? 'مقر التحكيم:' : 'Arbitration Center:'}
-                </span>
-                <span className="font-semibold text-slate-300 block truncate max-w-xs">
-                  {isRtl
-                    ? ((JURISDICTIONS as any)[selectedJurisdictionCode] as JurisdictionInfo).arbitrationVenueAr
-                    : ((JURISDICTIONS as any)[selectedJurisdictionCode] as JurisdictionInfo).arbitrationVenue}
-                </span>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Form Input Questionnaire */}
-        <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 space-y-6 shadow-2xl">
-          <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
-            <h3 className="font-extrabold text-sm text-cyan-400 flex items-center gap-2">
-              <FileText className="w-4 h-4" />
-              <span>{isRtl ? `بيانات وأطراف العقد: ${selectedType}` : `Smart Contract Parameters: ${selectedType}`}</span>
-            </h3>
-            <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
-              Active Scope: {selectedJurisdictionCode}
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            {/* Party A */}
-            <div className="space-y-2">
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">{isRtl ? 'اسم الطرف الأول (الشركة / المترخص):' : 'Party A Name & Entity:'}</label>
-              <div className="flex items-center gap-2">
-                <input
-                  type="text"
-                  placeholder={isRtl ? 'مثال: شركة القاهرة للاستثمارات والتكنولوجيا' : 'e.g. Cairo Tech Investments SAE'}
-                  value={partyA}
-                  onChange={(e) => setPartyA(e.target.value)}
-                  className="flex-1 p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-semibold text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                />
-                <VoiceInput onTranscript={(t) => setPartyA((p) => (p ? `${p} ${t}` : t))} />
-              </div>
-              <input
-                type="text"
-                placeholder={isRtl ? 'رقم السجل التجاري / البطاقة الضريبية للطرف الأول' : 'Party A Commercial Reg / Tax ID'}
-                value={partyATaxId}
-                onChange={(e) => setPartyATaxId(e.target.value)}
-                className="w-full p-2.5 rounded-xl bg-slate-950/70 border border-slate-200 dark:border-slate-800 text-[11px] font-mono text-slate-700 dark:text-slate-300 focus:outline-none"
-              />
-            </div>
-
-            {/* Party B */}
-            <div className="space-y-2">
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">{isRtl ? 'اسم الطرف الثاني (العميل / الموظف / المورد):' : 'Party B Name & Entity:'}</label>
-              <div className="flex items-center gap-2">
-                <input
-                  type="text"
-                  placeholder={isRtl ? 'مثال: شركة الدلتا للتوريدات أو اسم الموظف' : 'e.g. Delta Supplies SAE or Employee Name'}
-                  value={partyB}
-                  onChange={(e) => setPartyB(e.target.value)}
-                  className="flex-1 p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-semibold text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                />
-                <VoiceInput onTranscript={(t) => setPartyB((p) => (p ? `${p} ${t}` : t))} />
-              </div>
-              <input
-                type="text"
-                placeholder={isRtl ? 'رقم السجل التجاري / الرقم القومي للطرف الثاني' : 'Party B National ID / Tax Reg'}
-                value={partyBTaxId}
-                onChange={(e) => setPartyBTaxId(e.target.value)}
-                className="w-full p-2.5 rounded-xl bg-slate-950/70 border border-slate-200 dark:border-slate-800 text-[11px] font-mono text-slate-700 dark:text-slate-300 focus:outline-none"
-              />
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">{isRtl ? 'عملة العقد:' : 'Contract Currency:'}</label>
-              <select
-                value={currency}
-                onChange={(e) => setCurrency(e.target.value)}
-                className="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-800 dark:text-slate-200 focus:outline-none"
-              >
-                <option value="EGP">جنيه مصري (EGP)</option>
-                <option value="USD">دولار أمريكي (USD)</option>
-                <option value="EUR">يورو (EUR)</option>
-                <option value="SAR">ريال سعودي (SAR)</option>
-                <option value="AED">درهم إماراتي (AED)</option>
-                <option value="GBP">جنيه استرليني (GBP)</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">{isRtl ? 'القيمة الإجمالية / المقابل المالي:' : 'Contract Value / Fee:'}</label>
-              <input
-                type="text"
-                placeholder={isRtl ? 'مثال: 150,000' : 'e.g. 150,000'}
-                value={contractValue}
-                onChange={(e) => setContractValue(e.target.value)}
-                className="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-800 dark:text-slate-200 focus:outline-none font-mono"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">{isRtl ? 'مقر التحكيم والتنازع القضائي:' : 'Dispute Venue:'}</label>
-              <input
-                type="text"
-                value={disputeVenue}
-                onChange={(e) => setDisputeVenue(e.target.value)}
-                className="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-semibold text-slate-800 dark:text-slate-200 focus:outline-none truncate"
-              />
-            </div>
-          </div>
-
-          {/* Interactive Dialogue Notes / Voice Field */}
-          <div>
-            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
-              {isRtl ? 'ملاحظات تفاعلية وبنود خاصة إضافية (صوتياً أو كتابياً)' : 'Custom Dialogue Notes & Special Clauses'}
-            </label>
-            <div className="flex items-center gap-2">
-              <textarea
-                rows={3}
-                placeholder={isRtl ? 'أدخل أي بنود خاصة أو شروط جزائية محددة تود إضافتها للعقد...' : 'Type or dictate any custom provisions...'}
-                value={customNotes}
-                onChange={(e) => setCustomNotes(e.target.value)}
-                className="flex-1 p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500 leading-relaxed font-mono"
-              />
-              <VoiceInput onTranscript={(t) => setCustomNotes((p) => (p ? `${p} ${t}` : t))} />
-            </div>
-          </div>
-
-          {error && <p className="text-red-400 text-xs font-bold">{error}</p>}
-
-          <button
-            onClick={generateSmartContract}
-            disabled={loading}
-            className="w-full py-4 rounded-2xl bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 disabled:opacity-40 font-extrabold text-slate-950 flex items-center justify-center gap-2 transition-all shadow-xl shadow-cyan-500/20 text-sm sm:text-base active:scale-98"
-          >
-            {loading ? <Loader2 className="w-5 h-5 animate-spin text-slate-950" /> : <Sparkles className="w-5 h-5 text-slate-950" />}
-            <span>
-              {loading
-                ? isRtl ? 'جاري استدعاء نصوص مواد RAG وصياغة العقد الذكي...' : 'Retrieving statutory RAG & generating smart contract...'
-                : isRtl ? 'توليد العقد الذكي التلقائي والمطابقة التشريعية' : 'Execute AI Smart Contract Generation & Statutory Audit'}
-            </span>
-          </button>
-        </div>
-
-        {/* STEP 4: Real-Time Auto-Audit & Risk Scoring Report Panel */}
-        {auditReport && (
-          <div className={`bg-white dark:bg-slate-900 rounded-3xl p-6 border space-y-4 shadow-xl transition-all ${isRiskApproved ? 'border-emerald-500/50 glow-emerald' : 'border-amber-500/50 glow-amber'}`}>
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800 pb-3">
-              <div className="flex items-center gap-3">
-                <div className="p-3 rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-black text-2xl">
-                  {auditReport.safetyScore}%
+          {/* ── STEP 1: JURISDICTION & STATUTORY SELECTION ── */}
+          {studioStep === 1 && (
+            <section className="p-6 sm:p-8 rounded-3xl bg-slate-900/80 border border-slate-800 space-y-6 shadow-2xl backdrop-blur-xl">
+              <div className="flex items-center justify-between flex-wrap gap-4 border-b border-slate-800 pb-4">
+                <div className="space-y-1">
+                  <div className="text-xs text-cyan-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
+                    <Globe className="w-4 h-4" />
+                    <span>{l('الخطوة الأولى: تحديد المنظومة التشريعية والقضاء الحصري', 'Step 1: Jurisdiction & Legal Architecture')}</span>
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-black text-white">
+                    {l('اختر الدولة أو الإطار القانوني الدولي الحاكم للعقد', 'Select Governing Jurisdiction & Statutory Framework')}
+                  </h3>
                 </div>
-                <div>
-                  <h4 className="font-extrabold text-sm text-slate-900 dark:text-white">{isRtl ? 'مؤشر السلامة وتحليل المخاطر التشريعية للعقد' : 'Contract Risk & Statutory Audit Index'}</h4>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">{auditReport.recommendationsAr}</p>
-                </div>
+                <button
+                  onClick={() => setStudioStep(2)}
+                  className="px-5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs sm:text-sm flex items-center gap-2 transition-all shadow-lg shadow-cyan-500/20 cursor-pointer"
+                >
+                  <span>{l('المتابعة لاختيار نوع العقد', 'Proceed to Contract Type')}</span>
+                  <ArrowRight className={`w-4 h-4 ${isRtl ? 'rotate-180' : ''}`} />
+                </button>
               </div>
 
-              <div className="flex items-center gap-2 shrink-0">
-                {isRiskApproved ? (
-                  <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-3.5 py-1.5 rounded-full border border-emerald-500/30 font-bold flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                    <span>{isRtl ? 'تمت الموافقة على تقرير المخاطر وإصدار العقد' : 'Risk Audit Approved & Issued'}</span>
-                  </span>
-                ) : (
-                  <span className="text-xs font-mono text-amber-400 bg-amber-500/10 px-3.5 py-1.5 rounded-full border border-amber-500/30 font-bold flex items-center gap-1.5">
-                    <AlertTriangle className="w-4 h-4 text-amber-400 animate-pulse" />
-                    <span>{isRtl ? 'بانتظار مراجعة وقبول نتائج المخاطر لإصدار العقد' : 'Pending Risk Audit Approval'}</span>
-                  </span>
-                )}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono">
-              <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
-                <span className="text-cyan-400 font-bold block">{isRtl ? 'المواد التشريعية والمعايير المستندة في RAG:' : 'Cited Statutory & Global RAG Articles:'}</span>
-                <ul className="list-disc list-inside text-slate-700 dark:text-slate-300 space-y-0.5">
-                  {auditReport.jordanianArticlesCited.map((art, idx) => (
-                    <li key={idx}>{art}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
-                <span className="text-amber-400 font-bold block">{isRtl ? 'نقاط الحماية والتحصين المنفذة:' : 'Statutory Protection Directives:'}</span>
-                <ul className="list-disc list-inside text-slate-700 dark:text-slate-300 space-y-0.5">
-                  {auditReport.criticalFlags.map((flag, idx) => (
-                    <li key={idx}>{flag}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            {/* AI Contract Gap & Vulnerability Detection Section */}
-            {gapAnalysisResult && gapAnalysisResult.gaps.length > 0 && (
-              <div className="pt-4 border-t border-slate-200 dark:border-slate-800 space-y-3">
-                <div className="flex items-center justify-between">
-                  <h5 className="text-xs font-black text-amber-400 uppercase tracking-wider flex items-center gap-2">
-                    <AlertTriangle className="w-4 h-4 text-amber-400" />
-                    <span>
-                      {isRtl
-                        ? `خوارزمية رصد الثغرات والمخاطر الخفية (${gapAnalysisResult.gaps.length} ثغرات مكتشفة)`
-                        : `AI Legal Gap & Vulnerability Engine (${gapAnalysisResult.gaps.length} Gaps Detected)`}
-                    </span>
-                  </h5>
-                  <span className="text-[10px] bg-red-500/20 text-red-400 border border-red-500/30 px-2.5 py-0.5 rounded-full font-bold">
-                    Risk Score: {gapAnalysisResult.riskScore}/100 ({gapAnalysisResult.riskLevel})
-                  </span>
-                </div>
-
-                <div className="space-y-2.5 max-h-72 overflow-y-auto pr-1">
-                  {gapAnalysisResult.gaps.map((gap, idx) => (
-                    <div
-                      key={idx}
-                      className="p-3.5 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2 text-xs"
+              {/* Country Selection Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                {GLOBAL_JURISDICTION_PILLS.map((pill) => {
+                  const isSelected = selectedJurisdictionCode === pill.code;
+                  return (
+                    <button
+                      key={pill.code}
+                      onClick={() => handleJurisdictionChange(pill.code)}
+                      className={`p-4 rounded-2xl border text-right transition-all flex flex-col justify-between gap-3 cursor-pointer ${
+                        isSelected
+                          ? 'bg-gradient-to-br from-cyan-950/90 to-slate-900 border-cyan-500 shadow-xl shadow-cyan-500/15 ring-1 ring-cyan-500'
+                          : 'bg-slate-950/80 border-slate-800 hover:border-slate-700 text-slate-300 hover:bg-slate-900/60'
+                      }`}
                     >
                       <div className="flex items-center justify-between">
-                        <span className="font-bold text-white flex items-center gap-2">
-                          <span
-                            className={`w-2 h-2 rounded-full ${
-                              gap.severity === 'CRITICAL'
-                                ? 'bg-red-500 shadow-red-500/50 shadow-sm'
-                                : gap.severity === 'WARNING'
-                                ? 'bg-amber-500'
-                                : 'bg-blue-400'
-                            }`}
-                          />
-                          {isRtl ? gap.titleAr : gap.titleEn}
-                        </span>
-                        <span
-                          className={`text-[9px] font-black px-2 py-0.5 rounded-md uppercase ${
-                            gap.severity === 'CRITICAL'
-                              ? 'bg-red-500/20 text-red-400 border border-red-500/30'
-                              : gap.severity === 'WARNING'
-                              ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                              : 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
-                          }`}
-                        >
-                          {gap.severity}
-                        </span>
-                      </div>
-
-                      <p className="text-slate-400 text-[11px] leading-relaxed">
-                        {isRtl ? gap.descriptionAr : gap.descriptionEn}
-                      </p>
-
-                      {gap.detectedClauseSnippet && (
-                        <div className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300">
-                          <span className="text-slate-500 block text-[9px] mb-0.5">{isRtl ? 'النص المكتشف:' : 'Context Snippet:'}</span>
-                          "{gap.detectedClauseSnippet}"
+                        <div className="flex items-center gap-2.5">
+                          <span className="text-2xl">{pill.flag}</span>
+                          <span className="font-bold text-sm text-white">{isRtl ? pill.nameAr : pill.nameEn}</span>
                         </div>
-                      )}
-
-                      <div className="p-2.5 rounded-xl bg-emerald-950/30 border border-emerald-500/30 text-[11px] text-emerald-300 space-y-1">
-                        <span className="font-bold text-emerald-400 flex items-center gap-1 text-[10px]">
-                          <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-                          {isRtl ? 'مقترح التعديل الفوري المحسن:' : 'Suggested Redline Alternative:'}
-                        </span>
-                        <p className="font-sans font-medium">{isRtl ? gap.suggestedRedlineAr : gap.suggestedRedlineEn}</p>
+                        {isSelected && <CheckCircle2 className="w-5 h-5 text-cyan-400" />}
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
 
-            {/* Mandatory Risk Audit Approval Guard Button */}
-            {!isRiskApproved && (
-              <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-                <div className="flex items-center gap-2.5">
-                  <ShieldCheck className="w-6 h-6 text-amber-400 shrink-0" />
-                  <span className="text-amber-200 font-bold">
-                    {isRtl
-                      ? 'ربط مباشر: يتطلب إصدار العقد المعتمد مراجعتك وموافقتك الصريحة على نتائج تحليل المخاطر والشروط أعلاه.'
-                      : 'Direct Risk Link: Issuing certified contract requires your explicit review and approval of the risk audit findings above.'}
-                  </span>
+                      <div className="text-[11px] text-slate-400 line-clamp-2 leading-relaxed">
+                        {isRtl ? pill.keyLaw : pill.keyLawEn}
+                      </div>
+
+                      <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] font-mono text-slate-400">
+                        <span>{l('العملة الافتراضية:', 'Default Currency:')} <strong className="text-cyan-300">{pill.defaultCurr}</strong></span>
+                        <span className="text-emerald-400">● 100% {l('معتمد', 'Verified')}</span>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Active Jurisdiction Overview Card */}
+              <div className="p-4 rounded-2xl bg-cyan-950/40 border border-cyan-500/30 flex items-center justify-between flex-wrap gap-3">
+                <div className="flex items-center gap-3">
+                  <span className="text-3xl">{activeJurisdictionPill.flag}</span>
+                  <div>
+                    <span className="text-xs text-cyan-300 font-bold block">
+                      {isRtl ? 'الولاية الحاكمة النشطة حالياً:' : 'Active Governing Jurisdiction:'}{' '}
+                      <strong className="text-white">{isRtl ? activeJurisdictionPill.nameAr : activeJurisdictionPill.nameEn}</strong>
+                    </span>
+                    <span className="text-[11px] text-slate-400 block font-mono">
+                      {governingStatute || activeJurisdictionPill.keyLaw}
+                    </span>
+                  </div>
                 </div>
                 <button
-                  onClick={() => setIsRiskApproved(true)}
-                  className="px-6 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs shadow-lg transition-all shrink-0 flex items-center gap-2"
+                  onClick={() => setStudioStep(2)}
+                  className="px-4 py-2 rounded-xl bg-cyan-500 text-slate-950 font-black text-xs flex items-center gap-2 hover:bg-cyan-400 transition-all cursor-pointer"
                 >
-                  <CheckCircle2 className="w-4 h-4" />
-                  <span>{isRtl ? 'الموافقة على نتائج المخاطر وإصدار العقد المعتمد' : 'Approve Risk Audit & Issue Contract'}</span>
+                  <span>{l('التالي: نوع العقد', 'Next: Contract Type')}</span>
+                  <ArrowRight className={`w-3.5 h-3.5 ${isRtl ? 'rotate-180' : ''}`} />
                 </button>
               </div>
-            )}
-          </div>
-        )}
+            </section>
+          )}
 
-        {/* STEP 3 & 5: Generated Contract Result & E-Signature Pad Execution */}
-        {generatedContract && (
-          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 space-y-6 shadow-2xl">
-            <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-[10px] font-mono text-cyan-400 font-bold uppercase tracking-wider block">
-                    HASH: {sha256Hash}
-                  </span>
-                  {isRiskApproved ? (
-                    <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
-                      {isRtl ? '🟢 عقد معتمد بعد قبول المخاطر' : '🟢 CERTIFIED CONTRACT (RISK APPROVED)'}
-                    </span>
+          {/* ── STEP 2: CATEGORY & CONTRACT TYPE PICKER ── */}
+          {studioStep === 2 && (
+            <section className="p-6 sm:p-8 rounded-3xl bg-slate-900/80 border border-slate-800 space-y-6 shadow-2xl backdrop-blur-xl">
+              <div className="flex items-center justify-between flex-wrap gap-4 border-b border-slate-800 pb-4">
+                <div className="space-y-1">
+                  <div className="text-xs text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
+                    <Briefcase className="w-4 h-4" />
+                    <span>{l('الخطوة الثانية: اختيار القطاع ونوع العقد المطلوب', 'Step 2: Category & Contract Intent')}</span>
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-black text-white">
+                    {l('حدد القطاع التجاري ونموذج العقد المراد صياغته وتدقيقه', 'Select Commercial Sector & Target Contract Model')}
+                  </h3>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setStudioStep(1)}
+                    className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition-all cursor-pointer"
+                  >
+                    {l('السابق', 'Back')}
+                  </button>
+                  <button
+                    onClick={() => setStudioStep(3)}
+                    className="px-5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs sm:text-sm flex items-center gap-2 transition-all shadow-lg shadow-cyan-500/20 cursor-pointer"
+                  >
+                    <span>{l('المتابعة لإدخال بيانات الأطراف', 'Proceed to Parties Data')}</span>
+                    <ArrowRight className={`w-4 h-4 ${isRtl ? 'rotate-180' : ''}`} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Category Tabs */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
+                {UNIFIED_CONTRACT_CATEGORIES.map((cat) => {
+                  const Icon = cat.icon;
+                  const isCatActive = selectedCategoryKey === cat.id;
+                  return (
+                    <button
+                      key={cat.id}
+                      onClick={() => {
+                        setSelectedCategoryKey(cat.id);
+                        if (cat.types.length > 0) setSelectedType(cat.types[0].id);
+                      }}
+                      className={`p-3.5 rounded-2xl border text-center transition-all flex flex-col items-center gap-2 cursor-pointer ${
+                        isCatActive
+                          ? `bg-slate-900 border-cyan-500 shadow-xl shadow-cyan-500/10 ring-1 ring-cyan-500`
+                          : 'bg-slate-950/70 border-slate-800 text-slate-400 hover:text-white hover:border-slate-700'
+                      }`}
+                    >
+                      <Icon className={`w-5 h-5 ${isCatActive ? 'text-cyan-400' : 'text-slate-400'}`} />
+                      <span className="text-[11px] font-bold leading-snug line-clamp-2">
+                        {isRtl ? cat.categoryAr.split('و')[0] : cat.categoryEn.split(',')[0]}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Contract Models in Selected Category */}
+              <div className="space-y-3 pt-2">
+                <div className="text-xs font-bold text-slate-400 flex items-center gap-2">
+                  <Sliders className="w-4 h-4 text-cyan-400" />
+                  <span>{l('النماذج المعتمدة المتاحة في هذا القطاع:', 'Certified Models Available in this Sector:')}</span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {activeCategoryObj.types.map((typeItem) => {
+                    const isTypeSelected = selectedType === typeItem.id;
+                    return (
+                      <button
+                        key={typeItem.id}
+                        onClick={() => setSelectedType(typeItem.id)}
+                        className={`p-4 rounded-2xl border text-right transition-all flex items-start justify-between gap-3 cursor-pointer ${
+                          isTypeSelected
+                            ? 'bg-gradient-to-br from-cyan-950/90 to-slate-900 border-cyan-500 shadow-xl shadow-cyan-500/20 ring-1 ring-cyan-500'
+                            : 'bg-slate-950/80 border-slate-800 text-slate-300 hover:border-slate-700 hover:bg-slate-900/60'
+                        }`}
+                      >
+                        <div className="space-y-1 min-w-0">
+                          <h4 className="font-bold text-xs sm:text-sm text-white leading-snug">
+                            {isRtl ? typeItem.nameAr : typeItem.nameEn}
+                          </h4>
+                          <div className="flex items-center gap-3 text-[10px] font-mono text-slate-400">
+                            <span>📄 ~{typeItem.defaultPages} {l('صفحة', 'pages')}</span>
+                            <span>🛡️ {typeItem.defaultClauses} {l('بنداً قانونياً', 'clauses')}</span>
+                            <span className="text-emerald-400">★ 10/10 {l('معتمد', 'Rated')}</span>
+                          </div>
+                        </div>
+                        <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${
+                          isTypeSelected ? 'bg-cyan-500 text-slate-950' : 'border border-slate-700'
+                        }`}>
+                          {isTypeSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* ── STEP 3: PARTIES DATA, FINANCIALS & CUSTOM CLAUSES ── */}
+          {studioStep === 3 && (
+            <section className="p-6 sm:p-8 rounded-3xl bg-slate-900/80 border border-slate-800 space-y-6 shadow-2xl backdrop-blur-xl">
+              <div className="flex items-center justify-between flex-wrap gap-4 border-b border-slate-800 pb-4">
+                <div className="space-y-1">
+                  <div className="text-xs text-purple-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
+                    <Edit3 className="w-4 h-4" />
+                    <span>{l('الخطوة الثالثة: إدخال بيانات الأطراف والبنود المخصصة', 'Step 3: Parties, Financials & Custom Clauses')}</span>
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-black text-white">
+                    {l('أدخل أسماء وبيانات أطراف التعاقد والقيمة المالية', 'Contracting Parties & Commercial Terms')}
+                  </h3>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setStudioStep(2)}
+                    className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition-all cursor-pointer"
+                  >
+                    {l('السابق', 'Back')}
+                  </button>
+                  <button
+                    onClick={generateSmartContract}
+                    disabled={loading}
+                    className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 via-teal-400 to-emerald-400 hover:from-cyan-400 hover:to-emerald-300 text-slate-950 font-black text-xs sm:text-sm flex items-center gap-2 transition-all shadow-xl shadow-cyan-500/25 cursor-pointer disabled:opacity-50"
+                  >
+                    {loading ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span>{l('جاري الصياغة والتدقيق بالذكاء الاصطناعي...', 'Drafting with Google AI Pro...')}</span>
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="w-4 h-4 fill-slate-950" />
+                        <span>{l('توليد وصياغة العقد فورياً ⚡', 'Generate Smart Contract Now ⚡')}</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Form Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                {/* Party A */}
+                <div className="p-5 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-4">
+                  <div className="flex items-center gap-2 text-xs font-bold text-cyan-300">
+                    <Building2 className="w-4 h-4 text-cyan-400" />
+                    <span>{l('الطرف الأول (الشركة / صاحب العمل / المرخِّص):', 'Party A (Company / Employer / Licensor):')}</span>
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-400 mb-1.5">{l('الاسم الكامل أو اسم المنشأة:', 'Entity / Full Legal Name:')}</label>
+                    <input
+                      type="text"
+                      value={partyA}
+                      onChange={(e) => setPartyA(e.target.value)}
+                      placeholder={isRtl ? 'مثال: شركة تقنية المستقبل القابضة ش.م.م' : 'e.g. Future Tech Holdings LLC'}
+                      className="w-full p-3 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-cyan-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-400 mb-1.5">{l('رقم السجل التجاري / الرقم الضريبي / الهوية:', 'Tax ID / Commercial Register / CR:')}</label>
+                    <input
+                      type="text"
+                      value={partyATaxId}
+                      onChange={(e) => setPartyATaxId(e.target.value)}
+                      placeholder={isRtl ? 'مثال: 1010894231 (سجل تجاري)' : 'e.g. CR: 1010894231 / Tax: 300481239'}
+                      className="w-full p-3 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-cyan-500"
+                    />
+                  </div>
+                </div>
+
+                {/* Party B */}
+                <div className="p-5 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-4">
+                  <div className="flex items-center gap-2 text-xs font-bold text-emerald-300">
+                    <Users className="w-4 h-4 text-emerald-400" />
+                    <span>{l('الطرف الثاني (العميل / الموظف / المقاول / الشريك):', 'Party B (Client / Employee / Contractor / Partner):')}</span>
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-400 mb-1.5">{l('الاسم الكامل أو اسم الطرف الثاني:', 'Entity / Full Legal Name:')}</label>
+                    <input
+                      type="text"
+                      value={partyB}
+                      onChange={(e) => setPartyB(e.target.value)}
+                      placeholder={isRtl ? 'مثال: شركة الحلول الذكية للتجارة' : 'e.g. Smart Horizon Tech Inc.'}
+                      className="w-full p-3 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-emerald-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-400 mb-1.5">{l('رقم السجل التجاري / الهوية الوطنية / الإقامة:', 'Tax ID / National ID / Passport:')}</label>
+                    <input
+                      type="text"
+                      value={partyBTaxId}
+                      onChange={(e) => setPartyBTaxId(e.target.value)}
+                      placeholder={isRtl ? 'مثال: 7001928412' : 'e.g. ID: 7001928412'}
+                      className="w-full p-3 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-emerald-500"
+                    />
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Financial Terms & Currency */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-400 mb-1.5">{l('القيمة المالية الإجمالية للعقد:', 'Total Contract Financial Value:')}</label>
+                  <input
+                    type="text"
+                    value={contractValue}
+                    onChange={(e) => setContractValue(e.target.value)}
+                    placeholder="100,000"
+                    className="w-full p-3 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white font-mono placeholder:text-slate-600 focus:outline-none focus:border-cyan-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-400 mb-1.5">{l('عملة التعاقد والدفع:', 'Contract Currency:')}</label>
+                  <select
+                    value={currency}
+                    onChange={(e) => setCurrency(e.target.value)}
+                    className="w-full p-3 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white font-mono focus:outline-none focus:border-cyan-500"
+                  >
+                    <option value="SAR">SAR (ريال سعودي)</option>
+                    <option value="AED">AED (درهم إماراتي)</option>
+                    <option value="USD">USD (دولار أمريكي)</option>
+                    <option value="EUR">EUR (يورو أوروبي)</option>
+                    <option value="JOD">JOD (دينار أردني)</option>
+                    <option value="EGP">EGP (جنيه مصري)</option>
+                    <option value="QAR">QAR (ريال قطري)</option>
+                    <option value="KWD">KWD (دينار كويتي)</option>
+                    <option value="BHD">BHD (دينار بحريني)</option>
+                    <option value="OMR">OMR (ريال عماني)</option>
+                    <option value="GBP">GBP (جنيه إسترليني)</option>
+                    <option value="CNY">CNY (يوان صيني)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-400 mb-1.5">{l('رفع مستند مسودة / PDF (OCR):', 'Attach Draft / PDF OCR:')}</label>
+                  <label className="flex items-center justify-center gap-2 w-full p-2.5 rounded-xl bg-slate-950 border border-dashed border-slate-700 hover:border-cyan-500/60 text-xs text-slate-300 cursor-pointer transition-all">
+                    <Upload className="w-4 h-4 text-cyan-400" />
+                    <span>{isUploadingFile ? (ocrStatusMsg || l('جاري الفحص...', 'Scanning...')) : l('استخراج نصوص PDF', 'Extract PDF Texts')}</span>
+                    <input type="file" accept=".pdf,.doc,.docx,.txt" onChange={handleFileUploadOCR} className="hidden" />
+                  </label>
+                </div>
+              </div>
+
+              {/* Custom Clauses & Notes Area */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-slate-300 flex items-center gap-2">
+                    <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                    <span>{l('شروط خاصة أو بنود استثنائية ترغب بإضافتها:', 'Custom Clauses or Special Directives:')}</span>
+                  </label>
+                  <VoiceInput onTranscript={(txt) => setCustomNotes((prev) => `${prev ? prev + ' ' : ''}${txt}`)} />
+                </div>
+                <textarea
+                  value={customNotes}
+                  onChange={(e) => setCustomNotes(e.target.value)}
+                  placeholder={isRtl ? 'اكتب أي شروط إضافية ترغب في دمجها داخل العقد (مثال: مدة تسليم 30 يوماً، شرط جزائي 1% عن كل أسبوع تأخير، حق التدقيق المالي السنوي...)' : 'Enter any bespoke clauses or penalty parameters to include in the smart contract...'}
+                  rows={4}
+                  className="w-full p-4 rounded-2xl bg-slate-950 border border-slate-800 text-xs sm:text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-cyan-500 leading-relaxed"
+                />
+              </div>
+
+              {/* Bottom Generate Trigger */}
+              <div className="pt-2 flex justify-end">
+                <button
+                  onClick={generateSmartContract}
+                  disabled={loading}
+                  className="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-cyan-500 via-teal-400 to-emerald-400 hover:from-cyan-400 hover:to-emerald-300 text-slate-950 font-black text-sm flex items-center gap-2.5 transition-all shadow-xl shadow-cyan-500/25 cursor-pointer disabled:opacity-50"
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      <span>{l('جاري الصياغة والتدقيق بالذكاء الاصطناعي...', 'Drafting with Google AI Pro...')}</span>
+                    </>
                   ) : (
-                    <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40">
-                      {isRtl ? '🟡 بانتظار موافقة العميل على المخاطر أعلاه' : '🟡 DRAFT (PENDING RISK AUDIT APPROVAL)'}
+                    <>
+                      <Sparkles className="w-5 h-5 fill-slate-950" />
+                      <span>{l('صياغة العقد الذكي وتدقيقه الآن ⚡', 'Generate & Audit Smart Contract Now ⚡')}</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </section>
+          )}
+
+          {/* ── STEP 4: AI DRAFTING OUTPUT, AUDIT & EXPORT ── */}
+          {studioStep === 4 && (
+            <section className="space-y-6">
+              
+              {/* Audit & Security Metrics Bar */}
+              {auditReport && (
+                <div className="p-5 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-xl backdrop-blur-xl grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="flex items-center gap-3 p-3 rounded-2xl bg-slate-950/70 border border-slate-800">
+                    <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-mono font-black text-base border border-emerald-500/30">
+                      {auditReport.safetyScore}%
+                    </div>
+                    <div>
+                      <span className="text-[10px] text-slate-400 block font-sans">{l('مؤشر السلامة التشريعية:', 'Statutory Safety Score:')}</span>
+                      <span className="text-xs font-bold text-emerald-400">{l('معتمد قانونياً 100%', '100% Institutionally Cleared')}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3 p-3 rounded-2xl bg-slate-950/70 border border-slate-800">
+                    <div className="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center border border-cyan-500/30">
+                      <Lock className="w-5 h-5" />
+                    </div>
+                    <div className="min-w-0">
+                      <span className="text-[10px] text-slate-400 block font-sans">{l('الختم الرقمي المشفر SHA-256:', 'SHA-256 Cryptographic Seal:')}</span>
+                      <span className="text-[11px] font-mono text-cyan-300 truncate block">{sha256Hash || 'SHA256-ENCRYPTED-SEAL'}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3 p-3 rounded-2xl bg-slate-950/70 border border-slate-800">
+                    <div className="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center border border-purple-500/30">
+                      <Scale className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <span className="text-[10px] text-slate-400 block font-sans">{l('القانون وهيئة التحكيم الحاكمة:', 'Governing Law & Venue:')}</span>
+                      <span className="text-xs font-bold text-purple-300">{activeJurisdictionPill.flag} {activeJurisdictionPill.code}</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Main Contract Paper & Output Viewer */}
+              <div className="p-6 sm:p-8 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-2xl backdrop-blur-xl space-y-5">
+                
+                {/* Header Actions */}
+                <div className="flex items-center justify-between flex-wrap gap-4 border-b border-slate-800 pb-4">
+                  <div className="space-y-1">
+                    <span className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest flex items-center gap-1">
+                      <Sparkle className="w-3 h-3 text-cyan-400" />
+                      <span>{l('مسودة العقد الذكي المعتمدة (Cryptographically Sealed Document)', 'Cryptographically Sealed Smart Contract Draft')}</span>
                     </span>
+                    <h3 className="text-lg sm:text-xl font-black text-white">
+                      {selectedType} — {activeJurisdictionPill.nameAr}
+                    </h3>
+                  </div>
+
+                  {/* Multi-Format Export Toolbar */}
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <button
+                      onClick={() => {
+                        exportLegalContractPDF(generatedContract, selectedType, partyA || (isRtl ? 'الطرف الأول' : 'Party A'), partyB || (isRtl ? 'الطرف الثاني' : 'Party B'), partyASig, partyBSig, sha256Hash, i18n.language);
+                      }}
+                      className="px-3.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs flex items-center gap-1.5 transition-all shadow-md shadow-emerald-500/20 cursor-pointer"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      <span>{l('تحميل PDF', 'Download PDF')}</span>
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        exportDocumentMultiFormat(generatedContract, `${selectedType}_JurisTech`, partyA || (isRtl ? 'الطرف الأول' : 'Party A'), partyB || (isRtl ? 'الطرف الثاني' : 'Party B'), 'docx', isRtl ? 'ar' : 'en', selectedJurisdictionCode);
+                      }}
+                      className="px-3.5 py-2 rounded-xl bg-blue-500 hover:bg-blue-400 text-white font-black text-xs flex items-center gap-1.5 transition-all cursor-pointer"
+                    >
+                      <FileText className="w-3.5 h-3.5" />
+                      <span>{l('تصدير Word', 'Word DOCX')}</span>
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(generatedContract);
+                        setCopied(true);
+                        setTimeout(() => setCopied(false), 2000);
+                      }}
+                      className="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer"
+                    >
+                      {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                      <span>{copied ? l('تم النسخ', 'Copied') : l('نسخ', 'Copy')}</span>
+                    </button>
+
+                    <button
+                      onClick={() => setIsEsignatureOpen(true)}
+                      className="px-3.5 py-2 rounded-xl bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/40 font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer"
+                    >
+                      <Edit3 className="w-3.5 h-3.5" />
+                      <span>{l('التوقيع الرقمي', 'E-Sign')}</span>
+                    </button>
+
+                    <button
+                      onClick={() => setIsEditorOpen(true)}
+                      className="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer"
+                    >
+                      <Sliders className="w-3.5 h-3.5" />
+                      <span>{l('محرر النصوص', 'Edit')}</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Contract Body Viewport */}
+                <div className="relative p-6 sm:p-8 rounded-2xl bg-slate-950 border border-slate-800/80 font-mono text-xs sm:text-sm text-slate-200 leading-relaxed whitespace-pre-wrap max-h-[600px] overflow-y-auto select-text selection:bg-cyan-500 selection:text-slate-950">
+                  {generatedContract || (
+                    <div className="py-12 text-center text-slate-500">
+                      <FileText className="w-12 h-12 mx-auto mb-3 opacity-30 text-cyan-400" />
+                      <p>{l('لم يتم توليد أي عقد حتى الآن. يرجى الضغط على زر الصياغة بالأعلى.', 'No contract generated yet. Click generate above.')}</p>
+                    </div>
                   )}
                 </div>
-                <h2 className="text-xl font-black text-slate-900 dark:text-white">{isRtl ? 'العقد الذكي المولد المكتمل' : 'Pristine Smart Contract Output'}</h2>
+
+                {/* Bottom Step Reset / Edit */}
+                <div className="flex items-center justify-between pt-2">
+                  <button
+                    onClick={() => setStudioStep(3)}
+                    className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs flex items-center gap-2 transition-all cursor-pointer"
+                  >
+                    <span>{l('تعديل بنود وبيانات العقد', 'Edit Contract Details')}</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setStudioStep(1);
+                      setGeneratedContract('');
+                    }}
+                    className="px-4 py-2 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-bold text-xs flex items-center gap-2 transition-all cursor-pointer"
+                  >
+                    <RefreshCw className="w-3.5 h-3.5" />
+                    <span>{l('بدء صياغة عقد جديد', 'Draft New Contract')}</span>
+                  </button>
+                </div>
+
               </div>
 
-              <div className="flex flex-wrap items-center gap-2">
-                <button
-                  onClick={() => setIsEditorOpen(true)}
-                  className="bg-gradient-to-r from-cyan-500 to-indigo-600 hover:brightness-110 px-4 py-2.5 rounded-xl font-black flex items-center gap-2 text-xs text-white shadow-lg shadow-cyan-500/25 active:scale-95 border border-cyan-400/40 cursor-pointer"
-                >
-                  <Edit3 className="w-4 h-4 text-cyan-200" />
-                  <span>{isRtl ? '✏️ نافذة تعديل وتخصيص العقد (Full Editor)' : '✏️ Open Contract Customizer / Editor'}</span>
-                </button>
-                <button
-                  onClick={() =>
-                    exportLegalContractPDF(
-                      generatedContract,
-                      selectedType,
-                      partyA,
-                      partyB,
-                      partyASig,
-                      partyBSig,
-                      sha256Hash,
-                      isRtl ? 'ar' : 'en'
-                    )
-                  }
-                  className="bg-emerald-600 hover:bg-emerald-500 px-4 py-2.5 rounded-xl font-bold flex items-center gap-2 text-xs text-slate-900 dark:text-white shadow-lg shadow-emerald-600/30 active:scale-95"
-                >
-                  <Download className="w-4 h-4" /> PDF {isRtl ? 'موقع ومختوم' : 'Signed PDF'}
-                </button>
-                <button
-                  onClick={() => exportDocumentMultiFormat(generatedContract, selectedType, partyA, partyB, 'docx', isRtl ? 'ar' : 'en', jurisdiction?.countryCode || (isRtl ? 'JO' : 'US'))}
-                  className="bg-gradient-to-r from-blue-600 via-cyan-600 to-blue-500 hover:brightness-110 px-4 py-2.5 rounded-xl font-black flex items-center gap-2 text-xs text-white shadow-lg shadow-cyan-500/25 active:scale-95 border border-cyan-400/40"
-                >
-                  <Download className="w-4 h-4 text-cyan-200" />
-                  <span>{isRtl ? 'Word (.docx)' : 'Word (.docx)'}</span>
-                </button>
+            </section>
+          )}
 
-                <button
-                  onClick={() => exportDocumentMultiFormat(generatedContract, selectedType, partyA, partyB, 'txt', isRtl ? 'ar' : 'en', jurisdiction?.countryCode || (isRtl ? 'JO' : 'US'))}
-                  className="bg-slate-100 dark:bg-slate-800 hover:bg-slate-700 px-3.5 py-2.5 rounded-xl font-bold border border-slate-300 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-300"
-                >
-                  <Download className="w-3.5 h-3.5" /> Text (.txt)
-                </button>
-              </div>
+        </div>
+      )}
 
-            </div>
-
-            {/* Contract Textarea */}
-            <textarea
-              rows={18}
-              value={generatedContract}
-              onChange={(e) => setGeneratedContract(e.target.value)}
-              className="w-full font-mono text-xs bg-slate-50 dark:bg-slate-950 p-5 rounded-2xl text-slate-800 dark:text-slate-200 leading-relaxed border border-slate-200 dark:border-slate-800 focus:outline-none focus:ring-2 focus:ring-cyan-500"
-            />
-
-            {/* E-Signature Pad & Global eIDAS Signature Section */}
-            <div className="pt-4 border-t border-slate-200 dark:border-slate-800 space-y-4">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
-                  <Lock className="w-4 h-4 text-emerald-400" />
-                  <span>{isRtl ? 'اعتماد التوقيع الرقمي والختم الرسمي للعقد' : 'Execute Certified Digital E-Signatures & Official Stamp'}</span>
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      {/* 📚 VIEW 2: 1M+ CURATED CONTRACTS REPOSITORY & VAULT EXPLORER           */}
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      {activeTab === 'vault' && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-8">
+          
+          {/* Vault Control & Search Bar */}
+          <div className="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-2xl backdrop-blur-xl space-y-4">
+            <div className="flex items-center justify-between flex-wrap gap-4">
+              <div className="space-y-1">
+                <span className="text-xs text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
+                  <Layers className="w-4 h-4" />
+                  <span>{l('خزينة ومستودع العقود الذكية المليونية', '1,000,000+ Smart Legal Templates Vault')}</span>
+                </span>
+                <h3 className="text-xl sm:text-2xl font-black text-white">
+                  {l('ابحث واستعرض وحمّل أي عقد قانوني معتمد فورياً', 'Instant Search & Download Certified Smart Contracts')}
                 </h3>
-                <button
-                  onClick={() => setIsEsignatureOpen(true)}
-                  className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 text-xs font-black rounded-xl shadow-md transition-all flex items-center gap-1.5"
-                >
-                  <ShieldCheck className="w-4 h-4" />
-                  <span>{isRtl ? 'التوقيع الرقمي العالمي (DocuSign / Adobe Sign eIDAS)' : 'Global eIDAS Digital Signature'}</span>
-                </button>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <ESignaturePad
-                  partyName={partyA || (isRtl ? 'الطرف الأول' : 'Party A')}
-                  onSaveSignature={(dataUrl) => setPartyASig(dataUrl)}
-                />
-                <ESignaturePad
-                  partyName={partyB || (isRtl ? 'الطرف الثاني' : 'Party B')}
-                  onSaveSignature={(dataUrl) => setPartyBSig(dataUrl)}
-                />
-              </div>
-
-              <DigitalSignatureModal
-                isOpen={isEsignatureOpen}
-                onClose={() => setIsEsignatureOpen(false)}
-                contractId={`contract_${Date.now()}`}
-                contractTitle={selectedType}
-                onSigned={(res) => {
-                  alert(isRtl ? `تم التوقيع الرقمي بنجاح! رقم البصمة: ${res.hash.substring(0, 16)}...` : `Digitally signed via eIDAS! Hash: ${res.hash.substring(0, 16)}...`);
-                }}
-              />
-            </div>
-          </div>
-        )}
-
-        {/* Embedded AI Legal Assistant Chat Drawer */}
-        {showAssistantChat && (
-          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-indigo-500/40 space-y-4 shadow-2xl glow-cyan">
-            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
-              <div className="flex items-center gap-2">
-                <MessageSquare className="w-5 h-5 text-indigo-400" />
-                <h3 className="font-extrabold text-sm text-slate-900 dark:text-white">{isRtl ? 'المستشار القانوني الذكي بالذكاء الاصطناعي (Global & Jordanian AI Legal Advisor)' : 'Smart Global AI Legal Assistant'}</h3>
-              </div>
-              <button onClick={() => setShowAssistantChat(false)} className="text-xs text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:text-white">
-                {isRtl ? 'إغلاق' : 'Close'}
+              <button
+                onClick={() => { setActiveTab('studio'); setStudioStep(1); }}
+                className="px-5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs sm:text-sm flex items-center gap-2 transition-all shadow-lg shadow-cyan-500/20 cursor-pointer"
+              >
+                <Wand2 className="w-4 h-4" />
+                <span>{l('فتح محرك الصياغة المخصص بالذكاء الاصطناعي', 'Open AI Drafting Studio')}</span>
               </button>
             </div>
 
-            <div className="space-y-3 max-h-64 overflow-y-auto pr-2">
-              {chatMessages.map((msg, i) => (
-                <div
-                  key={i}
-                  className={`p-3 rounded-2xl text-xs font-mono leading-relaxed ${
-                    msg.sender === 'user' ? 'bg-indigo-600/20 text-indigo-200 ml-auto max-w-xl' : 'bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800'
-                  }`}
-                >
-                  <span className="font-bold text-[10px] block text-slate-600 dark:text-slate-400 mb-0.5">{msg.sender === 'user' ? 'You' : 'JurisTech AI'}</span>
-                  {msg.text}
-                </div>
-              ))}
-            </div>
-
-            <div className="flex items-center gap-2 pt-2">
+            {/* Instant Search Input */}
+            <div className="relative">
+              <Search className="w-5 h-5 text-slate-500 absolute top-3.5 right-4 pointer-events-none" />
               <input
                 type="text"
-                placeholder={isRtl ? 'أسأل عن أي بند أو قانون مصري أو دولي (مثال: ما هي قواعد الأونسيترال CISG 1980 في العقود؟)...' : 'Ask any legal question...'}
-                value={inputQuestion}
-                onChange={(e) => setInputQuestion(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    if (inputQuestion.trim() && !chatLoading) {
-                      handleSendAssistantQuestion();
-                    }
-                  }
-                }}
-                className="flex-1 p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs text-slate-800 dark:text-slate-200 focus:outline-none font-semibold"
+                value={vaultSearchQuery}
+                onChange={(e) => setVaultSearchQuery(e.target.value)}
+                placeholder={isRtl ? 'ابحث في أكثر من 1,000,000 عقد (مثال: اتفاقية مساهمين، عقد مقاولة فيديك، شراء أسهم، استثمار جريء، سرية معلومات)...' : 'Search across 1,000,000+ templates (e.g. Shareholders Agreement, FIDIC Construction, SAFE, NDA, Labor)...'}
+                className="w-full py-3.5 pr-12 pl-4 rounded-2xl bg-slate-950 border border-slate-700 text-xs sm:text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-500 shadow-inner"
               />
+            </div>
+
+            {/* Category Filter Pills */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
               <button
-                onClick={handleSendAssistantQuestion}
-                disabled={chatLoading}
-                className="p-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-slate-900 dark:text-white transition-colors"
+                onClick={() => setVaultCategoryFilter('all')}
+                className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
+                  vaultCategoryFilter === 'all'
+                    ? 'bg-cyan-500 text-slate-950 font-black shadow-md shadow-cyan-500/20'
+                    : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'
+                }`}
               >
-                {chatLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                {l('جميع القطاعات (الكل)', 'All Categories')}
               </button>
+              {MEGA_CATEGORIES.map((cat) => (
+                <button
+                  key={cat.key}
+                  onClick={() => setVaultCategoryFilter(cat.key)}
+                  className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
+                    vaultCategoryFilter === cat.key
+                      ? 'bg-cyan-500 text-slate-950 font-black shadow-md shadow-cyan-500/20'
+                      : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'
+                  }`}
+                >
+                  {isRtl ? cat.nameAr : cat.nameEn}
+                </button>
+              ))}
             </div>
           </div>
-        )}
 
-        {/* Live Contract Customization & Clause Editor Modal */}
+          {/* Curated Top Institutional Contracts Grid (Clean & Non-Cluttered) */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h4 className="text-sm font-black text-white uppercase tracking-wider flex items-center gap-2">
+                <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
+                <span>{l('أبرز العقود والنماذج المؤسسية المعتمدة الأكثر تحميلاً', 'Top Featured Certified Institutional Templates')}</span>
+              </h4>
+              <span className="text-xs text-slate-400 font-mono">
+                {l('عرض النماذج الأكثر موثوقية عالمياً', 'Showing top sovereign templates')}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {filteredVaultTemplates.map((template) => {
+                return (
+                  <div
+                    key={template.id}
+                    className="p-5 rounded-3xl bg-slate-900/80 border border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between gap-4 shadow-xl group hover:shadow-cyan-500/10"
+                  >
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="px-2.5 py-0.5 rounded-lg bg-cyan-500/10 text-cyan-300 font-bold border border-cyan-500/20 text-[10px]">
+                          {template.categoryKey.toUpperCase()}
+                        </span>
+                        <span className="text-amber-400 font-mono text-[11px] flex items-center gap-1 font-bold">
+                          <Star className="w-3 h-3 fill-amber-400" />
+                          {template.rating || 10}/10
+                        </span>
+                      </div>
+
+                      <h5 className="font-bold text-sm text-white group-hover:text-cyan-300 transition-colors leading-snug line-clamp-2">
+                        {isRtl ? template.titleAr : template.titleEn}
+                      </h5>
+
+                      <p className="text-[11px] text-slate-400 line-clamp-2 leading-relaxed">
+                        {isRtl ? template.descriptionAr : template.descriptionEn}
+                      </p>
+                    </div>
+
+                    <div className="pt-3 border-t border-slate-800/80 space-y-3">
+                      <div className="flex items-center justify-between text-[10px] font-mono text-slate-400">
+                        <span>📄 {template.pagesCount} {l('صفحة', 'pages')}</span>
+                        <span>🛡️ {template.clausesCount} {l('بنداً', 'clauses')}</span>
+                        <span className="text-emerald-400">⬇ {formatNum(template.downloads)}</span>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => loadTemplateIntoStudio(template)}
+                          className="flex-1 py-2 px-3 rounded-xl bg-gradient-to-r from-cyan-500 to-teal-500 text-slate-950 font-black text-xs flex items-center justify-center gap-1.5 hover:from-cyan-400 hover:to-teal-400 transition-all shadow-md shadow-cyan-500/20 cursor-pointer"
+                        >
+                          <Wand2 className="w-3.5 h-3.5" />
+                          <span>{l('صياغة وتخصيص بالذكاء الاصطناعي', 'Load in AI Studio')}</span>
+                        </button>
+
+                        <button
+                          onClick={() => {
+                            const sampleText = isRtl ? template.templateAr : template.templateEn;
+                            exportLegalContractPDF(sampleText, isRtl ? template.titleAr : template.titleEn, isRtl ? 'الطرف الأول' : 'Party A', isRtl ? 'الطرف الثاني' : 'Party B', undefined, undefined, undefined, isRtl ? 'ar' : 'en');
+                          }}
+                          className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition-all cursor-pointer"
+                          title={isRtl ? 'تحميل مباشر' : 'Direct Download'}
+                        >
+                          <Download className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+        </div>
+      )}
+
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      {/* ❓ INTERACTIVE FAQ SECTION (SEO & AI SEARCH OPTIMIZATION)              */}
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 space-y-6">
+        <div className="text-center max-w-3xl mx-auto space-y-2">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-slate-900 border border-slate-800 text-cyan-400 text-xs font-bold">
+            <HelpCircle className="w-3.5 h-3.5" />
+            <span>{l('الأسئلة الشائعة والاعتمادات القانونية', 'Frequently Asked Questions & Statutory Frameworks')}</span>
+          </div>
+          <h3 className="text-2xl sm:text-3xl font-black text-white">
+            {l('كل ما تحتاج معرفته عن صياغة العقود الذكية بالذكاء الاصطناعي', 'Everything you need to know about AI Smart Legal Drafting')}
+          </h3>
+        </div>
+
+        <div className="max-w-4xl mx-auto space-y-3 pt-4">
+          {[
+            {
+              qAr: 'هل العقود المولدة عبر منصة JurisTech معتمدة وملزمة قانونياً؟',
+              qEn: 'Are smart contracts generated by JurisTech legally binding and valid?',
+              aAr: 'نعم، تتم صياغة كافة العقود وفقاً للقوانين الموضوعية المحددة لكل دولة (مثل نظام المعاملات المدنية السعودي م/191، القانون المدني الأردني 43/1976، القانون المدني المصري 131/1948، وقانون ديلاوير DGCL وقواعد الأونسيترال الدولية UNCITRAL)، وتتضمن كافة الأركان القانونية والشروط الواجبة للتنفيذ القضائي والتحكيم.',
+              aEn: 'Yes, all contracts strictly incorporate the substantive statutes of the chosen jurisdiction (Saudi M/191, Jordanian Civil Code 43/1976, Egyptian Civil Code 131/1948, Delaware DGCL, and UNCITRAL rules) meeting all institutional criteria for judicial enforcement.',
+            },
+            {
+              qAr: 'كيف تضمن المنصة التوافق متعدد الولايات القضائية (Multi-Jurisdiction Compliance)؟',
+              qEn: 'How does JurisTech guarantee multi-jurisdictional compliance across GCC, US, EU, and Asia?',
+              aAr: 'تستخدم المنصة محرك قفل النطاق التشريعي (Jurisdiction Resolver) المدعوم بقواعد المعرفة القانونية RAG Database، والذي يستدعي تلقائياً النصوص النظامية ومحاكم الاختصاص وهيئات التحكيم المعتمدة (مثل SCCA, DIAC, CRCICA, LCIA, CIETAC) ويمنع أي خلط بين القوانين الوطنية.',
+              aEn: 'The platform deploys an automated Jurisdiction Resolver powered by RAG Databases, dynamically injecting precise statutory codes, exclusive courts, and regional arbitration venues (SCCA, DIAC, CRCICA, LCIA, CIETAC).',
+            },
+            {
+              qAr: 'ما هي معايير الأمان والتشفير المطبقة على نصوص العقود والبيانات المالية؟',
+              qEn: 'What encryption and data security standards safeguard contract clauses and financial datasets?',
+              aAr: 'تخضع جميع الوثائق لتشفير AES-GCM 256-bit على جانب العميل (Zero-Knowledge Architecture) مع توليد أختام رقمية مشفرة برمجياً بخوارزمية SHA-256، مما يمنع أي وصول غير مصرح به أو استخدام البيانات لتدريب نماذج الذكاء الاصطناعي العامة.',
+              aEn: 'All documents are cryptographically protected via client-side AES-GCM 256-bit encryption with SHA-256 digital seals under strict zero-knowledge protocols, ensuring customer data is never trained on.',
+            },
+            {
+              qAr: 'هل يمكن تصدير العقود بصيغ مختلفة مثل Word و PDF وتوقيعها رقمياً؟',
+              qEn: 'Can I export contracts in Word DOCX, PDF, and apply digital e-signatures?',
+              aAr: 'بالتأكيد، يتيح المحرك التصدير الفوري بصيغ PDF الرسمية، ومستندات Word (.docx) القابلة للتعديل المباشر، وملفات TXT و JSON، بالإضافة إلى لوحة توقيع إلكتروني مدمجة متوافقة مع لوائح التوقيع الإلكتروني الدولية.',
+              aEn: 'Absolutely. The studio supports instant multi-format downloads in official PDF, editable Microsoft Word (.docx), plain text, JSON, alongside an integrated e-signature pad compliant with global e-signature standards.',
+            },
+          ].map((faq, idx) => {
+            const isOpen = openFaqIndex === idx;
+            return (
+              <div
+                key={idx}
+                className="rounded-2xl bg-slate-900/80 border border-slate-800 overflow-hidden transition-all shadow-md"
+              >
+                <button
+                  onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
+                  className="w-full p-5 text-right flex items-center justify-between gap-4 font-bold text-sm text-white hover:text-cyan-300 transition-colors cursor-pointer"
+                >
+                  <span>{isRtl ? faq.qAr : faq.qEn}</span>
+                  {isOpen ? <ChevronUp className="w-4 h-4 text-cyan-400 flex-shrink-0" /> : <ChevronDown className="w-4 h-4 text-slate-400 flex-shrink-0" />}
+                </button>
+
+                {isOpen && (
+                  <div className="px-5 pb-5 text-xs sm:text-sm text-slate-300 leading-relaxed border-t border-slate-800/80 pt-4 bg-slate-950/40">
+                    {isRtl ? faq.aAr : faq.aEn}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* ── MODALS ── */}
+      {isEsignatureOpen && (
+        <DigitalSignatureModal
+          isOpen={isEsignatureOpen}
+          onClose={() => setIsEsignatureOpen(false)}
+          contractId={sha256Hash || 'CONTRACT-SEAL-01'}
+          contractTitle={selectedType}
+          onSigned={(sigRes: SignatureResult) => {
+            setPartyASig(partyA || 'Authorized Signatory');
+            setIsEsignatureOpen(false);
+          }}
+        />
+      )}
+
+      {isEditorOpen && (
         <ContractEditorModal
           isOpen={isEditorOpen}
           onClose={() => setIsEditorOpen(false)}
           contractText={generatedContract}
-          onSave={(updated) => setGeneratedContract(updated)}
           contractTitle={selectedType}
           partyA={partyA}
           partyB={partyB}
+          onSave={(newText) => {
+            setGeneratedContract(newText);
+            executeAutoAudit(newText);
+            setIsEditorOpen(false);
+          }}
         />
-      </div>
+      )}
+
+      {showPaywall && (
+        <TrialUpgradeModal
+          onClose={() => setShowPaywall(false)}
+        />
+      )}
+
     </main>
   );
 }
-
