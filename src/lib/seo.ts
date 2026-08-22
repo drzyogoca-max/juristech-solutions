@@ -218,6 +218,17 @@ export const PAGE_SEO: Record<string, PageSEO> = {
     keywords: 'terms of service, legaltech usage terms, SLA commitments',
     schemaType: 'WebPage',
   },
+  '/video-hub': {
+    path: '/video-hub',
+    titleEn: 'Interactive Smart Audiovisual Educational Platform | JurisTech',
+    titleAr: 'المنصة التعليمية التفاعلية المرئية للعملاء | حلول جوريس تك',
+    descriptionEn:
+      'Interactive AI-powered educational guide & customer journey walkthrough across all 10 platform legal engines with multi-language voice narration.',
+    descriptionAr:
+      'الدليل الاسترشادي وخطة العمل الشاملة لمنصة JurisTech: شرح تفصيلي خطوة بخطوة من لحظة الدخول وحتى آخر خدمة قانونية ناطق بـ 7 لغات.',
+    keywords: 'AI legal educational platform, customer journey walkthrough, smart legal tutorial, 7 languages voice legal guide',
+    schemaType: 'SoftwareApplication',
+  },
 };
 
 export function getPageSEO(pathname: string, lang = 'ar'): { title: string; description: string; keywords: string; schemaType?: string } {
