@@ -1,14 +1,8 @@
 /**
  * src/components/InteractiveCustomerJourneyMap.tsx
  * ─────────────────────────────────────────────────────────────────────────────
- * Interactive Sovereign Customer Journey Map for JurisTech Solutions
- * 
- * Features:
- *  • 6-Stage Interactive Sequential Visual Roadmap
- *  • Incorporates Google AI Pro Sovereign Core as Step 1
- *  • Clickable Nodes with Instant Feature Deep-Dive & Live Navigation
- *  • Global Luxury Aesthetic (Cyber Cyan, Obsidian Slate, Electric Indigo)
- *  • Clear conversion pathway showcasing Platform ROI & Enterprise Retainers
+ * Interactive Sovereign Customer Journey Map for JurisTech Solutions v2026
+ * ─────────────────────────────────────────────────────────────────────────────
  */
 
 import React, { useState } from 'react';
@@ -31,7 +25,10 @@ import {
   ChevronRight,
   Globe2,
   Award,
-  BrainCircuit
+  BrainCircuit,
+  FileText,
+  ShieldCheck,
+  Building2
 } from 'lucide-react';
 
 interface JourneyStep {
@@ -56,7 +53,7 @@ interface JourneyStep {
 }
 
 export default function InteractiveCustomerJourneyMap() {
-  const { l, lArray, isRtl } = usePlatformLocale();
+  const { l, isRtl } = usePlatformLocale();
   const navigate = useNavigate();
 
   const [activeStepIndex, setActiveStepIndex] = useState<number>(0);
@@ -64,389 +61,296 @@ export default function InteractiveCustomerJourneyMap() {
   const steps: JourneyStep[] = [
     {
       stepNumber: 1,
-      id: 'google-ai-pro',
-      icon: BrainCircuit,
-      titleAr: '1. محرك Google AI Pro السيادي',
-      titleEn: '1. Google AI Pro Sovereign Core',
-      subtitleAr: 'الاستحواذ التنبؤي M&A، المحاكاة القضائية، والتفاوض الآلي 2026',
-      subtitleEn: 'Predictive M&A Valuation, Courtroom Simulation & Autonomous Agents',
-      descriptionAr: 'المحرك الذكي السيادي المدعوم بنموذج Google Gemini Pro Ultra لتوليد التنبؤات القضائية، تقييم صفقات الاستحواذ، اكتشاف الاحتيال بالقياس النصي الحيوي، والامتثال التشريعي العابر للحدود مع التعلم والتدريب الذاتي المستمر.',
-      descriptionEn: 'Sovereign intelligence core powered by Google Gemini Pro Ultra for predictive M&A valuations, courtroom dispute simulation, stylometric fraud forensics, and cross-border compliance with continuous RLHF self-learning.',
+      id: 'vault-crypto',
+      icon: Lock,
+      titleAr: '1. الإيداع والتشفير السيادي (Zero-Knowledge Ingestion)',
+      titleEn: '1. Zero-Knowledge Cryptographic Vault Ingestion',
+      subtitleAr: 'تشفير AES-GCM-256 محلي مع توليد بصمة SHA-256 وشهادة عدم التلاعب',
+      subtitleEn: 'Client-side AES-GCM-256 encryption with verifiable SHA-256 tamper-proof seals',
+      descriptionAr: 'يتم تشفير أي مستند أو عقد يرفعه العميل محلياً في متصفحه قبل إرساله، مع استخراج بصمته الرقمية SHA-256 وإصدار شهادة سلامة مستندية معتمدة تثبت عدم تعرضه للتعديل.',
+      descriptionEn: 'Contracts are encrypted client-side via military-grade AES-GCM-256, generating a certified SHA-256 mathematical fingerprint and downloadable Certificate of Integrity.',
       featuresAr: [
-        'تحليل القوائم المالية واتفاقيات الاستحواذ M&A وتوقع احتمالية نجاح الصفقات',
-        'محاكاة افتراضية للنزاعات القضائية أمام محاكم الخليج والتحكيم الدولي',
-        'دعم كامل لرفع وتفريغ وتصدير مستندات متعددة الأنواع (PDF, Word, TXT) والتوافق مع 9 دول'
+        'تشفير وفك تشفير محلي 100% بدون إمكانية وصول السيرفر لمفتاحك الخاص',
+        'توليد شهادات أمان وبصمات غير قابلة للتزوير مقبولة أمام المحاكم والتحكيم',
+        'مختبر فحص جنائي فوري للتحقق من سلامة أي مستند بمجرد لصقه'
       ],
       featuresEn: [
-        'Predictive M&A intelligence forecasting deal success & EBITDA multiples',
-        'Virtual litigation and court simulation forecasting win/loss probability',
-        'Multi-format file upload/export (PDF, DOCX, TXT) across 9 regional jurisdictions'
+        '100% Client-side zero-knowledge encryption preventing server-side leakage',
+        'Court-admissible SHA-256 certificates of integrity & non-tampering',
+        'Instant forensic hash laboratory to verify document authenticity'
       ],
-      metricAr: 'دقة تنبؤية 99.4% مع تعلم ذاتي',
-      metricEn: '99.4% Predictive AI Accuracy',
-      ctaTextAr: 'إطلاق Google AI Pro',
-      ctaTextEn: 'Launch Google AI Pro',
-      targetRoute: '/sovereign-ai-hub',
+      metricAr: 'أمان عسكري EAL6+ بمفاتيح PBKDF2',
+      metricEn: 'Military-Grade EAL6+ Security',
+      ctaTextAr: 'فتح الخزنة المشفرة',
+      ctaTextEn: 'Open Encrypted Vault',
+      targetRoute: '/vault',
+      badgeColor: 'border-emerald-500/40 text-emerald-400 bg-emerald-500/10',
+      accentGradient: 'from-emerald-400 via-teal-500 to-cyan-600',
+    },
+    {
+      stepNumber: 2,
+      id: 'statutory-risk-radar',
+      icon: ShieldAlert,
+      titleAr: '2. الفحص التشريعي المعمق عبر المحاور الـ 8 (Deep Risk Radar)',
+      titleEn: '2. Deep 8-Axis Statutory Risk Radar',
+      subtitleAr: 'فحص سقف المسؤوليات المالية، البنود التعسفية، ومطابقة ICC 2020',
+      subtitleEn: 'Liability capping audit, abusive clause detection & ICC 2020 compliance',
+      descriptionAr: 'تحليل دقيق لبنود العقد عبر 8 محاور تشريعية تفصيلية تكشف فخاخ المسؤولية غير المحدودة، غرامات التأخير الباطلة، وثغرات الملكية الفكرية بموجب القوانين النافذة.',
+      descriptionEn: 'Deep statutory audit evaluating agreements across 8 rigorous axes to isolate uncapped liabilities, punitive delay penalties, and hidden IP ownership traps.',
+      featuresAr: [
+        'فحص إلزامي لسقف المسؤولية المالية والأضرار التبعية (Consequential Damages)',
+        'كشف بنود الإذعان والفسخ الانفرادي (م/149 مدني مصري، م/98 مدني سعودي)',
+        'مواءمة شروط القوة القاهرة والظروف الطارئة وفق معايير ICC Paris 2020'
+      ],
+      featuresEn: [
+        'Mandatory liability capping & indirect consequential damages audit',
+        'Detection of unilateral adhesion & unfair termination clauses',
+        'Strict harmonization with ICC Paris 2020 Force Majeure standards'
+      ],
+      metricAr: 'فحص شامل بـ 8 محاور تشريعية دقيقة',
+      metricEn: 'Exhaustive 8-Axis Statutory Audit',
+      ctaTextAr: 'بدء فحص المخاطر 8-Axis',
+      ctaTextEn: 'Launch 8-Axis Risk Radar',
+      targetRoute: '/risk',
+      badgeColor: 'border-amber-500/40 text-amber-400 bg-amber-500/10',
+      accentGradient: 'from-amber-400 via-orange-500 to-yellow-600',
+    },
+    {
+      stepNumber: 3,
+      id: 'executive-drafting',
+      icon: FileText,
+      titleAr: '3. استوديو الصياغة والبدائل الحمائية (Executive Redlining)',
+      titleEn: '3. Executive Redlines & Full Drafting Studio',
+      subtitleAr: 'توليد عقود متكاملة وصياغات بديلة جاهزة للتفاوض الفوري',
+      subtitleEn: 'Instant enforceable contract generation & executive protective redlines',
+      descriptionAr: 'توليد عقود قانونية متكاملة لجميع المجالات التجارية (بيع مركبات، إيجار، عمل، NDA، توريد، برمجيات، شراكة، ديون) مع صياغات بديلة تحمي مصالحك بنسبة 100%.',
+      descriptionEn: 'Generate enforceable multi-jurisdiction contracts across 10 commercial categories, equipped with protective executive counter-clauses ready for instant execution.',
+      featuresAr: [
+        'مكتبة عقود شاملة ومطابقة للقوانين المصرية والخليجية والدولية',
+        'صياغة بنود بديلة رادعة (Executive AI Redlines) قابلة للاقتباس والدمج المباشر',
+        'محرر تفاعلي لتعديل الشروط الخاصة والغرامات والتحكيم بضغطة زر'
+      ],
+      featuresEn: [
+        'Complete enforceable contracts library compliant with regional & global codes',
+        'Protective executive AI redlines ready for immediate contract addendums',
+        'Interactive studio for dynamic clause reformulation & dispute clauses'
+      ],
+      metricAr: '10 قطاعات تعاقدية متكاملة',
+      metricEn: '10 Comprehensive Contract Suites',
+      ctaTextAr: 'فتح استوديو العقود',
+      ctaTextEn: 'Launch Drafting Studio',
+      targetRoute: '/contracts',
       badgeColor: 'border-cyan-500/40 text-cyan-400 bg-cyan-500/10',
       accentGradient: 'from-cyan-400 via-sky-500 to-indigo-600',
     },
     {
-      stepNumber: 2,
-      id: 'diagnosis',
-      icon: Sparkles,
-      titleAr: '2. الاستشارة والتشخيص الذكي',
-      titleEn: '2. AI Legal Diagnosis & Discovery',
-      subtitleAr: 'مستشار تشريعي فوري معزز بمحركات المعرفة القانونية',
-      subtitleEn: 'Instant statutory legal counsel powered by specialized legal reasoning',
-      descriptionAr: 'اطرح أي استفسار قانوني أو أرفق مستنداتك مباشرة للمستشار الذكي ليقوم بتحديد الولاية القضائية والقوانين الحاكمة بدقة وتأصيل مباشر.',
-      descriptionEn: 'Submit complex legal queries or attach draft documents to the live AI Concierge for instant statutory classification and jurisdiction alignment.',
-      featuresAr: [
-        'تحليل فوري عبر اختصاصات تشريعية متعددة (الأردن، السعودية، الإمارات، مصر، دولياً)',
-        'استيعاب دقيق للمستندات المتعددة (PDF, DOCX, TXT) خلال ثوانٍ',
-        'تأصيل قانوني مباشر من أمهات الأنظمة واللوائح والقرارات السارية'
-      ],
-      featuresEn: [
-        'Instant multi-jurisdiction mapping across regional & international codes',
-        'Accurate document processing (PDF, DOCX, TXT) in seconds',
-        'Direct citation of applicable statutory codes & commercial precedents'
-      ],
-      metricAr: 'استجابة وتحليل فوري خلال ثوانٍ',
-      metricEn: 'Instant Real-time AI Analysis',
-      ctaTextAr: 'بدء الاستشارة الفورية',
-      ctaTextEn: 'Start Live AI Counsel',
-      targetRoute: '/chat',
-      badgeColor: 'border-blue-500/40 text-blue-400 bg-blue-500/10',
-      accentGradient: 'from-blue-500 to-cyan-600',
-    },
-    {
-      stepNumber: 3,
-      id: 'contracts',
-      icon: BookOpen,
-      titleAr: '3. مستودع العقود واستوديو الصياغة',
-      titleEn: '3. Contract Repository & Studio',
-      subtitleAr: 'نماذج مؤسسية رصينة ومحكمة بنظام الشركاء المعتمدين',
-      subtitleEn: 'Senior partner institutional templates with bilingual isolation',
-      descriptionAr: 'اختر أو ولد عقودك الذكية من مكتبة العقود الموثقة والمحدثة لعام 2026 (عقود بيع، خدمات، توريد، مقاولات، وتراخيص) مع تصدير نظيف لـ Word و PDF.',
-      descriptionEn: 'Generate or select battle-tested contracts from our certified template library (Commercial Sales, Services, FIDIC, Software & IP) with clean Word/PDF export.',
-      featuresAr: [
-        'بنود تفصيلية شاملة للضمانات وسقف المسؤولية والتحكيم وفض النزاعات',
-        'فصل لغوي نقي 100%: صياغة عربية فصيحة ومحكمة وإنجليزية دولية رفيعة',
-        'تصدير فوري بضغطة واحدة إلى Word (.docx) و PDF جاهزة للتوقيع'
-      ],
-      featuresEn: [
-        'Comprehensive clauses covering indemnities, liability caps & arbitration',
-        '100% pure linguistic isolation: Formal Arabic & Global Legal English',
-        'One-click instant export to formatted Word (.docx) and signed PDF'
-      ],
-      metricAr: '+1,000 نموذج معتمد ومحدث لعام 2026',
-      metricEn: '1,000+ Certified & Updated 2026 Templates',
-      ctaTextAr: 'تصفح مستودع النماذج',
-      ctaTextEn: 'Explore Template Repository',
-      targetRoute: '/templates',
-      badgeColor: 'border-indigo-500/40 text-indigo-400 bg-indigo-500/10',
-      accentGradient: 'from-indigo-500 to-purple-600',
-    },
-    {
       stepNumber: 4,
-      id: 'audit',
-      icon: ShieldAlert,
-      titleAr: '4. تدقيق المخاطر وكشف الثغرات',
-      titleEn: '4. AI Risk Audit & Vulnerability Radar',
-      subtitleAr: 'فحص مالي وتشريعي متعدد المحاور لكشف الشروط غير المتوازنة',
-      subtitleEn: 'Multi-axis financial & statutory scan for unbalanced terms & gaps',
-      descriptionAr: 'يقوم المحرك بفحص العقد بنداً بنداً لكشف تفاوت الالتزامات، والشروط الجزائية المرتفعة، وسقوف المسؤولية المنقوصة مع تقديم صياغات بديلة حمائية.',
-      descriptionEn: 'Automated clause-by-clause audit detecting power imbalances, unconscionable penalties, missing indemnity caps, and conflicting dispute resolution clauses.',
+      id: 'negotiation-copilot',
+      icon: Handshake,
+      titleAr: '4. مساعد التفاوض وحسم المنازعات (Negotiation Copilot)',
+      titleEn: '4. AI Negotiation Copilot & Strategy Room',
+      subtitleAr: 'حساب قوة الموقف التفاوضي وتوليد العروض المقابلة التكتيكية',
+      subtitleEn: 'Leverage scoring, tactical counter-offers & settlement mediation',
+      descriptionAr: 'محاكاة استراتيجية لموقف الطرف الآخر، مع حساب مؤشر القوة التفاوضية واقتراح حلول وسطى تحافظ على أرباحك وتغلق الصفقة بأعلى حماية تشريعية.',
+      descriptionEn: 'Simulate counter-party positions, quantify leverage scores, and formulate tactically engineered counter-proposals that accelerate deal closing.',
       featuresAr: [
-        'مؤشر شدة المخاطر الملون (🔴 حرج / 🟡 متوسط / 🟢 آمن)',
-        'كشف الثغرات الصامتة في حقوق الملكية الفكرية والسرية وسقوف الالتزام',
-        'مقترحات تعديل حمائية جاهزة للتفاوض (Executive Redlines)'
+        'محاكي العروض المقابلة (Counter-Offer Simulator) لتسريع التوافق',
+        'حساب درجة النفوذ والقوة التفاوضية (Leverage Score) بالأرقام',
+        'خارطة طريق لتسوية المنازعات الودية قبل التصعيد القضائي'
       ],
       featuresEn: [
-        'Traffic-light risk severity index (🔴 Critical / 🟡 Medium / 🟢 Safe)',
-        'Detection of silent gaps in IP rights, liability caps, and confidentiality',
-        'Ready-to-use protective redlines tailored for commercial leverage'
+        'Tactical Counter-Offer Simulator accelerating consensus',
+        'Quantified negotiation leverage & deal power scoring',
+        'Pre-litigation alternative dispute resolution (ADR) roadmaps'
       ],
-      metricAr: 'فحص وقائي شامل للثغرات',
-      metricEn: 'Comprehensive Statutory Risk Audit',
-      ctaTextAr: 'تدقيق عقدك الآن',
-      ctaTextEn: 'Audit Contract Risk Now',
-      targetRoute: '/enterprise-audit',
-      badgeColor: 'border-amber-500/40 text-amber-400 bg-amber-500/10',
-      accentGradient: 'from-amber-500 to-orange-600',
+      metricAr: 'تسريع إغلاق الصفقات بنسبة 75%',
+      metricEn: '75% Faster Deal Closing',
+      ctaTextAr: 'غرفة التفاوض الذكي',
+      ctaTextEn: 'Enter Negotiation Room',
+      targetRoute: '/negotiation',
+      badgeColor: 'border-purple-500/40 text-purple-400 bg-purple-500/10',
+      accentGradient: 'from-purple-400 via-violet-500 to-indigo-600',
     },
     {
       stepNumber: 5,
-      id: 'negotiation',
-      icon: Handshake,
-      titleAr: '5. محاكي التفاوض والردود القانونية',
-      titleEn: '5. Negotiation & Counter-Offer Simulator',
-      subtitleAr: 'استراتيجيات تفاوض وصياغة ردود متوازنة لتأمين مصالحك',
-      subtitleEn: 'Tactical counter-offers and commercial terms maximizing deal leverage',
-      descriptionAr: 'محاكي تفاوض ذكي يصوغ ردوداً قانونية دبلوماسية وحازمة لمواجهة الشروط الصعبة للطرف الآخر والوصول إلى أفضل شروط تعاقدية بأسرع وقت.',
-      descriptionEn: 'Simulate corporate negotiations and generate diplomatic, legally robust counter-offers to neutralize aggressive clauses while closing deals faster.',
+      id: 'execution-notarization',
+      icon: FileCheck,
+      titleAr: '5. التوقيع الإلكتروني والتوثيق الرسمي (E-Sign & Registry)',
+      titleEn: '5. Certified Execution & Notarization Roadmap',
+      subtitleAr: 'توقيع رقمي معتمد ودليل إجرائي للشهر العقاري والمرور والغرف التجارية',
+      subtitleEn: 'Digital signature pad with official procedural roadmaps & notarization guides',
+      descriptionAr: 'توقيع المستندات إلكترونياً مع توفير دليل إجرائي خطوة بخطوة للتوثيق لدى مكاتب الشهر العقاري، إدارات المرور، ومنصات إيجار والغرف التجارية لتفادي أي بطلان.',
+      descriptionEn: 'Execute agreements via compliant e-signatures with complete statutory roadmaps for notarization before real estate registries, traffic departments, and commercial chambers.',
       featuresAr: [
-        'توليد 3 بدائل تفاوضية: (صارم / متوازن / مرن مع الحماية)',
-        'مذكرات تبرير قانونية مقنعة مدعومة بالأعراف التجارية السائدة',
-        'تسريع وتيرة إغلاق الصفقات وتقليص دورة التفاوض'
+        'لوحة توقيع إلكتروني E-Signature مدعومة بأختام التوثيق الرقمية',
+        'دليل المستندات والرسوم والجهات الحكومية المختصة لإنهاء الإجراءات',
+        'تصدير فوري بصيغ PDF و Word عالية الدقة جاهزة للطباعة والتوقيع'
       ],
       featuresEn: [
-        '3 tactical options: (Firm Assertive / Balanced Commercial / Flexible Protected)',
-        'Persuasive statutory legal justifications backed by commercial standards',
-        'Accelerated corporate transaction closing velocity'
+        'Compliant e-signature pad with cryptographic tamper-evident seals',
+        'Step-by-step procedural roadmap for public notary & commercial registry',
+        'Multi-format export (PDF, Word) formatted for immediate official stamping'
       ],
-      metricAr: 'تسريع دورة التفاوض والاتفاق',
-      metricEn: 'Accelerated Deal Closing & Consensus',
-      ctaTextAr: 'فتح محاكي التفاوض',
-      ctaTextEn: 'Launch Negotiation Simulator',
-      targetRoute: '/negotiation',
-      badgeColor: 'border-emerald-500/40 text-emerald-400 bg-emerald-500/10',
-      accentGradient: 'from-emerald-500 to-teal-600',
+      metricAr: 'جاهزية قانونية وإجرائية 100%',
+      metricEn: '100% Statutory Execution Readiness',
+      ctaTextAr: 'مستودع العقود والتوثيق',
+      ctaTextEn: 'View Verified Repository',
+      targetRoute: '/repository',
+      badgeColor: 'border-blue-500/40 text-blue-400 bg-blue-500/10',
+      accentGradient: 'from-blue-400 via-indigo-500 to-sky-600',
     },
     {
       stepNumber: 6,
-      id: 'vault-retainer',
-      icon: Lock,
-      titleAr: '6. التوقيع الرقمي والخزنة المؤمنة',
-      titleEn: '6. Sovereign E-Sign, Vault & Enterprise Retainer',
-      subtitleAr: 'أرشفة مشفرة، طوابع زمنية موثقة، وحماية متواصلة',
-      subtitleEn: 'Encrypted vault, digital timestamps, and continuous institutional protection',
-      descriptionAr: 'توقيع إلكتروني معتمد بطوابع زمنية مشفرة، وتخزين في الخزنة السحابية المؤمنة بـ AES-256، مع توفير خطط اشتراك مؤسسية ملائمة للشركات ورواد الأعمال.',
-      descriptionEn: 'Legally binding e-signatures with cryptographic timestamps, AES-256 encrypted sovereign vaulting, and enterprise legal protection tiers.',
+      id: 'ma-war-room',
+      icon: Building2,
+      titleAr: '6. صفقات الاندماج وحوكمة الشركات (Enterprise M&A Hub)',
+      titleEn: '6. Enterprise M&A & Corporate Governance Hub',
+      subtitleAr: 'فحص نافٍ للجهالة، تقييم صفقات الاستحواذ، وحوكمة تأسيس الشركات',
+      subtitleEn: 'Comprehensive M&A due diligence, EBITDA deal valuation & incorporation',
+      descriptionAr: 'منظومة متكاملة لخدمة الصفقات الكبرى تشمل الفحص النافي للجهالة، ومطابقة قوانين حماية المنافسة ومنع الاحتكار، وحساب مضاعفات EBITDA لتأسيس وهيكلة الكيانات الكبرى.',
+      descriptionEn: 'Full-suite institutional M&A engine conducting deep due diligence, EBITDA valuation modeling, antitrust merger control checks, and global corporate incorporation.',
       featuresAr: [
-        'خزنة سحابية سيادية مشفرة بالكامل مع سجل تدقيق غير قابل للتعديل',
-        'توقيعات رقمية معتمدة مع طوابع زمنية مؤرخة',
-        'متابعة مستمرة ومراقبة استباقية لكافة العقود والامتثال التشغيلي'
+        'فحص نافٍ للجهالة قانوني ومالي شامل لمستندات الاستحواذ',
+        'مرشد تأسيس وحوكمة الشركات (مصر، السعودية، الإمارات، قطر، ديلاوير، بريطانيا)',
+        'فحص إخطار أجهزة حماية المنافسة والاندماج الاقتصادي'
       ],
       featuresEn: [
-        'Sovereign encrypted vault with tamper-proof immutable audit logs',
-        'Official digital certificates and verifiable cryptographic timestamps',
-        'Proactive statutory compliance monitoring for business operations'
+        'Comprehensive legal & financial due diligence audit suite',
+        'Multi-jurisdiction corporate formation wizard (Egypt, GCC, Delaware, UK)',
+        'Antitrust merger control & competition authority clearance auditor'
       ],
-      metricAr: 'حماية وأرشفة مشفرة 24/7',
-      metricEn: '24/7 Encrypted Sovereign Vault',
-      ctaTextAr: 'الترقية والاشتراك المؤسسي',
-      ctaTextEn: 'Upgrade to Enterprise Retainer',
-      targetRoute: '/payment',
-      badgeColor: 'border-purple-500/40 text-purple-400 bg-purple-500/10',
-      accentGradient: 'from-purple-500 to-pink-600',
+      metricAr: 'جاهزية لصفقات تتجاوز $100M+',
+      metricEn: '$100M+ Deal Architecture',
+      ctaTextAr: 'منصة الاستحواذ M&A',
+      ctaTextEn: 'Open M&A Platform',
+      targetRoute: '/acquisition',
+      badgeColor: 'border-rose-500/40 text-rose-400 bg-rose-500/10',
+      accentGradient: 'from-rose-400 via-pink-500 to-amber-500',
     },
   ];
 
-  const currentStep = steps[activeStepIndex];
-  const StepIcon = currentStep.icon;
+  const activeStep = steps[activeStepIndex];
 
   return (
-    <section className="relative overflow-hidden bg-slate-950 py-16 px-4 border-y border-slate-800">
-      {/* Background Glowing Ambient Accents */}
-      <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+    <div className="relative w-full rounded-3xl bg-slate-900/90 border border-slate-800 p-6 sm:p-8 shadow-2xl overflow-hidden" dir={isRtl ? 'rtl' : 'ltr'}>
+      {/* Background Ambient Glow */}
+      <div className="absolute top-0 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto relative z-10 space-y-12">
-        
-        {/* Section Header */}
-        <div className="text-center space-y-4 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-black uppercase tracking-wider shadow-sm">
-            <Globe2 className="w-3.5 h-3.5" />
-            <span>{isRtl ? 'خريطة رحلة العميل التفاعلية والخدمات الشاملة' : 'Interactive Sovereign Customer Journey Map'}</span>
-          </div>
-
-          <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight leading-snug">
-            {isRtl ? (
-              <>كيف تقودك <span className="bg-gradient-to-r from-cyan-400 via-teal-300 to-indigo-400 bg-clip-text text-transparent">JurisTech Solutions</span> من الفكرة إلى الحماية المؤسسية القصوى؟</>
-            ) : (
-              <>How <span className="bg-gradient-to-r from-cyan-400 via-teal-300 to-indigo-400 bg-clip-text text-transparent">JurisTech Solutions</span> Shields Your Enterprise from Day 1 to Multimillion Scale?</>
-            )}
-          </h2>
-
-          <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
-            {l(
-              'خريطة تسلسلية تفاعلية توضح مراحل عمل المنصة المتكاملة في 6 مراحل سيادية — انقر على أي مرحلة لاستكشاف خدماتها وقيمتها المضافة وبدء استخدامها فوراً.',
-              'An interactive sequential roadmap illustrating our 6-pillar sovereign ecosystem — click any phase to explore specialized tools, metrics, and instant deployment.'
-            )}
-          </p>
+      {/* Header Title */}
+      <div className="relative z-10 text-center max-w-3xl mx-auto space-y-3 mb-8">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-black uppercase tracking-wider">
+          <BrainCircuit className="w-4 h-4" />
+          <span>{l('الخريطة التفاعلية السيادية لرحلة العميل 2026', 'Interactive Sovereign Customer Journey Map 2026')}</span>
         </div>
-
-        {/* ── Interactive Sequential Roadmap Progress Bar ── */}
-        <div className="relative">
-          {/* Connector Line (Desktop) */}
-          <div className="hidden lg:block absolute top-7 left-12 right-12 h-1 bg-slate-800 rounded-full z-0">
-            <div
-              className="h-full bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 transition-all duration-500 rounded-full"
-              style={{ width: `${(activeStepIndex / (steps.length - 1)) * 100}%` }}
-            />
-          </div>
-
-          {/* 6 Sequential Step Buttons */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 relative z-10">
-            {steps.map((s, idx) => {
-              const Icon = s.icon;
-              const isActive = idx === activeStepIndex;
-              const isPast = idx < activeStepIndex;
-
-              return (
-                <button
-                  key={s.id}
-                  onClick={() => setActiveStepIndex(idx)}
-                  className={`p-4 rounded-2xl border transition-all flex flex-col items-center sm:items-start text-center sm:text-start gap-3 cursor-pointer group ${
-                    isActive
-                      ? 'bg-slate-900 border-cyan-400 shadow-xl shadow-cyan-500/10 ring-2 ring-cyan-500/30 scale-[1.02]'
-                      : isPast
-                      ? 'bg-slate-900/60 border-slate-700 hover:border-slate-500'
-                      : 'bg-slate-950/60 border-slate-800 hover:border-slate-700 opacity-75 hover:opacity-100'
-                  }`}
-                >
-                  <div className="flex items-center justify-between w-full">
-                    <div
-                      className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm transition-transform group-hover:scale-110 ${
-                        isActive
-                          ? `bg-gradient-to-r ${s.accentGradient} text-white shadow-md`
-                          : isPast
-                          ? 'bg-slate-800 text-cyan-400 border border-slate-700'
-                          : 'bg-slate-900 text-slate-500 border border-slate-800'
-                      }`}
-                    >
-                      <Icon className="w-5 h-5" />
-                    </div>
-
-                    <span className="text-[10px] font-sans font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-400">
-                      {l('المرحلة', 'Step')} {s.stepNumber}
-                    </span>
-                  </div>
-
-                  <div className="space-y-1 w-full text-start" dir={isRtl ? 'rtl' : 'ltr'}>
-                    <h4 className={`text-xs font-bold line-clamp-1 transition-colors ${
-                      isActive ? 'text-cyan-300' : 'text-slate-200'
-                    }`}>
-                      {l(s.titleAr, s.titleEn)}
-                    </h4>
-                    <p className="text-[10px] text-slate-400 line-clamp-1 font-sans">
-                      {l(s.metricAr, s.metricEn)}
-                    </p>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* ── Active Stage Interactive Deep-Dive Card ── */}
-        <div
-          className="p-6 sm:p-10 rounded-3xl bg-gradient-to-br from-slate-900 via-slate-900/90 to-slate-950 border border-slate-700 shadow-2xl space-y-8 relative overflow-hidden font-sans"
-          dir={isRtl ? 'rtl' : 'ltr'}
-        >
-          {/* Top Stage Header */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-800">
-            <div className="flex items-start gap-4">
-              <div className={`p-3.5 rounded-2xl bg-gradient-to-r ${currentStep.accentGradient} text-white shadow-lg`}>
-                <StepIcon className="w-7 h-7" />
-              </div>
-              <div className="space-y-1">
-                <span className={`inline-block text-[11px] font-bold uppercase px-3 py-1 rounded-full border ${currentStep.badgeColor}`}>
-                  {l(`المرحلة 0${currentStep.stepNumber} من 06 • ${currentStep.metricAr}`, `Phase 0${currentStep.stepNumber} of 06 • ${currentStep.metricEn}`)}
-                </span>
-                <h3 className="text-xl sm:text-2xl font-bold text-white">
-                  {l(currentStep.titleAr, currentStep.titleEn)}
-                </h3>
-                <p className="text-xs sm:text-sm text-cyan-300 font-medium">
-                  {l(currentStep.subtitleAr, currentStep.subtitleEn)}
-                </p>
-              </div>
-            </div>
-
-            {/* Direct CTA Action Button */}
-            <button
-              onClick={() => navigate(currentStep.targetRoute)}
-              className={`px-6 py-3.5 rounded-2xl bg-gradient-to-r ${currentStep.accentGradient} hover:brightness-110 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-lg active:scale-98 cursor-pointer`}
-            >
-              <span>{l(currentStep.ctaTextAr, currentStep.ctaTextEn)}</span>
-              {isRtl ? <ArrowLeft className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
-            </button>
-          </div>
-
-          {/* Description & Detailed Features Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            
-            {/* Left: Detailed Overview (5 cols) */}
-            <div className="lg:col-span-5 space-y-4">
-              <h4 className="text-xs font-black text-slate-300 uppercase tracking-wider flex items-center gap-2">
-                <Award className="w-4 h-4 text-cyan-400" />
-                <span>{l('الأثر القانوني والتشغيلي للعميل', 'Client Commercial & Legal Impact')}</span>
-              </h4>
-              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                {l(currentStep.descriptionAr, currentStep.descriptionEn)}
-              </p>
-
-              <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2">
-                <div className="text-[11px] text-slate-400">{l('القيمة المضافة المعيارية:', 'Standard Value Metric:')}</div>
-                <div className="text-lg font-black text-emerald-400 font-mono flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-                  <span>{l(currentStep.metricAr, currentStep.metricEn)}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Right: Key Deliverables Checklist (7 cols) */}
-            <div className="lg:col-span-7 space-y-4">
-              <h4 className="text-xs font-black text-slate-300 uppercase tracking-wider flex items-center gap-2">
-                <Zap className="w-4 h-4 text-amber-400" />
-                <span>{l('المزايا الفورية المضمنة في هذه المرحلة', 'Instant Deliverables Included')}</span>
-              </h4>
-
-              <div className="space-y-3">
-                {lArray(currentStep.featuresAr, currentStep.featuresEn).map((feature, fIdx) => (
-                  <div
-                    key={fIdx}
-                    className="p-3.5 rounded-2xl bg-slate-950/60 border border-slate-800/80 flex items-start gap-3 hover:border-slate-700 transition-colors"
-                  >
-                    <span className="w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
-                      ✓
-                    </span>
-                    <span className="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium">
-                      {feature}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-          </div>
-
-          {/* Quick Navigator Stepper Controls */}
-          <div className="flex items-center justify-between pt-6 border-t border-slate-800/80 text-xs">
-            <button
-              onClick={() => setActiveStepIndex((prev) => Math.max(0, prev - 1))}
-              disabled={activeStepIndex === 0}
-              className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-1.5 transition-colors cursor-pointer"
-            >
-              {isRtl ? <ArrowRight className="w-3.5 h-3.5" /> : <ArrowLeft className="w-3.5 h-3.5" />}
-              <span>{l('المرحلة السابقة', 'Previous Phase')}</span>
-            </button>
-
-            <div className="flex items-center gap-1.5">
-              {steps.map((_, dotIdx) => (
-                <button
-                  key={dotIdx}
-                  onClick={() => setActiveStepIndex(dotIdx)}
-                  className={`h-2 rounded-full transition-all cursor-pointer ${
-                    dotIdx === activeStepIndex ? 'w-6 bg-cyan-400' : 'w-2 bg-slate-700 hover:bg-slate-500'
-                  }`}
-                />
-              ))}
-            </div>
-
-            <button
-              onClick={() => setActiveStepIndex((prev) => Math.min(steps.length - 1, prev + 1))}
-              disabled={activeStepIndex === steps.length - 1}
-              className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-1.5 transition-colors cursor-pointer"
-            >
-              <span>{l('المرحلة التالية', 'Next Phase')}</span>
-              {isRtl ? <ArrowLeft className="w-3.5 h-3.5" /> : <ArrowRight className="w-3.5 h-3.5" />}
-            </button>
-          </div>
-
-        </div>
-
+        <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
+          {l('كيف تحول JurisTech أوراقك إلى حصن قانوني وتجاري متكامل؟', 'How JurisTech Transforms Your Contracts into Fortress-Grade Assets')}
+        </h2>
+        <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+          {l(
+            'مسار هندسي متسلسل وواضح من 6 مراحل يأخذ بيدك من لحظة إيداع وتشفير المستند حتى التدقيق، والتفاوض، والتوثيق والاعتماد المؤسسي.',
+            'A seamless 6-stage interactive transformation pathway from cryptographic deposit to 8-axis risk audit, redlining, negotiation, and official execution.'
+          )}
+        </p>
       </div>
-    </section>
+
+      {/* Step Selector Tabs (Desktop / Mobile Horizontal Scroll) */}
+      <div className="relative z-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 mb-8">
+        {steps.map((step, idx) => {
+          const Icon = step.icon;
+          const isActive = idx === activeStepIndex;
+          return (
+            <button
+              key={step.id}
+              onClick={() => setActiveStepIndex(idx)}
+              className={`p-3 rounded-2xl border transition-all text-start flex flex-col justify-between gap-2 cursor-pointer ${
+                isActive
+                  ? 'bg-slate-800/90 border-cyan-500 shadow-lg shadow-cyan-500/20 scale-102 ring-1 ring-cyan-500/50'
+                  : 'bg-slate-950/60 border-slate-800 hover:border-slate-700 hover:bg-slate-900/60'
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <span className={`w-7 h-7 rounded-xl flex items-center justify-center text-xs font-black ${
+                  isActive ? 'bg-gradient-to-r from-cyan-400 to-teal-400 text-slate-950' : 'bg-slate-800 text-slate-400'
+                }`}>
+                  {step.stepNumber}
+                </span>
+                <Icon className={`w-4 h-4 ${isActive ? 'text-cyan-400' : 'text-slate-500'}`} />
+              </div>
+              <span className={`text-xs font-bold truncate block ${isActive ? 'text-white font-black' : 'text-slate-400'}`}>
+                {isRtl ? step.titleAr.split('(')[0] : step.titleEn.split('(')[0]}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Active Step Deep-Dive Card */}
+      <div className="relative z-10 p-6 sm:p-8 rounded-3xl bg-slate-950/90 border border-slate-800 shadow-2xl space-y-6">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-slate-800">
+          <div className="space-y-2">
+            <div className="flex items-center gap-3">
+              <span className={`px-3 py-1 rounded-full text-xs font-black uppercase ${activeStep.badgeColor}`}>
+                {isRtl ? `المرحلة رقم ${activeStep.stepNumber}` : `Stage ${activeStep.stepNumber}`}
+              </span>
+              <span className="text-xs font-mono font-bold text-slate-400">
+                {isRtl ? activeStep.metricAr : activeStep.metricEn}
+              </span>
+            </div>
+            <h3 className="text-xl sm:text-2xl font-black text-white">
+              {isRtl ? activeStep.titleAr : activeStep.titleEn}
+            </h3>
+            <p className="text-xs sm:text-sm text-cyan-300 font-medium">
+              {isRtl ? activeStep.subtitleAr : activeStep.subtitleEn}
+            </p>
+          </div>
+
+          <button
+            onClick={() => navigate(activeStep.targetRoute)}
+            className="flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400 hover:from-cyan-300 hover:to-emerald-300 text-slate-950 text-xs sm:text-sm font-black transition-all shadow-xl shadow-cyan-500/20 cursor-pointer shrink-0"
+          >
+            <span>{isRtl ? activeStep.ctaTextAr : activeStep.ctaTextEn}</span>
+            {isRtl ? <ArrowLeft className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
+          </button>
+        </div>
+
+        <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+          {isRtl ? activeStep.descriptionAr : activeStep.descriptionEn}
+        </p>
+
+        {/* Features List */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          {(isRtl ? activeStep.featuresAr : activeStep.featuresEn).map((feat, i) => (
+            <div key={i} className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800/80 flex items-start gap-3">
+              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+              <span className="text-xs text-slate-200 leading-relaxed font-sans">{feat}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Navigation Step Arrows */}
+        <div className="flex items-center justify-between pt-4 border-t border-slate-800/60 text-xs">
+          <button
+            onClick={() => setActiveStepIndex((prev) => (prev > 0 ? prev - 1 : steps.length - 1))}
+            className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors cursor-pointer font-bold"
+          >
+            {isRtl ? <ArrowRight className="w-4 h-4" /> : <ArrowLeft className="w-4 h-4" />}
+            <span>{l('المرحلة السابقة', 'Previous Stage')}</span>
+          </button>
+
+          <span className="text-slate-500 font-mono">
+            {activeStepIndex + 1} / {steps.length}
+          </span>
+
+          <button
+            onClick={() => setActiveStepIndex((prev) => (prev < steps.length - 1 ? prev + 1 : 0))}
+            className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors cursor-pointer font-bold"
+          >
+            <span>{l('المرحلة التالية', 'Next Stage')}</span>
+            {isRtl ? <ArrowLeft className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
