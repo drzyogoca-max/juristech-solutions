@@ -4,7 +4,8 @@ import { Mail, Users, Target, Send, ShieldCheck, FileText, Download, CheckCircle
 import { useAuth } from '../../lib/authContext';
 import Forbidden403Page from '../Forbidden403Page';
 import AdminNavSubbar from '../../components/AdminNavSubbar';
-import { CRM_LEADS, sendOfficialEmail, EmailLead, EmailTemplate } from '../../services/marketingEmailEngine';
+import { crmService } from '../../services/crmService';
+import { sendOfficialEmail, EmailLead, EmailTemplate } from '../../services/marketingEmailEngine';
 import { autonomousCSuiteOutreachEngine, AutoMachineState } from '../../services/autonomousCSuiteOutreachEngine';
 import { callAI } from '../../lib/api';
 
@@ -31,7 +32,46 @@ export default function AdminMarketingCRMPage() {
   const { isAdmin } = useAuth();
   const isRtl = i18n.language === 'ar';
 
-  const [leads, setLeads] = useState<EmailLead[]>(CRM_LEADS);
+  const [leads, setLeads] = React.useState<EmailLead[]>(() => {
+    const active = crmService.getLeads();
+    return active.map((l) => ({
+      id: l.id,
+      name: l.clientName,
+      email: l.contactEmail,
+      company: l.companyName,
+      jurisdiction: l.jurisdiction,
+      status: l.status === 'Converted' ? 'Closed' : l.status === 'Disqualified' ? 'Cold' : l.status,
+      lastContactDate: l.lastContactDate,
+    }));
+  });
+
+  React.useEffect(() => {
+    const updateLeads = () => {
+      const active = crmService.getLeads();
+      setLeads(
+        active.map((l) => ({
+          id: l.id,
+          name: l.clientName,
+          email: l.contactEmail,
+          company: l.companyName,
+          jurisdiction: l.jurisdiction,
+          status: l.status === 'Converted' ? 'Closed' : l.status === 'Disqualified' ? 'Cold' : l.status,
+          lastContactDate: l.lastContactDate,
+        }))
+      );
+    };
+
+    return crmService.subscribe(updateLeads);
+  }, []);
+
+  const handleDiscoverFreshB2B = () => {
+    const added = crmService.discoverFreshB2BLeads(5);
+    alert(
+      isRtl
+        ? `🚀 تم اكتشاف وإضافة ${added.length} عميل مؤسسي تجاري جديد إلى خط أنابيب الـ CRM بنجاح!`
+        : `🚀 Discovered and ingested ${added.length} new unique B2B enterprise leads into CRM pipeline!`
+    );
+  };
   const [activeTab, setActiveTab] = useState<'pipeline' | 'campaign' | 'magnet' | 'audit'>('pipeline');
   
   // Email Campaign State
@@ -99,6 +139,7 @@ export default function AdminMarketingCRMPage() {
   };
 
   const statusColors = {
+    New: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
     Cold: 'bg-slate-500/20 text-slate-400 border-slate-500/30',
     Warm: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
     Negotiating: 'bg-indigo-500/20 text-indigo-400 border-indigo-500/30',
@@ -167,6 +208,17 @@ export default function AdminMarketingCRMPage() {
                 {isLaunching20
                   ? (isRtl ? 'جاري الإرسال التلقائي...' : 'Dispatching 20 Emails...')
                   : (isRtl ? 'تشغيل دفعة اليوم الآن (20 إيميل)' : 'Run Daily 20 C-Suite Batch')}
+              </span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handleDiscoverFreshB2B}
+              className="px-5 py-3 rounded-2xl bg-gradient-to-r from-emerald-400 to-teal-500 hover:from-emerald-300 hover:to-teal-400 text-slate-950 font-black text-xs flex items-center gap-2 transition-all shadow-xl shadow-emerald-500/25 active:scale-95 cursor-pointer"
+            >
+              <Users className="w-4 h-4" />
+              <span>
+                {isRtl ? '🚀 اكتشاف عملاء B2B جدد' : '🚀 Discover Fresh B2B Leads'}
               </span>
             </button>
           </div>

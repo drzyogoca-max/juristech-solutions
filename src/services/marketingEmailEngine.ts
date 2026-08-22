@@ -6,7 +6,7 @@ export interface EmailLead {
   email: string;
   company: string;
   jurisdiction: string;
-  status: 'Cold' | 'Warm' | 'Negotiating' | 'Closed';
+  status: 'New' | 'Cold' | 'Warm' | 'Negotiating' | 'Closed';
   lastContactDate: string;
 }
 
