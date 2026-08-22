@@ -512,15 +512,17 @@ async function processEmailDispatch(targetEmail, emailSubject, text, html, reply
 
 
   if (!providerSuccess) {
-    providerMessage = '✅ Queued in Sovereign Outbox Dispatcher (SSOT Recorded)';
+    providerMessage = `⚠️ Queued in Sovereign Outbox Dispatcher (SSOT Recorded) — Provider status: ${providerError || 'RESEND_API_KEY or SMTP credentials not configured in environment variables'}`;
   }
 
   return {
-    success: true,
-    status: providerSuccess ? 'DELIVERED' : 'QUEUED_OR_DELIVERED',
+    success: providerSuccess,
+    delivered: providerSuccess,
+    status: providerSuccess ? 'DELIVERED' : 'QUEUED_SAFELY',
     recipient: targetEmail,
     subject: emailSubject,
     provider: providerMessage,
+    diagnostic: providerError || (providerSuccess ? 'Dispatched successfully' : 'Missing RESEND_API_KEY or SMTP credentials in Vercel environment variables'),
     timestamp: new Date().toISOString(),
   };
 }
