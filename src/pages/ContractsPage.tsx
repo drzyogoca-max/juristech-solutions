@@ -730,7 +730,7 @@ Draft the complete contract in pristine professional legal ${
                       <button
                         key={type.id}
                         onClick={() => setSelectedType(type.id)}
-                        className={`w-full text-right p-2 rounded-xl text-xs font-bold transition-all truncate block ${
+                        className={`w-full text-start p-2 rounded-xl text-xs font-bold transition-all truncate block ${
                           selectedType === type.id
                             ? 'bg-cyan-500 text-slate-950 font-black shadow-md'
                             : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:bg-slate-800'
@@ -786,7 +786,7 @@ Draft the complete contract in pristine professional legal ${
                     key={j.countryCode}
                     type="button"
                     onClick={() => handleJurisdictionChange(j.countryCode)}
-                    className={`relative p-3 rounded-2xl text-right transition-all border flex flex-col justify-between gap-2 group cursor-pointer ${
+                    className={`relative p-3 rounded-2xl text-start transition-all border flex flex-col justify-between gap-2 group cursor-pointer ${
                       isSelected
                         ? 'bg-gradient-to-br from-cyan-500/20 via-indigo-600/30 to-cyan-600/20 border-cyan-400 shadow-lg shadow-cyan-500/20 ring-1 ring-cyan-400/50 scale-[1.02]'
                         : 'bg-slate-900/80 border-slate-800 hover:border-slate-700 hover:bg-slate-800/80'

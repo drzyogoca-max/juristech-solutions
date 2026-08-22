@@ -1256,7 +1256,7 @@ export default function ContractsRepositoryPage() {
                       <div
                         key={template.id}
                         onClick={() => setActiveTemplate(template)}
-                        className={`p-5 rounded-3xl border text-right transition-all cursor-pointer space-y-3 ${
+                        className={`p-5 rounded-3xl border text-start transition-all cursor-pointer space-y-3 ${
                           isActive
                             ? 'bg-white dark:bg-slate-900 border-cyan-500 ring-2 ring-cyan-500/20 shadow-xl'
                             : 'bg-white/60 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-700'

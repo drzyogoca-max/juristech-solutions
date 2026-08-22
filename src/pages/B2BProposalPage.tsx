@@ -140,7 +140,7 @@ export default function B2BProposalPage() {
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="text-right">
+                <div className="text-end">
                   <span className="text-xs text-slate-600 dark:text-slate-400 block">{isRtl ? 'التوفير السنوي المتوقع' : 'Estimated Annual Savings'}</span>
                   <span className="text-xl font-extrabold text-emerald-400">{proposal.estimatedAnnualSavings}</span>
                 </div>

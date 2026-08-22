@@ -287,7 +287,7 @@ export default function InteractiveCustomerJourneyMap() {
                 <button
                   key={s.id}
                   onClick={() => setActiveStepIndex(idx)}
-                  className={`p-4 rounded-2xl border text-right transition-all flex flex-col items-center sm:items-start text-center sm:text-right gap-3 cursor-pointer group ${
+                  className={`p-4 rounded-2xl border transition-all flex flex-col items-center sm:items-start text-center sm:text-start gap-3 cursor-pointer group ${
                     isActive
                       ? 'bg-slate-900 border-cyan-400 shadow-xl shadow-cyan-500/10 ring-2 ring-cyan-500/30 scale-[1.02]'
                       : isPast
@@ -313,7 +313,7 @@ export default function InteractiveCustomerJourneyMap() {
                     </span>
                   </div>
 
-                  <div className="space-y-1 w-full text-right" dir={isRtl ? 'rtl' : 'ltr'}>
+                  <div className="space-y-1 w-full text-start" dir={isRtl ? 'rtl' : 'ltr'}>
                     <h4 className={`text-xs font-bold line-clamp-1 transition-colors ${
                       isActive ? 'text-cyan-300' : 'text-slate-200'
                     }`}>

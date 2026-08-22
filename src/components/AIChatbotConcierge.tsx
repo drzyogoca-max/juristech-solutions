@@ -601,7 +601,7 @@ ${currentAttachedText.slice(0, 4500)}
                       onClick={() => {
                         setInput(pill.query);
                       }}
-                      className="text-[11px] px-2.5 py-1 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-cyan-500/50 text-slate-300 hover:text-cyan-300 transition-all text-right"
+                      className="text-[11px] px-2.5 py-1 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-cyan-500/50 text-slate-300 hover:text-cyan-300 transition-all text-start"
                     >
                       {pill.label}
                     </button>

@@ -200,7 +200,7 @@ ${targetText}`;
     : [];
 
   return (
-    <div className="bg-slate-950/90 rounded-3xl p-5 sm:p-6 border border-slate-200 dark:border-slate-800 space-y-4 shadow-2xl relative font-sans" dir={isDocArabic ? 'rtl' : 'ltr'}>
+    <div className="bg-slate-950/90 rounded-3xl p-5 sm:p-6 border border-slate-200 dark:border-slate-800 space-y-4 shadow-2xl relative font-sans" dir={isRtl ? 'rtl' : 'ltr'}>
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -208,11 +208,11 @@ ${targetText}`;
             <ShieldAlert className="w-5 h-5" />
           </div>
           <h3 className="font-extrabold text-sm sm:text-base text-slate-900 dark:text-white">
-            {isDocArabic ? 'مساحة العمل التفاعلية لتدقيق العقود' : 'Live Interactive Contract Audit Workspace'}
+            {isRtl ? 'مساحة العمل التفاعلية لتدقيق العقود' : 'Live Interactive Contract Audit Workspace'}
           </h3>
         </div>
         <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 font-sans">
-          {isDocArabic ? 'بيئة فحص قانوني مؤمنة' : 'Secure Legal Workspace'}
+          {isRtl ? 'بيئة فحص قانوني مؤمنة' : 'Secure Legal Workspace'}
         </span>
       </div>
 
@@ -220,7 +220,7 @@ ${targetText}`;
       <input
         ref={fileInputRef}
         type="file"
-        aria-label={isDocArabic ? 'ملف العقد' : 'Contract File'}
+        aria-label={isRtl ? 'ملف العقد' : 'Contract File'}
         accept=".pdf,.docx,.txt,application/pdf,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
         onChange={handleFileUpload}
         className="hidden"
@@ -235,7 +235,7 @@ ${targetText}`;
           </div>
           <button
             onClick={handleClear}
-            aria-label={isDocArabic ? 'إزالة المستند' : 'Remove document'}
+            aria-label={isRtl ? 'إزالة المستند' : 'Remove document'}
             className="p-1 rounded-lg text-slate-600 dark:text-slate-400 hover:text-red-400 hover:bg-slate-100 dark:bg-slate-800 transition-colors"
           >
             <X className="w-4 h-4" />
@@ -269,6 +269,7 @@ ${targetText}`;
       <div className="relative">
         <textarea
           aria-label={l('حقل إدخال بنود العقد', 'Contract text input')}
+          dir="auto"
           placeholder={
             l(
               'أو الصق بنود العقد هنا لإجراء الفحص الفوري والمباشر...',

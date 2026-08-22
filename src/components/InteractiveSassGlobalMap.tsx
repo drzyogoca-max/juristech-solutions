@@ -370,7 +370,7 @@ export default function InteractiveSassGlobalMap() {
               </p>
             </div>
 
-            <div className="text-right rtl:text-left">
+            <div className="text-end">
               <span className="text-[10px] text-slate-400 block font-bold">{l('حجم العقود', 'Volume')}</span>
               <span className="text-base font-black text-white font-mono">{selectedNode.contractsVolume}</span>
             </div>

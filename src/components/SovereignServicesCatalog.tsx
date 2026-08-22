@@ -323,9 +323,9 @@ export default function SovereignServicesCatalog() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder={isRtl ? 'ابحث في الخدمات...' : 'Search services...'}
-            className="w-full px-4 py-2.5 pr-10 rtl:pr-4 rtl:pl-10 rounded-2xl bg-slate-900/90 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-sky-400 transition-all shadow-inner"
+            className="w-full py-2.5 px-4 ps-10 pe-4 rounded-2xl bg-slate-900/90 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-sky-400 transition-all shadow-inner"
           />
-          <Search className="w-4 h-4 text-slate-400 absolute top-1/2 -translate-y-1/2 left-3 rtl:left-auto rtl:right-3 pointer-events-none" />
+          <Search className="w-4 h-4 text-slate-400 absolute top-1/2 -translate-y-1/2 start-3 pointer-events-none" />
         </div>
       </div>
 

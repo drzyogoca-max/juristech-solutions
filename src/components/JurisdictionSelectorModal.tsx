@@ -114,7 +114,7 @@ export default function JurisdictionSelectorModal({ isOpen, onClose, onSelectJur
                 <button
                   key={j.countryCode}
                   onClick={() => handleSelect(j.countryCode)}
-                  className={`p-4 rounded-2xl border text-right transition-all flex flex-col justify-between relative group ${
+                  className={`p-4 rounded-2xl border text-start transition-all flex flex-col justify-between relative group ${
                     isSelected
                       ? 'bg-cyan-50/90 dark:bg-gradient-to-b dark:from-cyan-950/60 dark:to-slate-900 border-cyan-500 text-cyan-950 dark:text-cyan-300 shadow-md shadow-cyan-500/10'
                       : 'bg-slate-50 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-900/90'

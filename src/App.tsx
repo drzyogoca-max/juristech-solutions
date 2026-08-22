@@ -19,6 +19,7 @@ import MasterAdminToolbar from './components/MasterAdminToolbar';
 import GlobalTrafficGrowthBanner from './components/GlobalTrafficGrowthBanner';
 import { logVisitorSession } from './lib/visitorTracker';
 import { Loader2 } from 'lucide-react';
+import { usePlatformLocale } from './lib/universalTranslator';
 
 // ── Lazy Loaded Page Components for Minimal Initial Bundle Size & 95+ Performance ──
 const Dashboard = lazy(() => import('./pages/Dashboard'));
@@ -78,11 +79,22 @@ function MainAppContent() {
   const [isBlocked, setIsBlocked] = useState(false);
   const { isAdmin } = useAuth();
   const location = useLocation();
+  const { lang, isRtl } = usePlatformLocale();
 
   // Auxiliary Widgets Mounted Only Upon User Interaction or Idle Timeout (Sub-500ms FCP/LCP Guarantee)
   const [showAuxWidgets, setShowAuxWidgets] = useState(false);
 
   const [showLeadGate, setShowLeadGate] = useState(false);
+
+  // Synchronize document dir and lang on every locale switch
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+      document.documentElement.lang = lang;
+      document.body.dir = isRtl ? 'rtl' : 'ltr';
+      document.body.lang = lang;
+    }
+  }, [lang, isRtl]);
 
   // ── Defer Auxiliary Floating Widgets (Chatbot, Radar) for High Speed Insights ──
   useEffect(() => {
@@ -194,7 +206,11 @@ function MainAppContent() {
   return (
     <ErrorBoundary>
       <GlobalForceUpdate />
-      <div className="min-h-screen bg-slate-950 text-white font-sans selection:bg-cyan-500 selection:text-slate-950 flex flex-col justify-between w-full max-w-full overflow-x-hidden">
+      <div
+        dir={isRtl ? 'rtl' : 'ltr'}
+        lang={lang}
+        className="min-h-screen bg-slate-950 text-white font-sans selection:bg-cyan-500 selection:text-slate-950 flex flex-col justify-between w-full max-w-full overflow-x-hidden transition-all"
+      >
         <div className="w-full max-w-full overflow-x-hidden">
           <Navbar />
 

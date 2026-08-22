@@ -136,7 +136,7 @@ export default function ThemeFontSelectorModal({ isOpen, onClose }: Props) {
           <div className="grid grid-cols-2 gap-3">
             <button
               onClick={() => handleToggleMode('dark')}
-              className={`p-4 rounded-2xl border text-right transition-all flex items-center justify-between ${
+              className={`p-4 rounded-2xl border text-start transition-all flex items-center justify-between ${
                 mode === 'dark'
                   ? 'bg-slate-950 border-cyan-500 text-white shadow-lg shadow-cyan-500/20'
                   : 'bg-slate-100 dark:bg-slate-950/40 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400'
@@ -154,7 +154,7 @@ export default function ThemeFontSelectorModal({ isOpen, onClose }: Props) {
 
             <button
               onClick={() => handleToggleMode('light')}
-              className={`p-4 rounded-2xl border text-right transition-all flex items-center justify-between ${
+              className={`p-4 rounded-2xl border text-start transition-all flex items-center justify-between ${
                 mode === 'light'
                   ? 'bg-sky-50 border-sky-500 text-slate-950 shadow-lg shadow-sky-500/20'
                   : 'bg-slate-100 dark:bg-slate-950/40 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400'
@@ -214,7 +214,7 @@ export default function ThemeFontSelectorModal({ isOpen, onClose }: Props) {
                   key={fontKey}
                   onClick={() => handleSelectFont(fontKey)}
                   style={{ fontFamily: font.fontFamily }}
-                  className={`p-3.5 rounded-2xl border text-right transition-all flex items-center justify-between ${
+                  className={`p-3.5 rounded-2xl border text-start transition-all flex items-center justify-between ${
                     isSelected
                       ? 'bg-amber-50 dark:bg-amber-950/40 border-amber-500 text-amber-950 dark:text-amber-200 shadow-md shadow-amber-500/10'
                       : 'bg-slate-50 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-700'
@@ -251,7 +251,7 @@ export default function ThemeFontSelectorModal({ isOpen, onClose }: Props) {
                   <button
                     key={bgKey}
                     onClick={() => handleSelectBg(bgKey)}
-                    className={`p-3 rounded-2xl border text-right transition-all flex items-center justify-between ${
+                    className={`p-3 rounded-2xl border text-start transition-all flex items-center justify-between ${
                       isSelected
                         ? 'bg-cyan-500/10 border-cyan-500 text-cyan-900 dark:text-cyan-300 font-bold shadow-sm'
                         : 'bg-slate-50 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300'

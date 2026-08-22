@@ -24,8 +24,13 @@ export default function LanguageSwitcher() {
     localStorage.setItem('locale_explicit', 'true');
 
     if (typeof document !== 'undefined') {
+      const isArabic = code === 'ar';
       document.documentElement.lang = code;
-      document.documentElement.dir = code === 'ar' ? 'rtl' : 'ltr';
+      document.documentElement.dir = isArabic ? 'rtl' : 'ltr';
+      if (document.body) {
+        document.body.lang = code;
+        document.body.dir = isArabic ? 'rtl' : 'ltr';
+      }
     }
 
     if (typeof window !== 'undefined') {
@@ -45,14 +50,14 @@ export default function LanguageSwitcher() {
         <span>{activeLabel}</span>
       </button>
 
-      <div className="absolute right-0 mt-2 w-48 bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50 overflow-hidden backdrop-blur-xl">
+      <div className={`absolute ${isRtl ? 'left-0' : 'right-0'} mt-2 w-48 bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50 overflow-hidden backdrop-blur-xl`}>
         {locales.map(({ code, label }) => (
           <button
             key={code}
             onClick={() => switchLanguage(code)}
-            className={`w-full text-left px-4 py-2.5 text-xs transition-colors flex items-center justify-between cursor-pointer ${
+            className={`w-full text-start px-4 py-2.5 text-xs transition-colors flex items-center justify-between cursor-pointer ${
               code === current
-                ? 'text-cyan-400 font-bold bg-cyan-500/10 border-r-2 border-cyan-400'
+                ? 'text-cyan-400 font-bold bg-cyan-500/10 border-s-2 border-cyan-400'
                 : 'text-slate-300 hover:bg-slate-800/80 hover:text-white'
             }`}
           >
