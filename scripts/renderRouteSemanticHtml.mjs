@@ -358,6 +358,25 @@ export function getSemanticHtmlForRoute(routePath) {
     `;
   }
 
+  if (routePath === '/404') {
+    return `
+      ${commonHeader}
+      <main class="max-w-4xl mx-auto p-8 font-sans text-slate-100 text-center my-12" dir="rtl">
+        <h1 class="text-6xl sm:text-8xl font-black text-cyan-400 font-mono mb-4">404</h1>
+        <h2 class="text-2xl font-bold text-slate-100 mb-4">عذراً، الصفحة أو الرابط المطلوب غير موجود</h2>
+        <p class="text-slate-300 max-w-xl mx-auto mb-8 leading-relaxed">
+          يبدو أن الرابط القانوني أو المستند الذي تبحث عنه تم نقله أو تعديله. يمكنك العودة مباشرة إلى لوحة التحكم الرئيسية أو استخدام المستشار القانوني الذكي.
+        </p>
+        <div class="flex gap-4 justify-center flex-wrap">
+          <a href="/dashboard" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 px-6 py-3 rounded-2xl font-bold no-underline shadow">العودة للرئيسية</a>
+          <a href="/chat" class="bg-slate-900 text-cyan-400 border border-cyan-500 px-6 py-3 rounded-2xl font-bold no-underline">المستشار الذكي 24/7</a>
+          <a href="/contracts" class="bg-slate-900 text-slate-200 border border-slate-700 px-6 py-3 rounded-2xl font-bold no-underline">صياغة العقود</a>
+        </div>
+      </main>
+      ${commonFooter}
+    `;
+  }
+
   // Generic clean fallback with reserved Ad slot for all other routes
   return `
     ${commonHeader}

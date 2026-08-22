@@ -354,6 +354,18 @@ function prerenderRoutes() {
     console.log(`[Prerender SEO] Created pre-rendered HTML with full semantic content for ${routePath} -> ${targetFilePath}`);
   });
 
+  // Generate dedicated 404.html for Vercel / static server fallback
+  try {
+    let notFoundHtml = templateHtml;
+    const notFoundSemantic = getSemanticHtmlForRoute('/404');
+    notFoundHtml = notFoundHtml.replace(/<title>[\s\S]*?<\/title>/i, '<title>404: الصفحة غير موجودة | JurisTech Solutions</title>');
+    notFoundHtml = notFoundHtml.replace(/<div id="root">[\s\S]*?<\/div>/i, `<div id="root">${notFoundSemantic}</div>`);
+    fs.writeFileSync(path.join(DIST_DIR, '404.html'), notFoundHtml, 'utf-8');
+    console.log('[Prerender SEO] Dedicated 404.html generated successfully.');
+  } catch (e) {
+    console.warn('[Prerender SEO] 404.html generation bypassed:', e);
+  }
+
   console.log('[Prerender SEO] All public routes pre-rendered with canonical URLs & full semantic HTML successfully.');
 }
 

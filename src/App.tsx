@@ -58,6 +58,7 @@ const ReceiptVerificationPage = lazy(() => import('./pages/ReceiptVerificationPa
 const AdminReceiptReviewPage = lazy(() => import('./pages/AdminReceiptReviewPage'));
 const PlatformChecklistPage = lazy(() => import('./pages/admin/PlatformChecklistPage'));
 const AdminMarketingCRMPage = lazy(() => import('./pages/admin/AdminMarketingCRMPage'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 // Lazy Loaded Auxiliary Components
 const VisitorRadar = lazy(() => import('./components/VisitorRadar'));
@@ -351,6 +352,9 @@ function MainAppContent() {
                   </ProtectedAdminRoute>
                 }
               />
+
+              {/* 🛑 404 Custom Legal Not Found Page */}
+              <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </Suspense>
 
