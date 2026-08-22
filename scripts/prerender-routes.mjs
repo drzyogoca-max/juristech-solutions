@@ -356,7 +356,7 @@ function prerenderRoutes() {
 
   // Generate dedicated 404.html for Vercel / static server fallback
   try {
-    let notFoundHtml = templateHtml;
+    let notFoundHtml = baseHtml;
     const notFoundSemantic = getSemanticHtmlForRoute('/404');
     notFoundHtml = notFoundHtml.replace(/<title>[\s\S]*?<\/title>/i, '<title>404: الصفحة غير موجودة | JurisTech Solutions</title>');
     notFoundHtml = notFoundHtml.replace(/<div id="root">[\s\S]*?<\/div>/i, `<div id="root">${notFoundSemantic}</div>`);
