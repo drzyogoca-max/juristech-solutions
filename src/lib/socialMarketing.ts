@@ -73,6 +73,14 @@ export const TIKTOK_OFFICIAL_CONFIG = {
   status: 'Official Channel Active 🟢',
 };
 
+/** Official X (Twitter) Profile Config */
+export const TWITTER_OFFICIAL_CONFIG = {
+  accountName: '@JurisTech_AI',
+  profileUrl: 'https://x.com/JurisTech_AI',
+  targetAudience: 'Global B2B Enterprises, Law Firms, C-Suite Officers & VCs',
+  status: 'Connected & Active 🟢',
+};
+
 export const DISALLOWED_TRADEMARK_KEYWORDS = [
   'legalshield usa',
   'legalshield america',

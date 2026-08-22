@@ -69,24 +69,32 @@ export async function executeHourlyAdCampaignCycle(): Promise<AdCampaignRun | nu
   const channel = channels[Math.floor(Math.random() * channels.length)];
   const targetRegion = regions[Math.floor(Math.random() * regions.length)];
 
-  const prompt = `You are a Multi-Agent AI Growth & Ad Director for JurisTech Solutions (https://juristech.solutions).
-Generate an enterprise B2B ad campaign targeting corporate legal departments, law firms, and C-level executives.
+  const prompt = `You are the Lead Growth & Ad Director for JurisTech Solutions (https://www.juristech.solutions).
+Generate a HIGH-CONVERTING 100% ENGLISH ONLY B2B ad campaign targeting global enterprise legal teams, CEOs, CFOs, VCs, and law firms.
 
 Channel: ${channel}
 Target Region: ${targetRegion}
 
+MANDATORY RULES:
+1. Language: MUST BE 100% ENGLISH ONLY. No Arabic text.
+2. Platform Name: Always mention "JurisTech Solutions (Sovereign AI Legal Intelligence)".
+3. Official Contact Info: Include "Email: juristech.solutions@outlook.com | Contact: +201126674337 | Domain: https://www.juristech.solutions".
+4. Sensitive Legal Issues Solved: Focus on one of:
+   - M&A Due Diligence, SPA Warranty & Indemnity (W&I) Risk Auditing
+   - Sub-Second (<90ms) Contract Risk Analysis & Uncapped Liability Trap Detection
+   - Cross-Border Compliance (Delaware DGCL, Saudi Civil Transactions Law M/191, UAE DIFC 50/2022)
+   - 1M+ Certified Template Repository & E-Signatures (AES-256 Vault / SHA-256 eIDAS)
+
 Generate JSON format with keys:
 "adHeadline": English headline (max 10 words),
-"adHeadlineAr": Arabic headline (max 10 words),
-"adCopy": English compelling ad text (max 40 words),
-"adCopyAr": Arabic compelling ad text (max 40 words),
-"targetKeywords": Array of 5 keywords,
-"projectedROI": number between 3.5 and 8.5 (e.g. 5.8)
+"adCopy": English ad body including platform name, contact email, and sensitive legal case highlights (max 45 words),
+"targetKeywords": Array of 5 English keywords,
+"projectedROI": number between 4.5 and 9.5 (e.g. 6.8)
 
 Respond ONLY with valid JSON.`;
 
   try {
-    const response = await callAI(prompt);
+    const response = await callAI(prompt, 'en');
     let parsed: any;
 
     try {
@@ -94,28 +102,26 @@ Respond ONLY with valid JSON.`;
       parsed = JSON.parse(cleaned);
     } catch {
       parsed = {
-        adHeadline: 'Autonomous AI Contract Audit & Enterprise Sealing',
-        adHeadlineAr: 'التدقيق العقدي المستقل بالذكاء الاصطناعي والختم الرقمي',
-        adCopy: 'Streamline B2B legal contracts with sub-100ms AI risk analysis and certified e-signatures for MENA, Europe & USA.',
-        adCopyAr: 'صياغة وتدقيق العقود التجارية بالذكاء الاصطناعي مع التوقيع الرقمي المعتمد لدول الخليج وأوروبا وأمريكا.',
-        targetKeywords: ['AI Legal Tech', 'Smart Contract Audit', 'GCC Compliance', 'M&A Due Diligence', 'JurisTech Solutions'],
-        projectedROI: 6.4,
+        adHeadline: 'JurisTech Solutions — Sovereign AI M&A & Contract Risk Audit',
+        adCopy: 'Mitigate uncapped liabilities & audit M&A due diligence in <90ms with JurisTech Solutions. Compliant with Delaware DGCL & Saudi M/191. Contact: juristech.solutions@outlook.com | +201126674337 | https://www.juristech.solutions',
+        targetKeywords: ['M&A Due Diligence', 'Contract Risk Audit', 'JurisTech Solutions', 'Delaware DGCL', 'Enterprise Legal AI'],
+        projectedROI: 7.2,
       };
     }
 
     const campaignRun: AdCampaignRun = {
-      id: `CAMPAIGN-${Date.now()}`,
+      id: `CAMPAIGN-EN-${Date.now()}`,
       timestamp: new Date().toISOString(),
       channel,
       targetRegion,
-      adHeadline: parsed.adHeadline || 'Autonomous AI Legal Intelligence Platform',
-      adHeadlineAr: parsed.adHeadlineAr || 'المنصة العالمية المستقلة للذكاء الاصطناعي العقدي',
-      adCopy: parsed.adCopy || 'Autonomous AI contract audit and corporate compliance.',
-      adCopyAr: parsed.adCopyAr || 'تدقيق وتوليد العقود بالذكاء الاصطناعي لحوكمة الشركات.',
-      targetKeywords: parsed.targetKeywords || ['JurisTech', 'Legal AI', 'Contract Audit'],
-      estimatedImpressions: Math.floor(12000 + Math.random() * 45000),
-      estimatedClicks: Math.floor(450 + Math.random() * 2100),
-      projectedROI: parsed.projectedROI || 5.2,
+      adHeadline: parsed.adHeadline || 'JurisTech Solutions — Enterprise AI Legal Risk Audit',
+      adHeadlineAr: parsed.adHeadline || 'JurisTech Solutions — Enterprise AI Legal Risk Audit',
+      adCopy: parsed.adCopy || 'JurisTech Solutions provides sub-second contract risk auditing and M&A due diligence. Contact: juristech.solutions@outlook.com | +201126674337 | https://www.juristech.solutions',
+      adCopyAr: parsed.adCopy || 'JurisTech Solutions provides sub-second contract risk auditing and M&A due diligence. Contact: juristech.solutions@outlook.com | +201126674337 | https://www.juristech.solutions',
+      targetKeywords: parsed.targetKeywords || ['JurisTech Solutions', 'Legal AI', 'M&A Risk Audit'],
+      estimatedImpressions: Math.floor(18000 + Math.random() * 50000),
+      estimatedClicks: Math.floor(650 + Math.random() * 2500),
+      projectedROI: parsed.projectedROI || 6.5,
       status: 'ACTIVE',
     };
 
@@ -124,12 +130,12 @@ Respond ONLY with valid JSON.`;
     // Save in Supabase audit log
     try {
       await supabase.from('chat_messages').insert({
-        content: `[HOURLY AD CAMPAIGN DISPATCHED] Channel: ${campaignRun.channel} | Region: ${campaignRun.targetRegion} | ROI: ${campaignRun.projectedROI}x`,
+        content: `[HOURLY ENGLISH AD DISPATCH] Channel: ${campaignRun.channel} | Region: ${campaignRun.targetRegion} | ROI: ${campaignRun.projectedROI}x | Copy: ${campaignRun.adCopy}`,
         role: 'system',
       });
     } catch {}
 
-    console.log('[Hourly Ad Engine] Campaign cycle completed successfully:', campaignRun.id);
+    console.log('[Hourly Ad Engine] 100% English Campaign cycle completed:', campaignRun.id);
     return campaignRun;
   } catch (err) {
     console.error('[Hourly Ad Engine] Campaign cycle error:', err);

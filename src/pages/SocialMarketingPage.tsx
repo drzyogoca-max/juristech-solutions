@@ -9,7 +9,7 @@ import {
   SocialPost, AutoEngagement, MarketingAnalytics, runCampaignGeneratorWorker,
   runSocialSchedulerWorker, runAutoEngagementWorker, runSelfOptimizationLoop,
   isReviewModeActive, toggleReviewMode, approveEngagementResponse,
-  editEngagementResponse, rejectEngagementResponse
+  editEngagementResponse, rejectEngagementResponse, TWITTER_OFFICIAL_CONFIG
 } from '../lib/socialMarketing';
 import { getFunnelAnalytics } from '../lib/marketingTracker';
 import SEO from '../components/SEO';
@@ -123,9 +123,18 @@ export default function SocialMarketingPage() {
               </p>
             </div>
           </div>
-          <div className="text-right shrink-0">
-            <span className="text-[10px] text-slate-500 dark:text-slate-400 dark:text-slate-400 font-mono block">{isRtl ? 'معدل التكرار النفاذ:' : 'Schedule Frequency:'}</span>
+          <div className="text-right shrink-0 flex flex-col items-end gap-1.5">
+            <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono block">{isRtl ? 'معدل التكرار النفاذ:' : 'Schedule Frequency:'}</span>
             <span className="text-xs font-mono font-black text-emerald-400">1 Tweet / Hour (Every 60m)</span>
+            <a
+              href={TWITTER_OFFICIAL_CONFIG.profileUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-1 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-cyan-400 border border-slate-700 text-xs font-bold flex items-center gap-1.5 transition-colors shadow-md"
+            >
+              <span className="text-white font-black text-sm">𝕏</span>
+              <span>{TWITTER_OFFICIAL_CONFIG.accountName}</span>
+            </a>
           </div>
         </div>
 
