@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import {
   ShieldAlert, Upload, FileText, X, Loader2, Sparkles, ArrowRight,
@@ -9,6 +8,7 @@ import { callAI } from '../lib/api';
 import { supabase } from '../lib/supabaseClient';
 import { extractPDFTextMultiStage, detectDocumentLanguage } from '../lib/pdfExtractor';
 import { useContract } from '../context/ContractContext';
+import { usePlatformLocale } from '../lib/universalTranslator';
 import VoiceInput from './VoiceInput';
 
 export interface QuickAuditResult {
@@ -28,8 +28,9 @@ export interface QuickAuditResult {
 }
 
 export default function QuickAuditWidget() {
-  const { i18n } = useTranslation();
+  const { l, isRtl } = usePlatformLocale();
   const navigate = useNavigate();
+
   const { contractState, setContractData, updateAuditResults, clearContractData } = useContract();
 
   const [contractText, setContractText] = useState(contractState.extractedText || '');
@@ -245,8 +246,8 @@ ${targetText}`;
           type="button"
           onClick={() => fileInputRef.current?.click()}
           disabled={extracting}
-          aria-label={isDocArabic ? 'اضغط هنا لرفع عقد (PDF أو DOCX أو TXT) للفحص المباشر' : 'Drop or upload contract file (PDF / DOCX / TXT)'}
-          className="w-full border-2 border-dashed border-slate-200 dark:border-slate-800 hover:border-cyan-500/60 rounded-2xl p-6 flex flex-col items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200 transition-all bg-slate-900/50 group"
+          aria-label={l('اضغط هنا لرفع عقد (PDF أو DOCX أو TXT) للفحص المباشر', 'Drop or upload contract file (PDF / DOCX / TXT)')}
+          className="w-full border-2 border-dashed border-slate-200 dark:border-slate-800 hover:border-cyan-500/60 rounded-2xl p-6 flex flex-col items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200 transition-all bg-slate-900/50 group cursor-pointer"
         >
           {extracting ? (
             <Loader2 className="w-8 h-8 animate-spin text-cyan-400" />
@@ -255,11 +256,11 @@ ${targetText}`;
           )}
           <span className="text-xs font-bold text-center">
             {extracting
-              ? extractionStatus || (isDocArabic ? 'جاري قراءة واستخراج نصوص المستند بدقة...' : 'Extracting document text...')
-              : isDocArabic ? 'اسحب وأفلت ملف العقد هنا (PDF / DOCX / TXT) أو اضغط للاختيار' : 'Drop or upload contract file (PDF / DOCX / TXT)'}
+              ? extractionStatus || l('جاري قراءة واستخراج نصوص المستند بدقة...', 'Extracting document text...')
+              : l('اسحب وأفلت ملف العقد هنا (PDF / DOCX / TXT) أو اضغط للاختيار', 'Drop or upload contract file (PDF / DOCX / TXT)')}
           </span>
           <span className="text-[10px] text-slate-400 font-sans">
-            {isDocArabic ? 'معالجة واستخراج دقيق لنصوص المستندات الأصلية' : 'Precision extraction of native document text'}
+            {l('معالجة واستخراج دقيق لنصوص المستندات الأصلية', 'Precision extraction of native document text')}
           </span>
         </button>
       )}
@@ -267,20 +268,21 @@ ${targetText}`;
       {/* Textarea for typing/dictating */}
       <div className="relative">
         <textarea
-          aria-label={isDocArabic ? 'حقل إدخال بنود العقد' : 'Contract text input'}
+          aria-label={l('حقل إدخال بنود العقد', 'Contract text input')}
           placeholder={
-            isDocArabic
-              ? 'أو الصق بنود العقد هنا لإجراء الفحص الفوري والمباشر...'
-              : 'Or paste contract text here for instant AI auditing...'
+            l(
+              'أو الصق بنود العقد هنا لإجراء الفحص الفوري والمباشر...',
+              'Or paste contract text here for instant AI auditing...'
+            )
           }
           value={contractText}
           onChange={(e) => {
             setContractText(e.target.value);
             if (!e.target.value) setFileName('');
           }}
-          className={`w-full p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 focus:outline-none focus:ring-2 focus:ring-cyan-500 font-sans text-xs text-slate-800 dark:text-slate-200 leading-relaxed ${isDocArabic ? 'pl-14' : 'pr-14'}`}
+          className={`w-full p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 focus:outline-none focus:ring-2 focus:ring-cyan-500 font-sans text-xs text-slate-800 dark:text-slate-200 leading-relaxed ${isRtl ? 'pl-14' : 'pr-14'}`}
         />
-        <div className={`absolute top-2.5 ${isDocArabic ? 'left-2.5' : 'right-2.5'} z-10`}>
+        <div className={`absolute top-2.5 ${isRtl ? 'left-2.5' : 'right-2.5'} z-10`}>
           <VoiceInput onTranscript={(text) => setContractText((prev) => prev + ' ' + text)} />
         </div>
       </div>
@@ -293,27 +295,28 @@ ${targetText}`;
           type="button"
           onClick={() => executeInlineAudit()}
           disabled={auditing || extracting || !contractText.trim()}
-          aria-label={isDocArabic ? 'إجراء الفحص الفوري الآن' : 'Execute Instant Audit'}
-          className="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 disabled:opacity-40 font-extrabold text-slate-950 transition-all flex items-center justify-center gap-2 text-xs sm:text-sm shadow-lg shadow-cyan-500/20 active:scale-98"
+          aria-label={l('إجراء الفحص الفوري الآن', 'Execute Instant Audit')}
+          className="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 disabled:opacity-40 font-extrabold text-slate-950 transition-all flex items-center justify-center gap-2 text-xs sm:text-sm shadow-lg shadow-cyan-500/20 active:scale-98 cursor-pointer"
         >
           {auditing ? <Loader2 className="w-4 h-4 animate-spin text-slate-950" /> : <Sparkles className="w-4 h-4 text-slate-950" />}
           <span>
             {auditing
-              ? isDocArabic ? 'جاري الفحص المتقدم بالذكاء الاصطناعي...' : 'Auditing Contract...'
-              : isDocArabic ? 'تنفيذ التدقيق الفوري' : 'Execute Instant Audit'}
+              ? l('جاري الفحص المتقدم بالذكاء الاصطناعي...', 'Auditing Contract...')
+              : l('تنفيذ التدقيق الفوري', 'Execute Instant Audit')}
           </span>
         </button>
 
         <button
           type="button"
           onClick={navigateToFullAudit}
-          aria-label={isDocArabic ? 'الانتقال لغرفة التحليل المفصل' : 'Full Audit Suite'}
-          className="py-3 px-4 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs transition-colors flex items-center gap-1.5 shrink-0"
+          aria-label={l('الانتقال لغرفة التحليل المفصل', 'Full Audit Suite')}
+          className="py-3 px-4 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs transition-colors flex items-center gap-1.5 shrink-0 cursor-pointer"
         >
-          <span>{isDocArabic ? 'غرفة التحليل المفصل الشامل' : 'Full Audit Suite'}</span>
-          <ArrowRight className={`w-3.5 h-3.5 ${isDocArabic ? 'rotate-180' : ''}`} />
+          <span>{l('غرفة التحليل المفصل الشامل', 'Full Audit Suite')}</span>
+          <ArrowRight className={`w-3.5 h-3.5 ${isRtl ? 'rotate-180' : ''}`} />
         </button>
       </div>
+
 
       {/* Inline Live Risk Heatmap Card Auto-Expansion */}
       {auditing && (

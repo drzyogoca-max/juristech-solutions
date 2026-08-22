@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import {
   Home, MessageSquare, FileText, AlertTriangle, Shield,
   Lock, CreditCard, Video, BarChart3, HelpCircle, X,
@@ -8,12 +7,13 @@ import {
 } from 'lucide-react';
 import TwoFactorAuthModal from './TwoFactorAuthModal';
 import { useAuth } from '../lib/authContext';
+import { usePlatformLocale } from '../lib/universalTranslator';
 
 export default function MobileBottomNav() {
-  const { t, i18n } = useTranslation();
-  const isRtl = i18n.language === 'ar';
+  const { l, isRtl } = usePlatformLocale();
   const location = useLocation();
   const { isAdmin } = useAuth();
+
 
   const [showDrawer, setShowDrawer] = useState(false);
   const [show2FA, setShow2FA] = useState(false);
@@ -66,7 +66,7 @@ export default function MobileBottomNav() {
                   <Icon className="w-5 h-5" />
                 </div>
                 <span className="text-[10px] mt-0.5 tracking-tight font-medium">
-                  {isRtl ? item.labelAr : item.labelEn}
+                  {l(item.labelAr, item.labelEn)}
                 </span>
               </Link>
             );
@@ -86,7 +86,7 @@ export default function MobileBottomNav() {
               <Shield className="w-5 h-5" />
             </div>
             <span className="text-[10px] mt-0.5 tracking-tight font-medium">
-              {isRtl ? 'الأمان والمزيد' : 'Security+'}
+              {l('الأمان والمزيد', 'Security+')}
             </span>
           </button>
         </div>
@@ -114,10 +114,10 @@ export default function MobileBottomNav() {
                 </div>
                 <div>
                   <h3 className="text-sm font-black text-white">
-                    {isRtl ? 'مركز الأمان والخدمات السيادية' : 'Sovereign Security & Services'}
+                    {l('مركز الأمان والخدمات السيادية', 'Sovereign Security & Services')}
                   </h3>
                   <p className="text-[10px] text-slate-400">
-                    {isRtl ? 'تشفير E2EE • تحقق ثنائي 2FA • 15 نظام تشريعي' : 'E2EE • 2FA Authentication • 15 Jurisdictions'}
+                    {l('تشفير E2EE • تحقق ثنائي 2FA • 15 نظام تشريعي', 'E2EE • 2FA Authentication • 15 Jurisdictions')}
                   </p>
                 </div>
               </div>
@@ -138,11 +138,11 @@ export default function MobileBottomNav() {
                 </div>
                 <div>
                   <div className="text-xs font-black text-white flex items-center gap-1.5">
-                    <span>{isRtl ? 'التحقق الثنائي (2FA TOTP)' : '2FA Authentication'}</span>
+                    <span>{l('التحقق الثنائي (2FA TOTP)', '2FA Authentication')}</span>
                     <span className="px-1.5 py-0.2 rounded text-[8px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold">ACTIVE</span>
                   </div>
                   <p className="text-[10px] text-slate-300 mt-0.5">
-                    {isRtl ? 'حماية الحساب عبر رمز OTP مشفر' : 'RFC 6238 TOTP Account Protection'}
+                    {l('حماية الحساب عبر رمز OTP مشفر', 'RFC 6238 TOTP Account Protection')}
                   </p>
                 </div>
               </div>
@@ -154,14 +154,14 @@ export default function MobileBottomNav() {
                 }}
                 className="px-3.5 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-black shrink-0 transition-all shadow-md active:scale-95 cursor-pointer"
               >
-                {isRtl ? 'إدارة 2FA' : 'Manage'}
+                {l('إدارة 2FA', 'Manage')}
               </button>
             </div>
 
             {/* Secondary Services Grid */}
             <div className="space-y-1.5">
               <span className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-widest px-1 block mb-2">
-                {isRtl ? 'كافة الخدمات والأنظمة القانونية' : 'All Platform Legal AI Engines'}
+                {l('كافة الخدمات والأنظمة القانونية', 'All Platform Legal AI Engines')}
               </span>
               {SECONDARY_SERVICES.map((srv) => {
                 const Icon = srv.icon;
@@ -177,7 +177,7 @@ export default function MobileBottomNav() {
                         <Icon className="w-4 h-4" />
                       </div>
                       <span className="text-xs font-bold text-slate-200 group-hover:text-white">
-                        {isRtl ? srv.labelAr : srv.labelEn}
+                        {l(srv.labelAr, srv.labelEn)}
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
@@ -192,6 +192,7 @@ export default function MobileBottomNav() {
                 );
               })}
             </div>
+
           </div>
         </div>
       )}
