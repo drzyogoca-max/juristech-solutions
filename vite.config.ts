@@ -133,6 +133,13 @@ export default defineConfig({
     assetsInlineLimit: 8192,
     sourcemap: false,
     target: 'es2020',
+    minify: 'esbuild',
+    cssMinify: true,
+  },
+
+  esbuild: {
+    drop: ['console', 'debugger'],
+    legalComments: 'none',
   },
 
   // ── Dev server with baseline security headers

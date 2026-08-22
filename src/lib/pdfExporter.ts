@@ -28,11 +28,17 @@ export async function exportLegalContractPDF(
   const hashToDisplay = sha256Hash || `SHA256-${Date.now()}-${Math.random().toString(36).substring(2, 10)}`;
   const dateStr = isRtl ? new Date().toLocaleDateString('ar-EG') : new Date().toLocaleDateString('en-US');
 
-  // Format the text content for HTML, handling line breaks with strict direction
+  // Format the text content for HTML, handling line breaks with strict direction (RTL for Arabic/Bilingual)
   const contentHtml = content
     .replace(/\r/g, '')
     .split('\n')
-    .map((line) => `<p style="margin-bottom: 8px; direction: ${isRtl ? 'rtl' : 'ltr'}; text-align: ${isRtl ? 'right' : 'left'};">${line}</p>`)
+    .map((line) => {
+      const lineHasArabic = /[\u0600-\u06FF]/.test(line);
+      const dir = lineHasArabic ? 'rtl' : (isRtl ? 'rtl' : 'ltr');
+      const align = isRtl ? 'right' : (lineHasArabic ? 'right' : 'left');
+      const font = lineHasArabic || isRtl ? activeFontFamily : "'Segoe UI', Tahoma, sans-serif";
+      return `<p style="margin-bottom: 8px; direction: ${dir}; text-align: ${align}; font-family: ${font}; font-size: 13px; line-height: 1.8;">${line}</p>`;
+    })
     .join('');
 
   container.innerHTML = `

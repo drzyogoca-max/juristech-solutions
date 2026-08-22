@@ -95,20 +95,22 @@ export async function generateAndDownloadWordDocument(title: string, content: st
                         cleanLine.startsWith('##');
 
       const textWithoutMarkdown = cleanLine.replace(/^#+\s*/, '');
+      const lineHasArabic = /[\u0600-\u06FF]/.test(textWithoutMarkdown);
+      const lineIsRtl = isRtl || lineHasArabic;
 
       paragraphs.push(
         new Paragraph({
-          alignment: isRtl ? AlignmentType.RIGHT : AlignmentType.LEFT,
-          bidirectional: isRtl,
+          alignment: lineIsRtl ? AlignmentType.RIGHT : AlignmentType.LEFT,
+          bidirectional: lineIsRtl,
           spacing: { after: isHeading ? 160 : 100 },
           children: [
             new TextRun({
               text: textWithoutMarkdown,
-              font: isRtl ? "Arial" : "Calibri",
+              font: lineIsRtl ? "Arial" : "Calibri",
               size: isHeading ? 26 : 24, // 13pt للعناوين، 12pt للنصوص
               bold: isHeading,
               color: isHeading ? "0F172A" : "333333",
-              rightToLeft: isRtl,
+              rightToLeft: lineIsRtl,
             }),
           ],
         })
