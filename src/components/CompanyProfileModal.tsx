@@ -86,23 +86,24 @@ export default function CompanyProfileModal({ isOpen, onClose, onUpdate }: Props
 
     // Sync company profile with CRM Pipeline if contact details exist
     try {
-      if (profile.representativeEmail) {
-        const clientEmail = profile.representativeEmail.trim();
-        const clientName = profile.representativeName?.trim() || profile.companyName || 'Corporate Executive';
-        const companyName = profile.companyName?.trim() || 'Enterprise Client';
+      if (profile.signatoryEmail) {
+        const clientEmail = profile.signatoryEmail.trim();
+        const clientName = profile.signatoryName?.trim() || profile.companyNameEn || profile.companyNameAr || 'Corporate Executive';
+        const companyName = profile.companyNameEn?.trim() || profile.companyNameAr?.trim() || 'Enterprise Client';
+        const jurisdiction = profile.country || 'Global Commercial';
 
         crmService.addLead({
           clientName,
           companyName,
           contactEmail: clientEmail,
-          jurisdiction: profile.jurisdiction || 'Global Commercial',
+          jurisdiction,
           flag: '🏢',
           status: 'Warm',
           lastContactDate: new Date().toISOString().split('T')[0],
           estimatedValueUSD: 10000,
           leadScore: 99,
-          notesAr: `تم تحديث ملف الشركة المؤسسي: ${companyName} (${profile.jurisdiction})`,
-          notesEn: `Corporate profile saved: ${companyName} (${profile.jurisdiction})`,
+          notesAr: `تم تحديث ملف الشركة المؤسسي: ${companyName} (${jurisdiction})`,
+          notesEn: `Corporate profile saved: ${companyName} (${jurisdiction})`,
           lastActivityAr: 'تم حفظ الملف المؤسسي وجاري إرسال حزمة الصفقات والامتثال',
           lastActivityEn: 'Corporate profile saved; queued executive proposal dispatch',
         });
@@ -110,10 +111,10 @@ export default function CompanyProfileModal({ isOpen, onClose, onUpdate }: Props
         if (crmService.isAutonomousMode()) {
           generateAndDispatchOffer({
             name: companyName,
-            requirement: `Enterprise Legal Architecture, M&A Governance & Corporate Structuring (${profile.jurisdiction || 'Global'})`,
+            requirement: `Enterprise Legal Architecture, M&A Governance & Corporate Structuring (${jurisdiction})`,
             language: i18n.language,
             email: clientEmail,
-            jurisdiction: profile.jurisdiction || 'Global Commercial',
+            jurisdiction,
           }).catch((e) => console.warn('[CompanyProfile CRM Dispatch] Error:', e));
         }
       }
