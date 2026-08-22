@@ -11,6 +11,7 @@ import { useAdaptiveUI } from '../hooks/useAdaptiveUI';
 import { callAI } from '../lib/api';
 import { useContract } from '../context/ContractContext';
 import InstitutionalTrustBadgeBar from '../components/InstitutionalTrustBadgeBar';
+import SovereignContactCenterCard from '../components/SovereignContactCenterCard';
 import QuickAuditWidget from '../components/QuickAuditWidget';
 import ContractAnalysisSkeleton from '../components/ContractAnalysisSkeleton';
 import HeartbeatBackground from '../components/HeartbeatBackground';
@@ -877,6 +878,9 @@ export default function Dashboard() {
               </Link>
             </div>
           </div>
+
+          {/* Sovereign Direct Contact Center Card (Exclusive to Homepage / Dashboard) */}
+          <SovereignContactCenterCard />
 
           {/* Institutional Trust Badges */}
           <InstitutionalTrustBadgeBar />

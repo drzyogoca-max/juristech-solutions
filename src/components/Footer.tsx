@@ -178,34 +178,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* 3. Direct Executive Contact Channels (Rendered on Dashboard) */}
-        {isHomePage && (
-          <div className="p-4 rounded-2xl bg-slate-900/80 border border-sky-500/20 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-300 shadow-lg">
-            <div className="flex items-center gap-3">
-              <Mail className="w-4 h-4 text-sky-400 shrink-0" />
-              <span>
-                {l('البريد المعتمد للإدارة:', 'Official Executive Email:')}{' '}
-                <code className="text-sky-300 font-mono">Drzyogo.ca@gmail.com</code>
-              </span>
-            </div>
-            <div className="flex items-center gap-3">
-              <Smartphone className="w-4 h-4 text-emerald-400 shrink-0" />
-              <span>
-                {l('الواتساب المباشر:', 'Direct WhatsApp:')}{' '}
-                <code className="text-emerald-300 font-mono">+201126674337</code>
-              </span>
-            </div>
-            <div className="flex items-center gap-3">
-              <Globe className="w-4 h-4 text-purple-400 shrink-0" />
-              <span>
-                {l('إنستا باي مصر:', 'InstaPay Egypt:')}{' '}
-                <code className="text-purple-300 font-mono">+201031222262</code>
-              </span>
-            </div>
-          </div>
-        )}
-
-        {/* 4. Mandatory Legal Disclaimer & Sovereign Independence */}
+        {/* 3. Mandatory Legal Disclaimer & Sovereign Independence */}
         <div className="p-4 rounded-2xl bg-slate-900/80 border border-amber-500/30 flex items-start gap-3 text-xs text-slate-300">
           <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
           <p className="leading-relaxed m-0 font-medium">
