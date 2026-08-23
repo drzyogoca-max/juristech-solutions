@@ -69,6 +69,7 @@ const GdprPrivacyBanner = lazy(() => import('./components/GdprPrivacyBanner'));
 const AdSponsorBanner = lazy(() => import('./components/AdSponsorBanner'));
 const HowItWorks = lazy(() => import('./components/HowItWorks'));
 const AIChatbotConcierge = lazy(() => import('./components/AIChatbotConcierge'));
+const YouTubeGrowthWidget = lazy(() => import('./components/YouTubeGrowthWidget'));
 
 function RouteFallback() {
   return (
@@ -376,6 +377,7 @@ function MainAppContent() {
               <VisitorRadar />
               <AIChatbotConcierge />
               <GdprPrivacyBanner />
+              <YouTubeGrowthWidget />
             </Suspense>
           )}
 
