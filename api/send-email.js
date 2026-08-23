@@ -405,10 +405,10 @@ async function processEmailDispatch(targetEmail, emailSubject, text, html, reply
   const FALLBACK_RESEND_KEY = Buffer.from('cmVfUEVMeUZVRnZfR01SNHFQaDNNaDh4RWhSaWtDQVRhU0NL', 'base64').toString('utf-8');
   const RESEND_API_KEY = process.env.RESEND_API_KEY || FALLBACK_RESEND_KEY;
   const EMAIL_FROM = process.env.EMAIL_FROM || 'onboarding@resend.dev';
-  const SMTP_HOST = process.env.SMTP_HOST || 'smtp.gmail.com';
-  const SMTP_PORT = parseInt(process.env.SMTP_PORT || '465', 10);
-  const SMTP_USER = process.env.SMTP_USER || '';
-  const SMTP_PASS = process.env.SMTP_PASS || '';
+  const SMTP_HOST = process.env.SMTP_HOST || 'smtp-mail.outlook.com';
+  const SMTP_PORT = parseInt(process.env.SMTP_PORT || '587', 10);
+  const SMTP_USER = process.env.SMTP_USER || 'juristech.solutions@outlook.com';
+  const SMTP_PASS = process.env.SMTP_PASS || 'jiyviwbzzisldwvt';
   const REPLY_TO = replyTo || process.env.REPLY_TO || 'juristech.solutions@outlook.com';
 
   let providerSuccess = false;
@@ -421,14 +421,50 @@ async function processEmailDispatch(targetEmail, emailSubject, text, html, reply
   // Add to deduplication registry
   if (cleanEmail) dispatchedRecipientsRegistry.add(cleanEmail);
 
-  // 1. Resend API
-  if (RESEND_API_KEY) {
+  // 1. Outlook Direct SMTP (Primary Executive Channel for Dr. Mohammad Mustafa)
+  if (SMTP_USER && SMTP_PASS) {
+    try {
+      const transporter = nodemailer.createTransport({
+        host: SMTP_HOST,
+        port: SMTP_PORT,
+        secure: false, // 587 uses STARTTLS
+        auth: { user: SMTP_USER, pass: SMTP_PASS },
+        tls: { rejectUnauthorized: false, ciphers: 'SSLv3' },
+      });
+
+      const info = await transporter.sendMail({
+        from: `"Dr. Mohammad Mustafa — JurisTech Solutions" <${SMTP_USER}>`,
+        to: targetEmail,
+        bcc: `${MANDATORY_ADMIN_COPY}, ${OFFICIAL_ARCHIVE}`,
+        replyTo: REPLY_TO,
+        subject: emailSubject,
+        text: text || 'JurisTech Solutions — Legal Intelligence Platform',
+        html: html || undefined,
+        headers: {
+          'X-JurisTech-Dispatch': 'Executive-Direct',
+          'X-Admin-Copy': MANDATORY_ADMIN_COPY,
+          'List-Unsubscribe': `<mailto:${REPLY_TO}?subject=unsubscribe>`,
+        },
+      });
+
+      if (info?.messageId) {
+        providerSuccess = true;
+        providerMessage = `✅ Direct Outlook SMTP dispatched via ${SMTP_USER} (${info.messageId}) with Admin BCC to ${MANDATORY_ADMIN_COPY}`;
+      }
+    } catch (smtpErr) {
+      console.warn('[Outlook SMTP] Primary dispatch fallback:', smtpErr?.message);
+      providerError = `Outlook SMTP: ${smtpErr?.message}`;
+    }
+  }
+
+  // 2. Resend API Fallback
+  if (!providerSuccess && RESEND_API_KEY) {
     try {
       const isCustomSender = EMAIL_FROM.includes('@') && !EMAIL_FROM.includes('onboarding@resend.dev');
       const senderAddress = isCustomSender ? EMAIL_FROM : 'onboarding@resend.dev';
 
       let resendPayload = {
-        from: `JurisTech Solutions <${senderAddress}>`,
+        from: `Dr. Mohammad Mustafa — JurisTech Solutions <${senderAddress}>`,
         to: [targetEmail],
         reply_to: REPLY_TO,
         subject: emailSubject,
@@ -476,45 +512,10 @@ async function processEmailDispatch(targetEmail, emailSubject, text, html, reply
         providerSuccess = true;
         providerMessage = `✅ Sent via Resend API (ID: ${resData.id}) to ${targetEmail}`;
       } else {
-        providerError = `Resend API Error (${resResend.status}): ${JSON.stringify(resData)}`;
+        providerError += ` | Resend API Error (${resResend.status}): ${JSON.stringify(resData)}`;
       }
     } catch (e) {
-      providerError = `Resend exception: ${e.message}`;
-    }
-  }
-
-  // 2. SMTP Fallback
-  if (!providerSuccess && SMTP_USER && SMTP_PASS) {
-    try {
-      const transporter = nodemailer.createTransport({
-        host: SMTP_HOST,
-        port: SMTP_PORT,
-        secure: SMTP_PORT === 465,
-        auth: { user: SMTP_USER, pass: SMTP_PASS },
-        tls: { rejectUnauthorized: false },
-      });
-
-      const info = await transporter.sendMail({
-        from: `"JurisTech Solutions" <${SMTP_USER}>`,
-        to: targetEmail,
-        bcc: `${MANDATORY_ADMIN_COPY}, ${OFFICIAL_ARCHIVE}`,
-        replyTo: REPLY_TO,
-        subject: emailSubject,
-        text: text || 'JurisTech Solutions — Legal Intelligence Platform',
-        html: html || undefined,
-        headers: {
-          'X-JurisTech-Dispatch': 'CRM-Automated',
-          'X-Admin-Copy': MANDATORY_ADMIN_COPY,
-          'List-Unsubscribe': `<mailto:${REPLY_TO}?subject=unsubscribe>`,
-        },
-      });
-
-      if (info?.messageId) {
-        providerSuccess = true;
-        providerMessage = `✅ Sent via SMTP (${info.messageId}) with Admin BCC to ${MANDATORY_ADMIN_COPY}`;
-      }
-    } catch (smtpErr) {
-      providerError += ` | SMTP: ${smtpErr.message}`;
+      providerError += ` | Resend exception: ${e.message}`;
     }
   }
 
