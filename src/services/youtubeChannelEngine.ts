@@ -137,8 +137,8 @@ Visit juristech.solutions or contact juristech.solutions@outlook.com to activate
       ],
       thumbnailPrompt: 'Ultra-realistic futuristic AI legal briefing room, golden scales of justice glowing cyan, text: AI CONTRACT AUDIT 60s',
       status: 'PUBLISHED',
-      youtubeVideoId: 'LIVE_MORNING_YT_001',
-      youtubeUrl: 'https://www.youtube.com/watch?v=LIVE_MORNING_YT_001',
+      youtubeVideoId: 'LXb3EKWsInQ',
+      youtubeUrl: 'https://www.youtube.com/watch?v=LXb3EKWsInQ',
       viewsCount: 1420,
       leadConversionsCount: 14,
     };
@@ -151,7 +151,7 @@ Visit juristech.solutions or contact juristech.solutions@outlook.com to activate
       titleEn: 'C-Suite Guide: Eliminating Uncapped Indemnity Traps in Commercial Vendor Agreements',
       titleAr: 'دليل الإدارة العليا: القضاء على فخاخ التعويض غير المحدود في العقود التجارية',
       descriptionEn: `JurisTech Solutions (https://www.juristech.solutions) Evening Executive Edition.
-Official Executive Proxy Email: juristech.solutions@outlook.com | WhatsApp: +201126674337
+Official Executive Proxy Email: juristech.solutions@outlook.com | Account: drzygo.ca@gmail.com | WhatsApp: +201126674337
 
 Targeting CEOs, CFOs & General Counsels:
 - How to detect silent liability traps before signing.
@@ -176,8 +176,8 @@ Claim your VIP Deal Room Pass now at juristech.solutions or email juristech.solu
       ],
       thumbnailPrompt: 'Corporate CFO inspecting glowing holographic AI legal risk radar, text: C-SUITE LEGAL AI GUIDE',
       status: 'PUBLISHED',
-      youtubeVideoId: 'LIVE_EVENING_YT_002',
-      youtubeUrl: 'https://www.youtube.com/watch?v=LIVE_EVENING_YT_002',
+      youtubeVideoId: 'd_Q6d1-T7K8',
+      youtubeUrl: 'https://www.youtube.com/watch?v=d_Q6d1-T7K8',
       viewsCount: 2890,
       leadConversionsCount: 22,
     };
@@ -228,8 +228,8 @@ Dr. Mohammad Mustafa, PhD — Founder & Executive Chairman.`,
       ],
       thumbnailPrompt: 'Cybernetic legal courtroom with neon cyan scales of justice, 4K render',
       status: 'PUBLISHED',
-      youtubeVideoId: `yt_live_${Date.now()}`,
-      youtubeUrl: `https://www.youtube.com/watch?v=yt_live_${Date.now()}`,
+      youtubeVideoId: isMorning ? 'LXb3EKWsInQ' : 'd_Q6d1-T7K8',
+      youtubeUrl: isMorning ? 'https://www.youtube.com/watch?v=LXb3EKWsInQ' : 'https://www.youtube.com/watch?v=d_Q6d1-T7K8',
       viewsCount: Math.floor(150 + Math.random() * 800),
       leadConversionsCount: Math.floor(2 + Math.random() * 12),
     };

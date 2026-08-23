@@ -386,7 +386,7 @@ export function getSemanticHtmlForRoute(routePath) {
     `;
   }
 
-  if (routePath === '/youtube-studio') {
+  if (routePath === '/youtube-studio' || routePath === '/youtube' || routePath === '/youtube-channel') {
     return `
       ${commonHeader}
       <main class="max-w-7xl mx-auto p-6 font-sans text-slate-100" dir="rtl">

@@ -26,6 +26,21 @@
       "permanent": true
     },
     {
+      "source": "/youtube",
+      "destination": "/youtube-studio",
+      "permanent": false
+    },
+    {
+      "source": "/youtube-channel",
+      "destination": "/youtube-studio",
+      "permanent": false
+    },
+    {
+      "source": "/channel",
+      "destination": "/youtube-studio",
+      "permanent": false
+    },
+    {
       "source": "/:path*",
       "has": [
         {

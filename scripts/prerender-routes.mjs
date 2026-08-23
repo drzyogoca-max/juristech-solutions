@@ -112,6 +112,18 @@ const ROUTE_METADATA = {
     descriptionAr: 'استوديو الإدارة التلقائية لقناة يوتيوب الرسمية لمنصة JurisTech Solutions — توليد ونشر فيديوهات قانونية يومية صباحاً ومساءً 100% بالذكاء الاصطناعي.',
     descriptionEn: 'Official YouTube Channel Studio for juristech.solutions@outlook.com. Automated 2x daily morning & evening video publishing engine.',
   },
+  '/youtube': {
+    titleAr: 'قناة يوتيوب الرسمية واستوديو الفيديوهات | JurisTech YouTube Channel',
+    titleEn: 'Official YouTube Channel & Video Studio | JurisTech Solutions',
+    descriptionAr: 'قناة يوتيوب الرسمية لمنصة JurisTech Solutions — مشاهدة الفيديوهات القانونية اليومية وإيجاز الإدارة العليا للشركات.',
+    descriptionEn: 'Official YouTube Channel for JurisTech Solutions. Watch daily legal tech briefings and AI contract audit guides.',
+  },
+  '/youtube-channel': {
+    titleAr: 'قناة يوتيوب الرسمية واسـتوديو الفيديوهات | JurisTech YouTube Channel',
+    titleEn: 'Official YouTube Channel & Video Studio | JurisTech Solutions',
+    descriptionAr: 'قناة يوتيوب الرسمية لمنصة JurisTech Solutions — مشاهدة الفيديوهات القانونية اليومية وإيجاز الإدارة العليا للشركات.',
+    descriptionEn: 'Official YouTube Channel for JurisTech Solutions. Watch daily legal tech briefings and AI contract audit guides.',
+  },
   '/b2b-proposals': {
     titleAr: 'منصة العروض التنافسية للشركات | JurisTech',
     titleEn: 'Enterprise B2B Proposal Engine & AI RFP Hub | JurisTech',
