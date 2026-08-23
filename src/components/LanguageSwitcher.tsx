@@ -5,11 +5,6 @@ import { normalizeLanguage } from '../lib/universalTranslator';
 const locales = [
   { code: 'ar', label: 'العربية', dir: 'rtl' },
   { code: 'en', label: 'English', dir: 'ltr' },
-  { code: 'fr', label: 'Français', dir: 'ltr' },
-  { code: 'de', label: 'Deutsch', dir: 'ltr' },
-  { code: 'es', label: 'Español', dir: 'ltr' },
-  { code: 'zh', label: '中文', dir: 'ltr' },
-  { code: 'tr', label: 'Türkçe', dir: 'ltr' },
 ];
 
 export default function LanguageSwitcher() {
