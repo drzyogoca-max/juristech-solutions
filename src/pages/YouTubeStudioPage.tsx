@@ -403,7 +403,7 @@ export const YouTubeStudioPage: React.FC = () => {
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2 bg-slate-900/80 backdrop-blur border border-slate-700 px-3 py-1 rounded-full text-xs text-cyan-300 font-bold">
                             <Youtube className="w-4 h-4 text-red-500 animate-pulse" />
-                            <span>JurisTech Official Channel • @JurisTech_AI</span>
+                            <span>JurisTech Official Channel • @JurisTechSolutions</span>
                           </div>
                           <span className="bg-red-600 text-white text-[10px] font-black uppercase px-2 py-0.5 rounded">
                             ● {selectedVideo.format}

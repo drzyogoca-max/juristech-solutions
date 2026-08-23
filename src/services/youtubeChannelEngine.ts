@@ -55,7 +55,7 @@ const STORAGE_YOUTUBE_STATS_KEY = 'juristech_youtube_stats_v1';
 export class YouTubeChannelEngine {
   private channelStats: YouTubeChannelStats = {
     channelName: 'JurisTech Solutions — Sovereign AI Legal Intelligence',
-    channelHandle: '@JurisTech_AI',
+    channelHandle: '@JurisTechSolutions',
     officialEmail: 'juristech.solutions@outlook.com',
     status: 'ACTIVE_AUTOMATED',
     subscribersCount: 1420,

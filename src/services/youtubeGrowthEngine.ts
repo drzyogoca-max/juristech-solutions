@@ -5,7 +5,7 @@
  *   1. Embedding live YouTube Video Player & Floating Subscribe Widget on high-traffic web pages
  *   2. Injecting Google Video Schema (VideoObject JSON-LD) for organic Google & Bing search indexing
  *   3. Multi-platform social syndication links (X, LinkedIn, Reddit, WhatsApp, Dev.to)
- *   4. Direct 1-click auto-subscribe link generation (https://www.youtube.com/@JurisTech_AI?sub_confirmation=1)
+ *   4. Direct 1-click auto-subscribe link generation (https://www.youtube.com/@JurisTechSolutions?sub_confirmation=1)
  */
 
 export interface YouTubeGrowthPlatform {
@@ -19,9 +19,9 @@ export interface YouTubeGrowthPlatform {
 }
 
 export class YouTubeGrowthEngine {
-  private channelHandle = '@JurisTech_AI';
-  private directSubscribeUrl = 'https://www.youtube.com/@JurisTech_AI?sub_confirmation=1';
-  private channelUrl = 'https://www.youtube.com/@JurisTech_AI';
+  private channelHandle = '@JurisTechSolutions';
+  private directSubscribeUrl = 'https://www.youtube.com/@JurisTechSolutions?sub_confirmation=1';
+  private channelUrl = 'https://www.youtube.com/@JurisTechSolutions';
 
   private growthPlatforms: YouTubeGrowthPlatform[] = [
     {
@@ -34,7 +34,7 @@ export class YouTubeGrowthEngine {
       referralTrafficSharePercent: 42,
     },
     {
-      name: 'Official X / Twitter Channel (@JurisTech_AI)',
+      name: 'Official X / Twitter Channel (@JurisTechSolutions)',
       category: 'Social Network',
       icon: 'Share2',
       status: 'CONNECTED_ACTIVE',
@@ -120,7 +120,7 @@ export class YouTubeGrowthEngine {
    * Generates instant social sharing links with custom thumbnail & text
    */
   public generateSocialShareLinks(videoTitle: string, videoUrl: string) {
-    const text = encodeURIComponent(`📺 Watch YouTube Video: ${videoTitle}\n\nSovereign AI Legal Intelligence by JurisTech Solutions (@JurisTech_AI):\n`);
+    const text = encodeURIComponent(`📺 Watch YouTube Video: ${videoTitle}\n\nSovereign AI Legal Intelligence by JurisTech Solutions (@JurisTechSolutions):\n`);
     const url = encodeURIComponent(videoUrl);
 
     return {

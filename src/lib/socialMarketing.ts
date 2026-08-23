@@ -75,8 +75,8 @@ export const TIKTOK_OFFICIAL_CONFIG = {
 
 /** Official X (Twitter) Profile Config */
 export const TWITTER_OFFICIAL_CONFIG = {
-  accountName: '@JurisTech_AI',
-  profileUrl: 'https://x.com/JurisTech_AI',
+  accountName: '@JurisTechSolutions',
+  profileUrl: 'https://x.com/JurisTechSolutions',
   targetAudience: 'Global B2B Enterprises, Law Firms, C-Suite Officers & VCs',
   status: 'Connected & Active 🟢',
 };

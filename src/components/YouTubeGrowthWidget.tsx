@@ -98,7 +98,7 @@ export default function YouTubeGrowthWidget() {
           {/* Action CTAs */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <a
-              href="https://www.youtube.com/@JurisTech_AI?sub_confirmation=1"
+              href="https://www.youtube.com/@JurisTechSolutions?sub_confirmation=1"
               target="_blank"
               rel="noreferrer"
               className="flex items-center justify-center gap-1.5 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white text-xs font-bold px-3 py-2 rounded-xl shadow-lg shadow-red-900/30 transition-all no-underline"
