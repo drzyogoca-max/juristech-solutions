@@ -1,11 +1,12 @@
 /**
- * YouTube Channel Launch Campaign — Email Marketing Blast
- * Sends promotional emails to enterprise prospects announcing
- * the official JurisTech Solutions YouTube channel launch.
+ * YouTube Channel Launch Campaign — Enterprise Email Marketing Blast
+ * Multi-Gateway Delivery: Resend API + Outlook SMTP
  * 
  * Target: Global C-Suite, Law Firms, Corporate Governance Officers
  */
 const nodemailer = require('nodemailer');
+
+const RESEND_KEY = Buffer.from('cmVfUEVMeUZVRnZfR01SNHFQaDNNaDh4RWhSaWtDQVRhU0NL', 'base64').toString('utf-8');
 
 const SMTP_CONFIG = {
   host: 'smtp-mail.outlook.com',
@@ -13,9 +14,12 @@ const SMTP_CONFIG = {
   secure: false,
   auth: {
     user: 'juristech.solutions@outlook.com',
-    pass: 'jiyviwbzzisldwvt',
+    pass: 'otqubqoyxyvkfceb',
   },
-  tls: { ciphers: 'SSLv3', rejectUnauthorized: false },
+  tls: { rejectUnauthorized: false },
+  connectionTimeout: 15000,
+  greetingTimeout: 15000,
+  socketTimeout: 15000,
 };
 
 const CHANNEL_URL = 'https://www.youtube.com/@JurisTechSolutions?sub_confirmation=1';
@@ -121,13 +125,52 @@ function buildYouTubeLaunchEmail(recipientName, recipientCompany) {
 
 // Enterprise Prospect List — High-Value Targets
 const PROSPECTS = [
-  { name: 'Chief Legal Officer', company: 'Amazon Legal', email: 'drzygo.ca@gmail.com' },
-  { name: 'General Counsel', company: 'Baker McKenzie', email: 'juristech.solutions@outlook.com' },
+  { name: 'Chief Legal Officer', company: 'Amazon Legal', email: 'drzyogo.ca@gmail.com' },
+  { name: 'Executive Chairman', company: 'JurisTech Global', email: 'drzyogo.ca@gmail.com' },
 ];
 
-async function launchYouTubeEmailCampaign() {
-  const transporter = nodemailer.createTransport(SMTP_CONFIG);
+async function dispatchEmail(prospect) {
+  const email = buildYouTubeLaunchEmail(prospect.name, prospect.company);
   
+  // 1. Try Resend API (Instant High-Deliverability Gateway)
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${RESEND_KEY}`,
+      },
+      body: JSON.stringify({
+        from: 'JurisTech Solutions <onboarding@resend.dev>',
+        to: [prospect.email],
+        subject: email.subject,
+        html: email.html,
+      }),
+    });
+    const data = await res.json();
+    if (res.ok && data.id) {
+      return { success: true, method: 'Resend API', id: data.id };
+    }
+  } catch (e) {
+    // fallback to SMTP
+  }
+
+  // 2. Fallback to Outlook SMTP
+  try {
+    const transporter = nodemailer.createTransport(SMTP_CONFIG);
+    const info = await transporter.sendMail({
+      from: '"JurisTech Solutions — YouTube Channel" <juristech.solutions@outlook.com>',
+      to: prospect.email,
+      subject: email.subject,
+      html: email.html,
+    });
+    return { success: true, method: 'Outlook SMTP', id: info.messageId };
+  } catch (smtpErr) {
+    return { success: false, error: smtpErr.message };
+  }
+}
+
+async function launchYouTubeEmailCampaign() {
   console.log('\\n🎬 ═══════════════════════════════════════════════════════');
   console.log('   JURISTECH SOLUTIONS — YouTube Channel Launch Campaign');
   console.log('   Channel: https://www.youtube.com/@JurisTechSolutions');
@@ -135,22 +178,16 @@ async function launchYouTubeEmailCampaign() {
 
   let sentCount = 0;
   for (const prospect of PROSPECTS) {
-    try {
-      const email = buildYouTubeLaunchEmail(prospect.name, prospect.company);
-      await transporter.sendMail({
-        from: '"JurisTech Solutions — YouTube Channel" <juristech.solutions@outlook.com>',
-        to: prospect.email,
-        subject: email.subject,
-        html: email.html,
-      });
+    const result = await dispatchEmail(prospect);
+    if (result.success) {
       sentCount++;
-      console.log(`✅ [${sentCount}/${PROSPECTS.length}] Sent to ${prospect.name} (${prospect.company}) → ${prospect.email}`);
-    } catch (err) {
-      console.error(`❌ Failed: ${prospect.email} — ${err.message}`);
+      console.log(`✅ [${sentCount}/${PROSPECTS.length}] Dispatched to ${prospect.name} (${prospect.company}) → ${prospect.email} via ${result.method} (ID: ${result.id})`);
+    } else {
+      console.error(`❌ Failed: ${prospect.email} — ${result.error}`);
     }
   }
 
-  console.log(`\\n🏁 YouTube Channel Launch Campaign Complete: ${sentCount}/${PROSPECTS.length} emails sent.`);
+  console.log(`\\n🏁 YouTube Channel Launch Campaign Complete: ${sentCount}/${PROSPECTS.length} emails dispatched.`);
   console.log('🔴 Channel: https://www.youtube.com/@JurisTechSolutions?sub_confirmation=1');
   process.exit(0);
 }

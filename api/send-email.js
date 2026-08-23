@@ -408,7 +408,7 @@ async function processEmailDispatch(targetEmail, emailSubject, text, html, reply
   const SMTP_HOST = process.env.SMTP_HOST || 'smtp-mail.outlook.com';
   const SMTP_PORT = parseInt(process.env.SMTP_PORT || '587', 10);
   const SMTP_USER = process.env.SMTP_USER || 'juristech.solutions@outlook.com';
-  const SMTP_PASS = process.env.SMTP_PASS || 'jiyviwbzzisldwvt';
+  const SMTP_PASS = process.env.SMTP_PASS || 'otqubqoyxyvkfceb';
   const REPLY_TO = replyTo || process.env.REPLY_TO || 'juristech.solutions@outlook.com';
 
   let providerSuccess = false;
@@ -429,7 +429,10 @@ async function processEmailDispatch(targetEmail, emailSubject, text, html, reply
         port: SMTP_PORT,
         secure: false, // 587 uses STARTTLS
         auth: { user: SMTP_USER, pass: SMTP_PASS },
-        tls: { rejectUnauthorized: false, ciphers: 'SSLv3' },
+        tls: { rejectUnauthorized: false },
+        connectionTimeout: 15000,
+        greetingTimeout: 15000,
+        socketTimeout: 15000,
       });
 
       const info = await transporter.sendMail({
