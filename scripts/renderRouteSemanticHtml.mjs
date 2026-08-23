@@ -358,6 +358,34 @@ export function getSemanticHtmlForRoute(routePath) {
     `;
   }
 
+  if (routePath === '/deal-shield') {
+    return `
+      ${commonHeader}
+      <main class="max-w-7xl mx-auto p-6 font-sans text-slate-100" dir="rtl">
+        ${commonAdSponsorSlot}
+        <section class="my-8">
+          <h1 class="text-3xl sm:text-4xl font-black text-slate-100 leading-tight mb-4">
+            رادار الصفقات ومستكشف الاحتياجات القانونية (DealShield 360™)
+          </h1>
+          <p class="text-base text-slate-300 leading-relaxed mb-6">
+            محرك الذكاء الاصطناعي السيادي لتشخيص احتياجات الشركات وكشف الثغرات والاتفاقيات الإلزامية الناقصة، مع محاكاة التعارض التشريعي بين الأنظمة الدولية وصياغة البنود التوافقية الموحدة.
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+            <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl">
+              <h2 class="text-lg font-bold text-cyan-400 mt-0">1. المستكشف التشخيصي الذكي لاحتياجات الشركة</h2>
+              <p class="text-xs text-slate-400 leading-relaxed">اكتب وصف صفقتك بلغة بسيطة ليقوم الذكاء الاصطناعي بتحليل المخاطر واستخراج العقود الواجب توقيعها فوراً.</p>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl">
+              <h2 class="text-lg font-bold text-emerald-400 mt-0">2. محاكي الصفقات والتعارض التشريعي الدولي</h2>
+              <p class="text-xs text-slate-400 leading-relaxed">فحص فوري لتوافق 2 إلى 3 أنظمة قضائية (السعودية، الإمارات، ديلاوير، بريطانيا) وتوليد البنود التوافقية المعتمدة.</p>
+            </div>
+          </div>
+        </section>
+      </main>
+      ${commonFooter}
+    `;
+  }
+
   if (routePath === '/404') {
     return `
       ${commonHeader}

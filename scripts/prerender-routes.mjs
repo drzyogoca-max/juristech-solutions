@@ -100,6 +100,12 @@ const ROUTE_METADATA = {
     descriptionAr: 'بنية تحتية سيادية للذكاء الاصطناعي القانوني — نماذج LLM خاصة بحوكمة وتدقيق العقود الحساسة وأسرار الشركات.',
     descriptionEn: 'Sovereign AI legal infrastructure hub powered by self-hosted LLM models for high-security corporate governance.',
   },
+  '/deal-shield': {
+    titleAr: 'رادار الصفقات ومستكشف الاحتياجات بالذكاء الاصطناعي | JurisTech DealShield 360',
+    titleEn: 'DealShield 360™ | AI Client Need Discovery & Cross-Border Deal Simulator',
+    descriptionAr: 'استكشاف الاحتياجات القانونية الماسة للشركات ومحاكاة التعارض التشريعي بين الأنظمة الدولية (السعودية، الإمارات، أمريكا ديلاوير، بريطانيا) وصياغة البنود التوافقية الموحدة.',
+    descriptionEn: 'Sovereign AI enterprise need diagnostic intake and cross-border statutory clash simulator for M&A, VC joint ventures, and international commercial deals.',
+  },
   '/b2b-proposals': {
     titleAr: 'منصة العروض التنافسية للشركات | JurisTech',
     titleEn: 'Enterprise B2B Proposal Engine & AI RFP Hub | JurisTech',

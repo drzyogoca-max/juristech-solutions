@@ -95,6 +95,11 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2 text-xs text-slate-400">
               <li>
+                <Link to="/deal-shield" className="hover:text-emerald-300 transition-colors block py-0.5 text-cyan-400 font-bold">
+                  {l('رادار الصفقات ومستكشف الاحتياجات (DealShield)', 'DealShield 360™ & Need Radar')}
+                </Link>
+              </li>
+              <li>
                 <Link to="/risk" className="hover:text-emerald-300 transition-colors block py-0.5">
                   {l('مدقق المخاطر والبنود التعسفية', 'Contract Risk Audit')}
                 </Link>

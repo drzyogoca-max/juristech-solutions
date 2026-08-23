@@ -40,6 +40,7 @@ const PaymentPage = lazy(() => import('./pages/PaymentPage'));
 const SupportPage = lazy(() => import('./pages/SupportPage'));
 const SocialMarketingPage = lazy(() => import('./pages/SocialMarketingPage'));
 const ReportsPage = lazy(() => import('./pages/ReportsPage'));
+const DealShieldPage = lazy(() => import('./pages/DealShieldPage'));
 const CompanyFormationPage = lazy(() => import('./pages/CompanyFormationPage'));
 const AcquisitionPage = lazy(() => import('./pages/AcquisitionPage'));
 const VaultPage = lazy(() => import('./pages/VaultPage'));
@@ -248,6 +249,10 @@ function MainAppContent() {
                 }
               />
               <Route path="/enterprise-audit" element={<EnterpriseAuditPage />} />
+              <Route path="/deal-shield" element={<DealShieldPage />} />
+              <Route path="/need-diagnostic" element={<Navigate to="/deal-shield" replace />} />
+              <Route path="/deal-simulator" element={<Navigate to="/deal-shield" replace />} />
+              <Route path="/clash-simulator" element={<Navigate to="/deal-shield" replace />} />
               <Route path="/company-formation" element={<CompanyFormationPage />} />
               <Route path="/acquisition" element={<AcquisitionPage />} />
               <Route path="/corporate-takeover" element={<Navigate to="/acquisition" replace />} />

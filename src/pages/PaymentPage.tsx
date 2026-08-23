@@ -25,8 +25,8 @@ import { usePlatformLocale } from '../lib/universalTranslator';
 import SEO from '../components/SEO';
 
 interface Plan {
-  id: 'startup' | 'sme' | 'enterprise';
-  tierKey: 'pro' | 'pro' | 'enterprise';
+  id: 'startup' | 'sme' | 'enterprise' | 'dealroom';
+  tierKey: 'pro' | 'enterprise';
   badge: string;
   badgeAr: string;
   nameEn: string;
@@ -102,6 +102,7 @@ export default function PaymentPage() {
         'Up to 10 Contract Ingestions (PDF, Word, TXT)',
         'Standard Statutory Risk & Penalty Detection',
         'Certified PDF & Word (.docx) Document Export',
+        'DealShield 360™: 3 Enterprise Need Diagnostics / month',
         'Regional Coverage (Saudi Arabia, UAE, Egypt, Jordan)',
         'Standard AES-256 Cryptographic Cloud Vault',
       ],
@@ -110,6 +111,7 @@ export default function PaymentPage() {
         'رفع وتفريغ حتى 10 عقود شهرياً (PDF, Word, TXT)',
         'كشف المخاطر التشريعية والشروط الجزائية الأساسية',
         'تصدير معتمد بصيغ PDF و Word (.docx) بالختم الرسمي',
+        'DealShield 360™: 3 فحوصات تشخيصية لاحتياجات الشركة شهرياً',
         'تغطية تشريعية إقليمية (السعودية، الإمارات، مصر، الأردن)',
         'خزنة سحابية مؤمنة بتشفير AES-256 قياسي',
       ],
@@ -145,22 +147,24 @@ export default function PaymentPage() {
       featuresEn: [
         'Everything in Startup Plan',
         'Google AI Pro Sovereign Core (Gemini Ultra Deep Reasoning)',
+        'Cross-Border Deal Simulator (15 Dual-Jurisdiction Simulations / mo)',
+        'Harmonized Bridging Clauses for Multi-Jurisdiction Contracts',
         'Autonomous AI Negotiation Agents & Tactical Redlines',
         'Virtual Courtroom Simulation & Win Probability Forecasting',
         'Up to 50 Contract Audits & Multi-Format Ingestions / month',
         'Comprehensive 9-Jurisdiction Statutory Coverage (GCC, UK, US Delaware, EU)',
         'Two-Factor Authentication (2FA TOTP) + TLS 1.3 Security',
-        'Continuous RLHF Self-Learning & Fine-Tuning Loop',
       ],
       featuresAr: [
         'كل مزايا باقة الشركات الصغرى والناشئة',
         'محرك Google AI Pro السيادي (تفكير استدلالي عميق Gemini Ultra)',
+        'محاكي الصفقات الدولية (15 محاكاة لولايتين متزامنتين شهرياً)',
+        'توليد الصياغات التوافقية (Harmonized Bridging Clauses) لفض التعارض',
         'وكلاء التفاوض الآلي والوساطة وصياغة البنود البديلة التكتيكية',
         'المحاكاة القضائية وتوقع نسب كسب القضايا والسوابق القضائية',
         'رفع وتدقيق حتى 50 عقداً شهرياً مع تصدير Word و PDF',
         'تغطية تشريعية لـ 9 دول (الخليج، بريطانيا، أمريكا ديلاوير، والاتحاد الأوروبي)',
         'التحقق الثنائي المشفر (2FA TOTP) وحماية TLS 1.3',
-        'حلقة التعلم والتدريب الذاتي المستمر (RLHF Feedback Loop)',
       ],
     },
     {
@@ -192,6 +196,7 @@ export default function PaymentPage() {
       supportAr: 'دعم تنفيذي مباشر ومخصص 24/7 مع المستشار القانوني د. محمد مصطفى',
       featuresEn: [
         'Everything in SMEs & Growth Plan',
+        'Unlimited DealShield 360™ Simulations (Up to 5 Jurisdictions Concurrently)',
         'Unlimited Predictive M&A Intelligence & Deal EBITDA Valuations',
         'Forensic Stylometric Fraud, Forgery & Tampering Detection',
         'Cross-Border Statutory Compliance (PDPL, GDPR, EU AI Act 2024, FATF AML)',
@@ -202,6 +207,7 @@ export default function PaymentPage() {
       ],
       featuresAr: [
         'كل مزايا حزمة الشركات المتوسطة والنمو',
+        'محاكاة صفقات دولية غير محدودة عبر DealShield (حتى 5 ولايات قضائية معاً)',
         'الاستحواذ والاندماج التنبؤي غير المحدود وتقييم صفقات الـ M&A و EBITDA',
         'كشف التزوير والاحتيال والتحريف بالقياس النصي الحيوي (Forensic Stylometry)',
         'الامتثال التشريعي العابر للحدود (PDPL, GDPR, EU AI Act 2024, FATF AML)',
@@ -209,6 +215,52 @@ export default function PaymentPage() {
         'إدارة متعددة المستخدمين وأدوار الصلاحيات المتقدمة (RBAC)',
         'خزنة سحابية سيادية بتشفير طرفي E2EE وطوابع زمنية رقمية معتمدة',
         'قناة تواصل استشارية تنفيذية مباشرة 24/7 مع د. محمد مصطفى',
+      ],
+    },
+    {
+      id: 'dealroom',
+      tierKey: 'enterprise',
+      badge: 'VIP Deal Room',
+      badgeAr: 'غرفة الصفقات المؤسسية VIP',
+      nameEn: 'VIP Institutional Deal Room Pass',
+      nameAr: 'باقة غرفة الصفقات المؤسسية الكبرى والاستحواذ',
+      targetEn: 'High-Stakes M&A, Sovereign Funds & Cross-Border Joint Ventures',
+      targetAr: 'صفقات الاستحواذ المليونية، الصناديق السيادية، والتحالفات الدولية',
+      price: billingAnnual ? 799 : 999,
+      globalPrice: 1500,
+      billingEn: billingAnnual ? '/ year (unlimited deal room)' : ' / one-time deal pass',
+      billingAr: billingAnnual ? '/ سنوياً (غرف صفقات غير محدودة)' : ' / دفعة واحدة للصفقة',
+      descEn: 'Dedicated Deal Room, W&I Audit, SPA Custom Drafting & SWIFT Concierge.',
+      descAr: 'غرفة صفقات مخصصة، فحص W&I، صياغة اتفاقيات SPA، وتنسيق مصرفي SWIFT.',
+      color: 'rose',
+      borderColor: 'border-rose-500/50',
+      bgColor: 'bg-rose-500/5',
+      icon: <Award className="w-7 h-7" />,
+      contractLimit: 'Full Dedicated Deal Room Vault',
+      contractLimitAr: 'غرفة صفقات كاملة ومستقلة لكل أطراف الصفقة',
+      apiAccess: 'Custom Enterprise Banking & SWIFT APIs',
+      apiAccessAr: 'ربط مباشر مع البنوك وأنظمة الفواتير المعتمدة',
+      security: 'Military-Grade E2EE + Multi-Sign Escrow',
+      securityAr: 'تشفير عسكري + توقيع متعدد الأطراف مشفر',
+      support: 'Direct Private Advisory & Deal Closing Concierge',
+      supportAr: 'إشراف استشاري خاص وإغلاق الصفقة مع د. محمد مصطفى',
+      featuresEn: [
+        'Dedicated Multi-Party Virtual Deal Room & Redlining Portal',
+        'Complete M&A Due Diligence & Warranties & Indemnities (W&I) Audit',
+        'Bespoke Share Purchase Agreement (SPA) & Term Sheet Drafting',
+        'Full DealShield 360™ Multi-Jurisdiction Clash Harmonization',
+        'Pro-Forma Tax Invoicing & Direct SWIFT Wire Remittance',
+        'Certified Cryptographic SHA-256 E-Signatures for All Parties',
+        'Direct Priority Concierge & Strategic Deal Advisory',
+      ],
+      featuresAr: [
+        'غرفة صفقات افتراضية مخصصة متعددة الأطراف مع مفاوضة مباشرة',
+        'فحص نافي للجهالة شامل (W&I Audit) لكشف الالتزامات والضمانات الخفية',
+        'صياغة مخصصة لاتفاقيات شراء الأسهم (SPA) ومذكرات الشروط Term Sheets',
+        'محاكاة وتوافق تشريعي شامل عبر DealShield 360 لجميع أطراف الصفقة',
+        'فاتورة ضريبية رسمية معتمدة ومتابعة مصرفية للتحويل البنكي SWIFT',
+        'توقيعات رقمية مشفرة SHA-256 معتمدة لجميع ممثلي الشركات',
+        'إشراف استشاري خاص ومباشر مع خبير المخاطر د. محمد مصطفى',
       ],
     },
   ];
@@ -307,9 +359,9 @@ export default function PaymentPage() {
         </div>
       </div>
 
-      {/* 3 Pricing Plans Cards */}
+      {/* 4 Sovereign Pricing Plans Cards */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
           {plans.map((plan) => {
             const isHighlighted = plan.highlight;
             return (

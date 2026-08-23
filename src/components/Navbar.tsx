@@ -25,6 +25,7 @@ import { usePlatformLocale } from '../lib/universalTranslator';
 // ─── Nav link groups (Visitor & Subscriber separated) ────────────────────────
 const VISITOR_LINKS = [
   { to: '/dashboard', icon: Home, key: 'dashboard' },
+  { to: '/deal-shield', icon: Sparkles, key: 'dealShield' },
   { to: '/chat', icon: MessageSquare, key: 'chat' },
   { to: '/repository', icon: Library, key: 'repository' },
   { to: '/payment', icon: CreditCard, key: 'payment' },
@@ -34,6 +35,7 @@ const VISITOR_LINKS = [
 ];
 
 const SUBSCRIBER_LINKS = [
+  { to: '/deal-shield', icon: Sparkles, key: 'dealShield' },
   { to: '/contracts', icon: FileText, key: 'contracts' },
   { to: '/risk', icon: AlertTriangle, key: 'risk' },
   { to: '/vault', icon: Lock, key: 'vault' },
@@ -49,14 +51,14 @@ const SUBSCRIBER_LINKS = [
   { to: '/reports', icon: BarChart3, key: 'reports' },
 ];
 
-// Top 5 most important links for the visible navbar bar
+// Top 6 most important links for the visible navbar bar
 const TOP_NAV = [
   { to: '/dashboard', key: 'dashboard' },
+  { to: '/deal-shield', key: 'dealShield' },
   { to: '/chat', key: 'chat' },
   { to: '/contracts', key: 'contracts' },
   { to: '/risk', key: 'risk' },
   { to: '/repository', key: 'repository' },
-  { to: '/sovereign-ai-hub', key: 'sovereignAiHub' },
 ];
 
 export default function Navbar() {
@@ -92,6 +94,7 @@ export default function Navbar() {
   useEffect(() => { setIsOpen(false); setShowMoreMenu(false); }, [pathname]);
 
   function navText(key: string) {
+    if (key === 'dealShield') return isRtl ? 'رادار الصفقات (DealShield)' : 'DealShield 360™';
     return (gt.nav as Record<string, string>)[key] || t(`Nav.${key}`) || key;
   }
 
