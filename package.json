@@ -1,6 +1,6 @@
 {
-  "name": "legalshield-solution",
-  "version": "10.5.0",
+  "name": "juristech-solutions",
+  "version": "10.5.1",
   "private": true,
   "type": "module",
   "scripts": {

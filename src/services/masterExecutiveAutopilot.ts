@@ -17,7 +17,7 @@ import { legalLexiconEngine } from './legalLexiconEvolutionEngine';
 import { autonomousCSuiteOutreachEngine } from './autonomousCSuiteOutreachEngine';
 import { youtubeGrowthEngine } from './youtubeGrowthEngine';
 import { youtubeChannelEngine } from './youtubeChannelEngine';
-import { dailyAuditReportEngine } from './dailyAuditReportEngine';
+import { scheduleDailyAudit, runDailyQueryAudit } from './dailyAuditReportEngine';
 import { crmService } from './crmService';
 
 export interface AutopilotCycleReport {
@@ -104,7 +104,14 @@ class MasterExecutiveAutopilot {
       const stats = youtubeChannelEngine.getChannelStats();
       const currentVideos = youtubeChannelEngine.getDailyVideos();
       if (currentVideos.length > 0) {
-        youtubeGrowthEngine.injectVideoSchema(currentVideos[0]);
+        youtubeGrowthEngine.generateGoogleVideoSchema({
+          title: currentVideos[0].titleEn,
+          description: currentVideos[0].descriptionEn,
+          thumbnailUrl: 'https://www.juristech.solutions/yt_thumb_morning.jpg',
+          uploadDate: new Date().toISOString(),
+          durationIso: 'PT1M',
+          contentUrl: currentVideos[0].youtubeUrl,
+        });
       }
     } catch (e) {
       console.warn('[Master Autopilot] YouTube growth step:', e);
@@ -112,9 +119,7 @@ class MasterExecutiveAutopilot {
 
     // 4. Daily Audit & Compliance Re-verification
     try {
-      if (dailyAuditReportEngine?.generateDailyReport) {
-        dailyAuditReportEngine.generateDailyReport();
-      }
+      runDailyQueryAudit().catch(() => {});
     } catch (e) {
       console.warn('[Master Autopilot] Daily audit step:', e);
     }
