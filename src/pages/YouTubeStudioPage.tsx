@@ -351,26 +351,22 @@ export const YouTubeStudioPage: React.FC = () => {
                     </div>
 
                     <div className="flex items-center gap-2 flex-wrap">
-                      <button
-                        onClick={() => setPlayerMode('YOUTUBE_EMBED')}
-                        className={`text-xs font-bold px-3 py-1.5 rounded-xl border transition ${
-                          playerMode === 'YOUTUBE_EMBED'
-                            ? 'bg-red-600 text-white border-red-500 shadow-md shadow-red-900/40'
-                            : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border-slate-700'
-                        }`}
+                      <a
+                        href="https://www.youtube.com/@JurisTechSolutions?sub_confirmation=1"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="bg-red-600 hover:bg-red-500 text-white text-xs font-bold px-3 py-1.5 rounded-xl border border-red-500 shadow-md shadow-red-900/40 transition flex items-center gap-1.5 no-underline"
                       >
-                        📺 {l('مشغل يوتيوب HD المباشر', 'YouTube HD Stream')}
-                      </button>
-                      <button
-                        onClick={() => setPlayerMode('AI_CANVAS')}
-                        className={`text-xs font-bold px-3 py-1.5 rounded-xl border transition ${
-                          playerMode === 'AI_CANVAS'
-                            ? 'bg-cyan-600 text-white border-cyan-500 shadow-md shadow-cyan-900/40'
-                            : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border-slate-700'
-                        }`}
+                        <Youtube className="w-3.5 h-3.5" />
+                        <span>{l('القناة الرسمية على يوتيوب 🔴', 'Official YouTube Channel 🔴')}</span>
+                      </a>
+                      <a
+                        href="/video-hub"
+                        className="bg-cyan-950/80 hover:bg-cyan-900 text-cyan-300 text-xs font-bold px-3 py-1.5 rounded-xl border border-cyan-700/50 shadow-md transition flex items-center gap-1.5 no-underline"
                       >
-                        🎙️ {l('محاكي الصوت البصري الذكي', 'AI Audio & Storyboard')}
-                      </button>
+                        <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                        <span>{l('مركز التدريب التفاعلي 🎓', 'Training Academy 🎓')}</span>
+                      </a>
                       <button
                         onClick={() => setAudioVoiceLang(audioVoiceLang === 'ar' ? 'en' : 'ar')}
                         className="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold px-3 py-1.5 rounded-xl transition flex items-center gap-1.5"
@@ -381,63 +377,51 @@ export const YouTubeStudioPage: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Video Player Display */}
-                  {playerMode === 'YOUTUBE_EMBED' ? (
-                    <div className="relative aspect-video bg-slate-950 border-2 border-slate-800 rounded-2xl overflow-hidden shadow-2xl">
-                      <iframe
-                        src={`https://www.youtube-nocookie.com/embed/${selectedVideo.youtubeVideoId}?autoplay=1&rel=0&enablejsapi=1`}
-                        title={selectedVideo.titleEn}
-                        className="w-full h-full border-0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowFullScreen
+                  {/* Video Player Display — Lightweight JurisTech Sovereign Canvas & Storyboard */}
+                  <div className="relative aspect-video bg-slate-950 border-2 border-slate-800 rounded-2xl overflow-hidden flex flex-col justify-between p-6 shadow-2xl group">
+                    {/* Background Visual Frame Simulation */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-cyan-950/40 opacity-90" />
+                    
+                    {/* Simulated Storyboard Animation Frame */}
+                    <div className="relative z-10 flex flex-col justify-between h-full">
+                      {/* Top Header overlay */}
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2 bg-slate-900/80 backdrop-blur border border-slate-700 px-3 py-1 rounded-full text-xs text-cyan-300 font-bold">
+                          <Youtube className="w-4 h-4 text-red-500 animate-pulse" />
+                          <span>JurisTech Official Channel • @JurisTechSolutions</span>
+                        </div>
+                        <span className="bg-red-600 text-white text-[10px] font-black uppercase px-2 py-0.5 rounded">
+                          ● {selectedVideo.format}
+                        </span>
+                      </div>
+
+                      {/* Center Frame Graphic & Storyboard Overlay */}
+                      <div className="text-center my-auto py-6 px-4">
+                        <div className="inline-flex p-4 rounded-3xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 mb-3 shadow-xl">
+                          <Activity className="w-10 h-10 animate-pulse" />
+                        </div>
+                        <h4 className="text-xl sm:text-2xl font-black text-white drop-shadow-md mb-2">
+                          {selectedVideo.visualStoryboard?.[activeFrameIndex]?.textOverlay || (isRtl ? selectedVideo.titleAr : selectedVideo.titleEn)}
+                        </h4>
+                        <p className="text-xs text-cyan-300 font-mono bg-slate-900/80 max-w-md mx-auto py-1 px-3 rounded-lg border border-slate-800">
+                          🎬 {l('المشهد البصري الحالي', 'Current Frame')}: {selectedVideo.visualStoryboard?.[activeFrameIndex]?.visualDescription || 'AI Legal Risk Radar'}
+                        </p>
+                      </div>
+
+                      {/* Bottom Narration Typewriter Subtitles */}
+                      <div className="bg-slate-950/90 backdrop-blur border border-cyan-500/30 p-3 rounded-xl text-xs text-slate-100 font-semibold text-center leading-relaxed">
+                        🔊 {isRtl ? (selectedVideo.titleAr + ' — نظام الذكاء الاصطناعي السيادي لمنصة JurisTech Solutions') : (selectedVideo.scriptVoiceoverEn.substring(0, 140) + '...')}
+                      </div>
+                    </div>
+
+                    {/* Progress Bar overlay */}
+                    <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-slate-800">
+                      <div
+                        className="h-full bg-gradient-to-r from-red-600 via-cyan-400 to-emerald-400 transition-all duration-300"
+                        style={{ width: `${playbackProgress}%` }}
                       />
                     </div>
-                  ) : (
-                    <div className="relative aspect-video bg-slate-950 border-2 border-slate-800 rounded-2xl overflow-hidden flex flex-col justify-between p-6 shadow-2xl group">
-                      {/* Background Visual Frame Simulation */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-cyan-950/40 opacity-90" />
-                      
-                      {/* Simulated Storyboard Animation Frame */}
-                      <div className="relative z-10 flex flex-col justify-between h-full">
-                        {/* Top Header overlay */}
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2 bg-slate-900/80 backdrop-blur border border-slate-700 px-3 py-1 rounded-full text-xs text-cyan-300 font-bold">
-                            <Youtube className="w-4 h-4 text-red-500 animate-pulse" />
-                            <span>JurisTech Official Channel • @JurisTechSolutions</span>
-                          </div>
-                          <span className="bg-red-600 text-white text-[10px] font-black uppercase px-2 py-0.5 rounded">
-                            ● {selectedVideo.format}
-                          </span>
-                        </div>
-
-                        {/* Center Frame Graphic & Storyboard Overlay */}
-                        <div className="text-center my-auto py-6 px-4">
-                          <div className="inline-flex p-4 rounded-3xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 mb-3 shadow-xl">
-                            <Activity className="w-10 h-10 animate-pulse" />
-                          </div>
-                          <h4 className="text-xl sm:text-2xl font-black text-white drop-shadow-md mb-2">
-                            {selectedVideo.visualStoryboard?.[activeFrameIndex]?.textOverlay || selectedVideo.titleEn}
-                          </h4>
-                          <p className="text-xs text-cyan-300 font-mono bg-slate-900/80 max-w-md mx-auto py-1 px-3 rounded-lg border border-slate-800">
-                            🎬 {l('المشهد البصري الحالي', 'Current Frame')}: {selectedVideo.visualStoryboard?.[activeFrameIndex]?.visualDescription || 'AI Legal Risk Radar'}
-                          </p>
-                        </div>
-
-                        {/* Bottom Narration Typewriter Subtitles */}
-                        <div className="bg-slate-950/90 backdrop-blur border border-cyan-500/30 p-3 rounded-xl text-xs text-slate-100 font-semibold text-center leading-relaxed">
-                          🔊 {selectedVideo.scriptVoiceoverEn.substring(0, 140)}...
-                        </div>
-                      </div>
-
-                      {/* Progress Bar overlay */}
-                      <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-slate-800">
-                        <div
-                          className="h-full bg-gradient-to-r from-red-600 via-cyan-400 to-emerald-400 transition-all duration-300"
-                          style={{ width: `${playbackProgress}%` }}
-                        />
-                      </div>
-                    </div>
-                  )}
+                  </div>
 
                   {/* Player Controls Bar */}
                   <div className="flex items-center justify-between bg-slate-950 border border-slate-800 p-4 rounded-2xl flex-wrap gap-4">
