@@ -106,6 +106,12 @@ const ROUTE_METADATA = {
     descriptionAr: 'استكشاف الاحتياجات القانونية الماسة للشركات ومحاكاة التعارض التشريعي بين الأنظمة الدولية (السعودية، الإمارات، أمريكا ديلاوير، بريطانيا) وصياغة البنود التوافقية الموحدة.',
     descriptionEn: 'Sovereign AI enterprise need diagnostic intake and cross-border statutory clash simulator for M&A, VC joint ventures, and international commercial deals.',
   },
+  '/youtube-studio': {
+    titleAr: 'إدارة قناة يوتيوب الرسمية والنشر اليومي | JurisTech YouTube Studio',
+    titleEn: 'Official YouTube Channel Studio & 2x Daily Video Automation | JurisTech',
+    descriptionAr: 'استوديو الإدارة التلقائية لقناة يوتيوب الرسمية لمنصة JurisTech Solutions — توليد ونشر فيديوهات قانونية يومية صباحاً ومساءً 100% بالذكاء الاصطناعي.',
+    descriptionEn: 'Official YouTube Channel Studio for juristech.solutions@outlook.com. Automated 2x daily morning & evening video publishing engine.',
+  },
   '/b2b-proposals': {
     titleAr: 'منصة العروض التنافسية للشركات | JurisTech',
     titleEn: 'Enterprise B2B Proposal Engine & AI RFP Hub | JurisTech',

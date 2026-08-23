@@ -60,10 +60,11 @@ export async function executeHourlyAdCampaignCycle(): Promise<AdCampaignRun | nu
   ];
 
   const regions = [
-    'GCC (Riyadh, Dubai, Kuwait, Muscat, Doha)',
-    'USA (New York, San Francisco, Washington DC)',
-    'Europe (London, Frankfurt, Paris, Zurich)',
-    'India (Mumbai, Bengaluru, Delhi)'
+    'USA Market (New York, Delaware, Silicon Valley, Washington DC)',
+    'German Market & EU (Munich, Frankfurt, Berlin, Zurich)',
+    'Turkish Market & Eurasia (Istanbul, Ankara, Izmir)',
+    'GCC Markets (Riyadh M/191, Dubai DIFC, Doha QFC, Kuwait)',
+    'Chinese Market & APAC (Shenzhen, Shanghai, Beijing, Hong Kong)',
   ];
 
   const channel = channels[Math.floor(Math.random() * channels.length)];

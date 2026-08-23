@@ -386,6 +386,34 @@ export function getSemanticHtmlForRoute(routePath) {
     `;
   }
 
+  if (routePath === '/youtube-studio') {
+    return `
+      ${commonHeader}
+      <main class="max-w-7xl mx-auto p-6 font-sans text-slate-100" dir="rtl">
+        ${commonAdSponsorSlot}
+        <section class="my-8">
+          <h1 class="text-3xl sm:text-4xl font-black text-slate-100 leading-tight mb-4">
+            إدارة قناة يوتيوب الرسمية والنشر اليومي الالي | JurisTech YouTube Studio
+          </h1>
+          <p class="text-base text-slate-300 leading-relaxed mb-6">
+            استوديو الإدارة البرمجية لقناة يوتيوب الرسمية للمنصة المرتبطة بـ juristech.solutions@outlook.com بإشراف المستشار د. محمد مصطفى. توليد ونشر فيديوهات قانونية يومية صباحاً (09:00 AM) ومساءً (06:00 PM).
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+            <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl">
+              <h2 class="text-lg font-bold text-red-500 mt-0">1. فيديو الصباح (Morning Briefing Slot - 9:00 AM UTC)</h2>
+              <p class="text-xs text-slate-400 leading-relaxed">تحليل صفقات الاندماج والاستحواذ، مطابقة الأنظمة الدولية (ديلاوير، المعاملات المدنية م/191، دبي DIFC)، وفحوصات الشروط الفورية.</p>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl">
+              <h2 class="text-lg font-bold text-cyan-400 mt-0">2. فيديو المساء (Evening Executive Briefing - 6:00 PM UTC)</h2>
+              <p class="text-xs text-slate-400 leading-relaxed">إيجاز الإدارة العليا للرؤساء التنفيذيين والمدراء الماليين: الوقاية من فخاخ التعويض، خفض أتعاب المحاماة بنسبة 85%، والفواتير الأولية.</p>
+            </div>
+          </div>
+        </section>
+      </main>
+      ${commonFooter}
+    `;
+  }
+
   if (routePath === '/404') {
     return `
       ${commonHeader}

@@ -5,7 +5,7 @@ import {
   Home, MessageSquare, FileText, AlertTriangle, Library, Handshake, Users,
   Building2, Video, CreditCard, Headphones, Share2, Menu, X, Shield, ShieldCheck,
   BarChart3, DollarSign, Search, Scale, Globe, Phone, Crown, ChevronDown,
-  Sparkles, Zap, Star, ArrowRight, Lock, Palette, Mail, ShieldAlert, Edit3, Briefcase
+  Sparkles, Zap, Star, ArrowRight, Lock, Palette, Mail, ShieldAlert, Edit3, Briefcase, Youtube
 } from 'lucide-react';
 import LanguageSwitcher from './LanguageSwitcher';
 import ThemeSwitcher from './ThemeSwitcher';
@@ -35,6 +35,7 @@ const VISITOR_LINKS = [
 ];
 
 const SUBSCRIBER_LINKS = [
+  { to: '/youtube-studio', icon: Youtube, key: 'youtubeStudio' },
   { to: '/deal-shield', icon: Sparkles, key: 'dealShield' },
   { to: '/contracts', icon: FileText, key: 'contracts' },
   { to: '/risk', icon: AlertTriangle, key: 'risk' },
@@ -95,6 +96,7 @@ export default function Navbar() {
 
   function navText(key: string) {
     if (key === 'dealShield') return isRtl ? 'رادار الصفقات (DealShield)' : 'DealShield 360™';
+    if (key === 'youtubeStudio') return isRtl ? 'إدارة استوديو يوتيوب 📺' : 'YouTube Studio 📺';
     return (gt.nav as Record<string, string>)[key] || t(`Nav.${key}`) || key;
   }
 

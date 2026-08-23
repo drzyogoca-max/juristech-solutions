@@ -140,6 +140,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link to="/youtube-studio" className="hover:text-purple-300 transition-colors block py-0.5 text-red-400 font-bold">
+                  {l('إدارة قناة يوتيوب الرسمية 📺', 'YouTube Studio & Daily Automation 📺')}
+                </Link>
+              </li>
+              <li>
                 <Link to="/video-hub" className="hover:text-purple-300 transition-colors block py-0.5">
                   {l('استوديو الوسائط والشرح المرئي', 'Media & Video Studio')}
                 </Link>

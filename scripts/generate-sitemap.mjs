@@ -18,6 +18,7 @@ const PAGES = [
   { url: '/legal-compliance', priority: '0.95', changefreq: 'weekly' },
   { url: '/enterprise-audit', priority: '0.90', changefreq: 'weekly' },
   { url: '/deal-shield', priority: '0.98', changefreq: 'daily' },
+  { url: '/youtube-studio', priority: '0.92', changefreq: 'daily' },
   { url: '/acquisition', priority: '0.90', changefreq: 'weekly' },
   { url: '/sovereign-ai-hub', priority: '0.90', changefreq: 'daily' },
   { url: '/lead-radar', priority: '0.85', changefreq: 'daily' },
