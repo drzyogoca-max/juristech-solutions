@@ -146,6 +146,8 @@ function MainAppContent() {
         const { scheduleDailyAudit } = await import('./services/dailyAuditReportEngine');
         const { autonomousCSuiteOutreachEngine } = await import('./services/autonomousCSuiteOutreachEngine');
 
+        const { masterExecutiveAutopilot } = await import('./services/masterExecutiveAutopilot');
+
         initVersionManager();
         enforceArchiveModeGuard();
         runSovereignDataPurification();
@@ -162,6 +164,7 @@ function MainAppContent() {
         runSWIFTWireCrossAudit();
         scheduleDailyAudit();
         autonomousCSuiteOutreachEngine.autoRunDailyBatch();
+        masterExecutiveAutopilot.startAutopilot();
       } catch (e) {
         console.warn('[Performance Boot] Background engine deferred init:', e);
       }
