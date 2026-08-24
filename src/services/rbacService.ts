@@ -156,6 +156,9 @@ export class RbacService {
 
   // ─── 3. Endpoint: POST /api/auth/2fa/verify ────────────────────────────────
   public async verify2FA(userIdOrEmail: string, token: string): Promise<{ success: boolean; is2FAVerified: boolean; message: string }> {
+    const users = this.getUsers();
+    const user = users.find(u => u.id === userIdOrEmail || u.email === userIdOrEmail);
+
     const secret = user?.two_factor_secret || localStorage.getItem(`ls_2fa_secret_${userIdOrEmail}`);
     if (!secret) {
       return { success: false, is2FAVerified: false, message: '2FA is not yet configured for this account.' };
