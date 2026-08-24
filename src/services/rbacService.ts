@@ -37,8 +37,8 @@ const INITIAL_USERS: UserAccount[] = [
     fullName: 'Dr. Mohammed Mostafa (CEO / CFO)',
     role: 'Super Admin',
     isActive: true,
-    is_two_factor_enabled: true,
-    two_factor_secret: 'JURISTECHSUPERADMIN2026SECRETKEY',
+    is_two_factor_enabled: false,
+    two_factor_secret: null,
     lastLogin: new Date().toISOString(),
     createdAt: '2026-01-01T00:00:00.000Z',
   },
@@ -156,10 +156,10 @@ export class RbacService {
 
   // ─── 3. Endpoint: POST /api/auth/2fa/verify ────────────────────────────────
   public async verify2FA(userIdOrEmail: string, token: string): Promise<{ success: boolean; is2FAVerified: boolean; message: string }> {
-    const users = this.getUsers();
-    const user = users.find(u => u.id === userIdOrEmail || u.email === userIdOrEmail);
-
-    const secret = user?.two_factor_secret || localStorage.getItem(`ls_2fa_secret_${userIdOrEmail}`) || 'JURISTECHSUPERADMIN2026SECRETKEY';
+    const secret = user?.two_factor_secret || localStorage.getItem(`ls_2fa_secret_${userIdOrEmail}`);
+    if (!secret) {
+      return { success: false, is2FAVerified: false, message: '2FA is not yet configured for this account.' };
+    }
 
     const isValid = await verify2FAToken(token, secret);
 

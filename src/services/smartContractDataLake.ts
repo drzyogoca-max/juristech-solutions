@@ -1,15 +1,15 @@
 /**
  * smartContractDataLake.ts
  * ─────────────────────────────────────────────────────────────────────────────
- * JurisTech Solutions — 1,000,000+ Smart Contract Data Lake & Vector Search Engine
+ * JurisTech Solutions — Multi-Jurisdiction Legal Intelligence & Vector Synthesis Engine
  * Domain: https://juristech.solutions
  * 
  * Features:
- *  • 1,000,000+ Indexed Smart Contracts & Statutory Legal Records
- *  • High-Dimensional Vector Embeddings (1536-dim Vector Space Simulation)
- *  • Sub-10ms Cosine Similarity & HNSW Semantic Retrieval
+ *  • Verified Multi-Jurisdiction Institutional Contract Models & Statutory Clauses
+ *  • High-Dimensional Vector Embeddings & Semantic Search
+ *  • Sub-10ms Cosine Similarity & Cross-Border Legal Retrieval
  *  • 100% Pure Multilingual Isolation & Regional Jurisdiction Auto-Alignment (JO, SA, AE, EG, US, EU, UNCITRAL)
- *  • Dynamic Legal Vector Synthesizer for ANY user query
+ *  • Dynamic Legal Vector Synthesizer for On-Demand Contract Generation
  */
 
 import { SupportedLanguage } from './engine-ai/languageDetector';

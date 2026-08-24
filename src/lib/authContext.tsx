@@ -172,7 +172,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (!isAuthorizedAdminEmail(targetEmail)) {
       return false;
     }
-    const secret = localStorage.getItem(`ls_2fa_secret_${targetEmail}`) || 'JURISTECHSUPERADMIN2026SECRETKEY';
+    const secret = localStorage.getItem(`ls_2fa_secret_${targetEmail}`);
+    if (!secret) {
+      console.warn('2FA verification attempted with unconfigured secret.');
+      return false;
+    }
     const isValid = await import('./twoFactorEngine').then(m => m.verify2FAToken(token, secret));
     if (isValid) {
       setIs2FAVerified(true);

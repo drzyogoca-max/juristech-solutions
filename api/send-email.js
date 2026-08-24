@@ -402,13 +402,12 @@ async function processEmailDispatch(targetEmail, emailSubject, text, html, reply
     };
   }
 
-  const FALLBACK_RESEND_KEY = Buffer.from('cmVfUEVMeUZVRnZfR01SNHFQaDNNaDh4RWhSaWtDQVRhU0NL', 'base64').toString('utf-8');
-  const RESEND_API_KEY = process.env.RESEND_API_KEY || FALLBACK_RESEND_KEY;
+  const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
   const EMAIL_FROM = process.env.EMAIL_FROM || 'onboarding@resend.dev';
   const SMTP_HOST = process.env.SMTP_HOST || 'smtp-mail.outlook.com';
   const SMTP_PORT = parseInt(process.env.SMTP_PORT || '587', 10);
   const SMTP_USER = process.env.SMTP_USER || 'juristech.solutions@outlook.com';
-  const SMTP_PASS = process.env.SMTP_PASS || 'otqubqoyxyvkfceb';
+  const SMTP_PASS = process.env.SMTP_PASS || process.env.OUTLOOK_APP_PASSWORD || '';
   const REPLY_TO = replyTo || process.env.REPLY_TO || 'juristech.solutions@outlook.com';
 
   let providerSuccess = false;
