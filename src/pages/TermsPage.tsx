@@ -1,432 +1,383 @@
 /**
  * src/pages/TermsPage.tsx
  * ─────────────────────────────────────────────────────────────────────────────
- * Official Terms of Use — Juristech.solutions
- * Fully compliant with GDPR, eIDAS EU Regulation 910/2014, ICC Arbitration Rules.
- * Updated: August 2026 — 10 comprehensive legal sections.
+ * JURISTECH — Official Terms of Service
+ * Last Updated: August 25, 2026
+ * 20 sections — bilingual EN / AR — Production Ready for Merchant Verification.
  */
 
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  FileCheck, ShieldAlert, Scale, CheckCircle, Lock, Globe,
-  Landmark, AlertTriangle, Cpu, Mail, ShieldCheck, FileText
+  Scale, ShieldAlert, CreditCard, Tag, XCircle, RotateCcw,
+  Ban, Cpu, Lock, Globe, AlertTriangle, RefreshCw, Mail, ShieldCheck,
+  FileText, Users, Zap, Server, BookOpen,
 } from 'lucide-react';
 import SEO from '../components/SEO';
+import { Link } from 'react-router-dom';
 
 const SUPPORT_EMAIL = 'juristech.solutions@outlook.com';
+const LAST_UPDATED = 'August 25, 2026';
 
-interface Section {
+const ACCENT_BORDER: Record<string, string> = {
+  blue: 'border-blue-500/30 bg-blue-500/5',
+  amber: 'border-amber-500/30 bg-amber-500/5',
+  emerald: 'border-emerald-500/30 bg-emerald-500/5',
+  purple: 'border-purple-500/30 bg-purple-500/5',
+  cyan: 'border-cyan-500/30 bg-cyan-500/5',
+  orange: 'border-orange-500/30 bg-orange-500/5',
+  sky: 'border-sky-500/30 bg-sky-500/5',
+  red: 'border-red-500/30 bg-red-500/5',
+  indigo: 'border-indigo-500/30 bg-indigo-500/5',
+  yellow: 'border-yellow-500/30 bg-yellow-500/5',
+  teal: 'border-teal-500/30 bg-teal-500/5',
+  slate: 'border-slate-600/30 bg-slate-800/20',
+};
+
+const ACCENT_TEXT: Record<string, string> = {
+  blue: 'text-blue-400', amber: 'text-amber-400', emerald: 'text-emerald-400',
+  purple: 'text-purple-400', cyan: 'text-cyan-400', orange: 'text-orange-400',
+  sky: 'text-sky-400', red: 'text-red-400', indigo: 'text-indigo-400',
+  yellow: 'text-yellow-400', teal: 'text-teal-400', slate: 'text-slate-300',
+};
+
+interface Sec {
+  num: number;
   icon: React.ReactNode;
   accent: string;
-  numAr: string;
-  numEn: string;
-  titleAr: string;
-  titleEn: string;
-  bodyAr: React.ReactNode;
-  bodyEn: React.ReactNode;
+  enTitle: string;
+  arTitle: string;
+  enBody: React.ReactNode;
+  arBody: React.ReactNode;
 }
 
 export default function TermsPage() {
   const { i18n } = useTranslation();
-  const isRtl = i18n.language === 'ar';
+  const ar = i18n.language === 'ar';
 
-  const sections: Section[] = [
+  const sections: Sec[] = [
     {
-      icon: <FileCheck className="w-5 h-5 text-blue-400" />,
-      accent: 'blue',
-      numAr: '١', numEn: '1',
-      titleAr: 'القبول والموافقة على الشروط',
-      titleEn: 'Acceptance of Terms',
-      bodyAr: (
-        <p>
-          بالوصول إلى منصة Juristech.solutions أو إنشاء حساب أو رفع مستندات للتحليل أو التوقيع الرقمي، فإنك توافق صراحةً على الالتزام بهذه الشروط والأحكام بالكامل، بما يشمل سياسة الخصوصية ومعايير التوافق القانوني الدولي. إذا كنت تمثل مؤسسة قانونية، فإن قبولك يُلزم المؤسسة كاملةً.
-        </p>
+      num: 1, icon: <BookOpen className="w-5 h-5" />, accent: 'blue',
+      enTitle: 'About JURISTECH', arTitle: 'عن جوريستك',
+      enBody: <p>JURISTECH is a software-as-a-service (SaaS) platform providing digital legal technology and business workflow tools. The Service may include AI-assisted legal technology, document intelligence, workflow automation, compliance-related tools, business management functionality, reporting, and related software features.</p>,
+      arBody: <p>جوريستك هي منصة برمجيات كخدمة (SaaS) تقدم تقنيات قانونية رقمية وأدوات أتمتة سير العمل التجاري، بما يشمل التقنية القانونية المعززة بالذكاء الاصطناعي، وذكاء المستندات، وأتمتة المهام، وأدوات الامتثال، وإدارة الأعمال، والتقارير.</p>,
+    },
+    {
+      num: 2, icon: <ShieldAlert className="w-5 h-5" />, accent: 'amber',
+      enTitle: 'Not Legal Advice', arTitle: 'ليس استشارة قانونية',
+      enBody: (
+        <div className="space-y-2">
+          <p>JURISTECH is a technology platform and does not itself provide legal advice, legal representation, or attorney-client services.</p>
+          <p className="text-slate-400">Information, documents, summaries, recommendations, or AI-generated outputs provided through the Service are technology-assisted outputs and should not be treated as a substitute for advice from a qualified lawyer or other appropriately licensed professional. You are responsible for reviewing and independently verifying information before relying on it.</p>
+        </div>
       ),
-      bodyEn: (
-        <p>
-          By accessing Juristech.solutions, creating an account, or uploading documents for AI analysis or digital signature, you expressly agree to be bound by these Terms in full, including our Privacy Policy and international compliance standards. If you represent a legal entity, your acceptance binds the organization in its entirety.
-        </p>
+      arBody: (
+        <div className="space-y-2">
+          <p>جوريستك منصة تقنية ولا تقدم استشارات قانونية أو تمثيلاً قانونياً أو خدمات محاماة.</p>
+          <p className="text-slate-400">المعلومات والمستندات والملخصات والتوصيات والمخرجات المولّدة بالذكاء الاصطناعي عبر الخدمة هي مخرجات تقنية مساعدة ولا تُعدّ بديلاً عن استشارة محامٍ مرخص أو متخصص معتمد. أنت مسؤول عن مراجعة المعلومات والتحقق منها بصورة مستقلة.</p>
+        </div>
       ),
     },
     {
-      icon: <ShieldAlert className="w-5 h-5 text-amber-400" />,
-      accent: 'amber',
-      numAr: '٢', numEn: '2',
-      titleAr: 'التوقيع الرقمي eIDAS وحجيته القانونية',
-      titleEn: 'eIDAS Digital Signature Legal Validity',
-      bodyAr: (
-        <div className="space-y-3">
-          <p>
-            التوقيعات الإلكترونية المنشأة عبر المنصة تمتثل لـ<strong> اللائحة الأوروبية رقم 910/2014 (eIDAS)</strong>. تُعدّ سجلات المراجعة المشفرة الناتجة عن عملية التوقيع دليلاً قانونياً ملزماً أمام المحاكم في الدول المشاركة في الاتحاد الأوروبي ودول GCC المتوافقة.
-          </p>
-          <ul className="space-y-1.5 text-slate-400 text-xs">
-            {['الختم الإلكتروني المؤهل (QES) معترف به في 27 دولة أوروبية', 'تُخزَّن سجلات التوقيع مشفرةً بـ SHA-256 لمدة 10 سنوات', 'طوابع زمنية موثقة وغير قابلة للتعديل'].map((item, i) => (
-              <li key={i} className="flex items-start gap-2">
-                <CheckCircle className="w-3.5 h-3.5 text-amber-400 mt-0.5 shrink-0" />
-                <span>{item}</span>
-              </li>
-            ))}
+      num: 3, icon: <Users className="w-5 h-5" />, accent: 'emerald',
+      enTitle: 'Eligibility and Accounts', arTitle: 'الأهلية والحسابات',
+      enBody: (
+        <div className="space-y-2">
+          <p>You must provide accurate information when creating an account. You are responsible for maintaining the confidentiality of your account credentials and for activity conducted through your account.</p>
+          <p className="text-slate-400">You must not:</p>
+          <ul className="list-disc list-inside text-slate-400 space-y-1 text-sm">
+            <li>impersonate another person or organization;</li>
+            <li>provide false or misleading information;</li>
+            <li>attempt to gain unauthorized access to another account;</li>
+            <li>interfere with the security or operation of the Service;</li>
+            <li>use the Service for unlawful purposes.</li>
           </ul>
         </div>
       ),
-      bodyEn: (
-        <div className="space-y-3">
-          <p>
-            Electronic signatures generated through our platform comply with <strong>EU Regulation No 910/2014 (eIDAS)</strong>. Cryptographic audit records generated during signing constitute binding legal proof across EU member state courts and compatible GCC jurisdictions.
-          </p>
-          <ul className="space-y-1.5 text-slate-400 text-xs">
-            {['Qualified Electronic Seal (QES) recognized in 27 EU member states', 'Signature records stored SHA-256 encrypted for 10 years', 'Immutable timestamped audit trail — tamper-proof'].map((item, i) => (
-              <li key={i} className="flex items-start gap-2">
-                <CheckCircle className="w-3.5 h-3.5 text-amber-400 mt-0.5 shrink-0" />
-                <span>{item}</span>
-              </li>
-            ))}
+      arBody: (
+        <div className="space-y-2">
+          <p>يجب تقديم معلومات دقيقة عند إنشاء الحساب. أنت مسؤول عن سرية بيانات اعتماد حسابك وعن جميع الأنشطة التي تجري من خلاله.</p>
+          <p className="text-slate-400">يُحظر عليك:</p>
+          <ul className="list-disc list-inside text-slate-400 space-y-1 text-sm">
+            <li>انتحال صفة شخص أو منظمة أخرى؛</li>
+            <li>تقديم معلومات كاذبة أو مضللة؛</li>
+            <li>محاولة الوصول غير المصرح به إلى حساب آخر؛</li>
+            <li>التدخل في أمان الخدمة أو تشغيلها؛</li>
+            <li>استخدام الخدمة لأغراض غير مشروعة.</li>
           </ul>
         </div>
       ),
     },
     {
-      icon: <CheckCircle className="w-5 h-5 text-emerald-400" />,
-      accent: 'emerald',
-      numAr: '٣', numEn: '3',
-      titleAr: 'الاشتراكات والمدفوعات عبر البوابات المعتمدة',
-      titleEn: 'Subscription Activation & Direct Merchant Payments',
-      bodyAr: (
+      num: 4, icon: <CreditCard className="w-5 h-5" />, accent: 'purple',
+      enTitle: 'Subscriptions and Billing', arTitle: 'الاشتراكات والفوترة',
+      enBody: (
         <div className="space-y-3">
-          <p>
-            تُفعَّل الاشتراكات عبر Binance Pay (USDT) أو التحويل البنكي SWIFT وتخضع لتحقق آلي من الاحتيال قبل تفعيل الخدمة. جميع المدفوعات نهائية وغير قابلة للاسترداد بعد التفعيل إلا في حالات العيوب التقنية الموثقة.
-          </p>
-          <div className="grid grid-cols-2 gap-2 text-xs font-mono">
-            <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300">
-              <div className="font-black">Binance Pay</div>
-              <div className="text-slate-400">Drzyogo.ca@gmail.com</div>
-              <div className="text-slate-400">User-444da · Zero Fees</div>
-            </div>
-            <div className="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-300">
-              <div className="font-black">SWIFT Wire</div>
-              <div className="text-slate-400">IBAN: EG310022012880211102491757001</div>
-              <div className="text-slate-400">BIC: ABRKEGCAXXX</div>
-            </div>
+          <p>Certain features of JURISTECH may require a paid subscription. Available plans, features, billing intervals, and prices are displayed on the JURISTECH pricing page.</p>
+          <p className="text-slate-400">Subscription charges are processed through the payment provider presented during checkout. A subscription becomes active only after the payment provider confirms successful payment and JURISTECH server-side systems verify the corresponding subscription status.</p>
+          <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-semibold">
+            ⚠️ A browser redirect, URL parameter, local browser storage value, or client-side state does not by itself create a paid subscription or grant paid access.
           </div>
         </div>
       ),
-      bodyEn: (
+      arBody: (
         <div className="space-y-3">
-          <p>
-            Subscriptions activated via Binance Pay (USDT) or SWIFT bank wire are subject to automated fraud verification before service activation. All payments are final and non-refundable after activation, except in cases of documented technical platform defects.
-          </p>
-          <div className="grid grid-cols-2 gap-2 text-xs font-mono">
-            <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300">
-              <div className="font-black">Binance Pay</div>
-              <div className="text-slate-400">Drzyogo.ca@gmail.com</div>
-              <div className="text-slate-400">User-444da · Zero Fees</div>
-            </div>
-            <div className="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-300">
-              <div className="font-black">SWIFT Wire</div>
-              <div className="text-slate-400">IBAN: EG310022012880211102491757001</div>
-              <div className="text-slate-400">BIC: ABRKEGCAXXX</div>
-            </div>
+          <p>قد تتطلب بعض ميزات جوريستك اشتراكاً مدفوعاً. تُعرض الخطط المتاحة والميزات وفترات الفوترة والأسعار على صفحة التسعير.</p>
+          <p className="text-slate-400">تُعالَج رسوم الاشتراك عبر مزود الدفع المقدَّم عند الدفع. يصبح الاشتراك نشطاً فقط بعد أن يؤكد مزود الدفع نجاح الدفع وتتحقق أنظمة الخادم لدى جوريستك من حالة الاشتراك المقابلة.</p>
+          <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-semibold">
+            ⚠️ لا يُنشئ إعادة التوجيه عبر المتصفح أو معامل URL أو قيمة التخزين المحلي أو الحالة من جانب العميل بحد ذاتها اشتراكاً مدفوعاً أو صلاحية وصول مدفوع.
           </div>
         </div>
       ),
     },
     {
-      icon: <Cpu className="w-5 h-5 text-purple-400" />,
-      accent: 'purple',
-      numAr: '٤', numEn: '4',
-      titleAr: 'الملكية الفكرية وحقوق المحتوى',
-      titleEn: 'Intellectual Property & Content Rights',
-      bodyAr: (
-        <p>
-          جميع محتويات المنصة — بما يشمل المساعد الذكي "جوريس"، محركات توليد العقود، خوارزميات تحليل المخاطر، قواعد البيانات القانونية، والتصميم البصري — هي ملكية فكرية حصرية لـ JurisTech Solutions. يُحظر نسخها أو تعديلها أو توزيعها أو هندستها عكسياً دون إذن كتابي مسبق. المستندات والعقود التي يرفعها المستخدم تبقى ملكاً له.
-        </p>
-      ),
-      bodyEn: (
-        <p>
-          All platform content — including the "Juris" AI legal advisor, contract generation engines, risk analysis algorithms, legal databases, and visual design — constitutes the exclusive intellectual property of JurisTech Solutions. Reproduction, modification, distribution, or reverse-engineering is strictly prohibited without prior written authorization. Documents uploaded by users remain their exclusive property.
-        </p>
-      ),
+      num: 5, icon: <Tag className="w-5 h-5" />, accent: 'cyan',
+      enTitle: 'Pricing', arTitle: 'التسعير',
+      enBody: <p>Prices displayed on the JURISTECH website are subject to change. Where applicable, the final amount charged to a customer is determined by the applicable checkout and payment-provider configuration. JURISTECH does not rely solely on client-side pricing information to authorize paid access.</p>,
+      arBody: <p>الأسعار المعروضة على موقع جوريستك عرضة للتغيير. عند الاقتضاء، يحدد المبلغ النهائي المحصّل من العميل إعداد الدفع ومزود الدفع المعمول به. لا تعتمد جوريستك فقط على معلومات التسعير من جانب العميل للسماح بالوصول المدفوع.</p>,
     },
     {
-      icon: <AlertTriangle className="w-5 h-5 text-red-400" />,
-      accent: 'red',
-      numAr: '٥', numEn: '5',
-      titleAr: 'حدود المسؤولية وإخلاء الضمانات',
-      titleEn: 'Limitation of Liability & Warranty Disclaimer',
-      bodyAr: (
-        <div className="space-y-2">
-          <p>
-            المنصة توفر خدمات استشارة ذكاء اصطناعي قانوني وليست بديلاً عن المحامي المرخص. لا تُعدّ JurisTech Solutions مسؤولةً عن أي قرارات قانونية تتخذها بناءً على مخرجات الذكاء الاصطناعي، وذلك في حدود ما يسمح به القانون المعمول به.
-          </p>
-          <div className="p-3 rounded-xl bg-red-500/8 border border-red-500/20 text-red-400 text-xs font-bold">
-            ⚠️ {isRtl ? 'الحد الأقصى للمسؤولية لا يتجاوز قيمة الاشتراك المدفوع في الأشهر الثلاثة الأخيرة.' : 'Maximum liability is capped at the value of subscription fees paid in the prior 3 months.'}
-          </div>
-        </div>
-      ),
-      bodyEn: (
-        <div className="space-y-2">
-          <p>
-            The platform provides AI-powered legal advisory services and does not substitute for a licensed attorney. JurisTech Solutions bears no liability for legal decisions made based on AI outputs, to the maximum extent permitted by applicable law.
-          </p>
-          <div className="p-3 rounded-xl bg-red-500/8 border border-red-500/20 text-red-400 text-xs font-bold">
-            ⚠️ Maximum liability is capped at the value of subscription fees paid in the prior 3 months.
-          </div>
-        </div>
-      ),
+      num: 6, icon: <XCircle className="w-5 h-5" />, accent: 'orange',
+      enTitle: 'Cancellation', arTitle: 'الإلغاء',
+      enBody: <p>You may cancel your subscription through the available account or payment-provider cancellation mechanism. Where a subscription is scheduled to cancel at the end of a billing period, access may continue until the end of the applicable paid period unless otherwise stated. After the subscription expires or is cancelled, access to paid features may be disabled.</p>,
+      arBody: <p>يمكنك إلغاء اشتراكك من خلال آلية الإلغاء المتاحة في الحساب أو مزود الدفع. عند جدولة الإلغاء في نهاية فترة الفوترة، قد يستمر الوصول حتى نهاية الفترة المدفوعة المعمول بها ما لم يُذكر خلاف ذلك. بعد انتهاء صلاحية الاشتراك أو إلغائه، قد يُعطَّل الوصول إلى الميزات المدفوعة.</p>,
     },
     {
-      icon: <Landmark className="w-5 h-5 text-cyan-400" />,
-      accent: 'cyan',
-      numAr: '٦', numEn: '6',
-      titleAr: 'اتفاقية مستوى الخدمة (SLA) وضمان التوفر',
-      titleEn: 'Service Level Agreement (SLA) & Uptime Guarantee',
-      bodyAr: (
+      num: 7, icon: <RotateCcw className="w-5 h-5" />, accent: 'sky',
+      enTitle: 'Refunds', arTitle: 'المبالغ المستردة',
+      enBody: <p>Refund requests are handled according to the JURISTECH Refund Policy. Please review: <Link to="/refund" className="text-sky-400 hover:text-sky-300 underline underline-offset-2">https://juristech.solutions/refund</Link></p>,
+      arBody: <p>تُعالَج طلبات الاسترداد وفق سياسة الاسترداد الخاصة بجوريستك. يرجى مراجعة: <Link to="/refund" className="text-sky-400 hover:text-sky-300 underline underline-offset-2">https://juristech.solutions/refund</Link></p>,
+    },
+    {
+      num: 8, icon: <Ban className="w-5 h-5" />, accent: 'red',
+      enTitle: 'Acceptable Use', arTitle: 'الاستخدام المقبول',
+      enBody: (
         <div className="space-y-2">
-          <p>
-            تلتزم المنصة بتوفر <strong>99.5%</strong> سنوياً وفق اتفاقية مستوى الخدمة (SLA). في حال انخفاض التوفر عن هذه النسبة لأسباب تقنية خارجة عن نطاق القوة القاهرة، يحق للمشترك المطالبة بامتداد مدة الاشتراك بما يتناسب مع فترة الانقطاع.
-          </p>
-          <div className="flex gap-3 text-xs">
-            {[['99.5%', 'ضمان التوفر', 'emerald'], ['< 4h', 'وقت الاستجابة', 'cyan'], ['24/7', 'مراقبة الخوادم', 'purple']].map(([val, label, color]) => (
-              <div key={label} className={`flex-1 p-2.5 rounded-xl bg-${color}-500/10 border border-${color}-500/20 text-center`}>
-                <div className={`text-lg font-black text-${color}-400 font-mono`}>{val}</div>
-                <div className="text-slate-400">{label}</div>
-              </div>
-            ))}
-          </div>
+          <p>You agree not to use the Service to:</p>
+          <ul className="list-disc list-inside text-slate-400 space-y-1 text-sm">
+            <li>conduct unlawful activity;</li>
+            <li>violate the rights of others;</li>
+            <li>upload malicious code;</li>
+            <li>attempt to bypass authentication or access controls;</li>
+            <li>interfere with the Service or its infrastructure;</li>
+            <li>reverse engineer or circumvent security mechanisms;</li>
+            <li>abuse automated systems;</li>
+            <li>submit fraudulent payment information;</li>
+            <li>use the Service in a manner prohibited by applicable law.</li>
+          </ul>
         </div>
       ),
-      bodyEn: (
+      arBody: (
         <div className="space-y-2">
-          <p>
-            The platform guarantees <strong>99.5% annual uptime</strong> under this SLA. Should availability fall below this threshold due to non-force-majeure technical causes, subscribers are entitled to proportional subscription extensions matching the outage duration.
-          </p>
-          <div className="flex gap-3 text-xs">
-            {[['99.5%', 'Uptime Guarantee', 'emerald'], ['< 4h', 'Response SLA', 'cyan'], ['24/7', 'Server Monitoring', 'purple']].map(([val, label, color]) => (
-              <div key={label} className={`flex-1 p-2.5 rounded-xl bg-${color}-500/10 border border-${color}-500/20 text-center`}>
-                <div className={`text-lg font-black text-${color}-400 font-mono`}>{val}</div>
-                <div className="text-slate-400">{label}</div>
-              </div>
-            ))}
-          </div>
+          <p>توافق على عدم استخدام الخدمة من أجل:</p>
+          <ul className="list-disc list-inside text-slate-400 space-y-1 text-sm">
+            <li>ممارسة أنشطة غير مشروعة؛</li>
+            <li>انتهاك حقوق الآخرين؛</li>
+            <li>رفع شفرات برمجية ضارة؛</li>
+            <li>محاولة تجاوز المصادقة أو ضوابط الوصول؛</li>
+            <li>التدخل في الخدمة أو بنيتها التحتية؛</li>
+            <li>الهندسة العكسية أو التحايل على آليات الأمان؛</li>
+            <li>إساءة استخدام الأنظمة الآلية؛</li>
+            <li>تقديم معلومات دفع احتيالية؛</li>
+            <li>استخدام الخدمة بأي طريقة يحظرها القانون.</li>
+          </ul>
         </div>
       ),
     },
     {
-      icon: <Lock className="w-5 h-5 text-emerald-400" />,
-      accent: 'emerald',
-      numAr: '٧', numEn: '7',
-      titleAr: 'التشفير الشامل وأمان البيانات',
-      titleEn: 'End-to-End Encryption & Data Security',
-      bodyAr: (
+      num: 9, icon: <Lock className="w-5 h-5" />, accent: 'emerald',
+      enTitle: 'Intellectual Property', arTitle: 'الملكية الفكرية',
+      enBody: <p>The JURISTECH software, interface, branding, design, documentation, and underlying technology are protected by applicable intellectual-property laws. Except for rights expressly granted under these Terms, no ownership rights are transferred to you. You retain ownership of content that you lawfully submit to the Service, subject to the rights necessary for JURISTECH to operate the Service.</p>,
+      arBody: <p>تُحمى برامج جوريستك وواجهتها وعلامتها التجارية وتصميمها ووثائقها والتقنية الأساسية بقوانين الملكية الفكرية المعمول بها. لا تُنقل إليك حقوق الملكية إلا ما صرّح به في هذه الشروط. تحتفظ بملكية المحتوى الذي تقدمه بصورة مشروعة إلى الخدمة، مع منح الحقوق اللازمة لتشغيل جوريستك للخدمة.</p>,
+    },
+    {
+      num: 10, icon: <FileText className="w-5 h-5" />, accent: 'indigo',
+      enTitle: 'User Content', arTitle: 'محتوى المستخدم',
+      enBody: <p>You are responsible for content and information that you submit to the Service. You represent that you have the necessary rights and permissions to submit such content. You grant JURISTECH the limited rights necessary to host, process, transmit, and otherwise use submitted content solely to provide, maintain, secure, and improve the Service, subject to applicable law and our Privacy Policy.</p>,
+      arBody: <p>أنت مسؤول عن المحتوى والمعلومات التي تقدمها إلى الخدمة. تُقرّ بامتلاك الحقوق والأذونات اللازمة لتقديم هذا المحتوى. تمنح جوريستك الحقوق المحدودة اللازمة لاستضافة المحتوى المقدَّم ومعالجته ونقله واستخدامه فقط لتقديم الخدمة وصيانتها وتأمينها وتحسينها، وفق القانون المعمول به وسياسة الخصوصية.</p>,
+    },
+    {
+      num: 11, icon: <Cpu className="w-5 h-5" />, accent: 'purple',
+      enTitle: 'AI-Generated Output', arTitle: 'المخرجات المولّدة بالذكاء الاصطناعي',
+      enBody: <p>Some features may use artificial intelligence or machine-learning technology. AI-generated outputs may contain errors, omissions, or inaccuracies. You are responsible for evaluating outputs before using them in legal, commercial, financial, compliance, or other consequential decisions.</p>,
+      arBody: <p>قد تستخدم بعض الميزات تقنيات الذكاء الاصطناعي أو التعلم الآلي. قد تحتوي المخرجات المولّدة بالذكاء الاصطناعي على أخطاء أو سهو أو معلومات غير دقيقة. أنت مسؤول عن تقييم المخرجات قبل استخدامها في القرارات القانونية أو التجارية أو المالية أو الامتثالية أو غيرها من القرارات ذات العواقب.</p>,
+    },
+    {
+      num: 12, icon: <Zap className="w-5 h-5" />, accent: 'yellow',
+      enTitle: 'Third-Party Services', arTitle: 'خدمات الطرف الثالث',
+      enBody: <p>The Service may integrate with third-party services, including payment processors, analytics providers, hosting providers, authentication services, and other technology providers. Third-party services may be governed by their own terms and privacy policies.</p>,
+      arBody: <p>قد تتكامل الخدمة مع خدمات طرف ثالث، بما يشمل معالجات الدفع ومزودي التحليلات ومزودي الاستضافة وخدمات المصادقة وغيرها من مزودي التقنية. قد تخضع خدمات الطرف الثالث لشروطها وسياسات الخصوصية الخاصة بها.</p>,
+    },
+    {
+      num: 13, icon: <Server className="w-5 h-5" />, accent: 'teal',
+      enTitle: 'Service Availability', arTitle: 'توفر الخدمة',
+      enBody: <p>We aim to maintain reliable availability of the Service but do not guarantee uninterrupted or error-free operation. Maintenance, upgrades, security events, infrastructure failures, and circumstances outside our reasonable control may temporarily affect availability.</p>,
+      arBody: <p>نسعى للحفاظ على توفر موثوق للخدمة لكننا لا نضمن تشغيلاً متواصلاً أو خالياً من الأخطاء. قد تؤثر عمليات الصيانة والترقيات وأحداث الأمان وإخفاقات البنية التحتية والظروف خارج سيطرتنا المعقولة مؤقتاً على التوفر.</p>,
+    },
+    {
+      num: 14, icon: <ShieldCheck className="w-5 h-5" />, accent: 'emerald',
+      enTitle: 'Security', arTitle: 'الأمان',
+      enBody: <p>JURISTECH implements reasonable technical and organizational safeguards designed to protect the Service and information processed through it. No internet-based system can be guaranteed to be completely secure.</p>,
+      arBody: <p>تطبّق جوريستك ضمانات تقنية وتنظيمية معقولة مصممة لحماية الخدمة والمعلومات المعالَجة من خلالها. لا يمكن ضمان أمان أي نظام قائم على الإنترنت بالكامل.</p>,
+    },
+    {
+      num: 15, icon: <AlertTriangle className="w-5 h-5" />, accent: 'orange',
+      enTitle: 'Termination', arTitle: 'الإنهاء',
+      enBody: (
         <div className="space-y-2">
-          <p>
-            جميع البيانات المتبادلة — العقود، الملفات القانونية، سجلات المدفوعات — مشفرة بمعيار <strong>AES-256</strong> أثناء النقل (TLS 1.3) وأثناء التخزين. سجلات المراجعة الأمنية مختومة بـ SHA-256 ومحمية بسياسات RLS على قاعدة بيانات Supabase.
-          </p>
-          <div className="flex flex-wrap gap-2 text-[10px] font-mono">
-            {['AES-256 Encryption', 'TLS 1.3 Transit', 'SHA-256 Audit Hash', 'Supabase RLS', 'GDPR Article 32'].map((t) => (
-              <span key={t} className="px-2 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-bold">{t}</span>
-            ))}
-          </div>
+          <p>We may suspend or terminate access where reasonably necessary to:</p>
+          <ul className="list-disc list-inside text-slate-400 space-y-1 text-sm">
+            <li>prevent abuse or security threats;</li>
+            <li>comply with applicable law;</li>
+            <li>address fraudulent activity;</li>
+            <li>enforce these Terms; or</li>
+            <li>protect the Service, users, or third parties.</li>
+          </ul>
         </div>
       ),
-      bodyEn: (
+      arBody: (
         <div className="space-y-2">
-          <p>
-            All exchanged data — contracts, legal files, and payment records — is encrypted with <strong>AES-256</strong> in transit (TLS 1.3) and at rest. Security audit logs are SHA-256 sealed and protected by Row-Level Security (RLS) policies on our Supabase infrastructure.
-          </p>
-          <div className="flex flex-wrap gap-2 text-[10px] font-mono">
-            {['AES-256 Encryption', 'TLS 1.3 Transit', 'SHA-256 Audit Hash', 'Supabase RLS', 'GDPR Article 32'].map((t) => (
-              <span key={t} className="px-2 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-bold">{t}</span>
-            ))}
-          </div>
+          <p>قد نوقف الوصول أو نُنهيه عند الضرورة المعقولة من أجل:</p>
+          <ul className="list-disc list-inside text-slate-400 space-y-1 text-sm">
+            <li>منع الإساءة أو التهديدات الأمنية؛</li>
+            <li>الامتثال للقانون المعمول به؛</li>
+            <li>معالجة الأنشطة الاحتيالية؛</li>
+            <li>تطبيق هذه الشروط؛ أو</li>
+            <li>حماية الخدمة أو المستخدمين أو الأطراف الثالثة.</li>
+          </ul>
         </div>
       ),
     },
     {
-      icon: <AlertTriangle className="w-5 h-5 text-orange-400" />,
-      accent: 'orange',
-      numAr: '٨', numEn: '8',
-      titleAr: 'إنهاء الخدمة وتعليق الحساب',
-      titleEn: 'Service Termination & Account Suspension',
-      bodyAr: (
-        <p>
-          تحتفظ JurisTech Solutions بالحق في تعليق أو إنهاء الحسابات التي تنتهك هذه الشروط، أو تحاول التلاعب بمنظومة المدفوعات، أو تمارس نشاطاً احتيالياً — وذلك دون إشعار مسبق في الحالات الحرجة. في حالات الإنهاء العادي، يُرسَل إشعار لا يقل عن 14 يوماً مسبقاً. يمكن للمستخدم طلب تصدير بياناته خلال 30 يوماً من تاريخ الإنهاء.
-        </p>
-      ),
-      bodyEn: (
-        <p>
-          JurisTech Solutions reserves the right to suspend or terminate accounts that violate these Terms, attempt to manipulate the payment system, or engage in fraudulent activity — without prior notice in critical cases. For standard terminations, a minimum 14-day advance notice is provided. Users may request data export within 30 days of account termination.
-        </p>
-      ),
+      num: 16, icon: <ShieldAlert className="w-5 h-5" />, accent: 'red',
+      enTitle: 'Disclaimers', arTitle: 'إخلاء المسؤولية',
+      enBody: <p>To the maximum extent permitted by applicable law, the Service is provided on an "as available" and "as is" basis. JURISTECH does not guarantee that the Service or any output will be accurate, complete, uninterrupted, or suitable for every particular purpose.</p>,
+      arBody: <p>بالقدر الأقصى المسموح به بموجب القانون المعمول به، تُقدَّم الخدمة على أساس "كما هي متاحة" و"كما هي". لا تضمن جوريستك دقة الخدمة أو أي مخرجاتها أو اكتمالها أو استمراريتها أو ملاءمتها لكل غرض بعينه.</p>,
     },
     {
-      icon: <Globe className="w-5 h-5 text-indigo-400" />,
-      accent: 'indigo',
-      numAr: '٩', numEn: '9',
-      titleAr: 'القانون الحاكم والتحكيم الدولي',
-      titleEn: 'Governing Law & International Arbitration',
-      bodyAr: (
+      num: 17, icon: <Scale className="w-5 h-5" />, accent: 'slate',
+      enTitle: 'Limitation of Liability', arTitle: 'تحديد المسؤولية',
+      enBody: (
         <div className="space-y-2">
-          <p>
-            تخضع هذه الشروط لأحكام القانون الدولي التجاري، مع مراعاة القوانين الوطنية المعمول بها في دولة المستخدم. في حال نشوء أي نزاع، يُفضَّل حله أولاً بالتفاوض الودي خلال 30 يوماً، ثم بالتحكيم الدولي وفق قواعد:
-          </p>
-          <div className="flex flex-wrap gap-2 text-xs">
-            {['ICC Paris', 'DIAC Dubai', 'CRCICA Cairo', 'LCIA London'].map((arb) => (
-              <span key={arb} className="px-3 py-1.5 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 font-bold">{arb}</span>
-            ))}
-          </div>
+          <p>To the maximum extent permitted by applicable law, JURISTECH will not be liable for indirect, incidental, consequential, special, or punitive damages arising from use of the Service.</p>
+          <p className="text-slate-400 text-sm">Nothing in these Terms excludes liability that cannot lawfully be excluded or limited.</p>
         </div>
       ),
-      bodyEn: (
+      arBody: (
         <div className="space-y-2">
-          <p>
-            These Terms are governed by international commercial law principles, subject to applicable national laws in the user's jurisdiction. Disputes shall first be resolved through good-faith negotiation within 30 days, then through binding international arbitration under:
-          </p>
-          <div className="flex flex-wrap gap-2 text-xs">
-            {['ICC Paris', 'DIAC Dubai', 'CRCICA Cairo', 'LCIA London'].map((arb) => (
-              <span key={arb} className="px-3 py-1.5 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 font-bold">{arb}</span>
-            ))}
-          </div>
+          <p>بالقدر الأقصى المسموح به بموجب القانون، لن تكون جوريستك مسؤولة عن الأضرار غير المباشرة أو العرضية أو التبعية أو الخاصة أو العقابية الناشئة عن استخدام الخدمة.</p>
+          <p className="text-slate-400 text-sm">لا يستثني أي بند في هذه الشروط المسؤولية التي لا يمكن استثناؤها أو تحديدها قانوناً.</p>
         </div>
       ),
     },
     {
-      icon: <Mail className="w-5 h-5 text-sky-400" />,
-      accent: 'sky',
-      numAr: '١٠', numEn: '10',
-      titleAr: 'التواصل الرسمي والاستفسارات القانونية',
-      titleEn: 'Official Contact & Legal Counsel Inquiries',
-      bodyAr: (
-        <div className="space-y-2">
-          <p>
-            للاستفسارات المؤسسية، دعم التحكيم التعاقدي، أو توضيح الشروط، تواصل مع فريقنا التنفيذي:
-          </p>
-          <a
-            href={`mailto:${SUPPORT_EMAIL}`}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-sky-500/10 border border-sky-500/30 text-sky-400 font-bold text-sm hover:bg-sky-500/20 transition-colors"
-          >
-            <Mail className="w-4 h-4" />
-            {SUPPORT_EMAIL}
-          </a>
+      num: 18, icon: <RefreshCw className="w-5 h-5" />, accent: 'blue',
+      enTitle: 'Changes to These Terms', arTitle: 'التغييرات على هذه الشروط',
+      enBody: <p>We may update these Terms from time to time. When material changes are made, the updated version will be published on this page with a revised "Last Updated" date.</p>,
+      arBody: <p>قد نحدّث هذه الشروط من حين لآخر. عند إجراء تغييرات جوهرية، سيُنشر الإصدار المحدَّث على هذه الصفحة بتاريخ "آخر تحديث" منقَّح.</p>,
+    },
+    {
+      num: 19, icon: <Globe className="w-5 h-5" />, accent: 'indigo',
+      enTitle: 'Governing Law', arTitle: 'القانون الحاكم',
+      enBody: <p>The governing law and dispute-resolution provisions applicable to the Service will depend on the legal structure and jurisdiction applicable to JURISTECH. Nothing in these Terms is intended to create rights that cannot lawfully be excluded.</p>,
+      arBody: <p>تعتمد أحكام القانون الحاكم وتسوية النزاعات المطبَّقة على الخدمة على الهيكل القانوني ونطاق الاختصاص القضائي المعمول به لجوريستك. لا يُقصد من أي بند في هذه الشروط إنشاء حقوق لا يمكن استثناؤها قانوناً.</p>,
+    },
+    {
+      num: 20, icon: <Mail className="w-5 h-5" />, accent: 'sky',
+      enTitle: 'Contact', arTitle: 'التواصل',
+      enBody: (
+        <div className="space-y-3">
+          <p>For questions regarding these Terms:</p>
+          <div className="space-y-1 text-sm text-slate-300">
+            <div className="font-bold text-white">JURISTECH</div>
+            <div>Website: <a href="https://juristech.solutions" className="text-sky-400 hover:text-sky-300">https://juristech.solutions</a></div>
+            <div>Email: <a href={`mailto:${SUPPORT_EMAIL}`} className="text-sky-400 hover:text-sky-300">{SUPPORT_EMAIL}</a></div>
+          </div>
         </div>
       ),
-      bodyEn: (
-        <div className="space-y-2">
-          <p>
-            For enterprise inquiries, contract arbitration support, or terms clarification, contact our executive legal team:
-          </p>
-          <a
-            href={`mailto:${SUPPORT_EMAIL}`}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-sky-500/10 border border-sky-500/30 text-sky-400 font-bold text-sm hover:bg-sky-500/20 transition-colors"
-          >
-            <Mail className="w-4 h-4" />
-            {SUPPORT_EMAIL}
-          </a>
+      arBody: (
+        <div className="space-y-3">
+          <p>للاستفسار عن هذه الشروط:</p>
+          <div className="space-y-1 text-sm text-slate-300">
+            <div className="font-bold text-white">JURISTECH</div>
+            <div>الموقع: <a href="https://juristech.solutions" className="text-sky-400 hover:text-sky-300">https://juristech.solutions</a></div>
+            <div>البريد: <a href={`mailto:${SUPPORT_EMAIL}`} className="text-sky-400 hover:text-sky-300">{SUPPORT_EMAIL}</a></div>
+          </div>
         </div>
       ),
     },
   ];
 
-  const accentMap: Record<string, string> = {
-    blue: 'border-blue-500/30 bg-blue-500/5',
-    amber: 'border-amber-500/30 bg-amber-500/5',
-    emerald: 'border-emerald-500/30 bg-emerald-500/5',
-    purple: 'border-purple-500/30 bg-purple-500/5',
-    red: 'border-red-500/30 bg-red-500/5',
-    cyan: 'border-cyan-500/30 bg-cyan-500/5',
-    orange: 'border-orange-500/30 bg-orange-500/5',
-    indigo: 'border-indigo-500/30 bg-indigo-500/5',
-    sky: 'border-sky-500/30 bg-sky-500/5',
-  };
-
   return (
-    <div className={`min-h-screen bg-slate-950 text-slate-100 py-12 px-4 sm:px-6 lg:px-8 ${isRtl ? 'rtl' : 'ltr'}`}>
+    <div className={`min-h-screen bg-slate-950 text-slate-100 py-12 px-4 sm:px-6 lg:px-8 ${ar ? 'rtl' : 'ltr'}`}>
       <SEO
-        title={`${isRtl ? 'شروط الاستخدام' : 'Terms of Use'} | Juristech.solutions`}
-        description={isRtl
-          ? 'الشروط والأحكام الرسمية لمنصة Juristech.solutions — متوافقة مع GDPR وeIDAS وقواعد ICC للتحكيم الدولي'
-          : 'Official Terms of Use — Juristech.solutions, fully compliant with GDPR, eIDAS EU Regulation 910/2014, and ICC International Arbitration Rules.'}
+        title={`${ar ? 'شروط الخدمة' : 'Terms of Service'} | JURISTECH`}
+        description={ar ? 'الشروط والأحكام الرسمية لمنصة JURISTECH — آخر تحديث: أغسطس 2026' : 'Official Terms of Service for JURISTECH — Last Updated: August 25, 2026'}
       />
-
       <div className="max-w-4xl mx-auto space-y-10">
-
-        {/* ── Hero Header ─────────────────────────────────────────────── */}
         <div className="text-center space-y-5">
-          <div className="inline-flex items-center justify-center p-4 bg-blue-500/10 rounded-3xl border border-blue-500/20 text-blue-400 mb-1">
+          <div className="inline-flex items-center justify-center p-4 bg-blue-500/10 rounded-3xl border border-blue-500/20 text-blue-400">
             <Scale className="w-12 h-12" />
           </div>
           <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
-            {isRtl ? 'شروط الاستخدام والأحكام القانونية' : 'Terms of Use & Legal Standards'}
+            {ar ? 'شروط الخدمة' : 'Terms of Service'}
           </h1>
           <p className="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
-            {isRtl
-              ? 'إطار الحوكمة القانونية الشاملة لمنصة Juristech.solutions — متوافق مع eIDAS وGDPR وقواعد ICC للتحكيم الدولي.'
-              : 'Comprehensive legal governance framework for Juristech.solutions — compliant with eIDAS, GDPR & ICC International Arbitration Rules.'}
+            {ar ? 'بوصولك إلى جوريستك أو استخدامها، فإنك توافق على الالتزام بهذه الشروط.' : 'By accessing or using JURISTECH, you agree to be bound by these Terms.'}
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-2">
-            {['GDPR Compliant', 'eIDAS EU 910/2014', 'ICC Arbitration', 'AES-256 Encrypted', 'ISO/IEC 27001'].map((badge) => (
-              <span key={badge} className="px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-300 text-xs font-bold font-mono">
-                {badge}
-              </span>
+          <p className="text-xs text-slate-500 font-mono">{ar ? 'آخر تحديث:' : 'Last Updated:'} {LAST_UPDATED}</p>
+          <div className="flex flex-wrap justify-center gap-3 pt-1">
+            {[
+              { to: '/pricing', label: ar ? 'الأسعار' : 'Pricing', active: false },
+              { to: '/terms', label: ar ? 'شروط الخدمة' : 'Terms of Service', active: true },
+              { to: '/privacy', label: ar ? 'سياسة الخصوصية' : 'Privacy Policy', active: false },
+              { to: '/refund', label: ar ? 'سياسة الاسترداد' : 'Refund Policy', active: false },
+            ].map(({ to, label, active }) => (
+              <Link
+                key={to}
+                to={to}
+                className={`px-4 py-1.5 rounded-full text-xs font-bold border transition-colors ${
+                  active ? 'bg-blue-500/20 border-blue-500/40 text-blue-300' : 'bg-slate-800/60 border-slate-700 text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                {label}
+              </Link>
             ))}
           </div>
-          <p className="text-xs text-slate-500 font-mono">
-            {isRtl ? 'آخر تحديث:' : 'Last Updated:'} August 2026 · v3.1
-          </p>
         </div>
 
-        {/* ── Compliance Strip ───────────────────────────────────────── */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {[
-            { icon: <ShieldCheck className="w-5 h-5" />, label: isRtl ? 'توافق GDPR' : 'GDPR Compliant', color: 'emerald' },
-            { icon: <FileText className="w-5 h-5" />, label: isRtl ? 'eIDAS معتمد' : 'eIDAS Certified', color: 'blue' },
-            { icon: <Lock className="w-5 h-5" />, label: isRtl ? 'تشفير AES-256' : 'AES-256 Encrypted', color: 'purple' },
-            { icon: <Globe className="w-5 h-5" />, label: isRtl ? 'تحكيم ICC دولي' : 'ICC Arbitration', color: 'cyan' },
-          ].map(({ icon, label, color }) => (
-            <div key={label} className={`p-4 rounded-2xl bg-${color}-500/10 border border-${color}-500/20 text-${color}-400 flex flex-col items-center gap-2 text-center`}>
-              {icon}
-              <span className="text-xs font-bold text-slate-200">{label}</span>
-            </div>
-          ))}
-        </div>
-
-        {/* ── Sections ──────────────────────────────────────────────── */}
         <div className="space-y-4">
-          {sections.map((sec, idx) => (
-            <div
-              key={idx}
-              className={`rounded-2xl border p-6 sm:p-8 space-y-4 transition-all ${accentMap[sec.accent] || 'border-slate-800 bg-slate-900/40'}`}
-            >
+          {sections.map((s) => (
+            <div key={s.num} className={`rounded-2xl border p-6 sm:p-8 space-y-4 ${ACCENT_BORDER[s.accent] ?? 'border-slate-800 bg-slate-900/40'}`}>
               <h2 className="text-lg sm:text-xl font-black text-white flex items-center gap-3">
-                <span className="flex items-center justify-center w-8 h-8 rounded-xl bg-slate-800/80 border border-slate-700 shrink-0">
-                  {sec.icon}
+                <span className={`flex items-center justify-center w-8 h-8 rounded-xl bg-slate-800/80 border border-slate-700 shrink-0 ${ACCENT_TEXT[s.accent] ?? 'text-slate-400'}`}>
+                  {s.icon}
                 </span>
-                <span>
-                  {isRtl ? sec.numAr : sec.numEn}.{' '}
-                  {isRtl ? sec.titleAr : sec.titleEn}
-                </span>
+                <span>{s.num}. {ar ? s.arTitle : s.enTitle}</span>
               </h2>
               <div className="text-sm leading-relaxed text-slate-300">
-                {isRtl ? sec.bodyAr : sec.bodyEn}
+                {ar ? s.arBody : s.enBody}
               </div>
             </div>
           ))}
         </div>
 
-        {/* ── Footer Notice ─────────────────────────────────────────── */}
-        <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-center space-y-2">
-          <p className="text-xs text-slate-400 leading-relaxed">
-            {isRtl
-              ? 'تحتفظ JurisTech Solutions بحق تعديل هذه الشروط في أي وقت، مع إشعار المستخدمين عبر البريد الإلكتروني المسجل قبل 14 يوماً من سريان التعديلات.'
-              : 'JurisTech Solutions reserves the right to modify these Terms at any time. Users will be notified via registered email at least 14 days before amendments take effect.'}
+        <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-center space-y-3">
+          <p className="text-sm font-semibold text-white">
+            {ar ? 'باستخدامك لجوريستك، فإنك تُقرّ بأنك قرأت هذه الشروط وفهمتها.' : 'By using JURISTECH, you acknowledge that you have read and understood these Terms of Service.'}
           </p>
-          <a href={`mailto:${SUPPORT_EMAIL}`} className="text-xs text-sky-400 hover:text-sky-300 font-bold transition-colors">
-            {SUPPORT_EMAIL}
-          </a>
+          <div className="flex flex-wrap justify-center gap-4 text-xs text-slate-500">
+            <Link to="/pricing" className="hover:text-slate-300">{ar ? 'الأسعار' : 'Pricing'}</Link>
+            <span>·</span>
+            <Link to="/privacy" className="hover:text-slate-300">{ar ? 'سياسة الخصوصية' : 'Privacy Policy'}</Link>
+            <span>·</span>
+            <Link to="/refund" className="hover:text-slate-300">{ar ? 'سياسة الاسترداد' : 'Refund Policy'}</Link>
+            <span>·</span>
+            <a href={`mailto:${SUPPORT_EMAIL}`} className="hover:text-slate-300">{SUPPORT_EMAIL}</a>
+          </div>
         </div>
-
       </div>
     </div>
   );
 }
+

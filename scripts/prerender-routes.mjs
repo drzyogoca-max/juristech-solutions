@@ -178,6 +178,18 @@ const ROUTE_METADATA = {
     descriptionAr: 'الشروط والأحكام الرسمية الحاكمة لاستخدام منصة JurisTech Solutions وحلول الذكاء الاصطناعي القانوني واتفاقيات مستوى الخدمة (SLA).',
     descriptionEn: 'Official Terms of Service governing platform usage, enterprise SLAs, and AI legal advisory standards for JurisTech Solutions.',
   },
+  '/refund': {
+    titleAr: 'سياسة الاسترداد وإلغاء الاشتراكات | JurisTech Solutions',
+    titleEn: 'Refund Policy & Cancellation Terms | JurisTech Solutions',
+    descriptionAr: 'السياسة الرسمية لاسترداد المبالغ وإلغاء الاشتراكات الرقمية لدى JurisTech Solutions.',
+    descriptionEn: 'Official Refund Policy and cancellation terms for digital software subscriptions at JurisTech Solutions.',
+  },
+  '/pricing': {
+    titleAr: 'خطط الأسعار والاشتراكات المؤسسية | JurisTech Solutions',
+    titleEn: 'Pricing Plans & Enterprise Subscriptions | JurisTech Solutions',
+    descriptionAr: 'استعرض خطط الأسعار والاشتراكات المؤسسية الشفافة لمنظومة JurisTech Solutions القانونية الذكية.',
+    descriptionEn: 'Explore transparent pricing plans and enterprise subscription tiers for JurisTech Solutions legal AI.',
+  },
 };
 
 const PUBLIC_ROUTES = Object.keys(ROUTE_METADATA);

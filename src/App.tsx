@@ -50,8 +50,9 @@ const AdminDashboardPage = lazy(() => import('./pages/AdminDashboardPage'));
 const AdvancedAIHubPage = lazy(() => import('./pages/AdvancedAIHubPage'));
 const LegalCompliancePage = lazy(() => import('./pages/LegalCompliancePage'));
 const AboutUsPage = lazy(() => import('./pages/AboutUsPage'));
-const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'));
+const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
 const TermsPage = lazy(() => import('./pages/TermsPage'));
+const RefundPage = lazy(() => import('./pages/RefundPage'));
 const AdminAnalyticsPage = lazy(() => import('./pages/admin/AdminAnalyticsPage'));
 const AdminFinancialDashboardPage = lazy(() => import('./pages/admin/AdminFinancialDashboardPage'));
 const AntiFraudAuditorPage = lazy(() => import('./pages/admin/AntiFraudAuditorPage'));
@@ -278,10 +279,13 @@ function MainAppContent() {
               <Route path="/legal-compliance" element={<LegalCompliancePage />} />
               <Route path="/about" element={<AboutUsPage />} />
               <Route path="/about-us" element={<Navigate to="/about" replace />} />
-              <Route path="/privacy" element={<PrivacyPolicyPage />} />
+              <Route path="/privacy" element={<PrivacyPage />} />
               <Route path="/privacy-policy" element={<Navigate to="/privacy" replace />} />
               <Route path="/terms" element={<TermsPage />} />
               <Route path="/terms-of-use" element={<Navigate to="/terms" replace />} />
+              <Route path="/refund" element={<RefundPage />} />
+              <Route path="/refunds" element={<RefundPage />} />
+              <Route path="/refund-policy" element={<Navigate to="/refund" replace />} />
               <Route path="/compliance" element={<Navigate to="/legal-compliance" replace />} />
               <Route path="/regulatory" element={<Navigate to="/legal-compliance" replace />} />
               <Route path="/regulatory-framework" element={<Navigate to="/legal-compliance" replace />} />

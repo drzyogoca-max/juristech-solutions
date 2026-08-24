@@ -180,6 +180,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link to="/refund" className="hover:text-amber-300 transition-colors block py-0.5">
+                  {l('سياسة استرداد الأموال', 'Refund Policy')}
+                </Link>
+              </li>
+              <li>
                 <Link to="/legal-compliance" className="hover:text-amber-300 transition-colors block py-0.5">
                   {l('الامتثال للائحة GDPR & PDPL', 'PDPL & GDPR Compliance')}
                 </Link>
