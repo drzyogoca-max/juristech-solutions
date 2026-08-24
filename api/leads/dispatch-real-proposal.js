@@ -31,8 +31,8 @@ export async function POST(req) {
     const authHeader = req.headers.get('Authorization') || req.headers.get('authorization') || '';
     const adminToken = req.headers.get('x-admin-token') || '';
 
-    const expectedSecret = process.env.ADMIN_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '505275MH';
-    const isAuthorized = authHeader.includes(expectedSecret) || adminToken === expectedSecret || authHeader.startsWith('Bearer juristech_admin_');
+    const expectedSecret = process.env.ADMIN_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+    const isAuthorized = (expectedSecret && (authHeader.includes(expectedSecret) || adminToken === expectedSecret)) || (process.env.NODE_ENV !== 'production' && authHeader.startsWith('Bearer juristech_admin_'));
 
     if (!isAuthorized && process.env.NODE_ENV === 'production') {
       return Response.json({ error: 'Unauthorized: Sovereign administrative authorization required' }, { status: 401, headers: CORS_HEADERS });

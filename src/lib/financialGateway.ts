@@ -32,8 +32,8 @@ export const OFFICIAL_BANK_ACCOUNT = {
 };
 
 export const LIVE_PAYMENT_KEYS = {
-  stripeLivePublishableKey: import.meta.env.VITE_STRIPE_LIVE_PUBLISHABLE_KEY || 'pk_live_51M...JurisTech',
-  tapPaymentsLiveSecretKey: import.meta.env.VITE_TAP_PAYMENTS_LIVE_SECRET_KEY || 'sk_live_Tap99...JurisTech',
+  stripeLivePublishableKey: import.meta.env.VITE_STRIPE_LIVE_PUBLISHABLE_KEY || '',
+  tapPaymentsLiveSecretKey: import.meta.env.VITE_TAP_PAYMENTS_LIVE_SECRET_KEY || '',
   binancePayUid: '557019549',
   binancePayEmail: 'Drzyogo.ca@gmail.com',
   status: 'ACTIVE_LIVE_VERIFIED',
