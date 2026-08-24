@@ -370,6 +370,16 @@ class CrmService {
     return this.leads;
   }
 
+  public getRealInboundLeads(): CrmClientLead[] {
+    const seedIds = ['b2b-lead-us-01', 'b2b-lead-uk-02', 'b2b-lead-de-03', 'b2b-lead-ae-04', 'b2b-lead-sa-05', 'b2b-lead-cn-06', 'b2b-lead-tr-07', 'b2b-lead-eg-08', 'b2b-lead-sg-09', 'b2b-lead-fr-10'];
+    return this.leads.filter(l => !seedIds.includes(l.id) && !l.contactEmail.includes('apex-energycorp.com'));
+  }
+
+  public getSeedLeads(): CrmClientLead[] {
+    const seedIds = ['b2b-lead-us-01', 'b2b-lead-uk-02', 'b2b-lead-de-03', 'b2b-lead-ae-04', 'b2b-lead-sa-05', 'b2b-lead-cn-06', 'b2b-lead-tr-07', 'b2b-lead-eg-08', 'b2b-lead-sg-09', 'b2b-lead-fr-10'];
+    return this.leads.filter(l => seedIds.includes(l.id) || l.contactEmail.includes('apex-energycorp.com'));
+  }
+
   public getArchivedLeads(): CrmClientLead[] {
     return this.archivedLeads;
   }
