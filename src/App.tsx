@@ -147,6 +147,7 @@ function MainAppContent() {
         const { autonomousCSuiteOutreachEngine } = await import('./services/autonomousCSuiteOutreachEngine');
 
         const { masterExecutiveAutopilot } = await import('./services/masterExecutiveAutopilot');
+        const { executiveMonitorEngine } = await import('./services/executiveMonitorEngine');
 
         initVersionManager();
         enforceArchiveModeGuard();
@@ -165,6 +166,7 @@ function MainAppContent() {
         scheduleDailyAudit();
         autonomousCSuiteOutreachEngine.autoRunDailyBatch();
         masterExecutiveAutopilot.startAutopilot();
+        executiveMonitorEngine.startDailyMonitoring();
       } catch (e) {
         console.warn('[Performance Boot] Background engine deferred init:', e);
       }
