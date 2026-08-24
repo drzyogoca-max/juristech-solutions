@@ -27,8 +27,6 @@ async function runRealityAudit() {
 
   // 1. Live Uptime Probes
   const homeProbe = await probeUrl(`${BASE_URL}/`);
-  const chatProbe = await probeUrl(`${BASE_URL}/chat`);
-  const contractsProbe = await probeUrl(`${BASE_URL}/contracts`);
 
   console.log('==========================================================================');
   console.log('                   📊 JURISTECH REALITY MONITOR DASHBOARD                 ');
@@ -64,8 +62,8 @@ async function runRealityAudit() {
   console.log('──────────────────────────────────────────────────────────────────────────');
   console.log(`⏳ [17] Credit Card Payment Gateways    : NOT_CONNECTED [Paddle / PayTabs KYC Application Pending]`);
   console.log(`⏳ [18] Live Webhook Event Streams      : STANDBY (0 Ingested) [Endpoints ready, awaiting gateway]`);
-  console.log(`⏳ [19] YouTube Analytics API           : NOT_CONNECTED [Channel configured, API polling standby]`);
-  console.log(`⏳ [20] Website Traffic API Querying    : TRACKING_ACTIVE [GA4 tag G-311560459 active, API standby]`);
+  console.log(`⏳ [19] YouTube Analytics API           : NOT_CONNECTED [Channel configured, Data API not connected]`);
+  console.log(`⏳ [20] Website Traffic Data API        : NOT_CONNECTED [TRACKING ACTIVE — DATA API NOT CONNECTED]`);
   console.log(`⏳ [21] Inbound Email Mailbox Scanning  : MANUAL_INBOX [Outbox live, Inbox manual check by founder]`);
   console.log(`⏳ [22] Subscription Auto-Renewal      : STANDBY [Awaiting Merchant of Record tokenization]`);
 

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * executiveMonitorEngine.ts
  * ─────────────────────────────────────────────────────────────────────────────
  * JurisTech Solutions — Strict Real-World Production & Telemetry Monitor v2.0
@@ -357,11 +357,11 @@ class ExecutiveMonitorEngine {
       },
       {
         id: 20,
-        pillar: 'Website Traffic API Querying',
+        pillar: 'Website Traffic Data API',
         pillarAr: 'استعلام زيارات الموقع عبر الـ API',
         category: 'INTEGRATION_STATUS',
-        value: 'TRACKING_ACTIVE (API Standby)',
-        status: 'UNVERIFIED',
+        value: 'TRACKING ACTIVE — DATA API NOT CONNECTED',
+        status: 'NOT_CONNECTED',
         sourceSystem: 'Google Analytics 4 (G-311560459)',
         sourceQueryOrFile: 'index.html GA4 gtag script tag',
         timestamp,
