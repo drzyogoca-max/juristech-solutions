@@ -1,11 +1,13 @@
 ﻿-- =============================================================================
--- JurisTech Solutions — Real Business & Revenue Database Schema v2026.1
+-- JurisTech Solutions — Real Business & Revenue Database Schema v2026.2
 -- Strict Production Model for Customers, Subscriptions, Payments & CRM Leads
+-- Includes Complete Idempotency Indexes & Row Level Security (RLS) Isolation
 -- =============================================================================
 
 -- 1. Customers Table (Real Customers & Organizations)
 CREATE TABLE IF NOT EXISTS public.customers (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    auth_user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now()),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now()),
     email TEXT NOT NULL UNIQUE,
@@ -27,12 +29,13 @@ CREATE TABLE IF NOT EXISTS public.subscriptions (
     plan_tier TEXT NOT NULL, -- 'startup', 'sme', 'enterprise', 'custom'
     price_usd NUMERIC(10, 2) NOT NULL,
     billing_interval TEXT NOT NULL DEFAULT 'monthly', -- 'monthly', 'yearly'
-    status TEXT NOT NULL DEFAULT 'active', -- 'active', 'cancelled', 'past_due', 'paused'
+    status TEXT NOT NULL DEFAULT 'pending', -- 'pending', 'authorized', 'active', 'cancelled', 'past_due', 'paused', 'expired'
     current_period_start TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now()),
     current_period_end TIMESTAMPTZ NOT NULL,
     cancel_at_period_end BOOLEAN NOT NULL DEFAULT false,
     verified BOOLEAN NOT NULL DEFAULT false,
     created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now()),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now()),
     metadata JSONB DEFAULT '{}'::jsonb
 );
 
@@ -45,7 +48,7 @@ CREATE TABLE IF NOT EXISTS public.payments (
     provider_payment_id TEXT,
     amount_usd NUMERIC(10, 2) NOT NULL,
     currency TEXT NOT NULL DEFAULT 'USD',
-    status TEXT NOT NULL DEFAULT 'completed', -- 'completed', 'pending', 'failed', 'refunded'
+    status TEXT NOT NULL DEFAULT 'pending', -- 'pending', 'authorized', 'completed', 'failed', 'refunded'
     payment_method TEXT, -- 'card', 'wire_swift', 'usdt'
     verified BOOLEAN NOT NULL DEFAULT false,
     created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now()),
@@ -60,9 +63,11 @@ CREATE TABLE IF NOT EXISTS public.transactions (
     transaction_ref TEXT NOT NULL UNIQUE,
     type TEXT NOT NULL DEFAULT 'subscription_charge', -- 'subscription_charge', 'one_off_audit', 'refund'
     amount_usd NUMERIC(10, 2) NOT NULL,
+    currency TEXT NOT NULL DEFAULT 'USD',
     status TEXT NOT NULL DEFAULT 'success',
     sha256_hash TEXT,
     verified BOOLEAN NOT NULL DEFAULT false,
+    verified_at TIMESTAMPTZ,
     created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
 );
 
@@ -75,7 +80,7 @@ CREATE TABLE IF NOT EXISTS public.invoices (
     amount_usd NUMERIC(10, 2) NOT NULL,
     currency TEXT NOT NULL DEFAULT 'USD',
     pdf_url TEXT,
-    status TEXT NOT NULL DEFAULT 'paid', -- 'draft', 'issued', 'paid', 'void'
+    status TEXT NOT NULL DEFAULT 'issued', -- 'draft', 'issued', 'paid', 'void'
     due_date TIMESTAMPTZ NOT NULL,
     paid_at TIMESTAMPTZ,
     sha256_hash TEXT,
@@ -91,7 +96,7 @@ CREATE TABLE IF NOT EXISTS public.leads (
     country TEXT,
     industry TEXT,
     role TEXT,
-    lead_source TEXT NOT NULL DEFAULT 'website_inquiry', -- 'website_inquiry', 'demo_request', 'linkedin_outreach', 'youtube'
+    lead_source TEXT NOT NULL DEFAULT 'website_inquiry', -- 'website_inquiry', 'demo_request', 'enterprise_rfp', 'linkedin_outreach', 'youtube'
     status TEXT NOT NULL DEFAULT 'Lead', -- 'Visitor', 'Lead', 'Qualified', 'Demo_Requested', 'Proposal_Sent', 'Customer'
     score INTEGER DEFAULT 50,
     notes TEXT,
@@ -119,7 +124,7 @@ CREATE TABLE IF NOT EXISTS public.enterprise_opportunities (
 -- 8. Analytics & Conversion Events (Funnel Tracking)
 CREATE TABLE IF NOT EXISTS public.events (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    event_name TEXT NOT NULL, -- 'pricing_view', 'checkout_start', 'payment_success', 'demo_request'
+    event_name TEXT NOT NULL, -- 'pricing_viewed', 'checkout_started', 'purchase_completed', 'enterprise_inquiry_sent'
     user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
     session_id TEXT,
     page_path TEXT,
@@ -129,7 +134,20 @@ CREATE TABLE IF NOT EXISTS public.events (
     created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
 );
 
--- Enable Row Level Security (RLS)
+-- ─── Idempotency & Query Optimization Indexes ─────────────────────────────────
+CREATE INDEX IF NOT EXISTS idx_customers_email ON public.customers(email);
+CREATE INDEX IF NOT EXISTS idx_customers_auth_user ON public.customers(auth_user_id);
+CREATE INDEX IF NOT EXISTS idx_subscriptions_customer_id ON public.subscriptions(customer_id);
+CREATE INDEX IF NOT EXISTS idx_subscriptions_provider_id ON public.subscriptions(provider, provider_subscription_id);
+CREATE INDEX IF NOT EXISTS idx_subscriptions_status ON public.subscriptions(status);
+CREATE INDEX IF NOT EXISTS idx_payments_customer_id ON public.payments(customer_id);
+CREATE INDEX IF NOT EXISTS idx_payments_provider_id ON public.payments(provider, provider_payment_id);
+CREATE INDEX IF NOT EXISTS idx_transactions_ref ON public.transactions(transaction_ref);
+CREATE INDEX IF NOT EXISTS idx_invoices_customer_id ON public.invoices(customer_id);
+CREATE INDEX IF NOT EXISTS idx_leads_email ON public.leads(email);
+CREATE INDEX IF NOT EXISTS idx_events_name_created ON public.events(event_name, created_at);
+
+-- ─── Enable Row Level Security (RLS) ──────────────────────────────────────────
 ALTER TABLE public.customers ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.subscriptions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.payments ENABLE ROW LEVEL SECURITY;
@@ -138,3 +156,24 @@ ALTER TABLE public.invoices ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.leads ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.enterprise_opportunities ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.events ENABLE ROW LEVEL SECURITY;
+
+-- ─── RLS Policies ─────────────────────────────────────────────────────────────
+-- Customers: Users can read their own profile
+CREATE POLICY "Users can view own customer record" ON public.customers
+    FOR SELECT USING (auth.uid() = auth_user_id);
+
+-- Subscriptions: Users can read their own subscriptions
+CREATE POLICY "Users can view own subscriptions" ON public.subscriptions
+    FOR SELECT USING (customer_id IN (SELECT id FROM public.customers WHERE auth_user_id = auth.uid()));
+
+-- Invoices: Users can read their own invoices
+CREATE POLICY "Users can view own invoices" ON public.invoices
+    FOR SELECT USING (customer_id IN (SELECT id FROM public.customers WHERE auth_user_id = auth.uid()));
+
+-- Leads: Anyone can submit a lead / inquiry (public insert)
+CREATE POLICY "Public can insert leads" ON public.leads
+    FOR INSERT WITH CHECK (true);
+
+-- Events: Anyone can log anonymous funnel events
+CREATE POLICY "Public can insert analytics events" ON public.events
+    FOR INSERT WITH CHECK (true);
