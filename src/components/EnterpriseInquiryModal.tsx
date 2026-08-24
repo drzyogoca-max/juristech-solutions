@@ -58,6 +58,9 @@ export default function EnterpriseInquiryModal({ isOpen, onClose }: EnterpriseIn
     try {
       // 3. Ingest into CRM as real inbound lead
       crmService.addLead({
+        source_type: 'REAL',
+        verification_status: 'VERIFIED',
+        created_at: new Date().toISOString(),
         clientName: cleanName,
         companyName: cleanCompany,
         contactEmail: cleanEmail,

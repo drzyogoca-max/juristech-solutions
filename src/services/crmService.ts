@@ -9,6 +9,9 @@
 import { triggerAutomatedB2BOutreach } from './outreachEngine';
 
 export interface CrmClientLead {
+  source_type?: 'REAL' | 'SEED' | 'SYNTHETIC';
+  verification_status?: 'VERIFIED' | 'UNVERIFIED' | 'SEED';
+  created_at?: string;
   id: string;
   clientName: string;
   companyName: string;
@@ -49,7 +52,7 @@ const CRM_DAILY_QUOTA_STORAGE_KEY = 'juristech_crm_daily_quota_v3';
 // ── 10 REAL UNIQUE GLOBAL B2B CLIENT PROSPECTS ──────────────────────────────
 export const INITIAL_CRM_LEADS: CrmClientLead[] = [
   {
-    id: 'b2b-lead-us-01',
+    source_type: 'SEED', verification_status: 'SEED', created_at: '2026-08-01T00:00:00Z', id: 'b2b-lead-us-01',
     clientName: 'Alexander Vance',
     companyName: 'Apex Energy & Infrastructure Partners LLC',
     contactEmail: 'executive@apex-energycorp.com',
@@ -65,7 +68,7 @@ export const INITIAL_CRM_LEADS: CrmClientLead[] = [
     lastActivityEn: 'Lead targeted with 99/100 HOT intent score',
   },
   {
-    id: 'b2b-lead-uk-02',
+    source_type: 'SEED', verification_status: 'SEED', created_at: '2026-08-01T00:00:00Z', id: 'b2b-lead-uk-02',
     clientName: 'Victoria Sterling',
     companyName: 'Vanguard Sovereign Investment Group',
     contactEmail: 'corporate.legal@vanguard-sovereign.co.uk',
@@ -81,7 +84,7 @@ export const INITIAL_CRM_LEADS: CrmClientLead[] = [
     lastActivityEn: 'Queued for automatic CEO & CFO executive outreach',
   },
   {
-    id: 'b2b-lead-de-03',
+    source_type: 'SEED', verification_status: 'SEED', created_at: '2026-08-01T00:00:00Z', id: 'b2b-lead-de-03',
     clientName: 'Dr. Klaus Hoffmann',
     companyName: 'Bavaria Tech & Industrial Solutions GmbH',
     contactEmail: 'legal.dept@bavaria-techsolutions.de',
@@ -97,7 +100,7 @@ export const INITIAL_CRM_LEADS: CrmClientLead[] = [
     lastActivityEn: 'Captured intent for EU statutory compliance radar',
   },
   {
-    id: 'b2b-lead-ae-04',
+    source_type: 'SEED', verification_status: 'SEED', created_at: '2026-08-01T00:00:00Z', id: 'b2b-lead-ae-04',
     clientName: 'Sheikh Tariq Al-Maktoum',
     companyName: 'Al-Maktoum Global Trade & Logistics FZE',
     contactEmail: 'csuite@almaktoum-trade.ae',
@@ -113,7 +116,7 @@ export const INITIAL_CRM_LEADS: CrmClientLead[] = [
     lastActivityEn: 'Requested board-level enterprise annual subscription proposal',
   },
   {
-    id: 'b2b-lead-sa-05',
+    source_type: 'SEED', verification_status: 'SEED', created_at: '2026-08-01T00:00:00Z', id: 'b2b-lead-sa-05',
     clientName: 'Eng. Fahad Al-Otaibi',
     companyName: 'Riyadh Horizon Capital & Real Estate Group',
     contactEmail: 'board@riyadh-horizoncapital.sa',
@@ -129,7 +132,7 @@ export const INITIAL_CRM_LEADS: CrmClientLead[] = [
     lastActivityEn: 'Prepared for direct executive dispatch signed by Dr. Mohammad',
   },
   {
-    id: 'b2b-lead-cn-06',
+    source_type: 'SEED', verification_status: 'SEED', created_at: '2026-08-01T00:00:00Z', id: 'b2b-lead-cn-06',
     clientName: 'Li Wei Central',
     companyName: 'Shenzhen Dragon Tech & AI Ventures Ltd.',
     contactEmail: 'corporate@shenzhen-dragontech.cn',
@@ -145,7 +148,7 @@ export const INITIAL_CRM_LEADS: CrmClientLead[] = [
     lastActivityEn: 'Automated clause extraction triggered',
   },
   {
-    id: 'b2b-lead-es-07',
+    source_type: 'SEED', verification_status: 'SEED', created_at: '2026-08-01T00:00:00Z', id: 'b2b-lead-es-07',
     clientName: 'Carlos Mendoza',
     companyName: 'Iberian Maritime & Commercial Partners S.L.',
     contactEmail: 'legal@iberian-maritime.es',
@@ -161,7 +164,7 @@ export const INITIAL_CRM_LEADS: CrmClientLead[] = [
     lastActivityEn: 'Captured intent from EU investment portal',
   },
   {
-    id: 'b2b-lead-fr-08',
+    source_type: 'SEED', verification_status: 'SEED', created_at: '2026-08-01T00:00:00Z', id: 'b2b-lead-fr-08',
     clientName: 'Claire Dubois',
     companyName: 'Elysian Corporate Advisory & M&A SAS',
     contactEmail: 'cfo@elysian-advisory.fr',
@@ -177,7 +180,7 @@ export const INITIAL_CRM_LEADS: CrmClientLead[] = [
     lastActivityEn: 'Queued for C-Suite advisory analysis',
   },
   {
-    id: 'b2b-lead-sg-09',
+    source_type: 'SEED', verification_status: 'SEED', created_at: '2026-08-01T00:00:00Z', id: 'b2b-lead-sg-09',
     clientName: 'Benjamin Tan',
     companyName: 'Pacific Star Asset Management Pte.',
     contactEmail: 'governance@pacificstar-assets.sg',
@@ -193,7 +196,7 @@ export const INITIAL_CRM_LEADS: CrmClientLead[] = [
     lastActivityEn: 'Queued for executive outreach',
   },
   {
-    id: 'b2b-lead-ca-10',
+    source_type: 'SEED', verification_status: 'SEED', created_at: '2026-08-01T00:00:00Z', id: 'b2b-lead-ca-10',
     clientName: 'David Miller',
     companyName: 'Maple Leaf International Legal Partners Corp.',
     contactEmail: 'executive.board@mapleleaf-legal.ca',
@@ -371,13 +374,13 @@ class CrmService {
   }
 
   public getRealInboundLeads(): CrmClientLead[] {
-    const seedIds = ['b2b-lead-us-01', 'b2b-lead-uk-02', 'b2b-lead-de-03', 'b2b-lead-ae-04', 'b2b-lead-sa-05', 'b2b-lead-cn-06', 'b2b-lead-tr-07', 'b2b-lead-eg-08', 'b2b-lead-sg-09', 'b2b-lead-fr-10'];
-    return this.leads.filter(l => !seedIds.includes(l.id) && !l.contactEmail.includes('apex-energycorp.com'));
+    const all = this.getLeads();
+    return all.filter(c => c.source_type === 'REAL');
   }
 
   public getSeedLeads(): CrmClientLead[] {
-    const seedIds = ['b2b-lead-us-01', 'b2b-lead-uk-02', 'b2b-lead-de-03', 'b2b-lead-ae-04', 'b2b-lead-sa-05', 'b2b-lead-cn-06', 'b2b-lead-tr-07', 'b2b-lead-eg-08', 'b2b-lead-sg-09', 'b2b-lead-fr-10'];
-    return this.leads.filter(l => seedIds.includes(l.id) || l.contactEmail.includes('apex-energycorp.com'));
+    const all = this.getLeads();
+    return all.filter(c => c.source_type === 'SEED' || !c.source_type);
   }
 
   public getArchivedLeads(): CrmClientLead[] {

@@ -110,13 +110,11 @@ class ExecutiveMonitorEngine {
     let seedLeadsCount = 0;
 
     try {
-      const allLeads = crmService.getLeads();
-      // Partition real inbound from seed leads
-      const seedIds = ['b2b-lead-us-01', 'b2b-lead-uk-02', 'b2b-lead-de-03', 'b2b-lead-ae-04', 'b2b-lead-sa-05'];
-      const realLeads = allLeads.filter((l) => !seedIds.includes(l.id) && !l.contactEmail.includes('apex-energycorp.com'));
+      const realLeads = crmService.getRealInboundLeads();
+      const seedLeads = crmService.getSeedLeads();
       
       realVerifiedLeadsCount = realLeads.length;
-      seedLeadsCount = allLeads.length - realVerifiedLeadsCount;
+      seedLeadsCount = seedLeads.length;
     } catch {}
 
     // ── 3. METRICS DEFINITIONS ───────────────────────────────────────────────

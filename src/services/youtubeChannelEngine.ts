@@ -57,17 +57,17 @@ export class YouTubeChannelEngine {
     channelName: 'JurisTech Solutions — Sovereign AI Legal Intelligence',
     channelHandle: '@JurisTechSolutions',
     officialEmail: 'juristech.solutions@outlook.com',
-    status: 'ACTIVE_AUTOMATED',
-    subscribersCount: 1420,
-    totalVideosPublished: 48,
-    totalViews: 38500,
+    status: 'CONFIGURED',
+    subscribersCount: 0,
+    totalVideosPublished: 0,
+    totalViews: 0,
     dailyVideosSchedule: '2 Videos / Day (Morning 9 AM & Evening 6 PM UTC)',
     lastPublishedTimestamp: new Date().toISOString(),
     nextScheduledVideoTimestamp: new Date(Date.now() + 12 * 3600 * 1000).toISOString(),
     oauthClientId: '420720999238-8hcb6ng6802jukmi9088uu8k5950etn5.apps.googleusercontent.com',
     oauthProjectId: 'gen-lang-client-0627816917',
     oauthRedirectUri: 'https://www.juristech.solutions/youtube-studio',
-    isOauthAuthorized: true,
+    isOauthAuthorized: false,
   };
 
   private videos: YouTubeVideoPost[] = [];
