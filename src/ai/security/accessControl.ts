@@ -1,4 +1,4 @@
-﻿/**
+/**
  * src/ai/security/accessControl.ts
  * JurisTech Solutions — AI Feature Access Control
  * Specification: JURISTECH-AI-P0 Phase P0-8
@@ -16,7 +16,11 @@ export type AIFeature =
   | 'enterprise_multi_jurisdiction'
   | 'hallucination_guard_details'
   | 'compliance_agent'
-  | 'seo_content_draft';
+  | 'seo_content_draft'
+  | 'admin_ai_analytics'
+  | 'customer_success_console'
+  | 'enterprise_governance_console'
+  | 'enterprise_ecosystem_console';
 
 const TIER_RANK: Record<UserTier, number> = {
   free: 0, startup: 1, sme: 2, pro: 3, enterprise: 4, lawyer: 4, admin: 5,
@@ -31,6 +35,10 @@ const FEATURE_MINIMUM_TIER: Record<AIFeature, UserTier> = {
   compliance_agent:                'sme',
   enterprise_multi_jurisdiction:   'enterprise',
   seo_content_draft:               'admin',
+  admin_ai_analytics:              'admin',
+  customer_success_console:        'admin',
+  enterprise_governance_console:   'admin',
+  enterprise_ecosystem_console:    'admin',
 };
 
 const FEATURE_DESCRIPTION: Record<AIFeature, { en: string; ar: string }> = {
@@ -42,6 +50,10 @@ const FEATURE_DESCRIPTION: Record<AIFeature, { en: string; ar: string }> = {
   compliance_agent:                { en: 'Regulatory Compliance Agent', ar: 'وكيل الامتثال التنظيمي' },
   enterprise_multi_jurisdiction:   { en: 'Enterprise Multi-Jurisdiction AI', ar: 'الذكاء المتعدد للولايات المؤسسي' },
   seo_content_draft:               { en: 'SEO AI Content Draft', ar: 'مسودة محتوى SEO' },
+  admin_ai_analytics:              { en: 'Admin AI Analytics Dashboard', ar: 'لوحة تحليلات الذكاء الاصطناعي الإدارية' },
+  customer_success_console:        { en: 'Customer Success Console', ar: 'لوحة نجاح العملاء المؤسسيين' },
+  enterprise_governance_console:   { en: 'Enterprise Governance Console', ar: 'مركز حوكمة الذكاء الاصطناعي المؤسسي' },
+  enterprise_ecosystem_console:    { en: 'Enterprise Ecosystem Console', ar: 'لوحة منظومة المطورين والشركاء المؤسسية' },
 };
 
 export function checkAccess(feature: AIFeature, userTier: UserTier): AccessCheckResult {

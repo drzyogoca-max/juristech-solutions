@@ -26,6 +26,10 @@ import { getLocaleFromUrl, setDocumentLanguage, persistLocalePreference, normali
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const ChatPage = lazy(() => import('./pages/ChatPage'));
 const AIAdvisorPage = lazy(() => import('./pages/AIAdvisorPage'));
+const AdminAIAnalyticsPage = lazy(() => import('./pages/AdminAIAnalyticsPage'));
+const CustomerSuccessPage = lazy(() => import('./pages/CustomerSuccessPage'));
+const EnterpriseGovernancePage = lazy(() => import('./pages/EnterpriseGovernancePage'));
+const EnterpriseEcosystemPage = lazy(() => import('./pages/EnterpriseEcosystemPage'));
 
 const ContractsPage = lazy(() => import('./pages/ContractsPage'));
 const ContractsRepositoryPage = lazy(() => import('./pages/ContractsRepositoryPage'));
@@ -333,6 +337,38 @@ function MainAppContent() {
                     element={
                       <ProtectedAdminRoute>
                         <AdminAnalyticsPage />
+                      </ProtectedAdminRoute>
+                    }
+                  />
+                  <Route
+                    path={`${prefix}/admin/ai-analytics`}
+                    element={
+                      <ProtectedAdminRoute>
+                        <AdminAIAnalyticsPage />
+                      </ProtectedAdminRoute>
+                    }
+                  />
+                  <Route
+                    path={`${prefix}/admin/customer-success`}
+                    element={
+                      <ProtectedAdminRoute>
+                        <CustomerSuccessPage />
+                      </ProtectedAdminRoute>
+                    }
+                  />
+                  <Route
+                    path={`${prefix}/admin/enterprise-governance`}
+                    element={
+                      <ProtectedAdminRoute>
+                        <EnterpriseGovernancePage />
+                      </ProtectedAdminRoute>
+                    }
+                  />
+                  <Route
+                    path={`${prefix}/admin/ecosystem`}
+                    element={
+                      <ProtectedAdminRoute>
+                        <EnterpriseEcosystemPage />
                       </ProtectedAdminRoute>
                     }
                   />
