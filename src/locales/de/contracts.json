@@ -1,0 +1,20 @@
+{
+  "generatorTitle": "Smart-Contract-Generator",
+  "generatorSubtitle": "Automatisierte Vertragserstellung im Einklang mit Zivil- und Handelsrecht aus 45+ Rechtsordnungen.",
+  "contractTypeLabel": "Vertragstyp / Rechtsgebiet",
+  "partyALabel": "Partei A (Name & Rechtsform)",
+  "partyBLabel": "Partei B (Name & Rechtsform)",
+  "valueLabel": "Vertragswert & Zahlungsbedingungen",
+  "currencyLabel": "Vertragswährung",
+  "jurisdictionLabel": "Anwendbares Recht & Gerichtsbarkeit",
+  "arbitrationLabel": "Schiedsort & Streitbeilegung",
+  "customClausesLabel": "Sonderklauseln & Individuelle Vereinbarungen",
+  "generateButton": "KI-Smart-Contract generieren",
+  "generatingMessage": "Juris ruft gesetzliche Vorlagen ab und formuliert Schutzklauseln...",
+  "outputTitle": "Fertiger Smart-Contract",
+  "exportPdfButton": "Gesiegeltes PDF exportieren",
+  "exportWordButton": "Word exportieren (.docx)",
+  "auditRiskButton": "Vertragsrisiko jetzt prüfen",
+  "riskApprovalNote": "Risiko-Verknüpfung: Die Ausstellung erfordert die Prüfung der Risikoanalyse.",
+  "fillRequiredFields": "Bitte geben Sie die Daten von Partei A und Partei B an."
+}

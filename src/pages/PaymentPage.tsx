@@ -21,6 +21,7 @@ import InstaPayModal from '../components/InstaPayModal';
 import ProformaInvoiceModal from '../components/ProformaInvoiceModal';
 import DigitalInvoiceModal from '../components/DigitalInvoiceModal';
 import { activateUserSubscription, BillingTransaction } from '../lib/financialGateway';
+import { openPaddleCheckout, PADDLE_CONFIG } from '../lib/paddleClient';
 import { usePlatformLocale } from '../lib/universalTranslator';
 import SEO from '../components/SEO';
 
@@ -423,40 +424,57 @@ export default function PaymentPage() {
                 </div>
 
                 {/* Direct Payment Method Launchers */}
-                <div className="space-y-2.5 pt-4 border-t border-slate-800">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase block text-center">
-                    {l('اختر وسيلة الدفع والتفعيل الفوري:', 'Select Instant Payment Gateway:')}
-                  </span>
+                <div className="space-y-3 pt-4 border-t border-slate-800">
+                  {/* Primary Instant Paddle Card Checkout */}
+                  <button
+                    onClick={() => openPaddleCheckout({
+                      priceId: PADDLE_CONFIG.priceId,
+                      planTier: plan.id as any,
+                      amountUSD: plan.price,
+                      onSuccess: () => {
+                        window.location.href = '/billing?session=success';
+                      },
+                    })}
+                    className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-cyan-500 via-sky-400 to-indigo-500 hover:from-cyan-400 hover:to-indigo-400 text-slate-950 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 active:scale-95 transition-all cursor-pointer"
+                  >
+                    <CreditCard className="w-4 h-4 text-slate-950" />
+                    <span>{l('اشترك الآن بالبطاقة (Paddle Checkout)', 'Subscribe Now (Paddle Checkout)')}</span>
+                    <Sparkles className="w-3.5 h-3.5 text-slate-950" />
+                  </button>
+
+                  <div className="flex items-center gap-2 text-[10px] text-slate-500 justify-center">
+                    <span>{l('أو سدد عبر البوابات المباشرة:', 'Or pay via alternative methods:')}</span>
+                  </div>
 
                   <div className="grid grid-cols-3 gap-2">
                     <button
                       onClick={() => setSelectedBinancePlan(plan)}
-                      className="py-2.5 px-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[11px] font-bold flex flex-col items-center gap-1 transition-all cursor-pointer"
+                      className="py-2 px-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-bold flex flex-col items-center gap-1 transition-all cursor-pointer"
                     >
-                      <Smartphone className="w-3.5 h-3.5 text-amber-400" />
+                      <Smartphone className="w-3 h-3 text-amber-400" />
                       <span>Binance Pay</span>
                     </button>
 
                     <button
                       onClick={() => setSelectedWirePlan(plan)}
-                      className="py-2.5 px-2 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30 text-[11px] font-bold flex flex-col items-center gap-1 transition-all cursor-pointer"
+                      className="py-2 px-1.5 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30 text-[10px] font-bold flex flex-col items-center gap-1 transition-all cursor-pointer"
                     >
-                      <Building2 className="w-3.5 h-3.5 text-sky-400" />
+                      <Building2 className="w-3 h-3 text-sky-400" />
                       <span>SWIFT Wire</span>
                     </button>
 
                     <button
                       onClick={() => setSelectedInstaPayPlan(plan)}
-                      className="py-2.5 px-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[11px] font-bold flex flex-col items-center gap-1 transition-all cursor-pointer"
+                      className="py-2 px-1.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold flex flex-col items-center gap-1 transition-all cursor-pointer"
                     >
-                      <Zap className="w-3.5 h-3.5 text-emerald-400" />
+                      <Zap className="w-3 h-3 text-emerald-400" />
                       <span>InstaPay</span>
                     </button>
                   </div>
 
                   <button
                     onClick={() => setSelectedProformaPlan(plan)}
-                    className="w-full py-2 rounded-xl bg-slate-950 hover:bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 text-[10px] font-bold transition-all cursor-pointer"
+                    className="w-full py-1.5 rounded-xl bg-slate-950 hover:bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 text-[10px] font-bold transition-all cursor-pointer"
                   >
                     {l('طلب فاتورة شكلية مبدئية (Proforma Invoice)', 'Request Proforma Invoice')}
                   </button>

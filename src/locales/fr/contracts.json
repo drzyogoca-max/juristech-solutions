@@ -1,0 +1,20 @@
+{
+  "generatorTitle": "Générateur de Contrats Intelligents",
+  "generatorSubtitle": "Rédaction automatisée conforme aux codes civils et commerciaux de 45+ juridictions.",
+  "contractTypeLabel": "Type de contrat / Domaine",
+  "partyALabel": "Partie A (Nom et entité juridique)",
+  "partyBLabel": "Partie B (Nom et entité juridique)",
+  "valueLabel": "Valeur contractuelle et modalités financières",
+  "currencyLabel": "Devise du contrat",
+  "jurisdictionLabel": "Droit applicable et système juridique",
+  "arbitrationLabel": "Siège d'arbitrage et résolution des litiges",
+  "customClausesLabel": "Clauses spécifiques et exigences personnalisées",
+  "generateButton": "Générer le contrat intelligent IA",
+  "generatingMessage": "Juris récupère les modèles législatifs et structure les clauses protectrices...",
+  "outputTitle": "Contrat Intelligent Finalisé",
+  "exportPdfButton": "Exporter PDF officiel",
+  "exportWordButton": "Exporter Word (.docx)",
+  "auditRiskButton": "Auditer les risques contractuels",
+  "riskApprovalNote": "Lien de risque : L'émission du contrat certifié nécessite l'examen préalable des risques.",
+  "fillRequiredFields": "Veuillez renseigner les identités de la Partie A et de la Partie B."
+}

@@ -1,0 +1,9 @@
+{
+  "title": "Base de Conocimiento y Documentación de la API",
+  "subtitle": "Explore guías de arquitectura, protocolos RAG y recursos para desarrolladores.",
+  "gettingStarted": "Guía de Inicio Rápido",
+  "apiReference": "Referencia de API REST y Webhooks",
+  "sdkIntegration": "Conectores ERP (SAP, Odoo, Salesforce)",
+  "securityArchitecture": "Libro Blanco de Seguridad y Cifrado",
+  "jurisdictionMatrix": "Matriz de Jurisdicciones (45+ Países)"
+}

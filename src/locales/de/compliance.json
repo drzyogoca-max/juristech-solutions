@@ -1,0 +1,12 @@
+{
+  "title": "Rechtskonformität & Gesetzliche Governance",
+  "subtitle": "Umfassender Rahmen zur Einhaltung von DSGVO, SOC 2 und internationalen Standards.",
+  "gdprTitle": "DSGVO- & Datenschutz-Konformität",
+  "gdprDesc": "JurisTech setzt strenge Datenschutzstandards, Datenresidenz und Löschrechte durch.",
+  "disclaimerTitle": "Rechtlicher Haftungsausschluss",
+  "disclaimerDesc": "Unsere KI-Plattform liefert algorithmische Orientierung und ersetzt keinen zugelassenen Rechtsanwalt.",
+  "exportUserData": "Meine Daten exportieren (JSON)",
+  "requestErasure": "Recht auf Vergessenwerden (Löschung) beantragen",
+  "regulatoryAudit": "Regulatorische Prüfberichte",
+  "isoCertified": "SOC 2 Type II & ISO 27001 konforme Kontrollen"
+}

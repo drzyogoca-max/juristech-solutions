@@ -1,0 +1,15 @@
+{
+  "title": "Solutions Entreprise & Audit Fusions-Acquisitions",
+  "subtitle": "Déploiements d'IA souveraine sur mesure pour cabinets d'avocats, banques d'affaires et multinationales.",
+  "customDeployment": "Hébergement Dédié & Cloud Privé",
+  "customDeploymentDesc": "Déployez les modèles JurisTech dans votre VPC privé sans aucun partage de données.",
+  "slaGuarantee": "Garantie de Disponibilité 99.99% SLA",
+  "requestProposal": "Demander une proposition entreprise",
+  "companyName": "Nom de l'entreprise / Cabinet",
+  "contactPerson": "Nom du responsable",
+  "workEmail": "E-mail professionnel",
+  "teamSize": "Nombre d'utilisateurs / Avocats",
+  "customRequirements": "Besoins spécifiques",
+  "submitProposal": "Envoyer la demande entreprise",
+  "proposalSentSuccess": "Demande reçue. Un conseiller entreprise vous contactera sous 4 heures ouvrées."
+}

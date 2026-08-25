@@ -1,0 +1,12 @@
+{
+  "title": "Radar de Sécurité & Vérification Cryptographique",
+  "subtitle": "Chiffrement bancaire côté client et souveraineté des données Zero-Trust.",
+  "e2eeTitle": "Chiffrement de bout en bout AES-256-GCM",
+  "e2eeDesc": "Vos contrats et données sensibles sont chiffrés avant de quitter votre navigateur.",
+  "sha256Title": "Scellement inviolable SHA-256",
+  "sha256Desc": "Chaque document généré reçoit une empreinte cryptographique immuable.",
+  "twoFactorTitle": "Authentification à deux facteurs (2FA)",
+  "twoFactorDesc": "Protection des opérations avec jeton ou code OTP.",
+  "threatDetection": "Surveillance anti-fraude en temps réel",
+  "activeStatus": "Radar de sécurité actif et opérationnel"
+}

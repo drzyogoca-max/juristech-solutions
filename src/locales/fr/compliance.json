@@ -1,0 +1,12 @@
+{
+  "title": "Conformité Légale & Gouvernance Réglementaire",
+  "subtitle": "Cadre complet garantissant l'alignement avec le RGPD, SOC 2 et les normes internationales.",
+  "gdprTitle": "Conformité RGPD et Protection des Données",
+  "gdprDesc": "JurisTech applique une politique stricte de confidentialité et garantit le droit à l'effacement.",
+  "disclaimerTitle": "Limitation de Responsabilité",
+  "disclaimerDesc": "Notre plateforme fournit des conseils algorithmiques sans remplacer un avocat inscrit au barreau.",
+  "exportUserData": "Exporter mes données personnelles (JSON)",
+  "requestErasure": "Demander l'effacement définitif (Droit à l'oubli)",
+  "regulatoryAudit": "Rapports d'audit réglementaire",
+  "isoCertified": "Contrôles alignés SOC 2 Type II & ISO 27001"
+}

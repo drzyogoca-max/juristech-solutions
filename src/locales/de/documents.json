@@ -1,0 +1,16 @@
+{
+  "title": "Dokumenten- & Vertragstresor",
+  "subtitle": "Sicheres, manipulationssicheres Repository mit kryptografischer SHA-256-Versiegelung.",
+  "uploadDocument": "Dokument hochladen",
+  "myDocuments": "Meine Dokumente",
+  "noDocuments": "Noch keine Dokumente gespeichert.",
+  "documentName": "Dokumentenname",
+  "fileSize": "Größe",
+  "uploadDate": "Hochgeladen am",
+  "sealStatus": "Kryptografisches Siegel",
+  "downloadPdf": "PDF herunterladen",
+  "downloadDocx": "Word herunterladen (.docx)",
+  "deleteDocument": "Dokument löschen",
+  "confirmDelete": "Möchten Sie dieses Dokument wirklich unwiderruflich löschen?",
+  "e2eeNotice": "Alle Dokumente werden vor der Übertragung clientseitig mit AES-256-GCM verschlüsselt."
+}

@@ -1,0 +1,21 @@
+{
+  "overviewTitle": "高管遥测与法务运营综合中心",
+  "overviewSubtitle": "全天候掌握实时活跃合同、自动化风险审计与主权AI遥测指标。",
+  "totalContracts": "系统合同总数",
+  "realVisitorsToday": "今日真实访问量",
+  "activeSubscribers": "活跃订阅用户与企业",
+  "payingEntities": "官方授权企业机构",
+  "riskReports": "风险审计报告总数",
+  "aiQueries": "法定AI咨询检索量",
+  "quickActions": "高管快捷操作",
+  "draftContractBtn": "起草商事智能合同",
+  "auditRiskBtn": "审计排查合同风险",
+  "liveConsultationBtn": "开启24/7全天候即时咨询",
+  "recentActivity": "系统最新运行动态",
+  "noRecentActivity": "暂无最新交易记录。",
+  "saasMapTab": "全球SaaS交互地图",
+  "contractStudioTab": "合同与审计工作室",
+  "servicesDirectoryTab": "18项主权服务全景目录",
+  "caseStudiesTab": "案例研究与价格方案",
+  "securityTab": "安全合规与双重验证"
+}

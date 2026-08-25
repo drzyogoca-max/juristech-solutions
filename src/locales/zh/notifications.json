@@ -1,0 +1,9 @@
+{
+  "title": "系统通知与运行预警",
+  "markAllRead": "全部标记为已读",
+  "noNotifications": "暂无未读系统通知。",
+  "contractGenerated": "智能商事合同已成功生成完毕。",
+  "riskAuditComplete": "合同风险穿透审计已完成并生成评级。",
+  "subscriptionRenewed": "您的主权订阅方案已成功自动续期。",
+  "invoiceReady": "已开具全新合规电子发票供下载。"
+}

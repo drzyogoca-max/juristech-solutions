@@ -1,0 +1,15 @@
+{
+  "title": "企业级解决方案与并购尽调 (M&A)",
+  "subtitle": "专为跨国律所、投资银行与大型集团定制的主权 AI 本地化私有化部署架构。",
+  "customDeployment": "本地化部署与专属主权私有云 (VPC)",
+  "customDeploymentDesc": "在企业专属私有云中部署 JurisTech 大模型，物理隔离，彻底阻断任何外部数据回流风险。",
+  "slaGuarantee": "99.99% 企业级高可用运行保障 (SLA)",
+  "requestProposal": "获取企业级定制方案与报价",
+  "companyName": "企业 / 律师事务所全称",
+  "contactPerson": "高管负责人姓名",
+  "workEmail": "企业官方工作邮箱",
+  "teamSize": "律师团队 / 授权用户规模",
+  "customRequirements": "企业专属架构与合规要求",
+  "submitProposal": "提交企业合作咨询",
+  "proposalSentSuccess": "您的合作意向已成功送达。企业顾问将在4个工作小时内与您取得联系。"
+}

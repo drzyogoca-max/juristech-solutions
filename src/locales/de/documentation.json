@@ -1,0 +1,9 @@
+{
+  "title": "Wissensdatenbank & API-Dokumentation",
+  "subtitle": "Architektur-Leitfäden, gesetzliche RAG-Protokolle und Entwickler-Ressourcen.",
+  "gettingStarted": "Erste Schritte",
+  "apiReference": "REST & Webhook API-Referenz",
+  "sdkIntegration": "ERP-Konnektoren (SAP, Odoo, Salesforce)",
+  "securityArchitecture": "Sicherheits- & Verschlüsselungs-Whitepaper",
+  "jurisdictionMatrix": "Rechtsordnungs-Matrix (45+ Länder)"
+}

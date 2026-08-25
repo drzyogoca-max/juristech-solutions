@@ -1,0 +1,12 @@
+{
+  "genericError": "Ein unerwarteter Fehler ist aufgetreten. Bitte erneut versuchen.",
+  "networkError": "Netzwerkverbindung fehlgeschlagen.",
+  "unauthorized": "Zugriff verweigert. Bitte anmelden.",
+  "forbidden": "Keine ausreichenden Berechtigungen vorhanden.",
+  "notFound": "Die angeforderte Seite wurde nicht gefunden.",
+  "subscriptionRequired": "Aktives Abonnement für diese Aktion erforderlich.",
+  "paymentFailed": "Zahlungsverarbeitung fehlgeschlagen.",
+  "fileTooLarge": "Datei überschreitet die Höchstgröße von 25 MB.",
+  "invalidFileType": "Dateityp nicht unterstützt (nur PDF, DOCX, TXT).",
+  "aiUnavailable": "KI-Modell ist momentan ausgelastet."
+}

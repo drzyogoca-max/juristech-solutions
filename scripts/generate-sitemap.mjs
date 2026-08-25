@@ -35,6 +35,7 @@ const PAGES = [
   { url: '/terms', priority: '0.80', changefreq: 'monthly' },
   { url: '/refund', priority: '0.80', changefreq: 'monthly' },
   { url: '/pricing', priority: '0.95', changefreq: 'daily' },
+  { url: '/billing', priority: '0.85', changefreq: 'weekly' },
 
   // Static Legal HTML Pages
   { url: '/legal/terms-of-service.html', priority: '0.90', changefreq: 'monthly' },

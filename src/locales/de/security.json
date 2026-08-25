@@ -1,0 +1,12 @@
+{
+  "title": "Sicherheits-Radar & Kryptografische Verifizierung",
+  "subtitle": "Bankentaugliche clientseitige Verschlüsselung und Zero-Trust-Datensouveränität.",
+  "e2eeTitle": "Ende-zu-Ende-Verschlüsselung mit AES-256-GCM",
+  "e2eeDesc": "Ihre sensiblen Verträge werden verschlüsselt, bevor sie Ihren Browser verlassen.",
+  "sha256Title": "Manipulationssichere SHA-256-Versiegelung",
+  "sha256Desc": "Jedes generierte Dokument erhält einen unveränderlichen kryptografischen Hash.",
+  "twoFactorTitle": "Zwei-Faktor-Authentifizierung (2FA)",
+  "twoFactorDesc": "Schutz für sensible Kanzlei- und Administratoroperationen.",
+  "threatDetection": "Echtzeit-Betrugserkennung & Bedrohungsüberwachung",
+  "activeStatus": "Sicherheitsradar aktiv und wachsam"
+}

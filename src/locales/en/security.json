@@ -1,0 +1,12 @@
+{
+  "title": "Security Radar & Cryptographic Verification",
+  "subtitle": "Bank-grade client-side encryption and zero-trust data sovereignty.",
+  "e2eeTitle": "End-to-End AES-256-GCM Encryption",
+  "e2eeDesc": "Your sensitive contract payloads and chat logs are encrypted before leaving your browser.",
+  "sha256Title": "SHA-256 Tamper-Proof Sealing",
+  "sha256Desc": "Every generated document and audit record receives an immutable cryptographic hash.",
+  "twoFactorTitle": "Two-Factor Authentication (2FA)",
+  "twoFactorDesc": "Protect executive and lawyer operations with hardware tokens or OTP verification.",
+  "threatDetection": "Live Anti-Fraud & Threat Monitoring",
+  "activeStatus": "Security Radar Active & Guarding"
+}

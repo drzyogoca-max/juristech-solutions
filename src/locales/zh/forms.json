@@ -1,0 +1,10 @@
+{
+  "required": "此字段为必填项",
+  "optional": "选填",
+  "selectOption": "请选择选项",
+  "namePlaceholder": "请输入您的完整姓名",
+  "emailPlaceholder": "name@company.com",
+  "phonePlaceholder": "+86 138 0000 0000",
+  "companyPlaceholder": "企业或律所官方全称",
+  "notesPlaceholder": "请输入特别说明或定制需求..."
+}

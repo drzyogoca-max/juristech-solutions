@@ -1,0 +1,12 @@
+{
+  "genericError": "Une erreur inattendue est survenue. Veuillez réessayer.",
+  "networkError": "Échec de connexion au réseau.",
+  "unauthorized": "Accès refusé. Veuillez vous connecter.",
+  "forbidden": "Privilèges insuffisants pour accéder à cette section.",
+  "notFound": "La page ou ressource demandée est introuvable.",
+  "subscriptionRequired": "Abonnement actif requis pour effectuer cette action.",
+  "paymentFailed": "Le paiement a échoué. Vérifiez vos coordonnées bancaires.",
+  "fileTooLarge": "Le fichier dépasse la taille maximale autorisée (25 Mo).",
+  "invalidFileType": "Type de fichier non pris en charge (PDF, DOCX, TXT uniquement).",
+  "aiUnavailable": "Le moteur IA est temporairement indisponible."
+}

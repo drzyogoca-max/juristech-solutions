@@ -1,0 +1,9 @@
+{
+  "title": "平台开发者知识库与 API 文档",
+  "subtitle": "深入了解系统架构指南、法定 RAG 检索协议及企业级开发资源。",
+  "gettingStarted": "快速上手入门指南",
+  "apiReference": "RESTful & Webhook 开放接口规范",
+  "sdkIntegration": "企业级 ERP 连接器 (SAP, Odoo, Salesforce)",
+  "securityArchitecture": "主权安全与端到端加密技术白皮书",
+  "jurisdictionMatrix": "全球45+国家与地区法定支持矩阵"
+}

@@ -1,0 +1,10 @@
+{
+  "required": "This field is required",
+  "optional": "Optional",
+  "selectOption": "Select an option",
+  "namePlaceholder": "Enter your full name",
+  "emailPlaceholder": "name@company.com",
+  "phonePlaceholder": "+1 (555) 000-0000",
+  "companyPlaceholder": "Organization / Firm Legal Name",
+  "notesPlaceholder": "Enter special notes or requirements..."
+}

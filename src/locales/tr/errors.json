@@ -1,0 +1,12 @@
+{
+  "genericError": "Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin.",
+  "networkError": "Ağ bağlantısı başarısız oldu.",
+  "unauthorized": "Erişim reddedildi. Lütfen giriş yapın.",
+  "forbidden": "Bu bölüme erişim yetkiniz bulunmuyor.",
+  "notFound": "İstenen kaynak veya sayfa bulunamadı.",
+  "subscriptionRequired": "Bu işlem için aktif abonelik gereklidir.",
+  "paymentFailed": "Ödeme işlemi başarısız oldu. Kart bilgilerinizi kontrol edin.",
+  "fileTooLarge": "Yüklenen dosya maksimum boyutu (25MB) aşıyor.",
+  "invalidFileType": "Desteklenmeyen dosya türü (Sadece PDF, DOCX, TXT).",
+  "aiUnavailable": "Yapay zeka motoru geçici olarak meşgul."
+}

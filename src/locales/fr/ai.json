@@ -1,0 +1,13 @@
+{
+  "assistantTitle": "Conseiller Juridique IA Senior",
+  "assistantSubtitle": "Propulsé par Gemini 2.0 Flash, recherche législative RAG et cadre multi-juridictionnel.",
+  "placeholder": "Posez une question juridique, demandez une clause ou collez un litige...",
+  "send": "Envoyer la requête",
+  "thinking": "Juris analyse les codes législatifs et confronte la jurisprudence...",
+  "disclaimer": "JurisTech IA fournit des orientations juridiques et l'automatisation des flux, pas de conseil juridique direct.",
+  "newSession": "Nouvelle session de consultation",
+  "exportHistory": "Exporter l'historique (.txt / .pdf)",
+  "groundingActive": "Ancrage législatif 100% actif",
+  "eightAxisAnalysis": "Cadre d'analyse juridique en 8 axes",
+  "modelEngine": "Moteur : Google AI Pro Sovereign Core"
+}

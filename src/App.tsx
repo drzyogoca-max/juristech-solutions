@@ -1,4 +1,4 @@
-import { useEffect, useState, lazy, Suspense } from 'react';
+import React, { useEffect, useState, lazy, Suspense, Fragment } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import VercelAnalyticsWrapper from './components/VercelAnalyticsWrapper';
@@ -20,6 +20,7 @@ import GlobalTrafficGrowthBanner from './components/GlobalTrafficGrowthBanner';
 import { logVisitorSession } from './lib/visitorTracker';
 import { Loader2 } from 'lucide-react';
 import { usePlatformLocale } from './lib/universalTranslator';
+import { getLocaleFromUrl, setDocumentLanguage, persistLocalePreference, normalizeLanguageCode } from './i18n';
 
 // ── Lazy Loaded Page Components for Minimal Initial Bundle Size & 95+ Performance ──
 const Dashboard = lazy(() => import('./pages/Dashboard'));
@@ -53,6 +54,7 @@ const AboutUsPage = lazy(() => import('./pages/AboutUsPage'));
 const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
 const TermsPage = lazy(() => import('./pages/TermsPage'));
 const RefundPage = lazy(() => import('./pages/RefundPage'));
+const BillingPage = lazy(() => import('./pages/BillingPage'));
 const AdminAnalyticsPage = lazy(() => import('./pages/admin/AdminAnalyticsPage'));
 const AdminFinancialDashboardPage = lazy(() => import('./pages/admin/AdminFinancialDashboardPage'));
 const AntiFraudAuditorPage = lazy(() => import('./pages/admin/AntiFraudAuditorPage'));
@@ -100,6 +102,15 @@ function MainAppContent() {
       document.body.lang = lang;
     }
   }, [lang, isRtl]);
+
+  // Synchronize URL locale with i18n instance on route transitions
+  useEffect(() => {
+    const urlLocale = getLocaleFromUrl(location.pathname);
+    if (urlLocale && urlLocale !== lang) {
+      setDocumentLanguage(urlLocale);
+      persistLocalePreference(urlLocale);
+    }
+  }, [location.pathname, lang]);
 
   // ── Defer Auxiliary Floating Widgets (Chatbot, Radar) for High Speed Insights ──
   useEffect(() => {
@@ -227,150 +238,156 @@ function MainAppContent() {
 
           <Suspense fallback={<RouteFallback />}>
             <Routes>
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/chat" element={<ChatPage />} />
-              <Route path="/contracts" element={<ContractsPage />} />
-              <Route path="/contract-generator" element={<Navigate to="/contracts" replace />} />
-              <Route path="/contract-builder" element={<Navigate to="/contracts" replace />} />
-              <Route path="/repository" element={<ContractsRepositoryPage />} />
-              <Route path="/contracts-library" element={<Navigate to="/repository" replace />} />
-              <Route path="/contracts-repository" element={<Navigate to="/repository" replace />} />
-              <Route path="/risk" element={<RiskPage />} />
-              <Route path="/vault" element={<VaultPage />} />
-              <Route path="/risk-analysis" element={<Navigate to="/risk" replace />} />
-              <Route path="/shared-contract" element={<Navigate to="/risk" replace />} />
-              <Route path="/investigate" element={<InvestigationPage />} />
-              <Route path="/inspection-room" element={<Navigate to="/investigate" replace />} />
-              <Route path="/investigation" element={<Navigate to="/investigate" replace />} />
-              <Route path="/templates" element={<TemplatesPage />} />
-              <Route path="/templates-library" element={<Navigate to="/templates" replace />} />
-              <Route path="/negotiation" element={<NegotiationPage />} />
-              <Route path="/negotiate" element={<Navigate to="/negotiation" replace />} />
-              <Route path="/e-signature-room" element={<Navigate to="/negotiation" replace />} />
-              <Route
-                path="/lead-radar"
-                element={
-                  <ProtectedAdminRoute>
-                    <LeadRadarPage />
-                  </ProtectedAdminRoute>
-                }
-              />
-              <Route path="/enterprise-audit" element={<EnterpriseAuditPage />} />
-              <Route path="/deal-shield" element={<DealShieldPage />} />
-              <Route path="/need-diagnostic" element={<Navigate to="/deal-shield" replace />} />
-              <Route path="/deal-simulator" element={<Navigate to="/deal-shield" replace />} />
-              <Route path="/clash-simulator" element={<Navigate to="/deal-shield" replace />} />
-              <Route path="/youtube-studio" element={<YouTubeStudioPage />} />
-              <Route path="/youtube" element={<Navigate to="/youtube-studio" replace />} />
-              <Route path="/youtube-channel" element={<Navigate to="/youtube-studio" replace />} />
-              <Route path="/company-formation" element={<CompanyFormationPage />} />
-              <Route path="/acquisition" element={<AcquisitionPage />} />
-              <Route path="/corporate-takeover" element={<Navigate to="/acquisition" replace />} />
-              <Route path="/b2b-proposals" element={<B2BProposalPage />} />
-              <Route path="/video-hub" element={<VideoHubPage />} />
-              <Route path="/sponsors-ads" element={<SponsorsAdsPage />} />
-              <Route path="/monetization" element={<Navigate to="/sponsors-ads" replace />} />
-              <Route path="/sponsors" element={<Navigate to="/sponsors-ads" replace />} />
-              <Route path="/payment" element={<PaymentPage />} />
-              <Route path="/payment/verify" element={<ReceiptVerificationPage />} />
-              <Route path="/pricing" element={<Navigate to="/payment" replace />} />
-              <Route path="/support" element={<SupportPage />} />
-              <Route path="/legal-compliance" element={<LegalCompliancePage />} />
-              <Route path="/about" element={<AboutUsPage />} />
-              <Route path="/about-us" element={<Navigate to="/about" replace />} />
-              <Route path="/privacy" element={<PrivacyPage />} />
-              <Route path="/privacy-policy" element={<Navigate to="/privacy" replace />} />
-              <Route path="/terms" element={<TermsPage />} />
-              <Route path="/terms-of-use" element={<Navigate to="/terms" replace />} />
-              <Route path="/refund" element={<RefundPage />} />
-              <Route path="/refunds" element={<RefundPage />} />
-              <Route path="/refund-policy" element={<Navigate to="/refund" replace />} />
-              <Route path="/compliance" element={<Navigate to="/legal-compliance" replace />} />
-              <Route path="/regulatory" element={<Navigate to="/legal-compliance" replace />} />
-              <Route path="/regulatory-framework" element={<Navigate to="/legal-compliance" replace />} />
-              <Route path="/marketing" element={<SocialMarketingPage />} />
-              <Route
-                path="/reports"
-                element={
-                  <ProtectedAdminRoute>
-                    <ReportsPage />
-                  </ProtectedAdminRoute>
-                }
-              />
-              <Route path="/blocked" element={<BlockedPage />} />
-              <Route path="/social-marketing" element={<Navigate to="/marketing" replace />} />
-              <Route path="/sovereign-ai-hub" element={<AdvancedAIHubPage />} />
-              
-              {/* Strictly Protected Admin & Chairman Vault Routes */}
-              <Route
-                path="/admin"
-                element={
-                  <ProtectedAdminRoute>
-                    <AdminDashboardPage />
-                  </ProtectedAdminRoute>
-                }
-              />
-              <Route
-                path="/admin/analytics"
-                element={
-                  <ProtectedAdminRoute>
-                    <AdminAnalyticsPage />
-                  </ProtectedAdminRoute>
-                }
-              />
-              <Route
-                path="/admin/marketing-crm"
-                element={
-                  <ProtectedAdminRoute>
-                    <AdminMarketingCRMPage />
-                  </ProtectedAdminRoute>
-                }
-              />
-              <Route
-                path="/admin/receipt-review"
-                element={
-                  <ProtectedAdminRoute>
-                    <AdminReceiptReviewPage />
-                  </ProtectedAdminRoute>
-                }
-              />
-              <Route
-                path="/admin/anti-fraud"
-                element={
-                  <ProtectedAdminRoute>
-                    <AntiFraudAuditorPage />
-                  </ProtectedAdminRoute>
-                }
-              />
-              <Route
-                path="/admin/financial"
-                element={
-                  <ProtectedAdminRoute>
-                    <AdminFinancialDashboardPage />
-                  </ProtectedAdminRoute>
-                }
-              />
-              <Route path="/admin/billing" element={<Navigate to="/admin/financial" replace />} />
-              <Route path="/admin/treasury" element={<Navigate to="/admin/financial" replace />} />
-              <Route path="/admin/receipts" element={<Navigate to="/admin/receipt-review" replace />} />
-              <Route path="/dashboard/finance" element={<Navigate to="/admin/financial" replace />} />
-              <Route
-                path="/admin/review-queue"
-                element={
-                  <ProtectedAdminRoute>
-                    <ReviewQueuePage />
-                  </ProtectedAdminRoute>
-                }
-              />
-              <Route
-                path="/admin/checklist"
-                element={
-                  <ProtectedAdminRoute>
-                    <PlatformChecklistPage />
-                  </ProtectedAdminRoute>
-                }
-              />
+              {/* Common Single-Source-of-Truth Route Definitions */}
+              {[ '', '/:locale' ].map((prefix) => (
+                <Fragment key={prefix || 'root'}>
+                  <Route path={`${prefix}/`} element={<Navigate to={`${prefix ? prefix + '/dashboard' : '/dashboard'}`} replace />} />
+                  <Route path={`${prefix}/dashboard`} element={<Dashboard />} />
+                  <Route path={`${prefix}/chat`} element={<ChatPage />} />
+                  <Route path={`${prefix}/contracts`} element={<ContractsPage />} />
+                  <Route path={`${prefix}/contract-generator`} element={<Navigate to={`${prefix}/contracts`} replace />} />
+                  <Route path={`${prefix}/contract-builder`} element={<Navigate to={`${prefix}/contracts`} replace />} />
+                  <Route path={`${prefix}/repository`} element={<ContractsRepositoryPage />} />
+                  <Route path={`${prefix}/contracts-library`} element={<Navigate to={`${prefix}/repository`} replace />} />
+                  <Route path={`${prefix}/contracts-repository`} element={<Navigate to={`${prefix}/repository`} replace />} />
+                  <Route path={`${prefix}/risk`} element={<RiskPage />} />
+                  <Route path={`${prefix}/vault`} element={<VaultPage />} />
+                  <Route path={`${prefix}/risk-analysis`} element={<Navigate to={`${prefix}/risk`} replace />} />
+                  <Route path={`${prefix}/shared-contract`} element={<Navigate to={`${prefix}/risk`} replace />} />
+                  <Route path={`${prefix}/investigate`} element={<InvestigationPage />} />
+                  <Route path={`${prefix}/inspection-room`} element={<Navigate to={`${prefix}/investigate`} replace />} />
+                  <Route path={`${prefix}/investigation`} element={<Navigate to={`${prefix}/investigate`} replace />} />
+                  <Route path={`${prefix}/templates`} element={<TemplatesPage />} />
+                  <Route path={`${prefix}/templates-library`} element={<Navigate to={`${prefix}/templates`} replace />} />
+                  <Route path={`${prefix}/negotiation`} element={<NegotiationPage />} />
+                  <Route path={`${prefix}/negotiate`} element={<Navigate to={`${prefix}/negotiation`} replace />} />
+                  <Route path={`${prefix}/e-signature-room`} element={<Navigate to={`${prefix}/negotiation`} replace />} />
+                  <Route
+                    path={`${prefix}/lead-radar`}
+                    element={
+                      <ProtectedAdminRoute>
+                        <LeadRadarPage />
+                      </ProtectedAdminRoute>
+                    }
+                  />
+                  <Route path={`${prefix}/enterprise-audit`} element={<EnterpriseAuditPage />} />
+                  <Route path={`${prefix}/deal-shield`} element={<DealShieldPage />} />
+                  <Route path={`${prefix}/need-diagnostic`} element={<Navigate to={`${prefix}/deal-shield`} replace />} />
+                  <Route path={`${prefix}/deal-simulator`} element={<Navigate to={`${prefix}/deal-shield`} replace />} />
+                  <Route path={`${prefix}/clash-simulator`} element={<Navigate to={`${prefix}/deal-shield`} replace />} />
+                  <Route path={`${prefix}/youtube-studio`} element={<YouTubeStudioPage />} />
+                  <Route path={`${prefix}/youtube`} element={<Navigate to={`${prefix}/youtube-studio`} replace />} />
+                  <Route path={`${prefix}/youtube-channel`} element={<Navigate to={`${prefix}/youtube-studio`} replace />} />
+                  <Route path={`${prefix}/company-formation`} element={<CompanyFormationPage />} />
+                  <Route path={`${prefix}/acquisition`} element={<AcquisitionPage />} />
+                  <Route path={`${prefix}/corporate-takeover`} element={<Navigate to={`${prefix}/acquisition`} replace />} />
+                  <Route path={`${prefix}/b2b-proposals`} element={<B2BProposalPage />} />
+                  <Route path={`${prefix}/video-hub`} element={<VideoHubPage />} />
+                  <Route path={`${prefix}/sponsors-ads`} element={<SponsorsAdsPage />} />
+                  <Route path={`${prefix}/monetization`} element={<Navigate to={`${prefix}/sponsors-ads`} replace />} />
+                  <Route path={`${prefix}/sponsors`} element={<Navigate to={`${prefix}/sponsors-ads`} replace />} />
+                  <Route path={`${prefix}/payment`} element={<PaymentPage />} />
+                  <Route path={`${prefix}/payment/verify`} element={<ReceiptVerificationPage />} />
+                  <Route path={`${prefix}/billing`} element={<BillingPage />} />
+                  <Route path={`${prefix}/pricing`} element={<Navigate to={`${prefix}/payment`} replace />} />
+                  <Route path={`${prefix}/support`} element={<SupportPage />} />
+                  <Route path={`${prefix}/legal-compliance`} element={<LegalCompliancePage />} />
+                  <Route path={`${prefix}/about`} element={<AboutUsPage />} />
+                  <Route path={`${prefix}/about-us`} element={<Navigate to={`${prefix}/about`} replace />} />
+                  <Route path={`${prefix}/privacy`} element={<PrivacyPage />} />
+                  <Route path={`${prefix}/privacy-policy`} element={<Navigate to={`${prefix}/privacy`} replace />} />
+                  <Route path={`${prefix}/terms`} element={<TermsPage />} />
+                  <Route path={`${prefix}/terms-of-use`} element={<Navigate to={`${prefix}/terms`} replace />} />
+                  <Route path={`${prefix}/refund`} element={<RefundPage />} />
+                  <Route path={`${prefix}/refunds`} element={<RefundPage />} />
+                  <Route path={`${prefix}/refund-policy`} element={<Navigate to={`${prefix}/refund`} replace />} />
+                  <Route path={`${prefix}/compliance`} element={<Navigate to={`${prefix}/legal-compliance`} replace />} />
+                  <Route path={`${prefix}/regulatory`} element={<Navigate to={`${prefix}/legal-compliance`} replace />} />
+                  <Route path={`${prefix}/regulatory-framework`} element={<Navigate to={`${prefix}/legal-compliance`} replace />} />
+                  <Route path={`${prefix}/marketing`} element={<SocialMarketingPage />} />
+                  <Route
+                    path={`${prefix}/reports`}
+                    element={
+                      <ProtectedAdminRoute>
+                        <ReportsPage />
+                      </ProtectedAdminRoute>
+                    }
+                  />
+                  <Route path={`${prefix}/blocked`} element={<BlockedPage />} />
+                  <Route path={`${prefix}/social-marketing`} element={<Navigate to={`${prefix}/marketing`} replace />} />
+                  <Route path={`${prefix}/sovereign-ai-hub`} element={<AdvancedAIHubPage />} />
+
+                  {/* Strictly Protected Admin & Chairman Vault Routes */}
+                  <Route
+                    path={`${prefix}/admin`}
+                    element={
+                      <ProtectedAdminRoute>
+                        <AdminDashboardPage />
+                      </ProtectedAdminRoute>
+                    }
+                  />
+                  <Route
+                    path={`${prefix}/admin/analytics`}
+                    element={
+                      <ProtectedAdminRoute>
+                        <AdminAnalyticsPage />
+                      </ProtectedAdminRoute>
+                    }
+                  />
+                  <Route
+                    path={`${prefix}/admin/marketing-crm`}
+                    element={
+                      <ProtectedAdminRoute>
+                        <AdminMarketingCRMPage />
+                      </ProtectedAdminRoute>
+                    }
+                  />
+                  <Route
+                    path={`${prefix}/admin/receipt-review`}
+                    element={
+                      <ProtectedAdminRoute>
+                        <AdminReceiptReviewPage />
+                      </ProtectedAdminRoute>
+                    }
+                  />
+                  <Route
+                    path={`${prefix}/admin/anti-fraud`}
+                    element={
+                      <ProtectedAdminRoute>
+                        <AntiFraudAuditorPage />
+                      </ProtectedAdminRoute>
+                    }
+                  />
+                  <Route
+                    path={`${prefix}/admin/financial`}
+                    element={
+                      <ProtectedAdminRoute>
+                        <AdminFinancialDashboardPage />
+                      </ProtectedAdminRoute>
+                    }
+                  />
+                  <Route path={`${prefix}/admin/billing`} element={<Navigate to={`${prefix}/admin/financial`} replace />} />
+                  <Route path={`${prefix}/admin/treasury`} element={<Navigate to={`${prefix}/admin/financial`} replace />} />
+                  <Route path={`${prefix}/admin/receipts`} element={<Navigate to={`${prefix}/admin/receipt-review`} replace />} />
+                  <Route path={`${prefix}/dashboard/finance`} element={<Navigate to={`${prefix}/admin/financial`} replace />} />
+                  <Route
+                    path={`${prefix}/admin/review-queue`}
+                    element={
+                      <ProtectedAdminRoute>
+                        <ReviewQueuePage />
+                      </ProtectedAdminRoute>
+                    }
+                  />
+                  <Route
+                    path={`${prefix}/admin/checklist`}
+                    element={
+                      <ProtectedAdminRoute>
+                        <PlatformChecklistPage />
+                      </ProtectedAdminRoute>
+                    }
+                  />
+                </Fragment>
+              ))}
 
               {/* 🛑 404 Custom Legal Not Found Page */}
               <Route path="*" element={<NotFoundPage />} />

@@ -21,6 +21,7 @@ import RbacUserManagementModal from './RbacUserManagementModal';
 import { useAuth } from '../lib/authContext';
 import { detectVisitorJurisdiction, JurisdictionInfo } from '../lib/jurisdiction';
 import { usePlatformLocale } from '../lib/universalTranslator';
+import { openPaddleCheckout } from '../lib/paddleClient';
 
 // ─── Nav link groups (Visitor & Subscriber separated) ────────────────────────
 const VISITOR_LINKS = [
@@ -201,6 +202,25 @@ export default function Navbar() {
               <Palette className="w-3.5 h-3.5 text-purple-400" />
               {t('Nav.themeFontLabel')}
             </button>
+
+            {/* Quick Action: Official Subscribe Now via Paddle */}
+            <button
+              onClick={() => openPaddleCheckout()}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 text-xs font-black shadow-md shadow-amber-500/20 active:scale-95 transition-all cursor-pointer"
+            >
+              <Crown className="w-3.5 h-3.5" />
+              <span>{l('اشترك الآن', 'Subscribe Now')}</span>
+            </button>
+
+            {/* Account Billing Link */}
+            <Link
+              to="/billing"
+              className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 text-xs font-bold transition-all"
+              title={l('إدارة الفوترة والاشتراك', 'Billing & Subscription')}
+            >
+              <CreditCard className="w-3.5 h-3.5 text-cyan-400" />
+              <span>{l('الفوترة', 'Billing')}</span>
+            </Link>
 
             {/* Unified "المزيد" (More Menu) Button & Dropdown */}
             <div className="relative">

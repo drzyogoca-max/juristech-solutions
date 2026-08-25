@@ -11,6 +11,7 @@ import { extractPDFTextMultiStage } from '../lib/pdfExtractor';
 import { exportDocumentMultiFormat } from '../lib/documentExporter';
 import { recordLawyerRLHFFeedback } from '../services/criticSelfLearningEngine';
 import { usePlatformLocale } from '../lib/universalTranslator';
+import PremiumFeatureGuard from '../components/PremiumFeatureGuard';
 import SEO from '../components/SEO';
 
 interface JurisdictionConfig {

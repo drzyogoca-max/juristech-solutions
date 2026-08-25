@@ -1,0 +1,12 @@
+{
+  "genericError": "Ocurrió un error inesperado. Inténtelo de nuevo.",
+  "networkError": "Error de conexión de red.",
+  "unauthorized": "Acceso denegado. Inicie sesión para continuar.",
+  "forbidden": "No tiene privilegios para acceder a esta sección.",
+  "notFound": "No se encontró el recurso solicitado.",
+  "subscriptionRequired": "Se requiere suscripción activa para esta acción.",
+  "paymentFailed": "El pago no pudo procesarse. Verifique su tarjeta.",
+  "fileTooLarge": "El archivo excede el tamaño máximo permitido (25 MB).",
+  "invalidFileType": "Tipo de archivo no admitido (solo PDF, DOCX, TXT).",
+  "aiUnavailable": "El motor de IA está momentáneamente ocupado."
+}

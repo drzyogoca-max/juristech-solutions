@@ -1,0 +1,21 @@
+{
+  "overviewTitle": "Centre de Télémétrie et d'Opérations Juridiques",
+  "overviewSubtitle": "Visibilité en temps réel sur les contrats actifs, l'analyse des risques et l'IA souveraine.",
+  "totalContracts": "Total des contrats au système",
+  "realVisitorsToday": "Visiteurs réels aujourd'hui",
+  "activeSubscribers": "Abonnés et clients actifs",
+  "payingEntities": "Entreprises licenciées",
+  "riskReports": "Rapports d'audit des risques",
+  "aiQueries": "Consultations juridiques IA",
+  "quickActions": "Actions Rapides",
+  "draftContractBtn": "Rédiger un contrat commercial",
+  "auditRiskBtn": "Auditer les risques",
+  "liveConsultationBtn": "Démarrer consultation 24/7",
+  "recentActivity": "Activité récente",
+  "noRecentActivity": "Aucune transaction récente.",
+  "saasMapTab": "Carte SaaS Globale",
+  "contractStudioTab": "Studio de Contrats",
+  "servicesDirectoryTab": "18 Services Souverains",
+  "caseStudiesTab": "Études de Cas & Tarifs",
+  "securityTab": "Sécurité & Gouvernance"
+}

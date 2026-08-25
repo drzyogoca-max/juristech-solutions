@@ -1,0 +1,7 @@
+{
+  "invalidEmail": "Lütfen geçerli bir e-posta adresi girin.",
+  "passwordTooShort": "Şifre en az 8 karakter olmalıdır.",
+  "fieldRequired": "Bu alan boş bırakılamaz.",
+  "mustAcceptTerms": "Devam etmek için şartları kabul etmelisiniz.",
+  "invalidNumber": "Lütfen geçerli bir sayısal değer girin."
+}

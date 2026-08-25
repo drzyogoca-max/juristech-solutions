@@ -1,0 +1,16 @@
+{
+  "title": "Belge ve Sözleşme Kasası",
+  "subtitle": "SHA-256 kriptografik mühürleme ile güvenli ve müdahale edilemez arşiv.",
+  "uploadDocument": "Belge Yükle",
+  "myDocuments": "Belgelerim",
+  "noDocuments": "Henüz saklanan belge yok.",
+  "documentName": "Belge Adı",
+  "fileSize": "Boyut",
+  "uploadDate": "Yükleme Tarihi",
+  "sealStatus": "Kriptografik Mühür",
+  "downloadPdf": "PDF İndir",
+  "downloadDocx": "Word İndir (.docx)",
+  "deleteDocument": "Belgeyi Sil",
+  "confirmDelete": "Bu belgeyi kalıcı olarak silmek istediğinizden emin misiniz?",
+  "e2eeNotice": "Tüm belgeler iletilmeden önce istemci tarafında AES-256-GCM ile şifrelenir."
+}

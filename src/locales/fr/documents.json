@@ -1,0 +1,16 @@
+{
+  "title": "Coffre de Documents et Contrats",
+  "subtitle": "Répertoire sécurisé et inviolable avec scellement cryptographique SHA-256.",
+  "uploadDocument": "Téléverser un document",
+  "myDocuments": "Mes Documents",
+  "noDocuments": "Aucun document stocké.",
+  "documentName": "Nom du document",
+  "fileSize": "Taille",
+  "uploadDate": "Date d'ajout",
+  "sealStatus": "Sceau Cryptographique",
+  "downloadPdf": "Télécharger PDF",
+  "downloadDocx": "Télécharger Word (.docx)",
+  "deleteDocument": "Supprimer le document",
+  "confirmDelete": "Êtes-vous sûr de vouloir supprimer définitivement ce document ?",
+  "e2eeNotice": "Tous les documents sont chiffrés côté client avec AES-256-GCM avant transmission."
+}

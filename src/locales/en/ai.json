@@ -1,0 +1,13 @@
+{
+  "assistantTitle": "Senior Executive AI Legal Advisor",
+  "assistantSubtitle": "Powered by Gemini 2.0 Flash REST, RAG Statutory Retrieval & Multi-Jurisdictional Framework.",
+  "placeholder": "Ask any legal question, request clause drafting, or paste a dispute summary...",
+  "send": "Send Query",
+  "thinking": "Juris is analyzing statutory codes and cross-referencing precedents...",
+  "disclaimer": "JurisTech AI provides statutory guidance and workflow automation, not direct legal advice. Consult licensed counsel for formal execution.",
+  "newSession": "New Consultation Session",
+  "exportHistory": "Export Dialogue (.txt / .pdf)",
+  "groundingActive": "100% Statutory Grounding Active",
+  "eightAxisAnalysis": "8-Axis Legal Framework Analysis",
+  "modelEngine": "Engine: Google AI Pro Sovereign Core"
+}

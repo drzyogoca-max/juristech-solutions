@@ -1,0 +1,10 @@
+{
+  "required": "Ce champ est obligatoire",
+  "optional": "Facultatif",
+  "selectOption": "Sélectionnez une option",
+  "namePlaceholder": "Entrez votre nom complet",
+  "emailPlaceholder": "nom@entreprise.com",
+  "phonePlaceholder": "+33 1 00 00 00 00",
+  "companyPlaceholder": "Nom de l'entreprise ou cabinet",
+  "notesPlaceholder": "Précisez vos remarques ou exigences..."
+}

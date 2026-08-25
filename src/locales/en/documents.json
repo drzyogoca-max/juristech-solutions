@@ -1,0 +1,16 @@
+{
+  "title": "Document & Contract Vault",
+  "subtitle": "Secure, tamper-proof repository with SHA-256 cryptographic sealing.",
+  "uploadDocument": "Upload Document",
+  "myDocuments": "My Documents",
+  "noDocuments": "No documents stored yet.",
+  "documentName": "Document Name",
+  "fileSize": "Size",
+  "uploadDate": "Uploaded On",
+  "sealStatus": "Cryptographic Seal",
+  "downloadPdf": "Download PDF",
+  "downloadDocx": "Download Word (.docx)",
+  "deleteDocument": "Delete Document",
+  "confirmDelete": "Are you sure you want to permanently delete this document?",
+  "e2eeNotice": "All documents are encrypted on the client side with AES-256-GCM before transmission."
+}

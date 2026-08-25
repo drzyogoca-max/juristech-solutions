@@ -1,0 +1,10 @@
+{
+  "required": "هذا الحقل مطلوب",
+  "optional": "اختياري",
+  "selectOption": "اختر من القائمة",
+  "namePlaceholder": "أدخل الاسم الكامل",
+  "emailPlaceholder": "name@company.com",
+  "phonePlaceholder": "+966 50 000 0000",
+  "companyPlaceholder": "الاسم الرسمي للشركة أو المكتب",
+  "notesPlaceholder": "أدخل ملاحظات أو متطلبات خاصة..."
+}

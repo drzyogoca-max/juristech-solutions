@@ -1,0 +1,7 @@
+{
+  "invalidEmail": "Ingrese un correo electrónico válido.",
+  "passwordTooShort": "La contraseña debe tener al menos 8 caracteres.",
+  "fieldRequired": "Este campo no puede estar vacío.",
+  "mustAcceptTerms": "Debe aceptar los términos para continuar.",
+  "invalidNumber": "Ingrese un valor numérico válido."
+}

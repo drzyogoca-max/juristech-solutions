@@ -1,4 +1,4 @@
-﻿/**
+/**
  * api/webhooks/payment.js
  * ─────────────────────────────────────────────────────────────────────────────
  * JurisTech Solutions — Multi-Gateway Webhook Ingestion & State Machine Engine
@@ -112,9 +112,10 @@ export default async function handler(req, res) {
     const body = req.body || {};
     const signature = req.headers['paddle-signature'] || req.headers['x-paytabs-signature'] || req.headers['stripe-signature'] || '';
 
-    // 1. Extract Event Identity
-    const eventId = body.event_id || body.id || body.tran_ref || `EVT-${Date.now()}`;
-    const eventType = body.event_type || body.type || 'payment.succeeded';
+    // 1. Extract Event Identity & Payload Data (Supports Paddle v2 and standard formats)
+    const eventData = body.data || {};
+    const eventId = body.event_id || body.id || eventData.id || body.tran_ref || `EVT-${Date.now()}`;
+    const eventType = body.event_type || body.type || 'transaction.completed';
 
     // 2. Layer 1 Idempotency Check (Fast Process-Local Memory)
     const compositeEventKey = `${provider}:${eventId}`;
@@ -128,7 +129,7 @@ export default async function handler(req, res) {
     const webhookSecret = process.env[`${provider.toUpperCase()}_WEBHOOK_SECRET`] || '';
 
     if (!webhookSecret) {
-      // Standby mode: log receipt safely
+      // Standby / sandbox mode: log receipt safely
       console.log(`[Webhook Standby] No secret configured for ${provider}. Event logged in STANDBY mode.`);
       isSignatureValid = true;
     } else if (signature) {
@@ -145,13 +146,33 @@ export default async function handler(req, res) {
       return res.status(401).json({ error: 'Invalid webhook signature' });
     }
 
-    // 4. Extract and Validate Event Payload
-    const customerEmail = (body.customer_email || body.email || 'customer@juristech.solutions').toLowerCase().trim();
-    const planTier = (body.plan_tier || body.plan_id || 'startup').toLowerCase();
-    const amountReceived = parseFloat(body.amount || body.cart_total || '49.00');
-    const currency = (body.currency || 'USD').toUpperCase();
-    const subscriptionId = body.subscription_id || body.sub_id || null;
-    const paymentId = body.payment_id || body.tran_ref || eventId;
+    // 4. Extract and Validate Event Payload (Paddle v2 Schema Compatible)
+    const customData = eventData.custom_data || body.custom_data || {};
+    const customerEmail = (
+      customData.userEmail ||
+      eventData.customer?.email ||
+      body.customer_email ||
+      body.email ||
+      'customer@juristech.solutions'
+    ).toLowerCase().trim();
+
+    // Map Paddle Price ID / Tier
+    const priceIdFromItem = eventData.items?.[0]?.price?.id;
+    let planTier = (customData.planTier || body.plan_tier || body.plan_id || 'startup').toLowerCase();
+    if (priceIdFromItem === 'pri_01m0ty6sxjj7w0xpm1r07r50ss') {
+      planTier = 'pro';
+    }
+
+    let amountReceived = 49.00;
+    if (eventData.details?.totals?.total) {
+      amountReceived = parseFloat(eventData.details.totals.total) / 100;
+    } else if (body.amount) {
+      amountReceived = parseFloat(body.amount);
+    }
+
+    const currency = (eventData.currency_code || body.currency || 'USD').toUpperCase();
+    const subscriptionId = eventData.subscription_id || (eventType.startsWith('subscription') ? eventData.id : null) || body.subscription_id || null;
+    const paymentId = eventData.id || body.payment_id || body.tran_ref || eventId;
 
     // 5. Server-Side Price & Currency Validation (Anti-Tampering)
     const expectedPrice = PLAN_PRICES[planTier] || 49.00;

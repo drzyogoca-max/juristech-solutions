@@ -1,0 +1,19 @@
+{
+  "guardTitle": "Exklusive Funktion für Abonnenten",
+  "guardSubtitle": "Diese Enterprise-KI-Funktion erfordert ein aktives Abonnement.",
+  "subscribeButton": "Jetzt abonnieren (Paddle)",
+  "openingCheckout": "Sicherer Checkout wird geöffnet...",
+  "featureBullet1": "Google AI Pro Sovereign Core & 8-Achsen-Vertragsanalyse",
+  "featureBullet2": "Virtuelle Streitsimulation & Autonome Verhandlung",
+  "featureBullet3": "Unbegrenzte Word/PDF-Dokumentenerstellung & Verschlüsselte Protokolle",
+  "merchantOfRecord": "Merchant of Record: Paddle.com",
+  "statusActive": "Aktiv",
+  "statusExpired": "Abgelaufen",
+  "statusCancelled": "Gekündigt",
+  "daysLeftSuffix": "Tage verbleibend",
+  "freeTrial": "Kostenlose Testphase",
+  "startupTier": "Startup",
+  "smeTier": "KMU",
+  "proTier": "Pro",
+  "enterpriseTier": "Enterprise"
+}

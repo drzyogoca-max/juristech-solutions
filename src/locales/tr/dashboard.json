@@ -1,0 +1,21 @@
+{
+  "overviewTitle": "Yönetici Telemetri ve Hukuk Operasyonları Merkezi",
+  "overviewSubtitle": "Aktif sözleşmeler, otomatik risk analizi ve egemen yapay zeka operasyonlarında gerçek zamanlı görünürlük.",
+  "totalContracts": "Sistemdeki Toplam Sözleşme",
+  "realVisitorsToday": "Bugünkü Gerçek Ziyaretçiler",
+  "activeSubscribers": "Aktif Aboneler ve Müşteriler",
+  "payingEntities": "Lisanslı Kurumsal Şirketler",
+  "riskReports": "Risk Denetim Raporları",
+  "aiQueries": "Mevzuata Dayalı Yapay Zeka Danışmanlıkları",
+  "quickActions": "Hızlı Yönetici İşlemleri",
+  "draftContractBtn": "Ticari Sözleşme Hazırla",
+  "auditRiskBtn": "Sözleşme Riskini Denetle",
+  "liveConsultationBtn": "7/24 Canlı Danışmanlık Başlat",
+  "recentActivity": "Son Sistem Faaliyeti",
+  "noRecentActivity": "Son işlem bulunamadı.",
+  "saasMapTab": "Küresel SaaS Haritası",
+  "contractStudioTab": "Sözleşme Stüdyosu",
+  "servicesDirectoryTab": "18 Egemen Hizmet Dizini",
+  "caseStudiesTab": "Vaka Çalışmaları ve Fiyatlar",
+  "securityTab": "Güvenlik ve Yönetişim"
+}

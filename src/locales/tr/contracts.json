@@ -1,0 +1,20 @@
+{
+  "generatorTitle": "Akıllı Sözleşme Oluşturucu",
+  "generatorSubtitle": "45'ten fazla yargı alanında Borçlar ve Ticaret Kanunlarına uygun otomatik sözleşme hazırlama.",
+  "contractTypeLabel": "Sözleşme Türü / Alanı",
+  "partyALabel": "Taraf A (İsim ve Hukuki Statü)",
+  "partyBLabel": "Taraf B (İsim ve Hukuki Statü)",
+  "valueLabel": "Sözleşme Bedeli ve Ödeme Şartları",
+  "currencyLabel": "Sözleşme Para Birimi",
+  "jurisdictionLabel": "Uygulanacak Hukuk ve Yargı Sistemi",
+  "arbitrationLabel": "Tahkim Yeri ve Uyuşmazlık Çözümü",
+  "customClausesLabel": "Özel Maddeler ve Ek Talepler",
+  "generateButton": "Yapay Zeka Akıllı Sözleşme Oluştur",
+  "generatingMessage": "Juris mevzuat şablonlarını alıyor ve koruyucu maddeleri yapılandırıyor...",
+  "outputTitle": "Akıllı Sözleşme Çıktısı",
+  "exportPdfButton": "Mühürlü PDF İndir",
+  "exportWordButton": "Word İndir (.docx)",
+  "auditRiskButton": "Sözleşme Riskini Hemen Denetle",
+  "riskApprovalNote": "Risk Bağlantısı: Onaylı sözleşme düzenlenmesi, risk denetiminin incelenmesini gerektirir.",
+  "fillRequiredFields": "Lütfen Taraf A ve Taraf B bilgilerini eksiksiz doldurun."
+}

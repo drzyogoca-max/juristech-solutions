@@ -1,0 +1,12 @@
+{
+  "title": "法律合规与法定治理框架",
+  "subtitle": "严格对齐 GDPR、SOC 2 Type II 及全球数据保护标准的法务合规体系。",
+  "gdprTitle": "GDPR 与全球数据隐私保护合规",
+  "gdprDesc": "JurisTech 实行严苛的数据隐私隔离机制，全面保障用户数据导出权与被遗忘权（删除权）。",
+  "disclaimerTitle": "法定责任限制与免责声明",
+  "disclaimerDesc": "本平台通过算法提供法定指引与自动化辅助，不替代执业注册律师的正式法定代理意见。",
+  "exportUserData": "导出我的个人全部数据 (JSON)",
+  "requestErasure": "行使被遗忘权（彻底删除账户与数据）",
+  "regulatoryAudit": "监管审计与合规穿透报告",
+  "isoCertified": "全面对齐 SOC 2 Type II 与 ISO 27001 安全管控规范"
+}

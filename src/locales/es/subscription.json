@@ -1,0 +1,19 @@
+{
+  "guardTitle": "Función Exclusiva para Suscriptores",
+  "guardSubtitle": "Esta capacidad de IA corporativa requiere una suscripción activa.",
+  "subscribeButton": "Suscribirse Ahora (Paddle)",
+  "openingCheckout": "Abriendo pasarela de pago segura...",
+  "featureBullet1": "Núcleo Soberano Google AI Pro y análisis en 8 ejes",
+  "featureBullet2": "Simulación de litigios y negociación autónoma",
+  "featureBullet3": "Generación ilimitada de documentos Word/PDF y registros cifrados",
+  "merchantOfRecord": "Merchant of Record: Paddle.com",
+  "statusActive": "Activo",
+  "statusExpired": "Expirado",
+  "statusCancelled": "Cancelado",
+  "daysLeftSuffix": "días restantes",
+  "freeTrial": "Prueba gratuita",
+  "startupTier": "Startup",
+  "smeTier": "PYME",
+  "proTier": "Pro",
+  "enterpriseTier": "Corporativo"
+}

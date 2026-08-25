@@ -539,7 +539,12 @@ const REVERSE_GLOBAL_MAP: Map<string, Record<SupportedLang, string>> = new Map()
  * 'ar' | 'en' | 'de' | 'fr' | 'es' | 'zh' | 'tr'
  */
 export function loc(arText: string, enText: string, lang?: string): string {
-  const targetLang = normalizeLanguage(lang || (typeof window !== 'undefined' ? localStorage.getItem('locale') || 'ar' : 'ar'));
+  const targetLang = normalizeLanguage(
+    lang ||
+      (typeof window !== 'undefined'
+        ? localStorage.getItem('juristech.locale') || localStorage.getItem('locale') || 'en'
+        : 'en')
+  );
 
   if (targetLang === 'ar') return arText || enText || '';
   if (targetLang === 'en') return enText || arText || '';

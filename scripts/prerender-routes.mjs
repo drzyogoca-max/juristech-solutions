@@ -190,6 +190,12 @@ const ROUTE_METADATA = {
     descriptionAr: 'استعرض خطط الأسعار والاشتراكات المؤسسية الشفافة لمنظومة JurisTech Solutions القانونية الذكية.',
     descriptionEn: 'Explore transparent pricing plans and enterprise subscription tiers for JurisTech Solutions legal AI.',
   },
+  '/billing': {
+    titleAr: 'إدارة الفوترة والاشتراك والبطاقات | JurisTech Solutions',
+    titleEn: 'Account Billing & Subscription Management | JurisTech Solutions',
+    descriptionAr: 'لوحة إدارة الفوترة الرسمية، تجديد الاشتراكات، وإيصالات الدفع المشفرة لدى JurisTech Solutions.',
+    descriptionEn: 'Official Merchant billing portal, Paddle subscriptions, and cryptographic payment receipts at JurisTech Solutions.',
+  },
 };
 
 const PUBLIC_ROUTES = Object.keys(ROUTE_METADATA);

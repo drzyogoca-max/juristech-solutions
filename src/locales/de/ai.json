@@ -1,0 +1,13 @@
+{
+  "assistantTitle": "Leitender KI-Rechtsberater",
+  "assistantSubtitle": "Unterstützt durch Gemini 2.0 Flash, gesetzliches RAG-Retrieval und multijurisdiktionellen Rahmen.",
+  "placeholder": "Stellen Sie eine Rechtsfrage, fordern Sie Klauseln an oder fügen Sie einen Sachverhalt ein...",
+  "send": "Anfrage senden",
+  "thinking": "Juris analysiert Gesetzestexte und gleicht Präzedenzfälle ab...",
+  "disclaimer": "JurisTech KI bietet gesetzliche Orientierung und Workflow-Automatisierung, keine direkte Rechtsberatung.",
+  "newSession": "Neue Beratungssitzung",
+  "exportHistory": "Verlauf exportieren (.txt / .pdf)",
+  "groundingActive": "100% gesetzlich fundiert aktiv",
+  "eightAxisAnalysis": "8-Achsen-Rechtsanalyserahmen",
+  "modelEngine": "Engine: Google AI Pro Sovereign Core"
+}

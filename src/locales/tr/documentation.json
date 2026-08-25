@@ -1,0 +1,9 @@
+{
+  "title": "Platform Bilgi Bankası ve API Kılavuzu",
+  "subtitle": "Mimari rehberler, RAG protokolleri ve geliştirici kaynaklarını keşfedin.",
+  "gettingStarted": "Başlangıç Kılavuzu",
+  "apiReference": "REST ve Webhook API Referansı",
+  "sdkIntegration": "ERP Entegratörleri (SAP, Odoo, Salesforce)",
+  "securityArchitecture": "Güvenlik ve Şifreleme Raporu",
+  "jurisdictionMatrix": "Mevzuat ve Yargı Matrisi (45+ Ülke)"
+}

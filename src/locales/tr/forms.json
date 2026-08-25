@@ -1,0 +1,10 @@
+{
+  "required": "Bu alan zorunludur",
+  "optional": "İsteğe bağlı",
+  "selectOption": "Bir seçenek seçin",
+  "namePlaceholder": "Adınızı ve soyadınızı girin",
+  "emailPlaceholder": "ad@sirket.com",
+  "phonePlaceholder": "+90 500 000 00 00",
+  "companyPlaceholder": "Şirket veya Büro Resmi Adı",
+  "notesPlaceholder": "Özel notlar veya talepler girin..."
+}

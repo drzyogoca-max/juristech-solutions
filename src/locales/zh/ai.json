@@ -1,0 +1,13 @@
+{
+  "assistantTitle": "高级执行级 AI 法律顾问",
+  "assistantSubtitle": "基于 Gemini 2.0 Flash、RAG 法定检索与全球跨法域知识库架构构建。",
+  "placeholder": "请输入任何法律咨询、请求起草专门条款或粘贴争议摘要...",
+  "send": "发送咨询",
+  "thinking": "Juris 正在深度检索法定条款并交叉比对司法裁判先例...",
+  "disclaimer": "JurisTech AI 提供法定指引与自动化流程，不构成直接法律意见。正式签署请咨询执业律师。",
+  "newSession": "开启全新咨询会话",
+  "exportHistory": "导出对话记录 (.txt / .pdf)",
+  "groundingActive": "100% 法定依据校验已激活",
+  "eightAxisAnalysis": "8 轴全景法律框架分析",
+  "modelEngine": "核心引擎：Google AI Pro Sovereign Core"
+}

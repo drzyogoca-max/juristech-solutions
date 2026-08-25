@@ -1,0 +1,12 @@
+{
+  "title": "Cumplimiento Legal y Gobernanza Regulatoria",
+  "subtitle": "Marco integral que garantiza la alineación con RGPD, SOC 2 y estándares internacionales.",
+  "gdprTitle": "Cumplimiento RGPD y Protección de Datos",
+  "gdprDesc": "JurisTech aplica estrictas políticas de privacidad y derechos de supresión de datos.",
+  "disclaimerTitle": "Descargo de Responsabilidad Legal",
+  "disclaimerDesc": "Nuestra plataforma ofrece orientación algorítmica sin sustituir a un abogado colegiado.",
+  "exportUserData": "Exportar mis datos personales (JSON)",
+  "requestErasure": "Solicitar derecho al olvido (Supresión)",
+  "regulatoryAudit": "Informes de auditoría regulatoria",
+  "isoCertified": "Controles alineados con SOC 2 Type II e ISO 27001"
+}

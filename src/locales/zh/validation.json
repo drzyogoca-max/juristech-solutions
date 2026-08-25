@@ -1,0 +1,7 @@
+{
+  "invalidEmail": "请输入有效的电子邮箱地址。",
+  "passwordTooShort": "密码长度不得少于8个字符。",
+  "fieldRequired": "该必填字段不能为空。",
+  "mustAcceptTerms": "您必须勾选并同意服务条款方可继续。",
+  "invalidNumber": "请输入有效的数值。"
+}

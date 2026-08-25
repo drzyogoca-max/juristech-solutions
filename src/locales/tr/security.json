@@ -1,0 +1,12 @@
+{
+  "title": "Güvenlik Radarı ve Kriptografik Doğrulama",
+  "subtitle": "Banka düzeyinde istemci tarafı şifreleme ve Sıfır Güven (Zero-Trust) veri egemenliği.",
+  "e2eeTitle": "Uçtan Uca AES-256-GCM Şifreleme",
+  "e2eeDesc": "Hassas sözleşmeleriniz ve kayıtlarınız tarayıcınızdan çıkmadan önce şifrelenir.",
+  "sha256Title": "SHA-256 Müdahale Edilemez Mühürleme",
+  "sha256Desc": "Oluşturulan her belge değiştirilemez bir kriptografik özet alır.",
+  "twoFactorTitle": "İki Faktörlü Kimlik Doğrulama (2FA)",
+  "twoFactorDesc": "Kritik işlemleri OTP doğrulama ile koruyun.",
+  "threatDetection": "Canlı Dolandırıcılık ve Tehdit İzleme",
+  "activeStatus": "Güvenlik Radarı Aktif ve Korumada"
+}

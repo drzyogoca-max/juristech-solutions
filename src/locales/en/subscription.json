@@ -1,0 +1,19 @@
+{
+  "guardTitle": "Subscriber-Only Sovereign Feature",
+  "guardSubtitle": "This enterprise AI capability requires an active subscription.",
+  "subscribeButton": "Subscribe Now (Paddle Checkout)",
+  "openingCheckout": "Opening Secure Checkout...",
+  "featureBullet1": "Google AI Pro Sovereign Core & 8-Axis Contract Analysis",
+  "featureBullet2": "Virtual Dispute Simulation & Autonomous Negotiation",
+  "featureBullet3": "Unlimited Word/PDF Document Generation & Cryptographic Logs",
+  "merchantOfRecord": "Merchant of Record: Paddle.com",
+  "statusActive": "Active",
+  "statusExpired": "Expired",
+  "statusCancelled": "Cancelled",
+  "daysLeftSuffix": "days remaining",
+  "freeTrial": "Free Trial",
+  "startupTier": "Startup",
+  "smeTier": "SMEs",
+  "proTier": "Pro",
+  "enterpriseTier": "Enterprise"
+}

@@ -1,0 +1,19 @@
+{
+  "guardTitle": "Abonelere Özel Egemen Özellik",
+  "guardSubtitle": "Bu kurumsal yapay zeka özelliği aktif bir abonelik gerektirir.",
+  "subscribeButton": "Hemen Abone Ol (Paddle)",
+  "openingCheckout": "Güvenli Ödeme Açılıyor...",
+  "featureBullet1": "Google AI Pro Egemen Çekirdeği ve 8 Eksenli Sözleşme Analizi",
+  "featureBullet2": "Sanal Uyuşmazlık Simülasyonu ve Otonom Müzakere",
+  "featureBullet3": "Sınırsız Word/PDF Belge Üretimi ve Kriptografik Günlükler",
+  "merchantOfRecord": "Yetkili Kayıtlı Satıcı: Paddle.com",
+  "statusActive": "Aktif",
+  "statusExpired": "Süresi Doldu",
+  "statusCancelled": "İptal Edildi",
+  "daysLeftSuffix": "gün kaldı",
+  "freeTrial": "Ücretsiz Deneme",
+  "startupTier": "Startup",
+  "smeTier": "KOBİ",
+  "proTier": "Pro",
+  "enterpriseTier": "Kurumsal"
+}

@@ -1,0 +1,21 @@
+{
+  "overviewTitle": "Executive Telemetry & Legal Operations Hub",
+  "overviewSubtitle": "Real-time visibility into active contracts, automated risk analysis, and sovereign AI telemetry.",
+  "totalContracts": "Total Contracts in System",
+  "realVisitorsToday": "Real Visitors Today",
+  "activeSubscribers": "Active Subscribers & Clients",
+  "payingEntities": "Licensed Corporate Entities",
+  "riskReports": "Risk Audit Reports",
+  "aiQueries": "Statutory AI Consultations",
+  "quickActions": "Quick Executive Actions",
+  "draftContractBtn": "Draft Commercial Contract",
+  "auditRiskBtn": "Audit Contract Risk",
+  "liveConsultationBtn": "Start Live Consultation 24/7",
+  "recentActivity": "Recent System Activity",
+  "noRecentActivity": "No recent transactions found.",
+  "saasMapTab": "Global SaaS Map",
+  "contractStudioTab": "Contract Studio",
+  "servicesDirectoryTab": "18 Sovereign Services",
+  "caseStudiesTab": "Case Studies & Pricing",
+  "securityTab": "Security & Governance"
+}

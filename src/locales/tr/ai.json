@@ -1,0 +1,13 @@
+{
+  "assistantTitle": "Kıdemli Yönetici Yapay Zeka Hukuk Danışmanı",
+  "assistantSubtitle": "Gemini 2.0 Flash, RAG mevzuat sorgulama ve çoklu yargı çerçevesi ile güçlendirilmiştir.",
+  "placeholder": "Hukuki bir soru sorun, madde taslağı isteyin veya uyuşmazlık özeti yapıştırın...",
+  "send": "Sorguyu Gönder",
+  "thinking": "Juris kanun maddelerini ve emsal kararları inceliyor...",
+  "disclaimer": "JurisTech AI yasal rehberlik ve iş akışı otomasyonu sunar, doğrudan hukuki tavsiye niteliği taşımaz.",
+  "newSession": "Yeni Danışmanlık Oturumu",
+  "exportHistory": "Görüşmeyi Dışa Aktar (.txt / .pdf)",
+  "groundingActive": "%100 Mevzuat Temeli Aktif",
+  "eightAxisAnalysis": "8 Eksenli Hukuki Analiz Çerçevesi",
+  "modelEngine": "Motor: Google AI Pro Sovereign Core"
+}

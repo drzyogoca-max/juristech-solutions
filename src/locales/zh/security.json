@@ -1,0 +1,12 @@
+{
+  "title": "安全态势雷达与加密合规审计",
+  "subtitle": "银行级客户端深度加密与零信任 (Zero-Trust) 数字主权隔离架构。",
+  "e2eeTitle": "端到端 AES-256-GCM 强加密",
+  "e2eeDesc": "合同正文与咨询流水在离开您的浏览器前即完成彻底高强度加密。",
+  "sha256Title": "SHA-256 不可篡改防伪盖印",
+  "sha256Desc": "系统生成的每一份文档均生成唯一的不可逆哈希指纹凭证。",
+  "twoFactorTitle": "双重身份认证 (2FA)",
+  "twoFactorDesc": "为企业高管与法务操作提供动态 OTP 口令二次安全加固。",
+  "threatDetection": "实时反欺诈与异常流量智能拦截",
+  "activeStatus": "安全防御雷达 24/7 守护中"
+}

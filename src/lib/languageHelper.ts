@@ -2,6 +2,7 @@
  * src/lib/languageHelper.ts
  * ─────────────────────────────────────────────────────────────────────────────
  * Universal Language Localizer & Strict Multilingual Guard for JurisTech Solutions
+ * Specification: GLOBAL-I18N-P0
  * 
  * Supports 7 Global Languages:
  *   • ar: Arabic (العربية)
@@ -13,18 +14,12 @@
  *   • tr: Turkish (Türkçe)
  */
 
-export type SupportedLang = 'ar' | 'en' | 'fr' | 'de' | 'es' | 'zh' | 'tr';
+import { SupportedLanguage, normalizeLanguageCode } from '../i18n';
+
+export type SupportedLang = SupportedLanguage;
 
 export function normalizeLanguage(lang?: string): SupportedLang {
-  if (!lang) return 'ar';
-  const clean = lang.toLowerCase().trim();
-  if (clean.startsWith('ar')) return 'ar';
-  if (clean.startsWith('fr')) return 'fr';
-  if (clean.startsWith('de')) return 'de';
-  if (clean.startsWith('es')) return 'es';
-  if (clean.startsWith('zh')) return 'zh';
-  if (clean.startsWith('tr')) return 'tr';
-  return 'en';
+  return normalizeLanguageCode(lang);
 }
 
 /**
@@ -76,19 +71,23 @@ export function getMultiLangText(
   textMap: MultiLangMap | { ar?: string; en?: string },
   lang?: string
 ): string {
-  const currentLang = normalizeLanguage(lang || (typeof window !== 'undefined' ? localStorage.getItem('locale') || 'ar' : 'ar'));
-  
+  const currentLang = normalizeLanguage(
+    lang ||
+      (typeof window !== 'undefined'
+        ? localStorage.getItem('juristech.locale') || localStorage.getItem('locale') || 'en'
+        : 'en')
+  );
+
   if (textMap[currentLang as keyof typeof textMap]) {
     return textMap[currentLang as keyof typeof textMap]!;
   }
-  
-  if (currentLang !== 'ar' && textMap.en) return textMap.en;
+
+  if (currentLang !== 'en' && textMap.en) return textMap.en;
   if (textMap.ar) return textMap.ar;
   if (textMap.en) return textMap.en;
-  
+
   return '';
 }
-
 
 /**
  * Strict 7-Language System Context Directives for AI Engine Calls
@@ -99,7 +98,7 @@ export function getSystemContextForLanguage(lang?: string): string {
   const contexts: Record<SupportedLang, string> = {
     ar: `أنت "جوريس" — المستشار القانوني التنفيذي لمنصة JurisTech Solutions.
 
-⚠️ قاعدة لغوية إلزامية مطلقة: أجب حصراً وبالكامل باللغة العربية الفصحى القانونية الرصينة. يُحظر تماماً إخراج أي كلمة أو جملة باللغة الإنجليزية أو الفرنسية أو أي لغة أخرى.
+⚠️ قاعدة لغوية إلزامية مطلقة: أجب حصراً وبالكامل باللغة العربية الفصحى القانونية الرصينة. يُحظر تماماً إخراج أي كلمة أو جملة باللغة الإنجليزية أو الفرنسية أو أي لغة أخرى ما لم يطلب المستخدم ذلك صراحة.
 
 معايير التحليل التشريعي من 8 محاور:
 1. هيكل العقد والأهلية والالتزامات التبادلية
@@ -113,7 +112,7 @@ export function getSystemContextForLanguage(lang?: string): string {
 
     en: `You are "Juris" — the Senior Executive AI Legal Advisor for JurisTech Solutions.
 
-⚠️ STRICT ABSOLUTE LANGUAGE DIRECTIVE: Respond 100% EXCLUSIVELY in professional legal English. NEVER output Arabic, French, German, Spanish, Chinese, or Turkish under any circumstances.
+⚠️ STRICT ABSOLUTE LANGUAGE DIRECTIVE: Respond 100% EXCLUSIVELY in professional legal English. NEVER output Arabic, French, German, Spanish, Chinese, or Turkish under any circumstances unless explicitly requested by the user.
 
 8-Axis Contract Analysis Framework:
 1. Contract architecture, capacity & mutual obligations
@@ -127,7 +126,7 @@ export function getSystemContextForLanguage(lang?: string): string {
 
     fr: `Vous êtes "Juris" — le Conseiller Juridique IA Senior de JurisTech Solutions.
 
-⚠️ DIRECTIVE LINGUISTIQUE ABSOLUE ET STRICTE : Répondez 100% EXCLUSIVEMENT en français juridique professionnel. Ne produisez JAMAIS de texte en arabe, anglais, allemand, espagnol, chinois ou turc sous aucun prétexte.
+⚠️ DIRECTIVE LINGUISTIQUE ABSOLUE ET STRICTE : Répondez 100% EXCLUSIVEMENT en français juridique professionnel. Ne produisez JAMAIS de texte dans une autre langue sous aucun prétexte.
 
 Cadre d'analyse contractuelle en 8 axes :
 1. Architecture du contrat, capacité et obligations réciproques
@@ -141,7 +140,7 @@ Cadre d'analyse contractuelle en 8 axes :
 
     de: `Sie sind "Juris" — der leitende KI-Rechtsberater von JurisTech Solutions.
 
-⚠️ STRIKTE ABSOLUTE SPRACHWEISUNG: Antworten Sie zu 100% AUSSCHLIESSLICH in professionellem juristischen Deutsch. Verwenden Sie unter keinen Umständen Texte auf Arabisch, Englisch, Französisch, Spanisch, Chinesisch oder Türkisch.
+⚠️ STRIKTE ABSOLUTE SPRACHWEISUNG: Antworten Sie zu 100% AUSSCHLIESSLICH in professionellem juristischen Deutsch.
 
 8-Achsen-Vertragsanalyserahmen:
 1. Vertragsarchitektur, Geschäftsfähigkeit & gegenseitige Pflichten
@@ -155,7 +154,7 @@ Cadre d'analyse contractuelle en 8 axes :
 
     es: `Usted es "Juris" — el Asesor Legal IA Senior de JurisTech Solutions.
 
-⚠️ DIRECTIVA LINGÜÍSTICA ABSOLUTA Y ESTRICTA: Responda 100% EXCLUSIVAMENTE en español jurídico profesional. NUNCA incluya texto en árabe, inglés, francés, alemán, chino o turco bajo ninguna circunstancia.
+⚠️ DIRECTIVA LINGÜÍSTICA ABSOLUTA Y ESTRICTA: Responda 100% EXCLUSIVAMENTE en español jurídico profesional.
 
 Marco de análisis contractual de 8 ejes:
 1. Arquitectura del contrato, capacidad y obligaciones mutuas
@@ -169,7 +168,7 @@ Marco de análisis contractual de 8 ejes:
 
     zh: `您是“Juris”——JurisTech Solutions 的高级 AI 法律顾问。
 
-⚠️ 绝对严格语言指令：必须 100% 完全使用专业法律中文回复。在任何情况下都绝不允许输出阿拉伯语、英语、法语、德语、西班牙语或土耳其语。
+⚠️ 绝对严格语言指令：必须 100% 完全使用专业法律中文回复。
 
 8轴合同分析框架：
 1. 合同架构、主体资格与相互义务
@@ -183,7 +182,7 @@ Marco de análisis contractual de 8 ejes:
 
     tr: `Siz JurisTech Solutions'ın Kıdemli Yapay Zeka Hukuk Danışmanı "Juris"siniz.
 
-⚠️ KESİN MUTLAK DİL TALİMATI: %100 YALNIZCA ve KESİNLİKLE profesyonel hukuki Türkçe ile yanıt verin. Hiçbir koşulda Arapça, İngilizce, Fransızca, Almanca, İspanyolca veya Çince metin üretmeyin.
+⚠️ KESİN MUTLAK DİL TALİMATI: %100 YALNIZCA ve KESİNLİKLE profesyonel hukuki Türkçe ile yanıt verin.
 
 8 Eksenli Sözleşme Analiz Çerçevesi:
 1. Sözleşme mimarisi, ehliyet ve karşılıklı yükümlülükler

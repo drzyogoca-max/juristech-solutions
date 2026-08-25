@@ -1,0 +1,15 @@
+{
+  "title": "Kurumsal Çözümler ve M&A Durum Tespiti",
+  "subtitle": "Büyük hukuk büroları, yatırım bankaları ve holdingler için özel egemen yapay zeka kurulumları.",
+  "customDeployment": "Şirket İçi (On-Premises) ve Özel Egemen Bulut",
+  "customDeploymentDesc": "JurisTech modellerini sıfır veri sızıntısı ile kendi özel VPC ağınızda çalıştırın.",
+  "slaGuarantee": "%99.99 Kurumsal Çalışma Süresi SLA",
+  "requestProposal": "Kurumsal Teklif Talep Edin",
+  "companyName": "Şirket / Hukuk Bürosu Adı",
+  "contactPerson": "Yetkili Kişi Adı",
+  "workEmail": "Kurumsal E-posta",
+  "teamSize": "Avukat / Kullanıcı Sayısı",
+  "customRequirements": "Özel Mimari Gereksinimler",
+  "submitProposal": "Kurumsal Talebi Gönder",
+  "proposalSentSuccess": "Talebiniz alındı. Bir kurumsal danışman 4 iş saati içinde sizinle iletişime geçecektir."
+}

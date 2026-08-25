@@ -1,0 +1,15 @@
+{
+  "title": "Soluciones Corporativas y Auditoría M&A",
+  "subtitle": "Implementaciones de IA soberana a medida para despachos de abogados, bancos y corporaciones.",
+  "customDeployment": "Nube Privada e Instalación On-Premises",
+  "customDeploymentDesc": "Implemente los modelos de JurisTech en su VPC privada con total aislamiento de datos.",
+  "slaGuarantee": "Garantía de Disponibilidad 99.99% SLA",
+  "requestProposal": "Solicitar propuesta corporativa",
+  "companyName": "Nombre de la empresa / Despacho",
+  "contactPerson": "Nombre del contacto",
+  "workEmail": "Correo corporativo",
+  "teamSize": "Número de abogados / Usuarios",
+  "customRequirements": "Requisitos personalizados",
+  "submitProposal": "Enviar consulta corporativa",
+  "proposalSentSuccess": "Consulta recibida. Un asesor corporativo se pondrá en contacto en 4 horas hábiles."
+}

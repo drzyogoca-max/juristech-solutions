@@ -1,0 +1,16 @@
+{
+  "title": "Bóveda de Documentos y Contratos",
+  "subtitle": "Repositorio seguro e inviolable con sellado criptográfico SHA-256.",
+  "uploadDocument": "Subir documento",
+  "myDocuments": "Mis Documentos",
+  "noDocuments": "No hay documentos almacenados.",
+  "documentName": "Nombre del documento",
+  "fileSize": "Tamaño",
+  "uploadDate": "Fecha de subida",
+  "sealStatus": "Sello Criptográfico",
+  "downloadPdf": "Descargar PDF",
+  "downloadDocx": "Descargar Word (.docx)",
+  "deleteDocument": "Eliminar documento",
+  "confirmDelete": "¿Está seguro de que desea eliminar permanentemente este documento?",
+  "e2eeNotice": "Todos los documentos se cifran en el cliente con AES-256-GCM antes de la transmisión."
+}

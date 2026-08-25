@@ -1,0 +1,15 @@
+{
+  "title": "Unternehmenslösungen & M&A Due Diligence",
+  "subtitle": "Maßgeschneiderte Bereitstellung souveräner KI für Großkanzleien, Investmentbanken und Konzerne.",
+  "customDeployment": "On-Premises & Souveräne Private Cloud",
+  "customDeploymentDesc": "Betreiben Sie JurisTech-Modelle in Ihrer privaten VPC mit vollständiger Datenisolation.",
+  "slaGuarantee": "99.99% Verfügbarkeits-SLA",
+  "requestProposal": "Unternehmensangebot anfordern",
+  "companyName": "Unternehmen / Kanzleiname",
+  "contactPerson": "Name des Ansprechpartners",
+  "workEmail": "Geschäftliche E-Mail",
+  "teamSize": "Anzahl Juristen / Nutzer",
+  "customRequirements": "Individuelle Anforderungen",
+  "submitProposal": "Anfrage absenden",
+  "proposalSentSuccess": "Anfrage erhalten. Ein Berater wird sich innerhalb von 4 Arbeitsstunden melden."
+}

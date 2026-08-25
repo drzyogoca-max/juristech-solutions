@@ -1,0 +1,20 @@
+{
+  "generatorTitle": "Smart Contract Generator",
+  "generatorSubtitle": "Automated drafting aligned with Civil & Commercial Codes across 45+ jurisdictions.",
+  "contractTypeLabel": "Contract Type / Domain",
+  "partyALabel": "Party A (Name & Legal Entity)",
+  "partyBLabel": "Party B (Name & Legal Entity)",
+  "valueLabel": "Contract Value & Financial Terms",
+  "currencyLabel": "Contract Currency",
+  "jurisdictionLabel": "Governing Law & Legal System",
+  "arbitrationLabel": "Arbitration & Dispute Resolution Seat",
+  "customClausesLabel": "Special Clauses & Custom Requirements",
+  "generateButton": "Generate AI Smart Contract",
+  "generatingMessage": "Juris is retrieving statutory RAG templates and structuring protective clauses...",
+  "outputTitle": "Pristine Smart Contract Output",
+  "exportPdfButton": "Export Sealed PDF",
+  "exportWordButton": "Export Word (.docx)",
+  "auditRiskButton": "Audit Contract Risk Now",
+  "riskApprovalNote": "Direct Risk Link: Issuing certified contract requires explicit review of the risk audit findings.",
+  "fillRequiredFields": "Please provide both Party A and Party B legal identities."
+}

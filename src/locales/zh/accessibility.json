@@ -1,0 +1,9 @@
+{
+  "selectLanguage": "选择系统界面显示语言",
+  "openMenu": "打开主导航栏菜单",
+  "closeMenu": "关闭导航栏菜单",
+  "skipToContent": "跳转至主要内容区域",
+  "userProfile": "用户个人信息与设置菜单",
+  "toggleTheme": "切换视觉主题与字体配置",
+  "statusIndicator": "系统实时可用性状态运行指示器"
+}

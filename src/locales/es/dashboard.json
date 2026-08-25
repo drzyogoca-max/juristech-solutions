@@ -1,0 +1,21 @@
+{
+  "overviewTitle": "Centro de Telemetría y Operaciones Legales",
+  "overviewSubtitle": "Visibilidad en tiempo real de contratos activos, análisis de riesgos e IA soberana.",
+  "totalContracts": "Contratos totales en el sistema",
+  "realVisitorsToday": "Visitantes reales hoy",
+  "activeSubscribers": "Suscriptores y clientes activos",
+  "payingEntities": "Empresas licenciadas",
+  "riskReports": "Informes de auditoría de riesgos",
+  "aiQueries": "Consultas jurídicas IA",
+  "quickActions": "Acciones Rápidas",
+  "draftContractBtn": "Redactar contrato mercantil",
+  "auditRiskBtn": "Auditar riesgo contractual",
+  "liveConsultationBtn": "Iniciar consulta 24/7",
+  "recentActivity": "Actividad reciente",
+  "noRecentActivity": "No hay transacciones recientes.",
+  "saasMapTab": "Mapa SaaS Global",
+  "contractStudioTab": "Estudio de Contratos",
+  "servicesDirectoryTab": "18 Servicios Soberanos",
+  "caseStudiesTab": "Casos de Éxito y Precios",
+  "securityTab": "Seguridad y Gobernanza"
+}

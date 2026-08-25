@@ -1,0 +1,20 @@
+{
+  "generatorTitle": "智能合同全景生成器",
+  "generatorSubtitle": "严格遵循全球45+法域民商法典与行业法定标准的自动化合同起草系统。",
+  "contractTypeLabel": "合同类型 / 业务领域",
+  "partyALabel": "甲方主体 (名称及法定资质)",
+  "partyBLabel": "乙方主体 (名称及法定资质)",
+  "valueLabel": "合同标的金额及结算条款",
+  "currencyLabel": "结算币种",
+  "jurisdictionLabel": "适用法律管辖与司法法系",
+  "arbitrationLabel": "仲裁机构与争议管辖地",
+  "customClausesLabel": "特别约定与定制保护性条款",
+  "generateButton": "生成 AI 智能商事合同",
+  "generatingMessage": "Juris 正在检索法定 RAG 模板库并结构化编排保护性条款...",
+  "outputTitle": "权威智能合同输出文本",
+  "exportPdfButton": "导出官方盖印PDF",
+  "exportWordButton": "导出Word文档 (.docx)",
+  "auditRiskButton": "立即进行风险穿透审计",
+  "riskApprovalNote": "风险闭环关联：正式颁发认证合同前必须确认并复核上述风险审计结论。",
+  "fillRequiredFields": "请完整填写甲方与乙方的法定主体名称。"
+}

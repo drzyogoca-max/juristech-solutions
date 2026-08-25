@@ -1,0 +1,21 @@
+{
+  "overviewTitle": "Zentrale Telemetrie & Legal Operations Hub",
+  "overviewSubtitle": "Echtzeit-Transparenz über aktive Verträge, automatisierte Risikoanalysen und souveräne KI-Telemetrie.",
+  "totalContracts": "Gesamtverträge im System",
+  "realVisitorsToday": "Reale Besucher heute",
+  "activeSubscribers": "Aktive Abonnenten & Mandanten",
+  "payingEntities": "Lizenzierte Unternehmen",
+  "riskReports": "Risiko-Audit-Berichte",
+  "aiQueries": "Gesetzliche KI-Beratungen",
+  "quickActions": "Schnellaktionen",
+  "draftContractBtn": "Handelsvertrag erstellen",
+  "auditRiskBtn": "Vertragsrisiko prüfen",
+  "liveConsultationBtn": "Live-Beratung starten 24/7",
+  "recentActivity": "Letzte Systemaktivitäten",
+  "noRecentActivity": "Keine aktuellen Transaktionen.",
+  "saasMapTab": "Globale SaaS-Karte",
+  "contractStudioTab": "Vertragsstudio",
+  "servicesDirectoryTab": "18 Souveräne Dienste",
+  "caseStudiesTab": "Fallstudien & Preise",
+  "securityTab": "Sicherheit & Governance"
+}

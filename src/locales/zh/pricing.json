@@ -1,0 +1,20 @@
+{
+  "title": "透明、合规的主权定价方案",
+  "subtitle": "由全球认证法定记录商 (Merchant of Record) Paddle.com 提供即时开通、税务合规与资金安全保障。",
+  "monthlyBilling": "按月订阅",
+  "annualBilling": "按年订阅 (享受 8 折优惠)",
+  "startupName": "初创企业法务方案 (Startup)",
+  "startupDesc": "为初创团队及创始人提供核心 AI 智能合同生成与风险雷达初审。",
+  "smeName": "中小企业与律所方案 (SMEs)",
+  "smeDesc": "为成长型企业及法律顾问提供全套自主 AI 法务运营与谈判模拟工具。",
+  "enterpriseName": "大型企业主权定制方案 (Enterprise)",
+  "enterpriseDesc": "配备专属大模型实例、无限量合同穿透审计及定制并购 (M&A) 工作流。",
+  "perMonth": "/ 月",
+  "subscribeNow": "立即订阅",
+  "subscribeViaPaddle": "使用信用卡立即订阅 (Paddle Checkout)",
+  "popularBadge": "最受欢迎",
+  "instantActivation": "通过国际官方记录商 Paddle.com 秒级开通",
+  "comparePlans": "对比全系方案功能矩阵",
+  "faqTitle": "订阅与支付常见问题解答",
+  "refundGuarantee": "享有14天合规公平退款保障"
+}

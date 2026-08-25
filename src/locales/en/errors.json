@@ -1,0 +1,12 @@
+{
+  "genericError": "An unexpected error occurred. Please try again.",
+  "networkError": "Network connection failed. Check your internet connection.",
+  "unauthorized": "Access denied. Please authenticate to view this resource.",
+  "forbidden": "You do not have administrative privileges to access this sector.",
+  "notFound": "The requested resource or page was not found.",
+  "subscriptionRequired": "Active subscription required to execute this operation.",
+  "paymentFailed": "Payment processing failed. Please verify your card details.",
+  "fileTooLarge": "Uploaded file exceeds maximum permitted size (25MB).",
+  "invalidFileType": "Unsupported file type. Please upload PDF, DOCX, or TXT.",
+  "aiUnavailable": "AI inference engine is momentarily busy. Re-trying statutory lookup..."
+}

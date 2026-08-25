@@ -1,0 +1,9 @@
+{
+  "dashboardTitle": "Super-Admin-Kontrollzentrum",
+  "executiveMonitor": "Täglicher Executive Monitor",
+  "financialHub": "Finanz- & Gateway-Dashboard",
+  "antiFraudRadar": "Anti-Betrugs-Sicherheitsradar",
+  "crmLeads": "CRM & Lead-Pipeline",
+  "systemHealth": "Systemzustand: 100% Betriebsbereit",
+  "liveTraffic": "Live-Traffic & Telemetrie"
+}

@@ -1,0 +1,16 @@
+{
+  "title": "文档与合同加密保险库",
+  "subtitle": "具备 SHA-256 加密防篡改盖印的安全存储知识库。",
+  "uploadDocument": "上传新文档",
+  "myDocuments": "我的文档与合同",
+  "noDocuments": "暂无存储的文档记录。",
+  "documentName": "文档名称",
+  "fileSize": "文件大小",
+  "uploadDate": "上传日期",
+  "sealStatus": "加密盖印状态",
+  "downloadPdf": "下载官方盖印PDF",
+  "downloadDocx": "下载Word文档 (.docx)",
+  "deleteDocument": "删除文档",
+  "confirmDelete": "确定要永久删除此文档吗？此操作无法撤销。",
+  "e2eeNotice": "所有文档在上传传输前均已在客户端完成 AES-256-GCM 彻底端到端加密。"
+}

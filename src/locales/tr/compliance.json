@@ -1,0 +1,12 @@
+{
+  "title": "Yasal Uyumluluk ve Mevzuat Yönetişimi",
+  "subtitle": "KVKK, GDPR, SOC 2 ve uluslararası standartlara tam uyum sağlayan kapsamlı çerçeve.",
+  "gdprTitle": "GDPR ve KVKK Veri Koruma Uyumluluğu",
+  "gdprDesc": "JurisTech katı veri gizliliği kuralları ve kullanıcı silme hakları uygular.",
+  "disclaimerTitle": "Hukuki Sorumluluk Reddi Beyanı",
+  "disclaimerDesc": "Yapay zeka platformumuz algoritmik rehberlik sunar, baroya kayıtlı avukatın yerini almaz.",
+  "exportUserData": "Kişisel Verilerimi Dışa Aktar (JSON)",
+  "requestErasure": "Unutulma Hakkı Talebi (Veri Silme)",
+  "regulatoryAudit": "Düzenleyici Denetim Raporları",
+  "isoCertified": "SOC 2 Type II ve ISO 27001 Uyumlu Güvenlik"
+}

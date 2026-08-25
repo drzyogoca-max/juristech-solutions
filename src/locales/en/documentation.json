@@ -1,0 +1,9 @@
+{
+  "title": "Platform Knowledge Base & API Reference",
+  "subtitle": "Explore architecture guides, statutory RAG protocols, and developer resources.",
+  "gettingStarted": "Getting Started Guide",
+  "apiReference": "REST & Webhook API Reference",
+  "sdkIntegration": "SDK & ERP Connectors (SAP, Odoo, Salesforce)",
+  "securityArchitecture": "Security & Encryption Whitepaper",
+  "jurisdictionMatrix": "Statutory Jurisdictions Matrix (45+ Countries)"
+}
