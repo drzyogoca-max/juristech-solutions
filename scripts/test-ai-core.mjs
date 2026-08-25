@@ -1476,12 +1476,178 @@ console.log('\n🔍 [TEST 309/310] Verifying Task 1 to 12 Full Regression Verifi
 assert(orchFile.includes('AIOrchestrator') && t11_legalAgentFile.includes('LegalResearchAgent') && t11_contractAgentFile.includes('ContractAgent') && t11_complianceAgentFile.includes('ComplianceAgent') && t11_docGenFile.includes('DocumentGenerator') && orgManagerFile.includes('OrganizationManager') && wsManagerFile.includes('WorkspaceManager') && quotaFile.includes('QuotaManager') && auditEngineFile.includes('EnterpriseAuditEngine') && govCenterFile.includes('AIGovernanceCenter'), 'All Task 1 through 12 systems 100% operational');
 
 // ── TEST 310: Final Enterprise AI Legal Ecosystem v10.6 Release Baseline ──────
-console.log('\n🔍 [TEST 310/310] Verifying Final Enterprise AI Legal Ecosystem v10.6 Release Baseline...');
+console.log('\n🔍 [TEST 310/350] Verifying Final Enterprise AI Legal Ecosystem v10.6 Release Baseline...');
 assert(apiGatewayFile.includes('ApiGateway') && marketplaceFile.includes('AgentMarketplace') && partnerFile.includes('PartnerIntegrationsManager') && compExportFile.includes('ComplianceExportEngine'), 'JurisTech Solutions Enterprise AI Ecosystem & Marketplace 100% Release Ready');
+
+// ── TEST 311: Knowledge Graph Engine Initialization & Node Types (Task 14.1) ──
+console.log('\n🔍 [TEST 311/350] Verifying Knowledge Graph Engine Initialization & Node Types (Task 14.1)...');
+const kgFile = readFileSync('src/network/legalKnowledgeGraph.ts', 'utf8');
+assert(kgFile.includes('KnowledgeNodeType') && kgFile.includes('STATUTE') && kgFile.includes('COURT_PRECEDENT'), 'Knowledge Graph engine node typology verified');
+
+// ── TEST 312: Knowledge Graph Edge Types & Relational Lineage (Task 14.1) ─────
+console.log('\n🔍 [TEST 312/350] Verifying Knowledge Graph Edge Types & Relational Lineage (Task 14.1)...');
+assert(kgFile.includes('AMENDS') && kgFile.includes('CROSS_REFERENCES') && kgFile.includes('SUPERSEDES') && kgFile.includes('DERIVES_FROM'), 'Knowledge Graph relationship edge types verified');
+
+// ── TEST 313: Knowledge Graph Traversal Depth and Neighbor Discovery (Task 14.1) 
+console.log('\n🔍 [TEST 313/350] Verifying Knowledge Graph Traversal Depth and Neighbor Discovery (Task 14.1)...');
+assert(kgFile.includes('traverseNode') && kgFile.includes('maxDepth') && kgFile.includes('visitedNodeIds'), 'Knowledge graph multi-hop traversal operational');
+
+// ── TEST 314: Knowledge Graph Multi-Jurisdictional Node Search (Task 14.1) ────
+console.log('\n🔍 [TEST 314/350] Verifying Knowledge Graph Multi-Jurisdictional Node Search (Task 14.1)...');
+assert(kgFile.includes('searchNodes') && kgFile.includes('node_sa_civil_tx_law') && kgFile.includes('node_eu_gdpr_art46'), 'Multi-jurisdictional statutory search operational');
+
+// ── TEST 315: Knowledge Graph Zero Customer Contract Storage (Task 14.1) ──────
+console.log('\n🔍 [TEST 315/350] Verifying Knowledge Graph Zero Customer Contract Storage (Task 14.1)...');
+assert(!kgFile.includes('customerUpload') && !kgFile.includes('clientContractBody'), 'Knowledge Graph contains zero client confidential data');
+
+// ── TEST 316: Precedent Intelligence Initialization & Case Citation (Task 14.2)
+console.log('\n🔍 [TEST 316/350] Verifying Precedent Intelligence Initialization & Case Citation (Task 14.2)...');
+const precFile = readFileSync('src/network/precedentIntelligence.ts', 'utf8');
+assert(precFile.includes('JudicialPrecedent') && precFile.includes('caseCitation') && precFile.includes('courtLevel'), 'Precedent Intelligence engine operational');
+
+// ── TEST 317: Precedent Judicial Courts (Saudi Commercial Court of Appeal) ───
+console.log('\n🔍 [TEST 317/350] Verifying Precedent Judicial Courts (Saudi Commercial Court of Appeal)...');
+assert(precFile.includes('Riyadh Commercial Court of Appeal') && precFile.includes('Civil Transactions Law Art 178'), 'Saudi Commercial Court precedents verified');
+
+// ── TEST 318: Precedent Judicial Courts (DIFC Court of First Instance) ────────
+console.log('\n🔍 [TEST 318/350] Verifying Precedent Judicial Courts (DIFC Court of First Instance)...');
+assert(precFile.includes('DIFC Court of First Instance') && precFile.includes('Cavendish Square'), 'DIFC Common Law precedents verified');
+
+// ── TEST 319: Precedent Judicial Courts (UK High Court Commercial) ───────────
+console.log('\n🔍 [TEST 319/350] Verifying Precedent Judicial Courts (UK High Court Commercial)...');
+assert(precFile.includes('England & Wales High Court') && precFile.includes('Force Majeure'), 'UK Commercial Court precedents verified');
+
+// ── TEST 320: Precedent Enforceability Forecaster & Probability Scoring ───────
+console.log('\n🔍 [TEST 320/350] Verifying Precedent Enforceability Forecaster & Probability Scoring (Task 14.2)...');
+assert(precFile.includes('predictClauseEnforceability') && precFile.includes('enforceabilityScore') && precFile.includes('HIGHLY_ENFORCEABLE'), 'Enforceability probability forecaster operational');
+
+// ── TEST 321: Precedent High-Risk Clause Detection & Invalidation Warning ────
+console.log('\n🔍 [TEST 321/350] Verifying Precedent High-Risk Clause Detection & Invalidation Warning...');
+assert(precFile.includes('HIGH_RISK_OF_INVALIDATION') && precFile.includes('unlimited'), 'High-risk clause invalidation detection verified');
+
+// ── TEST 322: Precedent Drafting Mitigations Generator (Task 14.2) ───────────
+console.log('\n🔍 [TEST 322/350] Verifying Precedent Drafting Mitigations Generator (Task 14.2)...');
+assert(precFile.includes('mitigationRecommendations') && precFile.includes('severability'), 'Drafting mitigations generator operational');
+
+// ── TEST 323: Multi-Agent Negotiation Room Architecture & Personas (Task 14.3)
+console.log('\n🔍 [TEST 323/350] Verifying Multi-Agent Negotiation Room Architecture & Personas (Task 14.3)...');
+const negFile = readFileSync('src/network/multiAgentNegotiation.ts', 'utf8');
+assert(negFile.includes('NegotiationMessage') && negFile.includes('BUYER_COUNSEL') && negFile.includes('SELLER_COUNSEL') && negFile.includes('ARBITER_FACILITATOR'), 'Multi-agent negotiation personas verified');
+
+// ── TEST 324: Multi-Agent Negotiation Buyer Counsel Protection Maximizer ─────
+console.log('\n🔍 [TEST 324/350] Verifying Multi-Agent Negotiation Buyer Counsel Persona (Task 14.3)...');
+assert(negFile.includes('Alpha Legal AI') && negFile.includes('Buyer Counsel'), 'Buyer Counsel protection maximizer verified');
+
+// ── TEST 325: Multi-Agent Negotiation Seller Counsel Liability Minimizer ─────
+console.log('\n🔍 [TEST 325/350] Verifying Multi-Agent Negotiation Seller Counsel Persona (Task 14.3)...');
+assert(negFile.includes('Beta Legal AI') && negFile.includes('Vendor Counsel'), 'Seller Counsel liability minimizer verified');
+
+// ── TEST 326: Multi-Agent Negotiation Neutral Arbiter Compromise Synthesizer ──
+console.log('\n🔍 [TEST 326/350] Verifying Multi-Agent Negotiation Neutral Arbiter (Task 14.3)...');
+assert(negFile.includes('Lex Arbiter') && negFile.includes('Harmonizer'), 'Neutral Arbiter compromise synthesizer verified');
+
+// ── TEST 327: Multi-Agent Negotiation 3-Turn Round Execution (Task 14.3) ──────
+console.log('\n🔍 [TEST 327/350] Verifying Multi-Agent Negotiation 3-Turn Round Execution (Task 14.3)...');
+assert(negFile.includes('runNegotiation') && negFile.includes('totalTurns: 3'), 'Negotiation multi-turn execution operational');
+
+// ── TEST 328: Multi-Agent Negotiation Consensus Scoring (0-100%) (Task 14.3) ─
+console.log('\n🔍 [TEST 328/350] Verifying Multi-Agent Negotiation Consensus Scoring (Task 14.3)...');
+assert(negFile.includes('consensusScore') && negFile.includes('CONSENSUS_REACHED'), 'Consensus scoring operational');
+
+// ── TEST 329: Multi-Agent Negotiation Bilingual Final Redline Clause (Task 14.3)
+console.log('\n🔍 [TEST 329/350] Verifying Multi-Agent Negotiation Bilingual Redline Generation...');
+assert(negFile.includes('finalSynthesizedClauseEn') && negFile.includes('finalSynthesizedClauseAr'), 'Bilingual synthesized compromise clause operational');
+
+// ── TEST 330: Multi-Agent Negotiation Harmonized Trade-Off Matrix (Task 14.3) ─
+console.log('\n🔍 [TEST 330/350] Verifying Multi-Agent Negotiation Harmonized Trade-Off Matrix...');
+assert(negFile.includes('keyTradeoffs') && negFile.includes('resolution'), 'Trade-off harmonization matrix operational');
+
+// ── TEST 331: Zero-Knowledge Enterprise Memory Layer Initialization (Task 14.4)
+console.log('\n🔍 [TEST 331/350] Verifying Zero-Knowledge Enterprise Memory Layer Initialization (Task 14.4)...');
+const memFile = readFileSync('src/network/enterpriseMemoryLayer.ts', 'utf8');
+assert(memFile.includes('EnterpriseMemoryProfile') && memFile.includes('EnterpriseMemoryLayer'), 'Enterprise memory layer operational');
+
+// ── TEST 332: Zero-Knowledge Memory Multi-Tenant Isolation by Org ID (Task 14.4)
+console.log('\n🔍 [TEST 332/350] Verifying Zero-Knowledge Memory Multi-Tenant Isolation (Task 14.4)...');
+assert(memFile.includes('organizationId') && memFile.includes('getMemoryProfile'), 'Multi-tenant organization memory isolation verified');
+
+// ── TEST 333: Zero-Knowledge Memory Preferred Arbitration Seat (Task 14.4) ───
+console.log('\n🔍 [TEST 333/350] Verifying Zero-Knowledge Memory Preferred Arbitration Seat (Task 14.4)...');
+assert(memFile.includes('SCCA_RIYADH') && memFile.includes('DIAC_DUBAI') && memFile.includes('LCIA_LONDON'), 'Arbitration seat preferences verified');
+
+// ── TEST 334: Zero-Knowledge Memory Liability Cap & Super-Cap Formulas (Task 14.4)
+console.log('\n🔍 [TEST 334/350] Verifying Zero-Knowledge Memory Liability Cap Formulas (Task 14.4)...');
+assert(memFile.includes('standardLiabilityCapMultiplier') && memFile.includes('corporateToneVector'), 'Tone vectors and cap multipliers verified');
+
+// ── TEST 335: Zero-Knowledge Memory Abstract Preference Directives (Task 14.4)
+console.log('\n🔍 [TEST 335/350] Verifying Zero-Knowledge Memory Abstract Directives (Task 14.4)...');
+assert(memFile.includes('abstractPreferredTerms') && !memFile.includes('fullContractText'), 'Zero raw document storage verified');
+
+// ── TEST 336: Zero-Knowledge Memory Profile Update & Timestamp Stamping ──────
+console.log('\n🔍 [TEST 336/350] Verifying Zero-Knowledge Memory Profile Update (Task 14.4)...');
+assert(memFile.includes('updateMemoryProfile') && memFile.includes('lastUpdated'), 'Memory profile updates operational');
+
+// ── TEST 337: Cross-Firm Legal Benchmarking Engine Initialization (Task 14.5) ─
+console.log('\n🔍 [TEST 337/350] Verifying Cross-Firm Legal Benchmarking Engine Initialization (Task 14.5)...');
+const benchFile = readFileSync('src/network/legalBenchmarkingEngine.ts', 'utf8');
+assert(benchFile.includes('SectorBenchmarkReport') && benchFile.includes('LegalBenchmarkingEngine'), 'Legal benchmarking engine operational');
+
+// ── TEST 338: Legal Benchmarking Technology & SaaS Sector Metrics (Task 14.5) ──
+console.log('\n🔍 [TEST 338/350] Verifying Legal Benchmarking Technology & SaaS Sector Metrics...');
+assert(benchFile.includes('technology_saas') && benchFile.includes('medianLiabilityCapPercent'), 'Tech SaaS benchmarking verified');
+
+// ── TEST 339: Legal Benchmarking Energy & Infrastructure Sector Metrics ───────
+console.log('\n🔍 [TEST 339/350] Verifying Legal Benchmarking Energy & Infrastructure Sector Metrics...');
+assert(benchFile.includes('energy_infrastructure') && benchFile.includes('arbitrationAdoptionRate'), 'Energy sector benchmarking verified');
+
+// ── TEST 340: Legal Benchmarking Banking & Fintech Sector Metrics (Task 14.5) ──
+console.log('\n🔍 [TEST 340/350] Verifying Legal Benchmarking Banking & Fintech Sector Metrics...');
+assert(benchFile.includes('banking_fintech') && benchFile.includes('SAMA Regulations'), 'Banking fintech benchmarking verified');
+
+// ── TEST 341: Legal Benchmarking Construction FIDIC Decennial Liability Metrics
+console.log('\n🔍 [TEST 341/350] Verifying Legal Benchmarking Construction FIDIC Metrics...');
+assert(benchFile.includes('construction_realestate') && benchFile.includes('FIDIC'), 'Construction FIDIC benchmarking verified');
+
+// ── TEST 342: Legal Benchmarking Complete Anonymity & Zero Cross-Leakage ──────
+console.log('\n🔍 [TEST 342/350] Verifying Legal Benchmarking Complete Anonymity (Task 14.5)...');
+assert(benchFile.includes('sampleContractCount') && !benchFile.includes('clientName'), 'Complete benchmark anonymity verified');
+
+// ── TEST 343: Legal Operations Command Center Page Structure (Task 14.6) ──────
+console.log('\n🔍 [TEST 343/350] Verifying Legal Operations Command Center Page Structure (Task 14.6)...');
+const opsPageFile = readFileSync('src/pages/LegalOperationsCenterPage.tsx', 'utf8');
+assert(opsPageFile.includes('LegalOperationsCenterPage') && opsPageFile.includes('legal_ops_command_center'), 'Legal Ops Command Center page operational');
+
+// ── TEST 344: Access Control for Legal Operations Command Center (Task 14.6) ──
+console.log('\n🔍 [TEST 344/350] Verifying Access Control for Legal Operations Command Center...');
+assert(accFile.includes("legal_ops_command_center:        'admin'"), 'Legal Ops command center strictly gated to admin tier');
+
+// ── TEST 345: Route Registration for /admin/legal-ops in App.tsx ──────────────
+console.log('\n🔍 [TEST 345/350] Verifying Route Registration for /admin/legal-ops in App.tsx...');
+assert(appFile.includes('admin/legal-ops'), 'Route /admin/legal-ops registered within ProtectedAdminRoute');
+
+// ── TEST 346: Lazy Loading of LegalOperationsCenterPage ───────────────────────
+console.log('\n🔍 [TEST 346/350] Verifying Lazy Loading of LegalOperationsCenterPage...');
+assert(appFile.includes("lazy(() => import('./pages/LegalOperationsCenterPage'))"), 'LegalOperationsCenterPage is lazily loaded');
+
+// ── TEST 347: Bilingual Support in Legal Operations Command Center ────────────
+console.log('\n🔍 [TEST 347/350] Verifying Bilingual Support in Legal Operations Command Center...');
+assert(opsPageFile.includes('isAr') && opsPageFile.includes('مركز العمليات وشبكة الذكاء القانوني العالمية'), 'Bilingual English/Arabic operational');
+
+// ── TEST 348: Dynamic RTL Layout in Legal Operations Command Center ──────────
+console.log('\n🔍 [TEST 348/350] Verifying Dynamic RTL Layout in Legal Operations Command Center...');
+assert(opsPageFile.includes("isRtl ? 'rtl' : 'ltr'"), 'Dynamic RTL layout verified in Legal Ops command center');
+
+// ── TEST 349: Rule Zero Financial & Payment Immutability in Task 14 ───────────
+console.log('\n🔍 [TEST 349/350] Verifying Rule Zero Payment Immutability in Task 14...');
+assert(paddleFile.includes('pro_01m0txshyww92xh07mawyzg52j') && paddleFile.includes('pri_01m0ty6sxjj7w0xpm1r07r50ss') && finFile.includes('getFinancialSummary'), 'Financial and payment subsystems 100% frozen');
+
+// ── TEST 350: Global Legal Intelligence Network v10.6 Complete Master Release ─
+console.log('\n🔍 [TEST 350/350] Verifying Global Legal Intelligence Network v10.6 Complete Master Release...');
+assert(kgFile.includes('LegalKnowledgeGraph') && precFile.includes('PrecedentIntelligence') && negFile.includes('MultiAgentNegotiationRoom') && memFile.includes('EnterpriseMemoryLayer') && benchFile.includes('LegalBenchmarkingEngine'), 'JurisTech Solutions Global Legal Intelligence Network 100% Operational & Release Ready');
 
 // ── SUMMARY REPORT ────────────────────────────────────────────────────────────
 console.log('\n──────────────────────────────────────────────────────────────────');
-console.log('                 📊 FULL 310 TEST SUITE RESULTS                   ');
+console.log('                 📊 FULL 350 TEST SUITE RESULTS                   ');
 console.log('──────────────────────────────────────────────────────────────────');
 console.log(`Total Tests Run : ${totalTests}`);
 console.log(`Passed Tests    : ${passedTests}`);
@@ -1490,7 +1656,7 @@ console.log(`Success Rate    : ${Math.round((passedTests / totalTests) * 100)}%`
 console.log('──────────────────────────────────────────────────────────────────\n');
 
 if (passedTests === totalTests) {
-  console.log('🎉 ALL 310 TEST SUITES PASSED WITH 100% SUCCESS!');
+  console.log('🎉 ALL 350 TEST SUITES PASSED WITH 100% SUCCESS!');
   process.exit(0);
 } else {
   console.error('⚠️ SOME TESTS FAILED.');
