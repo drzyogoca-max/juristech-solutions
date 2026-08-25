@@ -51,6 +51,9 @@ import { DocumentAgent } from '../ai/agents/documentAgent';
 import { EnterpriseAgent } from '../ai/agents/enterpriseAgent';
 import { DocumentGenerator } from '../ai/generation/documentGenerator';
 import { LegalDomainSelector } from '../components/ai-advisor/LegalDomainSelector';
+import { aiAnalytics } from '../analytics/aiAnalytics';
+import { aiQualityMonitor } from '../ai/monitoring/aiQualityMonitor';
+import { conversionTracker } from '../growth/conversionTracker';
 import type {
   Citation,
   ComplianceAssessmentResult,
@@ -132,6 +135,10 @@ export default function AIAdvisorPage() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    conversionTracker.trackStage('AI_STARTED', { currentTier: userTier });
+  }, [userTier]);
+
+  useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
 
@@ -144,7 +151,8 @@ export default function AIAdvisorPage() {
     setUpgradeFeature(feature);
     setRequiredTierForModal(minTier);
     setUpgradeModalOpen(true);
-  }, []);
+    conversionTracker.trackStage('UPGRADE_VIEWED', { currentTier: userTier, targetTier: minTier, featureContext: feature });
+  }, [userTier]);
 
   const handleSendMessage = async (overridePrompt?: string) => {
     const query = (overridePrompt || inputQuery).trim();
@@ -500,6 +508,7 @@ export default function AIAdvisorPage() {
                         citations={msg.citations}
                         clarificationRequired={msg.clarificationRequired}
                         clarificationPrompt={msg.clarificationPrompt}
+                        taskMode={msg.taskMode || taskMode}
                         lang={lang as SupportedAILang}
                         isRtl={isRtl}
                       />

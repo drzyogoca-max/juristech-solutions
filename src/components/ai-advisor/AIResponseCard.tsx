@@ -18,6 +18,7 @@ import type {
   SourceVerificationStatus,
   SupportedAILang,
 } from '../../ai/types';
+import { AIResponseFeedback } from './AIResponseFeedback';
 
 interface AIResponseCardProps {
   content: string;
@@ -28,6 +29,7 @@ interface AIResponseCardProps {
   citations?: Citation[];
   clarificationRequired?: boolean;
   clarificationPrompt?: string;
+  taskMode?: string;
   lang: SupportedAILang;
   isRtl: boolean;
 }
@@ -40,6 +42,7 @@ export const AIResponseCard: React.FC<AIResponseCardProps> = ({
   citations = [],
   clarificationRequired = false,
   clarificationPrompt,
+  taskMode = 'legal_research',
   lang,
   isRtl,
 }) => {
@@ -186,6 +189,15 @@ export const AIResponseCard: React.FC<AIResponseCardProps> = ({
           </div>
         </div>
       )}
+
+      {/* ── Anonymous AI Response Feedback ── */}
+      <div className="pt-2 border-t border-slate-800/60">
+        <AIResponseFeedback
+          feature={taskMode}
+          lang={lang}
+          isRtl={isRtl}
+        />
+      </div>
     </div>
   );
 };
