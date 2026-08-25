@@ -20,7 +20,8 @@ export type AIFeature =
   | 'admin_ai_analytics'
   | 'customer_success_console'
   | 'enterprise_governance_console'
-  | 'enterprise_ecosystem_console';
+  | 'enterprise_ecosystem_console'
+  | 'legal_ops_command_center';
 
 const TIER_RANK: Record<UserTier, number> = {
   free: 0, startup: 1, sme: 2, pro: 3, enterprise: 4, lawyer: 4, admin: 5,
@@ -39,6 +40,7 @@ const FEATURE_MINIMUM_TIER: Record<AIFeature, UserTier> = {
   customer_success_console:        'admin',
   enterprise_governance_console:   'admin',
   enterprise_ecosystem_console:    'admin',
+  legal_ops_command_center:        'admin',
 };
 
 const FEATURE_DESCRIPTION: Record<AIFeature, { en: string; ar: string }> = {
@@ -54,6 +56,7 @@ const FEATURE_DESCRIPTION: Record<AIFeature, { en: string; ar: string }> = {
   customer_success_console:        { en: 'Customer Success Console', ar: 'لوحة نجاح العملاء المؤسسيين' },
   enterprise_governance_console:   { en: 'Enterprise Governance Console', ar: 'مركز حوكمة الذكاء الاصطناعي المؤسسي' },
   enterprise_ecosystem_console:    { en: 'Enterprise Ecosystem Console', ar: 'لوحة منظومة المطورين والشركاء المؤسسية' },
+  legal_ops_command_center:        { en: 'Legal Operations Command Center', ar: 'مركز العمليات والذكاء القانوني الموحد' },
 };
 
 export function checkAccess(feature: AIFeature, userTier: UserTier): AccessCheckResult {
