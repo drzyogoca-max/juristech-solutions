@@ -14,12 +14,14 @@ export default function SEO({
   title: customTitle,
   description: customDesc,
   keywords: customKeywords,
+  noIndex = false,
 }: { 
   titleKey?: string; 
   descriptionKey?: string;
   title?: string;
   description?: string;
   keywords?: string;
+  noIndex?: boolean;
 }) {
   const { t, i18n } = useTranslation();
   const location = useLocation();
@@ -58,7 +60,7 @@ export default function SEO({
       <title>{title}</title>
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
-      <meta name="robots" content="index, follow" />
+      <meta name="robots" content={noIndex ? "noindex, nofollow" : "index, follow"} />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <meta name="google-site-verification" content="Csa-WN6QHwEIlH3lycEdcdsy5CznqwYzyJOq-PbjIpg" />
       <meta name="google-site-verification" content="Lnl_lvzcGvsmAArfcu_BajDGVmtf6XRUnMt1WWsSSyU" />

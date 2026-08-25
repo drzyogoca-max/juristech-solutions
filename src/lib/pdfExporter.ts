@@ -1,5 +1,3 @@
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 import { getSavedThemeConfig, THEME_BACKGROUNDS, APP_FONTS } from './themeSettings';
 
 export async function exportLegalContractPDF(
@@ -12,6 +10,8 @@ export async function exportLegalContractPDF(
   sha256Hash?: string,
   languageCode: string = 'en'
 ) {
+  const { default: jsPDF } = await import('jspdf');
+  const { default: html2canvas } = await import('html2canvas');
   const isRtl = languageCode === 'ar' || /[\u0600-\u06FF]/.test(content);
   const themeConfig = getSavedThemeConfig();
   const activeFontFamily = APP_FONTS[themeConfig.fontId]?.fontFamily || "'Cairo', sans-serif";

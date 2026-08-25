@@ -25,6 +25,7 @@ import { getLocaleFromUrl, setDocumentLanguage, persistLocalePreference, normali
 // ── Lazy Loaded Page Components for Minimal Initial Bundle Size & 95+ Performance ──
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const ChatPage = lazy(() => import('./pages/ChatPage'));
+const AIAdvisorPage = lazy(() => import('./pages/AIAdvisorPage'));
 
 const ContractsPage = lazy(() => import('./pages/ContractsPage'));
 const ContractsRepositoryPage = lazy(() => import('./pages/ContractsRepositoryPage'));
@@ -243,7 +244,8 @@ function MainAppContent() {
                 <Fragment key={prefix || 'root'}>
                   <Route path={`${prefix}/`} element={<Navigate to={`${prefix ? prefix + '/dashboard' : '/dashboard'}`} replace />} />
                   <Route path={`${prefix}/dashboard`} element={<Dashboard />} />
-                  <Route path={`${prefix}/chat`} element={<ChatPage />} />
+                  <Route path={`${prefix}/ai-advisor`} element={<AIAdvisorPage />} />
+                  <Route path={`${prefix}/chat`} element={<AIAdvisorPage />} />
                   <Route path={`${prefix}/contracts`} element={<ContractsPage />} />
                   <Route path={`${prefix}/contract-generator`} element={<Navigate to={`${prefix}/contracts`} replace />} />
                   <Route path={`${prefix}/contract-builder`} element={<Navigate to={`${prefix}/contracts`} replace />} />

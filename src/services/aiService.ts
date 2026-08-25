@@ -73,6 +73,22 @@ export class AIService {
     const prompt = `You are Sarah, JurisTech Solutions Senior AI Legal Counsel. Respond to this legal question concisely in ${lang}:\n${userMessage}`;
     return await callAI(prompt);
   }
+
+  /**
+   * High-Precision Structured AI Legal Advisor (AI-P0 Subsystem Facade)
+   */
+  public async queryStructuredAdvisor(
+    userMessage: string,
+    lang: string = 'ar',
+    userTier: 'free' | 'startup' | 'sme' | 'pro' | 'enterprise' | 'admin' | 'lawyer' = 'free'
+  ) {
+    const { aiOrchestrator } = await import('../ai');
+    return aiOrchestrator.executeLegalAdvisory({
+      query: userMessage,
+      lang: lang as any,
+      userTier,
+    });
+  }
 }
 
 export const aiService = AIService.getInstance();

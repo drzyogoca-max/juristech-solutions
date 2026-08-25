@@ -74,12 +74,19 @@ export default defineConfig({
           if (id.includes('node_modules/lucide-react')) {
             return 'vendor-icons';
           }
-          if (id.includes('node_modules/docx') ||
-              id.includes('node_modules/pdf-lib') ||
+          if (id.includes('node_modules/docx')) {
+            return 'vendor-docx';
+          }
+          if (id.includes('node_modules/pdf-lib') ||
               id.includes('node_modules/pdfjs-dist') ||
-              id.includes('node_modules/jspdf') ||
-              id.includes('node_modules/html2canvas')) {
-            return 'vendor-docs';
+              id.includes('node_modules/jspdf')) {
+            return 'vendor-pdf';
+          }
+          if (id.includes('node_modules/html2canvas')) {
+            return 'vendor-html2canvas';
+          }
+          if (id.includes('node_modules/tesseract.js')) {
+            return 'vendor-tesseract';
           }
 
           if (id.includes('node_modules/recharts') ||

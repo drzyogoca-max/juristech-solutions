@@ -11,15 +11,15 @@
  *  • Raw OCR Text + Confidence Score
  */
 
-import { createWorker } from 'tesseract.js';
 import type { OcrExtractedData } from './receiptFraudDetection';
 
 // ── OCR Worker Singleton ──────────────────────────────────────────────────────
 
-let ocrWorker: Awaited<ReturnType<typeof createWorker>> | null = null;
+let ocrWorker: any = null;
 
 async function getOcrWorker() {
   if (!ocrWorker) {
+    const { createWorker } = await import('tesseract.js');
     ocrWorker = await createWorker(['ara', 'eng'], 1, {
       logger: () => {}, // Suppress verbose logging
     });

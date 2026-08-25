@@ -1,5 +1,3 @@
-import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType } from 'docx';
-
 /**
  * دالة دقيقة لتنظيف النص من أي رموز تحكم مخفية أو \r التي تسبب تلف ملفات Word XML
  */
@@ -12,6 +10,7 @@ function sanitizeXmlText(text: string): string {
 
 export async function generateAndDownloadWordDocument(title: string, content: string, langCode?: string) {
   try {
+    const { Document, Packer, Paragraph, TextRun, AlignmentType } = await import('docx');
     const isLegalShieldDomain = typeof window !== 'undefined' && window.location.hostname.toLowerCase().includes('legalshield');
     const platformBrand = isLegalShieldDomain ? "JurisTech Solutions & LegalShield Solution" : "JurisTech Solutions";
 
@@ -29,7 +28,7 @@ export async function generateAndDownloadWordDocument(title: string, content: st
     // 2. تقسيم المحتوى إلى أسطر نظيفة دون أي \r أو \n داخل الأسطر
     const lines = normalizedContent.split('\n');
 
-    const paragraphs: Paragraph[] = [];
+    const paragraphs: any[] = [];
     let lastWasEmpty = false;
 
     // إضافة عنوان المستند الرئيسي بأعلى المعايير
