@@ -32,7 +32,8 @@ export type AIFeature =
   | 'trust_hub'
   | 'scale_readiness'
   | 'lifecycle_hub'
-  | 'strategic_operations';
+  | 'strategic_operations'
+  | 'enterprise_adoption';
 
 const TIER_RANK: Record<UserTier, number> = {
   free: 0, startup: 1, sme: 2, pro: 3, enterprise: 4, lawyer: 4, admin: 5,
@@ -43,9 +44,9 @@ const FEATURE_MINIMUM_TIER: Record<AIFeature, UserTier> = {
   structured_advisor:              'startup',
   contract_intelligence:           'startup',
   document_generator:              'startup',
-  hallucination_guard_details:     'startup',
+  hallucination_guard_details:     'sme',
   compliance_agent:                'sme',
-  enterprise_multi_jurisdiction:   'enterprise',
+  enterprise_multi_jurisdiction:   'pro',
   seo_content_draft:               'admin',
   admin_ai_analytics:              'admin',
   customer_success_console:        'admin',
@@ -63,6 +64,7 @@ const FEATURE_MINIMUM_TIER: Record<AIFeature, UserTier> = {
   scale_readiness:                 'admin',
   lifecycle_hub:                   'admin',
   strategic_operations:            'admin',
+  enterprise_adoption:             'admin',
 };
 
 const FEATURE_DESCRIPTION: Record<AIFeature, { en: string; ar: string }> = {
@@ -74,9 +76,9 @@ const FEATURE_DESCRIPTION: Record<AIFeature, { en: string; ar: string }> = {
   compliance_agent:                { en: 'Multi-Jurisdiction Compliance Agent', ar: 'وكيل الامتثال متعدد الأنظمة' },
   enterprise_multi_jurisdiction:   { en: 'Enterprise Multi-Jurisdiction Engine', ar: 'محرك المؤسسات متعدد الأنظمة' },
   seo_content_draft:               { en: 'SEO Legal Content Generator', ar: 'منشئ محتوى الـ SEO القانوني' },
-  admin_ai_analytics:              { en: 'Admin AI Analytics Dashboard', ar: 'لوحة تحليلات الذكاء الإدارية' },
-  customer_success_console:        { en: 'Customer Success & Intelligence Console', ar: 'منصة نجاح العملاء والذكاء التشغيلي' },
-  enterprise_governance_console:   { en: 'Enterprise AI Governance Console', ar: 'منصة الحوكمة المؤسسية والأمان' },
+  admin_ai_analytics:              { en: 'Admin AI Analytics', ar: 'تحليلات الذكاء الاصطناعي للمسؤول' },
+  customer_success_console:        { en: 'Customer Success Operations Console', ar: 'منصة عمليات نجاح العملاء' },
+  enterprise_governance_console:   { en: 'Enterprise Governance Console', ar: 'منصة الحوكمة المؤسسية' },
   enterprise_ecosystem_console:    { en: 'Enterprise AI Ecosystem Console', ar: 'منصة المنظومة المؤسسية الشاملة' },
   legal_ops_command_center:        { en: 'Legal Operations Command Center', ar: 'مركز قيادة العمليات القانونية' },
   enterprise_command_center_v2:    { en: 'Global Enterprise Command Center 2.0', ar: 'مركز القيادة المؤسسي العالمي 2.0' },
@@ -90,6 +92,7 @@ const FEATURE_DESCRIPTION: Record<AIFeature, { en: string; ar: string }> = {
   scale_readiness:                 { en: 'Enterprise Scale & Disaster Recovery Hub', ar: 'مركز التوسع والاستمرارية والجاهزية الخارجية' },
   lifecycle_hub:                   { en: 'Enterprise Continuous Governance & Lifecycle Hub', ar: 'مركز الحوكمة المستمرة والاعتماد ودورة الحياة' },
   strategic_operations:            { en: 'Strategic Operations & Executive Intelligence Hub', ar: 'مركز العمليات الاستراتيجية والذكاء التنبؤي' },
+  enterprise_adoption:             { en: 'Enterprise Adoption & Regulatory Passport Hub', ar: 'مركز التبني المؤسسي والجواز التنظيمي الدولي' },
 };
 
 export function checkAccess(feature: AIFeature, userTier: UserTier): AccessCheckResult {
