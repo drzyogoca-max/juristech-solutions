@@ -24,7 +24,8 @@ export type AIFeature =
   | 'legal_ops_command_center'
   | 'enterprise_command_center_v2'
   | 'regulatory_radar_v3'
-  | 'sovereign_cloud_console';
+  | 'sovereign_cloud_console'
+  | 'singularity_hub';
 
 const TIER_RANK: Record<UserTier, number> = {
   free: 0, startup: 1, sme: 2, pro: 3, enterprise: 4, lawyer: 4, admin: 5,
@@ -47,6 +48,7 @@ const FEATURE_MINIMUM_TIER: Record<AIFeature, UserTier> = {
   enterprise_command_center_v2:    'admin',
   regulatory_radar_v3:             'admin',
   sovereign_cloud_console:         'admin',
+  singularity_hub:                 'admin',
 };
 
 const FEATURE_DESCRIPTION: Record<AIFeature, { en: string; ar: string }> = {
@@ -66,6 +68,7 @@ const FEATURE_DESCRIPTION: Record<AIFeature, { en: string; ar: string }> = {
   enterprise_command_center_v2:    { en: 'Enterprise AI Command Center 2.0', ar: 'مركز قيادة العمليات القانونية الذاتية 2.0' },
   regulatory_radar_v3:             { en: 'Enterprise AI Regulatory Radar 3.0', ar: 'مركز الحوكمة والرادار التنظيمي للذكاء الاصطناعي 3.0' },
   sovereign_cloud_console:         { en: 'Sovereign Enterprise AI Cloud Console', ar: 'قمرة قيادة السحابة السيادية والذكاء الاصطناعي الخاص' },
+  singularity_hub:                 { en: 'Global Legal AI Singularity Hub', ar: 'مركز سينجولارتي للذكاء القانوني ونظام التشغيل الذاتي' },
 };
 
 export function checkAccess(feature: AIFeature, userTier: UserTier): AccessCheckResult {
