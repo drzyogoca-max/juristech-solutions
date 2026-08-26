@@ -31,7 +31,8 @@ export type AIFeature =
   | 'operations_center'
   | 'trust_hub'
   | 'scale_readiness'
-  | 'lifecycle_hub';
+  | 'lifecycle_hub'
+  | 'strategic_operations';
 
 const TIER_RANK: Record<UserTier, number> = {
   free: 0, startup: 1, sme: 2, pro: 3, enterprise: 4, lawyer: 4, admin: 5,
@@ -61,6 +62,7 @@ const FEATURE_MINIMUM_TIER: Record<AIFeature, UserTier> = {
   trust_hub:                       'admin',
   scale_readiness:                 'admin',
   lifecycle_hub:                   'admin',
+  strategic_operations:            'admin',
 };
 
 const FEATURE_DESCRIPTION: Record<AIFeature, { en: string; ar: string }> = {
@@ -87,6 +89,7 @@ const FEATURE_DESCRIPTION: Record<AIFeature, { en: string; ar: string }> = {
   trust_hub:                       { en: 'Enterprise Trust & Certification Hub', ar: 'مركز الثقة والاعتمادات والمشتريات المؤسسية' },
   scale_readiness:                 { en: 'Enterprise Scale & Disaster Recovery Hub', ar: 'مركز التوسع والاستمرارية والجاهزية الخارجية' },
   lifecycle_hub:                   { en: 'Enterprise Continuous Governance & Lifecycle Hub', ar: 'مركز الحوكمة المستمرة والاعتماد ودورة الحياة' },
+  strategic_operations:            { en: 'Strategic Operations & Executive Intelligence Hub', ar: 'مركز العمليات الاستراتيجية والذكاء التنبؤي' },
 };
 
 export function checkAccess(feature: AIFeature, userTier: UserTier): AccessCheckResult {
