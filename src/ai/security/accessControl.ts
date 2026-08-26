@@ -29,7 +29,8 @@ export type AIFeature =
   | 'sovereign_federation_hub'
   | 'planetary_hub'
   | 'operations_center'
-  | 'trust_hub';
+  | 'trust_hub'
+  | 'scale_readiness';
 
 const TIER_RANK: Record<UserTier, number> = {
   free: 0, startup: 1, sme: 2, pro: 3, enterprise: 4, lawyer: 4, admin: 5,
@@ -57,30 +58,32 @@ const FEATURE_MINIMUM_TIER: Record<AIFeature, UserTier> = {
   planetary_hub:                   'admin',
   operations_center:               'admin',
   trust_hub:                       'admin',
+  scale_readiness:                 'admin',
 };
 
 const FEATURE_DESCRIPTION: Record<AIFeature, { en: string; ar: string }> = {
   basic_legal_qa:                  { en: 'Basic Legal Q&A (limited)', ar: 'الاستشارة القانونية الأساسية' },
   structured_advisor:              { en: 'Structured Legal Advisor', ar: 'المستشار القانوني المهيكل' },
   contract_intelligence:           { en: 'Contract Intelligence Engine', ar: 'محرك ذكاء العقود' },
-  document_generator:              { en: 'Legal Document Generator', ar: 'مولد المستندات القانونية' },
-  hallucination_guard_details:     { en: 'Source Verification Details', ar: 'تفاصيل التحقق من المصادر' },
-  compliance_agent:                { en: 'Regulatory Compliance Agent', ar: 'وكيل الامتثال التنظيمي' },
-  enterprise_multi_jurisdiction:   { en: 'Enterprise Multi-Jurisdiction AI', ar: 'الذكاء المتعدد للولايات المؤسسي' },
-  seo_content_draft:               { en: 'SEO AI Content Draft', ar: 'مسودة محتوى SEO' },
-  admin_ai_analytics:              { en: 'Admin AI Analytics Dashboard', ar: 'لوحة تحليلات الذكاء الاصطناعي الإدارية' },
-  customer_success_console:        { en: 'Customer Success Console', ar: 'لوحة نجاح العملاء المؤسسيين' },
-  enterprise_governance_console:   { en: 'Enterprise Governance Console', ar: 'مركز حوكمة الذكاء الاصطناعي المؤسسي' },
-  enterprise_ecosystem_console:    { en: 'Enterprise Ecosystem Console', ar: 'لوحة منظومة المطورين والشركاء المؤسسية' },
-  legal_ops_command_center:        { en: 'Legal Operations Command Center', ar: 'مركز العمليات والذكاء القانوني الموحد' },
-  enterprise_command_center_v2:    { en: 'Enterprise AI Command Center 2.0', ar: 'مركز قيادة العمليات القانونية الذاتية 2.0' },
-  regulatory_radar_v3:             { en: 'Enterprise AI Regulatory Radar 3.0', ar: 'مركز الحوكمة والرادار التنظيمي للذكاء الاصطناعي 3.0' },
-  sovereign_cloud_console:         { en: 'Sovereign Enterprise AI Cloud Console', ar: 'قمرة قيادة السحابة السيادية والذكاء الاصطناعي الخاص' },
-  singularity_hub:                 { en: 'Global Legal AI Singularity Hub', ar: 'مركز سينجولارتي للذكاء القانوني ونظام التشغيل الذاتي' },
+  document_generator:              { en: 'Legal Document Generator', ar: 'منشئ الوثائق القانونية' },
+  hallucination_guard_details:     { en: 'Hallucination Guard Diagnostics', ar: 'تفاصيل حارس الهلوسة' },
+  compliance_agent:                { en: 'Multi-Jurisdiction Compliance Agent', ar: 'وكيل الامتثال متعدد الأنظمة' },
+  enterprise_multi_jurisdiction:   { en: 'Enterprise Multi-Jurisdiction Engine', ar: 'محرك المؤسسات متعدد الأنظمة' },
+  seo_content_draft:               { en: 'SEO Legal Content Generator', ar: 'منشئ محتوى الـ SEO القانوني' },
+  admin_ai_analytics:              { en: 'Admin AI Analytics Dashboard', ar: 'لوحة تحليلات الذكاء الإدارية' },
+  customer_success_console:        { en: 'Customer Success & Intelligence Console', ar: 'منصة نجاح العملاء والذكاء التشغيلي' },
+  enterprise_governance_console:   { en: 'Enterprise AI Governance Console', ar: 'منصة الحوكمة المؤسسية والأمان' },
+  enterprise_ecosystem_console:    { en: 'Enterprise AI Ecosystem Console', ar: 'منصة المنظومة المؤسسية الشاملة' },
+  legal_ops_command_center:        { en: 'Legal Operations Command Center', ar: 'مركز قيادة العمليات القانونية' },
+  enterprise_command_center_v2:    { en: 'Global Enterprise Command Center 2.0', ar: 'مركز القيادة المؤسسي العالمي 2.0' },
+  regulatory_radar_v3:             { en: 'Regulatory Horizon Radar 3.0', ar: 'رادار الأفق التنظيمي العالمي 3.0' },
+  sovereign_cloud_console:         { en: 'Sovereign Cloud & Zero-Retention Console 4.0', ar: 'منصة السحابة السيادية ومراقبة انعدام التخزين 4.0' },
+  singularity_hub:                 { en: 'Legal AI Singularity Operating System Hub 5.0', ar: 'مركز نظام تشغيل السينغيولاريتي القانوني 5.0' },
   sovereign_federation_hub:        { en: 'Global Sovereign Legal Node Federation Hub', ar: 'مركز الاتحاد القانوني السيادي وشبكة العقد المؤسسية' },
   planetary_hub:                   { en: 'Planetary Legal AI Intelligence Hub', ar: 'مركز الذكاء القانوني الكوكبي والشبكة الذكية متعددة الوكلاء' },
   operations_center:               { en: 'Enterprise Operations & Governance Center', ar: 'مركز العمليات والحوكمة المؤسسية' },
   trust_hub:                       { en: 'Enterprise Trust & Certification Hub', ar: 'مركز الثقة والاعتمادات والمشتريات المؤسسية' },
+  scale_readiness:                 { en: 'Enterprise Scale & Disaster Recovery Hub', ar: 'مركز التوسع والاستمرارية والجاهزية الخارجية' },
 };
 
 export function checkAccess(feature: AIFeature, userTier: UserTier): AccessCheckResult {
