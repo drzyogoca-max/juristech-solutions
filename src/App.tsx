@@ -37,6 +37,7 @@ const SovereignCloudConsolePage = lazy(() => import('./pages/SovereignCloudConso
 const SingularityHubPage = lazy(() => import('./pages/SingularityHubPage'));
 const SovereignFederationHubPage = lazy(() => import('./pages/SovereignFederationHubPage'));
 const PlanetaryHubPage = lazy(() => import('./pages/PlanetaryHubPage'));
+const OperationsCenterPage = lazy(() => import('./pages/OperationsCenterPage'));
 
 const ContractsPage = lazy(() => import('./pages/ContractsPage'));
 const ContractsRepositoryPage = lazy(() => import('./pages/ContractsRepositoryPage'));
@@ -432,6 +433,14 @@ function MainAppContent() {
                     element={
                       <ProtectedAdminRoute>
                         <PlanetaryHubPage />
+                      </ProtectedAdminRoute>
+                    }
+                  />
+                  <Route
+                    path={`${prefix}/admin/operations-center`}
+                    element={
+                      <ProtectedAdminRoute>
+                        <OperationsCenterPage />
                       </ProtectedAdminRoute>
                     }
                   />
