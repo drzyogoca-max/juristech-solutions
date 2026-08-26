@@ -40,7 +40,8 @@ export type AIFeature =
   | 'global_intelligence'
   | 'institutional_os'
   | 'global_ecosystem'
-  | 'operational_maturity';
+  | 'operational_maturity'
+  | 'institutional_scale';
 
 const TIER_RANK: Record<UserTier, number> = {
   free: 0, startup: 1, sme: 2, pro: 3, enterprise: 4, lawyer: 4, admin: 5,
@@ -79,6 +80,7 @@ const FEATURE_MINIMUM_TIER: Record<AIFeature, UserTier> = {
   institutional_os:                'admin',
   global_ecosystem:                'admin',
   operational_maturity:            'admin',
+  institutional_scale:             'admin',
 };
 
 const FEATURE_DESCRIPTION: Record<AIFeature, { en: string; ar: string }> = {
@@ -114,6 +116,7 @@ const FEATURE_DESCRIPTION: Record<AIFeature, { en: string; ar: string }> = {
   institutional_os:                { en: 'Institutional Legal Operating System Command Center', ar: 'مركز قيادة نظام التشغيل القانوني المؤسسي' },
   global_ecosystem:                { en: 'Global Legal Intelligence Ecosystem Command Center', ar: 'مركز قيادة المنظومة القانونية العالمية' },
   operational_maturity:            { en: 'Operational Maturity & Global Ecosystem Command Center', ar: 'مركز قيادة النضج التشغيلي والمنظومة العالمية' },
+  institutional_scale:             { en: 'Institutional Scale & Global Verification Command Center', ar: 'مركز قيادة التوسع المؤسسي وإثباتات الثقة العالمية' },
 };
 
 export function checkAccess(feature: AIFeature, userTier: UserTier): AccessCheckResult {
