@@ -37,7 +37,8 @@ export type AIFeature =
   | 'enterprise_operations'
   | 'commercial_intelligence'
   | 'partner_ecosystem'
-  | 'global_intelligence';
+  | 'global_intelligence'
+  | 'institutional_os';
 
 const TIER_RANK: Record<UserTier, number> = {
   free: 0, startup: 1, sme: 2, pro: 3, enterprise: 4, lawyer: 4, admin: 5,
@@ -73,6 +74,7 @@ const FEATURE_MINIMUM_TIER: Record<AIFeature, UserTier> = {
   commercial_intelligence:         'admin',
   partner_ecosystem:               'admin',
   global_intelligence:             'admin',
+  institutional_os:                'admin',
 };
 
 const FEATURE_DESCRIPTION: Record<AIFeature, { en: string; ar: string }> = {
@@ -105,6 +107,7 @@ const FEATURE_DESCRIPTION: Record<AIFeature, { en: string; ar: string }> = {
   commercial_intelligence:         { en: 'Commercial Intelligence & Revenue Command Center', ar: 'مركز قيادة الذكاء التجاري وتفعيل الإيرادات' },
   partner_ecosystem:               { en: 'Partner Ecosystem & Integration Command Center', ar: 'مركز قيادة منظومة الشركاء والتكامل المؤسسي' },
   global_intelligence:             { en: 'Global Intelligence & Simulation Command Center', ar: 'مركز قيادة المحاكاة والذكاء المؤسسي العالمي' },
+  institutional_os:                { en: 'Institutional Legal Operating System Command Center', ar: 'مركز قيادة نظام التشغيل القانوني المؤسسي' },
 };
 
 export function checkAccess(feature: AIFeature, userTier: UserTier): AccessCheckResult {
