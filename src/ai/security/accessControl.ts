@@ -47,7 +47,8 @@ export type AIFeature =
   | 'planetary_sovereign'
   | 'institutional_reality'
   | 'planetary_consortium'
-  | 'institutional_market_activation';
+  | 'institutional_market_activation'
+  | 'institutional_production_hardening';
 
 const TIER_RANK: Record<UserTier, number> = {
   free: 0, startup: 1, sme: 2, pro: 3, enterprise: 4, lawyer: 4, admin: 5,
@@ -93,6 +94,7 @@ const FEATURE_MINIMUM_TIER: Record<AIFeature, UserTier> = {
   institutional_reality:           'admin',
   planetary_consortium:            'admin',
   institutional_market_activation: 'admin',
+  institutional_production_hardening: 'admin',
 };
 
 const FEATURE_DESCRIPTION: Record<AIFeature, { en: string; ar: string }> = {
@@ -135,6 +137,7 @@ const FEATURE_DESCRIPTION: Record<AIFeature, { en: string; ar: string }> = {
   institutional_reality:           { en: 'Institutional Reality & External Validation Command Center', ar: 'مركز قيادة الواقع المؤسسي والاعتماد الخارجي' },
   planetary_consortium:            { en: 'Planetary Legal Consortium & Institutional Adoption Command Center', ar: 'مركز قيادة التحالف القانوني الكوكبي والتبني المؤسسي' },
   institutional_market_activation: { en: 'Institutional Market Activation & Enterprise Production Command Center', ar: 'مركز قيادة التفعيل المؤسسي للأسواق والإنتاج المؤسسي' },
+  institutional_production_hardening: { en: 'Institutional Production Hardening Command Center', ar: 'مركز قيادة التصليد التشغيلي والجاهزية الإنتاجية المؤسسية' },
 };
 
 export function checkAccess(feature: AIFeature, userTier: UserTier): AccessCheckResult {

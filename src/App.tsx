@@ -58,6 +58,7 @@ const PlanetarySovereignCommandCenterPage = lazy(() => import('./pages/Planetary
 const InstitutionalRealityCommandCenterPage = lazy(() => import('./pages/InstitutionalRealityCommandCenterPage'));
 const PlanetaryConsortiumCommandCenterPage = lazy(() => import('./pages/PlanetaryConsortiumCommandCenterPage'));
 const InstitutionalMarketActivationCommandCenterPage = lazy(() => import('./pages/InstitutionalMarketActivationCommandCenterPage'));
+const InstitutionalProductionHardeningDashboardPage = lazy(() => import('./pages/InstitutionalProductionHardeningDashboardPage'));
 
 const ContractsPage = lazy(() => import('./pages/ContractsPage'));
 const ContractsRepositoryPage = lazy(() => import('./pages/ContractsRepositoryPage'));
@@ -614,6 +615,14 @@ function MainAppContent() {
                     element={
                       <ProtectedAdminRoute>
                         <InstitutionalMarketActivationCommandCenterPage />
+                      </ProtectedAdminRoute>
+                    }
+                  />
+                  <Route
+                    path={`${prefix}/admin/production-hardening`}
+                    element={
+                      <ProtectedAdminRoute>
+                        <InstitutionalProductionHardeningDashboardPage />
                       </ProtectedAdminRoute>
                     }
                   />
