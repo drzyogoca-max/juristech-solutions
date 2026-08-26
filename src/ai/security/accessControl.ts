@@ -35,7 +35,8 @@ export type AIFeature =
   | 'strategic_operations'
   | 'enterprise_adoption'
   | 'enterprise_operations'
-  | 'commercial_intelligence';
+  | 'commercial_intelligence'
+  | 'partner_ecosystem';
 
 const TIER_RANK: Record<UserTier, number> = {
   free: 0, startup: 1, sme: 2, pro: 3, enterprise: 4, lawyer: 4, admin: 5,
@@ -69,6 +70,7 @@ const FEATURE_MINIMUM_TIER: Record<AIFeature, UserTier> = {
   enterprise_adoption:             'admin',
   enterprise_operations:           'admin',
   commercial_intelligence:         'admin',
+  partner_ecosystem:               'admin',
 };
 
 const FEATURE_DESCRIPTION: Record<AIFeature, { en: string; ar: string }> = {
@@ -99,6 +101,7 @@ const FEATURE_DESCRIPTION: Record<AIFeature, { en: string; ar: string }> = {
   enterprise_adoption:             { en: 'Enterprise Adoption & Regulatory Passport Hub', ar: 'مركز التبني المؤسسي والجواز التنظيمي الدولي' },
   enterprise_operations:           { en: 'Enterprise Scale Operations & Value Command Center', ar: 'مركز العمليات المؤسسية وإثبات القيمة' },
   commercial_intelligence:         { en: 'Commercial Intelligence & Revenue Command Center', ar: 'مركز قيادة الذكاء التجاري وتفعيل الإيرادات' },
+  partner_ecosystem:               { en: 'Partner Ecosystem & Integration Command Center', ar: 'مركز قيادة منظومة الشركاء والتكامل المؤسسي' },
 };
 
 export function checkAccess(feature: AIFeature, userTier: UserTier): AccessCheckResult {
