@@ -52,6 +52,7 @@ const InstitutionalOSCommandCenterPage = lazy(() => import('./pages/Institutiona
 const GlobalEcosystemCommandCenterPage = lazy(() => import('./pages/GlobalEcosystemCommandCenterPage'));
 const OperationalMaturityCommandCenterPage = lazy(() => import('./pages/OperationalMaturityCommandCenterPage'));
 const InstitutionalScaleCommandCenterPage = lazy(() => import('./pages/InstitutionalScaleCommandCenterPage'));
+const GlobalIntelligenceNetworkCommandCenterPage = lazy(() => import('./pages/GlobalIntelligenceNetworkCommandCenterPage'));
 
 const ContractsPage = lazy(() => import('./pages/ContractsPage'));
 const ContractsRepositoryPage = lazy(() => import('./pages/ContractsRepositoryPage'));
@@ -560,6 +561,14 @@ function MainAppContent() {
                     element={
                       <ProtectedAdminRoute>
                         <InstitutionalScaleCommandCenterPage />
+                      </ProtectedAdminRoute>
+                    }
+                  />
+                  <Route
+                    path={`${prefix}/admin/global-intelligence-network`}
+                    element={
+                      <ProtectedAdminRoute>
+                        <GlobalIntelligenceNetworkCommandCenterPage />
                       </ProtectedAdminRoute>
                     }
                   />
