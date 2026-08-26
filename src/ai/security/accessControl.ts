@@ -43,7 +43,8 @@ export type AIFeature =
   | 'operational_maturity'
   | 'institutional_scale'
   | 'global_intelligence_network'
-  | 'institutional_marketplace';
+  | 'institutional_marketplace'
+  | 'planetary_sovereign';
 
 const TIER_RANK: Record<UserTier, number> = {
   free: 0, startup: 1, sme: 2, pro: 3, enterprise: 4, lawyer: 4, admin: 5,
@@ -85,6 +86,7 @@ const FEATURE_MINIMUM_TIER: Record<AIFeature, UserTier> = {
   institutional_scale:             'admin',
   global_intelligence_network:     'admin',
   institutional_marketplace:       'admin',
+  planetary_sovereign:             'admin',
 };
 
 const FEATURE_DESCRIPTION: Record<AIFeature, { en: string; ar: string }> = {
@@ -123,6 +125,7 @@ const FEATURE_DESCRIPTION: Record<AIFeature, { en: string; ar: string }> = {
   institutional_scale:             { en: 'Institutional Scale & Global Verification Command Center', ar: 'مركز قيادة التوسع المؤسسي وإثباتات الثقة العالمية' },
   global_intelligence_network:     { en: 'Global Intelligence Network & Collaboration Command Center', ar: 'مركز قيادة شبكة الذكاء القانوني والتعاون المؤسسي' },
   institutional_marketplace:       { en: 'Institutional Intelligence Marketplace & Governed Exchange', ar: 'مركز قيادة سوق الذكاء المؤسسي والتبادل المحكوم' },
+  planetary_sovereign:             { en: 'Planetary Legal Sovereign Fabric Command Center', ar: 'مركز قيادة نسيج السيادة القانونية الكوكبي' },
 };
 
 export function checkAccess(feature: AIFeature, userTier: UserTier): AccessCheckResult {
