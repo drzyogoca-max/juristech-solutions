@@ -57,6 +57,7 @@ const InstitutionalMarketplaceCommandCenterPage = lazy(() => import('./pages/Ins
 const PlanetarySovereignCommandCenterPage = lazy(() => import('./pages/PlanetarySovereignCommandCenterPage'));
 const InstitutionalRealityCommandCenterPage = lazy(() => import('./pages/InstitutionalRealityCommandCenterPage'));
 const PlanetaryConsortiumCommandCenterPage = lazy(() => import('./pages/PlanetaryConsortiumCommandCenterPage'));
+const InstitutionalMarketActivationCommandCenterPage = lazy(() => import('./pages/InstitutionalMarketActivationCommandCenterPage'));
 
 const ContractsPage = lazy(() => import('./pages/ContractsPage'));
 const ContractsRepositoryPage = lazy(() => import('./pages/ContractsRepositoryPage'));
@@ -605,6 +606,14 @@ function MainAppContent() {
                     element={
                       <ProtectedAdminRoute>
                         <PlanetaryConsortiumCommandCenterPage />
+                      </ProtectedAdminRoute>
+                    }
+                  />
+                  <Route
+                    path={`${prefix}/admin/market-activation`}
+                    element={
+                      <ProtectedAdminRoute>
+                        <InstitutionalMarketActivationCommandCenterPage />
                       </ProtectedAdminRoute>
                     }
                   />
