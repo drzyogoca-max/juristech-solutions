@@ -33,6 +33,7 @@ const EnterpriseEcosystemPage = lazy(() => import('./pages/EnterpriseEcosystemPa
 const LegalOperationsCenterPage = lazy(() => import('./pages/LegalOperationsCenterPage'));
 const EnterpriseCommandCenterPage = lazy(() => import('./pages/EnterpriseCommandCenterPage'));
 const RegulatoryRadarPage = lazy(() => import('./pages/RegulatoryRadarPage'));
+const SovereignCloudConsolePage = lazy(() => import('./pages/SovereignCloudConsolePage'));
 
 const ContractsPage = lazy(() => import('./pages/ContractsPage'));
 const ContractsRepositoryPage = lazy(() => import('./pages/ContractsRepositoryPage'));
@@ -396,6 +397,14 @@ function MainAppContent() {
                     element={
                       <ProtectedAdminRoute>
                         <RegulatoryRadarPage />
+                      </ProtectedAdminRoute>
+                    }
+                  />
+                  <Route
+                    path={`${prefix}/admin/cloud-console`}
+                    element={
+                      <ProtectedAdminRoute>
+                        <SovereignCloudConsolePage />
                       </ProtectedAdminRoute>
                     }
                   />
