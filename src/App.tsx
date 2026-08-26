@@ -44,6 +44,7 @@ const ScaleReadinessCommandCenterPage = lazy(() => import('./pages/ScaleReadines
 const EnterpriseLifecycleHubPage = lazy(() => import('./pages/EnterpriseLifecycleHubPage'));
 const StrategicOperationsCommandCenterPage = lazy(() => import('./pages/StrategicOperationsCommandCenterPage'));
 const EnterpriseAdoptionCommandCenterPage = lazy(() => import('./pages/EnterpriseAdoptionCommandCenterPage'));
+const EnterpriseOperationsCommandCenterPage = lazy(() => import('./pages/EnterpriseOperationsCommandCenterPage'));
 
 const ContractsPage = lazy(() => import('./pages/ContractsPage'));
 const ContractsRepositoryPage = lazy(() => import('./pages/ContractsRepositoryPage'));
@@ -488,6 +489,14 @@ function MainAppContent() {
                     element={
                       <ProtectedAdminRoute>
                         <EnterpriseAdoptionCommandCenterPage />
+                      </ProtectedAdminRoute>
+                    }
+                  />
+                  <Route
+                    path={`${prefix}/admin/enterprise-operations`}
+                    element={
+                      <ProtectedAdminRoute>
+                        <EnterpriseOperationsCommandCenterPage />
                       </ProtectedAdminRoute>
                     }
                   />
