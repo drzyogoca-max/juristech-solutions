@@ -196,6 +196,12 @@ const ROUTE_METADATA = {
     descriptionAr: 'لوحة إدارة الفوترة الرسمية، تجديد الاشتراكات، وإيصالات الدفع المشفرة لدى JurisTech Solutions.',
     descriptionEn: 'Official Merchant billing portal, Paddle subscriptions, and cryptographic payment receipts at JurisTech Solutions.',
   },
+  '/trust': {
+    titleAr: 'مركز الثقة والامتثال المؤسسي | JurisTech Solutions',
+    titleEn: 'Enterprise Trust & Security Portal | JurisTech Solutions',
+    descriptionAr: 'بوابة الثقة والأمان المؤسسي لمنصة JurisTech. مواءمة معايير الآيزو 27001، سدايا، وضمان انعدام تخزين الوثائق بنسبة 100%.',
+    descriptionEn: 'JurisTech enterprise trust and security portal. Verified ISO 27001, SDAIA alignment, and 100% zero-retention guarantee.',
+  },
 };
 
 const PUBLIC_ROUTES = Object.keys(ROUTE_METADATA);

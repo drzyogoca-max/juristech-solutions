@@ -28,7 +28,8 @@ export type AIFeature =
   | 'singularity_hub'
   | 'sovereign_federation_hub'
   | 'planetary_hub'
-  | 'operations_center';
+  | 'operations_center'
+  | 'trust_hub';
 
 const TIER_RANK: Record<UserTier, number> = {
   free: 0, startup: 1, sme: 2, pro: 3, enterprise: 4, lawyer: 4, admin: 5,
@@ -55,6 +56,7 @@ const FEATURE_MINIMUM_TIER: Record<AIFeature, UserTier> = {
   sovereign_federation_hub:        'admin',
   planetary_hub:                   'admin',
   operations_center:               'admin',
+  trust_hub:                       'admin',
 };
 
 const FEATURE_DESCRIPTION: Record<AIFeature, { en: string; ar: string }> = {
@@ -78,6 +80,7 @@ const FEATURE_DESCRIPTION: Record<AIFeature, { en: string; ar: string }> = {
   sovereign_federation_hub:        { en: 'Global Sovereign Legal Node Federation Hub', ar: 'مركز الاتحاد القانوني السيادي وشبكة العقد المؤسسية' },
   planetary_hub:                   { en: 'Planetary Legal AI Intelligence Hub', ar: 'مركز الذكاء القانوني الكوكبي والشبكة الذكية متعددة الوكلاء' },
   operations_center:               { en: 'Enterprise Operations & Governance Center', ar: 'مركز العمليات والحوكمة المؤسسية' },
+  trust_hub:                       { en: 'Enterprise Trust & Certification Hub', ar: 'مركز الثقة والاعتمادات والمشتريات المؤسسية' },
 };
 
 export function checkAccess(feature: AIFeature, userTier: UserTier): AccessCheckResult {
