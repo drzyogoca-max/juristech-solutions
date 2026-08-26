@@ -50,6 +50,7 @@ const PartnerEcosystemCommandCenterPage = lazy(() => import('./pages/PartnerEcos
 const GlobalIntelligenceCommandCenterPage = lazy(() => import('./pages/GlobalIntelligenceCommandCenterPage'));
 const InstitutionalOSCommandCenterPage = lazy(() => import('./pages/InstitutionalOSCommandCenterPage'));
 const GlobalEcosystemCommandCenterPage = lazy(() => import('./pages/GlobalEcosystemCommandCenterPage'));
+const OperationalMaturityCommandCenterPage = lazy(() => import('./pages/OperationalMaturityCommandCenterPage'));
 
 const ContractsPage = lazy(() => import('./pages/ContractsPage'));
 const ContractsRepositoryPage = lazy(() => import('./pages/ContractsRepositoryPage'));
@@ -542,6 +543,14 @@ function MainAppContent() {
                     element={
                       <ProtectedAdminRoute>
                         <GlobalEcosystemCommandCenterPage />
+                      </ProtectedAdminRoute>
+                    }
+                  />
+                  <Route
+                    path={`${prefix}/admin/operational-maturity`}
+                    element={
+                      <ProtectedAdminRoute>
+                        <OperationalMaturityCommandCenterPage />
                       </ProtectedAdminRoute>
                     }
                   />
