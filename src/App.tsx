@@ -38,6 +38,8 @@ const SingularityHubPage = lazy(() => import('./pages/SingularityHubPage'));
 const SovereignFederationHubPage = lazy(() => import('./pages/SovereignFederationHubPage'));
 const PlanetaryHubPage = lazy(() => import('./pages/PlanetaryHubPage'));
 const OperationsCenterPage = lazy(() => import('./pages/OperationsCenterPage'));
+const TrustPortalPage = lazy(() => import('./pages/TrustPortalPage'));
+const EnterpriseTrustHubPage = lazy(() => import('./pages/EnterpriseTrustHubPage'));
 
 const ContractsPage = lazy(() => import('./pages/ContractsPage'));
 const ContractsRepositoryPage = lazy(() => import('./pages/ContractsRepositoryPage'));
@@ -296,6 +298,7 @@ function MainAppContent() {
                   <Route path={`${prefix}/acquisition`} element={<AcquisitionPage />} />
                   <Route path={`${prefix}/corporate-takeover`} element={<Navigate to={`${prefix}/acquisition`} replace />} />
                   <Route path={`${prefix}/b2b-proposals`} element={<B2BProposalPage />} />
+                  <Route path={`${prefix}/trust`} element={<TrustPortalPage />} />
                   <Route path={`${prefix}/video-hub`} element={<VideoHubPage />} />
                   <Route path={`${prefix}/sponsors-ads`} element={<SponsorsAdsPage />} />
                   <Route path={`${prefix}/monetization`} element={<Navigate to={`${prefix}/sponsors-ads`} replace />} />
@@ -441,6 +444,14 @@ function MainAppContent() {
                     element={
                       <ProtectedAdminRoute>
                         <OperationsCenterPage />
+                      </ProtectedAdminRoute>
+                    }
+                  />
+                  <Route
+                    path={`${prefix}/admin/trust-hub`}
+                    element={
+                      <ProtectedAdminRoute>
+                        <EnterpriseTrustHubPage />
                       </ProtectedAdminRoute>
                     }
                   />
