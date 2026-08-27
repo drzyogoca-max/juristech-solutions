@@ -31,6 +31,7 @@ $\text{Overall HAR} = \frac{\text{Direct Acceptance} + \text{Modified Acceptance
 | **Tier 2** | **Accepted After Human Modification** | AI recommendation served as accurate scaffolding, refined by lawyer. | $20 - 30\%$ |
 | **Tier 3** | **Rejected** | AI recommendation rejected due to statutory nuance or factual mismatch. | $< 8\%$ |
 | **Tier 4** | **Escalated to Human Expert** | AI detected edge-case ambiguity and proactively transferred to counsel. | $2 - 5\%$ |
+| **Tier 5** | **AI Voluntary Abstention** | AI detected low statutory confidence/conflicts and intentionally abstained. | $1 - 3\%$ |
 
 - **Strict Enforcement**: Verifying zero instances of AI bypassing human authorization in P1/P2 workflows.
 
@@ -59,9 +60,12 @@ COST DRIVERS (TCO)                        REVENUE & VALUE DRIVERS
 • Secure Ephemeral In-Memory Storage      • Consortium Partner Accreditation Fees
 • Audit Evidence Pack Assembly            • Premium Human Escalation Support Fees
 • Human Review & Commander Retainers      • Tailored Statutory Lexicon Integration
+• Customer Acquisition Cost (CAC)         • Multi-Year Institutional Retention
 ────────────────────────────────────────────────────────────────────────
 ```
-- Target Metric: **Contribution Margin $\ge 82\%$** per institutional tenant.
+- **Target Contribution Margin**: $\ge 82\%$ per institutional tenant.
+- **Target CAC Payback Period**: $\le 6.4$ months.
+- **Target Time to Legal Confidence (TTLC)**: $\le 90$ seconds end-to-end.
 
 ---
 
