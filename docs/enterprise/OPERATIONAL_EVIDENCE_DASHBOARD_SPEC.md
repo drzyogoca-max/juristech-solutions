@@ -49,14 +49,15 @@ PROD REALITY TELEMETRY (v33.1.0)
 - **Tier 5: AI Voluntary Abstention** (Target: $1 - 3\%$)  
   *Operational Definition*: The system autonomously detects low source confidence or conflicting statutory authorities and intentionally refuses to provide speculative advice.
 
-### Panel 3: AI Failure Taxonomy Registry
-Systematic categorization of all non-optimal AI outputs to direct v34 engineering focus:
-| Failure Category | Root Cause Vector | Automated Detection & Mitigation |
-|:---|:---|:---|
-| **Missing Statutory Citation** | Lexicon retrieval gap | Proactively suppressed by HallucinationGuard. |
-| **Cross-Jurisdiction Drift** | Overlapping civil/common concepts | Blocked by Sovereign Boundary Filter. |
-| **Overconfidence Anomaly** | Ambiguous statutory provision | Intercepted and routed to Voluntary Abstention. |
-| **Factual Incoherence** | Noisy prompt text snippet | Flagged as Insufficient Input. |
+### Panel 3: AI Failure Taxonomy & Severity Matrix
+Systematic categorization and risk mapping of all non-optimal AI outputs to direct v34 engineering focus:
+
+| Failure Category | Severity Tier | Root Cause Vector | Automated Detection & Programmatic Action |
+|:---|:---:|:---|:---|
+| **Missing Statutory Citation** | **Medium** | Lexicon retrieval latency / gap | Regenerate with constrained statutory filter. |
+| **Cross-Jurisdiction Drift** | **High** | Civil vs. Common law conceptual overlap | Immediate boundary intercept & output quarantine. |
+| **Overconfidence Anomaly** | **Critical** | Ambiguity across contradictory statutes | Force immediate **Tier 5 Voluntary Abstention**. |
+| **Data Leakage / Egress Risk** | **P0 (Catastrophic)** | Malicious prompt injection attempt | Trigger **P1 Incident Protocol** & immediate RAM purge. |
 
 ### Panel 4: Tenant Isolation & Zero-Retention Verification
 - **RAM Ephemeral Overwrite Audit**: Zero residual customer text post-inference.
@@ -76,6 +77,16 @@ Systematic categorization of all non-optimal AI outputs to direct v34 engineerin
 - **Customer Acquisition Cost (CAC)**: Audited enterprise sales cycle and legal onboarding expense.
 - **CAC Payback Period**: Target $\le 6.4\text{ months}$ based on annual institutional contract values.
 - **Gross Contribution Margin**: Target $\ge 82\%$.
+
+
+### Panel 7: Enterprise Trust Adoption Rate (ETAR)
+Measures the depth of institutional embedding and organizational migration into JurisTech Solutions:
+
+$\text{ETAR} = \frac{\text{Number of Active Legal Workflows Formally Migrated to JurisTech}}{\text{Total Eligible Enterprise Legal Workflows in Tenant Department}} \times 100$
+
+- **Distinction from HAR**: While HAR measures the approval of single advisory outputs, **ETAR measures systemic organizational habituation and operational dependency**.
+- **Tier 1 Pilot Target**: $\text{ETAR} \ge 35\%$ within 60 days of tenant onboarding.
+- **Full Production Target**: $\text{ETAR} \ge 75\%$ across contracting, regulatory review, and board reporting.
 
 ---
 
