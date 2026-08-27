@@ -9,16 +9,19 @@
 import { triggerAutomatedB2BOutreach } from './outreachEngine';
 
 export type CrmLeadStatus =
-  | 'NEW LEAD'
+  | 'LEAD CAPTURED'
   | 'QUALIFIED'
+  | 'CONTACTED'
   | 'ENGAGED'
   | 'DEMO BOOKED'
   | 'DEMO COMPLETED'
   | 'PROPOSAL SENT'
   | 'PAYMENT PENDING'
-  | 'CUSTOMER ACTIVE'
+  | 'PAID CUSTOMER'
   | 'CUSTOMER SUCCESS'
-  // Legacy backward-compatible statuses
+  // Synonyms & Legacy backward-compatible statuses
+  | 'NEW LEAD'
+  | 'CUSTOMER ACTIVE'
   | 'New'
   | 'Warm'
   | 'Cold'

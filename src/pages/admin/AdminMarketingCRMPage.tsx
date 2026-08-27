@@ -142,15 +142,18 @@ export default function AdminMarketingCRMPage() {
   };
 
   const statusColors: Record<string, string> = {
-    'NEW LEAD': 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
+    'LEAD CAPTURED': 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
     'QUALIFIED': 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+    'CONTACTED': 'bg-sky-500/20 text-sky-400 border-sky-500/30',
     'ENGAGED': 'bg-amber-500/20 text-amber-400 border-amber-500/30',
     'DEMO BOOKED': 'bg-purple-500/20 text-purple-400 border-purple-500/30',
     'DEMO COMPLETED': 'bg-violet-500/20 text-violet-400 border-violet-500/30',
     'PROPOSAL SENT': 'bg-indigo-500/20 text-indigo-400 border-indigo-500/30',
     'PAYMENT PENDING': 'bg-orange-500/20 text-orange-400 border-orange-500/30',
+    'PAID CUSTOMER': 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
     'CUSTOMER ACTIVE': 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
     'CUSTOMER SUCCESS': 'bg-green-500/20 text-green-400 border-green-500/30',
+    'NEW LEAD': 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
     New: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
     Cold: 'bg-slate-500/20 text-slate-400 border-slate-500/30',
     Warm: 'bg-amber-500/20 text-amber-400 border-amber-500/30',

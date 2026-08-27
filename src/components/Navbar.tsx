@@ -189,15 +189,15 @@ export default function Navbar() {
               {t('Nav.jurisdictionLaw')}
             </button>
 
-            {/* Quick Action: Book Strategic Advisor Dr. Mohammed Mustafa */}
+            {/* Quick Action: Book 15-Minute Contract Audit & Demo */}
             <button
               onClick={() => setShowConsultationModal(true)}
-              aria-label={t('Consultation.title')}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/25 text-xs font-bold transition-all"
-              title={t('Consultation.title')}
+              aria-label={isRtl ? 'افحص عقدك الأول مجاناً خلال 15 دقيقة' : 'Audit your first contract free in 15 mins'}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-xs font-black transition-all shadow-sm cursor-pointer"
+              title={isRtl ? 'افحص عقدك الأول مجاناً خلال 15 دقيقة' : 'Audit your first contract free in 15 mins'}
             >
               <Mail className="w-3.5 h-3.5 text-emerald-400" />
-              {t('Nav.bookAdvisor')}
+              {isRtl ? 'افحص عقدك الأول مجاناً خلال 15 دقيقة' : 'Audit Contract Free (15 Mins)'}
             </button>
 
             {/* Quick Action: Custom Themes & Fonts */}
