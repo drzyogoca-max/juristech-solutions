@@ -73,6 +73,10 @@ export interface CrmClientLead {
   buyerType?: 'Law Firm' | 'Corporate Legal' | 'Founder' | 'Procurement' | 'Enterprise Procurement' | 'Tech Startup' | 'Strategic Partner';
   arrPotential?: 'Low' | 'Medium' | 'High' | 'Enterprise';
   contractVolume?: string;
+  leadTemperature?: 'Hot' | 'Warm' | 'Cold';
+  nextAction?: 'Send follow-up' | 'Schedule demo' | 'Send proposal' | 'Close lost' | 'Initial Outreach';
+  linkedInUrl?: string;
+  painHypothesis?: string;
 }
 
 export interface CrmAuditLogEntry {
@@ -587,6 +591,10 @@ class CrmService {
     const volIdx = headers.findIndex((h) => h.includes('vol') || h.includes('contracts') || h.includes('عقود'));
     const painIdx = headers.findIndex((h) => h.includes('pain') || h.includes('ألم') || h.includes('مخاطر'));
     const scoreIdx = headers.findIndex((h) => h.includes('score') || h.includes('درجة') || h.includes('نقاط'));
+    const linkIdx = headers.findIndex((h) => h.includes('linkedin') || h.includes('link'));
+    const tempIdx = headers.findIndex((h) => h.includes('temp') || h.includes('حرارة'));
+    const actIdx = headers.findIndex((h) => h.includes('next') || h.includes('action') || h.includes('إجراء'));
+    const hypIdx = headers.findIndex((h) => h.includes('hypo') || h.includes('فرضية'));
 
     if (emailIdx === -1) {
       return { importedCount: 0, errors: ['لم يتم العثور على عمود البريد الإلكتروني (email) في ترويسة الملف'] };
@@ -607,6 +615,12 @@ class CrmService {
       const painPoint = painIdx !== -1 ? row[painIdx] : '';
       const contractVolume = volIdx !== -1 ? row[volIdx] : '50+';
       const customScore = scoreIdx !== -1 && !isNaN(Number(row[scoreIdx])) ? Number(row[scoreIdx]) : 75;
+      const linkedInUrl = linkIdx !== -1 ? row[linkIdx] : '';
+      const rawTemp = tempIdx !== -1 ? row[tempIdx] : '';
+      const leadTemperature: CrmClientLead['leadTemperature'] = rawTemp.includes('Hot') ? 'Hot' : rawTemp.includes('Cold') ? 'Cold' : 'Warm';
+      const rawAct = actIdx !== -1 ? row[actIdx] : '';
+      const nextAction: CrmClientLead['nextAction'] = rawAct.includes('demo') ? 'Schedule demo' : rawAct.includes('proposal') ? 'Send proposal' : rawAct.includes('lost') ? 'Close lost' : rawAct.includes('follow') ? 'Send follow-up' : 'Initial Outreach';
+      const painHypothesis = hypIdx !== -1 ? row[hypIdx] : painPoint;
 
       const cLower = country.toLowerCase();
       let flag = '🌐';
@@ -745,6 +759,10 @@ class CrmService {
         arrPotential,
         contractVolume,
         painPoint,
+        leadTemperature,
+        nextAction,
+        linkedInUrl,
+        painHypothesis,
         source_type: 'REAL',
         verification_status: 'UNVERIFIED',
       });
