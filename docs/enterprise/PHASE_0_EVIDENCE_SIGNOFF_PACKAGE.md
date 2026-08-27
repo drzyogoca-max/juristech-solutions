@@ -28,6 +28,17 @@ To prevent conflation between synthetic simulations and live empirical productio
 └──────────────────────────┴──────────────────────────────────┘
 ```
 
+### Six-Attribute Metric Metadata Standard
+Every metric ingested into Gate `v34-E0` must carry the following immutable schema:
+```yaml
+Metric_ID: "HAR-001"
+Source_Type: "Production Observed" # Simulation | Production Observed | Board Approved
+Collection_Method: "OED Ingress Telemetry Stream"
+Observation_Period: "2026-08-27 to 2026-09-24 (28 Days)"
+Confidence_Level: "95.4%"
+Approval_Status: "Pending Board Ratification" # Pending | Ratified | Quarantined
+```
+
 ---
 
 ## 2. Mandatory Gate v34-E0 Evidence Checklist
@@ -45,19 +56,32 @@ To prevent conflation between synthetic simulations and live empirical productio
 
 ---
 
-## 3. Formal Gate Decision Protocol
+## 3. Tri-State Gate Decision Protocol (Green / Yellow / Red) 🚦
 
-At the expiration of the Phase 0 observation window, the Enterprise Architecture Board and Executive Committee execute the following deterministic decision:
+At the expiration of the Phase 0 observation window, the Enterprise Architecture Board executes the institutional Tri-State Decision Model:
 
 ```
-IF (All 8 Evidence Checklist Items == VERIFIED && Zero Rule Zero Violations):
-    THEN:
-        AUTHORIZE: git checkout -b feature/v34-enterprise-operations-core
-        STATUS: PROCEED TO v34.0 IMPLEMENTATION 🚀
-ELSE:
-    THEN:
-        REJECT: Branching authorization denied.
-        ACTION: EXTEND Phase 0 Operational Evidence Window by 14 Additional Days.
+┌────────────────────────────────────────────────────────────────────────┐
+│ TRI-STATE GATE v34-E0 EVALUATION ENGINE                                │
+├──────────┬─────────────────────────────────┬───────────────────────────┤
+│ STATE    │ OPERATIONAL TRIGGER CONDITIONS  │ MANDATED ACTION           │
+├──────────┼─────────────────────────────────┼───────────────────────────┤
+│ 🟢 GREEN │ • All 8 Evidence Items VERIFIED │ • Authorize:              │
+│          │ • SLA >= 99.99% & TTLC <= 90s   │   git checkout -b         │
+│          │ • ETAR >= 35% & Margin >= 82%   │   feature/v34-enterprise- │
+│          │ • Zero P0/P1 Critical Incidents │   operations-core         │
+│          │ • Rule Zero 100% Preserved      │ • Proceed to v34.0 Build  │
+├──────────┼─────────────────────────────────┼───────────────────────────┤
+│ 🟡 YELLOW│ • Technical SLA & Isolation OK  │ • Extend Phase 0 Window   │
+│          │ • Adoption (ETAR) < 35% OR      │   by 14 Additional Days   │
+│          │   Sample coverage incomplete    │ • Deepen enterprise cohort│
+│          │ • Non-critical telemetry drift  │   simulation & logging    │
+├──────────┼─────────────────────────────────┼───────────────────────────┤
+│ 🔴 RED   │ • Rule Zero Boundary Violation  │ • Halt all progression    │
+│          │ • Tenant Data Isolation Leak    │ • Trigger P1 Incident     │
+│          │ • Financial Gateway Alteration  │ • Convene Emergency       │
+│          │ • Unrecoverable SLA Collapse    │   Architecture Review     │
+└──────────┴─────────────────────────────────┴───────────────────────────┘
 ```
 
 ---
