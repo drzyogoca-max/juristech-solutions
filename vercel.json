@@ -217,7 +217,7 @@
     },
     {
       "path": "/api/cron/spider-linkedin",
-      "schedule": "0 */6 * * *"
+      "schedule": "0 14 * * *"
     }
   ]
 }
