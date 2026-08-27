@@ -43,7 +43,7 @@
 ### Inviolable Governance Boundaries
 - **P1/P2 Incident Closures**: 100% mandated human Legal Incident Commander signoffs with immutable timestamps (`NO_AUTONOMOUS_P1_RESOLUTION = true`).
 - **Evidence Lifecycle**: Continuous 5-state machine progression with zero retroactive mutations.
-- **Evidence Characterization**: Retained as *Evidence Reliability Intelligence Score (ERIS)*, strictly rejecting self-issued legal licenses.
+- **Evidence Characterization**: Retained as *Evidence Trust Score (ETS)*, strictly rejecting self-issued legal licenses.
 
 ---
 

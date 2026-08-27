@@ -50,7 +50,7 @@ Approval_Status: "Pending Board Ratification" # Pending | Ratified | Quarantined
 | 3 | **Incident Post-Mortem** | `JUR-LOG-INC-2026` | Zero P1/P2 data breach incidents or ratified post-mortem dataset. | **LOCKED 🛡️** |
 | 4 | **5-Tier HAR Actuals** | `JUR-SPEC-OED-2026` | Audited distribution (Direct, Modified, Rejected, Escalated, Abstention). | **INGESTING 📈** |
 | 5 | **ETAR Adoption Actuals** | `JUR-MET-ETAR-2026` | Audited departmental workflow migration rate (Target $\ge 35\%$). | **MONITORING 🌐** |
-| 6 | **ETS Confidence Report** | `JUR-SPEC-ETS-2026` | 6-Factor confidence interval calculation (ERIS score $\pm$ coverage). | **CALIBRATED 💎** |
+| 6 | **ETS Confidence Report** | `JUR-SPEC-ETS-2026` | 6-Factor confidence interval calculation (ETS score $\pm$ coverage). | **CALIBRATED 💎** |
 | 7 | **TCO & Unit Economics** | `JUR-ECO-V34-2026` | Verified Gross Margin $\ge 82\%$ and CAC Payback $\le 6.4\text{ months}$. | **COMPILED 💼** |
 | 8 | **ADR-V34-01 Ratification** | `JUR-ADR-V34-01` | Signed Architectural Decision Record defining EOS boundaries. | **RATIFIED 📜** |
 
