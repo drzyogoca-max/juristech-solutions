@@ -8,6 +8,25 @@
 
 import { triggerAutomatedB2BOutreach } from './outreachEngine';
 
+export type CrmLeadStatus =
+  | 'NEW LEAD'
+  | 'QUALIFIED'
+  | 'ENGAGED'
+  | 'DEMO BOOKED'
+  | 'DEMO COMPLETED'
+  | 'PROPOSAL SENT'
+  | 'PAYMENT PENDING'
+  | 'CUSTOMER ACTIVE'
+  | 'CUSTOMER SUCCESS'
+  // Legacy backward-compatible statuses
+  | 'New'
+  | 'Warm'
+  | 'Cold'
+  | 'Negotiating'
+  | 'Converted'
+  | 'Closed'
+  | 'Disqualified';
+
 export interface CrmClientLead {
   source_type?: 'REAL' | 'SEED' | 'SYNTHETIC';
   verification_status?: 'VERIFIED' | 'UNVERIFIED' | 'SEED';
@@ -18,7 +37,7 @@ export interface CrmClientLead {
   contactEmail: string;
   jurisdiction: string;
   flag: string;
-  status: 'New' | 'Warm' | 'Cold' | 'Negotiating' | 'Converted' | 'Closed' | 'Disqualified';
+  status: CrmLeadStatus;
   lastContactDate: string;
   estimatedValueUSD: number;
   leadScore: number;
@@ -27,6 +46,13 @@ export interface CrmClientLead {
   lastActivityAr?: string;
   lastActivityEn?: string;
   dispatchedAt?: string;
+  industry?: string;
+  companySize?: string;
+  monthlyContracts?: number;
+  painPoint?: string;
+  sequenceStep?: number;
+  lastStepDispatchedAt?: string;
+  isSalesPriority?: boolean;
 }
 
 export interface CrmAuditLogEntry {
@@ -437,6 +463,146 @@ class CrmService {
   public deleteLead(id: string) {
     this.leads = this.leads.filter((l) => l.id !== id);
     this.saveLeads();
+  }
+
+  /**
+   * RECORD LEAD SCORING EVENT
+   * +30 Contract Upload | +25 Demo Request | +20 Payment Visit | +20 Email Click | +15 Proposal Open | +10 Email Open | +10 High Volume
+   */
+  public recordLeadScoreEvent(
+    emailOrId: string,
+    event: 'CONTRACT_UPLOAD' | 'EMAIL_OPENED' | 'EMAIL_CLICKED' | 'DEMO_REQUESTED' | 'PAYMENT_VISIT' | 'PROPOSAL_OPENED' | 'HIGH_VOLUME_CONTRACTS'
+  ): CrmClientLead | null {
+    const clean = (emailOrId || '').toLowerCase().trim();
+    const lead = this.leads.find((l) => l.id === clean || l.contactEmail.toLowerCase().trim() === clean) ||
+                 this.archivedLeads.find((l) => l.id === clean || l.contactEmail.toLowerCase().trim() === clean);
+
+    if (!lead) return null;
+
+    let points = 0;
+    let eventNameAr = '';
+    let eventNameEn = '';
+
+    switch (event) {
+      case 'CONTRACT_UPLOAD':
+        points = 30;
+        eventNameAr = 'تم رفع عقد للتحليل المباشر (+30)';
+        eventNameEn = 'Uploaded contract for live analysis (+30)';
+        lead.status = 'QUALIFIED';
+        break;
+      case 'DEMO_REQUESTED':
+        points = 25;
+        eventNameAr = 'طلب حجز عرض عملي حي Demo (+25)';
+        eventNameEn = 'Requested 15-min live demo (+25)';
+        lead.status = 'DEMO BOOKED';
+        break;
+      case 'PAYMENT_VISIT':
+        points = 20;
+        eventNameAr = 'زيارة صفحة السداد والاشتراك (+20)';
+        eventNameEn = 'Visited pricing & checkout page (+20)';
+        if (lead.status !== 'DEMO BOOKED' && lead.status !== 'PROPOSAL SENT') lead.status = 'ENGAGED';
+        break;
+      case 'EMAIL_CLICKED':
+        points = 20;
+        eventNameAr = 'النقر على رابط داخل البريد الإلكتروني (+20)';
+        eventNameEn = 'Clicked CTA link in outreach email (+20)';
+        lead.status = 'ENGAGED';
+        break;
+      case 'PROPOSAL_OPENED':
+        points = 15;
+        eventNameAr = 'فتح العرض المالي والتنفيذي (+15)';
+        eventNameEn = 'Opened executive B2B proposal (+15)';
+        lead.status = 'ENGAGED';
+        break;
+      case 'EMAIL_OPENED':
+        points = 10;
+        eventNameAr = 'فتح البريد الإلكتروني (+10)';
+        eventNameEn = 'Opened outreach email (+10)';
+        if (lead.status === 'NEW LEAD' || lead.status === 'New') lead.status = 'ENGAGED';
+        break;
+      case 'HIGH_VOLUME_CONTRACTS':
+        points = 10;
+        eventNameAr = 'شركة ذات كثافة تعاقدية عالية (+10)';
+        eventNameEn = 'High-volume contract enterprise (+10)';
+        break;
+    }
+
+    lead.leadScore = Math.min(100, (lead.leadScore || 50) + points);
+    lead.lastContactDate = new Date().toISOString().split('T')[0];
+    lead.lastActivityAr = eventNameAr;
+    lead.lastActivityEn = eventNameEn;
+
+    if (lead.leadScore >= 80) {
+      lead.isSalesPriority = true;
+    }
+
+    this.saveLeads();
+    return lead;
+  }
+
+  /**
+   * BULK IMPORT LEADS FROM CSV CONTENT
+   * Format: company_name, contact_name, email, industry, country
+   */
+  public importLeadsFromCsv(csvContent: string): { importedCount: number; errors: string[] } {
+    const lines = csvContent.split(/\r?\n/).filter((l) => l.trim().length > 0);
+    if (lines.length <= 1) {
+      return { importedCount: 0, errors: ['الملف فارغ أو لا يحتوي على صفوف بيانات'] };
+    }
+
+    let importedCount = 0;
+    const errors: string[] = [];
+    const headers = lines[0].toLowerCase().split(',').map((h) => h.trim().replace(/^["']|["']$/g, ''));
+
+    const compIdx = headers.findIndex((h) => h.includes('comp') || h.includes('شركة'));
+    const nameIdx = headers.findIndex((h) => h.includes('name') || h.includes('contact') || h.includes('اسم'));
+    const emailIdx = headers.findIndex((h) => h.includes('mail') || h.includes('بريد'));
+    const indIdx = headers.findIndex((h) => h.includes('ind') || h.includes('قطاع') || h.includes('مجال'));
+    const countryIdx = headers.findIndex((h) => h.includes('country') || h.includes('دولة') || h.includes('juris'));
+
+    if (emailIdx === -1) {
+      return { importedCount: 0, errors: ['لم يتم العثور على عمود البريد الإلكتروني (email) في ترويسة الملف'] };
+    }
+
+    for (let i = 1; i < lines.length; i++) {
+      const row = lines[i].split(',').map((c) => c.trim().replace(/^["']|["']$/g, ''));
+      const email = row[emailIdx]?.toLowerCase()?.trim();
+      if (!email || !email.includes('@')) {
+        continue;
+      }
+
+      const company = (compIdx !== -1 ? row[compIdx] : '') || email.split('@')[1];
+      const contact = (nameIdx !== -1 ? row[nameIdx] : '') || company;
+      const industry = indIdx !== -1 ? row[indIdx] : 'Corporate Legal';
+      const country = countryIdx !== -1 ? row[countryIdx] : 'Egypt / GCC';
+
+      const flag = country.toLowerCase().includes('saudi') || country.toLowerCase().includes('سعودي') ? '🇸🇦'
+                 : country.toLowerCase().includes('uae') || country.toLowerCase().includes('امارات') || country.toLowerCase().includes('دبي') ? '🇦🇪'
+                 : country.toLowerCase().includes('egypt') || country.toLowerCase().includes('مصر') ? '🇪🇬'
+                 : country.toLowerCase().includes('qatar') || country.toLowerCase().includes('قطر') ? '🇶🇦'
+                 : country.toLowerCase().includes('kuwait') || country.toLowerCase().includes('كويت') ? '🇰🇼'
+                 : '🌐';
+
+      this.addLead({
+        clientName: contact,
+        companyName: company,
+        contactEmail: email,
+        jurisdiction: country,
+        flag,
+        status: 'NEW LEAD',
+        lastContactDate: new Date().toISOString().split('T')[0],
+        estimatedValueUSD: 139 * 12,
+        leadScore: 60,
+        notesAr: `تم الاستيراد عبر ملف CSV — قطاع: ${industry}`,
+        notesEn: `Imported via CSV batch — Industry: ${industry}`,
+        industry,
+        source_type: 'REAL',
+        verification_status: 'UNVERIFIED',
+      });
+      importedCount++;
+    }
+
+    return { importedCount, errors };
   }
 
   /**

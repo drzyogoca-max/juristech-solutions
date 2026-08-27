@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Mail, Users, Target, Send, ShieldCheck, FileText, Download, CheckCircle, Clock, Bot, Zap } from 'lucide-react';
+import { Mail, Users, Target, Send, ShieldCheck, FileText, Download, Upload, CheckCircle, Clock, Bot, Zap, Flame } from 'lucide-react';
 import { useAuth } from '../../lib/authContext';
 import Forbidden403Page from '../Forbidden403Page';
 import AdminNavSubbar from '../../components/AdminNavSubbar';
-import { crmService } from '../../services/crmService';
+import { crmService, CrmClientLead } from '../../services/crmService';
 import { sendOfficialEmail, EmailLead, EmailTemplate } from '../../services/marketingEmailEngine';
 import { autonomousCSuiteOutreachEngine, AutoMachineState } from '../../services/autonomousCSuiteOutreachEngine';
 import { callAI } from '../../lib/api';
@@ -31,38 +31,41 @@ export default function AdminMarketingCRMPage() {
   const { t, i18n } = useTranslation();
   const { isAdmin } = useAuth();
   const isRtl = i18n.language === 'ar';
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [leads, setLeads] = React.useState<EmailLead[]>(() => {
-    const active = crmService.getLeads();
-    return active.map((l) => ({
-      id: l.id,
-      name: l.clientName,
-      email: l.contactEmail,
-      company: l.companyName,
-      jurisdiction: l.jurisdiction,
-      status: l.status === 'Converted' ? 'Closed' : l.status === 'Disqualified' ? 'Cold' : l.status,
-      lastContactDate: l.lastContactDate,
-    }));
-  });
+  const [leads, setLeads] = React.useState<CrmClientLead[]>(() => crmService.getLeads());
 
   React.useEffect(() => {
     const updateLeads = () => {
-      const active = crmService.getLeads();
-      setLeads(
-        active.map((l) => ({
-          id: l.id,
-          name: l.clientName,
-          email: l.contactEmail,
-          company: l.companyName,
-          jurisdiction: l.jurisdiction,
-          status: l.status === 'Converted' ? 'Closed' : l.status === 'Disqualified' ? 'Cold' : l.status,
-          lastContactDate: l.lastContactDate,
-        }))
-      );
+      setLeads([...crmService.getLeads()]);
     };
 
     return crmService.subscribe(updateLeads);
   }, []);
+
+  const handleImportCsv = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const text = event.target?.result as string;
+      if (text) {
+        const res = crmService.importLeadsFromCsv(text);
+        if (res.errors.length > 0) {
+          alert(isRtl ? `تنبيه: ${res.errors.join('\n')}` : `Alert: ${res.errors.join('\n')}`);
+        } else {
+          alert(
+            isRtl
+              ? `✅ تم استيراد ${res.importedCount} عميل جديد بنجاح إلى مسار مبيعات الـ CRM!`
+              : `✅ Successfully imported ${res.importedCount} new leads into CRM sales pipeline!`
+          );
+        }
+      }
+    };
+    reader.readAsText(file);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
 
   const handleDiscoverFreshB2B = () => {
     const added = crmService.discoverFreshB2BLeads(5);
@@ -117,7 +120,7 @@ export default function AdminMarketingCRMPage() {
     setIsSending(true);
     const lead = leads.find(l => l.id === selectedLeadId);
     if (lead) {
-      await sendOfficialEmail(lead.email, { subject: emailSubject, body: emailBody });
+      await sendOfficialEmail(lead.contactEmail, { subject: emailSubject, body: emailBody });
       setSendSuccess(true);
       setTimeout(() => setSendSuccess(false), 3000);
     }
@@ -138,12 +141,21 @@ export default function AdminMarketingCRMPage() {
     setIsGenerating(false);
   };
 
-  const statusColors = {
+  const statusColors: Record<string, string> = {
+    'NEW LEAD': 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
+    'QUALIFIED': 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+    'ENGAGED': 'bg-amber-500/20 text-amber-400 border-amber-500/30',
+    'DEMO BOOKED': 'bg-purple-500/20 text-purple-400 border-purple-500/30',
+    'DEMO COMPLETED': 'bg-violet-500/20 text-violet-400 border-violet-500/30',
+    'PROPOSAL SENT': 'bg-indigo-500/20 text-indigo-400 border-indigo-500/30',
+    'PAYMENT PENDING': 'bg-orange-500/20 text-orange-400 border-orange-500/30',
+    'CUSTOMER ACTIVE': 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+    'CUSTOMER SUCCESS': 'bg-green-500/20 text-green-400 border-green-500/30',
     New: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
     Cold: 'bg-slate-500/20 text-slate-400 border-slate-500/30',
     Warm: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
     Negotiating: 'bg-indigo-500/20 text-indigo-400 border-indigo-500/30',
-    Closed: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30'
+    Closed: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
   };
 
   return (
@@ -221,6 +233,24 @@ export default function AdminMarketingCRMPage() {
                 {isRtl ? '🚀 اكتشاف عملاء B2B جدد' : '🚀 Discover Fresh B2B Leads'}
               </span>
             </button>
+
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="px-5 py-3 rounded-2xl bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 text-slate-950 font-black text-xs flex items-center gap-2 transition-all shadow-xl shadow-amber-500/25 active:scale-95 cursor-pointer"
+            >
+              <Upload className="w-4 h-4" />
+              <span>
+                {isRtl ? '📂 استيراد عملاء (CSV)' : '📂 Import Leads (CSV)'}
+              </span>
+            </button>
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleImportCsv}
+              accept=".csv,text/csv"
+              className="hidden"
+            />
           </div>
         </div>
 
@@ -280,36 +310,67 @@ export default function AdminMarketingCRMPage() {
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">
-                    <th className="py-3 px-4 font-bold">Client / Company</th>
-                    <th className="py-3 px-4 font-bold">Email</th>
-                    <th className="py-3 px-4 font-bold">Jurisdiction</th>
-                    <th className="py-3 px-4 font-bold">Status</th>
-                    <th className="py-3 px-4 font-bold">Last Contact</th>
+                    <th className="py-3 px-4 font-bold">{isRtl ? 'العميل / الشركة' : 'Client / Company'}</th>
+                    <th className="py-3 px-4 font-bold">{isRtl ? 'البريد الإلكتروني' : 'Email'}</th>
+                    <th className="py-3 px-4 font-bold">{isRtl ? 'الدولة / الاختصاص' : 'Jurisdiction'}</th>
+                    <th className="py-3 px-4 font-bold">{isRtl ? 'مرحلة البيع' : 'Pipeline Status'}</th>
+                    <th className="py-3 px-4 font-bold text-center">{isRtl ? 'نقاط التأهيل (Score)' : 'Lead Score'}</th>
+                    <th className="py-3 px-4 font-bold">{isRtl ? 'آخر تواصل' : 'Last Contact'}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
-                  {leads.map(lead => (
-                    <tr key={lead.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                      <td className="py-4 px-4">
-                        <div className="font-bold text-sm text-slate-900 dark:text-white">{lead.name}</div>
-                        <div className="text-xs text-slate-500 dark:text-slate-400">{lead.company}</div>
-                      </td>
-                      <td className="py-4 px-4 text-sm text-slate-600 dark:text-slate-300 font-medium">
-                        {lead.email}
-                      </td>
-                      <td className="py-4 px-4 text-sm text-slate-600 dark:text-slate-300">
-                        {lead.jurisdiction}
-                      </td>
-                      <td className="py-4 px-4">
-                        <span className={`px-2.5 py-1 rounded-md text-[10px] font-black border uppercase tracking-wider ${statusColors[lead.status]}`}>
-                          {lead.status}
-                        </span>
-                      </td>
-                      <td className="py-4 px-4 text-xs font-mono text-slate-500 dark:text-slate-400">
-                        {lead.lastContactDate}
-                      </td>
-                    </tr>
-                  ))}
+                  {leads.map(lead => {
+                    const cName = lead.clientName || (lead as any).name || 'Executive Lead';
+                    const compName = lead.companyName || (lead as any).company || 'Enterprise Corp';
+                    const email = lead.contactEmail || (lead as any).email || '';
+                    const score = lead.leadScore ?? 50;
+                    const isHot = score >= 80 || lead.isSalesPriority;
+
+                    return (
+                      <tr key={lead.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                        <td className="py-4 px-4">
+                          <div className="flex items-center gap-2">
+                            <span className="text-base">{lead.flag || '🌐'}</span>
+                            <div>
+                              <div className="font-bold text-sm text-slate-900 dark:text-white flex items-center gap-1.5">
+                                {cName}
+                                {isHot && (
+                                  <span className="flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-400 border border-rose-500/30 text-[9px] font-black uppercase">
+                                    <Flame className="w-3 h-3 text-rose-400 fill-rose-400" />
+                                    HOT
+                                  </span>
+                                )}
+                              </div>
+                              <div className="text-xs text-slate-500 dark:text-slate-400">{compName}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="py-4 px-4 text-sm text-slate-600 dark:text-slate-300 font-medium">
+                          {email}
+                        </td>
+                        <td className="py-4 px-4 text-sm text-slate-600 dark:text-slate-300">
+                          {lead.jurisdiction}
+                        </td>
+                        <td className="py-4 px-4">
+                          <span className={`px-2.5 py-1 rounded-md text-[10px] font-black border uppercase tracking-wider ${statusColors[lead.status] || 'bg-slate-500/20 text-slate-400 border-slate-500/30'}`}>
+                            {lead.status}
+                          </span>
+                        </td>
+                        <td className="py-4 px-4 text-center">
+                          <span className={`inline-flex items-center justify-center font-mono font-black text-xs px-2.5 py-1 rounded-full border ${
+                            score >= 80 ? 'bg-rose-500/20 text-rose-400 border-rose-500/30' :
+                            score >= 60 ? 'bg-amber-500/20 text-amber-400 border-amber-500/30' :
+                            'bg-slate-500/20 text-slate-400 border-slate-500/30'
+                          }`}>
+                            {score} / 100
+                          </span>
+                        </td>
+                        <td className="py-4 px-4 text-xs font-mono text-slate-500 dark:text-slate-400">
+                          {lead.lastContactDate}
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -329,7 +390,7 @@ export default function AdminMarketingCRMPage() {
                 >
                   <option value="">Select a target...</option>
                   {leads.map(lead => (
-                    <option key={lead.id} value={lead.id}>{lead.name} ({lead.email})</option>
+                    <option key={lead.id} value={lead.id}>{lead.clientName} ({lead.contactEmail})</option>
                   ))}
                 </select>
               </div>
