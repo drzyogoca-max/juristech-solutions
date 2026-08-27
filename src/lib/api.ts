@@ -7,7 +7,6 @@ import { getSystemContextForLanguage } from './languageHelper';
 
 const SUPABASE_URL = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_URL) || '';
 const SUPABASE_ANON_KEY = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_ANON_KEY) || '';
-const GEMINI_API_KEY = (typeof import.meta !== 'undefined' && (import.meta.env?.VITE_GEMINI_API_KEY || import.meta.env?.GEMINI_API_KEY)) || '';
 
 // In-Memory Semantic Response Cache for sub-50ms repeat query execution
 const semanticResponseCache = new Map<string, string>();
@@ -86,73 +85,36 @@ export async function callAIWithHistory(
       // Fast fallback to direct API
     }
 
-    // ── Tier 2: Direct Client Gemini 2.0 Flash REST Call (Fast < 2.5s)
-    if (GEMINI_API_KEY) {
-      try {
-        // ── ABSOLUTE LANGUAGE LOCK: Detect active language from forceLang or message content
-        const targetLang = (forceLang as string) || (isAr ? 'ar' : 'en');
-        const sysContent = systemPrompt || messages.find(m => m.role === 'system')?.content || getSystemContextForLanguage(targetLang);
+    // ── Tier 2: Serverless Fallback API Endpoint (/api/ai)
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 9000);
 
-        const rawContents = messages
-          .filter(m => m.role !== 'system')
-          .map(m => ({
-            role: m.role === 'assistant' ? 'model' : 'user',
-            parts: [{ text: m.content }],
-          }));
+      const res = await fetch('/api/ai', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Language': lang },
+        body: JSON.stringify({
+          prompt: lastUserMsg,
+          message: lastUserMsg,
+          messages: messages.filter(m => m.role !== 'system'),
+          lang,
+          systemPrompt: systemPrompt || messages.find(m => m.role === 'system')?.content,
+        }),
+        signal: controller.signal,
+      });
+      clearTimeout(timeout);
 
-        rawContents.unshift({ role: 'user', parts: [{ text: `[JURISTECH SYSTEM DIRECTIVES — ABSOLUTE]: ${sysContent}` }] });
-        rawContents.splice(1, 0, { role: 'model', parts: [{ text: isAr ? 'نعم. فهمت التوجيهات الكاملة وسأستدعي النصوص التشريعية المحددة مع استيعاب التغييرات المتتابعة وتوليد العقود الجديدة فورياً.' : `Understood. I will respond exclusively in ${targetLang === 'fr' ? 'French' : targetLang === 'de' ? 'German' : targetLang === 'es' ? 'Spanish' : targetLang === 'zh' ? 'Chinese' : targetLang === 'tr' ? 'Turkish' : 'English'} with full statutory citations, multi-turn intelligence, and complete contract drafting.` }] });
-
-        // Ensure alternating user/model roles to prevent 400 Bad Request
-        const contents: Array<{ role: string; parts: Array<{ text: string }> }> = [];
-        for (const item of rawContents) {
-          const text = item.parts?.[0]?.text?.trim() || '';
-          if (!text) continue;
-          if (contents.length > 0 && contents[contents.length - 1].role === item.role) {
-            contents[contents.length - 1].parts[0].text += `\n\n${text}`;
-          } else {
-            contents.push({ role: item.role, parts: [{ text }] });
-          }
+      if (res.ok) {
+        const data = await res.json();
+        const output = (data.reply || data.result || data.response || '').trim();
+        if (output.length > 15 && !output.includes('مرحباً بك في JurisTech Solutions.')) {
+          if (messages.length <= 2) semanticResponseCache.set(cacheKey, output);
+          recordAndLearnQuery(lastUserMsg, output, isAr ? 'ar' : 'en');
+          return output;
         }
-
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 9000);
-
-        const res = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents,
-              generationConfig: {
-                temperature: 0.15,
-                maxOutputTokens: 8192,
-                topP: 0.95,
-                topK: 40,
-              },
-              safetySettings: [
-                { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
-                { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
-              ],
-            }),
-            signal: controller.signal,
-          }
-        );
-        clearTimeout(timeout);
-
-        if (res.ok) {
-          const data = await res.json();
-          const text = (data?.candidates?.[0]?.content?.parts?.[0]?.text || '').trim();
-          if (text.length > 30) {
-            if (messages.length <= 2) semanticResponseCache.set(cacheKey, text);
-            recordAndLearnQuery(lastUserMsg, text, isAr ? 'ar' : 'en');
-            return text;
-          }
-        }
-      } catch (geminiErr) {
-        // Fallback to dynamic synthesizer
       }
+    } catch (tier2Err) {
+      // Fallback to Tier 3
     }
 
     // ── Tier 3: Supabase AI Proxy (Fast < 3s)
