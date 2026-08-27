@@ -21,11 +21,18 @@ Gate `v34-E0` establishes the empirical, operational, and financial threshold th
 - **Aggregate Error Rate**: Monitored API failure percentage (Target: $< 0.01\%$).
 - **Latency Spectrum**: Empirical measurement of P50, P95, and P99 response distributions for both AI inference and ZKP verification cycles.
 
-### Dimension 2: AI Decision Quality & Human Acceptance Rate
-Evaluating the human-in-the-loop interaction boundary:
-$$\text{Human Acceptance Rate (HAR)} = \frac{\text{Accepted Recommendations}}{\text{Total AI Recommendations Generated}} \times 100$$
-- Tracking **Accepted**, **Modified**, and **Rejected** ratios across legal domains.
-- Verifying zero instances of AI bypassing human authorization in P1/P2 workflows.
+### Dimension 2: AI Decision Quality & Granular 4-Tier HAR Breakdown
+Evaluating the human-in-the-loop interaction boundary through an audited 4-tier taxonomy:
+$\text{Overall HAR} = \frac{\text{Direct Acceptance} + \text{Modified Acceptance}}{\text{Total AI Recommendations Generated}} \times 100$
+
+| Tier | Category | Operational Meaning & Quality Implication | Target Ratio |
+|:---|:---|:---|:---:|
+| **Tier 1** | **Accepted Without Modification** | AI recommendation adopted as verbatim production legal draft. | $\ge 60\%$ |
+| **Tier 2** | **Accepted After Human Modification** | AI recommendation served as accurate scaffolding, refined by lawyer. | $20 - 30\%$ |
+| **Tier 3** | **Rejected** | AI recommendation rejected due to statutory nuance or factual mismatch. | $< 8\%$ |
+| **Tier 4** | **Escalated to Human Expert** | AI detected edge-case ambiguity and proactively transferred to counsel. | $2 - 5\%$ |
+
+- **Strict Enforcement**: Verifying zero instances of AI bypassing human authorization in P1/P2 workflows.
 
 ### Dimension 3: Empirical Evidence Lifetime & State Stability
 - Tracking the actual temporal lifecycle of evidence records: `Created` $\to$ `Validated` $\to$ `Expired` $\to$ `Renewed` $\to$ `Archived`.
@@ -38,12 +45,23 @@ Conducting internal synthetic stress testing against 4 distinct institutional pr
 3. **Government / Sovereign Tenant (Air-Gapped / Sovereign Cloud Scope)**: Zero cross-border egress, domestic statutory lexicons.
 4. **SME / Startup Tenant**: High-volume, standard commercial templates, rapid turnaround.
 
-### Dimension 5: Institutional Operational Cost Model (TCO)
-Establishing the unit economics of the Enterprise Operating System before v34.5:
-- **Cost per Enterprise Tenant** (Monthly infrastructure & tenancy isolation overhead).
-- **Cost per ZKP Evidence Verification** (Compute cost of cryptographic proof validation).
-- **Cost per AI Advisory Session / Document Generation**.
-- **Cost per Executive Compliance Audit Pack**.
+### Dimension 5: Enterprise Unit Economics Model (Cost vs. Revenue Ecosystem)
+Establishing the holistic economic balance of the Enterprise Operating System prior to v34.5:
+
+```
+ENTERPRISE UNIT ECONOMICS MATRIX
+────────────────────────────────────────────────────────────────────────
+COST DRIVERS (TCO)                        REVENUE & VALUE DRIVERS
+────────────────────────────────────────────────────────────────────────
+• Tenant Infrastructure & Isolation       • Enterprise Annual License (ARR)
+• Cryptographic ZKP Verification Compute  • Compliance & GRC Module Add-ons
+• LLM Token & Inference Processing        • Verification Network Query Fees
+• Secure Ephemeral In-Memory Storage      • Consortium Partner Accreditation Fees
+• Audit Evidence Pack Assembly            • Premium Human Escalation Support Fees
+• Human Review & Commander Retainers      • Tailored Statutory Lexicon Integration
+────────────────────────────────────────────────────────────────────────
+```
+- Target Metric: **Contribution Margin $\ge 82\%$** per institutional tenant.
 
 ---
 
