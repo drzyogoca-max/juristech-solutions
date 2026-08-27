@@ -59,20 +59,13 @@ export async function checkLibyaGeoBlock(): Promise<boolean> {
     console.warn('Geo-block check primary exception:', err);
   }
 
-  // 5. Anti-Proxy / Secondary IP Check Fallback (Detects Libya IP even if primary was spoofed)
+  // 5. Anti-Proxy / Secondary IP Check Fallback (uses cached unified geo)
   try {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 2000);
-    const res = await fetch('https://ipapi.co/json/', { signal: controller.signal });
-    clearTimeout(timer);
-    if (res.ok) {
-      const data = await res.json();
-      const country = (data.country_code || data.country || '').toUpperCase();
-      const timezone = (data.timezone || '').toLowerCase();
-      if (country === 'LY' || timezone.includes('tripoli') || timezone.includes('libya')) {
-        sessionStorage.setItem('juristech_geo_blocked', 'LY');
-        return true;
-      }
+    const data = await detectVisitorJurisdiction();
+    const country = (data.countryCode || '').toUpperCase();
+    if (country === 'LY') {
+      sessionStorage.setItem('juristech_geo_blocked', 'LY');
+      return true;
     }
   } catch {}
 

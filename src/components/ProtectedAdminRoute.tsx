@@ -23,6 +23,8 @@ async function hashSHA256(text: string): Promise<string> {
   return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
+import { supabase } from '../lib/supabaseClient';
+
 export default function ProtectedAdminRoute({ children }: { children: React.ReactNode }) {
   const { isAdmin, user, setRole } = useAuth();
   const { i18n } = useTranslation();
@@ -39,11 +41,20 @@ export default function ProtectedAdminRoute({ children }: { children: React.Reac
   const [lockedUntil, setLockedUntil] = useState<number>(0);
   const [isSendingEmail, setIsSendingEmail] = useState(false);
   const [emailStatusMsg, setEmailStatusMsg] = useState('');
+  const [supabaseSessionVerified, setSupabaseSessionVerified] = useState(false);
+
+  React.useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user?.email && isAuthorizedAdminEmail(session.user.email)) {
+        setSupabaseSessionVerified(true);
+      }
+    }).catch(() => {});
+  }, []);
 
   const isLocallyAuthed = verifyAdminAccess();
-  const isSupabaseAdmin = user && isAuthorizedAdminEmail(user?.email);
+  const isSupabaseAdmin = (user && isAuthorizedAdminEmail(user?.email)) || supabaseSessionVerified;
 
-  if (isLocallyAuthed || (isAdmin && isSupabaseAdmin)) {
+  if (isSupabaseAdmin || (isLocallyAuthed && sessionStorage.getItem('juristech_2fa_verified_session') === 'true')) {
     return <>{children}</>;
   }
 
@@ -210,33 +221,18 @@ export default function ProtectedAdminRoute({ children }: { children: React.Reac
               </button>
             </div>
 
-            {/* Direct 2FA OTP Emergency Fallback & Auto-fill */}
-            {generated2FACode && (
-              <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-300 space-y-2.5 text-xs animate-in fade-in">
-                <div className="flex items-center justify-between font-bold text-amber-400">
-                  <div className="flex items-center gap-1.5">
-                    <Key className="w-4 h-4 shrink-0 text-amber-400" />
-                    <span>{isRtl ? 'رمز التحقق المباشر (2FA OTP Code):' : 'Live 2FA Security OTP:'}</span>
-                  </div>
-                  <span className="text-[10px] bg-amber-500/20 px-2 py-0.5 rounded text-amber-300 font-mono">DIRECT DISPLAY</span>
-                </div>
-                <div className="flex items-center justify-between bg-slate-950 p-3 rounded-xl border border-amber-500/40 font-mono shadow-inner">
-                  <span className="text-2xl font-black tracking-widest text-amber-400 select-all">{generated2FACode}</span>
-                  <button
-                    type="button"
-                    onClick={() => setOtpCode(generated2FACode)}
-                    className="px-3.5 py-1.5 bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 font-black text-xs rounded-lg transition-all shadow-md active:scale-95 flex items-center gap-1"
-                  >
-                    <span>{isRtl ? 'تعبئة تلقائية ⚡' : 'Auto-fill ⚡'}</span>
-                  </button>
-                </div>
-                <p className="text-[11px] text-amber-300/90 leading-relaxed">
-                  {isRtl
-                    ? `💡 في حال لم يصلك البريد على ${TARGET_OFFICIAL_EMAIL} بسبب مجلد البريد العشوائي (Spam)، انقر فوق "تعبئة تلقائية ⚡" للدخول فوراً.`
-                    : `💡 If email to ${TARGET_OFFICIAL_EMAIL} is in Spam/Junk or delayed, click "Auto-fill ⚡" to log in immediately.`}
-                </p>
+            {/* Verified 2FA Security Notice */}
+            <div className="p-4 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 space-y-2 text-xs animate-in fade-in">
+              <div className="flex items-center gap-1.5 font-bold text-indigo-400">
+                <Key className="w-4 h-4 shrink-0 text-indigo-400" />
+                <span>{isRtl ? 'تم إرسال رمز التحقق الثنائي (2FA OTP)' : '2FA Security Code Dispatched'}</span>
               </div>
-            )}
+              <p className="text-[11px] text-indigo-200/90 leading-relaxed">
+                {isRtl
+                  ? `تم إرسال رمز التحقق المكون من 6 أرقام بأمان إلى البريد الإلكتروني الرسمي المعتمد: ${TARGET_OFFICIAL_EMAIL}. يرجى فحص صندوق الوارد أو مجلد الرسائل غير المرغوب فيها (Spam).`
+                  : `A 6-digit verification code has been dispatched securely to the authorized administrator email: ${TARGET_OFFICIAL_EMAIL}. Please check your inbox or spam folder.`}
+              </p>
+            </div>
 
             <form onSubmit={handleVerify2FA} className="space-y-4">
               <div>

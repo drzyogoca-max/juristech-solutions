@@ -15,6 +15,7 @@
 
 import { supabase } from './supabaseClient';
 import { enterpriseDBGateway } from './enterpriseDatabaseGateway';
+import { getUnifiedVisitorGeo } from './geoService';
 
 export interface VisitorLogEntry {
   id: string;
@@ -293,50 +294,16 @@ export async function logVisitorSession(currentPath: string = typeof window !== 
     }
   }
 
-  // Multi-Provider GeoIP lookup with fast failover timeouts
-  let geoResolved = false;
-
-  // Provider 1: ipapi.co
+  // Multi-Provider GeoIP lookup with fast failover timeouts (delegated to unified geo cache)
   try {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 2000);
-    const res = await fetch('https://ipapi.co/json/', { signal: controller.signal });
-    clearTimeout(timer);
-
-    if (res.ok) {
-      const geo = await res.json();
-      if (geo.country_name) country = geo.country_name;
-      if (geo.country_code) countryCode = geo.country_code.toUpperCase();
-      if (geo.city) city = geo.city;
-      if (geo.region) region = geo.region;
-      if (geo.ip) ip = geo.ip;
-      if (geo.org) isp = geo.org;
-      geoResolved = true;
-    }
+    const geo = await getUnifiedVisitorGeo();
+    if (geo.countryName) country = geo.countryName;
+    if (geo.countryCode) countryCode = geo.countryCode;
+    if (geo.city) city = geo.city;
+    if (geo.region) region = geo.region;
+    if (geo.ip) ip = geo.ip;
+    if (geo.isp) isp = geo.isp;
   } catch {}
-
-  // Provider 2 Fallback: ipwho.is
-  if (!geoResolved) {
-    try {
-      const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), 2000);
-      const res = await fetch('https://ipwho.is/', { signal: controller.signal });
-      clearTimeout(timer);
-
-      if (res.ok) {
-        const geo = await res.json();
-        if (geo.success) {
-          if (geo.country) country = geo.country;
-          if (geo.country_code) countryCode = geo.country_code.toUpperCase();
-          if (geo.city) city = geo.city;
-          if (geo.region) region = geo.region;
-          if (geo.ip) ip = geo.ip;
-          if (geo.connection?.isp) isp = geo.connection.isp;
-          geoResolved = true;
-        }
-      }
-    } catch {}
-  }
 
   const hostDomain = typeof window !== 'undefined' ? window.location.hostname : 'juristech.solutions';
 

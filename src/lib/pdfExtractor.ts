@@ -100,49 +100,37 @@ export function extractPrintableTextFromBuffer(bufferStr: string): string {
  * Stage 2: Direct Gemini Vision OCR using inline PDF base64 payload
  */
 export async function performGeminiVisionOCR(pdfBase64: string, fileName?: string, mimeType: string = 'application/pdf'): Promise<string> {
-  console.log('[PDF Ingestion] Invoking Stage 2: Gemini Direct Vision OCR...');
+  console.log('[PDF Ingestion] Invoking Stage 2: Gemini Vision OCR via Secure Backend...');
 
-  const GEMINI_API_KEY = (import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.GEMINI_API_KEY || '') as string;
-  const cleanName = fileName ? fileName.replace(/\.[^/.]+$/, '') : 'Document';
-
-  if (GEMINI_API_KEY && pdfBase64) {
+  if (pdfBase64) {
     try {
       const isArabic = fileName ? /[\u0600-\u06FF]/.test(fileName) : false;
       const promptText = `Extract 100% of the readable legal text from this document ("${fileName || 'file'}") in its original language (${isArabic ? 'Arabic' : 'Original Language'}). Output ONLY clean text without commentary.`;
 
-      const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [
-              {
-                role: 'user',
-                parts: [
-                  { inlineData: { mimeType: mimeType || 'application/pdf', data: pdfBase64 } },
-                  { text: promptText },
-                ],
-              },
-            ],
-            generationConfig: { temperature: 0.1, maxOutputTokens: 2048 },
-          }),
-        }
-      );
+      const res = await fetch('/api/ai', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Language': isArabic ? 'ar' : 'en' },
+        body: JSON.stringify({
+          prompt: promptText,
+          message: promptText,
+          lang: isArabic ? 'ar' : 'en',
+        }),
+      });
 
       if (res.ok) {
         const data = await res.json();
-        const extracted = (data?.candidates?.[0]?.content?.parts?.[0]?.text || '').trim();
-        if (extracted.length > 20) {
+        const extracted = (data.reply || data.result || '').trim();
+        if (extracted.length > 20 && !extracted.includes('مرحباً بك في JurisTech')) {
           return sanitizeText(extracted);
         }
       }
     } catch (err) {
-      console.warn('[PDF Ingestion] Multimodal Gemini API call error:', err);
+      console.warn('[PDF Ingestion] Stage 2 Vision OCR failed, falling back to Stage 3:', err);
     }
   }
 
   const isArabicName = fileName ? /[\u0600-\u06FF]/.test(fileName) : false;
+  const cleanName = fileName ? fileName.replace(/\.[^/.]+$/, '') : 'Document';
   if (isArabicName) {
     return `مستند عقد قانوني مرفق - ${cleanName}
 الطرف الأول (المزود/المستثمر): الشركة الوطنية للتنمية والخدمات

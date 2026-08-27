@@ -19,8 +19,15 @@ if ('caches' in window) {
   });
 }
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+const rootElement = document.getElementById('root')!;
+const app = (
   <BrowserRouter>
     <App />
   </BrowserRouter>
 );
+
+if (rootElement.hasChildNodes() && rootElement.firstElementChild) {
+  ReactDOM.hydrateRoot(rootElement, app);
+} else {
+  ReactDOM.createRoot(rootElement).render(app);
+}

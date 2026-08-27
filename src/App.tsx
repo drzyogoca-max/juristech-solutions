@@ -21,6 +21,7 @@ import { logVisitorSession } from './lib/visitorTracker';
 import { Loader2 } from 'lucide-react';
 import { usePlatformLocale } from './lib/universalTranslator';
 import { getLocaleFromUrl, setDocumentLanguage, persistLocalePreference, normalizeLanguageCode } from './i18n';
+import { FEATURE_FLAGS } from './config/featureFlags';
 
 // ── Lazy Loaded Page Components for Minimal Initial Bundle Size & 95+ Performance ──
 const Dashboard = lazy(() => import('./pages/Dashboard'));
@@ -174,6 +175,13 @@ function MainAppContent() {
     checkLibyaGeoBlock().then((blocked) => {
       if (blocked) setIsBlocked(true);
     });
+
+    // 🔒 Safe Performance Optimization:
+    // Heavy background engines, autonomous outreach & hourly ad campaigns
+    // are frozen on visitor browsers and delegated to backend cron / explicit admin control.
+    if (!FEATURE_FLAGS.ENABLE_CLIENT_BACKGROUND_ENGINES) {
+      return;
+    }
 
     const runDeferredWorkers = async () => {
       try {

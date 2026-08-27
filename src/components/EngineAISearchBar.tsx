@@ -8,7 +8,6 @@ import {
 } from 'lucide-react';
 import { executeEngineAISearch, EngineAISearchResponse, SearchResultItem } from '../services/engine-ai';
 import VoiceInput from './VoiceInput';
-import { exportDocumentMultiFormat } from '../lib/documentExporter';
 
 export default function EngineAISearchBar() {
   const { i18n } = useTranslation();
@@ -93,6 +92,7 @@ export default function EngineAISearchBar() {
 
     setDownloadingId(`${item.id}-${format}`);
     try {
+      const { exportDocumentMultiFormat } = await import('../lib/documentExporter');
       await exportDocumentMultiFormat(
         text,
         title,

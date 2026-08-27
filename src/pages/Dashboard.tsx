@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   FileText, AlertTriangle, Zap, ArrowRight, Globe, Users, Shield, ShieldCheck,
@@ -22,16 +22,18 @@ import { getReviewQueueItems } from '../lib/reviewQueueService';
 import { getActiveGlobalTranslations } from '../lib/globalTranslations';
 import { usePlatformLocale } from '../lib/universalTranslator';
 
-import InteractiveCustomerJourneyMap from '../components/InteractiveCustomerJourneyMap';
 import WorkflowDashboard from '../components/WorkflowDashboard';
 import DashboardChatbotMagnet from '../components/DashboardChatbotMagnet';
 import USCompetitorMatchBanner from '../components/USCompetitorMatchBanner';
-import CaseStudiesSection from '../components/CaseStudiesSection';
-import TwoFactorSecurityModal from '../components/TwoFactorSecurityModal';
 import ExecutiveCommandBar from '../components/ExecutiveCommandBar';
-import InteractiveSassGlobalMap from '../components/InteractiveSassGlobalMap';
 import SovereignServicesCatalog from '../components/SovereignServicesCatalog';
 import ErrorBoundary from '../components/ErrorBoundary';
+
+// ── Lazy Loaded Heavy Below-The-Fold Sections ──
+const InteractiveCustomerJourneyMap = lazy(() => import('../components/InteractiveCustomerJourneyMap'));
+const InteractiveSassGlobalMap = lazy(() => import('../components/InteractiveSassGlobalMap'));
+const CaseStudiesSection = lazy(() => import('../components/CaseStudiesSection'));
+const TwoFactorSecurityModal = lazy(() => import('../components/TwoFactorSecurityModal'));
 
 
 interface ActivityItem {
@@ -211,8 +213,9 @@ export default function Dashboard() {
 
     loadDashboardData();
 
-    // Live Telemetry Tick
+    // Live Telemetry Tick (runs every 10s and pauses when browser tab is inactive)
     const liveTick = setInterval(() => {
+      if (typeof document !== 'undefined' && document.hidden) return;
       const summary = getVisitorAnalyticsSummary();
       const leadsCount = crmService.getLeads().length + crmService.getArchivedLeads().length;
       setStats(prev => ({
@@ -220,7 +223,7 @@ export default function Dashboard() {
         totalVisits: Math.max(prev.totalVisits, summary.totalPageViewsCount || prev.totalVisits + 1),
         activeUsers: Math.max(prev.activeUsers, leadsCount + 10),
       }));
-    }, 3000);
+    }, 10000);
 
     return () => clearInterval(liveTick);
   }, [isRtl]);
@@ -378,15 +381,17 @@ export default function Dashboard() {
         {/* SECTION 1: 🗺️ GLOBAL INTERACTIVE SAAS MAP & CUSTOMER JOURNEY         */}
         {/* ──────────────────────────────────────────────────────────────────── */}
         <section id="sec-map" className="space-y-6 pt-2">
-          {/* World-Class SaaS Interactive Map — wrapped in ErrorBoundary to prevent page crash */}
-          <ErrorBoundary>
-            <InteractiveSassGlobalMap />
-          </ErrorBoundary>
+          {/* World-Class SaaS Interactive Map — wrapped in ErrorBoundary & Suspense to prevent page crash */}
+          <Suspense fallback={<div className="h-64 w-full rounded-3xl bg-slate-900/50 animate-pulse border border-slate-800 flex items-center justify-center text-slate-500 text-xs font-mono">Loading Global SaaS Map...</div>}>
+            <ErrorBoundary>
+              <InteractiveSassGlobalMap />
+            </ErrorBoundary>
 
-          {/* 5-Stage Customer Journey Roadmap */}
-          <ErrorBoundary>
-            <InteractiveCustomerJourneyMap />
-          </ErrorBoundary>
+            {/* 5-Stage Customer Journey Roadmap */}
+            <ErrorBoundary>
+              <InteractiveCustomerJourneyMap />
+            </ErrorBoundary>
+          </Suspense>
         </section>
 
 
@@ -636,7 +641,9 @@ export default function Dashboard() {
         {/* ──────────────────────────────────────────────────────────────────── */}
         <section id="sec-cases" className="space-y-6 pt-2">
           {/* Real-World Multimillion Dollar Dispute Case Studies */}
-          <CaseStudiesSection />
+          <Suspense fallback={<div className="h-48 w-full rounded-3xl bg-slate-900/50 animate-pulse border border-slate-800" />}>
+            <CaseStudiesSection />
+          </Suspense>
 
           {/* Subscriptions & Pricing Packages Gateway (30% Discount) */}
           <div className="card-lawtech-lux p-6 sm:p-10 rounded-3xl border border-sky-500/30 shadow-2xl space-y-8">
@@ -889,7 +896,9 @@ export default function Dashboard() {
 
       {/* 2FA Security Modal */}
       {showSecurityModal && (
-        <TwoFactorSecurityModal isOpen={showSecurityModal} onClose={() => setShowSecurityModal(false)} />
+        <Suspense fallback={null}>
+          <TwoFactorSecurityModal isOpen={showSecurityModal} onClose={() => setShowSecurityModal(false)} />
+        </Suspense>
       )}
     </main>
   );

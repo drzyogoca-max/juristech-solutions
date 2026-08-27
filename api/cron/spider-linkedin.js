@@ -28,6 +28,14 @@ export default async function handler(req) {
 
 async function handleSpiderCampaign(req) {
   try {
+    const authHeader = req.headers.get?.('authorization') || req.headers?.['authorization'] || '';
+    const cronSecret = req.headers.get?.('x-cron-secret') || req.headers?.['x-cron-secret'] || '';
+    const expectedSecret = process.env.CRON_SECRET;
+
+    if (expectedSecret && authHeader !== `Bearer ${expectedSecret}` && cronSecret !== expectedSecret) {
+      return Response.json({ error: 'Unauthorized: Invalid CRON_SECRET' }, { status: 401, headers: CORS_HEADERS });
+    }
+
     const result = await executeSpiderRadarCampaign();
     return Response.json(result, { headers: CORS_HEADERS });
   } catch (err) {

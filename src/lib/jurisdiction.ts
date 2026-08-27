@@ -1,3 +1,5 @@
+import { getUnifiedVisitorGeo } from './geoService';
+
 export interface JurisdictionInfo {
   countryCode: string;
   countryName: string;
@@ -613,35 +615,26 @@ export async function detectVisitorJurisdiction(): Promise<JurisdictionInfo> {
     // Ignore storage read error
   }
 
-  // Non-blocking 1.5s fast timeout to prevent page hangs on desktop browsers
   try {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 1500);
+    const data = await getUnifiedVisitorGeo();
+    const code = (data.countryCode || '').toUpperCase() as string;
 
-    const res = await fetch('https://ipapi.co/json/', { signal: controller.signal });
-    clearTimeout(timer);
-
-    if (res.ok) {
-      const data = await res.json();
-      const code = (data.country_code || '').toUpperCase() as string;
-
-      if (code === 'LY') {
-        cachedJurisdiction = JURISDICTIONS.LY;
-      } else if (code && JURISDICTIONS[code]) {
-        cachedJurisdiction = JURISDICTIONS[code];
-      } else if (code) {
-        cachedJurisdiction = {
-          countryCode: code,
-          countryName: data.country_name || 'International (Global Standards)',
-          countryNameAr: data.country_name || 'دولياً (معايير الأمم المتحدة والغرفة الدولية)',
-          legalFramework: `Applicable statutory rules, UNCITRAL CISG 1980 standards, & commercial statutes of ${data.country_name || 'Jurisdiction'}`,
-          legalFrameworkAr: `القوانين والأنظمة التجارية المعيارية الدولية في ${data.country_name || 'الدولة المحددة'}`,
-          governingLaws: [`قوانين والمعايير التجارية الدولية في ${data.country_name || 'الدولة'}`],
-          arbitrationVenue: `Commercial Arbitration Venue of ${data.country_name || 'Jurisdiction'} / ICC Paris`,
-          arbitrationVenueAr: `المحاكم التجارية وهيئات التحكيم المعتمدة في ${data.country_name || 'الدولة'} / غرف التحكيم الدولية`,
-          flagEmoji: '🌐',
-        };
-      }
+    if (code === 'LY') {
+      cachedJurisdiction = JURISDICTIONS.LY;
+    } else if (code && JURISDICTIONS[code]) {
+      cachedJurisdiction = JURISDICTIONS[code];
+    } else if (code) {
+      cachedJurisdiction = {
+        countryCode: code,
+        countryName: data.countryName || 'International (Global Standards)',
+        countryNameAr: data.countryName || 'دولياً (معايير الأمم المتحدة والغرفة الدولية)',
+        legalFramework: `Applicable statutory rules, UNCITRAL CISG 1980 standards, & commercial statutes of ${data.countryName || 'Jurisdiction'}`,
+        legalFrameworkAr: `القوانين والأنظمة التجارية المعيارية الدولية في ${data.countryName || 'الدولة المحددة'}`,
+        governingLaws: [`قوانين والمعايير التجارية الدولية في ${data.countryName || 'الدولة'}`],
+        arbitrationVenue: `Commercial Arbitration Venue of ${data.countryName || 'Jurisdiction'} / ICC Paris`,
+        arbitrationVenueAr: `المحاكم التجارية وهيئات التحكيم المعتمدة في ${data.countryName || 'الدولة'} / غرف التحكيم الدولية`,
+        flagEmoji: '🌐',
+      };
     }
   } catch (err) {
     console.warn('GeoIP detection fallback to Jordan/Default:', err);

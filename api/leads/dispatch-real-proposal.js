@@ -44,8 +44,7 @@ export async function POST(req) {
       return Response.json({ error: 'Missing companyEmail or proposalText payload' }, { status: 400, headers: CORS_HEADERS });
     }
 
-    const FALLBACK_RESEND_KEY = Buffer.from('cmVfUEVMeUZVRnZfR01SNHFQaDNNaDh4RWhSaWtDQVRhU0NL', 'base64').toString('utf-8');
-    const RESEND_API_KEY = process.env.RESEND_API_KEY || FALLBACK_RESEND_KEY;
+    const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
     let realEmailId = `resend_live_${Date.now()}_${Math.random().toString(36).substring(7)}`;
 
     const EMAIL_FROM = process.env.EMAIL_FROM || 'onboarding@resend.dev';

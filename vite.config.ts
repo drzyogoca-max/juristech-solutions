@@ -52,85 +52,37 @@ export default defineConfig({
         assetFileNames:   'assets/[name]-[hash][extname]',
 
         manualChunks(id) {
-          if (id.includes('erpIntegrationService') || id.includes('adCampaignApiConnectors')) {
-            return 'vendor-erp';
-          }
-          if (id.includes('swiftVaultService') || id.includes('securityAuditEngine')) {
-            return 'vendor-crypto';
-          }
-          if (id.includes('node_modules/react') ||
-              id.includes('node_modules/react-dom') ||
-              id.includes('node_modules/react-router') ||
-              id.includes('node_modules/react-router-dom')) {
-            return 'vendor-react';
-          }
-          if (id.includes('node_modules/i18next') ||
-              id.includes('node_modules/react-i18next')) {
-            return 'vendor-i18n';
-          }
-          if (id.includes('node_modules/@supabase')) {
-            return 'vendor-supabase';
-          }
-          if (id.includes('node_modules/lucide-react')) {
-            return 'vendor-icons';
-          }
-          if (id.includes('node_modules/docx')) {
-            return 'vendor-docx';
-          }
-          if (id.includes('node_modules/pdf-lib') ||
-              id.includes('node_modules/pdfjs-dist') ||
-              id.includes('node_modules/jspdf')) {
-            return 'vendor-pdf';
-          }
-          if (id.includes('node_modules/html2canvas')) {
-            return 'vendor-html2canvas';
-          }
-          if (id.includes('node_modules/tesseract.js')) {
-            return 'vendor-tesseract';
-          }
-
-          if (id.includes('node_modules/recharts') ||
-              id.includes('node_modules/d3') ||
-              id.includes('node_modules/victory')) {
-            return 'vendor-charts';
-          }
-          if (id.includes('node_modules/react-helmet')) {
-            return 'vendor-seo';
-          }
-          if (id.includes('node_modules/dompurify') ||
-              id.includes('node_modules/marked') ||
-              id.includes('node_modules/isomorphic-dompurify')) {
-            return 'vendor-sanitize';
-          }
-          if (id.includes('/pages/admin/') || id.includes('AdminDashboard') || id.includes('AdminAnalytics')) {
-            return 'page-admin';
-          }
-          if (id.includes('VaultPage')) {
-            return 'page-vault';
-          }
-          if (id.includes('VideoHubPage')) {
-            return 'page-video-hub';
-          }
-          if (id.includes('PaymentPage') || id.includes('BinancePay')) {
-            return 'page-payment';
-          }
-          if (id.includes('LeadRadarPage') || id.includes('SmartRadarDashboard')) {
-            return 'page-radar';
-          }
-          if (id.includes('TemplatesPage') || id.includes('ContractLibraryGate')) {
-            return 'page-templates';
-          }
-          if (id.includes('NegotiationPage')) {
-            return 'page-negotiation';
-          }
-          if (id.includes('EnterpriseAuditPage') || id.includes('ragEnterpriseAgent')) {
-            return 'page-enterprise-audit';
-          }
-          if (id.includes('SocialMarketingPage') || id.includes('socialMarketing') || id.includes('marketingTracker')) {
-            return 'page-marketing';
-          }
-          if (id.includes('ContractsPage')) {
-            return 'page-contracts';
+          if (id.includes('node_modules')) {
+            if (id.includes('react') ||
+                id.includes('react-dom') ||
+                id.includes('react-router') ||
+                id.includes('react-router-dom')) {
+              return 'vendor-react';
+            }
+            if (id.includes('i18next') ||
+                id.includes('react-i18next')) {
+              return 'vendor-i18n';
+            }
+            if (id.includes('@supabase')) {
+              return 'vendor-supabase';
+            }
+            if (id.includes('lucide-react')) {
+              return 'vendor-icons';
+            }
+            if (id.includes('docx')) {
+              return 'vendor-docx';
+            }
+            if (id.includes('html2canvas')) {
+              return 'vendor-html2canvas';
+            }
+            if (id.includes('recharts') ||
+                id.includes('d3')) {
+              return 'vendor-charts';
+            }
+            if (id.includes('dompurify') ||
+                id.includes('marked')) {
+              return 'vendor-sanitize';
+            }
           }
         },
       },

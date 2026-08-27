@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -10,18 +10,20 @@ import {
 import LanguageSwitcher from './LanguageSwitcher';
 import ThemeSwitcher from './ThemeSwitcher';
 import AlertBell from './AlertBell';
-import EngineAISearchBar from './EngineAISearchBar';
-import JurisdictionSelectorModal from './JurisdictionSelectorModal';
-import LiveMeetingModal from './LiveMeetingModal';
-import ThemeFontSelectorModal from './ThemeFontSelectorModal';
-import CompanyProfileModal from './CompanyProfileModal';
-import LegalConsultationBookingModal from './LegalConsultationBookingModal';
-import TwoFactorAuthModal from './TwoFactorAuthModal';
-import RbacUserManagementModal from './RbacUserManagementModal';
 import { useAuth } from '../lib/authContext';
 import { detectVisitorJurisdiction, JurisdictionInfo } from '../lib/jurisdiction';
 import { usePlatformLocale } from '../lib/universalTranslator';
 import { openPaddleCheckout } from '../lib/paddleClient';
+
+// ── Lazy Loaded Modals & Search Bar for Lightweight Initial Nav Payload ──
+const EngineAISearchBar = lazy(() => import('./EngineAISearchBar'));
+const JurisdictionSelectorModal = lazy(() => import('./JurisdictionSelectorModal'));
+const LiveMeetingModal = lazy(() => import('./LiveMeetingModal'));
+const ThemeFontSelectorModal = lazy(() => import('./ThemeFontSelectorModal'));
+const CompanyProfileModal = lazy(() => import('./CompanyProfileModal'));
+const LegalConsultationBookingModal = lazy(() => import('./LegalConsultationBookingModal'));
+const TwoFactorAuthModal = lazy(() => import('./TwoFactorAuthModal'));
+const RbacUserManagementModal = lazy(() => import('./RbacUserManagementModal'));
 
 // ─── Nav link groups (Visitor & Subscriber separated) ────────────────────────
 const VISITOR_LINKS = [
@@ -114,15 +116,19 @@ export default function Navbar() {
         {isRtl ? 'الانتقال إلى المحتوى الرئيسي' : 'Skip to main content'}
       </a>
 
-      <JurisdictionSelectorModal
-        isOpen={showJurisdictionModal}
-        onClose={() => setShowJurisdictionModal(false)}
-        onSelectJurisdiction={(j) => setActiveJurisdiction(j)}
-      />
-      <LiveMeetingModal isOpen={showMeetingModal} onClose={() => setShowMeetingModal(false)} />
-      <ThemeFontSelectorModal isOpen={showThemeModal} onClose={() => setShowThemeModal(false)} />
-      <CompanyProfileModal isOpen={showCompanyModal} onClose={() => setShowCompanyModal(false)} />
-      <LegalConsultationBookingModal isOpen={showConsultationModal} onClose={() => setShowConsultationModal(false)} />
+      <Suspense fallback={null}>
+        {showJurisdictionModal && (
+          <JurisdictionSelectorModal
+            isOpen={showJurisdictionModal}
+            onClose={() => setShowJurisdictionModal(false)}
+            onSelectJurisdiction={(j) => setActiveJurisdiction(j)}
+          />
+        )}
+        {showMeetingModal && <LiveMeetingModal isOpen={showMeetingModal} onClose={() => setShowMeetingModal(false)} />}
+        {showThemeModal && <ThemeFontSelectorModal isOpen={showThemeModal} onClose={() => setShowThemeModal(false)} />}
+        {showCompanyModal && <CompanyProfileModal isOpen={showCompanyModal} onClose={() => setShowCompanyModal(false)} />}
+        {showConsultationModal && <LegalConsultationBookingModal isOpen={showConsultationModal} onClose={() => setShowConsultationModal(false)} />}
+      </Suspense>
 
       {/* ─── Main Navbar ────────────────────────────────────────────────────── */}
       <nav
@@ -163,7 +169,9 @@ export default function Navbar() {
           {/* ── Integrated Search & Action Controls ────────────────── */}
           <div className="hidden md:flex items-center gap-2 flex-1 justify-center max-w-xl mx-2">
             <div className="w-full">
-              <EngineAISearchBar />
+              <Suspense fallback={<div className="h-9 w-full rounded-xl bg-slate-800/40 animate-pulse border border-slate-700/40" />}>
+                <EngineAISearchBar />
+              </Suspense>
             </div>
           </div>
 
@@ -453,7 +461,9 @@ export default function Navbar() {
 
             {/* Search */}
             <div className="p-4 border-b border-slate-200 dark:border-slate-800">
-              <EngineAISearchBar />
+              <Suspense fallback={<div className="h-9 w-full rounded-xl bg-slate-800/40 animate-pulse border border-slate-700/40" />}>
+                <EngineAISearchBar />
+              </Suspense>
             </div>
 
             {/* Scrollable nav links */}
@@ -561,15 +571,20 @@ export default function Navbar() {
       )}
 
       {/* 🔐 2FA & RBAC Security Modals */}
-      <TwoFactorAuthModal
-        isOpen={show2FAModal}
-        onClose={() => setShow2FAModal(false)}
-      />
-
-      <RbacUserManagementModal
-        isOpen={showRbacModal}
-        onClose={() => setShowRbacModal(false)}
-      />
+      <Suspense fallback={null}>
+        {show2FAModal && (
+          <TwoFactorAuthModal
+            isOpen={show2FAModal}
+            onClose={() => setShow2FAModal(false)}
+          />
+        )}
+        {showRbacModal && (
+          <RbacUserManagementModal
+            isOpen={showRbacModal}
+            onClose={() => setShowRbacModal(false)}
+          />
+        )}
+      </Suspense>
     </>
   );
 }

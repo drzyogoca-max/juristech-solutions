@@ -33,7 +33,7 @@ export const OFFICIAL_BANK_ACCOUNT = {
 
 export const LIVE_PAYMENT_KEYS = {
   stripeLivePublishableKey: import.meta.env.VITE_STRIPE_LIVE_PUBLISHABLE_KEY || '',
-  tapPaymentsLiveSecretKey: import.meta.env.VITE_TAP_PAYMENTS_LIVE_SECRET_KEY || '',
+  tapPaymentsLiveSecretKey: 'SERVER_MANAGED', // 🔒 Processed securely on server-side webhook/RPC only
   binancePayUid: '557019549',
   binancePayEmail: 'Drzyogo.ca@gmail.com',
   status: 'ACTIVE_LIVE_VERIFIED',
