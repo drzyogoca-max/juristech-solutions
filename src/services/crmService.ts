@@ -57,9 +57,11 @@ export interface CrmClientLead {
   lastStepDispatchedAt?: string;
   isSalesPriority?: boolean;
   marketTier?: 'Tier 1 - GCC' | 'Tier 2 - USA' | 'Tier 3 - EU/Germany' | 'Tier 4 - Learning/Egypt';
-  language?: 'ar' | 'en' | 'de';
-  currency?: 'USD' | 'AED' | 'SAR' | 'EUR' | 'EGP';
-  buyerType?: 'Law Firm' | 'Corporate Legal' | 'Enterprise Procurement' | 'Tech Startup';
+  market?: 'GCC' | 'USA' | 'EU' | 'UK' | 'Egypt';
+  language?: 'Arabic' | 'English' | 'German' | 'ar' | 'en' | 'de';
+  currency?: 'USD' | 'AED' | 'SAR' | 'EUR' | 'EGP' | 'GBP';
+  buyerType?: 'Law Firm' | 'Corporate Legal' | 'Founder' | 'Procurement' | 'Enterprise Procurement' | 'Tech Startup' | 'Strategic Partner';
+  arrPotential?: 'Low' | 'Medium' | 'High' | 'Enterprise';
   contractVolume?: string;
 }
 
@@ -603,55 +605,114 @@ class CrmService {
       let language: CrmClientLead['language'] = 'en';
       let estimatedValueUSD = 349 * 12; // default annual Enterprise $4,188
 
+      let market: CrmClientLead['market'] = 'GCC';
+      let arrPotential: CrmClientLead['arrPotential'] = 'Enterprise';
+
       if (cLower.includes('uae') || cLower.includes('إمارات') || cLower.includes('dubai') || cLower.includes('abu dhabi')) {
         flag = '🇦🇪';
+        market = 'GCC';
         marketTier = 'Tier 1 - GCC';
         currency = 'AED';
-        language = 'ar';
-        estimatedValueUSD = 4188;
+        language = 'Arabic';
+        arrPotential = 'Enterprise';
+        estimatedValueUSD = 349 * 12; // $4,188
       } else if (cLower.includes('saudi') || cLower.includes('سعودي') || cLower.includes('riyadh')) {
         flag = '🇸🇦';
+        market = 'GCC';
         marketTier = 'Tier 1 - GCC';
         currency = 'SAR';
-        language = 'ar';
-        estimatedValueUSD = 4188;
+        language = 'Arabic';
+        arrPotential = 'Enterprise';
+        estimatedValueUSD = 349 * 12;
       } else if (cLower.includes('qatar') || cLower.includes('قطر')) {
         flag = '🇶🇦';
+        market = 'GCC';
         marketTier = 'Tier 1 - GCC';
         currency = 'USD';
-        language = 'ar';
-        estimatedValueUSD = 4188;
+        language = 'Arabic';
+        arrPotential = 'Enterprise';
+        estimatedValueUSD = 349 * 12;
       } else if (cLower.includes('kuwait') || cLower.includes('كويت')) {
         flag = '🇰🇼';
+        market = 'GCC';
         marketTier = 'Tier 1 - GCC';
         currency = 'USD';
-        language = 'ar';
-        estimatedValueUSD = 4188;
+        language = 'Arabic';
+        arrPotential = 'Enterprise';
+        estimatedValueUSD = 349 * 12;
       } else if (cLower.includes('bahrain') || cLower.includes('بحرين')) {
         flag = '🇧🇭';
+        market = 'GCC';
         marketTier = 'Tier 1 - GCC';
         currency = 'USD';
-        language = 'ar';
-        estimatedValueUSD = 4188;
+        language = 'Arabic';
+        arrPotential = 'High';
+        estimatedValueUSD = 299 * 12;
+      } else if (cLower.includes('oman') || cLower.includes('عمان')) {
+        flag = '🇴🇲';
+        market = 'GCC';
+        marketTier = 'Tier 1 - GCC';
+        currency = 'USD';
+        language = 'Arabic';
+        arrPotential = 'High';
+        estimatedValueUSD = 299 * 12;
       } else if (cLower.includes('usa') || cLower.includes('united states') || cLower.includes('أمريكا')) {
         flag = '🇺🇸';
+        market = 'USA';
         marketTier = 'Tier 2 - USA';
         currency = 'USD';
-        language = 'en';
-        estimatedValueUSD = 249 * 12; // $2,988
-      } else if (cLower.includes('germany') || cLower.includes('ألمانيا') || cLower.includes('eu') || cLower.includes('europe')) {
+        language = 'English';
+        arrPotential = 'Enterprise';
+        estimatedValueUSD = 799 * 12; // Corporate / Enterprise tier $9,588
+      } else if (cLower.includes('uk') || cLower.includes('united kingdom') || cLower.includes('london') || cLower.includes('بريطانيا')) {
+        flag = '🇬🇧';
+        market = 'UK';
+        marketTier = 'Tier 2 - USA';
+        currency = 'GBP';
+        language = 'English';
+        arrPotential = 'High';
+        estimatedValueUSD = 299 * 12;
+      } else if (cLower.includes('germany') || cLower.includes('deutschland') || cLower.includes('ألمانيا')) {
         flag = '🇩🇪';
+        market = 'EU';
         marketTier = 'Tier 3 - EU/Germany';
         currency = 'EUR';
-        language = 'en';
-        estimatedValueUSD = 4188;
+        language = 'German';
+        arrPotential = 'Enterprise';
+        estimatedValueUSD = 349 * 12;
+      } else if (cLower.includes('netherlands') || cLower.includes('switzerland') || cLower.includes('sweden') || cLower.includes('eu') || cLower.includes('europe')) {
+        flag = '🇪🇺';
+        market = 'EU';
+        marketTier = 'Tier 3 - EU/Germany';
+        currency = 'EUR';
+        language = 'English';
+        arrPotential = 'High';
+        estimatedValueUSD = 349 * 12;
       } else if (cLower.includes('egypt') || cLower.includes('مصر')) {
         flag = '🇪🇬';
+        market = 'Egypt';
         marketTier = 'Tier 4 - Learning/Egypt';
         currency = 'EGP';
-        language = 'ar';
-        estimatedValueUSD = 1020;
+        language = 'Arabic';
+        arrPotential = 'Low';
+        estimatedValueUSD = 85 * 12;
+      } else if (cLower.includes('partner') || cLower.includes('accelerator') || cLower.includes('شريك')) {
+        flag = '🤝';
+        market = 'GCC';
+        marketTier = 'Tier 1 - GCC';
+        currency = 'USD';
+        language = 'English';
+        arrPotential = 'Enterprise';
+        estimatedValueUSD = 349 * 12;
       }
+
+      const inferredBuyerType = buyerIdx !== -1 && row[buyerIdx]
+        ? (row[buyerIdx] as any)
+        : industry.toLowerCase().includes('partner') || industry.toLowerCase().includes('accelerator') ? 'Strategic Partner'
+        : industry.toLowerCase().includes('procurement') ? 'Procurement'
+        : industry.toLowerCase().includes('law') ? 'Law Firm'
+        : industry.toLowerCase().includes('tech') || industry.toLowerCase().includes('startup') ? 'Founder'
+        : 'Corporate Legal';
 
       this.addLead({
         clientName: position ? `${contact} (${position})` : contact,
@@ -664,12 +725,14 @@ class CrmService {
         estimatedValueUSD,
         leadScore: customScore,
         notesAr: painPoint ? `${painPoint} | العقود: ${contractVolume}/شهر` : `تم الاستيراد — ${industry}`,
-        notesEn: `Target: ${company} | Market: ${marketTier} | Vol: ${contractVolume}/mo`,
+        notesEn: `Target: ${company} | Market: ${market} | Tier: ${arrPotential} ARR`,
         industry,
         marketTier,
+        market,
         language,
         currency,
-        buyerType: industry.toLowerCase().includes('law') ? 'Law Firm' : industry.toLowerCase().includes('tech') ? 'Tech Startup' : 'Corporate Legal',
+        buyerType: inferredBuyerType,
+        arrPotential,
         contractVolume,
         painPoint,
         source_type: 'REAL',

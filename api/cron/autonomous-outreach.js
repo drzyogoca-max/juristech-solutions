@@ -17,8 +17,9 @@ const CORS_HEADERS = {
 export const SEQUENCE_TEMPLATES = {
   1: {
     day: 0,
-    subjectAr: 'تم تحليل عقدك — هل تريد مراجعة المخاطر كاملة؟',
-    subjectEn: 'Your Contract Analysis is Ready — View Critical Liability Review',
+    subjectAr: 'خفض وقت مراجعة العقود التجارية بنسبة كبيرة دون زيادة فريقك القانوني',
+    subjectEn: 'Reduce Contract Review Time Without Adding Legal Headcount',
+    subjectDe: 'Secure AI-Powered Contract Intelligence for Legal Teams',
   },
   2: {
     day: 2,
