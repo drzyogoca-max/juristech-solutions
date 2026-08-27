@@ -77,6 +77,9 @@ export interface CrmClientLead {
   nextAction?: 'Send follow-up' | 'Schedule demo' | 'Send proposal' | 'Close lost' | 'Initial Outreach';
   linkedInUrl?: string;
   painHypothesis?: string;
+  owner?: string;
+  campaign?: string;
+  stakeholderRole?: 'CEO' | 'Legal' | 'Operations' | 'Partner' | string;
 }
 
 export interface CrmAuditLogEntry {
@@ -595,6 +598,10 @@ class CrmService {
     const tempIdx = headers.findIndex((h) => h.includes('temp') || h.includes('حرارة'));
     const actIdx = headers.findIndex((h) => h.includes('next') || h.includes('action') || h.includes('إجراء'));
     const hypIdx = headers.findIndex((h) => h.includes('hypo') || h.includes('فرضية'));
+    const ownerIdx = headers.findIndex((h) => h.includes('owner') || h.includes('مسؤول'));
+    const campIdx = headers.findIndex((h) => h.includes('campaign') || h.includes('حملة'));
+    const roleIdx = headers.findIndex((h) => h.includes('stakeholder') || h.includes('دور'));
+    const statIdx = headers.findIndex((h) => h.includes('status') || h.includes('حالة'));
 
     if (emailIdx === -1) {
       return { importedCount: 0, errors: ['لم يتم العثور على عمود البريد الإلكتروني (email) في ترويسة الملف'] };
@@ -621,6 +628,10 @@ class CrmService {
       const rawAct = actIdx !== -1 ? row[actIdx] : '';
       const nextAction: CrmClientLead['nextAction'] = rawAct.includes('demo') ? 'Schedule demo' : rawAct.includes('proposal') ? 'Send proposal' : rawAct.includes('lost') ? 'Close lost' : rawAct.includes('follow') ? 'Send follow-up' : 'Initial Outreach';
       const painHypothesis = hypIdx !== -1 ? row[hypIdx] : painPoint;
+      const owner = ownerIdx !== -1 && row[ownerIdx] ? row[ownerIdx] : 'Dr. Mohammed';
+      const campaign = campIdx !== -1 && row[campIdx] ? row[campIdx] : 'UAE Fast Close Sprint';
+      const stakeholderRole = roleIdx !== -1 && row[roleIdx] ? row[roleIdx] : (position.toLowerCase().includes('ceo') || position.toLowerCase().includes('founder') ? 'CEO' : position.toLowerCase().includes('legal') || position.toLowerCase().includes('counsel') ? 'Legal' : 'Operations');
+      const explicitStatus = statIdx !== -1 && row[statIdx] ? (row[statIdx] as any) : 'CONTACTED';
 
       const cLower = country.toLowerCase();
       let flag = '🌐';
@@ -744,12 +755,12 @@ class CrmService {
         contactEmail: email,
         jurisdiction: country,
         flag,
-        status: 'LEAD CAPTURED',
+        status: explicitStatus,
         lastContactDate: new Date().toISOString().split('T')[0],
         estimatedValueUSD,
         leadScore: customScore,
         notesAr: painPoint ? `${painPoint} | العقود: ${contractVolume}/شهر` : `تم الاستيراد — ${industry}`,
-        notesEn: `Target: ${company} | Market: ${market} | Tier: ${arrPotential} ARR`,
+        notesEn: `Target: ${company} | Market: ${market} | Campaign: ${campaign} | Role: ${stakeholderRole}`,
         industry,
         marketTier,
         market,
@@ -763,6 +774,9 @@ class CrmService {
         nextAction,
         linkedInUrl,
         painHypothesis,
+        owner,
+        campaign,
+        stakeholderRole,
         source_type: 'REAL',
         verification_status: 'UNVERIFIED',
       });
