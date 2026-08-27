@@ -56,6 +56,11 @@ export interface CrmClientLead {
   sequenceStep?: number;
   lastStepDispatchedAt?: string;
   isSalesPriority?: boolean;
+  marketTier?: 'Tier 1 - GCC' | 'Tier 2 - USA' | 'Tier 3 - EU/Germany' | 'Tier 4 - Learning/Egypt';
+  language?: 'ar' | 'en' | 'de';
+  currency?: 'USD' | 'AED' | 'SAR' | 'EUR' | 'EGP';
+  buyerType?: 'Law Firm' | 'Corporate Legal' | 'Enterprise Procurement' | 'Tech Startup';
+  contractVolume?: string;
 }
 
 export interface CrmAuditLogEntry {
@@ -559,9 +564,17 @@ class CrmService {
 
     const compIdx = headers.findIndex((h) => h.includes('comp') || h.includes('شركة'));
     const nameIdx = headers.findIndex((h) => h.includes('name') || h.includes('contact') || h.includes('اسم'));
+    const posIdx = headers.findIndex((h) => h.includes('pos') || h.includes('منصب') || h.includes('role'));
     const emailIdx = headers.findIndex((h) => h.includes('mail') || h.includes('بريد'));
     const indIdx = headers.findIndex((h) => h.includes('ind') || h.includes('قطاع') || h.includes('مجال'));
     const countryIdx = headers.findIndex((h) => h.includes('country') || h.includes('دولة') || h.includes('juris'));
+    const tierIdx = headers.findIndex((h) => h.includes('tier') || h.includes('market'));
+    const langIdx = headers.findIndex((h) => h.includes('lang') || h.includes('لغة'));
+    const curIdx = headers.findIndex((h) => h.includes('curr') || h.includes('عملة'));
+    const buyerIdx = headers.findIndex((h) => h.includes('buyer') || h.includes('نوع'));
+    const volIdx = headers.findIndex((h) => h.includes('vol') || h.includes('contracts') || h.includes('عقود'));
+    const painIdx = headers.findIndex((h) => h.includes('pain') || h.includes('ألم') || h.includes('مخاطر'));
+    const scoreIdx = headers.findIndex((h) => h.includes('score') || h.includes('درجة') || h.includes('نقاط'));
 
     if (emailIdx === -1) {
       return { importedCount: 0, errors: ['لم يتم العثور على عمود البريد الإلكتروني (email) في ترويسة الملف'] };
@@ -576,29 +589,89 @@ class CrmService {
 
       const company = (compIdx !== -1 ? row[compIdx] : '') || email.split('@')[1];
       const contact = (nameIdx !== -1 ? row[nameIdx] : '') || company;
+      const position = posIdx !== -1 ? row[posIdx] : '';
       const industry = indIdx !== -1 ? row[indIdx] : 'Corporate Legal';
-      const country = countryIdx !== -1 ? row[countryIdx] : 'Egypt / GCC';
+      const country = countryIdx !== -1 ? row[countryIdx] : 'GCC';
+      const painPoint = painIdx !== -1 ? row[painIdx] : '';
+      const contractVolume = volIdx !== -1 ? row[volIdx] : '50+';
+      const customScore = scoreIdx !== -1 && !isNaN(Number(row[scoreIdx])) ? Number(row[scoreIdx]) : 75;
 
-      const flag = country.toLowerCase().includes('saudi') || country.toLowerCase().includes('سعودي') ? '🇸🇦'
-                 : country.toLowerCase().includes('uae') || country.toLowerCase().includes('امارات') || country.toLowerCase().includes('دبي') ? '🇦🇪'
-                 : country.toLowerCase().includes('egypt') || country.toLowerCase().includes('مصر') ? '🇪🇬'
-                 : country.toLowerCase().includes('qatar') || country.toLowerCase().includes('قطر') ? '🇶🇦'
-                 : country.toLowerCase().includes('kuwait') || country.toLowerCase().includes('كويت') ? '🇰🇼'
-                 : '🌐';
+      const cLower = country.toLowerCase();
+      let flag = '🌐';
+      let marketTier: CrmClientLead['marketTier'] = 'Tier 1 - GCC';
+      let currency: CrmClientLead['currency'] = 'USD';
+      let language: CrmClientLead['language'] = 'en';
+      let estimatedValueUSD = 349 * 12; // default annual Enterprise $4,188
+
+      if (cLower.includes('uae') || cLower.includes('إمارات') || cLower.includes('dubai') || cLower.includes('abu dhabi')) {
+        flag = '🇦🇪';
+        marketTier = 'Tier 1 - GCC';
+        currency = 'AED';
+        language = 'ar';
+        estimatedValueUSD = 4188;
+      } else if (cLower.includes('saudi') || cLower.includes('سعودي') || cLower.includes('riyadh')) {
+        flag = '🇸🇦';
+        marketTier = 'Tier 1 - GCC';
+        currency = 'SAR';
+        language = 'ar';
+        estimatedValueUSD = 4188;
+      } else if (cLower.includes('qatar') || cLower.includes('قطر')) {
+        flag = '🇶🇦';
+        marketTier = 'Tier 1 - GCC';
+        currency = 'USD';
+        language = 'ar';
+        estimatedValueUSD = 4188;
+      } else if (cLower.includes('kuwait') || cLower.includes('كويت')) {
+        flag = '🇰🇼';
+        marketTier = 'Tier 1 - GCC';
+        currency = 'USD';
+        language = 'ar';
+        estimatedValueUSD = 4188;
+      } else if (cLower.includes('bahrain') || cLower.includes('بحرين')) {
+        flag = '🇧🇭';
+        marketTier = 'Tier 1 - GCC';
+        currency = 'USD';
+        language = 'ar';
+        estimatedValueUSD = 4188;
+      } else if (cLower.includes('usa') || cLower.includes('united states') || cLower.includes('أمريكا')) {
+        flag = '🇺🇸';
+        marketTier = 'Tier 2 - USA';
+        currency = 'USD';
+        language = 'en';
+        estimatedValueUSD = 249 * 12; // $2,988
+      } else if (cLower.includes('germany') || cLower.includes('ألمانيا') || cLower.includes('eu') || cLower.includes('europe')) {
+        flag = '🇩🇪';
+        marketTier = 'Tier 3 - EU/Germany';
+        currency = 'EUR';
+        language = 'en';
+        estimatedValueUSD = 4188;
+      } else if (cLower.includes('egypt') || cLower.includes('مصر')) {
+        flag = '🇪🇬';
+        marketTier = 'Tier 4 - Learning/Egypt';
+        currency = 'EGP';
+        language = 'ar';
+        estimatedValueUSD = 1020;
+      }
 
       this.addLead({
-        clientName: contact,
+        clientName: position ? `${contact} (${position})` : contact,
         companyName: company,
         contactEmail: email,
         jurisdiction: country,
         flag,
-        status: 'NEW LEAD',
+        status: 'LEAD CAPTURED',
         lastContactDate: new Date().toISOString().split('T')[0],
-        estimatedValueUSD: 139 * 12,
-        leadScore: 60,
-        notesAr: `تم الاستيراد عبر ملف CSV — قطاع: ${industry}`,
-        notesEn: `Imported via CSV batch — Industry: ${industry}`,
+        estimatedValueUSD,
+        leadScore: customScore,
+        notesAr: painPoint ? `${painPoint} | العقود: ${contractVolume}/شهر` : `تم الاستيراد — ${industry}`,
+        notesEn: `Target: ${company} | Market: ${marketTier} | Vol: ${contractVolume}/mo`,
         industry,
+        marketTier,
+        language,
+        currency,
+        buyerType: industry.toLowerCase().includes('law') ? 'Law Firm' : industry.toLowerCase().includes('tech') ? 'Tech Startup' : 'Corporate Legal',
+        contractVolume,
+        painPoint,
         source_type: 'REAL',
         verification_status: 'UNVERIFIED',
       });
