@@ -9,6 +9,16 @@
 import { triggerAutomatedB2BOutreach } from './outreachEngine';
 
 export type CrmLeadStatus =
+  // Pre-Contact Verification & Outreach Stages
+  | 'Imported'
+  | 'Verified Decision Maker'
+  | 'Personalized Message Ready'
+  | 'Contacted'
+  | 'Reply Received'
+  | 'Demo'
+  | 'Proposal'
+  | 'Paid'
+  // Full Enterprise SaaS Pipeline
   | 'LEAD CAPTURED'
   | 'QUALIFIED'
   | 'CONTACTED'
