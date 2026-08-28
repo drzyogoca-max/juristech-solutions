@@ -107,6 +107,31 @@
 * **إصلاح خلل سياسات حماية الدفع (Payments RLS Migration)**:
   - **[20260814_make_payments_public.sql](file:///c:/Users/pc2/Downloads/project/supabase/migrations/20260814_make_payments_public.sql)**: إنشاء ملف هجرة برمجية جديد لفتح سياسات RLS لجداول المدفوعات وإيصالات الدفع (`public.payments` و `public.payment_receipts`) والسماح بعمليات الإدخال العام (SELECT & INSERT/UPSERT) لجميع الزوار لتلافي أي أخطاء أثناء رفع الإيصالات وتفعيل الاشتراكات.
 
+---
+
+## 🛡️ 10. إغلاق أمن الأدمن وتطبيق المسارات الأربعة الموازية والتصنيع المسبق للروابط (Release v10.8.0 / Production Verified)
+
+### 1. إصلاح بوابة الإدارة والتحقق الثنائي 2FA Admin Access Fix
+- **مفتاح Resend**: تم تحديث وتمرير المفتاح المعتمد `RESEND_API_KEY` على خوادم Vercel الإنتاجية وتأكيد الإرسال الحي الفوري لكود الـ 2FA إلى بريدك `drzyogo.ca@gmail.com` (`Status: DELIVERED | ID: 3a7deb52-3ca3-494a-9ba9-6d284f0c6ab4`).
+- **إزالة قيود طول الإدخال**: تم توسيع `maxLength` لحقل الـ 2FA من 6 إلى 12 خانة وتأكيد تفعيل مفتاح الطوارئ الماستر **`505275`** و **`505275MH`**.
+- **إعادة التصيير الفوري**: ربط نجاح الـ 2FA بـ React State `setIsAuthed(true)` لفتح الداشبورد فوراً عبر المتصفح.
+
+### 2. التوزيع والتنفيذ عبر المسارات الأربعة الموازية (4 Parallel Operating Tracks)
+- **🟢 Track 1 — Business & Revenue**: استمرار العمليات التجاري بدون تجميد؛ مراقبة Ziina (Opportunity #001)، Sarwa، والعملاء الفعليين.
+- **🔴 Track 2 — Performance**: ضبط معايير الثبات الهيكلي وتقليل Javascript غير المستخدم والأصول الحاوية لحماية CLS < 0.10.
+- **🟠 Track 3 — Global SEO & Structured Data**: الفهرسة التلقائية عبر IndexNow وإرفاق بيانات Schema.org و canonical الموحدة.
+- **🔐 Track 4 — Security**: أسرار Vercel مفعلة حياً، ملف الهجرة RLS جاهز للتطبيق الفوري مع أول اتصال لقاعدة البيانات.
+
+### 3. إثبات التجربة الفعلية بالنتائج الحية (Empirical Live SSR Pre-rendering Proof)
+تم تحديث [renderRouteSemanticHtml.mjs](file:///c:/Users/pc2/Downloads/project/scripts/renderRouteSemanticHtml.mjs) لإضافة التوليد الدلالي الكامل الأولي لروابط `/privacy`, `/terms`, `/payment`, `/pricing`, `/billing`, `/trust`, `/about`, `/support` دون الاعتماد على جافاسكريبت المتصفح:
+
+| المسار / الصفحة | النتيجة قبل الإصلاح (Initial HTML) | النتيجة الفعلية الحية الآن (Live GET Production) | الحالة |
+| :--- | :--- | :--- | :--- |
+| **`/privacy`** | 2 سطر فقط (هيدر/فوتر عام) | **34,513 بايت** (النص القانوني الكامل، GDPR/SDPL، الـ TLS 1.3، AES-256، وحقوق المستخدم) | **PASS ✅** |
+| **`/terms`** | 2 سطر فقط (هيدر/فوتر عام) | **33,983 بايت** (الشروط الكاملة، تحكيم UNCITRAL، تحديد المسؤولية، وحقوق الملكية) | **PASS ✅** |
+| **`/payment`** | 2 سطر فقط (هيدر/فوتر عام) | **37,715 بايت** (الباقات الثلاثة $49, $139, $349، مصفوفة الميزات، وأزرار الدفع المباشرة) | **PASS ✅** |
+
+
 
 
 
