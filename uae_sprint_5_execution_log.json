@@ -1,0 +1,167 @@
+[
+  {
+    "company": "Huspy",
+    "email": "contact@huspy.io",
+    "contact": "Jad",
+    "role": "CEO & Co-Founder",
+    "statusCode": 200,
+    "response": {
+      "id": "77420896-8be3-40c9-a51b-f403b33f73a6"
+    },
+    "timestamp": "2026-08-28T07:32:06.880Z",
+    "telemetry": {
+      "object": "email",
+      "id": "77420896-8be3-40c9-a51b-f403b33f73a6",
+      "to": [
+        "contact@huspy.io"
+      ],
+      "from": "Dr. Mohammed Mustafa <founder@juristech.solutions>",
+      "created_at": "2026-08-28 07:32:06.866000+00",
+      "subject": "15-minute contract risk review for Huspy",
+      "bcc": [
+        "drzyogo.ca@gmail.com"
+      ],
+      "cc": null,
+      "reply_to": [
+        "juristech.solutions@outlook.com"
+      ],
+      "last_event": "delivered",
+      "scheduled_at": null,
+      "message_id": "<010201a047487995-79d64204-488f-4486-8b9d-0ec95b20adb9-000000@eu-west-1.amazonses.com>",
+      "html": "\n<div style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #1e293b; max-width: 580px; padding: 20px;\">\n  <p>Hello Jad,</p>\n  <p>We built <strong>JurisTech</strong> to help legal and commercial teams identify contract risks faster before negotiation or signing.</p>\n  <p>We are inviting a small number of UAE companies to a private 15-minute contract risk review using one non-confidential sample agreement.</p>\n  <p>No commitment required.</p>\n  <p>Would you be open to a brief review?</p>\n  <div style=\"margin: 25px 0;\">\n    <a href=\"https://www.juristech.solutions\" style=\"display: inline-block; background-color: #0284c7; color: #ffffff; text-decoration: none; padding: 12px 22px; border-radius: 8px; font-weight: 600; font-size: 14px;\">Book a 15-minute Contract Risk Review &rarr;</a>\n  </div>\n  <p style=\"margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 15px; color: #64748b; font-size: 13px;\">\n    Regards,<br>\n    <strong style=\"color: #0f172a;\">Dr. Mohammed Mustafa</strong><br>\n    Founder — JurisTech Solutions<br>\n    <a href=\"https://www.juristech.solutions\" style=\"color: #0284c7; text-decoration: none;\">www.juristech.solutions</a>\n  </p>\n</div>",
+      "text": "Hello Jad,\n\nWe built JurisTech to help legal and commercial teams identify contract risks faster before negotiation or signing.\n\nWe are inviting a small number of UAE companies to a private 15-minute contract risk review using one non-confidential sample agreement.\n\nNo commitment required.\n\nWould you be open to a brief review?\n\nRegards,\nDr. Mohammed Mustafa\nFounder — JurisTech Solutions\nhttps://www.juristech.solutions"
+    }
+  },
+  {
+    "company": "Sarwa",
+    "email": "hello@sarwa.co",
+    "contact": "Mark",
+    "role": "CEO & Co-Founder",
+    "statusCode": 200,
+    "response": {
+      "id": "90f18011-e3c9-4b97-93f4-f27eaaa32b9e"
+    },
+    "timestamp": "2026-08-28T07:32:08.325Z",
+    "telemetry": {
+      "object": "email",
+      "id": "90f18011-e3c9-4b97-93f4-f27eaaa32b9e",
+      "to": [
+        "hello@sarwa.co"
+      ],
+      "from": "Dr. Mohammed Mustafa <founder@juristech.solutions>",
+      "created_at": "2026-08-28 07:32:08.354000+00",
+      "subject": "15-minute contract risk review for Sarwa",
+      "bcc": [
+        "drzyogo.ca@gmail.com"
+      ],
+      "cc": null,
+      "reply_to": [
+        "juristech.solutions@outlook.com"
+      ],
+      "last_event": "delivered",
+      "scheduled_at": null,
+      "message_id": "<010201a047487f4a-55eeb773-4d02-4af5-8665-d5cd3d4bf27b-000000@eu-west-1.amazonses.com>",
+      "html": "\n<div style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #1e293b; max-width: 580px; padding: 20px;\">\n  <p>Hello Mark,</p>\n  <p>We built <strong>JurisTech</strong> to help legal and commercial teams identify contract risks faster before negotiation or signing.</p>\n  <p>We are inviting a small number of UAE companies to a private 15-minute contract risk review using one non-confidential sample agreement.</p>\n  <p>No commitment required.</p>\n  <p>Would you be open to a brief review?</p>\n  <div style=\"margin: 25px 0;\">\n    <a href=\"https://www.juristech.solutions\" style=\"display: inline-block; background-color: #0284c7; color: #ffffff; text-decoration: none; padding: 12px 22px; border-radius: 8px; font-weight: 600; font-size: 14px;\">Book a 15-minute Contract Risk Review &rarr;</a>\n  </div>\n  <p style=\"margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 15px; color: #64748b; font-size: 13px;\">\n    Regards,<br>\n    <strong style=\"color: #0f172a;\">Dr. Mohammed Mustafa</strong><br>\n    Founder — JurisTech Solutions<br>\n    <a href=\"https://www.juristech.solutions\" style=\"color: #0284c7; text-decoration: none;\">www.juristech.solutions</a>\n  </p>\n</div>",
+      "text": "Hello Mark,\n\nWe built JurisTech to help legal and commercial teams identify contract risks faster before negotiation or signing.\n\nWe are inviting a small number of UAE companies to a private 15-minute contract risk review using one non-confidential sample agreement.\n\nNo commitment required.\n\nWould you be open to a brief review?\n\nRegards,\nDr. Mohammed Mustafa\nFounder — JurisTech Solutions\nhttps://www.juristech.solutions"
+    }
+  },
+  {
+    "company": "Ziina",
+    "email": "support@ziina.com",
+    "contact": "Faisal",
+    "role": "CEO & Co-Founder",
+    "statusCode": 200,
+    "response": {
+      "id": "865ba3eb-6fa9-41c3-9dd8-d8a07bdcd385"
+    },
+    "timestamp": "2026-08-28T07:32:09.835Z",
+    "telemetry": {
+      "object": "email",
+      "id": "865ba3eb-6fa9-41c3-9dd8-d8a07bdcd385",
+      "to": [
+        "support@ziina.com"
+      ],
+      "from": "Dr. Mohammed Mustafa <founder@juristech.solutions>",
+      "created_at": "2026-08-28 07:32:09.788000+00",
+      "subject": "15-minute contract risk review for Ziina",
+      "bcc": [
+        "drzyogo.ca@gmail.com"
+      ],
+      "cc": null,
+      "reply_to": [
+        "juristech.solutions@outlook.com"
+      ],
+      "last_event": "delivered",
+      "scheduled_at": null,
+      "message_id": "<010201a0474884fb-5b901db4-b2db-4e5a-be57-777a7ada28a5-000000@eu-west-1.amazonses.com>",
+      "html": "\n<div style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #1e293b; max-width: 580px; padding: 20px;\">\n  <p>Hello Faisal,</p>\n  <p>We built <strong>JurisTech</strong> to help legal and commercial teams identify contract risks faster before negotiation or signing.</p>\n  <p>We are inviting a small number of UAE companies to a private 15-minute contract risk review using one non-confidential sample agreement.</p>\n  <p>No commitment required.</p>\n  <p>Would you be open to a brief review?</p>\n  <div style=\"margin: 25px 0;\">\n    <a href=\"https://www.juristech.solutions\" style=\"display: inline-block; background-color: #0284c7; color: #ffffff; text-decoration: none; padding: 12px 22px; border-radius: 8px; font-weight: 600; font-size: 14px;\">Book a 15-minute Contract Risk Review &rarr;</a>\n  </div>\n  <p style=\"margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 15px; color: #64748b; font-size: 13px;\">\n    Regards,<br>\n    <strong style=\"color: #0f172a;\">Dr. Mohammed Mustafa</strong><br>\n    Founder — JurisTech Solutions<br>\n    <a href=\"https://www.juristech.solutions\" style=\"color: #0284c7; text-decoration: none;\">www.juristech.solutions</a>\n  </p>\n</div>",
+      "text": "Hello Faisal,\n\nWe built JurisTech to help legal and commercial teams identify contract risks faster before negotiation or signing.\n\nWe are inviting a small number of UAE companies to a private 15-minute contract risk review using one non-confidential sample agreement.\n\nNo commitment required.\n\nWould you be open to a brief review?\n\nRegards,\nDr. Mohammed Mustafa\nFounder — JurisTech Solutions\nhttps://www.juristech.solutions"
+    }
+  },
+  {
+    "company": "TruKKer",
+    "email": "contact@trukker.com",
+    "contact": "Gaurav",
+    "role": "CEO & Founder",
+    "statusCode": 200,
+    "response": {
+      "id": "e1a93fc6-5acb-4f36-aed7-4d251e0039ff"
+    },
+    "timestamp": "2026-08-28T07:32:11.346Z",
+    "telemetry": {
+      "object": "email",
+      "id": "e1a93fc6-5acb-4f36-aed7-4d251e0039ff",
+      "to": [
+        "contact@trukker.com"
+      ],
+      "from": "Dr. Mohammed Mustafa <founder@juristech.solutions>",
+      "created_at": "2026-08-28 07:32:11.344000+00",
+      "subject": "15-minute contract risk review for TruKKer",
+      "bcc": [
+        "drzyogo.ca@gmail.com"
+      ],
+      "cc": null,
+      "reply_to": [
+        "juristech.solutions@outlook.com"
+      ],
+      "last_event": "delivered",
+      "scheduled_at": null,
+      "message_id": "<010201a047488b15-04ce429e-e7c5-4c3f-9b1a-437986ef0b98-000000@eu-west-1.amazonses.com>",
+      "html": "\n<div style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #1e293b; max-width: 580px; padding: 20px;\">\n  <p>Hello Gaurav,</p>\n  <p>We built <strong>JurisTech</strong> to help legal and commercial teams identify contract risks faster before negotiation or signing.</p>\n  <p>We are inviting a small number of UAE companies to a private 15-minute contract risk review using one non-confidential sample agreement.</p>\n  <p>No commitment required.</p>\n  <p>Would you be open to a brief review?</p>\n  <div style=\"margin: 25px 0;\">\n    <a href=\"https://www.juristech.solutions\" style=\"display: inline-block; background-color: #0284c7; color: #ffffff; text-decoration: none; padding: 12px 22px; border-radius: 8px; font-weight: 600; font-size: 14px;\">Book a 15-minute Contract Risk Review &rarr;</a>\n  </div>\n  <p style=\"margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 15px; color: #64748b; font-size: 13px;\">\n    Regards,<br>\n    <strong style=\"color: #0f172a;\">Dr. Mohammed Mustafa</strong><br>\n    Founder — JurisTech Solutions<br>\n    <a href=\"https://www.juristech.solutions\" style=\"color: #0284c7; text-decoration: none;\">www.juristech.solutions</a>\n  </p>\n</div>",
+      "text": "Hello Gaurav,\n\nWe built JurisTech to help legal and commercial teams identify contract risks faster before negotiation or signing.\n\nWe are inviting a small number of UAE companies to a private 15-minute contract risk review using one non-confidential sample agreement.\n\nNo commitment required.\n\nWould you be open to a brief review?\n\nRegards,\nDr. Mohammed Mustafa\nFounder — JurisTech Solutions\nhttps://www.juristech.solutions"
+    }
+  },
+  {
+    "company": "Kitopi",
+    "email": "info@kitopi.com",
+    "contact": "Mohamad",
+    "role": "CEO & Co-Founder",
+    "statusCode": 200,
+    "response": {
+      "id": "fe45edb9-e518-4489-939d-eb4b0f9c2d97"
+    },
+    "timestamp": "2026-08-28T07:32:12.586Z",
+    "telemetry": {
+      "object": "email",
+      "id": "fe45edb9-e518-4489-939d-eb4b0f9c2d97",
+      "to": [
+        "info@kitopi.com"
+      ],
+      "from": "Dr. Mohammed Mustafa <founder@juristech.solutions>",
+      "created_at": "2026-08-28 07:32:12.616000+00",
+      "subject": "15-minute contract risk review for Kitopi",
+      "bcc": [
+        "drzyogo.ca@gmail.com"
+      ],
+      "cc": null,
+      "reply_to": [
+        "juristech.solutions@outlook.com"
+      ],
+      "last_event": "delivered",
+      "scheduled_at": null,
+      "message_id": "<010201a04748900f-9a6815a6-ea35-49ed-a87e-f32ea791651f-000000@eu-west-1.amazonses.com>",
+      "html": "\n<div style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #1e293b; max-width: 580px; padding: 20px;\">\n  <p>Hello Mohamad,</p>\n  <p>We built <strong>JurisTech</strong> to help legal and commercial teams identify contract risks faster before negotiation or signing.</p>\n  <p>We are inviting a small number of UAE companies to a private 15-minute contract risk review using one non-confidential sample agreement.</p>\n  <p>No commitment required.</p>\n  <p>Would you be open to a brief review?</p>\n  <div style=\"margin: 25px 0;\">\n    <a href=\"https://www.juristech.solutions\" style=\"display: inline-block; background-color: #0284c7; color: #ffffff; text-decoration: none; padding: 12px 22px; border-radius: 8px; font-weight: 600; font-size: 14px;\">Book a 15-minute Contract Risk Review &rarr;</a>\n  </div>\n  <p style=\"margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 15px; color: #64748b; font-size: 13px;\">\n    Regards,<br>\n    <strong style=\"color: #0f172a;\">Dr. Mohammed Mustafa</strong><br>\n    Founder — JurisTech Solutions<br>\n    <a href=\"https://www.juristech.solutions\" style=\"color: #0284c7; text-decoration: none;\">www.juristech.solutions</a>\n  </p>\n</div>",
+      "text": "Hello Mohamad,\n\nWe built JurisTech to help legal and commercial teams identify contract risks faster before negotiation or signing.\n\nWe are inviting a small number of UAE companies to a private 15-minute contract risk review using one non-confidential sample agreement.\n\nNo commitment required.\n\nWould you be open to a brief review?\n\nRegards,\nDr. Mohammed Mustafa\nFounder — JurisTech Solutions\nhttps://www.juristech.solutions"
+    }
+  }
+]
