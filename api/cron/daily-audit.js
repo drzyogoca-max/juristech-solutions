@@ -21,10 +21,10 @@ export default async function handler(req, res) {
 
   const authHeader = req.headers['authorization'] || '';
   const cronSecret = req.headers['x-cron-secret'] || '';
-  const expectedSecret = process.env.CRON_SECRET || process.env.ADMIN_SECRET_KEY || '';
+  const expectedSecret = process.env.CRON_SECRET || '';
 
-  if (expectedSecret && authHeader !== `Bearer ${expectedSecret}` && cronSecret !== expectedSecret) {
-    return res.status(401).json({ error: 'Unauthorized: Invalid CRON_SECRET token' });
+  if (!expectedSecret || (authHeader !== `Bearer ${expectedSecret}` && cronSecret !== expectedSecret)) {
+    return res.status(401).json({ error: 'Unauthorized: Missing or invalid CRON_SECRET token' });
   }
 
   try {

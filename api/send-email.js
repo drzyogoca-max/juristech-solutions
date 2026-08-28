@@ -200,9 +200,75 @@ function getClientIP(req) {
   return (
     req.headers?.['x-forwarded-for']?.split(',')[0]?.trim() ||
     req.headers?.['x-real-ip'] ||
+    req.headers?.get?.('x-forwarded-for')?.split(',')[0]?.trim() ||
+    req.headers?.get?.('x-real-ip') ||
     req.socket?.remoteAddress ||
     'unknown'
   );
+}
+
+// ── Helper: verify dispatch authorization (Anti-Open Relay) ───────────────────
+const OFFICIAL_SYSTEM_EMAILS = [
+  'drzyogo.ca@gmail.com',
+  'juristech.solutions@outlook.com',
+  'admin@juristech.solutions',
+  'founder@juristech.solutions',
+  'contact@juristech.solutions',
+];
+
+async function checkEmailAuthorization(req, targetEmail) {
+  const authHeader = req.headers?.['authorization'] || req.headers?.get?.('authorization') || '';
+  const adminToken = req.headers?.['x-admin-token'] || req.headers?.get?.('x-admin-token') || '';
+  const cronSecret = req.headers?.['x-cron-secret'] || req.headers?.get?.('x-cron-secret') || '';
+
+  const cleanTarget = (targetEmail || '').trim().toLowerCase();
+
+  // 1. Legitimate system notification or 2FA OTP to official admin address is permitted
+  if (OFFICIAL_SYSTEM_EMAILS.includes(cleanTarget)) {
+    return { authorized: true, reason: 'OFFICIAL_SYSTEM_DESTINATION' };
+  }
+
+  // 2. Server Secret Authorization (CRM, cron, automated scripts)
+  const validSecrets = [
+    process.env.ADMIN_SECRET_KEY,
+    process.env.CRON_SECRET,
+    process.env.SUPABASE_SERVICE_ROLE_KEY,
+  ].filter(Boolean);
+
+  for (const sec of validSecrets) {
+    if (authHeader === `Bearer ${sec}` || adminToken === sec || cronSecret === sec) {
+      return { authorized: true, reason: 'SERVER_SECRET_AUTHORIZED' };
+    }
+  }
+
+  // 3. User JWT Authorization via Supabase
+  if (authHeader.startsWith('Bearer ')) {
+    const jwt = authHeader.replace('Bearer ', '').trim();
+    const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
+    const anonKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+
+    if (supabaseUrl && anonKey && jwt) {
+      try {
+        const userRes = await fetch(`${supabaseUrl}/auth/v1/user`, {
+          headers: {
+            'Authorization': `Bearer ${jwt}`,
+            'apikey': anonKey,
+          },
+        });
+        if (userRes.ok) {
+          const userData = await userRes.json();
+          if (userData && userData.id) {
+            return { authorized: true, reason: 'AUTHENTICATED_USER_SESSION', user: userData };
+          }
+        }
+      } catch (err) {
+        console.warn('[Email Auth Check] Supabase JWT validation error:', err.message);
+      }
+    }
+  }
+
+  // Otherwise: Reject arbitrary external outbound dispatch
+  return { authorized: false, reason: 'UNAUTHENTICATED_EXTERNAL_DISPATCH_BLOCKED' };
 }
 
 // ── Main Handler ──────────────────────────────────────────────────────────────
@@ -270,10 +336,21 @@ async function handleNodeRequest(req, res) {
     const emailSubject = subject || 'JurisTech Solutions — Legal Intelligence Platform';
 
     if (!targetEmail || !isValidEmail(targetEmail)) {
-      return res.status(200).json({
+      return res.status(400).json({
         success: false,
         status: 'INVALID_EMAIL',
         message: `Invalid or missing recipient email: ${targetEmail}`,
+      });
+    }
+
+    // ── Anti-Open Relay Authorization Enforcement ──
+    const authCheck = await checkEmailAuthorization(req, targetEmail);
+    if (!authCheck.authorized) {
+      console.warn(`[SendEmail 401] Unauthorized outbound dispatch to ${targetEmail} blocked from IP ${ip}`);
+      return res.status(401).json({
+        success: false,
+        status: 'UNAUTHORIZED',
+        error: 'Unauthorized: Authenticated session or approved server secret required to dispatch external outbound emails.',
       });
     }
 
@@ -355,7 +432,20 @@ async function handleEdgeRequest(req) {
           status: 'INVALID_EMAIL',
           message: `Invalid or missing recipient email: ${targetEmail}`,
         }),
-        { status: 200, headers: CORS_HEADERS }
+        { status: 400, headers: CORS_HEADERS }
+      );
+    }
+
+    // ── Anti-Open Relay Authorization Enforcement ──
+    const authCheck = await checkEmailAuthorization(req, targetEmail);
+    if (!authCheck.authorized) {
+      return new Response(
+        JSON.stringify({
+          success: false,
+          status: 'UNAUTHORIZED',
+          error: 'Unauthorized: Authenticated session or approved server secret required to dispatch external outbound emails.',
+        }),
+        { status: 401, headers: CORS_HEADERS }
       );
     }
 

@@ -51,10 +51,12 @@ export default function ProtectedAdminRoute({ children }: { children: React.Reac
     }).catch(() => {});
   }, []);
 
-  const isLocallyAuthed = verifyAdminAccess();
+  const is2FAVerified = typeof window !== 'undefined' && sessionStorage.getItem('juristech_2fa_verified_session') === 'true';
   const isSupabaseAdmin = (user && isAuthorizedAdminEmail(user?.email)) || supabaseSessionVerified;
+  const isLocallyAuthed = verifyAdminAccess();
 
-  if (isSupabaseAdmin || (isLocallyAuthed && sessionStorage.getItem('juristech_2fa_verified_session') === 'true')) {
+  // Strict Sovereign Gate: Must have verified admin identity AND passed 2FA challenge
+  if ((isSupabaseAdmin || isLocallyAuthed) && is2FAVerified) {
     return <>{children}</>;
   }
 

@@ -29,10 +29,32 @@ export async function POST(req) {
     const authHeader = req.headers.get('Authorization') || req.headers.get('authorization') || '';
     const adminToken = req.headers.get('x-admin-token') || '';
 
-    const expectedSecret = process.env.ADMIN_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-    const isAuthorized = (expectedSecret && (authHeader.includes(expectedSecret) || adminToken === expectedSecret)) || (process.env.NODE_ENV !== 'production' && authHeader.startsWith('Bearer juristech_admin_'));
+    const OFFICIAL_ADMIN_EMAILS = ['drzyogo.ca@gmail.com', 'juristech.solutions@outlook.com', 'admin@juristech.solutions'];
+    let isAuthorized = false;
 
-    if (!isAuthorized && process.env.NODE_ENV === 'production') {
+    const serverSecret = process.env.ADMIN_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+    if (serverSecret && (authHeader === `Bearer ${serverSecret}` || adminToken === serverSecret)) {
+      isAuthorized = true;
+    } else if (authHeader.startsWith('Bearer ')) {
+      const jwt = authHeader.replace('Bearer ', '').trim();
+      const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
+      const anonKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+      if (supabaseUrl && anonKey && jwt) {
+        try {
+          const uRes = await fetch(`${supabaseUrl}/auth/v1/user`, {
+            headers: { 'Authorization': `Bearer ${jwt}`, 'apikey': anonKey }
+          });
+          if (uRes.ok) {
+            const uData = await uRes.json();
+            if (uData?.email && OFFICIAL_ADMIN_EMAILS.includes(uData.email.toLowerCase().trim())) {
+              isAuthorized = true;
+            }
+          }
+        } catch (e) {}
+      }
+    }
+
+    if (!isAuthorized) {
       return Response.json({ error: 'Unauthorized: Sovereign administrative authorization required' }, { status: 401, headers: CORS_HEADERS });
     }
 

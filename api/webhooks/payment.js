@@ -85,6 +85,60 @@ async function executeAtomicWebhookTransaction(params) {
   }
 }
 
+function verifyWebhookSignature(provider, body, signature, secret) {
+  if (!secret || !signature) return false;
+
+  const rawBody = typeof body === 'string' ? body : JSON.stringify(body);
+
+  // 1. Direct hex HMAC-SHA256
+  try {
+    const directHmac = crypto.createHmac('sha256', secret).update(rawBody).digest('hex');
+    if (signature.length === directHmac.length && crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(directHmac))) {
+      return true;
+    }
+  } catch (e) {}
+
+  // 2. Paddle v2 Signature Format: ts=123456789;h1=hexhash
+  if (signature.includes('ts=') && signature.includes('h1=')) {
+    try {
+      const parts = signature.split(';').reduce((acc, part) => {
+        const [k, v] = part.trim().split('=');
+        if (k && v) acc[k] = v;
+        return acc;
+      }, {});
+
+      if (parts.ts && parts.h1) {
+        const payloadToSign = `${parts.ts}:${rawBody}`;
+        const computedH1 = crypto.createHmac('sha256', secret).update(payloadToSign).digest('hex');
+        if (parts.h1.length === computedH1.length && crypto.timingSafeEqual(Buffer.from(parts.h1), Buffer.from(computedH1))) {
+          return true;
+        }
+      }
+    } catch (e) {}
+  }
+
+  // 3. Stripe Signature Format: t=123456789,v1=hexhash
+  if (signature.includes('t=') && signature.includes('v1=')) {
+    try {
+      const parts = signature.split(',').reduce((acc, part) => {
+        const [k, v] = part.trim().split('=');
+        if (k && v) acc[k] = v;
+        return acc;
+      }, {});
+
+      if (parts.t && parts.v1) {
+        const payloadToSign = `${parts.t}.${rawBody}`;
+        const computedV1 = crypto.createHmac('sha256', secret).update(payloadToSign).digest('hex');
+        if (parts.v1.length === computedV1.length && crypto.timingSafeEqual(Buffer.from(parts.v1), Buffer.from(computedV1))) {
+          return true;
+        }
+      }
+    } catch (e) {}
+  }
+
+  return false;
+}
+
 export default async function handler(req, res) {
   const timestamp = new Date().toISOString();
 
@@ -124,26 +178,23 @@ export default async function handler(req, res) {
       return res.status(200).json({ received: true, duplicate: true, eventId, provider, status: 'ALREADY_PROCESSED_IN_MEMORY' });
     }
 
-    // 3. Signature Validation Architecture (Safe Sandbox vs Production Mode)
-    let isSignatureValid = false;
-    const webhookSecret = process.env[`${provider.toUpperCase()}_WEBHOOK_SECRET`] || '';
+    // 3. Strict Signature Validation (Zero Unverified Subscription Activations)
+    const webhookSecret = process.env[`${provider.toUpperCase()}_WEBHOOK_SECRET`] || process.env.PAYMENT_WEBHOOK_SECRET || '';
 
     if (!webhookSecret) {
-      // Standby / sandbox mode: log receipt safely
-      console.log(`[Webhook Standby] No secret configured for ${provider}. Event logged in STANDBY mode.`);
-      isSignatureValid = true;
-    } else if (signature) {
-      try {
-        const expectedSignature = crypto.createHmac('sha256', webhookSecret).update(JSON.stringify(body)).digest('hex');
-        isSignatureValid = crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature));
-      } catch (err) {
-        isSignatureValid = false;
-      }
+      console.error(`[Webhook Security] No webhook secret configured for provider: ${provider}`);
+      return res.status(401).json({ error: `Unauthorized: Webhook secret not configured for ${provider}` });
     }
 
+    if (!signature) {
+      console.error(`[Webhook Security] Missing webhook signature header for provider: ${provider}`);
+      return res.status(401).json({ error: 'Unauthorized: Missing webhook signature header' });
+    }
+
+    const isSignatureValid = verifyWebhookSignature(provider, body, signature, webhookSecret);
     if (!isSignatureValid) {
       console.error(`[Webhook Security] Invalid signature rejected for provider: ${provider}`);
-      return res.status(401).json({ error: 'Invalid webhook signature' });
+      return res.status(401).json({ error: 'Unauthorized: Invalid webhook signature' });
     }
 
     // 4. Extract and Validate Event Payload (Paddle v2 Schema Compatible)
@@ -211,6 +262,7 @@ export default async function handler(req, res) {
     }
 
     return res.status(200).json({
+      success: true,
       received: true,
       provider,
       eventId,
