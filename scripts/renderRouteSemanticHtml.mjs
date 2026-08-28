@@ -132,6 +132,258 @@ export function getSemanticHtmlForRoute(routePath) {
     </footer>
   `;
 
+  if (routePath === '/privacy') {
+    return `
+      ${commonHeader}
+      <main class="max-w-7xl mx-auto p-6 font-sans text-slate-100" dir="rtl">
+        ${commonAdSponsorSlot}
+        <article class="my-8 space-y-6">
+          <header class="border-b border-slate-800 pb-6">
+            <span class="text-xs font-mono text-cyan-400 bg-cyan-950/60 border border-cyan-500/30 px-3 py-1 rounded-full uppercase tracking-wider">Official Legal Statement — GDPR & SDPL Compliant</span>
+            <h1 class="text-3xl sm:text-5xl font-black text-slate-100 leading-tight mt-3 mb-2">
+              سياسة الخصوصية وحماية البيانات الشخصية | JurisTech Privacy Policy
+            </h1>
+            <p class="text-xs text-slate-400 font-mono">تاريخ التحديث الأخير: 25 أغسطس 2026 | الإصدار المعتمد 4.2.0 | مسؤول حماية البيانات: juristech.solutions@outlook.com</p>
+          </header>
+
+          <div class="prose prose-invert max-w-none text-slate-300 leading-relaxed space-y-6 text-sm">
+            <section class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-3">
+              <h2 class="text-xl font-bold text-cyan-400 m-0">1. المقدمة والالتزام بالحماية السيادية للبيانات (Introduction & Sovereign Data Pledge)</h2>
+              <p>تلتزم منصة <strong>JurisTech Solutions</strong> بحماية الخصوصية والسرية التامة لكافة بيانات المستخدمين والعقود التجارية والوثائق المرفوعة. تخضع جميع عمليات جمع البيانات والمعالجة والتخزين لأعلى المعايير الأمنية العالمية وفقاً لنظام حماية البيانات الشخصية السعودي (SDPL)، لائحة حماية البيانات الاتحادية الإماراتية، اللائحة العامة لحماية البيانات الأوروبية (GDPR)، وتشريعات الخصوصية الأمريكية (CCPA/CPRA).</p>
+            </section>
+
+            <section class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-3">
+              <h2 class="text-xl font-bold text-emerald-400 m-0">2. المعلومات التي نجمعها (Information We Collect)</h2>
+              <p>نجمع البيانات الضرورية فقط لتقديم وتطوير خدمات الذكاء الاصطناعي القانوني:</p>
+              <ul class="list-disc pr-6 space-y-1 text-slate-300">
+                <li><strong>بيانات الحساب والهوية:</strong> الاسم الكامل، البريد الإلكتروني المؤسسي، المسمى الوظيفي، واسم الشركة أو المكتب القانوني.</li>
+                <li><strong>بيانات المستندات والعقود:</strong> نصوص العقود والاتفاقيات المرفوعة لأغراض الفحص والتدقيق الآلي فقط دون مشاركتها.</li>
+                <li><strong>بيانات الجلسة والتقنيات:</strong> عنوان IP، نوع المتصفح، الروابط المزارة، والمؤشرات الفنية لضمان أمان النظام ومنع الاحتيال.</li>
+              </ul>
+            </section>
+
+            <section class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-3">
+              <h2 class="text-xl font-bold text-purple-400 m-0">3. تشفير البيانات والعزل السيادي (Data Encryption & Sovereign Isolation)</h2>
+              <p>يتم تشفير كافة البيانات والمستندات أثناء نقلها باستخدام بروتوكولات <strong>TLS 1.3 / HTTPS 256-bit</strong>، وأثناء تخزينها باستخدام تشفير <strong>AES-256 GCM</strong>. نضمن عدم استخدام العقود الخاصة بك أو بيانات شركتك لتنقيح أو تدريب أي نماذج ذكاء اصطناعي عامة ذات ملكية مشتركة.</p>
+            </section>
+
+            <section class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-3">
+              <h2 class="text-xl font-bold text-amber-400 m-0">4. عدم مشاركة البيانات وحظر البيع (Zero-Data Selling Mandate)</h2>
+              <p>نؤكد بشكل حاسم وقاطع: <strong>JurisTech Solutions لا تبيع ولا تؤجر ولا تشارك</strong> أي بيانات شخصية أو عقود تجارية مع أي أطراف ثالثة أو شركات إعلانية أو وكالات تسويق تحت أي ظرف من الظروف.</p>
+            </section>
+
+            <section class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-3">
+              <h2 class="text-xl font-bold text-sky-400 m-0">5. حقوق المستخدم والتحكم في البيانات (User Rights & Data Control)</h2>
+              <p>يحق لك في أي وقت: (1) طلب نسخة كاملة من بياناتك المخزنة، (2) طلب تصحيح أو تعديل أي بيانات غير دقيقة، (3) طلب حذف حسابك وكافة مستنداتك بشكل دائم من السيرفرات (Right to be Forgotten)، (4) تقديم اعتراض لمسؤول حماية البيانات عبر البريد الرسمى <code>juristech.solutions@outlook.com</code>.</p>
+            </section>
+          </div>
+        </article>
+      </main>
+      ${commonFooter}
+    `;
+  }
+
+  if (routePath === '/terms') {
+    return `
+      ${commonHeader}
+      <main class="max-w-7xl mx-auto p-6 font-sans text-slate-100" dir="rtl">
+        ${commonAdSponsorSlot}
+        <article class="my-8 space-y-6">
+          <header class="border-b border-slate-800 pb-6">
+            <span class="text-xs font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-3 py-1 rounded-full uppercase tracking-wider">Official Terms of Service — UNCITRAL & International Commercial Law Compliant</span>
+            <h1 class="text-3xl sm:text-5xl font-black text-slate-100 leading-tight mt-3 mb-2">
+              شروط وأحكام الخدمة واتفاقية الاستخدام | JurisTech Terms of Service
+            </h1>
+            <p class="text-xs text-slate-400 font-mono">تاريخ التحديث: 25 أغسطس 2026 | ملزمة قانونياً لكافة مستخدمي المنصة | الاستشارات: juristech.solutions@outlook.com</p>
+          </header>
+
+          <div class="prose prose-invert max-w-none text-slate-300 leading-relaxed space-y-6 text-sm">
+            <section class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-3">
+              <h2 class="text-xl font-bold text-emerald-400 m-0">1. قبول الشروط والتأهيل الاستخدامي (Acceptance of Terms & Eligibility)</h2>
+              <p>بوصولك أو استخدامك لمنصة <strong>JurisTech Solutions</strong>، فإنك تقر وتوافق على الالتزام الكامل بهذه الشروط والأحكام. إذا كنت تستخدم المنصة نيابة عن شركة أو كيان قانوني، فإنك تضمن امتلاكك الصلاحية النظامية الكاملة لإلزام ذلك الكيان بهذه الاتفاقية.</p>
+            </section>
+
+            <section class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-3">
+              <h2 class="text-xl font-bold text-sky-400 m-0">2. طبيعة الخدمات ومسؤولية الذكاء الاصطناعي (Nature of AI Legal Services)</h2>
+              <p>تقدم المنصة أدوات ذكاء اصطناعي سيادية لتوليد العقود، فحص المخاطر، تدقيق البنود، واستشارات التحليل القانوني الآلي. تم تصميم هذه الأدوات لمساعدة المحامين، المستشارين القانونيين، ورؤساء الشركات. مخرجات الذكاء الاصطناعي تعتبر أدوات مساندة عالية الدقة ولا تغني عن المراجعة النهائية للمستشار القانوني المعتمد.</p>
+            </section>
+
+            <section class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-3">
+              <h2 class="text-xl font-bold text-amber-400 m-0">3. الملكية الفكرية والعقود الصادرة (Intellectual Property Rights)</h2>
+              <p>تظل كافة العقود والاتفاقيات والتحليلات التي يقوم المستخدم بتوليدها أو تعديلها ملكاً خالصاً للمستخدم دون أي ادعاء ملكية من المنصة. وتظل المنصة مالكة لكافة حقوق الملكية الفكرية الخاصة بالخوارزميات، الواجهات، والتقنيات البرمجية.</p>
+            </section>
+
+            <section class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-3">
+              <h2 class="text-xl font-bold text-purple-400 m-0">4. باقات الاشتراك والاسترجاع والدفع (Billing, Subscriptions & Refund Terms)</h2>
+              <p>تتم فوترة الاشتراكات شهرية أو سنوياً وفقاً للباقة المختارة ($49 باقة الناشئة، $139 باقة النمو، $349 باقة المؤسسات). يحق للمستخدم طلب إلغاء الاشتراك في أي وقت. يخضع استرجاع الأموال لسياسة الاسترجاع المعتمدة خلال 14 يوماً من تاريخ الاشتراك الأول شريطة عدم تجاوز استهلاك الاستشارات المحددة.</p>
+            </section>
+
+            <section class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-3">
+              <h2 class="text-xl font-bold text-cyan-400 m-0">5. القانون الواجب التطبيق وحل النزاعات (Governing Law & UNCITRAL Arbitration)</h2>
+              <p>تخضع هذه الاتفاقية وتُفسر وفقاً للقوانين التجارية المعتمدة، ويتم تسوية أي نزاع ينشأ عنها عن طريق التحكيم التجاري وفقاً لقواعد لجنة الأمم المتحدة للقانون التجاري الدولي (UNCITRAL) أو المحاكم المختصة بمقر تسجيل الكيان.</p>
+            </section>
+          </div>
+        </article>
+      </main>
+      ${commonFooter}
+    `;
+  }
+
+  if (routePath === '/payment' || routePath === '/pricing' || routePath === '/billing') {
+    return `
+      ${commonHeader}
+      <main class="max-w-7xl mx-auto p-6 font-sans text-slate-100" dir="rtl">
+        ${commonAdSponsorSlot}
+        <section class="my-8 text-center">
+          <span class="bg-sky-500/10 text-sky-400 border border-sky-500/30 text-xs font-mono font-bold px-3 py-1 rounded-full uppercase tracking-wider">Enterprise Pricing & Transparent Subscription Plans</span>
+          <h1 class="text-3xl sm:text-5xl font-black text-slate-100 leading-tight mt-3 mb-4">
+            باقات الاشتراك والحلول المالية المعتمدة للشركات لعام 2026
+          </h1>
+          <p class="text-base text-slate-300 max-w-3xl mx-auto leading-relaxed mb-8">
+            اختر الباقة المناسبة لحجم أعمالك مع ضمانات الشفافية التامة، التفعيل الفوري، وتكلفة تقارن بـ 5% فقط من أتعاب المكاتب التقليدية.
+          </p>
+
+          <!-- Pricing Grid Cards (SSR Rendered for Search Engines & Bot Compliance) -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 my-10 text-right">
+            <!-- Startup Plan -->
+            <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-8 flex flex-col justify-between shadow-2xl relative">
+              <div>
+                <span class="bg-slate-800 text-slate-300 text-xs font-bold px-3 py-1 rounded-full">باقة الشركات الناشئة</span>
+                <h3 class="text-2xl font-black text-sky-400 mt-4 mb-2">Startup Legal AI Plan</h3>
+                <p class="text-xs text-slate-400 leading-relaxed mb-6">مثالية للشركات الصغرى والمستقلين وصناع القرار الفرديين لتأمين العقود الأساسية.</p>
+                <div class="my-4 border-y border-slate-800 py-4">
+                  <span class="text-4xl font-black text-white font-mono">$49</span>
+                  <span class="text-xs text-slate-400 font-mono"> / شهرياً</span>
+                </div>
+                <ul class="text-xs text-slate-300 space-y-3 my-6 list-none p-0">
+                  <li class="flex items-center gap-2">✓ المستشار القانوني الذكي 24/7 (حتى 100 استشارة)</li>
+                  <li class="flex items-center gap-2">✓ صياغة وتوليد 10 عقود شهرياً</li>
+                  <li class="flex items-center gap-2">✓ فحص المخاطر والبنود التعسفية الأساسي</li>
+                  <li class="flex items-center gap-2">✓ تصدير فوري بصيغة Word (.docx) و PDF</li>
+                  <li class="flex items-center gap-2">✓ التغطية النظامية: السعودية، الإمارات، مصر</li>
+                </ul>
+              </div>
+              <a href="/checkout?plan=startup" class="w-full py-4 rounded-2xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-center no-underline block shadow-lg transition-all text-sm">
+                اشترك الآن — باقة الناشئة ($49/mo)
+              </a>
+            </div>
+
+            <!-- Growth Plan (Recommended) -->
+            <div class="bg-slate-900 border-2 border-indigo-500 rounded-3xl p-8 flex flex-col justify-between shadow-2xl relative transform md:-translate-y-2">
+              <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-[11px] font-black px-4 py-1 rounded-full uppercase tracking-wider shadow">
+                ⭐ الأكثر طلباً للشركات والنمو
+              </div>
+              <div>
+                <span class="bg-indigo-500/20 text-indigo-300 text-xs font-bold px-3 py-1 rounded-full border border-indigo-500/30">باقة النمو والتوسع</span>
+                <h3 class="text-2xl font-black text-indigo-400 mt-4 mb-2">Growth & M&A Plan</h3>
+                <p class="text-xs text-slate-400 leading-relaxed mb-6">مصممة للشركات المتوسطة، بيوت الاستثمار، ومكاتب المحاماة ذات حجم الأعمال النشط.</p>
+                <div class="my-4 border-y border-slate-800 py-4">
+                  <span class="text-4xl font-black text-white font-mono">$139</span>
+                  <span class="text-xs text-slate-400 font-mono"> / شهرياً</span>
+                </div>
+                <ul class="text-xs text-slate-300 space-y-3 my-6 list-none p-0">
+                  <li class="flex items-center gap-2">✓ استشارات غير محدودة من Google AI Pro</li>
+                  <li class="flex items-center gap-2">✓ صياغة وتوليد 50 عقداً شهرياً</li>
+                  <li class="flex items-center gap-2">✓ فحص المخاطر عبر 8 متجهات قانونية شمولية</li>
+                  <li class="flex items-center gap-2">✓ غرف التفاوض الآلي والتعديلات الذكية (Redlining)</li>
+                  <li class="flex items-center gap-2">✓ التغطية النظامية: 9 دول (GCC + US + EU)</li>
+                </ul>
+              </div>
+              <a href="/checkout?plan=growth" class="w-full py-4 rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 text-white font-black text-center no-underline block shadow-xl transition-all text-sm">
+                اشترك الآن — باقة النمو ($139/mo)
+              </a>
+            </div>
+
+            <!-- Enterprise Sovereign Plan -->
+            <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-8 flex flex-col justify-between shadow-2xl relative">
+              <div>
+                <span class="bg-amber-500/20 text-amber-300 text-xs font-bold px-3 py-1 rounded-full border border-amber-500/30">باقة المؤسسات والسيادة</span>
+                <h3 class="text-2xl font-black text-amber-400 mt-4 mb-2">Sovereign Enterprise Plan</h3>
+                <p class="text-xs text-slate-400 leading-relaxed mb-6">للمؤسسات الكبرى، البنوك، والمجموعات الاستثمارية التي تتطلب بيئة سيادية مخصصة.</p>
+                <div class="my-4 border-y border-slate-800 py-4">
+                  <span class="text-4xl font-black text-white font-mono">$349</span>
+                  <span class="text-xs text-slate-400 font-mono"> / شهرياً</span>
+                </div>
+                <ul class="text-xs text-slate-300 space-y-3 my-6 list-none p-0">
+                  <li class="flex items-center gap-2">✓ عقود واستشارات وتدقيق مخاطر غير محدود</li>
+                  <li class="flex items-center gap-2">✓ كشف التزوير والاحتيال ومحاكاة القضايا</li>
+                  <li class="flex items-center gap-2">✓ ربط API وسيرفرات سيادية مخصصة</li>
+                  <li class="flex items-center gap-2">✓ دعم تنفيذي مباشر وإشعارات واتساب 24/7</li>
+                  <li class="flex items-center gap-2">✓ التغطية النظامية: كافة الاختصاصات القضائية العالمية</li>
+                </ul>
+              </div>
+              <a href="/checkout?plan=enterprise" class="w-full py-4 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-center no-underline block shadow-lg transition-all text-sm">
+                اشترك الآن — باقة المؤسسات ($349/mo)
+              </a>
+            </div>
+          </div>
+
+          <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl text-right max-w-4xl mx-auto my-8 space-y-3">
+            <h3 class="text-lg font-bold text-sky-400 m-0">طرق الدفع والفوترة المعتمدة:</h3>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              ندعم الدفع الآمن المباشر عبر بطاقات Visa و Mastercard و Apple Pay عبر بوابة <strong>Stripe Live</strong> المعتمدة، إضافة إلى الدفع الفوري عبر بوابة <strong>Tap Payments</strong>، والتحويل البنكي وحوالات InstaPay الرسمية لحسابات الشركات مع إصدار الفواتير الأولية المعتمدة (Proforma Invoices).
+            </p>
+          </div>
+        </section>
+      </main>
+      ${commonFooter}
+    `;
+  }
+
+  if (routePath === '/about') {
+    return `
+      ${commonHeader}
+      <main class="max-w-7xl mx-auto p-6 font-sans text-slate-100" dir="rtl">
+        ${commonAdSponsorSlot}
+        <section class="my-8">
+          <h1 class="text-3xl sm:text-5xl font-black text-slate-100 leading-tight mb-4">
+            عن المنصة والحوكمة المؤسسية | About JurisTech Solutions
+          </h1>
+          <p class="text-base text-slate-300 leading-relaxed mb-6">
+            منصة <strong>JurisTech Solutions</strong> هي البنية التحتية العالمية الأولى المتخصصة في الذكاء الاصطناعي القانوني السيادي، صياغة وتدقيق العقود، حوكمة الشركات، والامتثال التنظيمي للشركات والمؤسسات الاستثمارية بإشراف المستشار د. محمد مصطفى.
+          </p>
+        </section>
+      </main>
+      ${commonFooter}
+    `;
+  }
+
+  if (routePath === '/support') {
+    return `
+      ${commonHeader}
+      <main class="max-w-7xl mx-auto p-6 font-sans text-slate-100" dir="rtl">
+        ${commonAdSponsorSlot}
+        <section class="my-8">
+          <h1 class="text-3xl sm:text-5xl font-black text-slate-100 leading-tight mb-4">
+            مركز الدعم الفني والاستشارات المباشرة 24/7 | JurisTech Support
+          </h1>
+          <p class="text-base text-slate-300 leading-relaxed mb-6">
+            فريق الدعم الفني والاستشاري المباشر متاح على مدار الساعة لمساعدة الشركات والمؤسسات في تفعيل الباقات، فحص العقود الحساسة، وحل أي استفسارات نظامية.
+          </p>
+        </section>
+      </main>
+      ${commonFooter}
+    `;
+  }
+
+  if (routePath === '/trust') {
+    return `
+      ${commonHeader}
+      <main class="max-w-7xl mx-auto p-6 font-sans text-slate-100" dir="rtl">
+        ${commonAdSponsorSlot}
+        <section class="my-8">
+          <h1 class="text-3xl sm:text-5xl font-black text-slate-100 leading-tight mb-4">
+            مركز الثقة وأمان المعلومات | JurisTech Security & Trust Center
+          </h1>
+          <p class="text-base text-slate-300 leading-relaxed mb-6">
+            بيئة أمنية سيادية مشفرة بمعايير التشفير البنكي AES-256 GCM و TLS 1.3 مع حماية كاملة للملكية الفكرية وعدم استخدام البيانات في تدريب النماذج العامة.
+          </p>
+        </section>
+      </main>
+      ${commonFooter}
+    `;
+  }
+
   // 1. Homepage & Dashboard (Sole location of the Executive Contact Command Hub)
   if (routePath === '/' || routePath === '/dashboard') {
     return `
