@@ -1,0 +1,358 @@
+[
+  {
+    "market": "USA",
+    "company": "Goodwin Procter",
+    "email": "info@goodwinlaw.com",
+    "contact": "Anthony",
+    "role": "Technology Practice Lead",
+    "statusCode": 200,
+    "response": {
+      "id": "4cceb9fc-d5e4-4346-abe7-8d1758dab5f2"
+    },
+    "timestamp": "2026-08-28T07:45:41.587Z",
+    "telemetry": {
+      "object": "email",
+      "id": "4cceb9fc-d5e4-4346-abe7-8d1758dab5f2",
+      "to": [
+        "info@goodwinlaw.com"
+      ],
+      "from": "Dr. Mohammed Mustafa <founder@juristech.solutions>",
+      "created_at": "2026-08-28 07:45:41.612000+00",
+      "subject": "15-minute contract risk review for Goodwin Procter",
+      "bcc": [
+        "drzyogo.ca@gmail.com"
+      ],
+      "cc": null,
+      "reply_to": [
+        "juristech.solutions@outlook.com"
+      ],
+      "last_event": "bounced",
+      "scheduled_at": null,
+      "message_id": "<010201a04754e84b-b0ce35fb-6d44-40b1-a628-d13203f00ddd-000000@eu-west-1.amazonses.com>",
+      "html": "\n<div style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #1e293b; max-width: 580px; padding: 20px;\">\n  <p>Hello Anthony,</p>\n  <p>We built <strong>JurisTech</strong> to help legal and commercial teams identify contract risks faster before negotiation or signing.</p>\n  <p>We are inviting a small number of US companies to a private 15-minute contract risk review using one non-confidential sample agreement.</p>\n  <p>The review focuses on liability, indemnity, termination and other clauses that may create negotiation or commercial risk.</p>\n  <p>No commitment required.</p>\n  <p>Would you be open to a brief review?</p>\n  <div style=\"margin: 25px 0;\">\n    <a href=\"https://www.juristech.solutions\" style=\"display: inline-block; background-color: #0284c7; color: #ffffff; text-decoration: none; padding: 12px 22px; border-radius: 8px; font-weight: 600; font-size: 14px;\">Book a 15-minute Contract Risk Review &rarr;</a>\n  </div>\n  <p style=\"margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 15px; color: #64748b; font-size: 13px;\">\n    Best regards,<br>\n    <strong style=\"color: #0f172a;\">Dr. Mohammed Mustafa</strong><br>\n    Founder — JurisTech Solutions<br>\n    <a href=\"https://www.juristech.solutions\" style=\"color: #0284c7; text-decoration: none;\">www.juristech.solutions</a>\n  </p>\n</div>",
+      "text": "Hello Anthony,\n\nWe built JurisTech to help legal and commercial teams identify contract risks faster before negotiation or signing.\n\nWe are inviting a small number of US companies to a private 15-minute contract risk review using one non-confidential sample agreement.\n\nThe review focuses on liability, indemnity, termination and other clauses that may create negotiation or commercial risk.\n\nNo commitment required.\n\nWould you be open to a brief review?\n\nBest regards,\n\nDr. Mohammed Mustafa\nFounder — JurisTech Solutions\nhttps://www.juristech.solutions",
+      "bounce": {
+        "message": "The recipient's email provider sent a hard bounce message, but didn't specify the reason for the hard bounce. We recommend removing the recipient's email address from your mailing list. Sending messages to addresses that produce hard bounces can have a negative impact on your reputation as a sender.",
+        "type": "Permanent",
+        "subType": "General",
+        "diagnosticCode": [
+          "smtp; 550 Invalid Recipient - https://community.mimecast.com/docs/DOC-1369#550 [o-cBudRfOe2WVikYfjq8bw.us633]"
+        ]
+      }
+    }
+  },
+  {
+    "market": "USA",
+    "company": "Carta",
+    "email": "legal@carta.com",
+    "contact": "Henry",
+    "role": "Legal Operations Directorate",
+    "statusCode": 200,
+    "response": {
+      "id": "46ff732b-ddfc-414f-9437-1ab52c0d0a21"
+    },
+    "timestamp": "2026-08-28T07:45:43.507Z",
+    "telemetry": {
+      "object": "email",
+      "id": "46ff732b-ddfc-414f-9437-1ab52c0d0a21",
+      "to": [
+        "legal@carta.com"
+      ],
+      "from": "Dr. Mohammed Mustafa <founder@juristech.solutions>",
+      "created_at": "2026-08-28 07:45:43.514000+00",
+      "subject": "15-minute contract risk review for Carta",
+      "bcc": [
+        "drzyogo.ca@gmail.com"
+      ],
+      "cc": null,
+      "reply_to": [
+        "juristech.solutions@outlook.com"
+      ],
+      "last_event": "delivered",
+      "scheduled_at": null,
+      "message_id": "<010201a04754efbb-67ac55e0-d7ae-4aa1-afc9-d235e2ff55da-000000@eu-west-1.amazonses.com>",
+      "html": "\n<div style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #1e293b; max-width: 580px; padding: 20px;\">\n  <p>Hello Henry,</p>\n  <p>We built <strong>JurisTech</strong> to help legal and commercial teams identify contract risks faster before negotiation or signing.</p>\n  <p>We are inviting a small number of US companies to a private 15-minute contract risk review using one non-confidential sample agreement.</p>\n  <p>The review focuses on liability, indemnity, termination and other clauses that may create negotiation or commercial risk.</p>\n  <p>No commitment required.</p>\n  <p>Would you be open to a brief review?</p>\n  <div style=\"margin: 25px 0;\">\n    <a href=\"https://www.juristech.solutions\" style=\"display: inline-block; background-color: #0284c7; color: #ffffff; text-decoration: none; padding: 12px 22px; border-radius: 8px; font-weight: 600; font-size: 14px;\">Book a 15-minute Contract Risk Review &rarr;</a>\n  </div>\n  <p style=\"margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 15px; color: #64748b; font-size: 13px;\">\n    Best regards,<br>\n    <strong style=\"color: #0f172a;\">Dr. Mohammed Mustafa</strong><br>\n    Founder — JurisTech Solutions<br>\n    <a href=\"https://www.juristech.solutions\" style=\"color: #0284c7; text-decoration: none;\">www.juristech.solutions</a>\n  </p>\n</div>",
+      "text": "Hello Henry,\n\nWe built JurisTech to help legal and commercial teams identify contract risks faster before negotiation or signing.\n\nWe are inviting a small number of US companies to a private 15-minute contract risk review using one non-confidential sample agreement.\n\nThe review focuses on liability, indemnity, termination and other clauses that may create negotiation or commercial risk.\n\nNo commitment required.\n\nWould you be open to a brief review?\n\nBest regards,\n\nDr. Mohammed Mustafa\nFounder — JurisTech Solutions\nhttps://www.juristech.solutions"
+    }
+  },
+  {
+    "market": "USA",
+    "company": "Deel",
+    "email": "legal@deel.com",
+    "contact": "Alex",
+    "role": "Global Legal Operations",
+    "statusCode": 200,
+    "response": {
+      "id": "7e6522f9-063f-4bbb-897b-b09cb6817268"
+    },
+    "timestamp": "2026-08-28T07:45:44.952Z",
+    "telemetry": {
+      "object": "email",
+      "id": "7e6522f9-063f-4bbb-897b-b09cb6817268",
+      "to": [
+        "legal@deel.com"
+      ],
+      "from": "Dr. Mohammed Mustafa <founder@juristech.solutions>",
+      "created_at": "2026-08-28 07:45:45.020000+00",
+      "subject": "15-minute contract risk review for Deel",
+      "bcc": [
+        "drzyogo.ca@gmail.com"
+      ],
+      "cc": null,
+      "reply_to": [
+        "juristech.solutions@outlook.com"
+      ],
+      "last_event": "delivered",
+      "scheduled_at": null,
+      "message_id": "<010201a04754f576-23e6006e-b0cc-43b4-b61e-a2e149e337db-000000@eu-west-1.amazonses.com>",
+      "html": "\n<div style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #1e293b; max-width: 580px; padding: 20px;\">\n  <p>Hello Alex,</p>\n  <p>We built <strong>JurisTech</strong> to help legal and commercial teams identify contract risks faster before negotiation or signing.</p>\n  <p>We are inviting a small number of US companies to a private 15-minute contract risk review using one non-confidential sample agreement.</p>\n  <p>The review focuses on liability, indemnity, termination and other clauses that may create negotiation or commercial risk.</p>\n  <p>No commitment required.</p>\n  <p>Would you be open to a brief review?</p>\n  <div style=\"margin: 25px 0;\">\n    <a href=\"https://www.juristech.solutions\" style=\"display: inline-block; background-color: #0284c7; color: #ffffff; text-decoration: none; padding: 12px 22px; border-radius: 8px; font-weight: 600; font-size: 14px;\">Book a 15-minute Contract Risk Review &rarr;</a>\n  </div>\n  <p style=\"margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 15px; color: #64748b; font-size: 13px;\">\n    Best regards,<br>\n    <strong style=\"color: #0f172a;\">Dr. Mohammed Mustafa</strong><br>\n    Founder — JurisTech Solutions<br>\n    <a href=\"https://www.juristech.solutions\" style=\"color: #0284c7; text-decoration: none;\">www.juristech.solutions</a>\n  </p>\n</div>",
+      "text": "Hello Alex,\n\nWe built JurisTech to help legal and commercial teams identify contract risks faster before negotiation or signing.\n\nWe are inviting a small number of US companies to a private 15-minute contract risk review using one non-confidential sample agreement.\n\nThe review focuses on liability, indemnity, termination and other clauses that may create negotiation or commercial risk.\n\nNo commitment required.\n\nWould you be open to a brief review?\n\nBest regards,\n\nDr. Mohammed Mustafa\nFounder — JurisTech Solutions\nhttps://www.juristech.solutions"
+    }
+  },
+  {
+    "market": "USA",
+    "company": "Stripe",
+    "email": "legal@stripe.com",
+    "contact": "Patrick",
+    "role": "Partnerships & Ecosystem Legal",
+    "statusCode": 200,
+    "response": {
+      "id": "26f4c6c9-1096-4442-b679-3880e1b78939"
+    },
+    "timestamp": "2026-08-28T07:45:46.623Z",
+    "telemetry": {
+      "object": "email",
+      "id": "26f4c6c9-1096-4442-b679-3880e1b78939",
+      "to": [
+        "legal@stripe.com"
+      ],
+      "from": "Dr. Mohammed Mustafa <founder@juristech.solutions>",
+      "created_at": "2026-08-28 07:45:46.673000+00",
+      "subject": "15-minute contract risk review for Stripe",
+      "bcc": [
+        "drzyogo.ca@gmail.com"
+      ],
+      "cc": null,
+      "reply_to": [
+        "juristech.solutions@outlook.com"
+      ],
+      "last_event": "delivered",
+      "scheduled_at": null,
+      "message_id": "<010201a04754fbeb-3474f24c-0557-40cd-bef9-c2a42af33aa4-000000@eu-west-1.amazonses.com>",
+      "html": "\n<div style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #1e293b; max-width: 580px; padding: 20px;\">\n  <p>Hello Patrick,</p>\n  <p>We built <strong>JurisTech</strong> to help legal and commercial teams identify contract risks faster before negotiation or signing.</p>\n  <p>We are inviting a small number of US companies to a private 15-minute contract risk review using one non-confidential sample agreement.</p>\n  <p>The review focuses on liability, indemnity, termination and other clauses that may create negotiation or commercial risk.</p>\n  <p>No commitment required.</p>\n  <p>Would you be open to a brief review?</p>\n  <div style=\"margin: 25px 0;\">\n    <a href=\"https://www.juristech.solutions\" style=\"display: inline-block; background-color: #0284c7; color: #ffffff; text-decoration: none; padding: 12px 22px; border-radius: 8px; font-weight: 600; font-size: 14px;\">Book a 15-minute Contract Risk Review &rarr;</a>\n  </div>\n  <p style=\"margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 15px; color: #64748b; font-size: 13px;\">\n    Best regards,<br>\n    <strong style=\"color: #0f172a;\">Dr. Mohammed Mustafa</strong><br>\n    Founder — JurisTech Solutions<br>\n    <a href=\"https://www.juristech.solutions\" style=\"color: #0284c7; text-decoration: none;\">www.juristech.solutions</a>\n  </p>\n</div>",
+      "text": "Hello Patrick,\n\nWe built JurisTech to help legal and commercial teams identify contract risks faster before negotiation or signing.\n\nWe are inviting a small number of US companies to a private 15-minute contract risk review using one non-confidential sample agreement.\n\nThe review focuses on liability, indemnity, termination and other clauses that may create negotiation or commercial risk.\n\nNo commitment required.\n\nWould you be open to a brief review?\n\nBest regards,\n\nDr. Mohammed Mustafa\nFounder — JurisTech Solutions\nhttps://www.juristech.solutions"
+    }
+  },
+  {
+    "market": "USA",
+    "company": "Blackstone",
+    "email": "info@blackstone.com",
+    "contact": "Stephen",
+    "role": "Infrastructure Legal & Compliance",
+    "statusCode": 200,
+    "response": {
+      "id": "be14e4cb-c73d-4cd5-8f15-0686e9c7e7eb"
+    },
+    "timestamp": "2026-08-28T07:45:48.088Z",
+    "telemetry": {
+      "object": "email",
+      "id": "be14e4cb-c73d-4cd5-8f15-0686e9c7e7eb",
+      "to": [
+        "info@blackstone.com"
+      ],
+      "from": "Dr. Mohammed Mustafa <founder@juristech.solutions>",
+      "created_at": "2026-08-28 07:45:48.148000+00",
+      "subject": "15-minute contract risk review for Blackstone",
+      "bcc": [
+        "drzyogo.ca@gmail.com"
+      ],
+      "cc": null,
+      "reply_to": [
+        "juristech.solutions@outlook.com"
+      ],
+      "last_event": "delivered",
+      "scheduled_at": null,
+      "message_id": "<010201a0475501e3-09de645d-7ee0-43e9-88ee-6e703f982832-000000@eu-west-1.amazonses.com>",
+      "html": "\n<div style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #1e293b; max-width: 580px; padding: 20px;\">\n  <p>Hello Stephen,</p>\n  <p>We built <strong>JurisTech</strong> to help legal and commercial teams identify contract risks faster before negotiation or signing.</p>\n  <p>We are inviting a small number of US companies to a private 15-minute contract risk review using one non-confidential sample agreement.</p>\n  <p>The review focuses on liability, indemnity, termination and other clauses that may create negotiation or commercial risk.</p>\n  <p>No commitment required.</p>\n  <p>Would you be open to a brief review?</p>\n  <div style=\"margin: 25px 0;\">\n    <a href=\"https://www.juristech.solutions\" style=\"display: inline-block; background-color: #0284c7; color: #ffffff; text-decoration: none; padding: 12px 22px; border-radius: 8px; font-weight: 600; font-size: 14px;\">Book a 15-minute Contract Risk Review &rarr;</a>\n  </div>\n  <p style=\"margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 15px; color: #64748b; font-size: 13px;\">\n    Best regards,<br>\n    <strong style=\"color: #0f172a;\">Dr. Mohammed Mustafa</strong><br>\n    Founder — JurisTech Solutions<br>\n    <a href=\"https://www.juristech.solutions\" style=\"color: #0284c7; text-decoration: none;\">www.juristech.solutions</a>\n  </p>\n</div>",
+      "text": "Hello Stephen,\n\nWe built JurisTech to help legal and commercial teams identify contract risks faster before negotiation or signing.\n\nWe are inviting a small number of US companies to a private 15-minute contract risk review using one non-confidential sample agreement.\n\nThe review focuses on liability, indemnity, termination and other clauses that may create negotiation or commercial risk.\n\nNo commitment required.\n\nWould you be open to a brief review?\n\nBest regards,\n\nDr. Mohammed Mustafa\nFounder — JurisTech Solutions\nhttps://www.juristech.solutions"
+    }
+  },
+  {
+    "market": "EU",
+    "company": "Hengeler Mueller",
+    "email": "frankfurt@hengeler.com",
+    "contact": "Dirk",
+    "role": "Senior Partner",
+    "statusCode": 200,
+    "response": {
+      "id": "0d423e74-5073-4d96-8591-39af17ea16ad"
+    },
+    "timestamp": "2026-08-28T07:45:49.548Z",
+    "telemetry": {
+      "object": "email",
+      "id": "0d423e74-5073-4d96-8591-39af17ea16ad",
+      "to": [
+        "frankfurt@hengeler.com"
+      ],
+      "from": "Dr. Mohammed Mustafa <founder@juristech.solutions>",
+      "created_at": "2026-08-28 07:45:49.615000+00",
+      "subject": "15-minute contract risk review for Hengeler Mueller",
+      "bcc": [
+        "drzyogo.ca@gmail.com"
+      ],
+      "cc": null,
+      "reply_to": [
+        "juristech.solutions@outlook.com"
+      ],
+      "last_event": "delivered",
+      "scheduled_at": null,
+      "message_id": "<010201a0475507b9-c4c4db39-b9ed-460c-b7ef-de7a67c215b5-000000@eu-west-1.amazonses.com>",
+      "html": "\n<div style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #1e293b; max-width: 580px; padding: 20px;\">\n  <p>Dear Dirk,</p>\n  <p>We built <strong>JurisTech</strong> as an AI-powered contract intelligence platform designed to help legal teams identify contractual risks faster before negotiation and signing.</p>\n  <p>We are currently inviting a small number of European legal teams to a private 15-minute review using one non-confidential contract page.</p>\n  <p>The session focuses on identifying potential liability, indemnity, termination and compliance risks.</p>\n  <p>There is no commitment required.</p>\n  <p>Would you be open to a brief demonstration?</p>\n  <div style=\"margin: 25px 0;\">\n    <a href=\"https://www.juristech.solutions\" style=\"display: inline-block; background-color: #0284c7; color: #ffffff; text-decoration: none; padding: 12px 22px; border-radius: 8px; font-weight: 600; font-size: 14px;\">Schedule a 15-minute Contract Risk Review &rarr;</a>\n  </div>\n  <p style=\"margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 15px; color: #64748b; font-size: 13px;\">\n    Kind regards,<br>\n    <strong style=\"color: #0f172a;\">Dr. Mohammed Mustafa</strong><br>\n    Founder — JurisTech Solutions<br>\n    <a href=\"https://www.juristech.solutions\" style=\"color: #0284c7; text-decoration: none;\">www.juristech.solutions</a>\n  </p>\n</div>",
+      "text": "Dear Dirk,\n\nWe built JurisTech as an AI-powered contract intelligence platform designed to help legal teams identify contractual risks faster before negotiation and signing.\n\nWe are currently inviting a small number of European legal teams to a private 15-minute review using one non-confidential contract page.\n\nThe session focuses on identifying potential liability, indemnity, termination and compliance risks.\n\nThere is no commitment required.\n\nWould you be open to a brief demonstration?\n\nKind regards,\n\nDr. Mohammed Mustafa\nFounder — JurisTech Solutions\nhttps://www.juristech.solutions"
+    }
+  },
+  {
+    "market": "EU",
+    "company": "Gleiss Lutz",
+    "email": "info@gleisslutz.com",
+    "contact": "Michael",
+    "role": "Managing Partner",
+    "statusCode": 200,
+    "response": {
+      "id": "119b3dbc-65ce-42e8-9a4f-e156264cf509"
+    },
+    "timestamp": "2026-08-28T07:45:51.028Z",
+    "telemetry": {
+      "object": "email",
+      "id": "119b3dbc-65ce-42e8-9a4f-e156264cf509",
+      "to": [
+        "info@gleisslutz.com"
+      ],
+      "from": "Dr. Mohammed Mustafa <founder@juristech.solutions>",
+      "created_at": "2026-08-28 07:45:51.079000+00",
+      "subject": "15-minute contract risk review for Gleiss Lutz",
+      "bcc": [
+        "drzyogo.ca@gmail.com"
+      ],
+      "cc": null,
+      "reply_to": [
+        "juristech.solutions@outlook.com"
+      ],
+      "last_event": "delivered",
+      "scheduled_at": null,
+      "message_id": "<010201a047550d1f-312bb1da-50d9-49d9-b2e3-c27de6e1e9c4-000000@eu-west-1.amazonses.com>",
+      "html": "\n<div style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #1e293b; max-width: 580px; padding: 20px;\">\n  <p>Dear Michael,</p>\n  <p>We built <strong>JurisTech</strong> as an AI-powered contract intelligence platform designed to help legal teams identify contractual risks faster before negotiation and signing.</p>\n  <p>We are currently inviting a small number of European legal teams to a private 15-minute review using one non-confidential contract page.</p>\n  <p>The session focuses on identifying potential liability, indemnity, termination and compliance risks.</p>\n  <p>There is no commitment required.</p>\n  <p>Would you be open to a brief demonstration?</p>\n  <div style=\"margin: 25px 0;\">\n    <a href=\"https://www.juristech.solutions\" style=\"display: inline-block; background-color: #0284c7; color: #ffffff; text-decoration: none; padding: 12px 22px; border-radius: 8px; font-weight: 600; font-size: 14px;\">Schedule a 15-minute Contract Risk Review &rarr;</a>\n  </div>\n  <p style=\"margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 15px; color: #64748b; font-size: 13px;\">\n    Kind regards,<br>\n    <strong style=\"color: #0f172a;\">Dr. Mohammed Mustafa</strong><br>\n    Founder — JurisTech Solutions<br>\n    <a href=\"https://www.juristech.solutions\" style=\"color: #0284c7; text-decoration: none;\">www.juristech.solutions</a>\n  </p>\n</div>",
+      "text": "Dear Michael,\n\nWe built JurisTech as an AI-powered contract intelligence platform designed to help legal teams identify contractual risks faster before negotiation and signing.\n\nWe are currently inviting a small number of European legal teams to a private 15-minute review using one non-confidential contract page.\n\nThe session focuses on identifying potential liability, indemnity, termination and compliance risks.\n\nThere is no commitment required.\n\nWould you be open to a brief demonstration?\n\nKind regards,\n\nDr. Mohammed Mustafa\nFounder — JurisTech Solutions\nhttps://www.juristech.solutions"
+    }
+  },
+  {
+    "market": "EU",
+    "company": "Noerr",
+    "email": "info@noerr.com",
+    "contact": "Alexander",
+    "role": "Managing Partner",
+    "statusCode": 200,
+    "response": {
+      "id": "f74c98a6-7b88-4f99-98c7-82771e461bc3"
+    },
+    "timestamp": "2026-08-28T07:45:52.640Z",
+    "telemetry": {
+      "object": "email",
+      "id": "f74c98a6-7b88-4f99-98c7-82771e461bc3",
+      "to": [
+        "info@noerr.com"
+      ],
+      "from": "Dr. Mohammed Mustafa <founder@juristech.solutions>",
+      "created_at": "2026-08-28 07:45:52.703000+00",
+      "subject": "15-minute contract risk review for Noerr",
+      "bcc": [
+        "drzyogo.ca@gmail.com"
+      ],
+      "cc": null,
+      "reply_to": [
+        "juristech.solutions@outlook.com"
+      ],
+      "last_event": "delivered",
+      "scheduled_at": null,
+      "message_id": "<010201a04755137b-46a551dc-fc07-4ae8-8c65-4a349cbc62ed-000000@eu-west-1.amazonses.com>",
+      "html": "\n<div style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #1e293b; max-width: 580px; padding: 20px;\">\n  <p>Dear Alexander,</p>\n  <p>We built <strong>JurisTech</strong> as an AI-powered contract intelligence platform designed to help legal teams identify contractual risks faster before negotiation and signing.</p>\n  <p>We are currently inviting a small number of European legal teams to a private 15-minute review using one non-confidential contract page.</p>\n  <p>The session focuses on identifying potential liability, indemnity, termination and compliance risks.</p>\n  <p>There is no commitment required.</p>\n  <p>Would you be open to a brief demonstration?</p>\n  <div style=\"margin: 25px 0;\">\n    <a href=\"https://www.juristech.solutions\" style=\"display: inline-block; background-color: #0284c7; color: #ffffff; text-decoration: none; padding: 12px 22px; border-radius: 8px; font-weight: 600; font-size: 14px;\">Schedule a 15-minute Contract Risk Review &rarr;</a>\n  </div>\n  <p style=\"margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 15px; color: #64748b; font-size: 13px;\">\n    Kind regards,<br>\n    <strong style=\"color: #0f172a;\">Dr. Mohammed Mustafa</strong><br>\n    Founder — JurisTech Solutions<br>\n    <a href=\"https://www.juristech.solutions\" style=\"color: #0284c7; text-decoration: none;\">www.juristech.solutions</a>\n  </p>\n</div>",
+      "text": "Dear Alexander,\n\nWe built JurisTech as an AI-powered contract intelligence platform designed to help legal teams identify contractual risks faster before negotiation and signing.\n\nWe are currently inviting a small number of European legal teams to a private 15-minute review using one non-confidential contract page.\n\nThe session focuses on identifying potential liability, indemnity, termination and compliance risks.\n\nThere is no commitment required.\n\nWould you be open to a brief demonstration?\n\nKind regards,\n\nDr. Mohammed Mustafa\nFounder — JurisTech Solutions\nhttps://www.juristech.solutions"
+    }
+  },
+  {
+    "market": "EU",
+    "company": "CMS Hasche Sigle",
+    "email": "kontakt@cms-hs.com",
+    "contact": "Martin",
+    "role": "Managing Partner",
+    "statusCode": 200,
+    "response": {
+      "id": "9a5b05b2-5a9b-47e9-8958-78e66fc7bd71"
+    },
+    "timestamp": "2026-08-28T07:45:54.307Z",
+    "telemetry": {
+      "object": "email",
+      "id": "9a5b05b2-5a9b-47e9-8958-78e66fc7bd71",
+      "to": [
+        "kontakt@cms-hs.com"
+      ],
+      "from": "Dr. Mohammed Mustafa <founder@juristech.solutions>",
+      "created_at": "2026-08-28 07:45:54.369000+00",
+      "subject": "15-minute contract risk review for CMS Hasche Sigle",
+      "bcc": [
+        "drzyogo.ca@gmail.com"
+      ],
+      "cc": null,
+      "reply_to": [
+        "juristech.solutions@outlook.com"
+      ],
+      "last_event": "bounced",
+      "scheduled_at": null,
+      "message_id": "<010201a0475519fb-c1285c0a-613c-4b9f-bdec-e026103f482f-000000@eu-west-1.amazonses.com>",
+      "html": "\n<div style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #1e293b; max-width: 580px; padding: 20px;\">\n  <p>Dear Martin,</p>\n  <p>We built <strong>JurisTech</strong> as an AI-powered contract intelligence platform designed to help legal teams identify contractual risks faster before negotiation and signing.</p>\n  <p>We are currently inviting a small number of European legal teams to a private 15-minute review using one non-confidential contract page.</p>\n  <p>The session focuses on identifying potential liability, indemnity, termination and compliance risks.</p>\n  <p>There is no commitment required.</p>\n  <p>Would you be open to a brief demonstration?</p>\n  <div style=\"margin: 25px 0;\">\n    <a href=\"https://www.juristech.solutions\" style=\"display: inline-block; background-color: #0284c7; color: #ffffff; text-decoration: none; padding: 12px 22px; border-radius: 8px; font-weight: 600; font-size: 14px;\">Schedule a 15-minute Contract Risk Review &rarr;</a>\n  </div>\n  <p style=\"margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 15px; color: #64748b; font-size: 13px;\">\n    Kind regards,<br>\n    <strong style=\"color: #0f172a;\">Dr. Mohammed Mustafa</strong><br>\n    Founder — JurisTech Solutions<br>\n    <a href=\"https://www.juristech.solutions\" style=\"color: #0284c7; text-decoration: none;\">www.juristech.solutions</a>\n  </p>\n</div>",
+      "text": "Dear Martin,\n\nWe built JurisTech as an AI-powered contract intelligence platform designed to help legal teams identify contractual risks faster before negotiation and signing.\n\nWe are currently inviting a small number of European legal teams to a private 15-minute review using one non-confidential contract page.\n\nThe session focuses on identifying potential liability, indemnity, termination and compliance risks.\n\nThere is no commitment required.\n\nWould you be open to a brief demonstration?\n\nKind regards,\n\nDr. Mohammed Mustafa\nFounder — JurisTech Solutions\nhttps://www.juristech.solutions",
+      "bounce": {
+        "message": "The recipient's email provider sent a hard bounce message, but didn't specify the reason for the hard bounce. We recommend removing the recipient's email address from your mailing list. Sending messages to addresses that produce hard bounces can have a negative impact on your reputation as a sender.",
+        "type": "Permanent",
+        "subType": "General",
+        "diagnosticCode": [
+          "smtp; 550 5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [DU2PEPF00028D02.eurprd03.prod.outlook.com 2026-08-28T07:45:55.294Z 08DF046751F94063]"
+        ]
+      }
+    }
+  },
+  {
+    "market": "EU",
+    "company": "Heuking Kühn Lüer Wojtek",
+    "email": "duesseldorf@heuking.de",
+    "contact": "Pär",
+    "role": "Managing Partner",
+    "statusCode": 200,
+    "response": {
+      "id": "67e2ac03-9eaa-4998-9bff-77dacf704149"
+    },
+    "timestamp": "2026-08-28T07:45:55.964Z",
+    "telemetry": {
+      "object": "email",
+      "id": "67e2ac03-9eaa-4998-9bff-77dacf704149",
+      "to": [
+        "duesseldorf@heuking.de"
+      ],
+      "from": "Dr. Mohammed Mustafa <founder@juristech.solutions>",
+      "created_at": "2026-08-28 07:45:56.026000+00",
+      "subject": "15-minute contract risk review for Heuking Kühn Lüer Wojtek",
+      "bcc": [
+        "drzyogo.ca@gmail.com"
+      ],
+      "cc": null,
+      "reply_to": [
+        "juristech.solutions@outlook.com"
+      ],
+      "last_event": "delivered",
+      "scheduled_at": null,
+      "message_id": "<010201a0475520b5-c5f1f354-ba74-4ead-a348-b10335a9e1aa-000000@eu-west-1.amazonses.com>",
+      "html": "\n<div style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #1e293b; max-width: 580px; padding: 20px;\">\n  <p>Dear Pär,</p>\n  <p>We built <strong>JurisTech</strong> as an AI-powered contract intelligence platform designed to help legal teams identify contractual risks faster before negotiation and signing.</p>\n  <p>We are currently inviting a small number of European legal teams to a private 15-minute review using one non-confidential contract page.</p>\n  <p>The session focuses on identifying potential liability, indemnity, termination and compliance risks.</p>\n  <p>There is no commitment required.</p>\n  <p>Would you be open to a brief demonstration?</p>\n  <div style=\"margin: 25px 0;\">\n    <a href=\"https://www.juristech.solutions\" style=\"display: inline-block; background-color: #0284c7; color: #ffffff; text-decoration: none; padding: 12px 22px; border-radius: 8px; font-weight: 600; font-size: 14px;\">Schedule a 15-minute Contract Risk Review &rarr;</a>\n  </div>\n  <p style=\"margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 15px; color: #64748b; font-size: 13px;\">\n    Kind regards,<br>\n    <strong style=\"color: #0f172a;\">Dr. Mohammed Mustafa</strong><br>\n    Founder — JurisTech Solutions<br>\n    <a href=\"https://www.juristech.solutions\" style=\"color: #0284c7; text-decoration: none;\">www.juristech.solutions</a>\n  </p>\n</div>",
+      "text": "Dear Pär,\n\nWe built JurisTech as an AI-powered contract intelligence platform designed to help legal teams identify contractual risks faster before negotiation and signing.\n\nWe are currently inviting a small number of European legal teams to a private 15-minute review using one non-confidential contract page.\n\nThe session focuses on identifying potential liability, indemnity, termination and compliance risks.\n\nThere is no commitment required.\n\nWould you be open to a brief demonstration?\n\nKind regards,\n\nDr. Mohammed Mustafa\nFounder — JurisTech Solutions\nhttps://www.juristech.solutions"
+    }
+  }
+]
