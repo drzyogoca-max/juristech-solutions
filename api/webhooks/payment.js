@@ -139,6 +139,8 @@ export function verifyWebhookSignature(provider, body, signature, secret) {
   return false;
 }
 
+import { isPaddleIpAllowed } from '../ipAllowlist.js';
+
 export default async function handler(req, res) {
   const timestamp = new Date().toISOString();
 
@@ -163,6 +165,19 @@ export default async function handler(req, res) {
 
   try {
     const provider = (req.query?.provider || 'paddle').toLowerCase();
+
+    // IP Allowlist Check for Paddle Webhooks (fetches dynamically from https://api.paddle.com/ips)
+    if (provider === 'paddle') {
+      const clientIp = (req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || req.socket?.remoteAddress || '').toString();
+      if (clientIp) {
+        const isAllowed = await isPaddleIpAllowed(clientIp);
+        if (!isAllowed) {
+          console.warn(`[Webhook Security] IP Allowlist rejected client IP: ${clientIp}`);
+          return res.status(403).json({ error: 'Forbidden: Unauthorized IP address' });
+        }
+      }
+    }
+
     const body = req.body || {};
     const signature = req.headers['paddle-signature'] || req.headers['x-paytabs-signature'] || req.headers['stripe-signature'] || '';
 

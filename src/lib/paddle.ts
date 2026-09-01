@@ -15,6 +15,7 @@ export interface PricePreviewMap {
 export interface CheckoutOptions {
   priceId: string;
   userEmail?: string;
+  paddleCustomerId?: string;
   planName?: string;
   onSuccess?: () => void;
   onClosed?: () => void;
@@ -31,7 +32,7 @@ let paddleInitPromise: Promise<any> | null = null;
 /**
  * Dynamically loads Paddle.js v2 SDK from official CDN and initializes it.
  */
-export function initializePaddle(): Promise<any> {
+export function initializePaddle(paddleCustomerId?: string): Promise<any> {
   if (typeof window === 'undefined') return Promise.resolve(null);
   if (window.Paddle && window.Paddle.Status?.libraryVersion) {
     return Promise.resolve(window.Paddle);
@@ -44,10 +45,13 @@ export function initializePaddle(): Promise<any> {
     const onScriptLoad = () => {
       if (window.Paddle) {
         try {
+          // Explicitly set sandbox mode ONLY if in sandbox environment
           if (PADDLE_ENV.isSandbox) {
             window.Paddle.Environment.set('sandbox');
           }
-          window.Paddle.Initialize({
+
+          // Build initialization payload
+          const initPayload: any = {
             token: PADDLE_ENV.clientToken,
             eventCallback: (event: any) => {
               if (event?.name === 'checkout.completed') {
@@ -56,7 +60,17 @@ export function initializePaddle(): Promise<any> {
                 window.location.href = successRedirectUrl;
               }
             },
-          });
+          };
+
+          // Paddle Retain integration: pass signed-in user's Paddle Customer ID (ctm_...)
+          if (paddleCustomerId && typeof paddleCustomerId === 'string' && paddleCustomerId.startsWith('ctm_')) {
+            initPayload.pwCustomer = {
+              id: paddleCustomerId,
+            };
+            console.log('[Paddle Retain Active]: Configured pwCustomer for ID:', paddleCustomerId);
+          }
+
+          window.Paddle.Initialize(initPayload);
           console.log(`[Paddle.js v2] Successfully initialized in ${PADDLE_ENV.environment.toUpperCase()} mode.`);
           resolve(window.Paddle);
         } catch (err) {
@@ -147,7 +161,7 @@ export async function fetchPricePreviews(
  * Settings: displayMode: 'overlay', variant: 'one-page', successUrl: '/welcome'.
  */
 export async function openPaddleCheckout(options: CheckoutOptions): Promise<void> {
-  const paddle = await initializePaddle();
+  const paddle = await initializePaddle(options.paddleCustomerId);
   const successUrl = `${window.location.origin}/welcome`;
 
   if (!paddle || !paddle.Checkout) {
