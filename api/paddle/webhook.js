@@ -69,7 +69,7 @@ export default async function handler(req, res) {
     let parsedBody = {};
     if (rawBody) {
       try {
-        parsedBody = JSON.parse(rawBody);
+        parsedBody = typeof rawBody === 'string' ? JSON.parse(rawBody) : rawBody;
       } catch (err) {
         return res.status(400).json({ error: 'Invalid JSON payload' });
       }
@@ -80,12 +80,17 @@ export default async function handler(req, res) {
     // 4. Attach rawBody and parsedBody to req for delegation to shared handler
     req.rawBody = rawBody;
     req.body = parsedBody;
-    req.query = { ...req.query, provider: 'paddle' };
+    req.query = { ...(req.query || {}), provider: 'paddle' };
 
     // 5. Delegate to atomic payment engine in api/webhooks/payment.js
-    return await paymentHandler(req, res);
+    const delegateFn = typeof paymentHandler === 'function' ? paymentHandler : paymentHandler?.default;
+    if (typeof delegateFn === 'function') {
+      return await delegateFn(req, res);
+    }
+
+    return res.status(500).json({ error: 'Webhook handler function resolution failed' });
   } catch (error) {
-    console.error('[Paddle Webhook Adapter Error]:', error.message);
-    return res.status(500).json({ error: 'Internal server error processing Paddle webhook' });
+    console.error('[Paddle Webhook Adapter Error]:', error.message || error);
+    return res.status(500).json({ error: 'Internal server error processing Paddle webhook', details: String(error) });
   }
 }
