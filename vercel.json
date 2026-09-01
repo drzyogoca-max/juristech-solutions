@@ -198,6 +198,10 @@
   ],
   "rewrites": [
     {
+      "source": "/api/paddle/webhook",
+      "destination": "/api/paddle/webhook.js"
+    },
+    {
       "source": "/api/(.*)",
       "destination": "/api/$1"
     },
