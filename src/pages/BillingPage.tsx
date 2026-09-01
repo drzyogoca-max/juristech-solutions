@@ -55,6 +55,33 @@ export default function BillingPage() {
   const isPaddleActive = paddleData?.status === 'active';
   const isCancelled = status === 'Cancelled' || paddleData?.status === 'canceled';
 
+  const [portalLoading, setPortalLoading] = useState(false);
+
+  const handleOpenCustomerPortal = async () => {
+    if (!user?.email) return;
+    setPortalLoading(true);
+    try {
+      const res = await fetch('/api/portal', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-user-email': user.email,
+        },
+        body: JSON.stringify({ userEmail: user.email }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.url) {
+          window.open(data.url, '_blank');
+        }
+      }
+    } catch (err) {
+      console.error('[Portal Error]:', err);
+    } finally {
+      setPortalLoading(false);
+    }
+  };
+
   return (
     <div className={`min-h-screen bg-slate-950 text-slate-100 py-12 px-4 sm:px-6 lg:px-8 ${isRtl ? 'rtl' : 'ltr'}`}>
       <SEO
@@ -246,6 +273,15 @@ export default function BillingPage() {
                   </button>
                 </>
               )}
+
+              <button
+                onClick={handleOpenCustomerPortal}
+                disabled={portalLoading}
+                className="px-5 py-2.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 text-xs font-bold flex items-center gap-2 transition-all cursor-pointer"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                <span>{portalLoading ? l('جاري الفتح...', 'Opening Portal...') : l('بوابة إدارة الاشتراك والتعديل (Paddle Portal)', 'Customer Self-Service Portal')}</span>
+              </button>
 
               <Link
                 to="/pricing"

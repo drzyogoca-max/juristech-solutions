@@ -206,6 +206,10 @@
       "destination": "/api/country.js"
     },
     {
+      "source": "/api/portal",
+      "destination": "/api/portal.js"
+    },
+    {
       "source": "/api/(.*)",
       "destination": "/api/$1"
     },
