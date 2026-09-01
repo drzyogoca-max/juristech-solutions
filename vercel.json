@@ -202,6 +202,10 @@
       "destination": "/api/paddle/webhook.js"
     },
     {
+      "source": "/api/country",
+      "destination": "/api/country.js"
+    },
+    {
       "source": "/api/(.*)",
       "destination": "/api/$1"
     },
