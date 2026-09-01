@@ -90,6 +90,8 @@ const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
 const TermsPage = lazy(() => import('./pages/TermsPage'));
 const RefundPage = lazy(() => import('./pages/RefundPage'));
 const BillingPage = lazy(() => import('./pages/BillingPage'));
+const PricingPage = lazy(() => import('./pages/PricingPage'));
+const WelcomePage = lazy(() => import('./pages/WelcomePage'));
 const AdminAnalyticsPage = lazy(() => import('./pages/admin/AdminAnalyticsPage'));
 const AdminFinancialDashboardPage = lazy(() => import('./pages/admin/AdminFinancialDashboardPage'));
 const AntiFraudAuditorPage = lazy(() => import('./pages/admin/AntiFraudAuditorPage'));
@@ -333,7 +335,8 @@ function MainAppContent() {
                   <Route path={`${prefix}/payment`} element={<PaymentPage />} />
                   <Route path={`${prefix}/payment/verify`} element={<ReceiptVerificationPage />} />
                   <Route path={`${prefix}/billing`} element={<BillingPage />} />
-                  <Route path={`${prefix}/pricing`} element={<Navigate to={`${prefix}/payment`} replace />} />
+                  <Route path={`${prefix}/pricing`} element={<PricingPage />} />
+                  <Route path={`${prefix}/welcome`} element={<WelcomePage />} />
                   <Route path={`${prefix}/support`} element={<SupportPage />} />
                   <Route path={`${prefix}/legal-compliance`} element={<LegalCompliancePage />} />
                   <Route path={`${prefix}/about`} element={<AboutUsPage />} />
