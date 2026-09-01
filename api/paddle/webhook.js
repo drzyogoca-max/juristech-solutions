@@ -67,9 +67,9 @@ export default async function handler(req, res) {
 
     // 3. Parse body for payload inspection while preserving rawBody intact
     let parsedBody = {};
-    if (rawBody) {
+    if (rawBody && typeof rawBody === 'string' && rawBody.trim().length > 0) {
       try {
-        parsedBody = typeof rawBody === 'string' ? JSON.parse(rawBody) : rawBody;
+        parsedBody = JSON.parse(rawBody);
       } catch (err) {
         return res.status(400).json({ error: 'Invalid JSON payload' });
       }
@@ -91,6 +91,6 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Webhook handler function resolution failed' });
   } catch (error) {
     console.error('[Paddle Webhook Adapter Error]:', error.message || error);
-    return res.status(500).json({ error: 'Internal server error processing Paddle webhook', details: String(error) });
+    return res.status(500).json({ error: 'Internal server error processing Paddle webhook' });
   }
 }
