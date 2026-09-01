@@ -15,14 +15,26 @@ export const config = {
 };
 
 async function getRawBody(req) {
+  if (req.rawBody) return req.rawBody;
   if (typeof req.body === 'string') return req.body;
   if (Buffer.isBuffer(req.body)) return req.body.toString('utf-8');
 
-  const chunks = [];
-  for await (const chunk of req) {
-    chunks.push(typeof chunk === 'string' ? Buffer.from(chunk) : chunk);
+  if (req.readableEnded || req.complete) {
+    return typeof req.body === 'object' ? JSON.stringify(req.body) : '';
   }
-  return Buffer.concat(chunks).toString('utf-8');
+
+  try {
+    const chunks = [];
+    for await (const chunk of req) {
+      chunks.push(typeof chunk === 'string' ? Buffer.from(chunk) : chunk);
+    }
+    const result = Buffer.concat(chunks).toString('utf-8');
+    if (result) return result;
+  } catch (e) {
+    console.warn('[Paddle Webhook Adapter Stream Warning]:', e.message);
+  }
+
+  return typeof req.body === 'object' ? JSON.stringify(req.body) : '';
 }
 
 export default async function handler(req, res) {
@@ -44,14 +56,14 @@ export default async function handler(req, res) {
   }
 
   try {
-    // 1. Capture exact raw HTTP request body string before JSON parsing
-    const rawBody = await getRawBody(req);
-
-    // 2. Validate presence of Paddle-Signature header
+    // 1. Validate presence of Paddle-Signature header FIRST
     const signature = req.headers['paddle-signature'] || req.headers['x-paddle-signature'] || '';
     if (!signature) {
       return res.status(400).json({ error: 'Missing Paddle-Signature header' });
     }
+
+    // 2. Capture exact raw HTTP request body string before JSON parsing
+    const rawBody = await getRawBody(req);
 
     // 3. Parse body for payload inspection while preserving rawBody intact
     let parsedBody = {};
@@ -61,6 +73,8 @@ export default async function handler(req, res) {
       } catch (err) {
         return res.status(400).json({ error: 'Invalid JSON payload' });
       }
+    } else if (req.body && typeof req.body === 'object') {
+      parsedBody = req.body;
     }
 
     // 4. Attach rawBody and parsedBody to req for delegation to shared handler
