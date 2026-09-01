@@ -85,7 +85,7 @@ async function executeAtomicWebhookTransaction(params) {
   }
 }
 
-function verifyWebhookSignature(provider, body, signature, secret) {
+export function verifyWebhookSignature(provider, body, signature, secret) {
   if (!secret || !signature) return false;
 
   const rawBody = typeof body === 'string' ? body : JSON.stringify(body);
@@ -191,7 +191,7 @@ export default async function handler(req, res) {
       return res.status(401).json({ error: 'Unauthorized: Missing webhook signature header' });
     }
 
-    const isSignatureValid = verifyWebhookSignature(provider, body, signature, webhookSecret);
+    const isSignatureValid = verifyWebhookSignature(provider, req.rawBody || body, signature, webhookSecret);
     if (!isSignatureValid) {
       console.error(`[Webhook Security] Invalid signature rejected for provider: ${provider}`);
       return res.status(401).json({ error: 'Unauthorized: Invalid webhook signature' });
