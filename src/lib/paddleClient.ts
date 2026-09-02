@@ -14,14 +14,13 @@ export const PADDLE_CONFIG = {
   productId: import.meta.env.VITE_PADDLE_PRODUCT_ID || 'pro_01m1f46hy5e68zq68jvm573pzr',
   priceId: 'pri_01m0ty6sxjj7w0xpm1r07r50ss',
   // Environment toggled via localStorage key 'juristech_paddle_env' or VITE env var
-  // Set to 'live' for production, 'sandbox' for testing
-  environment: (
+  environment: ((
     import.meta.env.VITE_PADDLE_ENVIRONMENT ||
     localStorage.getItem('juristech_paddle_env') ||
-    'live'
-  ) as 'sandbox' | 'live',
+    'sandbox'
+  ).toString().trim().toLowerCase()) as 'sandbox' | 'live',
   // Client-Side Token (safe to expose in frontend — read-only checkout only)
-  clientToken: import.meta.env.VITE_PADDLE_CLIENT_TOKEN || 'test_eff98630073a3f06a59d0bc3694',
+  clientToken: (import.meta.env.VITE_PADDLE_CLIENT_TOKEN || 'test_eff98630073a3f06a59d0bc3694').toString().trim(),
 };
 
 export interface PaddleCheckoutOptions {

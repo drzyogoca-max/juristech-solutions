@@ -5,8 +5,9 @@
  * Reads environment settings from env vars and fails loudly if unset.
  */
 
-const envMode = import.meta.env.VITE_PADDLE_ENVIRONMENT;
-const clientToken = import.meta.env.VITE_PADDLE_CLIENT_TOKEN;
+const rawEnvMode = import.meta.env.VITE_PADDLE_ENVIRONMENT;
+const envMode = (rawEnvMode || '').toString().trim().toLowerCase();
+const clientToken = (import.meta.env.VITE_PADDLE_CLIENT_TOKEN || '').toString().trim();
 
 if (!envMode) {
   throw new Error(
