@@ -274,14 +274,20 @@ export default function PricingPage() {
         </div>
 
         {/* Security & Guarantee Note */}
-        <div className="max-w-2xl mx-auto text-center border-t border-slate-800/80 pt-8 text-xs text-slate-400 flex items-center justify-center gap-6">
-          <div className="flex items-center gap-1.5">
-            <Lock className="w-4 h-4 text-emerald-400" />
-            <span>256-bit Encrypted Checkout</span>
+        <div className="max-w-3xl mx-auto text-center border-t border-slate-800/80 pt-8 text-xs text-slate-400 space-y-4">
+          <div className="flex items-center justify-center gap-6">
+            <div className="flex items-center gap-1.5">
+              <Lock className="w-4 h-4 text-emerald-400" />
+              <span>256-bit Encrypted Checkout</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <ShieldCheck className="w-4 h-4 text-cyan-400" />
+              <span>Paddle Merchant of Record</span>
+            </div>
           </div>
-          <div className="flex items-center gap-1.5">
-            <ShieldCheck className="w-4 h-4 text-cyan-400" />
-            <span>Paddle Merchant of Record</span>
+
+          <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800 text-left text-slate-400 text-xs leading-relaxed">
+            <strong>Platform Legal Disclaimer:</strong> JurisTech is a B2B legal technology SaaS platform. It provides automated document analysis, contract risk detection, and workflow tools. JurisTech is not a law firm and does not provide legal advice, legal representation, or human consulting services.
           </div>
         </div>
       </div>

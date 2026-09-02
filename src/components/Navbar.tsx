@@ -189,16 +189,16 @@ export default function Navbar() {
               {t('Nav.jurisdictionLaw')}
             </button>
 
-            {/* Quick Action: Book 15-Minute Contract Audit & Demo */}
-            <button
-              onClick={() => setShowConsultationModal(true)}
-              aria-label={isRtl ? 'افحص عقدك الأول مجاناً خلال 15 دقيقة' : 'Audit your first contract free in 15 mins'}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-xs font-black transition-all shadow-sm cursor-pointer"
-              title={isRtl ? 'افحص عقدك الأول مجاناً خلال 15 دقيقة' : 'Audit your first contract free in 15 mins'}
+            {/* Quick Action: Start Automated Contract Risk Scan */}
+            <Link
+              to="/risk"
+              aria-label={isRtl ? 'الفحص الآلي لمخاطر العقود' : 'Start Automated Contract Scan'}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-xs font-black transition-all shadow-sm cursor-pointer no-underline"
+              title={isRtl ? 'الفحص الآلي لمخاطر العقود' : 'Start Automated Contract Scan'}
             >
-              <Mail className="w-3.5 h-3.5 text-emerald-400" />
-              {isRtl ? 'افحص عقدك الأول مجاناً خلال 15 دقيقة' : 'Audit Contract Free (15 Mins)'}
-            </button>
+              <Zap className="w-3.5 h-3.5 text-emerald-400" />
+              {isRtl ? 'الفحص الآلي لمخاطر العقود' : 'Start Automated Contract Scan'}
+            </Link>
 
             {/* Quick Action: Custom Themes & Fonts */}
             <button

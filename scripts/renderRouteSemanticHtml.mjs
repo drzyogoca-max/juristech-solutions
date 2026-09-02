@@ -124,7 +124,10 @@ export function getSemanticHtmlForRoute(routePath) {
           </div>
         </div>
       </div>
-      <div class="max-w-7xl mx-auto mt-8 pt-4 border-t border-slate-800 flex justify-between items-center flex-wrap gap-2 text-xs text-slate-500">
+      <div class="max-w-7xl mx-auto mt-6 p-4 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 text-xs leading-relaxed" dir="ltr">
+        <strong>Platform Legal Disclaimer:</strong> JurisTech is a B2B legal technology SaaS platform. It provides automated document analysis, contract risk detection, and workflow tools. JurisTech is not a law firm and does not provide legal advice, legal representation, or human consulting services.
+      </div>
+      <div class="max-w-7xl mx-auto mt-4 pt-4 border-t border-slate-800 flex justify-between items-center flex-wrap gap-2 text-xs text-slate-500">
         <span>© 2026 JurisTech Solutions Sovereign Tech. جميع الحقوق محفوظة قانونياً.</span>
         <span class="text-emerald-400 font-mono">آخر تحديث للنظام: 21 أغسطس 2026 (إصدار معتمد وحي)</span>
       </div>

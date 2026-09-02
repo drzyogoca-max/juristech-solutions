@@ -193,14 +193,11 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* 3. Mandatory Legal Disclaimer & Sovereign Independence */}
-        <div className="p-4 rounded-2xl bg-slate-900/80 border border-amber-500/30 flex items-start gap-3 text-xs text-slate-300">
-          <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+        {/* 3. Mandatory B2B SaaS Legal Disclaimer */}
+        <div className="p-4 rounded-2xl bg-slate-900/90 border border-cyan-500/30 flex items-start gap-3 text-xs text-slate-300">
+          <AlertTriangle className="w-5 h-5 text-cyan-400 shrink-0 mt-0.5" />
           <p className="leading-relaxed m-0 font-medium">
-            {l(
-              'تنبيه نظامي: منصة JurisTech Solutions منظومة ذكاء اصطناعي قانونية استرشادية، ولا تُعد بديلاً عن المشورة القانونية المباشرة من محامٍ مرخص في دائرتك القضائية.',
-              'Statutory Notice: JurisTech Solutions is an AI legal intelligence and document generation platform and does not constitute formal legal representation.'
-            )}
+            JurisTech is a B2B legal technology SaaS platform. It provides automated document analysis, contract risk detection, and workflow tools. JurisTech is not a law firm and does not provide legal advice, legal representation, or human consulting services.
           </p>
         </div>
 
