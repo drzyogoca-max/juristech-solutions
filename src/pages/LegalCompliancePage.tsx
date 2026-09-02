@@ -179,7 +179,11 @@ ${policyInput}`;
       contentAr: `
         <div class="p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl mb-3">
           <p class="font-bold text-amber-400">إعلان وإشعار رسمي بالاستقلالية القانونية:</p>
-          <p><strong>هذه الم    {
+          <p><strong>تعمل منصة JurisTech Solutions كمنظومة برمجيات سحابية مستقيمة مستقلة 100%.</strong></p>
+        </div>
+      `
+    },
+    {
       title: "Sovereign AI Legal Platform Jurisdiction",
       titleAr: "الولاية القضائية وحوكمة النظام التقني",
       icon: Globe,
