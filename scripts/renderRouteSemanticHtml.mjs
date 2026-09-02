@@ -107,7 +107,7 @@ export function getSemanticHtmlForRoute(routePath) {
             <li>حماية الخصوصية GDPR & CCPA</li>
             <li>مصادقة ثنائية 2FA TOTP</li>
             <li>عزل تام لبيانات المستندات</li>
-            <li><a href="/privacy" class="text-slate-400 hover:text-white no-underline">سياسة الخصوصية</a> | <a href="/terms" class="text-slate-400 hover:text-white no-underline">الشروط والأحكام</a></li>
+            <li><a href="/privacy" class="text-slate-400 hover:text-white no-underline">سياسة الخصوصية</a> | <a href="/terms" class="text-slate-400 hover:text-white no-underline">الشروط والأحكام</a> | <a href="/refund" class="text-slate-400 hover:text-white no-underline">سياسة الاسترداد (Refund Policy)</a></li>
           </ul>
         </div>
         <div>
@@ -229,6 +229,42 @@ export function getSemanticHtmlForRoute(routePath) {
     `;
   }
 
+  if (routePath === '/refund') {
+    return `
+      ${commonHeader}
+      <main class="max-w-7xl mx-auto p-6 font-sans text-slate-100" dir="rtl">
+        ${commonAdSponsorSlot}
+        <article class="my-8 space-y-6">
+          <header class="border-b border-slate-800 pb-6">
+            <span class="text-xs font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-3 py-1 rounded-full uppercase tracking-wider">Official Refund & Cancellation Policy — Consumer Rights Compliant</span>
+            <h1 class="text-3xl sm:text-5xl font-black text-slate-100 leading-tight mt-3 mb-2">
+              سياسة استرداد الأموال وإلغاء الاشتراك | JurisTech Refund Policy
+            </h1>
+            <p class="text-xs text-slate-400 font-mono">تاريخ التحديث: 25 أغسطس 2026 | مسؤول الدعم والفوترة: juristech.solutions@outlook.com</p>
+          </header>
+
+          <div class="prose prose-invert max-w-none text-slate-300 leading-relaxed space-y-6 text-sm">
+            <section class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-3">
+              <h2 class="text-xl font-bold text-emerald-400 m-0">1. شروط وأهلية استرداد الأموال (Refund Eligibility)</h2>
+              <p>تضمن <strong>JurisTech Solutions</strong> حق العميل في طلب استرداد المبالغ المدفوعة خلال 14 يوماً من تاريخ الاشتراك الأول، في حال عدم استخدام أكثر من 20% من حد الخدمة المتاح. تتم معالجة طلبات الاسترداد عبر مزود بوابة الدفع المعتمد Paddle (Merchant of Record).</p>
+            </section>
+
+            <section class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-3">
+              <h2 class="text-xl font-bold text-sky-400 m-0">2. آلية إلغاء الاشتراك (Subscription Cancellation)</h2>
+              <p>يمكنك إلغاء تجديد الاشتراك في أي وقت من خلال لوحة التحكم أو عبر بوابة الإدارة الذاتية المتاحة. عند الإلغاء، يظل وصولك فعالاً حتى نهاية دوره الفوترة الحالية المدفوعة دون خصم أي مبالغ إضافية.</p>
+            </section>
+
+            <section class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-3">
+              <h2 class="text-xl font-bold text-amber-400 m-0">3. تقديم طلب الاسترداد والجدول الزمني (Refund Processing & Support)</h2>
+              <p>لتقديم طلب استرداد، يرجى مراسلة فريق الفوترة عبر البريد الرسمى <code>juristech.solutions@outlook.com</code> بكتّابة "Refund Request" في العنوان وتحديد بريد الحساب. يتم البت في الطلب وإعادة المبلغ لنفس طريقة الدفع خلال 5 إلى 10 أيام عمل.</p>
+            </section>
+          </div>
+        </article>
+      </main>
+      ${commonFooter}
+    `;
+  }
+
   if (routePath === '/payment' || routePath === '/pricing' || routePath === '/billing') {
     return `
       ${commonHeader}
@@ -321,7 +357,7 @@ export function getSemanticHtmlForRoute(routePath) {
           <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl text-right max-w-4xl mx-auto my-8 space-y-3">
             <h3 class="text-lg font-bold text-sky-400 m-0">طرق الدفع والفوترة المعتمدة:</h3>
             <p class="text-xs text-slate-300 leading-relaxed">
-              ندعم الدفع الآمن المباشر عبر بطاقات Visa و Mastercard و Apple Pay عبر بوابة <strong>Stripe Live</strong> المعتمدة، إضافة إلى الدفع الفوري عبر بوابة <strong>Tap Payments</strong>، والتحويل البنكي وحوالات InstaPay الرسمية لحسابات الشركات مع إصدار الفواتير الأولية المعتمدة (Proforma Invoices).
+              تتم معالجة كافة الاشتراكات والدفع الإلكتروني بأعلى مستويات الأمان عبر بوابة <strong>Paddle (Merchant of Record)</strong> المعتمدة عالمياً لبطاقات Visa و Mastercard و Apple Pay، إضافة إلى الفواتير الرسمية لحسابات الشركات (Proforma Invoices) والتحويلات البنكية المباشرة.
             </p>
           </div>
         </section>
