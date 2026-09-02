@@ -170,10 +170,14 @@ export async function openPaddleCheckout(options: CheckoutOptions): Promise<void
     return;
   }
 
+  const targetPriceId = (options.priceId && !options.priceId.includes('demo'))
+    ? options.priceId
+    : 'pri_01m0ty6sxjj7w0xpm1r07r50ss';
+
   paddle.Checkout.open({
     items: [
       {
-        priceId: options.priceId,
+        priceId: targetPriceId,
         quantity: 1,
       },
     ],
