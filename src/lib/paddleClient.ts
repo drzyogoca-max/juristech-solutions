@@ -20,8 +20,8 @@ export const PADDLE_CONFIG = {
     localStorage.getItem('juristech_paddle_env') ||
     'live'
   ) as 'sandbox' | 'live',
-  // Live Client-Side Token (safe to expose in frontend — read-only checkout only)
-  clientToken: import.meta.env.VITE_PADDLE_CLIENT_TOKEN || 'live_08dad1304849fe550fb9c689a50',
+  // Client-Side Token (safe to expose in frontend — read-only checkout only)
+  clientToken: import.meta.env.VITE_PADDLE_CLIENT_TOKEN || 'test_eff98630073a3f06a59d0bc3694',
 };
 
 export interface PaddleCheckoutOptions {
