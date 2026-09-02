@@ -88,18 +88,7 @@ export default function PricingPage() {
       />
 
       <div className="max-w-7xl mx-auto">
-        {/* Environment Banner */}
-        {PADDLE_ENV.isSandbox && (
-          <div className="mb-8 p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl flex items-start gap-3 text-amber-300 text-xs">
-            <AlertTriangle className="w-5 h-5 shrink-0 text-amber-400 mt-0.5" />
-            <div>
-              <span className="font-bold uppercase tracking-wide">Paddle Sandbox Active:</span> Operating in test mode using token <code className="bg-amber-950/60 px-1.5 py-0.5 rounded border border-amber-500/20">{PADDLE_ENV.clientToken.substring(0, 10)}...</code>.
-              <span className="block mt-1 text-amber-400/80">
-                <strong>Dashboard Note:</strong> Remember to set your Default Payment Link in Paddle Dashboard under <em>Checkout &gt; Checkout Settings</em> to your checkout page.
-              </span>
-            </div>
-          </div>
-        )}
+
 
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
