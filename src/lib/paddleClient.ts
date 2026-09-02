@@ -11,7 +11,7 @@
 import { activateUserSubscription } from './financialGateway';
 
 export const PADDLE_CONFIG = {
-  productId: 'pro_01m0txshyww92xh07mawyzg52j',
+  productId: import.meta.env.VITE_PADDLE_PRODUCT_ID || 'pro_01m1f46hy5e68zq68jvm573pzr',
   priceId: 'pri_01m0ty6sxjj7w0xpm1r07r50ss',
   // Environment toggled via localStorage key 'juristech_paddle_env' or VITE env var
   // Set to 'live' for production, 'sandbox' for testing
