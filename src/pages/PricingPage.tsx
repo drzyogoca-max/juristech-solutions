@@ -133,8 +133,8 @@ export default function PricingPage() {
           </div>
         </div>
 
-        {/* 3-Tier Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch mb-16">
+        {/* Active Offer & Enterprise Custom Sales Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch max-w-5xl mx-auto mb-16">
           {PRICING_TIERS.map((tier) => {
             const selectedPriceId = tier.priceId[billingCycle];
             const formattedTotal = pricePreviews[selectedPriceId];
@@ -142,21 +142,17 @@ export default function PricingPage() {
             return (
               <div
                 key={tier.name}
-                className={`relative bg-slate-900/60 border rounded-2xl p-8 flex flex-col justify-between backdrop-blur-xl transition-all duration-300 hover:border-slate-700 ${
-                  tier.highlight
-                    ? 'border-cyan-500/50 shadow-2xl shadow-cyan-500/10 ring-1 ring-cyan-500/30'
-                    : 'border-slate-800/80'
-                }`}
+                className="relative bg-slate-900/80 border border-cyan-500/50 rounded-2xl p-8 flex flex-col justify-between backdrop-blur-xl transition-all duration-300 shadow-2xl shadow-cyan-500/10 ring-1 ring-cyan-500/30"
               >
                 {tier.badge && (
-                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 bg-cyan-500 text-slate-950 font-extrabold text-[10px] uppercase tracking-wider rounded-full shadow-md">
+                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 bg-cyan-500 text-slate-950 font-extrabold text-[11px] uppercase tracking-wider rounded-full shadow-md">
                     {tier.badge}
                   </div>
                 )}
 
                 <div>
-                  <h3 className="text-xl font-bold text-white mb-2">{tier.name}</h3>
-                  <p className="text-slate-400 text-xs leading-relaxed mb-6 min-h-[36px]">
+                  <h3 className="text-2xl font-black text-white mb-2">{tier.title}</h3>
+                  <p className="text-slate-300 text-xs leading-relaxed mb-6 min-h-[36px]">
                     {tier.description}
                   </p>
 
@@ -173,14 +169,19 @@ export default function PricingPage() {
                           <span className="text-4xl font-extrabold text-white tracking-tight">
                             {formattedTotal}
                           </span>
-                          <span className="text-slate-400 text-xs">
+                          <span className="text-slate-400 text-xs font-mono">
                             / {billingCycle === 'month' ? 'month' : 'year'}
                           </span>
                         </>
                       ) : (
-                        <span className="text-slate-400 text-sm italic">
-                          Contact Sales for Pricing
-                        </span>
+                        <>
+                          <span className="text-4xl font-extrabold text-white tracking-tight">
+                            {billingCycle === 'month' ? '$49.00' : '$470.00'}
+                          </span>
+                          <span className="text-slate-400 text-xs font-mono">
+                            / {billingCycle === 'month' ? 'month' : 'year'}
+                          </span>
+                        </>
                       )}
                     </div>
                   </div>
@@ -188,7 +189,7 @@ export default function PricingPage() {
                   {/* Features List */}
                   <ul className="space-y-3 mb-8">
                     {tier.features.map((feature, i) => (
-                      <li key={i} className="flex items-start gap-2.5 text-xs text-slate-300">
+                      <li key={i} className="flex items-start gap-2.5 text-xs text-slate-200">
                         <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
                         <span>{feature}</span>
                       </li>
@@ -201,11 +202,7 @@ export default function PricingPage() {
                   <button
                     onClick={() => handleSubscribe(tier)}
                     disabled={checkoutLoadingTier === tier.name}
-                    className={`w-full py-3 px-4 rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-2 ${
-                      tier.highlight
-                        ? 'bg-cyan-500 hover:bg-cyan-400 text-slate-950 shadow-lg shadow-cyan-500/20'
-                        : 'bg-slate-800 hover:bg-slate-700 text-white border border-slate-700'
-                    }`}
+                    className="w-full py-3.5 px-4 rounded-xl font-extrabold text-xs transition-all flex items-center justify-center gap-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 shadow-lg shadow-cyan-500/20"
                   >
                     {checkoutLoadingTier === tier.name ? (
                       <>
@@ -214,7 +211,7 @@ export default function PricingPage() {
                       </>
                     ) : (
                       <>
-                        <span>Subscribe to {tier.name}</span>
+                        <span>Subscribe to Pro Sovereign Plan</span>
                         <ArrowRight className="w-4 h-4" />
                       </>
                     )}
@@ -229,6 +226,51 @@ export default function PricingPage() {
               </div>
             );
           })}
+
+          {/* Card 2: Enterprise & Custom Solutions */}
+          <div className="relative bg-slate-900/40 border border-slate-800 rounded-2xl p-8 flex flex-col justify-between backdrop-blur-xl transition-all duration-300 hover:border-slate-700">
+            <div>
+              <h3 className="text-2xl font-black text-white mb-2">Enterprise & Custom SLA</h3>
+              <p className="text-slate-400 text-xs leading-relaxed mb-6 min-h-[36px]">
+                Private deployment, custom RAG legal intelligence, dedicated legal operations specialist, and bespoke SLA contracts.
+              </p>
+
+              <div className="mb-6 pb-6 border-b border-slate-800/80">
+                <div className="flex items-baseline gap-1">
+                  <span className="text-3xl font-black text-slate-200">Custom Contract</span>
+                </div>
+              </div>
+
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-start gap-2.5 text-xs text-slate-300">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <span>Private On-Premise Cloud & Isolated VPC Deployment</span>
+                </li>
+                <li className="flex items-start gap-2.5 text-xs text-slate-300">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <span>Custom Legal AI Fine-Tuning & Document Vault RAG</span>
+                </li>
+                <li className="flex items-start gap-2.5 text-xs text-slate-300">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <span>24/7 Dedicated Legal Operations Account Manager</span>
+                </li>
+                <li className="flex items-start gap-2.5 text-xs text-slate-300">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <span>Custom Multi-Jurisdiction Governance & Custom SLA</span>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <a
+                href="mailto:juristech.solutions@outlook.com?subject=Enterprise%20Sovereign%20Legal%20Inquiry"
+                className="w-full py-3.5 px-4 rounded-xl font-extrabold text-xs transition-all flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 no-underline"
+              >
+                <span>Contact Enterprise Sales</span>
+                <ArrowRight className="w-4 h-4" />
+              </a>
+            </div>
+          </div>
         </div>
 
         {/* Security & Guarantee Note */}
