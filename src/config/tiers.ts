@@ -26,8 +26,8 @@ export const PRICING_TIERS: Tier[] = [
       'Direct Email Support',
     ],
     priceId: {
-      month: import.meta.env.VITE_PADDLE_STARTER_PRICE_ID_MONTH || 'pri_01m0ty6sxjj7w0xpm1r07r50ss',
-      year: import.meta.env.VITE_PADDLE_STARTER_PRICE_ID_YEAR || 'pri_01m0ty6sxjj7w0xpm1r07r50ss',
+      month: import.meta.env.VITE_PADDLE_STARTER_PRICE_ID_MONTH || 'pri_01m1hrzf3gsc22yvse2yhf70ya',
+      year: import.meta.env.VITE_PADDLE_STARTER_PRICE_ID_YEAR || 'pri_01m1hs9fc5xt8vch12cd0r5xxv',
     },
   },
   {
@@ -44,8 +44,8 @@ export const PRICING_TIERS: Tier[] = [
       'Full API Access & Webhook Integrations',
     ],
     priceId: {
-      month: import.meta.env.VITE_PADDLE_PRO_PRICE_ID_MONTH || 'pri_01m0ty6sxjj7w0xpm1r07r50ss',
-      year: import.meta.env.VITE_PADDLE_PRO_PRICE_ID_YEAR || 'pri_01m0ty6sxjj7w0xpm1r07r50ss',
+      month: import.meta.env.VITE_PADDLE_PRO_PRICE_ID_MONTH || 'pri_01m1hrzf3gsc22yvse2yhf70ya',
+      year: import.meta.env.VITE_PADDLE_PRO_PRICE_ID_YEAR || 'pri_01m1hs9fc5xt8vch12cd0r5xxv',
     },
   },
   {
@@ -60,8 +60,8 @@ export const PRICING_TIERS: Tier[] = [
       'Custom Contract Templates & Governance Policy',
     ],
     priceId: {
-      month: import.meta.env.VITE_PADDLE_ADVANCED_PRICE_ID_MONTH || 'pri_01m0ty6sxjj7w0xpm1r07r50ss',
-      year: import.meta.env.VITE_PADDLE_ADVANCED_PRICE_ID_YEAR || 'pri_01m0ty6sxjj7w0xpm1r07r50ss',
+      month: import.meta.env.VITE_PADDLE_ADVANCED_PRICE_ID_MONTH || 'pri_01m1hrzf3gsc22yvse2yhf70ya',
+      year: import.meta.env.VITE_PADDLE_ADVANCED_PRICE_ID_YEAR || 'pri_01m1hs9fc5xt8vch12cd0r5xxv',
     },
   },
 ];

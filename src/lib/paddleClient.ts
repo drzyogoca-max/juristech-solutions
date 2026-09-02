@@ -12,7 +12,7 @@ import { activateUserSubscription } from './financialGateway';
 
 export const PADDLE_CONFIG = {
   productId: import.meta.env.VITE_PADDLE_PRODUCT_ID || 'pro_01m1hrmg79yvps6dg4bppfgpec',
-  priceId: 'pri_01m0ty6sxjj7w0xpm1r07r50ss',
+  priceId: 'pri_01m1hrzf3gsc22yvse2yhf70ya',
   // Environment toggled via localStorage key 'juristech_paddle_env' or VITE env var
   environment: ((
     import.meta.env.VITE_PADDLE_ENVIRONMENT ||
