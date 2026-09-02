@@ -51,7 +51,7 @@ export function getSemanticHtmlForRoute(routePath) {
         </div>
         <div class="bg-slate-950 border border-sky-600/40 p-4 rounded-2xl shadow">
           <strong class="text-sky-400 block mb-1">📧 البريد الرسمي للإدارة:</strong>
-          <a href="mailto:Drzyogo.ca@gmail.com" class="text-slate-100 font-bold no-underline font-mono select-all">Drzyogo.ca@gmail.com</a>
+          <a href="mailto:juristech.solutions@outlook.com" class="text-slate-100 font-bold no-underline font-mono select-all">juristech.solutions@outlook.com</a>
           <span class="block text-xs text-slate-400 mt-1">إرسال العقود والاتفاقيات الرسمية</span>
         </div>
         <div class="bg-slate-950 border border-purple-600/40 p-4 rounded-2xl shadow">
@@ -113,8 +113,7 @@ export function getSemanticHtmlForRoute(routePath) {
         <div>
           <strong class="text-slate-100 block mb-2">الرعاية وحسابات التواصل الرسمية</strong>
           <p class="leading-relaxed m-0 mb-3">
-            الموقع الإلكتروني: www.juristech.solutions<br>
-            المقر الإقليمي: المملكة الأردنية الهاشمية - عمّان
+            الموقع الإلكتروني: www.juristech.solutions
           </p>
           <div class="flex gap-3 flex-wrap">
             <a href="https://www.linkedin.com/in/juristech-solutions-14954b427/" target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300 font-bold no-underline">LinkedIn</a>

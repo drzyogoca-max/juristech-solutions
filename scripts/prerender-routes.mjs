@@ -275,7 +275,7 @@ function prerenderRoutes() {
           '@type': 'Person',
           'name': 'Dr. Mohammed Mostafa',
           'jobTitle': 'Chief Legal Architect & Senior Counsel',
-          'email': 'Drzyogo.ca@gmail.com',
+          'email': 'juristech.solutions@outlook.com',
           'telephone': '+201126674337'
         },
         'sameAs': [
@@ -289,7 +289,7 @@ function prerenderRoutes() {
             '@type': 'ContactPoint',
             'telephone': '+201126674337',
             'contactType': 'customer support',
-            'email': 'Drzyogo.ca@gmail.com',
+            'email': 'juristech.solutions@outlook.com',
             'availableLanguage': ['Arabic', 'English'],
             'areaServed': ['SA', 'AE', 'EG', 'QA', 'KW', 'BH', 'OM', 'JO', 'US', 'GB', 'EU']
           }
@@ -305,7 +305,7 @@ function prerenderRoutes() {
           'name': 'JurisTech Solutions'
         },
         'telephone': '+201126674337',
-        'email': 'Drzyogo.ca@gmail.com',
+        'email': 'juristech.solutions@outlook.com',
         'sameAs': [
           'https://www.linkedin.com/in/juristech-solutions-14954b427/',
           'https://x.com/JurisTechAI'
@@ -313,35 +313,20 @@ function prerenderRoutes() {
       },
       {
         '@context': 'https://schema.org',
-        '@type': 'LegalService',
-        'name': 'JurisTech Solutions - Sovereign AI Legal Tech',
+        '@type': 'SoftwareApplication',
+        'name': 'JurisTech Solutions - Sovereign AI Legal Platform',
         'url': BASE_URL,
         'logo': `${BASE_URL}/favicon.ico`,
         'image': `${BASE_URL}/og-image.jpg`,
-        'priceRange': '$$$',
+        'applicationCategory': 'BusinessApplication',
+        'operatingSystem': 'All',
+        'offers': {
+          '@type': 'Offer',
+          'price': '49.00',
+          'priceCurrency': 'USD'
+        },
         'telephone': '+201126674337',
-        'email': 'Drzyogo.ca@gmail.com',
-        'address': {
-          '@type': 'PostalAddress',
-          'streetAddress': 'King Fahd Road, Al Olaya',
-          'addressLocality': 'Riyadh',
-          'addressRegion': 'Riyadh Region',
-          'postalCode': '12211',
-          'addressCountry': 'SA'
-        },
-        'geo': {
-          '@type': 'GeoCoordinates',
-          'latitude': 24.7136,
-          'longitude': 46.6753
-        },
-        'openingHoursSpecification': {
-          '@type': 'OpeningHoursSpecification',
-          'dayOfWeek': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-          'opens': '00:00',
-          'closes': '23:59'
-        },
-        'areaServed': ['SA', 'AE', 'EG', 'QA', 'KW', 'JO', 'BH', 'OM', 'IQ', 'DE', 'FR', 'ES', 'GB', 'CN', 'IN', 'ZA'],
-        'serviceType': 'صياغة العقود بالذكاء الاصطناعي, تأسيس الشركات والامتثال التشريعي, فحص وتدقيق مخاطر العقود, المستشار القانوني الذكي الفوري'
+        'email': 'juristech.solutions@outlook.com'
       },
       {
         '@context': 'https://schema.org',

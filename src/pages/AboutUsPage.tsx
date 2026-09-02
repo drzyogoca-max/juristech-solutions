@@ -26,7 +26,7 @@ export default function AboutUsPage() {
     <main dir={isRtl ? 'rtl' : 'ltr'} className="min-h-screen bg-slate-950 text-white selection:bg-cyan-500 selection:text-slate-950 py-12 px-4 sm:px-6 lg:px-8">
       <SEO
         title={isRtl ? 'من نحن | JurisTech Solutions — الكيان التقني المستقل' : 'About Us | JurisTech Solutions — Independent AI Tech Entity'}
-        description={isRtl ? 'تعرف على الكيان التقني المستقل JurisTech Solutions، المقر القانوني في عمّان، ونظام حوكمة الذكاء الاصطناعي العقدي.' : 'Learn about JurisTech Solutions, the sovereign independent AI Legal platform headquartered in Amman, Jordan.'}
+        description={isRtl ? 'تعرف على الكيان التقني المستقل JurisTech Solutions ونظام حوكمة وتدقيق الذكاء الاصطناعي العقدي.' : 'Learn about JurisTech Solutions, the sovereign independent AI Legal software platform.'}
       />
 
       <div className="max-w-6xl mx-auto space-y-12">
@@ -45,7 +45,7 @@ export default function AboutUsPage() {
           </h1>
           <p className="text-slate-400 text-sm sm:text-base max-w-3xl mx-auto leading-relaxed">
             {isRtl
-              ? 'المنصة العالمية المستقلة للذكاء الاصطناعي العقدي والتدقيق التشريعي المحمي بالكامل تحت القوانين الأردنية والدولية.'
+              ? 'المنصة العالمية المستقلة للذكاء الاصطناعي العقدي والتدقيق التشريعي المحمي بالكامل أمنياً وتقنياً.'
               : 'The global sovereign AI Legal Intelligence platform providing autonomous contract generation and legislative risk auditing.'}
           </p>
         </div>
@@ -62,7 +62,7 @@ export default function AboutUsPage() {
                   {isRtl ? 'المقر الرئيسي والعلامة التجارية المسجلة' : 'Global Headquarters & Registered Trademark'}
                 </h2>
                 <span className="text-xs text-cyan-400 font-mono">
-                  {isRtl ? 'المملكة الأردنية الهاشمية — عمّان' : 'Amman, Hashemite Kingdom of Jordan'}
+                  {isRtl ? 'منصة الذكاء الاصطناعي البرمجية' : 'Sovereign AI Software Platform'}
                 </span>
               </div>
             </div>

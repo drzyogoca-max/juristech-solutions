@@ -55,10 +55,10 @@ export default function SovereignContactCenterCard() {
             {l('📧 البريد الرسمي للإدارة:', '📧 Official Executive Email:')}
           </strong>
           <a
-            href="mailto:Drzyogo.ca@gmail.com?cc=juristech.solutions@outlook.com&subject=Executive%20Legal%20Advisory"
+            href="mailto:juristech.solutions@outlook.com?subject=Executive%20Legal%20Advisory"
             className="text-slate-100 font-bold hover:text-sky-300 transition-colors block font-mono select-all text-sm truncate"
           >
-            Drzyogo.ca@gmail.com
+            juristech.solutions@outlook.com
           </a>
           <span className="block text-xs text-slate-400 mt-1">
             {l('إرسال العقود والاتفاقيات الرسمية', 'Official contracts & corporate agreements')}
