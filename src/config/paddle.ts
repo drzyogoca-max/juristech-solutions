@@ -6,8 +6,9 @@
  */
 
 const rawEnvMode = import.meta.env.VITE_PADDLE_ENVIRONMENT;
-const envMode = (rawEnvMode || '').toString().trim().toLowerCase();
-const clientToken = (import.meta.env.VITE_PADDLE_CLIENT_TOKEN || '').toString().trim();
+const parsedEnv = (rawEnvMode || '').toString().toLowerCase().replace(/[^a-z]/g, '');
+const envMode = parsedEnv === 'live' ? 'live' : 'sandbox';
+const clientToken = (import.meta.env.VITE_PADDLE_CLIENT_TOKEN || '').toString().replace(/[\"\'\s]/g, '').trim();
 
 if (!envMode) {
   throw new Error(

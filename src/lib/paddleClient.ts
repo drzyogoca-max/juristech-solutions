@@ -18,9 +18,9 @@ export const PADDLE_CONFIG = {
     import.meta.env.VITE_PADDLE_ENVIRONMENT ||
     localStorage.getItem('juristech_paddle_env') ||
     'sandbox'
-  ).toString().trim().toLowerCase()) as 'sandbox' | 'live',
+  ).toString().toLowerCase().replace(/[^a-z]/g, '') === 'live' ? 'live' : 'sandbox') as 'sandbox' | 'live',
   // Client-Side Token (safe to expose in frontend — read-only checkout only)
-  clientToken: (import.meta.env.VITE_PADDLE_CLIENT_TOKEN || 'test_eff98630073a3f06a59d0bc3694').toString().trim(),
+  clientToken: (import.meta.env.VITE_PADDLE_CLIENT_TOKEN || 'test_eff98630073a3f06a59d0bc3694').toString().replace(/[\"\'\s]/g, '').trim(),
 };
 
 export interface PaddleCheckoutOptions {
