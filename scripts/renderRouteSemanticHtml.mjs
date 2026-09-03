@@ -683,19 +683,19 @@ export function getSemanticHtmlForRoute(routePath) {
         ${commonAdSponsorSlot}
         <section class="my-8">
           <h1 class="text-3xl sm:text-4xl font-black text-slate-100 leading-tight mb-4">
-            إدارة قناة يوتيوب الرسمية والنشر اليومي الالي | JurisTech YouTube Studio
+            استوديو توليد المحتوى والقيادة المعرفية وإدارة قناة يوتيوب | JurisTech Content & YouTube SaaS Studio
           </h1>
           <p class="text-base text-slate-300 leading-relaxed mb-6">
-            استوديو الإدارة البرمجية لقناة يوتيوب الرسمية للمنصة المرتبطة بـ juristech.solutions@outlook.com بإشراف المستشار د. محمد مصطفى. توليد ونشر فيديوهات قانونية يومية صباحاً (09:00 AM) ومساءً (06:00 PM).
+            استوديو صناعة المحتوى التنبؤي والإنتاج الإعلامي للمؤسس المستشار د. محمد مصطفى. توليد سكريبتات الشرح المرئي، منشورات LinkedIn القيادية، وعناوين الكلمات المفتاحية بالذكاء الاصطناعي مع إتاحة التصدير المباشر بصيغة Word (.docx).
           </p>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
             <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl">
-              <h2 class="text-lg font-bold text-red-500 mt-0">1. فيديو الصباح (Morning Briefing Slot - 9:00 AM UTC)</h2>
-              <p class="text-xs text-slate-400 leading-relaxed">تحليل صفقات الاندماج والاستحواذ، مطابقة الأنظمة الدولية (ديلاوير، المعاملات المدنية م/191، دبي DIFC)، وفحوصات الشروط الفورية.</p>
+              <h2 class="text-lg font-bold text-sky-400 mt-0">1. استوديو توليد السكريبتات والمنشورات التنفيذية</h2>
+              <p class="text-xs text-slate-400 leading-relaxed">صياغة آليّة لسكريبتات الفيديوهات 5 دقائق، منشورات LinkedIn للتواصل مع مدراء الشركات، وتصدير كامل حزمة المحتوى.</p>
             </div>
             <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl">
-              <h2 class="text-lg font-bold text-cyan-400 mt-0">2. فيديو المساء (Evening Executive Briefing - 6:00 PM UTC)</h2>
-              <p class="text-xs text-slate-400 leading-relaxed">إيجاز الإدارة العليا للرؤساء التنفيذيين والمدراء الماليين: الوقاية من فخاخ التعويض، خفض أتعاب المحاماة بنسبة 85%، والفواتير الأولية.</p>
+              <h2 class="text-lg font-bold text-red-500 mt-0">2. جدول النشر اليومي الآلي للقناة الرسمية</h2>
+              <p class="text-xs text-slate-400 leading-relaxed">نشر واستعراض الفيديوهات المجدولة صباحاً (09:00 AM) ومساءً (06:00 PM) المربوطة ببريد القناة juristech.solutions@outlook.com.</p>
             </div>
           </div>
         </section>
