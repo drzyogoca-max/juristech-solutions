@@ -515,8 +515,8 @@ export function getSemanticHtmlForRoute(routePath) {
               <p class="text-xs text-slate-400 leading-relaxed m-0">صفقات الاستحواذ وعقود نقل الملكية الفكرية والتراخيص الدولية المتوافقة مع قوانين الملكية الفكرية العالمية WIPO.</p>
             </article>
             <article class="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow">
-              <h3 class="text-base font-bold text-purple-400 mb-2"><a href="/lead-radar" class="text-purple-400 hover:text-purple-300 no-underline">12. مرصد رادار استقطاب العملاء والجذب</a></h3>
-              <p class="text-xs text-slate-400 leading-relaxed m-0">تتبع وتحليل تفاعلات العملاء المحتملين والجذب التلقائي بالذكاء الاصطناعي للمكاتب القانونية والشركات الاستشارية.</p>
+              <h3 class="text-base font-bold text-purple-400 mb-2"><a href="/lead-radar" class="text-purple-400 hover:text-purple-300 no-underline">12. مساحة عمل وتقييم الشركات المستهدفة B2B</a></h3>
+              <p class="text-xs text-slate-400 leading-relaxed m-0">إدخال وتنظيم وتقييم الشركات المستهدفة حتمياً (B2B Lead Intelligence Workspace)، تتبع تدفق الصفقات، وتصدير البيانات بصيغة CSV.</p>
             </article>
           </div>
         </section>

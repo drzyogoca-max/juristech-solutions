@@ -1,1 +1,16 @@
-{"projectId":"prj_r7IFe1OLaxCFupIkRuySnDDllbEz","orgId":"team_NlH2KnA7D59owJybl5ANtzRK","projectName":"juristech-solutions"}
+{
+  "projectId": "prj_r7IFe1OLaxCFupIkRuySnDDllbEz",
+  "orgId": "team_NlH2KnA7D59owJybl5ANtzRK",
+  "projectName": "juristech-solutions",
+  "settings": {
+    "createdAt": 1787085042081,
+    "framework": "vite",
+    "devCommand": null,
+    "installCommand": null,
+    "buildCommand": null,
+    "outputDirectory": "dist",
+    "rootDirectory": null,
+    "directoryListing": false,
+    "nodeVersion": "24.x"
+  }
+}
