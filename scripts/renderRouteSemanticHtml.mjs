@@ -507,8 +507,8 @@ export function getSemanticHtmlForRoute(routePath) {
               <p class="text-xs text-slate-400 leading-relaxed m-0">الاستحواذ التنبؤي M&A، المحاكاة القضائية وتوقع نسب كسب القضايا، كشف التزوير والاحتيال، والامتثال العابر للحدود.</p>
             </article>
             <article class="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow">
-              <h3 class="text-base font-bold text-emerald-400 mb-2"><a href="/company-formation" class="text-emerald-400 hover:text-emerald-300 no-underline">10. تأسيس المنشآت والشركات</a></h3>
-              <p class="text-xs text-slate-400 leading-relaxed m-0">صياغة عقود التأسيس والأنظمة الأساسية واتفاقيات الشركاء وفق أنظمة الشركات والاستثمار في السعودية والإمارات ومصر.</p>
+              <h3 class="text-base font-bold text-emerald-400 mb-2"><a href="/company-formation" class="text-emerald-400 hover:text-emerald-300 no-underline">10. أداة بحث وقوائم تدقيق تأسيس المنشآت والشركات</a></h3>
+              <p class="text-xs text-slate-400 leading-relaxed m-0">أداة برمجية لاستكشاف الوثائق وإجراءات التأسيس والالتزام النظامي في السعودية والإمارات ومصر والولايات المتحدة محددة المراجع.</p>
             </article>
             <article class="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow">
               <h3 class="text-base font-bold text-amber-400 mb-2"><a href="/b2b-proposals" class="text-amber-400 hover:text-amber-300 no-underline">11. العروض المؤسسية B2B والتراخيص</a></h3>
