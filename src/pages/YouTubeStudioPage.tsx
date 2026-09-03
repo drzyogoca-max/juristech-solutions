@@ -9,6 +9,8 @@ import { youtubeChannelEngine, YouTubeVideoPost, YouTubeChannelStats } from '../
 import { youtubeGrowthEngine } from '../services/youtubeGrowthEngine';
 import { usePlatformLocale } from '../lib/universalTranslator';
 import { aiVoiceSynthesizer } from '../lib/aiVoiceSynthesizer';
+import { callAIWithHistory } from '../lib/api';
+import { generateAndDownloadWordDocument } from '../utils/export-utils';
 
 export const YouTubeStudioPage: React.FC = () => {
   const { l, isRtl, i18n } = usePlatformLocale();
@@ -16,8 +18,21 @@ export const YouTubeStudioPage: React.FC = () => {
   const [videos, setVideos] = useState<YouTubeVideoPost[]>(youtubeChannelEngine.getDailyVideos());
   const [selectedVideo, setSelectedVideo] = useState<YouTubeVideoPost | null>(videos[0] || null);
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
-  const [activeTab, setActiveTab] = useState<'SCHEDULE' | 'SCRIPT_TELEPROMPTER' | 'OAUTH_SETUP' | 'GROWTH_CONNECTIONS'>('SCHEDULE');
+  const [activeTab, setActiveTab] = useState<'CONTENT_STUDIO' | 'SCHEDULE' | 'SCRIPT_TELEPROMPTER' | 'OAUTH_SETUP' | 'GROWTH_CONNECTIONS'>('CONTENT_STUDIO');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  // Content Intelligence Studio State
+  const [topicInput, setTopicInput] = useState<string>('');
+  const [targetAudience, setTargetAudience] = useState<string>('GCC & Saudi Arabia');
+  const [isSynthesizing, setIsSynthesizing] = useState<boolean>(false);
+  const [copiedType, setCopiedType] = useState<string | null>(null);
+  const [synthesizedPackage, setSynthesizedPackage] = useState<{
+    title: string;
+    videoScript: string;
+    linkedInPost: string;
+    seoDescription: string;
+    hashtags: string;
+  } | null>(null);
 
   // Live Video Preview Player State
   const [playerMode, setPlayerMode] = useState<'YOUTUBE_EMBED' | 'AI_CANVAS'>('YOUTUBE_EMBED');
@@ -97,6 +112,93 @@ export const YouTubeStudioPage: React.FC = () => {
       setToastMessage(successMsg);
       setTimeout(() => setToastMessage(null), 5000);
     }, 1200);
+  };
+
+  const handleSynthesizeContent = async () => {
+    const topic = topicInput.trim() || (isRtl ? 'الامتثال لنظام حماية البيانات الشخصية KSA PDPL وكشف مخاطر العقود' : 'Saudi PDPL Compliance & Contract Risk Auditing');
+    setIsSynthesizing(true);
+
+    try {
+      const prompt = `You are the Chief AI Content Strategist for Dr. Mohammed Mostafa, Founder of JurisTech Solutions (B2B LegalTech SaaS).
+Synthesize a complete executive media package for topic: "${topic}". Target Audience: "${targetAudience}".
+
+Format your response in clear sections using these exact headings:
+1. VIDEO_TITLE
+Provide 2 high-CTR title options.
+
+2. YOUTUBE_SCRIPT
+Write a structured 5-minute video script with timestamps [00:00], hook, body analysis, and software CTA.
+
+3. LINKEDIN_POST
+Write an authoritative LinkedIn thought leadership post for Dr. Mohammed Mostafa with bullet points, strategic insights, and hashtags.
+
+4. SEO_DESCRIPTION
+Write a YouTube SEO video description with key takeaways.
+
+5. HASHTAGS
+List relevant hashtags.`;
+
+      const response = await callAIWithHistory([{ role: 'user', content: prompt }], isRtl ? 'ar' : 'en');
+
+      // Parse structured sections
+      const titleMatch = response.match(/1\.\s*VIDEO_TITLE([\s\S]*?)(?=2\.\s*YOUTUBE_SCRIPT|$)/i);
+      const scriptMatch = response.match(/2\.\s*YOUTUBE_SCRIPT([\s\S]*?)(?=3\.\s*LINKEDIN_POST|$)/i);
+      const linkedInMatch = response.match(/3\.\s*LINKEDIN_POST([\s\S]*?)(?=4\.\s*SEO_DESCRIPTION|$)/i);
+      const seoMatch = response.match(/4\.\s*SEO_DESCRIPTION([\s\S]*?)(?=5\.\s*HASHTAGS|$)/i);
+      const hashtagsMatch = response.match(/5\.\s*HASHTAGS([\s\S]*?)$/i);
+
+      setSynthesizedPackage({
+        title: titleMatch ? titleMatch[1].trim() : topic,
+        videoScript: scriptMatch ? scriptMatch[1].trim() : response,
+        linkedInPost: linkedInMatch ? linkedInMatch[1].trim() : response,
+        seoDescription: seoMatch ? seoMatch[1].trim() : response,
+        hashtags: hashtagsMatch ? hashtagsMatch[1].trim() : '#LegalTech #JurisTech #B2BSaaS #AI',
+      });
+    } catch (err) {
+      console.error('Content synthesis error:', err);
+    } finally {
+      setIsSynthesizing(false);
+    }
+  };
+
+  const handleCopy = (text: string, type: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedType(type);
+    setTimeout(() => setCopiedType(null), 3000);
+  };
+
+  const handleExportPackage = () => {
+    if (!synthesizedPackage) return;
+    const fullDoc = `JURISTECH SOLUTIONS — CONTENT & THOUGHT LEADERSHIP PACKAGE
+Topic: ${topicInput || 'LegalTech SaaS Executive Media'}
+Audience: ${targetAudience}
+Generated: ${new Date().toISOString()}
+
+==================================================
+1. YOUTUBE VIDEO TITLES
+==================================================
+${synthesizedPackage.title}
+
+==================================================
+2. YOUTUBE VIDEO SCRIPT
+==================================================
+${synthesizedPackage.videoScript}
+
+==================================================
+3. LINKEDIN EXECUTIVE THOUGHT LEADERSHIP POST
+==================================================
+${synthesizedPackage.linkedInPost}
+
+==================================================
+4. SEO DESCRIPTION & HASHTAGS
+==================================================
+${synthesizedPackage.seoDescription}
+
+Hashtags: ${synthesizedPackage.hashtags}
+
+Disclaimer: JurisTech Solutions is a B2B Legal Technology SaaS platform. Content is produced for educational and thought leadership purposes.
+`;
+    generateAndDownloadWordDocument('JurisTech_Content_Package.docx', fullDoc, isRtl ? 'ar' : 'en');
   };
 
   return (
@@ -234,6 +336,17 @@ export const YouTubeStudioPage: React.FC = () => {
         {/* Tab Navigation */}
         <div className="flex space-x-6 gap-6 border-b border-slate-800 mb-8 overflow-x-auto">
           <button
+            onClick={() => setActiveTab('CONTENT_STUDIO')}
+            className={`pb-3 font-bold text-sm flex items-center gap-2 border-b-2 transition ${
+              activeTab === 'CONTENT_STUDIO'
+                ? 'border-sky-500 text-sky-400 font-black'
+                : 'border-transparent text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <Sparkles className="w-4 h-4 text-sky-400" />
+            {l('استوديو توليد المحتوى والقيادة المعرفية', 'Content & Thought Leadership Studio')}
+          </button>
+          <button
             onClick={() => setActiveTab('SCHEDULE')}
             className={`pb-3 font-bold text-sm flex items-center gap-2 border-b-2 transition ${
               activeTab === 'SCHEDULE'
@@ -278,6 +391,137 @@ export const YouTubeStudioPage: React.FC = () => {
             {l('محرك النمو والتسويق السريع', 'Rapid Growth & Web Syndication')}
           </button>
         </div>
+
+        {/* TAB 0: Content & Thought Leadership SaaS Studio */}
+        {activeTab === 'CONTENT_STUDIO' && (
+          <div className="space-y-8">
+            {/* Topic Synthesis Input Card */}
+            <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+              <div>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 text-sky-400 border border-sky-500/20 text-xs font-bold uppercase tracking-wider mb-2">
+                  <Sparkles className="w-4 h-4 text-sky-400" />
+                  <span>{l('صناعة المحتوى التنبؤي والقيادة المعرفية للمؤسس', 'Founder Thought Leadership & Content Engine')}</span>
+                </div>
+                <h2 className="text-2xl font-black text-white">
+                  {l('توليد حزمة السكريبتات والمنشورات التنفيذية بضغطة زر', 'Generate Executive Script & LinkedIn Media Package')}
+                </h2>
+                <p className="text-sm text-slate-400 mt-1 leading-relaxed">
+                  {l(
+                    'أدخل الموضوع أو النظام القانوني، وسيتم توليد سكريبت فيديو 5 دقائق، منشور LinkedIn تنفيذي لسعادة المستشار د. محمد مصطفى، وعناوين الكلمات المفتاحية آلياً.',
+                    'Enter a legal topic or regulation to auto-synthesize a 5-minute video script, executive LinkedIn thought-leadership post, and SEO metadata.'
+                  )}
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="md:col-span-2">
+                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+                    {l('الموضوع أو النظام التنظيمي المستهدف', 'Target Legal Topic or Regulation')}
+                  </label>
+                  <input
+                    type="text"
+                    value={topicInput}
+                    onChange={(e) => setTopicInput(e.target.value)}
+                    placeholder={l(
+                      'مثال: الامتثال لنظام حماية البيانات الشخصية KSA PDPL وكشف مخاطر العقود',
+                      'e.g., KSA Personal Data Protection Law (PDPL) & Contract Risk Auditing'
+                    )}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 transition"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+                    {l('الجمهور والسوق المستهدف', 'Target Audience & Region')}
+                  </label>
+                  <select
+                    value={targetAudience}
+                    onChange={(e) => setTargetAudience(e.target.value)}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-sky-500 transition"
+                  >
+                    <option value="GCC & Saudi Arabia">المملكة العربية السعودية والخليج (KSA & GCC)</option>
+                    <option value="United Arab Emirates">الإمارات العربية المتحدة (UAE)</option>
+                    <option value="Egypt & North Africa">مصر وشمال إفريقيا (Egypt & MENA)</option>
+                    <option value="USA & International B2B">USA & International B2B Corporate</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between flex-wrap gap-4 pt-2">
+                <button
+                  onClick={handleSynthesizeContent}
+                  disabled={isSynthesizing}
+                  className="px-6 py-3.5 rounded-2xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-sm flex items-center gap-2.5 transition shadow-lg disabled:opacity-50"
+                >
+                  {isSynthesizing ? <RefreshCw className="w-5 h-5 animate-spin" /> : <Sparkles className="w-5 h-5 text-sky-200" />}
+                  <span>{isSynthesizing ? l('جاري صياغة السكريبت والمنشور...', 'Synthesizing Media Package...') : l('توليد حزمة المحتوى بالذكاء الاصطناعي', 'Generate Content Package')}</span>
+                </button>
+
+                {synthesizedPackage && (
+                  <button
+                    onClick={handleExportPackage}
+                    className="px-5 py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-sm flex items-center gap-2 border border-slate-700 transition"
+                  >
+                    <Download className="w-4 h-4 text-emerald-400" />
+                    <span>{l('تصدير كملف Word (.docx)', 'Export Word Package (.docx)')}</span>
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Synthesized Output Display */}
+            {synthesizedPackage && (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* 1. YouTube Video Script Card */}
+                <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
+                  <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+                    <div className="flex items-center gap-2">
+                      <Youtube className="w-5 h-5 text-red-500" />
+                      <h3 className="text-lg font-bold text-white m-0">
+                        {l('سكريبت فيديو يوتيوب (5 دقائق)', 'YouTube Video Script (5 Mins)')}
+                      </h3>
+                    </div>
+                    <button
+                      onClick={() => handleCopy(synthesizedPackage.videoScript, 'script')}
+                      className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-300 flex items-center gap-1.5 border border-slate-700"
+                    >
+                      {copiedType === 'script' ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> : <Share2 className="w-3.5 h-3.5" />}
+                      <span>{copiedType === 'script' ? l('تم النسخ!', 'Copied!') : l('نسخ السكريبت', 'Copy Script')}</span>
+                    </button>
+                  </div>
+                  
+                  <div className="bg-slate-950 p-4 rounded-2xl text-xs text-slate-300 font-mono leading-relaxed whitespace-pre-wrap max-h-96 overflow-y-auto">
+                    <strong className="text-sky-400 block mb-2">{synthesizedPackage.title}</strong>
+                    {synthesizedPackage.videoScript}
+                  </div>
+                </div>
+
+                {/* 2. LinkedIn Executive Post Card */}
+                <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
+                  <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+                    <div className="flex items-center gap-2">
+                      <Globe className="w-5 h-5 text-sky-400" />
+                      <h3 className="text-lg font-bold text-white m-0">
+                        {l('منشور LinkedIn القيادي للمؤسس', 'LinkedIn Executive Post (Dr. Mostafa)')}
+                      </h3>
+                    </div>
+                    <button
+                      onClick={() => handleCopy(synthesizedPackage.linkedInPost, 'linkedin')}
+                      className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-300 flex items-center gap-1.5 border border-slate-700"
+                    >
+                      {copiedType === 'linkedin' ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> : <Share2 className="w-3.5 h-3.5" />}
+                      <span>{copiedType === 'linkedin' ? l('تم النسخ!', 'Copied!') : l('نسخ المنشور', 'Copy Post')}</span>
+                    </button>
+                  </div>
+
+                  <div className="bg-slate-950 p-4 rounded-2xl text-xs text-slate-300 leading-relaxed whitespace-pre-wrap max-h-96 overflow-y-auto">
+                    {synthesizedPackage.linkedInPost}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* TAB 1: 2x Daily Schedule & Interactive Video Player */}
         {activeTab === 'SCHEDULE' && (
