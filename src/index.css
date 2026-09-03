@@ -20,12 +20,12 @@ html {
 }
 
 :root {
-  --user-font-size: 14px;
+  --user-font-size: 16px;
 }
 
 @layer base {
   html {
-    font-size: var(--user-font-size, 14px);
+    font-size: var(--user-font-size, 16px);
     scroll-behavior: smooth;
     overflow-x: hidden;
   }
@@ -33,10 +33,10 @@ html {
     font-family: 'Cairo', 'Inter', system-ui, -apple-system, sans-serif;
     font-display: swap;
     font-size: inherit;
-    line-height: 1.6;
+    line-height: 1.65;
     text-rendering: optimizeLegibility;
     overflow-x: hidden;
-    @apply bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-200;
+    @apply bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-50 transition-colors duration-200;
   }
   @media (max-width: 1023px) {
     body {

@@ -286,8 +286,8 @@ export default function PricingPage() {
             </div>
           </div>
 
-          <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800 text-left text-slate-400 text-xs leading-relaxed">
-            <strong>Platform Legal Disclaimer:</strong> JurisTech is a B2B legal technology SaaS platform. It provides automated document analysis, contract risk detection, and workflow tools. JurisTech is not a law firm and does not provide legal advice, legal representation, or human consulting services.
+          <div className="p-4 sm:p-5 rounded-xl bg-slate-900/90 border border-slate-800 text-left text-slate-300 text-sm leading-relaxed">
+            <strong className="text-white">Platform Legal Disclaimer:</strong> JurisTech is a B2B legal technology SaaS platform. It provides automated document analysis, contract risk detection, and workflow tools. JurisTech is not a law firm and does not provide legal advice, legal representation, or human consulting services.
           </div>
         </div>
       </div>

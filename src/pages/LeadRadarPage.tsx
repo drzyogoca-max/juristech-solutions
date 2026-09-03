@@ -164,13 +164,18 @@ export default function LeadRadarPage() {
       <SmartRadarDashboard />
 
       <div className="p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto space-y-8">
-        
         {/* Header Bar */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900/80 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 backdrop-blur-xl shadow-2xl">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-xs font-bold uppercase tracking-wider mb-2">
-              <Zap className="w-4 h-4 text-cyan-400 animate-pulse" />
-              <span>{isRtl ? 'محرك رادار الذكاء الاصطناعي والتقييم المستمر' : 'AI Autonomous Radar & Lead Engine'}</span>
+            <div className="flex items-center gap-2 flex-wrap mb-2">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-xs font-bold uppercase tracking-wider">
+                <Zap className="w-4 h-4 text-cyan-400 animate-pulse" />
+                <span>{isRtl ? 'محرك رادار الذكاء الاصطناعي والتقييم المستمر' : 'AI Autonomous Radar & Lead Engine'}</span>
+              </div>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30 text-xs font-bold tracking-wider">
+                <Sparkles className="w-4 h-4 text-amber-400" />
+                <span>{isRtl ? 'ذكاء الفرص التعاقدية B2B — نسخة تجريبية' : 'B2B Lead Intelligence — Demo'}</span>
+              </div>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
               {isRtl ? 'رادار تتبع حركة العملاء واقتناص صفقات B2B' : 'Live Corporate & B2B Lead Radar'}

@@ -194,8 +194,8 @@ export default function Footer() {
         </div>
 
         {/* 3. Mandatory B2B SaaS Legal Disclaimer */}
-        <div className="p-4 rounded-2xl bg-slate-900/90 border border-cyan-500/30 flex items-start gap-3 text-xs text-slate-300">
-          <AlertTriangle className="w-5 h-5 text-cyan-400 shrink-0 mt-0.5" />
+        <div className="p-4 sm:p-5 rounded-2xl bg-slate-900/90 border border-slate-800 flex items-start gap-3 text-sm text-slate-300">
+          <AlertTriangle className="w-5 h-5 text-sky-400 shrink-0 mt-0.5" />
           <p className="leading-relaxed m-0 font-medium">
             JurisTech is a B2B legal technology SaaS platform. It provides automated document analysis, contract risk detection, and workflow tools. JurisTech is not a law firm and does not provide legal advice, legal representation, or human consulting services.
           </p>
