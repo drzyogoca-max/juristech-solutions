@@ -25,11 +25,11 @@
       "adminDashboard": "超级管理员仪表板",
       "jurisdictionLaw": "管辖法域与适用法律",
       "companyFiles": "公司档案与文件",
-      "bookAdvisor": "预约法律顾问",
+      "bookAdvisor": "申请演示",
       "themeFontLabel": "主题与字体设置",
       "whatsapp": "加密WhatsApp沟通",
-      "liveOnlineConsultation": "在线实时视频咨询",
-      "directLegislativeAdvisor": "国际立法直通顾问",
+      "liveOnlineConsultation": "在线实时工作流演示",
+      "directLegislativeAdvisor": "国际立法直通助手",
       "companyFormation": "公司设立与登记",
       "acquisition": "国际并购(M&A)平台",
       "sovereignAiHub": "⭐ 主权AI专业版",
@@ -81,7 +81,7 @@
       "approveRisk": "确认风险审计并出具合同",
       "riskApproved": "已确认风险审计并成功出具合同",
       "pendingRisk": "等待确认风险审计",
-      "aiAdvisor": "全球AI法律顾问"
+      "aiAdvisor": "全球AI法律助手"
     },
     "Risk": {
       "title": "智能风险分析与合规审查",
@@ -131,10 +131,10 @@
       "savedSuccess": "企业档案与文件保存成功！"
     },
     "Consultation": {
-      "title": "预约专业法律咨询服务",
+      "title": "预约工作流演示与AI分析",
       "subtitle": "书面法律意见书或在线视频律师咨询",
-      "selectAdvisor": "选择法律顾问",
-      "consultationType": "咨询服务形式",
+      "selectAdvisor": "选择技术支持专家",
+      "consultationType": "服务形式",
       "emailOpinion": "书面法律意见书 (电子邮件)",
       "videoCall": "在线实时视频咨询会议",
       "emergencyAudit": "紧急合同加急审查",
@@ -160,7 +160,7 @@
       "applyClose": "应用并关闭"
     },
     "Meeting": {
-      "title": "在线实时视频谈判与AI会议助理",
+      "title": "在线实时工作流与AI助手",
       "selectPlatform": "选择视频会议平台",
       "dateLabel": "会议日期",
       "timeLabel": "会议时间",
@@ -199,22 +199,22 @@
     },
     "Payment": {
       "title": "订阅套餐与官方支付通道",
-      "subtitle": "支持 PayPal、国际银行电汇(SWIFT) 以及 Binance Pay 快速结算",
-      "proDesc": "适合独立律师、法律顾问与企业创始人。",
+      "subtitle": "结账时提供安全合规的电子支付方式。",
+      "proDesc": "适合企业法务团队、独立法律人士和初创企业创始人。",
       "enterpriseDesc": "适合企业法务部门与大型律师事务所的无限全功能访问。",
       "payWithPayPal": "使用商业 PayPal 支付",
       "secureNote": "所有支付交易均受到国际标准的 SSL 256-Bit 高强度加密保护。"
     },
     "Support": {
       "title": "技术支持与客户服务",
-      "subtitle": "24/7 全天候AI与人工双轨技术支持",
+      "subtitle": "24/7 全天候技术与运营支持",
       "submitTicket": "提交新工单",
       "liveChat": "在线实时客服",
       "faq": "常见问题解答 (FAQ)"
     },
     "Legal": {
       "title": "法律合规与国际监管框架",
-      "disclaimer": "JurisTech Solutions 提供高水平的AI法律信息与合规分析，不可替代执业律师出庭代理等诉讼业务。",
+      "disclaimer": "JurisTech Solutions 提供自动化法律分析工具与智能合同起草软件，不提供法律咨询或诉讼代理服务。",
       "dismiss": "我已知晓",
       "viewCompliance": "查看合规说明"
     },

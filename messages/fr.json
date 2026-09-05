@@ -25,11 +25,11 @@
       "adminDashboard": "Tableau de Bord Super Admin",
       "jurisdictionLaw": "Juridiction & Droit Applicable",
       "companyFiles": "Profil Entreprise & Documents",
-      "bookAdvisor": "Réserver un Conseiller",
+      "bookAdvisor": "Demander une Démo",
       "themeFontLabel": "Thème & Police",
       "whatsapp": "WhatsApp Chiffré",
-      "liveOnlineConsultation": "Consultation en Direct",
-      "directLegislativeAdvisor": "Conseiller Législatif Direct",
+      "liveOnlineConsultation": "Session de Flux de Travail en Direct",
+      "directLegislativeAdvisor": "Assistant Législatif Direct",
       "companyFormation": "Création d'Entreprise",
       "acquisition": "Plateforme Internationale M&A",
       "sovereignAiHub": "⭐ IA Souveraine Pro",
@@ -55,7 +55,7 @@
       "send": "Envoyer",
       "thinking": "Analyse des textes de loi en cours...",
       "error": "Erreur de connexion au service IA.",
-      "newChat": "Nouvelle Consultation",
+      "newChat": "Nouvelle Session d'Analyse",
       "exportChat": "Exporter la Conversation",
       "welcome": "Bienvenue ! Je suis votre Conseiller Juridique IA Senior chez JurisTech Solutions."
     },
@@ -81,7 +81,7 @@
       "approveRisk": "Valider l'Audit & Émettre le Contrat",
       "riskApproved": "Audit Validé & Contrat Émis",
       "pendingRisk": "En attente de validation des risques",
-      "aiAdvisor": "Conseiller Juridique IA International"
+      "aiAdvisor": "Assistant Juridique IA International"
     },
     "Risk": {
       "title": "Analyseur de Risques & de Conformité",
@@ -131,10 +131,10 @@
       "savedSuccess": "Profil et documents sauvegardés avec succès !"
     },
     "Consultation": {
-      "title": "Planifier une Consultation Juridique",
+      "title": "Planifier une Démo et Session d'Analyse IA",
       "subtitle": "Avis Écrit ou Session Vidéo avec un Avocat Conseil",
-      "selectAdvisor": "Choisir un Conseiller",
-      "consultationType": "Format de Consultation",
+      "selectAdvisor": "Choisir un Spécialiste Technique",
+      "consultationType": "Format de Session",
       "emailOpinion": "Avis Juridique Écrit par E-mail",
       "videoCall": "Session Vidéo en Direct",
       "emergencyAudit": "Audit Juridique d'Urgence",
@@ -144,11 +144,11 @@
       "companyName": "Nom de l'Entreprise",
       "preferredDate": "Date Souhaitée",
       "preferredTime": "Heure Souhaitée",
-      "subjectDetails": "Résumé et Objet de la Consultation",
+      "subjectDetails": "Résumé et Portée de l'Analyse",
       "confirm": "Confirmer & Réserver",
       "sending": "Envoi en cours...",
       "instantEmail": "Confirmation immédiate envoyée par e-mail",
-      "confirmedTitle": "Consultation Confirmée & Transmise !",
+      "confirmedTitle": "Demande de Session Confirmée !",
       "done": "Terminé"
     },
     "Theme": {
@@ -160,7 +160,7 @@
       "applyClose": "Appliquer & Fermer"
     },
     "Meeting": {
-      "title": "Consultation Vidéo en Direct & Assistant IA",
+      "title": "Session de Travail en Direct & Assistant IA",
       "selectPlatform": "Sélectionner la Plateforme Vidéo",
       "dateLabel": "Date",
       "timeLabel": "Heure",
@@ -199,22 +199,22 @@
     },
     "Payment": {
       "title": "Abonnements & Moyens de Paiement",
-      "subtitle": "Paiements sécurisés via PayPal, Virement Bancaire (SWIFT) et Binance Pay",
-      "proDesc": "Idéal pour les avocats indépendants et consultants.",
+      "subtitle": "Moyens de paiement électroniques sécurisés et certifiés disponibles lors de la commande.",
+      "proDesc": "Idéal pour les équipes juridiques, praticiens indépendants et fondateurs.",
       "enterpriseDesc": "Accès illimité pour les directions juridiques et cabinets.",
       "payWithPayPal": "Payer avec PayPal Commercial",
       "secureNote": "Transactions 100% sécurisées par chiffrement SSL 256 bits."
     },
     "Support": {
       "title": "Support & Assistance Juridique",
-      "subtitle": "Support technique et assistance IA 24/7",
+      "subtitle": "Support technique et opérationnel 24/7",
       "submitTicket": "Ouvrir un Ticket",
       "liveChat": "Discussion en Direct",
       "faq": "Foire Aux Questions (FAQ)"
     },
     "Legal": {
       "title": "Conformité Légale & Cadre Réglementaire",
-      "disclaimer": "JurisTech Solutions fournit une assistance et des informations juridiques IA hautement qualifiées, sans se substituer à la représentation judiciaire devant les tribunaux.",
+      "disclaimer": "JurisTech Solutions fournit des outils d'analyse juridique automatisée et de rédaction de contrats ; elle ne dispense aucun conseil juridique ni représentation devant les tribunaux.",
       "dismiss": "J'ai compris",
       "viewCompliance": "Voir la Conformité"
     },

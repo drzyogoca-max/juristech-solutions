@@ -27,7 +27,7 @@ export const PAGE_SEO: Record<string, PageSEO> = {
     descriptionEn:
       'Premier AI contract review and automated legal document analysis platform. Detect liability traps, audit clauses, and draft sovereign agreements.',
     descriptionAr:
-      'منصة JurisTech لتحليل العقود بالذكاء الاصطناعي وكشف الثغرات والبنود التعسفية وإدارة المخاطر القانونية للشركات وصياغة الاتفاقيات بدقة تشريعية واستشارات فورية.',
+      'منصة JurisTech لتحليل العقود بالذكاء الاصطناعي وكشف الثغرات والبنود التعسفية وإدارة المخاطر القانونية للشركات وصياغة الاتفاقيات بدقة تشريعية ودعم سير العمل القانوني.',
     keywords: 'منصة تحليل العقود بالذكاء الاصطناعي, كشف الثغرات القانونية, تدقيق العقود التجارية, AI contract review software, corporate legal risk audit',
     schemaType: 'SoftwareApplication',
   },
@@ -38,19 +38,19 @@ export const PAGE_SEO: Record<string, PageSEO> = {
     descriptionEn:
       'Enterprise AI contract review dashboard. Instant clause redlining, liability cap analysis, and multi-jurisdictional compliance across US & GCC.',
     descriptionAr:
-      'المنصة الذكية الأولى لتحليل العقود وكشف الثغرات والبنود التعسفية وإدارة المخاطر القانونية للشركات. صياغة العقود التجارية واستشارات قانونية فورية للشركات.',
+      'المنصة الذكية الأولى لتحليل العقود وكشف الثغرات والبنود التعسفية وإدارة المخاطر القانونية للشركات. صياغة العقود التجارية ودعم سير العمل القانوني للشركات.',
     keywords: 'AI-powered contract risk scoring, automated legal document analysis platform, contract liability analyzer, AI contract review',
     schemaType: 'SoftwareApplication',
   },
   '/chat': {
     path: '/chat',
-    titleEn: '24/7 AI Legal Counsel & Virtual Attorney | JurisTech',
-    titleAr: 'المستشار القانوني الذكي للشركات | JurisTech Solutions',
+    titleEn: '24/7 AI LegalTech SaaS & Contract Intelligence | JurisTech',
+    titleAr: 'مساعد التحليل القانوني الذكي للشركات | JurisTech Solutions',
     descriptionEn:
-      '24/7 enterprise AI legal counsel for corporate disputes, commercial contract terms, Delaware statutes, Saudi Companies Law & UNCITRAL regulations.',
+      '24/7 enterprise AI LegalTech software for contract drafting, risk detection, Delaware statutes, Saudi Companies Law & UNCITRAL frameworks.',
     descriptionAr:
-      'مستشارك القانوني الذكي المتاح 24 ساعة: استشارات قانونية موثوقة لحل النزاعات العقدية، فحص شروط الاتفاقيات، وتدقيق أنظمة الشركات والعمل بالسعودية والخليج.',
-    keywords: 'AI legal counsel, virtual attorney USA, corporate lawyer AI, GCC legal assistant',
+      'منصة التحليل القانوني الذكي للشركات: فحص شروط الاتفاقيات، كشف الثغرات العقدية، وتدقيق أنظمة الشركات والعمل بالسعودية والخليج.',
+    keywords: 'LegalTech SaaS, AI contract analysis, contract drafting, corporate compliance AI, GCC legal tech',
     schemaType: 'SoftwareApplication',
   },
   '/contracts': {
@@ -165,13 +165,13 @@ export const PAGE_SEO: Record<string, PageSEO> = {
   },
   '/support': {
     path: '/support',
-    titleEn: '24/7 Client Support & Advisory Helpdesk | JurisTech',
-    titleAr: 'الدعم الفني والاستشارات الفورية | JurisTech',
+    titleEn: '24/7 Technical Support & Workflow Desk | JurisTech',
+    titleAr: 'الدعم الفني ومساندة سير العمل | JurisTech',
     descriptionEn:
-      '24/7 technical and legal support desk for enterprise clients and platform subscribers with instant advisory response.',
+      '24/7 technical and platform support desk for enterprise clients and platform subscribers with instant operational response.',
     descriptionAr:
-      'فريق الدعم الاستشاري والفني متاح 24 ساعة طوال أيام الأسبوع للإجابة على كافة الاستفسارات التعاقدية وتقديم المساندة الفنية الفورية للعملاء.',
-    keywords: 'legaltech support, client advisory helpdesk, 24/7 legal support',
+      'فريق الدعم الفني والتقني متاح 24 ساعة طوال أيام الأسبوع للإجابة على كافة الاستفسارات التقنية وتقديم المساندة الفورية للمشتركين.',
+    keywords: 'legaltech support, technical helpdesk, 24/7 platform support',
     schemaType: 'SoftwareApplication',
   },
   '/about': {

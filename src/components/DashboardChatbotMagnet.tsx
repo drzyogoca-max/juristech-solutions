@@ -206,14 +206,14 @@ export default function DashboardChatbotMagnet({ onContractUploaded }: Dashboard
               <button
                 onClick={() => handleSubmitQuery()}
                 disabled={loading || !inputQuery.trim()}
-                aria-label={isRtl ? 'إرسال الاستشارة القانونية' : 'Submit legal query'}
+                aria-label={isRtl ? 'إرسال طلب التحليل الذكي' : 'Submit contract analysis query'}
                 className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-slate-950 font-black text-xs flex items-center gap-2 transition-all disabled:opacity-50 shadow-md"
               >
                 {loading ? (
                   <span className="animate-spin border-2 border-slate-950 border-t-transparent rounded-full w-4 h-4" />
                 ) : (
                   <>
-                    <span>{isRtl ? 'اسأل الآن' : 'Consult'}</span>
+                    <span>{isRtl ? 'تحليل الآن' : 'Analyze'}</span>
                     <Send className={`w-3.5 h-3.5 ${isRtl ? 'rotate-180' : ''}`} />
                   </>
                 )}

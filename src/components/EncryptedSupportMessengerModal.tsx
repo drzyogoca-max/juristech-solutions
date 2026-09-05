@@ -91,11 +91,11 @@ export default function EncryptedSupportMessengerModal({
             <p className="text-xs text-slate-300 leading-relaxed max-w-md mx-auto">
               {isRtl ? (
                 <>
-                  تم تحويل رسالتك المشفرة مباشرة إلى فريق المستشارين القانونيين والدعم المالي على البريد الرسمي <code className="text-cyan-300 font-mono">founder@juristech.solutions</code>. ستتلقى الرد والمتابعة عبر المنصة خلال أقل من 15 دقيقة.
+                  تم تحويل رسالتك المشفرة مباشرة إلى فريق الدعم الفني والتقني وإدارة المنظومة على البريد الرسمي <code className="text-cyan-300 font-mono">founder@juristech.solutions</code>. ستتلقى الرد والمتابعة عبر المنصة خلال أقل من 15 دقيقة.
                 </>
               ) : (
                 <>
-                  Your encrypted message has been dispatched to the legal counsel desk at <code className="text-cyan-300 font-mono">founder@juristech.solutions</code>. You will receive follow-up within 15 minutes.
+                  Your encrypted message has been dispatched to the technical and executive support desk at <code className="text-cyan-300 font-mono">founder@juristech.solutions</code>. You will receive follow-up within 15 minutes.
                 </>
               )}
             </p>

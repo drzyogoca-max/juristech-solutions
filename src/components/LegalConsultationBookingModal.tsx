@@ -25,11 +25,11 @@ export const ADVISORS: LegalAdvisor[] = [
   {
     id: 'advisor-1',
     nameAr: 'د. محمد مصطفى',
-    nameEn: 'Dr. Mohammed Mustafa',
-    titleAr: 'مستشار استراتيجي | دكتوراه إدارة المخاطر',
-    titleEn: 'Strategic Advisor | PhD Risk Management',
-    specialtyAr: 'الاستشارات الاستراتيجية الحصرية، حوكمة المخاطر القانونية والتشريعية للمؤسسات والشركات',
-    specialtyEn: 'Exclusive Strategic Advisory, Legal & Regulatory Risk Governance',
+    nameEn: 'Dr. Mohammad Mustafa',
+    titleAr: 'المؤسس ورئيس مجلس الإدارة | دكتوراه إدارة المخاطر',
+    titleEn: 'Founder & Chairman | PhD Risk Management',
+    specialtyAr: 'الإشراف الاستراتيجي وحوكمة المخاطر التعاقدية وهندسة حلول التقنية القانونية LegalTech SaaS',
+    specialtyEn: 'Strategic Governance, Contractual Risk Management & LegalTech SaaS Architecture',
     countryFlag: '🏛️ ⚖️',
   },
 ];

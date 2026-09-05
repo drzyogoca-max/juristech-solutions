@@ -25,11 +25,11 @@
       "adminDashboard": "Süper Yönetici Paneli",
       "jurisdictionLaw": "Yargı Yetkisi ve Uygulanacak Hukuk",
       "companyFiles": "Şirket Profili ve Belgeler",
-      "bookAdvisor": "Danışman Randevusu Al",
+      "bookAdvisor": "Demo Talep Et",
       "themeFontLabel": "Tema ve Yazı Tipi Ayarı",
       "whatsapp": "Şifreli WhatsApp İletişimi",
-      "liveOnlineConsultation": "Canlı Görüntülü Danışmanlık",
-      "directLegislativeAdvisor": "Doğrudan Mevzuat Danışmanı",
+      "liveOnlineConsultation": "Canlı İş Akışı Oturumu",
+      "directLegislativeAdvisor": "Doğrudan Mevzuat Asistanı",
       "companyFormation": "Şirket Kuruluşu ve Tescil",
       "acquisition": "Uluslararası M&A Platformu",
       "sovereignAiHub": "⭐ Egemen Yapay Zeka Pro",
@@ -81,7 +81,7 @@
       "approveRisk": "Risk Denetimini Onayla ve Sözleşmeyi Çıkar",
       "riskApproved": "Risk Denetimi Onaylandı ve Sözleşme Çıkarıldı",
       "pendingRisk": "Risk Denetim Onayı Bekleniyor",
-      "aiAdvisor": "Uluslararası Yapay Zeka Hukuk Danışmanı"
+      "aiAdvisor": "Uluslararası Yapay Zeka Hukuk Asistanı"
     },
     "Risk": {
       "title": "Akıllı Risk Analizi ve Mevzuat Uyumu",
@@ -131,10 +131,10 @@
       "savedSuccess": "Şirket profili ve belgeler başarıyla kaydedildi!"
     },
     "Consultation": {
-      "title": "Hukuki Danışmanlık Randevusu Al",
+      "title": "İş Akışı Demosu ve Yapay Zeka Analizi Planla",
       "subtitle": "Yazılı Hukuki Mütalaa veya Canlı Görüntülü Danışmanlık",
-      "selectAdvisor": "Hukuk Danışmanını Seçin",
-      "consultationType": "Danışmanlık Hizmet Türü",
+      "selectAdvisor": "Teknik Destek Uzmanını Seçin",
+      "consultationType": "Oturum Hizmet Türü",
       "emailOpinion": "E-posta ile Yazılı Hukuki Görüş / Mütalaa",
       "videoCall": "Canlı Görüntülü Görüşme Seansı",
       "emergencyAudit": "Acil Sözleşme Denetimi",
@@ -160,7 +160,7 @@
       "applyClose": "Uygula ve Kapat"
     },
     "Meeting": {
-      "title": "Canlı Çevrimiçi Danışmanlık ve Müzakere",
+      "title": "Canlı İş Akışı Oturumu ve Yapay Zeka Asistanı",
       "selectPlatform": "Video Platformunu Seçin",
       "dateLabel": "Tarih",
       "timeLabel": "Saat",
@@ -199,22 +199,22 @@
     },
     "Payment": {
       "title": "Abonelik Paketleri ve Ödeme Kanalları",
-      "subtitle": "PayPal, Doğrudan Banka Havalesi (SWIFT) ve Binance Pay ile güvenli ödeme",
-      "proDesc": "Bireysel avukatlar, danışmanlar ve girişimciler için ideal.",
+      "subtitle": "Sipariş tamamlama aşamasında güvenli ve onaylı elektronik ödeme yöntemleri mevcuttur.",
+      "proDesc": "Hukuk ekipleri, bağımsız uzmanlar ve kurucular için idealdir.",
       "enterpriseDesc": "Kurumsal hukuk departmanları ve bürolar için sınırsız erişim.",
       "payWithPayPal": "Kurumsal PayPal ile Öde",
       "secureNote": "Tüm finansal işlemler uluslararası SSL 256-Bit şifreleme ile korunur."
     },
     "Support": {
       "title": "Destek ve Müşteri Hizmetleri",
-      "subtitle": "7/24 Kesintisiz Yapay Zeka ve Teknik Destek",
+      "subtitle": "7/24 teknik ve operasyonel destek",
       "submitTicket": "Yeni Destek Talebi Aç",
       "liveChat": "Canlı Sohbet",
       "faq": "Sıkça Sorulan Sorular (SSS)"
     },
     "Legal": {
       "title": "Hukuki Uyum ve Düzenleyici Çerçeve",
-      "disclaimer": "JurisTech Solutions yüksek nitelikli yapay zeka hukuki bilgisi ve analizi sağlar; doğrudan mahkemede vekillik yerine geçmez.",
+      "disclaimer": "JurisTech Solutions, otomatik hukuki analiz ve sözleşme hazırlama araçları sunar; hukuki danışmanlık veya avukatlık hizmeti sağlamaz.",
       "dismiss": "Anladım",
       "viewCompliance": "Uyumluluk Şartlarını Gör"
     },

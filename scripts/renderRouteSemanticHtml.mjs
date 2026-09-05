@@ -20,7 +20,7 @@ export function getSemanticHtmlForRoute(routePath) {
         </div>
         <nav class="flex gap-4 flex-wrap text-sm">
           <a href="/dashboard" class="text-slate-200 hover:text-white no-underline font-bold">الرئيسية</a>
-          <a href="/chat" class="text-slate-200 hover:text-white no-underline font-bold">المستشار الذكي</a>
+          <a href="/chat" class="text-slate-200 hover:text-white no-underline font-bold">المساعد الذكي</a>
           <a href="/contracts" class="text-slate-200 hover:text-white no-underline font-bold">صياغة العقود</a>
           <a href="/risk" class="text-slate-200 hover:text-white no-underline font-bold">فحص المخاطر</a>
           <a href="/repository" class="text-slate-200 hover:text-white no-underline font-bold">مستودع العقود</a>
@@ -93,7 +93,7 @@ export function getSemanticHtmlForRoute(routePath) {
         <div>
           <strong class="text-slate-100 block mb-2">الخدمات الرئيسية</strong>
           <ul class="list-none p-0 m-0 space-y-2">
-            <li><a href="/chat" class="text-slate-400 hover:text-white no-underline">المستشار القانوني الذكي</a></li>
+            <li><a href="/chat" class="text-slate-400 hover:text-white no-underline">المساعد الذكي للعقود</a></li>
             <li><a href="/contracts" class="text-slate-400 hover:text-white no-underline">صانع ومولد العقود</a></li>
             <li><a href="/risk" class="text-slate-400 hover:text-white no-underline">مدقق المخاطر والبنود التعسفية</a></li>
             <li><a href="/repository" class="text-slate-400 hover:text-white no-underline">مستودع العقود والنماذج</a></li>
@@ -205,7 +205,7 @@ export function getSemanticHtmlForRoute(routePath) {
 
             <section class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-3">
               <h2 class="text-xl font-bold text-sky-400 m-0">2. طبيعة الخدمات ومسؤولية الذكاء الاصطناعي (Nature of AI Legal Services)</h2>
-              <p>تقدم المنصة أدوات ذكاء اصطناعي سيادية لتوليد العقود، فحص المخاطر، تدقيق البنود، وتحليلات العقود الذكية آلياً. تم تصميم هذه الأدوات البرمجية لمساعدة المحامين، المستشارين القانونيين، ورؤساء الشركات. مخرجات الذكاء الاصطناعي تعتبر أدوات مساندة برمجية عالية الدقة ولا تقدم استشارات قانونية بشرية ولا تغني عن المراجعة النهائية للمستشار القانوني المعتمد.</p>
+              <p>تقدم المنصة <strong>أدوات التحليل القانوني الآلي</strong> لتوليد العقود، فحص المخاطر، تدقيق البنود، وتحليلات العقود الذكية آلياً. تم تصميم هذه الأدوات البرمجية لمساعدة المحامين، المستشارين القانونيين، ورؤساء الشركات. مخرجات الذكاء الاصطناعي تعتبر أدوات مساندة برمجية عالية الدقة (automated legal analysis tools) ولا تقدم استشارات قانونية بشرية ولا تغني عن المراجعة النهائية للمستشار القانوني المعتمد.</p>
             </section>
 
             <section class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-3">
@@ -651,7 +651,7 @@ export function getSemanticHtmlForRoute(routePath) {
             إدارة قناة يوتيوب الرسمية والنشر اليومي الالي | JurisTech YouTube Studio
           </h1>
           <p class="text-base text-slate-300 leading-relaxed mb-6">
-            استوديو الإدارة البرمجية لقناة يوتيوب الرسمية للمنصة المرتبطة بـ founder@juristech.solutions بإشراف المستشار د. محمد مصطفى. توليد ونشر فيديوهات قانونية يومية صباحاً (09:00 AM) ومساءً (06:00 PM).
+            استوديو الإدارة البرمجية لقناة يوتيوب الرسمية للمنصة المرتبطة بـ founder@juristech.solutions بإشراف وتأسيس د. محمد مصطفى (المؤسس ورئيس مجلس الإدارة). توليد ونشر فيديوهات قانونية يومية صباحاً (09:00 AM) ومساءً (06:00 PM).
           </p>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
             <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl">
@@ -676,11 +676,11 @@ export function getSemanticHtmlForRoute(routePath) {
         <h1 class="text-6xl sm:text-8xl font-black text-cyan-400 font-mono mb-4">404</h1>
         <h2 class="text-2xl font-bold text-slate-100 mb-4">عذراً، الصفحة أو الرابط المطلوب غير موجود</h2>
         <p class="text-slate-300 max-w-xl mx-auto mb-8 leading-relaxed">
-          يبدو أن الرابط القانوني أو المستند الذي تبحث عنه تم نقله أو تعديله. يمكنك العودة مباشرة إلى لوحة التحكم الرئيسية أو استخدام المستشار القانوني الذكي.
+          يبدو أن الرابط أو المستند الذي تبحث عنه تم نقله أو تعديله. يمكنك العودة مباشرة إلى لوحة التحكم الرئيسية أو استخدام المساعد الذكي.
         </p>
         <div class="flex gap-4 justify-center flex-wrap">
           <a href="/dashboard" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 px-6 py-3 rounded-2xl font-bold no-underline shadow">العودة للرئيسية</a>
-          <a href="/chat" class="bg-slate-900 text-cyan-400 border border-cyan-500 px-6 py-3 rounded-2xl font-bold no-underline">المستشار الذكي 24/7</a>
+          <a href="/chat" class="bg-slate-900 text-cyan-400 border border-cyan-500 px-6 py-3 rounded-2xl font-bold no-underline">المساعد الذكي</a>
           <a href="/contracts" class="bg-slate-900 text-slate-200 border border-slate-700 px-6 py-3 rounded-2xl font-bold no-underline">صياغة العقود</a>
         </div>
       </main>

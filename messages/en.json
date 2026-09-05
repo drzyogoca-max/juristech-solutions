@@ -2,7 +2,7 @@
   "translation": {
     "Nav": {
       "dashboard": "Dashboard",
-      "chat": "AI Advisor",
+      "chat": "AI Assistant",
       "contracts": "Contract Generator",
       "risk": "Smart Audit",
       "vault": "Encrypted Vault",
@@ -25,11 +25,11 @@
       "adminDashboard": "Super Admin Dashboard",
       "jurisdictionLaw": "Jurisdiction Law",
       "companyFiles": "Company & Files",
-      "bookAdvisor": "Book Advisor",
+      "bookAdvisor": "Request Demo",
       "themeFontLabel": "Theme & Font",
       "whatsapp": "WhatsApp",
-      "liveOnlineConsultation": "Live Online Consultation",
-      "directLegislativeAdvisor": "Direct Legislative Advisor",
+      "liveOnlineConsultation": "Live Workflow Session",
+      "directLegislativeAdvisor": "Direct Legislative Assistant",
       "companyFormation": "Corporate Formation",
       "acquisition": "International M&A Platform",
       "sovereignAiHub": "⭐ Sovereign AI Pro",
@@ -40,7 +40,7 @@
       "subtitle": "Sovereign AI Legal Intelligence",
       "contracts": "Contracts",
       "riskReports": "Risk Reports",
-      "aiRequests": "AI Requests",
+      "aiRequests": "AI Analysis Runs",
       "activeUsers": "Active Users",
       "howItWorksTitle": "How JurisTech Works",
       "step1": "Upload or Type Contract",
@@ -49,15 +49,15 @@
       "step4": "E-Sign & Export PDF"
     },
     "Chat": {
-      "title": "AI Legal Advisor",
+      "title": "AI Legal Assistant",
       "subtitle": "Powered by Egyptian, GCC & International Law",
       "placeholder": "Ask a legal question in any language...",
-      "send": "Send",
+      "send": "Send Query",
       "thinking": "Thinking...",
       "error": "Error contacting AI service.",
-      "newChat": "New Chat",
+      "newChat": "New Analysis Session",
       "exportChat": "Export Conversation",
-      "welcome": "Welcome! I am your Senior AI Legal Advisor."
+      "welcome": "Welcome! I am your AI Legal Assistant. How can I help you analyze documents and draft contracts today?"
     },
     "Contracts": {
       "title": "Smart Contract Generator",
@@ -81,7 +81,7 @@
       "approveRisk": "Approve Risk Audit & Issue Contract",
       "riskApproved": "Risk Audit Approved & Issued",
       "pendingRisk": "Pending Risk Audit Approval",
-      "aiAdvisor": "Global AI Legal Advisor"
+      "aiAdvisor": "Global AI Legal Assistant"
     },
     "Risk": {
       "title": "Smart Risk Analyzer",
@@ -105,8 +105,8 @@
     },
     "Jurisdiction": {
       "title": "Select Active Country & Statutory Framework",
-      "subtitle": "Direct International Legislative Advisor",
-      "description": "Select the active jurisdiction to automatically ground all AI contract audits, risk checks, and live consultations in its specific Civil & Commercial Codes:",
+      "subtitle": "Direct International Legislative Assistant",
+      "description": "Select the active jurisdiction to automatically ground all AI contract audits, risk checks, and automated legal analysis tools in its specific Civil & Commercial Codes:",
       "grounding": "100% Statutory AI Grounding Active",
       "close": "Close",
       "arbitration": "Venue"
@@ -131,10 +131,10 @@
       "savedSuccess": "Profile and documents saved!"
     },
     "Consultation": {
-      "title": "Schedule Legal Consultation Session",
-      "subtitle": "Advisor Email & Live Consultation Booking",
-      "selectAdvisor": "Select Legal Advisor",
-      "consultationType": "Consultation Delivery Method",
+      "title": "Schedule Workflow Demo & AI Analysis Session",
+      "subtitle": "Technical Support & Automated Analysis Walkthrough",
+      "selectAdvisor": "Select Technical Support Specialist",
+      "consultationType": "Session Format",
       "emailOpinion": "Written Email Opinion",
       "videoCall": "Live Video Session",
       "emergencyAudit": "Emergency Audit",
@@ -144,11 +144,11 @@
       "companyName": "Company Name",
       "preferredDate": "Preferred Date",
       "preferredTime": "Preferred Time",
-      "subjectDetails": "Consultation Summary & Case Notes",
+      "subjectDetails": "Analysis Summary & Scope Details",
       "confirm": "Confirm & Schedule",
       "sending": "Sending...",
       "instantEmail": "Instant email confirmation sent",
-      "confirmedTitle": "Consultation Booking Confirmed & Dispatched!",
+      "confirmedTitle": "Session Request Confirmed & Dispatched!",
       "done": "Done"
     },
     "Theme": {
@@ -160,7 +160,7 @@
       "applyClose": "Apply & Close"
     },
     "Meeting": {
-      "title": "Live Online Consultation & AI Assistant",
+      "title": "Live Workflow & AI Assistant Session",
       "selectPlatform": "Select Video Meeting Platform",
       "dateLabel": "Date",
       "timeLabel": "Time",
@@ -199,22 +199,22 @@
     },
     "Payment": {
       "title": "Subscriptions & Gateways",
-      "subtitle": "Secure payments via PayPal, Direct Bank Wire (SWIFT) & Binance Pay",
-      "proDesc": "Perfect for individual lawyers, consultants, and founders.",
+      "subtitle": "Secure payment methods available at checkout.",
+      "proDesc": "Perfect for corporate legal teams, independent practitioners, and founders.",
       "enterpriseDesc": "Full access for corporate legal teams and law firms.",
       "payWithPayPal": "Pay with PayPal Commercial",
       "secureNote": "All payments are processed securely via SSL 256-Bit Encryption."
     },
     "Support": {
       "title": "Support & Helpdesk",
-      "subtitle": "24/7 AI-powered legal support",
+      "subtitle": "24/7 AI-powered technical & workflow support",
       "submitTicket": "Submit a Ticket",
       "liveChat": "Live Chat",
       "faq": "FAQ"
     },
     "Legal": {
       "title": "Legal Compliance & Regulatory Framework",
-      "disclaimer": "JurisTech AI provides legal information, not legal advice. Consult a licensed attorney for legal counsel.",
+      "disclaimer": "JurisTech Solutions provides automated legal analysis tools and contract drafting software; it does not provide legal advice or attorney representation.",
       "dismiss": "Dismiss",
       "viewCompliance": "View Compliance"
     },

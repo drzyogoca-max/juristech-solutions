@@ -107,7 +107,7 @@ const ROUTE_METADATA = {
     descriptionEn: 'Sovereign AI enterprise need diagnostic intake and cross-border statutory clash simulator for M&A, VC joint ventures, and international commercial deals.',
   },
   '/acquisition': {
-    titleAr: 'استشارات الاندماج والاستحواذ الذكي | JurisTech Solutions',
+    titleAr: 'تحليلات الاندماج والاستحواذ الذكي | JurisTech Solutions',
     titleEn: 'M&A Deal Room & Acquisition Intelligence | JurisTech',
     descriptionAr: 'منظومة حوكمة صفقات الاندماج والاستحواذ، الفحص النافي للجهالة، وتقييم مخاطر التوافق التنظيمي للمؤسسات.',
     descriptionEn: 'M&A intelligence, virtual deal room workflows, due diligence auditing, and regulatory risk scoring.',
@@ -230,7 +230,7 @@ function prerenderRoutes() {
 
     const metadata = ROUTE_METADATA[routePath] || {};
     const pageTitle = metadata.titleAr || metadata.titleEn || 'منصة تحليل العقود بالذكاء الاصطناعي | JurisTech Solutions';
-    const pageDesc = metadata.descriptionAr || metadata.descriptionEn || 'المنصة الذكية لتحليل العقود وكشف الثغرات وإدارة المخاطر القانونية للشركات واستشارات فورية.';
+    const pageDesc = metadata.descriptionAr || metadata.descriptionEn || 'المنصة الذكية لتحليل العقود وكشف الثغرات وإدارة المخاطر القانونية للشركات ودعم سير العمل القانوني.';
     const canonicalUrl = `${BASE_URL}${routePath === '/' ? '/' : routePath}`;
 
     let routeHtml = baseHtml;

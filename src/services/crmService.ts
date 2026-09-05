@@ -953,7 +953,7 @@ class CrmService {
         leadScore: 99,
         notesAr: 'مجموعة كوتش القابضة في إسطنبول — حوكمة عقود الطاقة والتجارة العابرة للحدود وعقود الفيديك FIDIC',
         notesEn: 'Koç Holding Istanbul — International Energy & Cross-Border Supply Trade FIDIC Audit',
-        lastActivityAr: 'تم التأهيل للتواصل التنفيذي عبر بريد المستشار د. محمد مصطفى',
+        lastActivityAr: 'تم التأهيل للتواصل التنفيذي عبر بريد د. محمد مصطفى (المؤسس ورئيس مجلس الإدارة)',
         lastActivityEn: 'Qualified for C-Suite Executive Outreach',
       },
       {

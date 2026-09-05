@@ -653,7 +653,7 @@ export default function Dashboard() {
                 <span>{l('حزم الاشتراكات المخصومة بنسبة 30%', '30% Discounted Subscription Packages')}</span>
               </span>
               <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-                {l('اختر الباقة المناسبة لمؤسستك وابدأ الاستشارة الفورية', 'Select Your Tier & Unlock Institutional Intelligence')}
+                {l('اختر الباقة المناسبة لمؤسستك وابدأ التحليل الذكي', 'Select Your Tier & Unlock Institutional Intelligence')}
               </h2>
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
                 {l('جميع الباقات مصممة لتوفير أقصى قدر من الكفاءة مع فتح آلي آمن عبر بوابة Binance Pay أو الحوالات المعتمدة أو إنستا باي.', 'All tiers feature zero-touch automated Binance Pay deployment, SWIFT & InstaPay processing.')}

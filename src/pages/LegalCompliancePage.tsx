@@ -191,13 +191,13 @@ ${policyInput}`;
       content: `
         <div class="p-4 bg-cyan-500/10 border border-cyan-500/30 rounded-xl mb-3">
           <p class="font-bold text-cyan-400">Independent Legal Technology SaaS Platform:</p>
-          <p>JurisTech Solutions is an independent legal technology SaaS platform engineered by Senior Legal Counsel & Chief AI Architect Dr. Mohammed Mostafa (Contact: founder@juristech.solutions | +201126674337). All proprietary models, codebases, and intellectual property are protected under applicable international IP conventions.</p>
+          <p>JurisTech Solutions is an independent legal technology SaaS platform founded and engineered by Founder & Chief AI Architect Dr. Mohammad Mustafa (Contact: founder@juristech.solutions | +201126674337). All proprietary models, codebases, and intellectual property are protected under applicable international IP conventions.</p>
         </div>
       `,
       contentAr: `
         <div class="p-4 bg-cyan-500/10 border border-cyan-500/30 rounded-xl mb-3">
           <p class="font-bold text-cyan-400">كيان برمجيات تقني قانوني مستقل (Legal Tech SaaS):</p>
-          <p>تُعد منصة JurisTech Solutions منظومة برمجيات تقنية قانونية سحابية مستقلة، تم تطويرها وهندستها بإشراف المستشار القانوني د. محمد مصطفى (تواصل: founder@juristech.solutions | هاتف: 201126674337+). وتعتبر كافة الأصول البرمجية والنماذج الذكية وحقوق الملكية الفكرية ملكية تكنولوجية خاصة ومحمية قانونياً.</p>
+          <p>تُعد منصة JurisTech Solutions منظومة برمجيات تقنية قانونية سحابية مستقلة، تم تطويرها وهندستها بإشراف وتأسيس د. محمد مصطفى (المؤسس ورئيس مجلس الإدارة وخبير إدارة المخاطر) (تواصل: founder@juristech.solutions | هاتف: 201126674337+). وتعتبر كافة الأصول البرمجية والنماذج الذكية وحقوق الملكية الفكرية ملكية تكنولوجية خاصة ومحمية قانونياً.</p>
         </div>
       `
     },

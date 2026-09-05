@@ -12,7 +12,7 @@
     "restore:ui-layout": "echo Restoring UI layout and visual styles...",
     "apply:recommendations": "echo Applying visual recommendations and RBAC security rules...",
     "clean": "node -e \"import('fs').then(fs=>fs.rmSync('dist',{recursive:true,force:true}))\"",
-    "build": "tsc && vite build && node scripts/prerender-routes.mjs",
+    "build": "node bump-version.mjs && tsc && vite build && node scripts/prerender-routes.mjs",
     "build:production": "npm run prebuild && tsc && vite build && node scripts/prerender-routes.mjs",
     "daily:update": "node scripts/daily-autonomous-evolution.mjs",
     "evolve:lexicon": "node scripts/evolve-legal-lexicon.mjs",
