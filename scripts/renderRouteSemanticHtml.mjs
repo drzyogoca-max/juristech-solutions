@@ -52,7 +52,7 @@ export function getSemanticHtmlForRoute(routePath) {
         <div class="bg-slate-950 border border-sky-600/40 p-4 rounded-2xl shadow">
           <strong class="text-sky-400 block mb-1">📧 البريد الرسمي للإدارة والتقنية:</strong>
           <a href="mailto:founder@juristech.solutions" class="text-slate-100 font-bold no-underline font-mono select-all">founder@juristech.solutions</a>
-          <span class="block text-xs text-slate-400 mt-1">تنسيق التكامل المؤسسي والاشتراكات</span>
+          <span class="block text-xs text-slate-400 mt-1">د. محمد مصطفى (المؤسس ورئيس مجلس الإدارة) / Founder & Chief AI Architect</span>
         </div>
         <div class="bg-slate-950 border border-purple-600/40 p-4 rounded-2xl shadow">
           <strong class="text-purple-400 block mb-1">⚡ إنستا باي مصر (InstaPay):</strong>
@@ -396,11 +396,11 @@ export function getSemanticHtmlForRoute(routePath) {
         ${commonContactHub}
 
         <section class="my-8 text-center">
-          <h1 class="text-3xl sm:text-4xl font-black text-slate-100 leading-tight mb-4">
-            منصة تحليل العقود بالذكاء الاصطناعي وإدارة المخاطر القانونية للشركات
+          <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-100 leading-tight mb-4">
+            منصة LegalTech SaaS مدعومة بالذكاء الاصطناعي لصياغة العقود وتحليل المستندات واكتشاف المخاطر ودعم سير العمل القانوني.
           </h1>
           <p class="text-base sm:text-lg text-slate-300 max-w-4xl mx-auto mb-6 leading-relaxed">
-            المنصة الذكية الأولى المتخصصة في كشف الثغرات والبنود التعسفية في العقود التجارية، صياغة الاتفاقيات الذكية، وتأسيس الشركات وحوكمة الالتزامات المالية بالذكاء الاصطناعي وفق الأنظمة والقوانين السيادية في السعودية والإمارات ومصر والخليج وأمريكا وأوروبا.
+            AI-powered LegalTech SaaS software for contract drafting, document analysis, risk detection and legal workflow support. المنصة الذكية المتخصصة في كشف الثغرات والبنود التعسفية في العقود التجارية، صياغة الاتفاقيات الذكية، وتأسيس الشركات وحوكمة الالتزامات المالية بالذكاء الاصطناعي بإشراف د. محمد مصطفى (المؤسس ورئيس مجلس الإدارة) / Founder & Chief AI Architect.
           </p>
           <div class="flex gap-4 justify-center flex-wrap">
             <a href="/chat" class="bg-sky-600 hover:bg-sky-500 text-white px-6 py-3 rounded-2xl font-bold no-underline shadow">بدء التحليل الذكي 24/7</a>
@@ -496,7 +496,7 @@ export function getSemanticHtmlForRoute(routePath) {
               <div>
                 <h3 class="text-lg font-bold text-sky-400">باقة الشركات الصغرى والناشئة</h3>
                 <span class="text-3xl font-black text-white block my-2 font-mono">$49 <span class="text-xs text-slate-400 font-normal">/ شهرياً</span></span>
-                <p class="text-xs text-slate-400 leading-relaxed">المستشار الذكي ومولد العقود حتى 10 عقود شهرياً مع تصدير Word و PDF وتغطية إقليمية.</p>
+                <p class="text-xs text-slate-400 leading-relaxed">المساعد الذكي ومولد العقود حتى 10 عقود شهرياً مع تصدير Word و PDF وتغطية إقليمية.</p>
               </div>
               <a href="/payment" class="bg-sky-600 hover:bg-sky-500 text-white text-center py-2.5 rounded-xl font-bold text-xs no-underline mt-4 block">اشتراك الباقة ($49)</a>
             </div>
