@@ -783,7 +783,7 @@ export default function Dashboard() {
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
-                      <span>{l('دعم تنفيذي مباشر 24/7 مع المستشار القانوني د. محمد مصطفى', '24/7 Dedicated Senior Counsel Concierge (Dr. Mohammad Mustafa)')}</span>
+                      <span>{l('دعم فني وتنفيذي 24/7 لحلول وأتمتة العقود الذكية', '24/7 Dedicated Technical & Smart Contract Workflow Support')}</span>
                     </li>
                   </ul>
                 </div>

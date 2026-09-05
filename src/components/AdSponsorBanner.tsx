@@ -157,7 +157,7 @@ export default function AdSponsorBanner({
   }
 
   return (
-    <footer className="w-full py-4 border-t border-slate-800/80 bg-slate-50 dark:bg-slate-950 text-center text-xs text-slate-600 dark:text-slate-400" dir={isRtl ? 'rtl' : 'ltr'}>
+    <aside aria-label="Sponsorship & Partner Banner" className="w-full py-4 border-t border-slate-800/80 bg-slate-50 dark:bg-slate-950 text-center text-xs text-slate-600 dark:text-slate-400" dir={isRtl ? 'rtl' : 'ltr'}>
       <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
         <div className="flex items-center gap-2">
           <ShieldCheck className="w-4 h-4 text-emerald-400" />
@@ -179,6 +179,6 @@ export default function AdSponsorBanner({
           {l('حجز المساحة والإعلان عبر التحويل البنكي', 'Reserve Slot via Direct Bank Wire Transfer')}
         </button>
       </div>
-    </footer>
+    </aside>
   );
 }

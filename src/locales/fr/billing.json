@@ -1,6 +1,6 @@
 {
   "portalTitle": "Facturation & Gestion des Abonnements",
-  "portalSubtitle": "Portail de facturation officiel — Propulsé par Paddle.com",
+  "portalSubtitle": "Portail de facturation souverain officiel — Sécurisé TLS 1.3",
   "currentPlan": "Forfait Actuel Actif",
   "planAmount": "Montant du forfait",
   "startDate": "Date de début",
@@ -26,7 +26,7 @@
   "keepSubscription": "Conserver l'abonnement",
   "confirmCancelBtn": "Résilier maintenant",
   "cancelling": "Résiliation en cours...",
-  "merchantProtectionTitle": "Protection Marchand de Référence",
-  "merchantProtectionDesc": "Tous les paiements sont sécurisés par Paddle.com en tant que Marchand officiel (Merchant of Record).",
-  "supportEmail": "Support Facturation : juristech.solutions@outlook.com"
+  "merchantProtectionTitle": "Sécurité d'Entreprise & Conformité des Transactions",
+  "merchantProtectionDesc": "Toutes les transactions sont protégées par chiffrement TLS 1.3 et vérification institutionnelle (Virements SWIFT, Binance Pay, InstaPay) avec PayTabs en cours d'examen.",
+  "supportEmail": "Support Facturation : founder@juristech.solutions"
 }

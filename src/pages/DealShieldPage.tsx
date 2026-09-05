@@ -128,7 +128,7 @@ ${diagnosticResult.bespokeActionPlan
 
 ================================================================================
 JurisTech Solutions | Certified Sovereign AI Diagnostic Engine
-Official Contact: juristech.solutions@outlook.com | +201126674337
+Official Contact: founder@juristech.solutions | +201126674337
 ================================================================================`;
 
     exportDocumentMultiFormat(
@@ -171,7 +171,7 @@ ${isRtl ? simulationResult.masterBridgingClauseAr : simulationResult.masterBridg
 
 ================================================================================
 JurisTech Solutions | Sovereign Cross-Border DealShield 360
-Official Contact: juristech.solutions@outlook.com | +201126674337
+Official Contact: founder@juristech.solutions | +201126674337
 ================================================================================`;
 
     exportDocumentMultiFormat(

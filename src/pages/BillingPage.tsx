@@ -1,7 +1,7 @@
 /**
  * src/pages/BillingPage.tsx
  * ─────────────────────────────────────────────────────────────────────────────
- * JurisTech Solutions — Account Billing & Paddle Subscription Management
+ * JurisTech Solutions — Account Billing & Subscription Management
  * Route: /billing
  */
 
@@ -9,37 +9,30 @@ import React, { useState } from 'react';
 import {
   CreditCard, Crown, Calendar, ShieldCheck, AlertCircle, RefreshCw,
   XCircle, CheckCircle2, FileText, Download, Zap, ExternalLink, Sparkles,
-  ToggleLeft, ToggleRight, ArrowRight, Shield
+  ArrowRight, Shield
 } from 'lucide-react';
 import { useSubscription } from '../hooks/useSubscription';
 import { usePlatformLocale } from '../lib/universalTranslator';
 import { useAuth } from '../lib/authContext';
-import { PADDLE_CONFIG, togglePaddleEnvironment } from '../lib/paddleClient';
 import { getStoredTransactions, BillingTransaction } from '../lib/financialGateway';
 import DigitalInvoiceModal from '../components/DigitalInvoiceModal';
 import SEO from '../components/SEO';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function BillingPage() {
-  const { isSubscriber, tier, status, daysLeft, startDate, endDate, paymentMethod, paddleData, cancelSubscription, subscribeWithPaddle, refresh } = useSubscription();
+  const { isSubscriber, tier, status, daysLeft, startDate, endDate, paymentMethod, cancelSubscription, refresh } = useSubscription();
   const { user } = useAuth();
   const { l, isRtl } = usePlatformLocale();
+  const navigate = useNavigate();
 
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [cancelling, setCancelling] = useState(false);
-  const [subscribing, setSubscribing] = useState(false);
   const [activeInvoice, setActiveInvoice] = useState<BillingTransaction | null>(null);
 
   const transactions = getStoredTransactions();
-  const currentEnv = PADDLE_CONFIG.environment;
 
-  const handleSubscribe = async () => {
-    setSubscribing(true);
-    try {
-      await subscribeWithPaddle('pro');
-    } finally {
-      setSubscribing(false);
-    }
+  const handleSubscribe = () => {
+    navigate('/pricing');
   };
 
   const handleCancel = async () => {
@@ -52,8 +45,7 @@ export default function BillingPage() {
     }
   };
 
-  const isPaddleActive = paddleData?.status === 'active';
-  const isCancelled = status === 'Cancelled' || paddleData?.status === 'canceled';
+  const isCancelled = status === 'Cancelled';
 
   return (
     <div className={`min-h-screen bg-slate-950 text-slate-100 py-12 px-4 sm:px-6 lg:px-8 ${isRtl ? 'rtl' : 'ltr'}`}>
@@ -127,19 +119,12 @@ export default function BillingPage() {
             </p>
           </div>
 
-          {/* Paddle Environment Mode Switcher */}
-          <div className="flex items-center gap-2 p-2 rounded-2xl bg-slate-900 border border-slate-800 text-xs">
-            <span className="text-slate-400 font-medium">Paddle:</span>
-            <button
-              onClick={() => togglePaddleEnvironment(currentEnv === 'sandbox' ? 'live' : 'sandbox')}
-              className={`px-3 py-1 rounded-xl font-bold font-mono transition-all cursor-pointer ${
-                currentEnv === 'live'
-                  ? 'bg-emerald-500/20 border border-emerald-500/40 text-emerald-300'
-                  : 'bg-amber-500/20 border border-amber-500/40 text-amber-300'
-              }`}
-            >
-              {currentEnv === 'live' ? '🟢 Live Production' : '🟡 Sandbox Testing'}
-            </button>
+          {/* Secure Portal Indicator */}
+          <div className="flex items-center gap-2 p-2 px-3 rounded-2xl bg-slate-900 border border-slate-800 text-xs">
+            <span className="text-slate-400 font-medium">{l('نظام الفوترة:', 'Billing Engine:')}</span>
+            <span className="px-3 py-1 rounded-xl font-bold font-mono bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
+              🔒 TLS 1.3 Verified
+            </span>
           </div>
         </div>
 
@@ -191,28 +176,20 @@ export default function BillingPage() {
               </div>
             </div>
 
-            {/* Paddle Technical Details */}
+            {/* Gateway & Settlement Details */}
             <div className="p-4 rounded-2xl bg-slate-950/60 border border-slate-800 text-xs space-y-2 font-mono">
               <div className="flex items-center justify-between text-slate-400">
-                <span>Paddle Price ID:</span>
-                <span className="text-sky-300 font-bold">{PADDLE_CONFIG.priceId}</span>
+                <span>Primary Gateway:</span>
+                <span className="text-sky-300 font-bold">PayTabs (Under Merchant Review)</span>
               </div>
               <div className="flex items-center justify-between text-slate-400">
-                <span>Paddle Product ID:</span>
-                <span className="text-slate-300">{PADDLE_CONFIG.productId}</span>
+                <span>Active Direct Settlement:</span>
+                <span className="text-slate-300">Bank Wire SWIFT / Binance Pay / InstaPay Egypt</span>
               </div>
-              {paddleData?.subscriptionId && (
-                <div className="flex items-center justify-between text-slate-400">
-                  <span>Subscription ID:</span>
-                  <span className="text-emerald-400">{paddleData.subscriptionId}</span>
-                </div>
-              )}
-              {paddleData?.customerId && (
-                <div className="flex items-center justify-between text-slate-400">
-                  <span>Customer ID:</span>
-                  <span className="text-slate-300">{paddleData.customerId}</span>
-                </div>
-              )}
+              <div className="flex items-center justify-between text-slate-400">
+                <span>Payment Channel:</span>
+                <span className="text-emerald-400">{paymentMethod || 'Manual Verified Settlement'}</span>
+              </div>
             </div>
 
             {/* Actions */}
@@ -220,21 +197,19 @@ export default function BillingPage() {
               {!isSubscriber || isCancelled ? (
                 <button
                   onClick={handleSubscribe}
-                  disabled={subscribing}
                   className="px-6 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-amber-500/20 active:scale-95 transition-all cursor-pointer"
                 >
                   <Sparkles className="w-4 h-4" />
-                  <span>{subscribing ? l('جاري الفتح...', 'Opening...') : l('تفعيل / تجديد الاشتراك (Paddle Checkout)', 'Subscribe Now (Paddle Checkout)')}</span>
+                  <span>{l('تفعيل / تجديد الخطة', 'Subscribe / Upgrade Plan')}</span>
                 </button>
               ) : (
                 <>
                   <button
                     onClick={handleSubscribe}
-                    disabled={subscribing}
                     className="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold flex items-center gap-2 transition-all cursor-pointer"
                   >
                     <RefreshCw className="w-3.5 h-3.5 text-cyan-400" />
-                    <span>{l('ترقية الخطة أو تحديث البطاقة', 'Upgrade / Update Payment')}</span>
+                    <span>{l('ترقية الخطة أو تحديث طريقة الدفع', 'Upgrade Plan / Payment Method')}</span>
                   </button>
 
                   <button
@@ -264,12 +239,12 @@ export default function BillingPage() {
                 <ShieldCheck className="w-6 h-6" />
               </div>
               <h4 className="font-black text-white text-base">
-                {l('ضمان الأمان والتاجر المعتمد', 'Merchant of Record Protection')}
+                {l('حماية المعاملات والامتثال المالي', 'Security & Financial Compliance')}
               </h4>
               <p className="text-xs text-slate-400 leading-relaxed">
                 {l(
-                  'تُدار جميع المدفوعات والاشتراكات عبر Paddle.com كتاجر سجل معتمد دولياً (Merchant of Record) مع تشفير بنكي TLS 1.3 وحماية كاملة للمشتري.',
-                  'All digital software subscription payments are securely processed through Paddle.com as the authorized Merchant of Record with automated tax compliance.'
+                  'تُدار جميع العمليات المالية باشتراطات أمان بنكية مشفرة عبر بروتوكول TLS 1.3 مع دعم التحويلات المباشرة (Bank Wire SWIFT، Binance Pay، InstaPay) وبوابة PayTabs للبطاقات الائتمانية قيد المراجعة.',
+                  'All digital transactions are protected via TLS 1.3 encryption and institutional verification. Currently supporting direct verified settlements (SWIFT, Binance Pay, InstaPay) with PayTabs card checkout under merchant review.'
                 )}
               </p>
 
@@ -291,7 +266,7 @@ export default function BillingPage() {
 
             <div className="pt-4 border-t border-slate-800 text-[11px] text-slate-500">
               <span>{l('دعم الفوترة والاسترداد:', 'Billing & Refund Support:')} </span>
-              <a href="mailto:juristech.solutions@outlook.com" className="text-sky-400 hover:underline">juristech.solutions@outlook.com</a>
+              <a href="mailto:founder@juristech.solutions" className="text-sky-400 hover:underline">founder@juristech.solutions</a>
             </div>
           </div>
         </div>

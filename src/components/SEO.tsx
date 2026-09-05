@@ -137,7 +137,7 @@ export default function SEO({
               'name': 'JurisTech Solutions & LegalShield Ecosystem',
               'url': baseUrl,
               'logo': `${baseUrl}/logo.png`,
-              'email': 'juristech.solutions@outlook.com',
+              'email': 'founder@juristech.solutions',
               'sameAs': [
                 'https://www.linkedin.com/in/juristech-solutions-14954b427/',
                 'https://www.tiktok.com/@juristech.solutio6',

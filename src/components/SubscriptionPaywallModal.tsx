@@ -31,7 +31,7 @@ export const SubscriptionPaywallModal: React.FC<SubscriptionPaywallModalProps> =
         {onClose && (
           <button
             onClick={onClose}
-            aria-label="إغلاق"
+            aria-label={isRtl ? 'إغلاق' : 'Close'}
             className="absolute top-4 left-4 p-2 text-slate-400 hover:text-white rounded-xl hover:bg-slate-800 transition-colors"
           >
             <X className="w-5 h-5" />
@@ -91,8 +91,8 @@ export const SubscriptionPaywallModal: React.FC<SubscriptionPaywallModalProps> =
             <Mail className="w-4 h-4 text-cyan-400" />
             <span dir="auto">
               {isRtl
-                ? '✉️ الدعم الفني المشفر (Drzyogo.ca@gmail.com)'
-                : '✉️ Encrypted Support (Drzyogo.ca@gmail.com)'}
+                ? '✉️ الدعم الفني المشفر (founder@juristech.solutions)'
+                : '✉️ Encrypted Support (founder@juristech.solutions)'}
             </span>
             <ArrowUpRight className="w-4 h-4 opacity-80" />
           </Link>

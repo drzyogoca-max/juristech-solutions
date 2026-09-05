@@ -21,8 +21,8 @@ export interface ConsultationBookingPayload {
   subjectDetails: string;
 }
 
-const OFFICIAL_ADMIN_EMAIL = 'juristech.solutions@outlook.com';
-const MANDATORY_ADMIN_COPY = 'drzyogo.ca@gmail.com';
+const OFFICIAL_ADMIN_EMAIL = 'founder@juristech.solutions';
+const MANDATORY_ADMIN_COPY = 'founder@juristech.solutions';
 
 export async function dispatchReceiptEmail(payload: ReceiptNotificationPayload): Promise<{ success: boolean; message: string }> {
   console.log('[Real Email Automation] Dispatching live email via /api/send-email with Admin BCC:', payload);
@@ -103,7 +103,7 @@ export async function dispatchReceiptEmail(payload: ReceiptNotificationPayload):
 }
 
 /**
- * Dispatch Advisor & Live Legal Consultation Requests directly to juristech.solutions@outlook.com
+ * Dispatch Advisor & Live Legal Consultation Requests directly to founder@juristech.solutions
  */
 export async function dispatchConsultationBooking(payload: ConsultationBookingPayload): Promise<{ success: boolean; bookingId: string }> {
   const bookingId = `BOOK-${Date.now().toString(36).toUpperCase()}`;

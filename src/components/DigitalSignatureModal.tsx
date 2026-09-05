@@ -72,7 +72,11 @@ export default function DigitalSignatureModal({
               <p className="text-xs text-slate-400">{contractTitle}</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800">
+          <button
+            onClick={onClose}
+            aria-label={t('common.close', 'Close')}
+            className="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800"
+          >
             <X className="w-5 h-5" />
           </button>
         </div>

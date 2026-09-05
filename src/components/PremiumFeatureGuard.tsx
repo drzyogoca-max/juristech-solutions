@@ -4,11 +4,11 @@
  * Locks sovereign legal AI features for non-subscribers with high-conversion CTA.
  */
 
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Lock, Crown, CheckCircle2, Sparkles, ArrowRight, ShieldCheck } from 'lucide-react';
 import { useSubscription } from '../hooks/useSubscription';
 import { usePlatformLocale } from '../lib/universalTranslator';
-import { PADDLE_CONFIG } from '../lib/paddleClient';
 
 interface Props {
   children: React.ReactNode;
@@ -23,21 +23,16 @@ export default function PremiumFeatureGuard({
   featureNameAr = 'الذكاء الاصطناعي القانوني السيادي للمؤسسات',
   requiredTier = 'Pro',
 }: Props) {
-  const { isSubscriber, tier, subscribeWithPaddle } = useSubscription();
-  const { l, isRtl } = usePlatformLocale();
-  const [subscribing, setSubscribing] = useState(false);
+  const { isSubscriber } = useSubscription();
+  const { l } = usePlatformLocale();
+  const navigate = useNavigate();
 
   if (isSubscriber) {
     return <>{children}</>;
   }
 
-  const handleSubscribe = async () => {
-    setSubscribing(true);
-    try {
-      await subscribeWithPaddle('pro');
-    } finally {
-      setSubscribing(false);
-    }
+  const handleSubscribe = () => {
+    navigate('/pricing');
   };
 
   return (
@@ -62,8 +57,8 @@ export default function PremiumFeatureGuard({
 
           <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
             {l(
-              'هذه الميزة تتطلب اشتراكاً نشطاً. اشترك الآن ببطاقة الائتمان عبر Paddle بضمان استرداد وأمان مصرفي كامل.',
-              'This enterprise AI capability requires an active subscription. Subscribe now via Paddle with instant activation and full buyer protection.'
+              'هذه الميزة تتطلب اشتراكاً نشطاً. اشترك الآن للاستفادة الكاملة مع حماية وأمان مصرفي شامل وتفعيل موثوق.',
+              'This enterprise AI capability requires an active subscription. Subscribe now for full access with end-to-end security and verified activation.'
             )}
           </p>
         </div>
@@ -85,11 +80,10 @@ export default function PremiumFeatureGuard({
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
           <button
             onClick={handleSubscribe}
-            disabled={subscribing}
             className="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-sm flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 active:scale-95 transition-all cursor-pointer"
           >
             <Sparkles className="w-4 h-4" />
-            <span>{subscribing ? l('جاري فتح نافذة الدفع...', 'Opening Checkout...') : l('اشترك الآن فوراً (Paddle)', 'Subscribe Now (Paddle)')}</span>
+            <span>{l('ترقية والاشتراك الآن', 'Upgrade & Subscribe Now')}</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>
@@ -97,10 +91,10 @@ export default function PremiumFeatureGuard({
         <div className="flex items-center justify-center gap-4 text-[11px] text-slate-500">
           <span className="flex items-center gap-1">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Merchant of Record: Paddle</span>
+            <span>{l('تشفير بنكي TLS 1.3 وحماية كاملة', 'TLS 1.3 Bank-Grade Encryption')}</span>
           </span>
           <span>·</span>
-          <span>Price: $49/mo</span>
+          <span>{l('يبدأ من $49/شهرياً', 'Starting at $49/mo')}</span>
         </div>
       </div>
     </div>

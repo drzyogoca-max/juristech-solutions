@@ -248,7 +248,7 @@ export default function EngineAISearchBar() {
                   ⚡ {isRtl ? 'فحص ومطابقة قانونية فورية' : 'Instant AI Match'}
                 </span>
                 <span className="bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 px-2.5 py-1 rounded-lg border border-cyan-500/20">
-                  📚 {isRtl ? '1,000,000+ عقد مُفهرس ومعتمد' : '1M+ Certified Templates'}
+                  📚 {isRtl ? 'خزينة النماذج والعقود المعتمدة' : 'Verified Templates Vault'}
                 </span>
                 {searchResponse.detectedJurisdiction && (
                   <span className="bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 px-2.5 py-1 rounded-lg border border-indigo-500/20">

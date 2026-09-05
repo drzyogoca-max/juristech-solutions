@@ -61,7 +61,7 @@ export function getSecurityAuditLogs(): SecurityAuditEvent[] {
       severity: 'INFO',
       userEmail: 'executive@juristech.solutions',
       ipAddress: '197.55.12.98',
-      location: 'Amman, Jordan (Sovereign Core)',
+      location: 'Global Digital Platform — Cloud Edge',
       sha256Hash: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
       timestamp: new Date().toISOString(),
       details: 'Contract SHA-256 digital verification seal generated & anchored.',

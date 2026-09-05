@@ -1,8 +1,8 @@
-﻿/**
+/**
  * paymentProviderAdapter.ts
  * ─────────────────────────────────────────────────────────────────────────────
  * JurisTech Solutions — Multi-Gateway Payment Orchestration & Adapter Engine
- * Supports: Paddle (Merchant of Record), PayTabs (MENA), Paymob (Egypt), Stripe & Manual Wire
+ * Supports: PayTabs (MENA & Primary Gateway Under Review), Paymob (Egypt), Stripe & Manual Settlement
  * 
  * Standardized Unified Interface:
  *  - createCheckout()
@@ -12,7 +12,7 @@
  *  - syncSubscription()
  */
 
-export type SupportedPaymentProvider = 'paddle' | 'paytabs' | 'paymob' | 'stripe' | 'manual_swift' | 'binance_pay';
+export type SupportedPaymentProvider = 'paytabs' | 'paymob' | 'stripe' | 'manual_swift' | 'binance_pay';
 
 export type SubscriptionPlanTier = 'startup' | 'sme' | 'enterprise';
 
@@ -90,19 +90,12 @@ export class PaymentProviderAdapter {
     missingRequirements: string[];
   } {
     switch (provider) {
-      case 'paddle':
-        return {
-          provider: 'paddle',
-          isConnected: false,
-          mode: 'NOT_CONFIGURED',
-          missingRequirements: ['PADDLE_VENDOR_ID', 'PADDLE_API_KEY', 'PADDLE_PUBLIC_KEY', 'KYC_APPROVAL'],
-        };
       case 'paytabs':
         return {
           provider: 'paytabs',
           isConnected: false,
           mode: 'NOT_CONFIGURED',
-          missingRequirements: ['PAYTABS_PROFILE_ID', 'PAYTABS_SERVER_KEY', 'COMMERCIAL_REGISTRATION'],
+          missingRequirements: ['MERCHANT_KYC_APPROVAL', 'PAYTABS_PROFILE_ID', 'PAYTABS_SERVER_KEY'],
         };
       case 'paymob':
         return {
@@ -225,7 +218,7 @@ export class PaymentProviderAdapter {
   }
 
   /**
-   * 3. Handle Webhook Payload (Paddle, PayTabs, Paymob)
+   * 3. Handle Webhook Payload (PayTabs, Paymob, Stripe)
    */
   public async handleWebhook(
     rawBody: string,
@@ -237,7 +230,7 @@ export class PaymentProviderAdapter {
     try {
       // Stub HMAC validation logic for each gateway
       let signatureVerified = false;
-      const signature = headers['paddle-signature'] || headers['signature'] || headers['x-paytabs-signature'] || '';
+      const signature = headers['x-paytabs-signature'] || headers['stripe-signature'] || headers['signature'] || '';
 
       if (process.env.NODE_ENV === 'development' || !signature) {
         signatureVerified = true;

@@ -570,7 +570,7 @@ export default function VaultPage() {
                 <FileText className="w-5 h-5 text-indigo-400 shrink-0" />
                 {viewingDoc.file_name}
               </h2>
-              <button onClick={() => setViewingDoc(null)} className="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 cursor-pointer">
+              <button onClick={() => setViewingDoc(null)} aria-label={isRtl ? 'إغلاق المعاينة' : 'Close preview'} className="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 cursor-pointer">
                 <X className="w-5 h-5" />
               </button>
             </div>

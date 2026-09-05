@@ -13,7 +13,6 @@ import AlertBell from './AlertBell';
 import { useAuth } from '../lib/authContext';
 import { detectVisitorJurisdiction, JurisdictionInfo } from '../lib/jurisdiction';
 import { usePlatformLocale } from '../lib/universalTranslator';
-import { openPaddleCheckout } from '../lib/paddleClient';
 
 // ── Lazy Loaded Modals & Search Bar for Lightweight Initial Nav Payload ──
 const EngineAISearchBar = lazy(() => import('./EngineAISearchBar'));
@@ -209,14 +208,14 @@ export default function Navbar() {
               {t('Nav.themeFontLabel')}
             </button>
 
-            {/* Quick Action: Official Subscribe Now via Paddle */}
-            <button
-              onClick={() => openPaddleCheckout()}
+            {/* Quick Action: Official Subscribe Now */}
+            <Link
+              to="/pricing"
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 text-xs font-black shadow-md shadow-amber-500/20 active:scale-95 transition-all cursor-pointer"
             >
               <Crown className="w-3.5 h-3.5" />
               <span>{l('اشترك الآن', 'Subscribe Now')}</span>
-            </button>
+            </Link>
 
             {/* Account Billing Link */}
             <Link

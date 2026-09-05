@@ -1,8 +1,8 @@
 {
   "title": "Transparent, Sovereign Pricing Plans",
-  "subtitle": "Instant activation via Paddle Merchant of Record with automated tax compliance and buyer protection.",
+  "subtitle": "Instant activation with bank-grade TLS 1.3 encryption, buyer protection, and direct verified settlement.",
   "monthlyBilling": "Monthly Billing",
-  "annualBilling": "Annual Billing (20% Off)",
+  "annualBilling": "Annual Billing (Bespoke Invoicing)",
   "startupName": "Startup Legal Retainer",
   "startupDesc": "Essential AI contract generation and risk radar for founders and early-stage companies.",
   "smeName": "SME Legal Retainer",
@@ -11,9 +11,9 @@
   "enterpriseDesc": "Dedicated AI models, unlimited contract audits, and custom M&A workflows.",
   "perMonth": "/ month",
   "subscribeNow": "Subscribe Now",
-  "subscribeViaPaddle": "Subscribe Now via Card (Paddle Checkout)",
+  "subscribeViaCard": "Pay via Card (PayTabs Under Review)",
   "popularBadge": "Most Popular",
-  "instantActivation": "Instant Activation via Paddle Merchant of Record",
+  "instantActivation": "Instant Activation with Bank-Grade Security",
   "comparePlans": "Compare All Plan Features",
   "faqTitle": "Frequently Asked Questions",
   "refundGuarantee": "Protected 14-Day Refund Guarantee"

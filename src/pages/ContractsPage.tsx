@@ -1104,7 +1104,7 @@ Language: ${i18n.language === 'ar' ? 'Arabic (العربية الفصحى الق
               <div className="space-y-1">
                 <span className="text-xs text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
                   <Layers className="w-4 h-4" />
-                  <span>{l('خزينة ومستودع العقود الذكية المليونية', '1,000,000+ Smart Legal Templates Vault')}</span>
+                  <span>{l('خزينة ومستودع العقود الذكية المعتمدة', 'Verified Smart Legal Templates Vault')}</span>
                 </span>
                 <h3 className="text-xl sm:text-2xl font-black text-white">
                   {l('ابحث واستعرض وحمّل أي عقد قانوني معتمد فورياً', 'Instant Search & Download Certified Smart Contracts')}
@@ -1127,7 +1127,7 @@ Language: ${i18n.language === 'ar' ? 'Arabic (العربية الفصحى الق
                 type="text"
                 value={vaultSearchQuery}
                 onChange={(e) => setVaultSearchQuery(e.target.value)}
-                placeholder={isRtl ? 'ابحث في أكثر من 1,000,000 عقد (مثال: اتفاقية مساهمين، عقد مقاولة فيديك، شراء أسهم، استثمار جريء، سرية معلومات)...' : 'Search across 1,000,000+ templates (e.g. Shareholders Agreement, FIDIC Construction, SAFE, NDA, Labor)...'}
+                placeholder={isRtl ? 'ابحث في خزينة العقود المعتمدة (مثال: اتفاقية مساهمين، عقد مقاولة فيديك، شراء أسهم، استثمار جريء، سرية معلومات)...' : 'Search across verified templates (e.g. Shareholders Agreement, FIDIC Construction, SAFE, NDA, Labor)...'}
                 className="w-full py-3.5 pr-12 pl-4 rounded-2xl bg-slate-950 border border-slate-700 text-xs sm:text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-500 shadow-inner"
               />
             </div>

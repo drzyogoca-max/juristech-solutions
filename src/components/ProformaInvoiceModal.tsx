@@ -198,7 +198,7 @@ export default function ProformaInvoiceModal({
                 <div>
                   <span className="text-[10px] font-bold text-slate-500 uppercase block mb-1">Provider (المورد):</span>
                   <div className="font-bold text-slate-200 print:text-black">JurisTech Solutions Platform</div>
-                  <div className="text-[11px] text-slate-400 print:text-black">Official Email: juristech.solutions@outlook.com</div>
+                  <div className="text-[11px] text-slate-400 print:text-black">Official Email: founder@juristech.solutions</div>
                   <div className="text-[11px] text-slate-400 print:text-black">WhatsApp / Phone: +201126674337</div>
                 </div>
               </div>

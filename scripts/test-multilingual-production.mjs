@@ -105,6 +105,43 @@ assert(binancePayCode.includes("status: 'قيد المراجعة والتدقي�
 const paddlePath = path.join(process.cwd(), 'src', 'lib', 'paddleClient.ts');
 const paddleCode = fs.readFileSync(paddlePath, 'utf-8');
 assert(!paddleCode.includes('Direct overlay unavailable, executing fallback activation'), 'paddleClient does NOT execute insecure auto-activation fallback');
+assert(!paddleCode.includes('https://cdn.paddle.com/paddle/v2/paddle.js'), 'paddleClient does NOT load Paddle external script');
+assert(paddleCode.includes('PERMANENTLY DECOMMISSIONED'), 'paddleClient is explicitly marked permanently decommissioned');
+
+// Verify zero customer-facing Paddle references in critical UI components
+const paymentPagePath = path.join(process.cwd(), 'src', 'pages', 'PaymentPage.tsx');
+const paymentPageCode = fs.readFileSync(paymentPagePath, 'utf-8');
+assert(!paymentPageCode.includes('openPaddleCheckout'), 'PaymentPage does NOT import or call openPaddleCheckout');
+assert(!paymentPageCode.includes('PADDLE_CONFIG'), 'PaymentPage does NOT reference PADDLE_CONFIG');
+assert(paymentPageCode.includes('PayTabsReviewModal'), 'PaymentPage correctly routes card payments to PayTabsReviewModal');
+
+const billingPagePath = path.join(process.cwd(), 'src', 'pages', 'BillingPage.tsx');
+const billingPageCode = fs.readFileSync(billingPagePath, 'utf-8');
+assert(!billingPageCode.includes('openPaddleCheckout'), 'BillingPage does NOT import or call openPaddleCheckout');
+assert(!billingPageCode.includes('PADDLE_CONFIG'), 'BillingPage does NOT reference PADDLE_CONFIG');
+assert(!billingPageCode.includes('togglePaddleEnvironment'), 'BillingPage does NOT include Paddle environment switcher');
+
+const navbarPath = path.join(process.cwd(), 'src', 'components', 'Navbar.tsx');
+const navbarCode = fs.readFileSync(navbarPath, 'utf-8');
+assert(!navbarCode.includes('openPaddleCheckout'), 'Navbar does NOT import or call openPaddleCheckout');
+
+// Verify zero mentions of Paddle in all generated locale files
+const localesDir = path.join(process.cwd(), 'src', 'locales');
+let paddleFoundInLocales = false;
+for (const lang of ['ar', 'en', 'fr', 'es', 'de', 'tr', 'zh']) {
+  const langDir = path.join(localesDir, lang);
+  if (fs.existsSync(langDir)) {
+    const files = fs.readdirSync(langDir);
+    for (const f of files) {
+      const content = fs.readFileSync(path.join(langDir, f), 'utf-8');
+      if (content.toLowerCase().includes('paddle')) {
+        paddleFoundInLocales = true;
+        break;
+      }
+    }
+  }
+}
+assert(!paddleFoundInLocales, 'src/locales does NOT contain any customer-facing references to Paddle');
 
 // 7. Verify Customer Services Catalog & Templates Studio
 console.log('\n🔍 Test Group 7: Service Catalog Integrity & Templates Studio');

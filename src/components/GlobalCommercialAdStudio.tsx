@@ -78,8 +78,8 @@ export const COMMERCIAL_SCENES: CommercialScene[] = [
     durationSec: 16,
     badge: 'ENTERPRISE ADOPTION & OFFICIAL CONTACT',
     headline: 'Fortify Your Contracts Today — Start Free',
-    subheadline: 'Visit: www.juristech.solutions | Enterprise: juristech.solutions@outlook.com',
-    voiceoverText: "Empower your corporate legal team today. Visit juristech.solutions for a free AI contract audit trial, or contact our enterprise desk at juristech.solutions@outlook.com. JurisTech Solutions: Global Law, Automated.",
+    subheadline: 'Visit: www.juristech.solutions | Enterprise: founder@juristech.solutions',
+    voiceoverText: "Empower your corporate legal team today. Visit juristech.solutions for a free AI contract audit trial, or contact our enterprise desk at founder@juristech.solutions. JurisTech Solutions: Global Law, Automated.",
     visualFocus: 'cta',
     accentColor: '#ec4899', // Pink
   },
@@ -316,7 +316,7 @@ export default function GlobalCommercialAdStudio() {
 
         ctx.fillStyle = '#f472b6';
         ctx.font = 'bold 18px system-ui, sans-serif';
-        ctx.fillText('📧 Inquiries & Sales: juristech.solutions@outlook.com', 60, 345);
+        ctx.fillText('📧 Inquiries & Sales: founder@juristech.solutions', 60, 345);
 
         ctx.fillStyle = '#10b981';
         ctx.font = 'bold 14px monospace';
@@ -437,7 +437,7 @@ export default function GlobalCommercialAdStudio() {
 Target Market: United States (US), European Union (EU), United Kingdom (UK), and Gulf (GCC) Corporate Legal Sectors.
 Brand: JurisTech Solutions
 Domain: https://www.juristech.solutions
-Inquiries: juristech.solutions@outlook.com
+Inquiries: founder@juristech.solutions
 
 =======================================================
 [SCENE 01 - 0:00 to 0:18]
@@ -483,10 +483,10 @@ On-Screen Text:
 [SCENE 05 - 1:14 to 1:30]
 Visual: Official Certificate, Official Digital Seal, Website URL & Contact Desk.
 Voiceover (English):
-"Empower your corporate legal team today. Visit juristech.solutions for a free AI contract audit trial, or contact our enterprise desk at juristech.solutions@outlook.com. JurisTech Solutions: Global Law, Automated."
+"Empower your corporate legal team today. Visit juristech.solutions for a free AI contract audit trial, or contact our enterprise desk at founder@juristech.solutions. JurisTech Solutions: Global Law, Automated."
 On-Screen Text:
 - Official Domain: https://www.juristech.solutions
-- Enterprise Sales: juristech.solutions@outlook.com
+- Enterprise Sales: founder@juristech.solutions
 - Free 1-Contract AI Audit Trial Available Now
 =======================================================`;
 

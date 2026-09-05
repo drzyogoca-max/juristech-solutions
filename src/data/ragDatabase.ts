@@ -24,7 +24,7 @@ export const ACTIVE_RAG_KNOWLEDGE_BASE: RAGKnowledgeEntry[] = [
     category: 'Enterprise Subscriptions & Direct SWIFT/Pay Activation',
     jurisdiction: 'GLOBAL',
     queryPattern: 'تفعيل اشتراكات الشركات باقات الاشتراك دفع تحويل بنكي SWIFT WhatsApp',
-    statutoryContext: 'تفعيل باقات اشتراكات الشركات الكبرى والناشئة يتم فورياً عبر بوابات الدفع الإلكتروني المعتمدة، أو إجراء تحويل بنكي مباشر (SWIFT Wire Transfer) لعنوان الحساب الرسمي، أو التنسيق الفوري المباشر مع الرئيس التنفيذي والمستشار الاستراتيجي د. محمد مصطفى عبر الإيميل Drzyogo.ca@gmail.com أو الواتساب المباشر +201126674337.',
+    statutoryContext: 'تفعيل باقات اشتراكات الشركات الكبرى والناشئة يتم عبر بوابات الدفع الإلكتروني المعتمدة، أو إجراء تحويل بنكي مباشر (SWIFT Wire Transfer) لعنوان الحساب الرسمي، أو التنسيق الفوري المباشر مع المؤسس ورئيس مجلس الإدارة د. محمد مصطفى عبر الإيميل founder@juristech.solutions أو الواتساب المباشر +201126674337.',
     confidenceScore: 1.0,
   },
   {

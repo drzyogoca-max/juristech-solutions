@@ -1,27 +1,16 @@
 /**
  * src/lib/paddleClient.ts
  * ─────────────────────────────────────────────────────────────────────────────
- * JurisTech Solutions — Official Paddle.js v2 Merchant Gateway Integration
- * 
- * Paddle Product ID: pro_01m0txshyww92xh07mawyzg52j
- * Paddle Price ID:   pri_01m0ty6sxjj7w0xpm1r07r50ss
- * Paddle Live Client Token: live_08dad1304849fe550fb9c689a50
+ * JurisTech Solutions — Decommissioned Gateway Module
+ * STATUS: PERMANENTLY DECOMMISSIONED (Paddle rejected - Zero Runtime Calls).
+ * PayTabs is the primary gateway under review.
  */
 
-import { activateUserSubscription } from './financialGateway';
-
 export const PADDLE_CONFIG = {
-  productId: 'pro_01m0txshyww92xh07mawyzg52j',
-  priceId: 'pri_01m0ty6sxjj7w0xpm1r07r50ss',
-  // Environment toggled via localStorage key 'juristech_paddle_env' or VITE env var
-  // Set to 'live' for production, 'sandbox' for testing
-  environment: (
-    import.meta.env.VITE_PADDLE_ENVIRONMENT ||
-    localStorage.getItem('juristech_paddle_env') ||
-    'live'
-  ) as 'sandbox' | 'live',
-  // Live Client-Side Token (safe to expose in frontend — read-only checkout only)
-  clientToken: import.meta.env.VITE_PADDLE_CLIENT_TOKEN || 'live_08dad1304849fe550fb9c689a50',
+  productId: 'decommissioned',
+  priceId: 'decommissioned',
+  environment: 'sandbox' as const,
+  clientToken: '',
 };
 
 export interface PaddleCheckoutOptions {
@@ -45,175 +34,27 @@ export interface PaddleSubscriptionData {
   updatedAt: string;
 }
 
-const STORAGE_PADDLE_SUB = 'juristech_paddle_subscription_meta';
-
-declare global {
-  interface Window {
-    Paddle?: any;
-  }
-}
-
-let paddleLoadedPromise: Promise<any> | null = null;
-
 /**
- * Dynamically loads Paddle.js v2 SDK from official CDN
+ * Inert loader — permanently disabled. Never loads external scripts.
  */
-export function loadPaddleScript(): Promise<any> {
-  if (typeof window === 'undefined') return Promise.resolve(null);
-  if (window.Paddle) return Promise.resolve(window.Paddle);
-  if (paddleLoadedPromise) return paddleLoadedPromise;
-
-  paddleLoadedPromise = new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-    script.src = 'https://cdn.paddle.com/paddle/v2/paddle.js';
-    script.async = true;
-    script.onload = () => {
-      if (window.Paddle) {
-        try {
-          const env = PADDLE_CONFIG.environment;
-          if (env === 'sandbox') {
-            window.Paddle.Environment.set('sandbox');
-          }
-          window.Paddle.Initialize({
-            token: PADDLE_CONFIG.clientToken,
-            eventCallback: handlePaddleGlobalEvent,
-          });
-          console.log(`[Paddle.js v2] Initialized in ${env.toUpperCase()} mode.`);
-          resolve(window.Paddle);
-        } catch (err) {
-          console.warn('[Paddle.js v2] Init warning:', err);
-          resolve(window.Paddle);
-        }
-      } else {
-        reject(new Error('Paddle.js failed to attach to window.'));
-      }
-    };
-    script.onerror = (err) => {
-      paddleLoadedPromise = null;
-      reject(err);
-    };
-    document.head.appendChild(script);
-  });
-
-  return paddleLoadedPromise;
+export function loadPaddleScript(): Promise<null> {
+  return Promise.resolve(null);
 }
 
 /**
- * Handles global Paddle checkout events
+ * Inert checkout stub — throws informative error if called.
  */
-function handlePaddleGlobalEvent(data: any) {
-  if (!data || !data.name) return;
-  console.log('[Paddle Event]', data.name, data);
-
-  if (data.name === 'checkout.completed') {
-    const checkoutData = data.data;
-    const customerId = checkoutData?.customer?.id || `ctm_${Date.now()}`;
-    const subscriptionId = checkoutData?.subscription?.id || `sub_paddle_${Date.now()}`;
-    const customData = checkoutData?.custom_data || {};
-    const email = customData.userEmail || checkoutData?.customer?.email || 'subscriber@juristech.solutions';
-
-    const subMeta: PaddleSubscriptionData = {
-      customerId,
-      subscriptionId,
-      priceId: PADDLE_CONFIG.priceId,
-      status: 'active',
-      currentPeriodStart: new Date().toISOString(),
-      currentPeriodEnd: new Date(Date.now() + 30 * 86400000).toISOString(),
-      cancelAtPeriodEnd: false,
-      updatedAt: new Date().toISOString(),
-    };
-
-    savePaddleSubscription(subMeta);
-
-    // Activate in local financial gateway
-    activateUserSubscription({
-      userEmail: email,
-      userName: customData.userName || email.split('@')[0],
-      planId: (customData.planTier as any) || 'pro',
-      paymentMethod: 'Credit Card / Gateway',
-      amountUSD: customData.amountUSD || 49,
-    }).catch((err) => console.error('[Paddle Auto-Activation Error]:', err));
-  }
+export async function openPaddleCheckout(_options: PaddleCheckoutOptions = {}): Promise<void> {
+  throw new Error('Paddle checkout is permanently decommissioned. Please use Bank Wire SWIFT, Binance Pay, InstaPay, or contact support for PayTabs activation status.');
 }
 
-/**
- * Opens the Paddle.js checkout overlay
- */
-export async function openPaddleCheckout(options: PaddleCheckoutOptions = {}): Promise<void> {
-  const priceId = options.priceId || PADDLE_CONFIG.priceId;
-  const userEmail = options.userEmail || localStorage.getItem('juristech_last_login_email') || 'client@juristech.solutions';
-  const userName = options.userName || userEmail.split('@')[0];
-  const planTier = options.planTier || 'pro';
-  const amountUSD = options.amountUSD || 49;
-
-  const paddle = await loadPaddleScript();
-
-  if (!paddle || !paddle.Checkout) {
-    console.error('[Paddle.js] Secure checkout gateway unavailable.');
-    throw new Error('Payment gateway service is currently unreachable. Please check your connection, disable ad-blockers, or use an alternative payment method (Bank Wire / Binance Pay / InstaPay).');
-  }
-
-  paddle.Checkout.open({
-    items: [
-      {
-        priceId,
-        quantity: 1,
-      },
-    ],
-    customer: {
-      email: userEmail,
-    },
-    customData: {
-      userEmail,
-      userName,
-      planTier,
-      amountUSD,
-      productId: PADDLE_CONFIG.productId,
-    },
-    settings: {
-      displayMode: 'overlay',
-      theme: 'dark',
-      locale: 'en',
-      successUrl: `${window.location.origin}/billing?session=success&provider=paddle`,
-    },
-  });
-}
-
-/**
- * Storage helpers for Paddle Subscription state
- */
 export function getStoredPaddleSubscription(): PaddleSubscriptionData | null {
-  try {
-    const raw = localStorage.getItem(STORAGE_PADDLE_SUB);
-    if (!raw) return null;
-    return JSON.parse(raw);
-  } catch {
-    return null;
-  }
+  return null;
 }
 
-export function savePaddleSubscription(data: PaddleSubscriptionData): void {
-  try {
-    localStorage.setItem(STORAGE_PADDLE_SUB, JSON.stringify(data));
-  } catch (err) {
-    console.error('Failed saving Paddle subscription:', err);
-  }
-}
+export function savePaddleSubscription(_data: PaddleSubscriptionData): void {}
 
-export function cancelPaddleSubscriptionLocally(): void {
-  const current = getStoredPaddleSubscription();
-  if (current) {
-    savePaddleSubscription({
-      ...current,
-      status: 'canceled',
-      cancelAtPeriodEnd: true,
-      updatedAt: new Date().toISOString(),
-    });
-  }
-}
+export function cancelPaddleSubscriptionLocally(): void {}
 
-export function togglePaddleEnvironment(env: 'sandbox' | 'live'): void {
-  localStorage.setItem('juristech_paddle_env', env);
-  PADDLE_CONFIG.environment = env;
-  window.location.reload();
-}
+export function togglePaddleEnvironment(_env: 'sandbox' | 'live'): void {}
+

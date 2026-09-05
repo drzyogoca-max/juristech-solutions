@@ -38,11 +38,7 @@ export default function AboutUsPage() {
             <span>{l('الكيان التقني المستقل للمنظومة', 'Sovereign Technical Entity')}</span>
           </div>
           <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-white">
-            {isRtl ? (
-              <>عن المنصة: <span className="text-cyan-400">JurisTech Solutions</span></>
-            ) : (
-              <>About <span className="text-cyan-400">JurisTech Solutions</span></>
-            )}
+            {l('عن المنصة:', 'About')} <span className="text-cyan-400">JurisTech Solutions</span>
           </h1>
           <p className="text-slate-400 text-sm sm:text-base max-w-3xl mx-auto leading-relaxed">
             {l(
@@ -63,8 +59,11 @@ export default function AboutUsPage() {
                 <h2 className="text-xl font-extrabold text-white">
                   {l('الكيان التقني والهندسة السحابية الدولية', 'Global Cloud Engineering & SaaS Architecture')}
                 </h2>
-                <span className="text-xs text-cyan-400 font-mono">
+                <span className="text-xs text-cyan-400 font-mono block">
                   {l('منصة برمجيات قانونية سحابية مستقلة (Legal Tech SaaS)', 'Independent Cloud Legal Technology SaaS Platform')}
+                </span>
+                <span className="text-xs text-emerald-400 font-mono block mt-1">
+                  ● {l('منصة رقمية عالمية — تعمل عن بعد', 'Global Digital Platform — Operated remotely')}
                 </span>
               </div>
             </div>
@@ -111,18 +110,18 @@ export default function AboutUsPage() {
                 {isRtl ? 'القيادة الاستراتيجية والعمادة الفنية' : 'Strategic Leadership & Advisory Board'}
               </h2>
               <p className="text-xs text-purple-400 font-mono font-bold">
-                {isRtl ? 'د. محمد مصطفى — مستشار استراتيجي وحاصل على دكتوراه في إدارة المخاطر' : 'Dr. Mohammad Mustafa — Strategic Advisor & PhD in Risk Management'}
+                {isRtl ? 'د. محمد مصطفى — المؤسس ورئيس مجلس الإدارة (دكتوراه في إدارة المخاطر)' : 'Dr. Mohammad Mustafa — Founder & Chairman (PhD in Risk Management)'}
               </p>
             </div>
           </div>
           <p className="text-xs text-slate-300 leading-relaxed">
             {isRtl
-              ? 'تخضع منصة JurisTech Solutions للإشراف الاستراتيجي والعمادة الفنية برئاسة د. محمد مصطفى، لضمان تطبيق أعلى معايير الحوكمة وإدارة المخاطر التشريعية والامتثال للمتطلبات الإقليمية والدولية.'
-              : 'JurisTech Solutions is strategically advised by Dr. Mohammad Mustafa (PhD in Risk Management), ensuring top-tier governance, statutory compliance, and enterprise risk mitigation.'}
+              ? 'تخضع منصة JurisTech Solutions للإشراف الاستراتيجي والعمادة الفنية برئاسة د. محمد مصطفى (المؤسس ورئيس مجلس الإدارة)، لضمان تطبيق أعلى معايير الحوكمة والتحليل التقني وإدارة المخاطر التشريعية كمنصة برمجيات قانونية (LegalTech SaaS).'
+              : 'JurisTech Solutions is strategically led by Dr. Mohammad Mustafa (Founder & Chairman, PhD in Risk Management), ensuring high standards of technical governance, automated risk analysis, and SaaS compliance.'}
           </p>
           <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 pt-1">
             <Mail className="w-4 h-4" />
-            <span>Drzyogo.ca@gmail.com</span>
+            <span>founder@juristech.solutions</span>
           </div>
         </div>
 

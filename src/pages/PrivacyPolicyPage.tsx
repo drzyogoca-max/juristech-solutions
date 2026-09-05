@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import SEO from '../components/SEO';
 
-const DPO_EMAIL = 'juristech.solutions@outlook.com';
+const DPO_EMAIL = 'founder@juristech.solutions';
 
 export default function PrivacyPolicyPage() {
   const { i18n } = useTranslation();

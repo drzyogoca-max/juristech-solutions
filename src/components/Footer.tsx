@@ -13,6 +13,7 @@ import {
   Lock,
 } from 'lucide-react';
 import { usePlatformLocale } from '../lib/universalTranslator';
+import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Footer() {
   const { l, isRtl } = usePlatformLocale();
@@ -23,7 +24,7 @@ export default function Footer() {
   return (
     <footer
       dir={isRtl ? 'rtl' : 'ltr'}
-      className="bg-slate-950 text-slate-300 border-t border-slate-800/80 pt-12 pb-24 lg:pb-10 px-4 sm:px-6 lg:px-8 mt-auto font-sans"
+      className="bg-slate-950 text-slate-300 border-t border-slate-800/80 pt-12 pb-32 lg:pb-12 px-4 sm:px-6 lg:px-8 mt-auto font-sans"
     >
       <div className="max-w-7xl mx-auto space-y-8">
         {/* 1. Brand & Value Proposition Row */}
@@ -43,7 +44,15 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 flex-wrap">
+          <div className="flex items-center gap-2.5 flex-wrap">
+            <a
+              href="mailto:founder@juristech.solutions"
+              aria-label="Email JurisTech Official Support"
+              className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-slate-900 text-cyan-300 border border-slate-700/80 hover:border-cyan-500/50 transition-colors font-mono"
+            >
+              <Mail className="w-3.5 h-3.5 text-cyan-400" />
+              <span>founder@juristech.solutions</span>
+            </a>
             <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5" />
               {l('مطابق لـ 15+ نظام قضائي', '15+ Sovereign Frameworks')}
@@ -204,11 +213,26 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* 5. Bottom Copyright, Social Links & Security Status */}
-        <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500 border-t border-slate-800/60">
-          <p>© {currentYear} JurisTech Solutions. {l('جميع الحقوق محفوظة', 'All Rights Reserved')}.</p>
+        {/* 5. Bottom Copyright, Social Links, Language Switcher & Security Status */}
+        <div className="pt-4 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500 border-t border-slate-800/60">
+          <div className="flex items-center gap-3 flex-wrap">
+            <p>© {currentYear} JurisTech Solutions. {l('جميع الحقوق محفوظة', 'All Rights Reserved')}.</p>
+            <span className="hidden sm:inline text-slate-800">•</span>
+            <span className="text-slate-400 font-medium">{l('منصة رقمية عالمية — تعمل عن بعد', 'Global Digital Platform — Operated remotely')}</span>
+            <span className="hidden sm:inline text-slate-800">•</span>
+            <Link to="/about" className="hover:text-slate-300 transition-colors">
+              {l('من نحن', 'About')}
+            </Link>
+            <Link to="/terms" className="hover:text-slate-300 transition-colors">
+              {l('الشروط', 'Terms')}
+            </Link>
+            <Link to="/privacy" className="hover:text-slate-300 transition-colors">
+              {l('الخصوصية', 'Privacy')}
+            </Link>
+          </div>
 
           <div className="flex items-center gap-3 flex-wrap">
+            <LanguageSwitcher variant="footer" />
             <a
               href="https://www.linkedin.com/in/juristech-solutions-14954b427/"
               target="_blank"
@@ -229,8 +253,8 @@ export default function Footer() {
               <span className="text-white font-black text-sm">𝕏</span>
               <span>Twitter</span>
             </a>
-            <span className="text-emerald-400 font-bold ml-2">● {l('مشفر E2EE', 'E2EE Encrypted')}</span>
-            <span className="font-mono text-cyan-400 font-bold">v10.8.0</span>
+            <span className="text-emerald-400 font-bold ml-1">● {l('مشفر E2EE', 'E2EE Encrypted')}</span>
+            <span className="font-mono text-cyan-400 font-bold">v10.9.0</span>
           </div>
         </div>
       </div>

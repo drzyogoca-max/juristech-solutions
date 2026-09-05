@@ -400,7 +400,7 @@ ${currentAttachedText.slice(0, 4500)}
   const quickPills = ui.chatbot.pills;
 
   return (
-    <div className="fixed bottom-5 left-5 z-50 font-sans" dir={isRtl ? 'rtl' : 'ltr'}>
+    <div className="fixed bottom-20 left-4 sm:bottom-6 sm:left-6 z-50 font-sans" dir={isRtl ? 'rtl' : 'ltr'}>
       {/* Hidden File Input */}
       <input
         ref={fileInputRef}

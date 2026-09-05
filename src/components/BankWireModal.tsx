@@ -220,7 +220,7 @@ export default function BankWireModal({
 
       // Email Notification to Chairman & Client
       await dispatchReceiptEmail({
-        clientEmail: officialEmail.trim() || 'Drzyogo.ca@gmail.com',
+        clientEmail: officialEmail.trim() || 'founder@juristech.solutions',
         clientRef: companyName.trim() || 'Corporate Entity',
         transactionId: referenceCode,
         planName: packageName,
@@ -552,7 +552,7 @@ Status: ORDER RESERVED & PENDING BANK VERIFICATION
                       <FileText className="w-4 h-4 shrink-0" />
                       <span className="font-bold truncate">{receiptFile.name}</span>
                     </div>
-                    <button onClick={() => setReceiptFile(null)} className="text-slate-600 dark:text-slate-400 hover:text-red-400 p-1">
+                    <button onClick={() => setReceiptFile(null)} aria-label={isRtl ? 'إزالة الإيصال' : 'Remove receipt'} className="text-slate-600 dark:text-slate-400 hover:text-red-400 p-1">
                       <X className="w-4 h-4" />
                     </button>
                   </div>

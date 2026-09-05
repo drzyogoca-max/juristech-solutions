@@ -128,7 +128,7 @@ export default function LegalConsultationBookingModal({ isOpen, onClose }: Props
               {ui.consultation.confirmedDesc}
             </p>
             <div className="p-4 bg-slate-100 dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800 text-xs font-mono text-cyan-700 dark:text-cyan-400 font-bold max-w-md mx-auto">
-              Ref ID: {confirmedBookingId || 'LS-BOOK-CONFIRMED'} • Direct Target: juristech.solutions@outlook.com
+              Ref ID: {confirmedBookingId || 'LS-BOOK-CONFIRMED'} • Direct Target: founder@juristech.solutions
             </div>
             <button
               onClick={() => {

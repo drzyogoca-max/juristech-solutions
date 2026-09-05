@@ -38,21 +38,21 @@ export function getSemanticHtmlForRoute(routePath) {
     <section class="bg-slate-900 border-2 border-sky-600 rounded-3xl p-6 my-6 text-slate-100 shadow-2xl" dir="rtl">
       <div class="flex items-center justify-between flex-wrap gap-4 border-b border-slate-800 pb-4 mb-4">
         <div>
-          <h2 class="text-lg font-extrabold text-sky-400 m-0">مركز التواصل المباشر والخدمات السيادية الفورية</h2>
-          <p class="text-xs text-slate-300 mt-1 mb-0">قناة التواصل المباشر مع المستشار د. محمد مصطفى وفريق الخبراء القانونيين للشركات والأفراد 24/7</p>
+          <h2 class="text-lg font-extrabold text-sky-400 m-0">مركز الدعم الفني وأتمتة العمليات العقدية</h2>
+          <p class="text-xs text-slate-300 mt-1 mb-0">مركز الدعم الفني والتقني وإدارة منظومة الذكاء الاصطناعي العقدي 24/7</p>
         </div>
         <span class="bg-emerald-950 text-emerald-400 border border-emerald-500/40 px-3 py-1 rounded-full text-xs font-bold">● متصل الآن 24/7</span>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
         <div class="bg-slate-950 border border-emerald-600/40 p-4 rounded-2xl shadow">
-          <strong class="text-emerald-400 block mb-1">💬 واتساب المستشار المباشر:</strong>
+          <strong class="text-emerald-400 block mb-1">💬 واتساب الدعم الفني المباشر:</strong>
           <a href="https://wa.me/201126674337" class="text-slate-100 font-bold no-underline font-mono select-all">+201126674337</a>
-          <span class="block text-xs text-slate-400 mt-1">استجابة فورية واستشارات عقدية</span>
+          <span class="block text-xs text-slate-400 mt-1">استجابة فورية ودعم تشغيلي للمنصة</span>
         </div>
         <div class="bg-slate-950 border border-sky-600/40 p-4 rounded-2xl shadow">
-          <strong class="text-sky-400 block mb-1">📧 البريد الرسمي للإدارة:</strong>
-          <a href="mailto:Drzyogo.ca@gmail.com" class="text-slate-100 font-bold no-underline font-mono select-all">Drzyogo.ca@gmail.com</a>
-          <span class="block text-xs text-slate-400 mt-1">إرسال العقود والاتفاقيات الرسمية</span>
+          <strong class="text-sky-400 block mb-1">📧 البريد الرسمي للإدارة والتقنية:</strong>
+          <a href="mailto:founder@juristech.solutions" class="text-slate-100 font-bold no-underline font-mono select-all">founder@juristech.solutions</a>
+          <span class="block text-xs text-slate-400 mt-1">تنسيق التكامل المؤسسي والاشتراكات</span>
         </div>
         <div class="bg-slate-950 border border-purple-600/40 p-4 rounded-2xl shadow">
           <strong class="text-purple-400 block mb-1">⚡ إنستا باي مصر (InstaPay):</strong>
@@ -76,7 +76,7 @@ export function getSemanticHtmlForRoute(routePath) {
           <span class="px-3 py-1 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 text-xs font-bold font-mono">AD / SPONSORSHIP</span>
           <span class="text-xs text-slate-300 font-bold">مساحة مخصصة لرعاية الشركات والشركاء الإعلاميين والإعلانات المؤسسية مستقبلاً</span>
         </div>
-        <a href="mailto:juristech.solutions@outlook.com?subject=Advertising%20%26%20Sponsorship%20Inquiry" class="text-xs text-cyan-400 hover:text-cyan-300 font-bold no-underline">
+        <a href="mailto:founder@juristech.solutions?subject=Advertising%20%26%20Sponsorship%20Inquiry" class="text-xs text-cyan-400 hover:text-cyan-300 font-bold no-underline">
           حجز مساحة إعلانية ↗
         </a>
       </div>
@@ -114,7 +114,7 @@ export function getSemanticHtmlForRoute(routePath) {
           <strong class="text-slate-100 block mb-2">الرعاية وحسابات التواصل الرسمية</strong>
           <p class="leading-relaxed m-0 mb-3">
             الموقع الإلكتروني: www.juristech.solutions<br>
-            المقر الإقليمي: المملكة الأردنية الهاشمية - عمّان
+            البريد الرسمي: founder@juristech.solutions
           </p>
           <div class="flex gap-3 flex-wrap">
             <a href="https://www.linkedin.com/in/juristech-solutions-14954b427/" target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300 font-bold no-underline">LinkedIn</a>
@@ -126,7 +126,7 @@ export function getSemanticHtmlForRoute(routePath) {
         </div>
       </div>
       <div class="max-w-7xl mx-auto mt-8 pt-4 border-t border-slate-800 flex justify-between items-center flex-wrap gap-2 text-xs text-slate-500">
-        <span>© 2026 JurisTech Solutions Sovereign Tech. جميع الحقوق محفوظة قانونياً.</span>
+        <span>© 2026 JurisTech Solutions. منصة رقمية عالمية — تعمل عن بعد (Global Digital Platform — Operated remotely). جميع الحقوق محفوظة قانونياً.</span>
         <span class="text-emerald-400 font-mono">آخر تحديث للنظام: 21 أغسطس 2026 (إصدار معتمد وحي)</span>
       </div>
     </footer>
@@ -143,7 +143,7 @@ export function getSemanticHtmlForRoute(routePath) {
             <h1 class="text-3xl sm:text-5xl font-black text-slate-100 leading-tight mt-3 mb-2">
               سياسة الخصوصية وحماية البيانات الشخصية | JurisTech Privacy Policy
             </h1>
-            <p class="text-xs text-slate-400 font-mono">تاريخ التحديث الأخير: 25 أغسطس 2026 | الإصدار المعتمد 4.2.0 | مسؤول حماية البيانات: juristech.solutions@outlook.com</p>
+            <p class="text-xs text-slate-400 font-mono">تاريخ التحديث الأخير: 25 أغسطس 2026 | الإصدار المعتمد 4.2.0 | مسؤول حماية البيانات: founder@juristech.solutions</p>
           </header>
 
           <div class="prose prose-invert max-w-none text-slate-300 leading-relaxed space-y-6 text-sm">
@@ -174,7 +174,7 @@ export function getSemanticHtmlForRoute(routePath) {
 
             <section class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-3">
               <h2 class="text-xl font-bold text-sky-400 m-0">5. حقوق المستخدم والتحكم في البيانات (User Rights & Data Control)</h2>
-              <p>يحق لك في أي وقت: (1) طلب نسخة كاملة من بياناتك المخزنة، (2) طلب تصحيح أو تعديل أي بيانات غير دقيقة، (3) طلب حذف حسابك وكافة مستنداتك بشكل دائم من السيرفرات (Right to be Forgotten)، (4) تقديم اعتراض لمسؤول حماية البيانات عبر البريد الرسمى <code>juristech.solutions@outlook.com</code>.</p>
+              <p>يحق لك في أي وقت: (1) طلب نسخة كاملة من بياناتك المخزنة، (2) طلب تصحيح أو تعديل أي بيانات غير دقيقة، (3) طلب حذف حسابك وكافة مستنداتك بشكل دائم من السيرفرات (Right to be Forgotten)، (4) تقديم اعتراض لمسؤول حماية البيانات عبر البريد الرسمى <code>founder@juristech.solutions</code>.</p>
             </section>
           </div>
         </article>
@@ -194,7 +194,7 @@ export function getSemanticHtmlForRoute(routePath) {
             <h1 class="text-3xl sm:text-5xl font-black text-slate-100 leading-tight mt-3 mb-2">
               شروط وأحكام الخدمة واتفاقية الاستخدام | JurisTech Terms of Service
             </h1>
-            <p class="text-xs text-slate-400 font-mono">تاريخ التحديث: 25 أغسطس 2026 | ملزمة قانونياً لكافة مستخدمي المنصة | الاستشارات: juristech.solutions@outlook.com</p>
+            <p class="text-xs text-slate-400 font-mono">تاريخ التحديث: 25 أغسطس 2026 | ملزمة قانونياً لكافة مستخدمي المنصة | الدعم الفني: founder@juristech.solutions</p>
           </header>
 
           <div class="prose prose-invert max-w-none text-slate-300 leading-relaxed space-y-6 text-sm">
@@ -205,7 +205,7 @@ export function getSemanticHtmlForRoute(routePath) {
 
             <section class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-3">
               <h2 class="text-xl font-bold text-sky-400 m-0">2. طبيعة الخدمات ومسؤولية الذكاء الاصطناعي (Nature of AI Legal Services)</h2>
-              <p>تقدم المنصة أدوات ذكاء اصطناعي سيادية لتوليد العقود، فحص المخاطر، تدقيق البنود، واستشارات التحليل القانوني الآلي. تم تصميم هذه الأدوات لمساعدة المحامين، المستشارين القانونيين، ورؤساء الشركات. مخرجات الذكاء الاصطناعي تعتبر أدوات مساندة عالية الدقة ولا تغني عن المراجعة النهائية للمستشار القانوني المعتمد.</p>
+              <p>تقدم المنصة أدوات ذكاء اصطناعي سيادية لتوليد العقود، فحص المخاطر، تدقيق البنود، وتحليلات العقود الذكية آلياً. تم تصميم هذه الأدوات البرمجية لمساعدة المحامين، المستشارين القانونيين، ورؤساء الشركات. مخرجات الذكاء الاصطناعي تعتبر أدوات مساندة برمجية عالية الدقة ولا تقدم استشارات قانونية بشرية ولا تغني عن المراجعة النهائية للمستشار القانوني المعتمد.</p>
             </section>
 
             <section class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-3">
@@ -215,7 +215,7 @@ export function getSemanticHtmlForRoute(routePath) {
 
             <section class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-3">
               <h2 class="text-xl font-bold text-purple-400 m-0">4. باقات الاشتراك والاسترجاع والدفع (Billing, Subscriptions & Refund Terms)</h2>
-              <p>تتم فوترة الاشتراكات شهرية أو سنوياً وفقاً للباقة المختارة ($49 باقة الناشئة، $139 باقة النمو، $349 باقة المؤسسات). يحق للمستخدم طلب إلغاء الاشتراك في أي وقت. يخضع استرجاع الأموال لسياسة الاسترجاع المعتمدة خلال 14 يوماً من تاريخ الاشتراك الأول شريطة عدم تجاوز استهلاك الاستشارات المحددة.</p>
+              <p>تتم فوترة الاشتراكات شهرية أو سنوياً وفقاً للباقة المختارة ($49 باقة الناشئة، $139 باقة النمو، $349 باقة المؤسسات). يحق للمستخدم طلب إلغاء الاشتراك في أي وقت. يخضع استرجاع الأموال لسياسة الاسترجاع المعتمدة خلال 14 يوماً من تاريخ الاشتراك الأول شريطة عدم تجاوز استهلاك جلسات التحليل المحددة.</p>
             </section>
 
             <section class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-3">
@@ -256,7 +256,7 @@ export function getSemanticHtmlForRoute(routePath) {
                   <span class="text-xs text-slate-400 font-mono"> / شهرياً</span>
                 </div>
                 <ul class="text-xs text-slate-300 space-y-3 my-6 list-none p-0">
-                  <li class="flex items-center gap-2">✓ المستشار القانوني الذكي 24/7 (حتى 100 استشارة)</li>
+                  <li class="flex items-center gap-2">✓ مساعد التحليل القانوني الذكي 24/7 (حتى 100 جلسة فحص)</li>
                   <li class="flex items-center gap-2">✓ صياغة وتوليد 10 عقود شهرياً</li>
                   <li class="flex items-center gap-2">✓ فحص المخاطر والبنود التعسفية الأساسي</li>
                   <li class="flex items-center gap-2">✓ تصدير فوري بصيغة Word (.docx) و PDF</li>
@@ -282,7 +282,7 @@ export function getSemanticHtmlForRoute(routePath) {
                   <span class="text-xs text-slate-400 font-mono"> / شهرياً</span>
                 </div>
                 <ul class="text-xs text-slate-300 space-y-3 my-6 list-none p-0">
-                  <li class="flex items-center gap-2">✓ استشارات غير محدودة من Google AI Pro</li>
+                  <li class="flex items-center gap-2">✓ جلسات فحص وتحليل ذكي غير محدودة</li>
                   <li class="flex items-center gap-2">✓ صياغة وتوليد 50 عقداً شهرياً</li>
                   <li class="flex items-center gap-2">✓ فحص المخاطر عبر 8 متجهات قانونية شمولية</li>
                   <li class="flex items-center gap-2">✓ غرف التفاوض الآلي والتعديلات الذكية (Redlining)</li>
@@ -305,10 +305,10 @@ export function getSemanticHtmlForRoute(routePath) {
                   <span class="text-xs text-slate-400 font-mono"> / شهرياً</span>
                 </div>
                 <ul class="text-xs text-slate-300 space-y-3 my-6 list-none p-0">
-                  <li class="flex items-center gap-2">✓ عقود واستشارات وتدقيق مخاطر غير محدود</li>
+                  <li class="flex items-center gap-2">✓ عقود وتدقيق مخاطر وأتمتة غير محدودة</li>
                   <li class="flex items-center gap-2">✓ كشف التزوير والاحتيال ومحاكاة القضايا</li>
                   <li class="flex items-center gap-2">✓ ربط API وسيرفرات سيادية مخصصة</li>
-                  <li class="flex items-center gap-2">✓ دعم تنفيذي مباشر وإشعارات واتساب 24/7</li>
+                  <li class="flex items-center gap-2">✓ دعم فني وتنفيذي وإشعارات واتساب 24/7</li>
                   <li class="flex items-center gap-2">✓ التغطية النظامية: كافة الاختصاصات القضائية العالمية</li>
                 </ul>
               </div>
@@ -320,8 +320,11 @@ export function getSemanticHtmlForRoute(routePath) {
 
           <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl text-right max-w-4xl mx-auto my-8 space-y-3">
             <h3 class="text-lg font-bold text-sky-400 m-0">طرق الدفع والفوترة المعتمدة:</h3>
+            <div class="p-3 bg-slate-950 border border-slate-800 rounded-2xl text-xs text-cyan-400 font-bold text-center">
+              🛡️ طرق دفع إلكترونية آمنة ومعتمدة متاحة عند إتمام الطلب.
+            </div>
             <p class="text-xs text-slate-300 leading-relaxed">
-              ندعم الدفع الإلكتروني المعتمد عبر بوابة <strong>Paddle</strong> والبطاقات الائتمانية، والعملات الرقمية عبر <strong>Binance Pay</strong>، والتحويل الفوري عبر <strong>InstaPay</strong> لحسابات مصر، إضافة إلى التحويل البنكي وحوالات <strong>SWIFT</strong> الرسمية لحسابات الشركات مع إصدار الفواتير الأولية المعتمدة (Proforma Invoices).
+              ندعم التحويل المباشر والعملات الرقمية عبر <strong>Binance Pay</strong>، والتحويل الفوري عبر <strong>InstaPay</strong> لحسابات مصر، إضافة إلى التحويل البنكي وحوالات <strong>SWIFT</strong> الرسمية لحسابات الشركات مع إصدار الفواتير الأولية المعتمدة (Proforma Invoices)، مع خيار الدفع بالبطاقات الائتمانية عبر بوابة <strong>PayTabs</strong> (قيد مراجعة الحساب والربط النهائي).
             </p>
           </div>
         </section>
@@ -340,7 +343,7 @@ export function getSemanticHtmlForRoute(routePath) {
             عن المنصة والحوكمة المؤسسية | About JurisTech Solutions
           </h1>
           <p class="text-base text-slate-300 leading-relaxed mb-6">
-            منصة <strong>JurisTech Solutions</strong> هي البنية التحتية العالمية الأولى المتخصصة في الذكاء الاصطناعي القانوني السيادي، صياغة وتدقيق العقود، حوكمة الشركات، والامتثال التنظيمي للشركات والمؤسسات الاستثمارية بإشراف المستشار د. محمد مصطفى.
+            منصة <strong>JurisTech Solutions</strong> هي منصة برمجيات وذكاء اصطناعي رائدة (LegalTech SaaS) لأتمتة وتحليل وصياغة وتقييم مخاطر العقود وسير العمل المؤسسي، منصة رقمية عالمية تعمل عن بعد بإشراف وتأسيس د. محمد مصطفى (المؤسس ورئيس مجلس الإدارة وخبير إدارة المخاطر).
           </p>
         </section>
       </main>
@@ -355,10 +358,10 @@ export function getSemanticHtmlForRoute(routePath) {
         ${commonAdSponsorSlot}
         <section class="my-8">
           <h1 class="text-3xl sm:text-5xl font-black text-slate-100 leading-tight mb-4">
-            مركز الدعم الفني والاستشارات المباشرة 24/7 | JurisTech Support
+            مركز الدعم الفني وأتمتة العمليات 24/7 | JurisTech Support
           </h1>
           <p class="text-base text-slate-300 leading-relaxed mb-6">
-            فريق الدعم الفني والاستشاري المباشر متاح على مدار الساعة لمساعدة الشركات والمؤسسات في تفعيل الباقات، فحص العقود الحساسة، وحل أي استفسارات نظامية.
+            فريق الدعم الفني والتقني متاح على مدار الساعة لمساعدة الشركات والمؤسسات في تفعيل الباقات، تكامل المنظومة، واستخدام أدوات الذكاء الاصطناعي العقدي.
           </p>
         </section>
       </main>
@@ -400,7 +403,7 @@ export function getSemanticHtmlForRoute(routePath) {
             المنصة الذكية الأولى المتخصصة في كشف الثغرات والبنود التعسفية في العقود التجارية، صياغة الاتفاقيات الذكية، وتأسيس الشركات وحوكمة الالتزامات المالية بالذكاء الاصطناعي وفق الأنظمة والقوانين السيادية في السعودية والإمارات ومصر والخليج وأمريكا وأوروبا.
           </p>
           <div class="flex gap-4 justify-center flex-wrap">
-            <a href="/chat" class="bg-sky-600 hover:bg-sky-500 text-white px-6 py-3 rounded-2xl font-bold no-underline shadow">بدء استشارة فورية 24/7</a>
+            <a href="/chat" class="bg-sky-600 hover:bg-sky-500 text-white px-6 py-3 rounded-2xl font-bold no-underline shadow">بدء التحليل الذكي 24/7</a>
             <a href="/contracts" class="bg-slate-900 text-sky-400 border border-sky-600 px-6 py-3 rounded-2xl font-bold no-underline">صياغة عقد تجاري</a>
             <a href="/risk" class="bg-slate-900 text-amber-400 border border-amber-600 px-6 py-3 rounded-2xl font-bold no-underline">فحص مخاطر عقدك</a>
           </div>
@@ -418,7 +421,7 @@ export function getSemanticHtmlForRoute(routePath) {
           </div>
           <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl text-center shadow">
             <span class="text-2xl sm:text-3xl font-black text-purple-400 block">تأصيل فقهي وقضائي</span>
-            <span class="text-xs text-slate-400">استشارات ذكاء اصطناعي 24/7</span>
+            <span class="text-xs text-slate-400">تحليل ذكاء اصطناعي 24/7</span>
           </div>
           <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl text-center shadow">
             <span class="text-2xl sm:text-3xl font-black text-amber-400 block">35+ دولة</span>
@@ -433,8 +436,8 @@ export function getSemanticHtmlForRoute(routePath) {
           </h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <article class="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow">
-              <h3 class="text-base font-bold text-sky-400 mb-2"><a href="/chat" class="text-sky-400 hover:text-sky-300 no-underline">1. المستشار التشريعي الذكي المباشر</a></h3>
-              <p class="text-xs text-slate-400 leading-relaxed m-0">استشارات قانونية فورية وتأصيل تشريعي شامل عبر 35+ اختصاص قضائي وفق أنظمة الشركات والعمل والتحكيم التجاري.</p>
+              <h3 class="text-base font-bold text-sky-400 mb-2"><a href="/chat" class="text-sky-400 hover:text-sky-300 no-underline">1. المساعد التشريعي الذكي المباشر</a></h3>
+              <p class="text-xs text-slate-400 leading-relaxed m-0">تحليل عقود آلي وتأصيل تشريعي رقمي عبر 35+ اختصاص قضائي وفق أنظمة الشركات والعمل والتحكيم التجاري بالذكاء الاصطناعي.</p>
             </article>
             <article class="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow">
               <h3 class="text-base font-bold text-emerald-400 mb-2"><a href="/repository" class="text-emerald-400 hover:text-emerald-300 no-underline">2. مستودع العقود والبيانات القانونية</a></h3>
@@ -530,13 +533,13 @@ export function getSemanticHtmlForRoute(routePath) {
         ${commonAdSponsorSlot}
         <section class="my-8">
           <h1 class="text-3xl sm:text-4xl font-black text-slate-100 leading-tight mb-4">
-            المستشار القانوني الذكي للشركات | استشارات فورية موثوقة 24/7
+            المساعد القانوني الذكي للشركات | تحليل فوري موثوق للعقود 24/7
           </h1>
           <p class="text-base text-slate-300 leading-relaxed mb-6">
-            تحدث مباشرة مع مستشارك القانوني الافتراضي المدعوم بنماذج الذكاء الاصطناعي القانونية السيادية للحصول على إجابات وتأصيل تشريعي دقيق لنزاعات العقود، صفقات الاستحواذ، اتفاقيات الشراكة، وتفسير القوانين والأنظمة التجارية.
+            تحدث مباشرة مع المساعد الذكي الآلي للحصول على تحليلات برمجية وتأصيل تشريعي رقمي لنصوص العقود، صفقات الاستحواذ، اتفاقيات الشراكة، وبنود الأنظمة التجارية.
           </p>
           <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl my-6">
-            <h2 class="text-lg font-bold text-sky-400 mt-0">محاور الاستشارة المتخصصة:</h2>
+            <h2 class="text-lg font-bold text-sky-400 mt-0">محاور التحليل الذكي المتخصص:</h2>
             <ul class="text-slate-300 leading-loose text-sm">
               <li><strong>نظام المعاملات المدنية ونظام الشركات السعودي:</strong> صياغة قرارات الشركاء وحل النزاعات والتعويضات.</li>
               <li><strong>قوانين المعاملات التجارية والشركات الاتحادية الإماراتية:</strong> عقود المناطق الحرة (DIFC / ADGM).</li>
@@ -648,7 +651,7 @@ export function getSemanticHtmlForRoute(routePath) {
             إدارة قناة يوتيوب الرسمية والنشر اليومي الالي | JurisTech YouTube Studio
           </h1>
           <p class="text-base text-slate-300 leading-relaxed mb-6">
-            استوديو الإدارة البرمجية لقناة يوتيوب الرسمية للمنصة المرتبطة بـ juristech.solutions@outlook.com بإشراف المستشار د. محمد مصطفى. توليد ونشر فيديوهات قانونية يومية صباحاً (09:00 AM) ومساءً (06:00 PM).
+            استوديو الإدارة البرمجية لقناة يوتيوب الرسمية للمنصة المرتبطة بـ founder@juristech.solutions بإشراف المستشار د. محمد مصطفى. توليد ونشر فيديوهات قانونية يومية صباحاً (09:00 AM) ومساءً (06:00 PM).
           </p>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
             <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl">

@@ -28,7 +28,7 @@ export default function SupportPage() {
   const [tickets, setTickets] = useState<Ticket[]>([
     {
       id: 'TICK-1082',
-      subject: isRtl ? 'استفسار عن تفعيل مفاتيح بوابات Stripe / Tap' : 'Query regarding Stripe / Tap API activation',
+      subject: isRtl ? 'استفسار عن طرق الدفع الإلكترونية المعتمدة' : 'Inquiry regarding approved payment methods',
       category: 'Billing & Payments',
       status: 'Resolved',
       createdAt: 'منذ يومين',
@@ -49,7 +49,7 @@ export default function SupportPage() {
     setTickets([newTicket, ...tickets]);
     setSubmitted(true);
     await dispatchReceiptEmail({
-      clientEmail: 'juristech.solutions@outlook.com',
+      clientEmail: 'founder@juristech.solutions',
       clientRef: subject,
       transactionId: newTicket.id,
       planName: `Support Inquiry (${category})`,
@@ -143,7 +143,7 @@ export default function SupportPage() {
             <Mail className="w-6 h-6 text-cyan-400 shrink-0" />
             <div>
               <span className="font-bold text-sm block">{isRtl ? 'البريد الرسمي للدعم الإداري' : 'Official Admin Email'}</span>
-              <span className="text-xs text-slate-600 dark:text-slate-400 font-mono">Drzyogo.ca@gmail.com</span>
+              <span className="text-xs text-slate-600 dark:text-slate-400 font-mono">founder@juristech.solutions</span>
             </div>
           </div>
         </div>

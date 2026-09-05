@@ -29,10 +29,10 @@ export default function MobileBottomNav() {
 
   const SECONDARY_SERVICES = [
     { to: '/vault', icon: Lock, labelAr: 'الخزنة المشفرة (E2EE)', labelEn: 'Encrypted Vault (E2EE)', badge: 'E2EE' },
-    { to: '/payment', icon: CreditCard, labelAr: 'الأسعار والاشتراكات', labelEn: 'Pricing & Plans', badge: 'InstaPay' },
+    { to: '/payment', icon: CreditCard, labelAr: 'الأسعار والاشتراكات', labelEn: 'Pricing & Plans' },
     { to: '/video-hub', icon: Video, labelAr: 'مركز الفيديو والإعلانات', labelEn: 'Video Ad Studio', badge: '90s' },
     { to: '/enterprise-audit', icon: Building2, labelAr: 'التدقيق المؤسسي', labelEn: 'Enterprise Audit' },
-    { to: '/legal-compliance', icon: Scale, labelAr: 'الامتثال الدولي (15 دولة)', labelEn: 'Global Compliance' },
+    { to: '/legal-compliance', icon: Scale, labelAr: 'الامتثال القانوني الدولي', labelEn: 'Global Compliance' },
     { to: '/reports', icon: BarChart3, labelAr: 'التقارير الجنائية الذكية', labelEn: 'Forensic Reports' },
     { to: '/support', icon: HelpCircle, labelAr: 'المساعدة والدعم المباشر', labelEn: 'Direct Support' },
   ];

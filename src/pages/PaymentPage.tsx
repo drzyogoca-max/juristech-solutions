@@ -20,10 +20,11 @@ import BinancePayModal from '../components/BinancePayModal';
 import InstaPayModal from '../components/InstaPayModal';
 import ProformaInvoiceModal from '../components/ProformaInvoiceModal';
 import DigitalInvoiceModal from '../components/DigitalInvoiceModal';
+import PayTabsReviewModal from '../components/PayTabsReviewModal';
 import { activateUserSubscription, BillingTransaction } from '../lib/financialGateway';
-import { openPaddleCheckout, PADDLE_CONFIG } from '../lib/paddleClient';
 import { usePlatformLocale } from '../lib/universalTranslator';
 import SEO from '../components/SEO';
+import { X, Clock } from 'lucide-react';
 
 interface Plan {
   id: 'startup' | 'sme' | 'enterprise' | 'dealroom';
@@ -57,7 +58,7 @@ interface Plan {
   highlight?: boolean;
 }
 
-const SUPPORT_EMAIL = 'juristech.solutions@outlook.com';
+const SUPPORT_EMAIL = 'founder@juristech.solutions';
 
 export default function PaymentPage() {
   const { l, isRtl, gt, i18n } = usePlatformLocale();
@@ -66,9 +67,10 @@ export default function PaymentPage() {
   const [selectedBinancePlan, setSelectedBinancePlan] = useState<Plan | null>(null);
   const [selectedInstaPayPlan, setSelectedInstaPayPlan] = useState<Plan | null>(null);
   const [selectedProformaPlan, setSelectedProformaPlan] = useState<Plan | null>(null);
+  const [payTabsModalOpen, setPayTabsModalOpen] = useState(false);
+  const [selectedPayTabsPlan, setSelectedPayTabsPlan] = useState<Plan | null>(null);
   const [showProformaModal, setShowProformaModal] = useState(false);
   const [activeInvoice, setActiveInvoice] = useState<BillingTransaction | null>(null);
-  const [billingAnnual, setBillingAnnual] = useState(false);
 
   const plans: Plan[] = [
     {
@@ -80,10 +82,10 @@ export default function PaymentPage() {
       nameAr: 'حزمة الشركات الصغرى والناشئة',
       targetEn: 'Founders, Freelancers & Emerging Ventures',
       targetAr: 'المؤسسون، رواد الأعمال، والشركات الناشئة حديثاً',
-      price: billingAnnual ? 39 : 49,
+      price: 49,
       globalPrice: 70,
-      billingEn: billingAnnual ? '/ year (save 20%)' : '/ month',
-      billingAr: billingAnnual ? '/ سنوياً (وفر 20%)' : '/ شهرياً',
+      billingEn: '/ month',
+      billingAr: '/ شهرياً',
       descEn: 'Essential sovereign legal AI with multi-format PDF & Word processing.',
       descAr: 'الذكاء الاصطناعي القانوني الأساسي مع معالجة وتصدير ملفات PDF و Word.',
       color: 'cyan',
@@ -126,10 +128,10 @@ export default function PaymentPage() {
       nameAr: 'حزمة الشركات المتوسطة والنمو المتسارع',
       targetEn: 'Small & Medium Enterprises & Investment Funds',
       targetAr: 'الشركات المتوسطة، صناديق الاستثمار، ومكاتب المحاماة المتطورة',
-      price: billingAnnual ? 111 : 139,
+      price: 139,
       globalPrice: 200,
-      billingEn: billingAnnual ? '/ year (save 20%)' : '/ month',
-      billingAr: billingAnnual ? '/ سنوياً (وفر 20%)' : '/ شهرياً',
+      billingEn: '/ month',
+      billingAr: '/ شهرياً',
       descEn: 'Autonomous AI Negotiation, Virtual Litigation Simulation & 8-Axis Risk Audit.',
       descAr: 'وكلاء التفاوض الآلي، محاكاة النزاعات القضائية، وتدقيق المخاطر الشامل.',
       color: 'indigo',
@@ -158,14 +160,14 @@ export default function PaymentPage() {
       ],
       featuresAr: [
         'كل مزايا باقة الشركات الصغرى والناشئة',
-        'محرك Google AI Pro السيادي (تفكير استدلالي عميق Gemini Ultra)',
-        'محاكي الصفقات الدولية (15 محاكاة لولايتين متزامنتين شهرياً)',
-        'توليد الصياغات التوافقية (Harmonized Bridging Clauses) لفض التعارض',
-        'وكلاء التفاوض الآلي والوساطة وصياغة البنود البديلة التكتيكية',
-        'المحاكاة القضائية وتوقع نسب كسب القضايا والسوابق القضائية',
-        'رفع وتدقيق حتى 50 عقداً شهرياً مع تصدير Word و PDF',
-        'تغطية تشريعية لـ 9 دول (الخليج، بريطانيا، أمريكا ديلاوير، والاتحاد الأوروبي)',
-        'التحقق الثنائي المشفر (2FA TOTP) وحماية TLS 1.3',
+        'محرك Google AI Pro السيادي (تفكير فائق وتحليل عميق بالذكاء الاصطناعي)',
+        'محاكي الصفقات العابرة للحدود (15 محاكاة نزاع وازدواج قضائي شهرياً)',
+        'توليد بنود التجسير المنسجمة (Harmonized Bridging Clauses)',
+        'وكلاء التفاوض الآلي وخطوط التعديل التكتيكية (Tactical Redlines)',
+        'محاكاة جلسات المرافعة وتوقع نسب كسب القضايا والتحكيم التجاري',
+        'تدقيق وتفريغ حتى 50 عقداً شهرياً بجميع الصيغ',
+        'تغطية تشريعية كاملة لـ 9 ولايات قضائية (الخليج، بريطانيا، ديلاوير، أوروبا)',
+        'مصادقة ثنائية مشفرة (2FA TOTP) وأمان TLS 1.3 فائق الأمان',
       ],
     },
     {
@@ -177,10 +179,10 @@ export default function PaymentPage() {
       nameAr: 'حزمة الشركات الكبرى والمؤسسات السيادية',
       targetEn: 'Multinationals, Conglomerates & Sovereign Financial Entities',
       targetAr: 'الشركات متعددة الجنسيات، المجموعات القابضة، والمؤسسات المصرفية والسيادية',
-      price: billingAnnual ? 279 : 349,
+      price: 349,
       globalPrice: 500,
-      billingEn: billingAnnual ? '/ year (save 20%)' : '/ month',
-      billingAr: billingAnnual ? '/ سنوياً (وفر 20%)' : '/ شهرياً',
+      billingEn: '/ month',
+      billingAr: '/ شهرياً',
       descEn: 'Predictive M&A Intelligence, Stylometric Anti-Fraud & Cross-Border Compliance.',
       descAr: 'الاستحواذ الذكي M&A، كشف التزوير والاحتيال، والامتثال العابر للحدود.',
       color: 'amber',
@@ -193,8 +195,8 @@ export default function PaymentPage() {
       apiAccessAr: 'تكامل كامل عبر API وأنظمة المؤسسات الضخمة',
       security: 'AES-256 E2EE + Forensic Audit Trail Logs',
       securityAr: 'تشفير طرفي شامل (E2EE) + سجلات تدقيق جنائية غير قابلة للتعديل',
-      support: 'Dedicated Executive Priority Concierge (Senior Counsel Dr. Mohammad Mustafa)',
-      supportAr: 'دعم تنفيذي مباشر ومخصص 24/7 مع المستشار القانوني د. محمد مصطفى',
+      support: 'Dedicated Technical Priority Concierge (Enterprise AI Systems)',
+      supportAr: 'دعم فني وتنفيذي مباشر ومخصص 24/7 لأنظمة الذكاء الاصطناعي',
       featuresEn: [
         'Everything in SMEs & Growth Plan',
         'Unlimited DealShield 360™ Simulations (Up to 5 Jurisdictions Concurrently)',
@@ -204,7 +206,7 @@ export default function PaymentPage() {
         'Unlimited Contract Audits & Instant Gap Identification',
         'Multi-User Departmental Access & Role-Based Control (RBAC)',
         'End-to-End Encrypted Sovereign Vault with Digital Timestamps',
-        'Dedicated 24/7 Senior Legal Counsel Priority Access',
+        'Dedicated 24/7 Enterprise Technical Support Priority Access',
       ],
       featuresAr: [
         'كل مزايا حزمة الشركات المتوسطة والنمو',
@@ -215,7 +217,7 @@ export default function PaymentPage() {
         'تدقيق وتوليد عقود غير محدود مع رصد فوري للثغرات الصامتة',
         'إدارة متعددة المستخدمين وأدوار الصلاحيات المتقدمة (RBAC)',
         'خزنة سحابية سيادية بتشفير طرفي E2EE وطوابع زمنية رقمية معتمدة',
-        'قناة تواصل استشارية تنفيذية مباشرة 24/7 مع د. محمد مصطفى',
+        'دعم فني مخصص 24/7 لتشغيل المنظومة وأتمتة العقود',
       ],
     },
     {
@@ -227,10 +229,10 @@ export default function PaymentPage() {
       nameAr: 'باقة غرفة الصفقات المؤسسية الكبرى والاستحواذ',
       targetEn: 'High-Stakes M&A, Sovereign Funds & Cross-Border Joint Ventures',
       targetAr: 'صفقات الاستحواذ المليونية، الصناديق السيادية، والتحالفات الدولية',
-      price: billingAnnual ? 799 : 999,
+      price: 999,
       globalPrice: 1500,
-      billingEn: billingAnnual ? '/ year (unlimited deal room)' : ' / one-time deal pass',
-      billingAr: billingAnnual ? '/ سنوياً (غرف صفقات غير محدودة)' : ' / دفعة واحدة للصفقة',
+      billingEn: ' / one-time deal pass',
+      billingAr: ' / دفعة واحدة للصفقة',
       descEn: 'Dedicated Deal Room, W&I Audit, SPA Custom Drafting & SWIFT Concierge.',
       descAr: 'غرفة صفقات مخصصة، فحص W&I، صياغة اتفاقيات SPA، وتنسيق مصرفي SWIFT.',
       color: 'rose',
@@ -243,8 +245,8 @@ export default function PaymentPage() {
       apiAccessAr: 'ربط مباشر مع البنوك وأنظمة الفواتير المعتمدة',
       security: 'Military-Grade E2EE + Multi-Sign Escrow',
       securityAr: 'تشفير عسكري + توقيع متعدد الأطراف مشفر',
-      support: 'Direct Private Advisory & Deal Closing Concierge',
-      supportAr: 'إشراف استشاري خاص وإغلاق الصفقة مع د. محمد مصطفى',
+      support: 'Advanced Technical Risk Analysis & DealShield 360 Support',
+      supportAr: 'إشراف تقني وتحليلي متقدم لمخاطر الصفقات عبر DealShield 360',
       featuresEn: [
         'Dedicated Multi-Party Virtual Deal Room & Redlining Portal',
         'Complete M&A Due Diligence & Warranties & Indemnities (W&I) Audit',
@@ -252,7 +254,7 @@ export default function PaymentPage() {
         'Full DealShield 360™ Multi-Jurisdiction Clash Harmonization',
         'Pro-Forma Tax Invoicing & Direct SWIFT Wire Remittance',
         'Certified Cryptographic SHA-256 E-Signatures for All Parties',
-        'Direct Priority Concierge & Strategic Deal Advisory',
+        'Direct Priority Concierge & Technical Deal Flow Support',
       ],
       featuresAr: [
         'غرفة صفقات افتراضية مخصصة متعددة الأطراف مع مفاوضة مباشرة',
@@ -261,7 +263,7 @@ export default function PaymentPage() {
         'محاكاة وتوافق تشريعي شامل عبر DealShield 360 لجميع أطراف الصفقة',
         'فاتورة ضريبية رسمية معتمدة ومتابعة مصرفية للتحويل البنكي SWIFT',
         'توقيعات رقمية مشفرة SHA-256 معتمدة لجميع ممثلي الشركات',
-        'إشراف استشاري خاص ومباشر مع خبير المخاطر د. محمد مصطفى',
+        'إشراف تقني وتحليلي متقدم لمخاطر الصفقات عبر DealShield 360',
       ],
     },
   ];
@@ -315,6 +317,20 @@ export default function PaymentPage() {
         />
       )}
 
+      {/* PayTabs Under Review Notice Modal */}
+      <PayTabsReviewModal
+        isOpen={payTabsModalOpen}
+        onClose={() => setPayTabsModalOpen(false)}
+        selectedPlan={selectedPayTabsPlan}
+        onSelectMethod={(method, plan) => {
+          setPayTabsModalOpen(false);
+          if (method === 'wire') setSelectedWirePlan(plan);
+          if (method === 'binance') setSelectedBinancePlan(plan);
+          if (method === 'instapay') setSelectedInstaPayPlan(plan);
+          if (method === 'proforma') setSelectedProformaPlan(plan);
+        }}
+      />
+
       {/* Hero Header */}
       <div className="relative py-14 border-b border-slate-800/80 overflow-hidden bg-gradient-to-b from-slate-900 via-slate-950 to-slate-950">
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none" />
@@ -324,7 +340,7 @@ export default function PaymentPage() {
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900 border border-amber-500/30 shadow-lg">
             <Crown className="w-4 h-4 text-amber-400" />
             <span className="text-xs font-black uppercase tracking-widest text-amber-300">
-              {l('حزم الاشتراكات السيادية المخصومة 30% لعام 2026', '30% Discounted Sovereign Retainer Tiers 2026')}
+              {l('باقات الاشتراكات والخدمات السيادية لعام 2026', 'Sovereign Retainer Tiers 2026')}
             </span>
           </div>
 
@@ -334,29 +350,10 @@ export default function PaymentPage() {
 
           <p className="text-slate-300 max-w-3xl mx-auto text-xs sm:text-sm leading-relaxed font-medium">
             {l(
-              'اختر الباقة المناسبة لمؤسستك واستفد من محرك Google AI Pro السيادي، الاستحواذ التنبؤي M&A، التفاوض الآلي، والمحاكاة القضائية مع تفعيل فوري عبر Binance Pay، التحويلات البنكية SWIFT، أو إنستا باي.',
-              'Empower your enterprise with Google AI Pro Sovereign Core, predictive M&A valuations, autonomous negotiation, and virtual dispute simulation with zero-touch instant activation.'
+              'اختر الباقة المناسبة لمؤسستك واستفد من محرك Google AI Pro السيادي، الاستحواذ التنبؤي M&A، التفاوض الآلي، والمحاكاة القضائية مع تسوية معتمدة عبر Binance Pay، التحويلات البنكية SWIFT، أو إنستا باي.',
+              'Empower your enterprise with Google AI Pro Sovereign Core, predictive M&A valuations, autonomous negotiation, and virtual dispute simulation with verified institutional settlement.'
             )}
           </p>
-
-          {/* Billing Switcher (Monthly / Annual) */}
-          <div className="flex items-center justify-center gap-3 pt-3">
-            <span className={`text-xs font-bold ${!billingAnnual ? 'text-cyan-400 font-black' : 'text-slate-400'}`}>
-              {l('فاتورة شهرية', 'Monthly Billing')}
-            </span>
-            <button
-              onClick={() => setBillingAnnual(!billingAnnual)}
-              className="w-14 h-7 rounded-full bg-slate-900 border border-slate-700 p-1 flex items-center transition-colors cursor-pointer"
-            >
-              <div className={`w-5 h-5 rounded-full bg-cyan-400 transition-transform ${billingAnnual ? (isRtl ? '-translate-x-7' : 'translate-x-7') : 'translate-x-0'}`} />
-            </button>
-            <span className={`text-xs font-bold flex items-center gap-1.5 ${billingAnnual ? 'text-cyan-400 font-black' : 'text-slate-400'}`}>
-              <span>{l('فاتورة سنوية', 'Annual Billing')}</span>
-              <span className="px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-400 text-[10px] font-mono border border-emerald-500/30">
-                {l('وفر 20%', 'Save 20%')}
-              </span>
-            </span>
-          </div>
         </div>
       </div>
 
@@ -425,25 +422,25 @@ export default function PaymentPage() {
 
                 {/* Direct Payment Method Launchers */}
                 <div className="space-y-3 pt-4 border-t border-slate-800">
-                  {/* Primary Instant Paddle Card Checkout */}
+                  <div className="p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-[11px] text-slate-300 text-center font-medium">
+                    <Lock className="w-3 h-3 text-cyan-400 inline-block mr-1.5" />
+                    <span>{l('طرق دفع إلكترونية آمنة ومعتمدة متاحة عند إتمام الطلب.', 'Secure payment methods available at checkout.')}</span>
+                  </div>
+                  {/* Primary Card Option: PayTabs (Under Merchant Review) */}
                   <button
-                    onClick={() => openPaddleCheckout({
-                      priceId: PADDLE_CONFIG.priceId,
-                      planTier: plan.id as any,
-                      amountUSD: plan.price,
-                      onSuccess: () => {
-                        window.location.href = '/billing?session=success';
-                      },
-                    })}
+                    onClick={() => {
+                      setSelectedPayTabsPlan(plan);
+                      setPayTabsModalOpen(true);
+                    }}
                     className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-cyan-500 via-sky-400 to-indigo-500 hover:from-cyan-400 hover:to-indigo-400 text-slate-950 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 active:scale-95 transition-all cursor-pointer"
                   >
                     <CreditCard className="w-4 h-4 text-slate-950" />
-                    <span>{l('اشترك الآن بالبطاقة (Paddle Checkout)', 'Subscribe Now (Paddle Checkout)')}</span>
-                    <Sparkles className="w-3.5 h-3.5 text-slate-950" />
+                    <span>{l('الدفع بالبطاقة الائتمانية (PayTabs — قيد المراجعة)', 'Card Checkout (PayTabs — Under Review)')}</span>
+                    <Clock className="w-3.5 h-3.5 text-slate-950" />
                   </button>
 
                   <div className="flex items-center gap-2 text-[10px] text-slate-500 justify-center">
-                    <span>{l('أو سدد عبر البوابات المباشرة:', 'Or pay via alternative methods:')}</span>
+                    <span>{l('أو سدد عبر القنوات المباشرة المعتمدة:', 'Or pay via direct verified channels:')}</span>
                   </div>
 
                   <div className="grid grid-cols-3 gap-2">
@@ -496,18 +493,21 @@ export default function PaymentPage() {
             </h3>
             <p className="text-xs text-slate-400 max-w-2xl leading-relaxed">
               {l(
-                'للشركات الكبرى وصناديق الاستثمار التي تتطلب اتفاقيات مستوى خدمة مخصصة (Custom SLA) أو تحليلات سرية خاصة، يمكنك التنسيق المباشر مع رئيس مجلس الإدارة والمستشار الاستراتيجي د. محمد مصطفى.',
-                'For large enterprises, sovereign entities, and custom SLAs requiring NDA-isolated deployments, contact Senior Partner Dr. Mohammad Mustafa directly.'
+                'للشركات الكبرى وصناديق الاستثمار التي تتطلب اتفاقيات مستوى خدمة مخصصة (Custom SLA) أو تكامل برمجي مخصص، يمكنك التنسيق المباشر مع الإدارة التنفيذية والتقنية برئاسة د. محمد مصطفى (المؤسس ورئيس مجلس الإدارة وخبير إدارة المخاطر).',
+                'For large enterprises, sovereign entities, and custom SLAs requiring dedicated software deployments, contact Executive Leadership headed by Dr. Mohammad Mustafa (Founder & Chairman, Risk Management Specialist).'
               )}
+            </p>
+            <p className="text-[11px] text-cyan-400 font-mono pt-1">
+              {l('منصة رقمية عالمية — تعمل عن بعد', 'Global Digital Platform — Operated remotely')}
             </p>
           </div>
 
           <a
-            href="mailto:Drzyogo.ca@gmail.com?cc=juristech.solutions@outlook.com&subject=Bespoke%20Enterprise%20Retainer%20Inquiry%20-%20JurisTech"
+            href="mailto:founder@juristech.solutions?subject=Bespoke%20Enterprise%20Retainer%20Inquiry%20-%20JurisTech"
             className="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-slate-950 font-black text-xs sm:text-sm flex items-center gap-2 transition-all shadow-lg active:scale-95 shrink-0"
           >
             <Mail className="w-4 h-4 text-slate-950" />
-            <span>{l('مراسلة المستشار الاستراتيجي', 'Contact Senior Counsel')}</span>
+            <span>{l('مراسلة الإدارة التنفيذية والتقنية', 'Contact Executive & Technical Leadership')}</span>
           </a>
         </div>
       </div>

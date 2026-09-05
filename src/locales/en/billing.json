@@ -1,6 +1,6 @@
 {
   "portalTitle": "Account Billing & Subscription Management",
-  "portalSubtitle": "Official Merchant Billing Portal — Powered by Paddle.com",
+  "portalSubtitle": "Official Sovereign Billing Portal — TLS 1.3 Secured",
   "currentPlan": "Current Active Plan",
   "planAmount": "Plan Amount",
   "startDate": "Start Date",
@@ -26,7 +26,7 @@
   "keepSubscription": "Keep Subscription",
   "confirmCancelBtn": "Cancel Now",
   "cancelling": "Cancelling...",
-  "merchantProtectionTitle": "Merchant of Record Protection",
-  "merchantProtectionDesc": "All digital software subscription payments are securely processed through Paddle.com as the authorized Merchant of Record with automated tax compliance.",
-  "supportEmail": "Billing & Refund Support: juristech.solutions@outlook.com"
+  "merchantProtectionTitle": "Enterprise Security & Transaction Compliance",
+  "merchantProtectionDesc": "All digital transactions are protected via TLS 1.3 encryption and institutional verification. Supporting direct settlements (SWIFT, Binance Pay, InstaPay) with PayTabs card checkout under review.",
+  "supportEmail": "Billing & Invoicing Support: founder@juristech.solutions"
 }

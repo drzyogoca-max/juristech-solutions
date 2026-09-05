@@ -153,7 +153,7 @@ export default function SmartContractEngine() {
   const handleEmailContract = () => {
     const subject = encodeURIComponent(`وثيقة العقد السيادي المعتمد (${jurProfile.countryAr}) - JurisTech Solutions`);
     const body = encodeURIComponent(generatedContract);
-    window.location.href = `mailto:juristech.solutions@outlook.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:founder@juristech.solutions?subject=${subject}&body=${body}`;
   };
 
   return (

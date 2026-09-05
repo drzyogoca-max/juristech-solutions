@@ -31,6 +31,7 @@ import {
 import { usePlatformLocale } from '../lib/universalTranslator';
 import { useAuth } from '../lib/authContext';
 import { useSubscription } from '../hooks/useSubscription';
+import { useNavigate } from 'react-router-dom';
 import SEO from '../components/SEO';
 
 // UI Subcomponents
@@ -108,7 +109,8 @@ export default function AIAdvisorPage() {
   const { lang, isRtl } = usePlatformLocale();
   const isAr = lang === 'ar';
   const { isAdmin, isLawyer } = useAuth();
-  const { tier: subTierName, isSubscriber, subscribeWithPaddle } = useSubscription();
+  const { tier: subTierName, isSubscriber } = useSubscription();
+  const navigate = useNavigate();
 
   // Map user tier (memoized)
   const userTier: UserTier = useMemo(() => {
@@ -587,7 +589,7 @@ export default function AIAdvisorPage() {
           onClose={() => setUpgradeModalOpen(false)}
           requiredTier={requiredTierForModal}
           featureName={upgradeFeature}
-          onUpgrade={(planKey) => subscribeWithPaddle(planKey)}
+          onUpgrade={(planKey) => navigate(`/pricing?plan=${planKey}`)}
           lang={lang as SupportedAILang}
           isRtl={isRtl}
         />

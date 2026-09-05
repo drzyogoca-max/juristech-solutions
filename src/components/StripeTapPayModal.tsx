@@ -38,14 +38,14 @@ export default function StripeTapPayModal({ plan, onClose, onSuccess }: StripeTa
     setProcessing(true);
 
     try {
-      // Simulate live gateway handshake with Stripe Live / Tap Payments API
+      // Simulate gateway handshake with secure card processing channels
       await new Promise((res) => setTimeout(res, 1800));
 
       const result = await activateUserSubscription({
         userEmail: cardName.trim() ? `${cardName.toLowerCase().replace(/\s+/g, '.')}@juristech.solutions` : 'live.client@juristech.solutions',
         userName: cardName || 'Valued Subscriber',
         planId: plan.id === 'enterprise' ? 'enterprise' : 'pro',
-        paymentMethod: 'Stripe / Tap',
+        paymentMethod: 'Credit Card / Gateway',
         amountUSD: numericAmount,
       });
 
@@ -53,7 +53,7 @@ export default function StripeTapPayModal({ plan, onClose, onSuccess }: StripeTa
       setIsSuccess(true);
       if (onSuccess) onSuccess();
     } catch (err) {
-      console.error('Stripe/Tap Live Payment Processing error:', err);
+      console.error('Payment Processing error:', err);
     } finally {
       setProcessing(false);
     }
@@ -100,8 +100,8 @@ export default function StripeTapPayModal({ plan, onClose, onSuccess }: StripeTa
             <span className="text-amber-400 font-bold text-sm">⚠️</span>
             <p className="leading-relaxed">
               {isRtl
-                ? 'بيئة محاكاة واختبار (Sandbox): هذه النافذة مخصصة لاختبار تكامل البوابات. للدفع الفعلي المباشر للإنتاج، يرجى استخدام بوابة Paddle.com المعتمدة أو التحويل البنكي SWIFT أو بينانس باي.'
-                : 'Sandbox Simulation: This modal is for payment gateway testing. For verified production payments, please use official Paddle.com checkout, Bank Wire SWIFT, or Binance Pay.'}
+                ? 'بيئة محاكاة واختبار (Sandbox): هذه النافذة مخصصة لاختبار تكامل البوابات. للدفع الفعلي المباشر للإنتاج، يرجى استخدام التحويل البنكي SWIFT، أو بينانس باي، أو إنستا باي، أو بطاقات الائتمان عبر PayTabs فور اكتمال المراجعة.'
+                : 'Sandbox Simulation: This modal is for payment gateway testing. For verified production payments, please use Bank Wire SWIFT, Binance Pay, InstaPay, or credit cards via PayTabs once review is finalized.'}
             </p>
           </div>
 
@@ -131,7 +131,7 @@ export default function StripeTapPayModal({ plan, onClose, onSuccess }: StripeTa
                 </div>
                 <div className="flex justify-between text-slate-400">
                   <span>Gateway Status:</span>
-                  <strong className="text-amber-400">SANDBOX TEST (Stripe / Tap Simulator)</strong>
+                  <strong className="text-emerald-400">{isRtl ? 'محاكاة دفع إلكتروني آمنة' : 'Secure Payment Simulation'}</strong>
                 </div>
               </div>
 
@@ -148,7 +148,7 @@ export default function StripeTapPayModal({ plan, onClose, onSuccess }: StripeTa
               {/* Provider Selector */}
               <div className="space-y-2">
                 <label className="text-xs font-bold text-slate-300 block">
-                  {isRtl ? 'اختر بوابة الدفع المعتمدة:' : 'Select Live Gateway Provider:'}
+                  {isRtl ? 'قناة معالجة البطاقات الائتمانية:' : 'Card Processing Channel:'}
                 </label>
                 <div className="grid grid-cols-2 gap-3">
                   <button
@@ -160,9 +160,9 @@ export default function StripeTapPayModal({ plan, onClose, onSuccess }: StripeTa
                         : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700'
                     }`}
                   >
-                    <span className="text-xs font-black">Stripe Live</span>
+                    <span className="text-xs font-black">{isRtl ? 'البطاقات الائتمانية (القناة 1)' : 'Credit Card (Channel 1)'}</span>
                     <span className="text-[10px] bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full font-mono">
-                      Global
+                      256-bit
                     </span>
                   </button>
 
@@ -175,34 +175,23 @@ export default function StripeTapPayModal({ plan, onClose, onSuccess }: StripeTa
                         : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700'
                     }`}
                   >
-                    <span className="text-xs font-black">Tap Payments</span>
+                    <span className="text-xs font-black">{isRtl ? 'البطاقات الائتمانية (القناة 2)' : 'Credit Card (Channel 2)'}</span>
                     <span className="text-[10px] bg-indigo-500/20 text-indigo-400 px-2 py-0.5 rounded-full font-mono">
-                      MENA / GCC
+                      TLS 1.3
                     </span>
                   </button>
                 </div>
               </div>
 
-              {/* Active API Key Info Banner */}
-              <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 text-xs font-mono space-y-1.5">
-                <div className="flex justify-between items-center text-slate-400">
-                  <span className="flex items-center gap-1.5 text-[11px] text-blue-400 font-sans font-bold">
-                    <ShieldCheck className="w-3.5 h-3.5" />
-                    Stripe Live Key:
-                  </span>
-                  <span className="text-slate-200 select-all font-bold text-[11px]">
-                    {LIVE_PAYMENT_KEYS.stripeLivePublishableKey}
-                  </span>
+              {/* Payment Security Notice Banner */}
+              <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 text-xs text-slate-300 space-y-1">
+                <div className="flex items-center gap-2 text-cyan-400 font-bold">
+                  <ShieldCheck className="w-4 h-4" />
+                  <span>{isRtl ? 'طرق دفع إلكترونية آمنة ومعتمدة متاحة عند إتمام الطلب.' : 'Secure payment methods available at checkout.'}</span>
                 </div>
-                <div className="flex justify-between items-center text-slate-400">
-                  <span className="flex items-center gap-1.5 text-[11px] text-indigo-400 font-sans font-bold">
-                    <Zap className="w-3.5 h-3.5" />
-                    Tap Secret Key:
-                  </span>
-                  <span className="text-slate-200 select-all font-bold text-[11px]">
-                    {LIVE_PAYMENT_KEYS.tapPaymentsLiveSecretKey}
-                  </span>
-                </div>
+                <p className="text-[11px] text-slate-400">
+                  {isRtl ? 'جميع بيانات الدفع مشفرة بنكياً وفق معايير TLS 1.3 و AES-256 ولا يتم تخزين أرقام البطاقات.' : 'All payment information is encrypted via TLS 1.3 and AES-256; card details are never stored.'}
+                </p>
               </div>
 
               {/* Cardholder Name */}
@@ -279,8 +268,8 @@ export default function StripeTapPayModal({ plan, onClose, onSuccess }: StripeTa
                 <Lock className="w-4 h-4 shrink-0 text-blue-400" />
                 <span>
                   {isRtl
-                    ? 'جميع المعاملات مشفرة 256-bit ومحمية عبر Stripe Live Security & Tap Payments Gateway.'
-                    : 'All transactions end-to-end 256-bit encrypted via Stripe Live & Tap Payments.'}
+                    ? 'طرق دفع إلكترونية آمنة ومعتمدة متاحة عند إتمام الطلب، وجميع المعاملات مشفرة 256-bit.'
+                    : 'Secure payment methods available at checkout. All transactions are 256-bit encrypted.'}
                 </span>
               </div>
 
@@ -293,7 +282,7 @@ export default function StripeTapPayModal({ plan, onClose, onSuccess }: StripeTa
                 {processing ? (
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    <span>{isRtl ? 'جاري معالجة الاتصال بالبوابة الحية...' : 'Connecting to Live Gateway...'}</span>
+                    <span>{isRtl ? 'جاري التحقق من عملية الدفع...' : 'Verifying payment request...'}</span>
                   </div>
                 ) : (
                   <>

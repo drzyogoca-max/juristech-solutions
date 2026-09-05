@@ -79,12 +79,12 @@ Target Region: ${targetRegion}
 MANDATORY RULES:
 1. Language: MUST BE 100% ENGLISH ONLY. No Arabic text.
 2. Platform Name: Always mention "JurisTech Solutions (Sovereign AI Legal Intelligence)".
-3. Official Contact Info: Include "Email: juristech.solutions@outlook.com | Contact: +201126674337 | Domain: https://www.juristech.solutions".
+3. Official Contact Info: Include "Email: founder@juristech.solutions | Contact: +201126674337 | Domain: https://www.juristech.solutions".
 4. Sensitive Legal Issues Solved: Focus on one of:
    - M&A Due Diligence, SPA Warranty & Indemnity (W&I) Risk Auditing
    - Sub-Second (<90ms) Contract Risk Analysis & Uncapped Liability Trap Detection
    - Cross-Border Compliance (Delaware DGCL, Saudi Civil Transactions Law M/191, UAE DIFC 50/2022)
-   - 1M+ Certified Template Repository & E-Signatures (AES-256 Vault / SHA-256 eIDAS)
+   - Verified Smart Contract Vault & E-Signatures (AES-256 Vault / SHA-256 eIDAS)
 
 Generate JSON format with keys:
 "adHeadline": English headline (max 10 words),
@@ -104,7 +104,7 @@ Respond ONLY with valid JSON.`;
     } catch {
       parsed = {
         adHeadline: 'JurisTech Solutions — Sovereign AI M&A & Contract Risk Audit',
-        adCopy: 'Mitigate uncapped liabilities & audit M&A due diligence in <90ms with JurisTech Solutions. Compliant with Delaware DGCL & Saudi M/191. Contact: juristech.solutions@outlook.com | +201126674337 | https://www.juristech.solutions',
+        adCopy: 'Mitigate uncapped liabilities & audit M&A due diligence in <90ms with JurisTech Solutions. Compliant with Delaware DGCL & Saudi M/191. Contact: founder@juristech.solutions | +201126674337 | https://www.juristech.solutions',
         targetKeywords: ['M&A Due Diligence', 'Contract Risk Audit', 'JurisTech Solutions', 'Delaware DGCL', 'Enterprise Legal AI'],
         projectedROI: 7.2,
       };
@@ -117,8 +117,8 @@ Respond ONLY with valid JSON.`;
       targetRegion,
       adHeadline: parsed.adHeadline || 'JurisTech Solutions — Enterprise AI Legal Risk Audit',
       adHeadlineAr: parsed.adHeadline || 'JurisTech Solutions — Enterprise AI Legal Risk Audit',
-      adCopy: parsed.adCopy || 'JurisTech Solutions provides sub-second contract risk auditing and M&A due diligence. Contact: juristech.solutions@outlook.com | +201126674337 | https://www.juristech.solutions',
-      adCopyAr: parsed.adCopy || 'JurisTech Solutions provides sub-second contract risk auditing and M&A due diligence. Contact: juristech.solutions@outlook.com | +201126674337 | https://www.juristech.solutions',
+      adCopy: parsed.adCopy || 'JurisTech Solutions provides sub-second contract risk auditing and M&A due diligence. Contact: founder@juristech.solutions | +201126674337 | https://www.juristech.solutions',
+      adCopyAr: parsed.adCopy || 'JurisTech Solutions provides sub-second contract risk auditing and M&A due diligence. Contact: founder@juristech.solutions | +201126674337 | https://www.juristech.solutions',
       targetKeywords: parsed.targetKeywords || ['JurisTech Solutions', 'Legal AI', 'M&A Risk Audit'],
       estimatedImpressions: Math.floor(18000 + Math.random() * 50000),
       estimatedClicks: Math.floor(650 + Math.random() * 2500),

@@ -409,7 +409,7 @@ export default function AdminReceiptReviewPage() {
                 <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0" />
                 <span>{notification}</span>
               </div>
-              <button onClick={() => setNotification(null)} className="p-1 hover:opacity-75">
+              <button onClick={() => setNotification(null)} aria-label={isRtl ? 'إغلاق التنبيه' : 'Dismiss notification'} className="p-1 hover:opacity-75">
                 <X className="w-4 h-4" />
               </button>
             </div>
@@ -573,7 +573,7 @@ export default function AdminReceiptReviewPage() {
                   className="w-full pl-9 pr-4 rtl:pr-9 rtl:pl-4 py-2 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 />
                 {searchQuery && (
-                  <button onClick={() => setSearchQuery('')} className="absolute top-2.5 right-3 rtl:left-3 rtl:right-auto text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                  <button onClick={() => setSearchQuery('')} aria-label={isRtl ? 'مسح البحث' : 'Clear search'} className="absolute top-2.5 right-3 rtl:left-3 rtl:right-auto text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
                     <X className="w-3.5 h-3.5" />
                   </button>
                 )}
@@ -900,7 +900,7 @@ export default function AdminReceiptReviewPage() {
                 <XCircle className="w-5 h-5 text-red-500" />
                 <span>{isRtl ? 'سبب رفض إيصال التحويل البنكي' : 'Select Rejection Reason'}</span>
               </h3>
-              <button onClick={() => setRejectItem(null)} className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+              <button onClick={() => setRejectItem(null)} aria-label={isRtl ? 'إغلاق' : 'Close'} className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
                 <X className="w-4 h-4" />
               </button>
             </div>
@@ -970,7 +970,7 @@ export default function AdminReceiptReviewPage() {
                 <Crown className="w-5 h-5 text-amber-500" />
                 <span>👑 {isRtl ? 'التحكم والقرار السيادي الإداري (د. محمد مصطفى)' : 'Sovereign Chairman Decision Override'}</span>
               </h3>
-              <button onClick={() => setOverrideItem(null)} className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+              <button onClick={() => setOverrideItem(null)} aria-label={isRtl ? 'إغلاق' : 'Close'} className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
                 <X className="w-4 h-4" />
               </button>
             </div>
@@ -1040,7 +1040,7 @@ export default function AdminReceiptReviewPage() {
                 <Plus className="w-5 h-5 text-emerald-500" />
                 <span>{isRtl ? 'إضافة وتسجيل إيصال بنكي يدوي للعميل' : 'Log VIP SWIFT Remittance Receipt'}</span>
               </h3>
-              <button onClick={() => setShowManualModal(false)} className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+              <button onClick={() => setShowManualModal(false)} aria-label={isRtl ? 'إغلاق' : 'Close'} className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
                 <X className="w-4 h-4" />
               </button>
             </div>

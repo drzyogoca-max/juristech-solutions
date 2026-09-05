@@ -1,8 +1,8 @@
 {
   "title": "Şeffaf ve Egemen Fiyatlandırma Paketleri",
-  "subtitle": "Vergi uyumluluğu ve alıcı korumasıyla yetkili satıcı Paddle üzerinden anında aktivasyon.",
+  "subtitle": "Banka düzeyinde TLS 1.3 şifreleme, alıcı koruması ve doğrulanmış mutabakat ile anında aktivasyon.",
   "monthlyBilling": "Aylık Faturalandırma",
-  "annualBilling": "Yıllık Faturalandırma (%20 İndirim)",
+  "annualBilling": "Yıllık Faturalandırma (Özel Faturalandırma)",
   "startupName": "Startup Paketi",
   "startupDesc": "Girişimciler ve yeni kurulan şirketler için temel yapay zeka sözleşme ve risk radarı.",
   "smeName": "KOBİ ve Danışman Paketi",
@@ -11,9 +11,9 @@
   "enterpriseDesc": "Özel yapay zeka modelleri, sınırsız sözleşme denetimi ve M&A iş akışları.",
   "perMonth": "/ ay",
   "subscribeNow": "Hemen Abone Ol",
-  "subscribeViaPaddle": "Kart ile Hemen Abone Ol (Paddle Checkout)",
+  "subscribeViaCard": "Kart ile Öde (PayTabs İncelemede)",
   "popularBadge": "En Çok Tercih Edilen",
-  "instantActivation": "Resmi Satıcı Kaydı Paddle Üzerinden Anında Aktivasyon",
+  "instantActivation": "Banka Düzeyinde Güvenlikle Anında Aktivasyon",
   "comparePlans": "Tüm Paket Özelliklerini Karşılaştırın",
   "faqTitle": "Sıkça Sorulan Sorular",
   "refundGuarantee": "14 Günlük Korumalı İade Garantisi"

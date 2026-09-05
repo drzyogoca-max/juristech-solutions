@@ -1525,9 +1525,9 @@ const NAMESPACES_DATA = {
   pricing: {
     en: {
       title: "Transparent, Sovereign Pricing Plans",
-      subtitle: "Instant activation via Paddle Merchant of Record with automated tax compliance and buyer protection.",
+      subtitle: "Instant activation with bank-grade TLS 1.3 encryption, buyer protection, and direct verified settlement.",
       monthlyBilling: "Monthly Billing",
-      annualBilling: "Annual Billing (20% Off)",
+      annualBilling: "Annual Billing (Bespoke Invoicing)",
       startupName: "Startup Legal Retainer",
       startupDesc: "Essential AI contract generation and risk radar for founders and early-stage companies.",
       smeName: "SME Legal Retainer",
@@ -1536,18 +1536,18 @@ const NAMESPACES_DATA = {
       enterpriseDesc: "Dedicated AI models, unlimited contract audits, and custom M&A workflows.",
       perMonth: "/ month",
       subscribeNow: "Subscribe Now",
-      subscribeViaPaddle: "Subscribe Now via Card (Paddle Checkout)",
+      subscribeViaCard: "Pay via Card (PayTabs Under Review)",
       popularBadge: "Most Popular",
-      instantActivation: "Instant Activation via Paddle Merchant of Record",
+      instantActivation: "Instant Activation with Bank-Grade Security",
       comparePlans: "Compare All Plan Features",
       faqTitle: "Frequently Asked Questions",
       refundGuarantee: "Protected 14-Day Refund Guarantee"
     },
     ar: {
       title: "باقات اشتراك شفافة وسيادية",
-      subtitle: "تفعيل فوري وآمن عبر تاجر السجل المعتمد دولياً Paddle مع حماية المشتري والفواتير الضريبية.",
+      subtitle: "تفعيل فوري وآمن بتشفير بنكي TLS 1.3 وحماية كاملة وتسوية مباشرة معتمدة.",
       monthlyBilling: "اشتراك شهري",
-      annualBilling: "اشتراك سنوي (خصم 20%)",
+      annualBilling: "اشتراك سنوي (فواتير معتمدة)",
       startupName: "الباقة التأسيسية للشركات الناشئة",
       startupDesc: "توليد العقود الذكية وفحص المخاطر الأساسي لرواد الأعمال والمؤسسين.",
       smeName: "باقة الشركات المتوسطة والمكاتب",
@@ -1556,18 +1556,18 @@ const NAMESPACES_DATA = {
       enterpriseDesc: "نماذج ذكاء اصطناعي مخصصة، تدقيق عقود غير محدود، وأدوات تدقيق الاستحواذ M&A.",
       perMonth: "/ شهرياً",
       subscribeNow: "اشترك الآن",
-      subscribeViaPaddle: "اشترك الآن بالبطاقة (Paddle Checkout)",
+      subscribeViaCard: "الدفع بالبطاقة (PayTabs قيد المراجعة)",
       popularBadge: "الأكثر طلباً",
-      instantActivation: "تفعيل فوري عبر تاجر السجل الرسمي Paddle",
+      instantActivation: "تفعيل فوري وحماية بنكية مشفرة",
       comparePlans: "مقارنة جميع ميزات الباقات",
       faqTitle: "الأسئلة الشائعة حول الاشتراكات",
       refundGuarantee: "ضمان استرداد عادل ومحمي لمدة 14 يوماً"
     },
     fr: {
       title: "Tarifs Transparents & Forfaits Souverains",
-      subtitle: "Activation instantanée via Paddle (Marchand officiel) avec conformité fiscale et protection acheteur.",
+      subtitle: "Activation instantanée avec chiffrement TLS 1.3 bancaire, protection acheteur et règlement sécurisé.",
       monthlyBilling: "Facturation mensuelle",
-      annualBilling: "Facturation annuelle (-20%)",
+      annualBilling: "Facturation annuelle (Facturation sur mesure)",
       startupName: "Forfait Startup",
       startupDesc: "Génération de contrats IA et radar des risques pour fondateurs et startups.",
       smeName: "Forfait PME & Cabinets",
@@ -1576,18 +1576,18 @@ const NAMESPACES_DATA = {
       enterpriseDesc: "Modèles dédiés, audits illimités et flux de travail M&A personnalisés.",
       perMonth: "/ mois",
       subscribeNow: "S'abonner maintenant",
-      subscribeViaPaddle: "S'abonner par carte (Paddle Checkout)",
+      subscribeViaCard: "Payer par carte (PayTabs en cours d'examen)",
       popularBadge: "Le plus populaire",
-      instantActivation: "Activation immédiate via le Marchand de référence Paddle",
+      instantActivation: "Activation immédiate avec sécurité bancaire",
       comparePlans: "Comparer toutes les fonctionnalités",
       faqTitle: "Foire Aux Questions",
       refundGuarantee: "Garantie de remboursement protégée sous 14 jours"
     },
     es: {
       title: "Planes de Precios Transparentes y Soberanos",
-      subtitle: "Activación inmediata mediante Paddle como Merchant of Record con cumplimiento fiscal y protección al comprador.",
+      subtitle: "Activación inmediata con cifrado bancario TLS 1.3, protección al comprador y liquidación verificada.",
       monthlyBilling: "Facturación mensual",
-      annualBilling: "Facturación anual (20% de descuento)",
+      annualBilling: "Facturación anual (Facturación a medida)",
       startupName: "Plan Startup",
       startupDesc: "Generación de contratos IA y radar de riesgos para fundadores y empresas emergentes.",
       smeName: "Plan PYME y Asesores",
@@ -1596,18 +1596,18 @@ const NAMESPACES_DATA = {
       enterpriseDesc: "Modelos IA dedicados, auditorías ilimitadas y flujos de trabajo M&A personalizados.",
       perMonth: "/ mes",
       subscribeNow: "Suscribirse Ahora",
-      subscribeViaPaddle: "Suscribirse con Tarjeta (Paddle Checkout)",
+      subscribeViaCard: "Pagar con Tarjeta (PayTabs en revisión)",
       popularBadge: "Más Popular",
-      instantActivation: "Activación inmediata mediante Merchant of Record Paddle",
+      instantActivation: "Activación inmediata con seguridad de nivel bancario",
       comparePlans: "Comparar todas las características",
       faqTitle: "Preguntas Frecuentes",
       refundGuarantee: "Garantía de reembolso protegida de 14 días"
     },
     de: {
       title: "Transparente, souveräne Tarifpläne",
-      subtitle: "Sofortige Freischaltung über Paddle als Merchant of Record mit Steuerkonformität und Käuferschutz.",
+      subtitle: "Sofortige Freischaltung mit TLS 1.3-Verschlüsselung nach Bankenstandard, Käuferschutz und direkter Abrechnung.",
       monthlyBilling: "Monatliche Abrechnung",
-      annualBilling: "Jährliche Abrechnung (20% Rabatt)",
+      annualBilling: "Jährliche Abrechnung (Individuelle Rechnungsstellung)",
       startupName: "Startup-Tarif",
       startupDesc: "Wesentliche KI-Vertragsgenerierung und Risikoradar für Gründer und Startups.",
       smeName: "KMU- & Kanzlei-Tarif",
@@ -1616,18 +1616,18 @@ const NAMESPACES_DATA = {
       enterpriseDesc: "Dedizierte KI-Modelle, unbegrenzte Vertragsaudits und M&A-Workflows.",
       perMonth: "/ Monat",
       subscribeNow: "Jetzt abonnieren",
-      subscribeViaPaddle: "Jetzt mit Karte abonnieren (Paddle Checkout)",
+      subscribeViaCard: "Mit Karte zahlen (PayTabs in Prüfung)",
       popularBadge: "Sehr beliebt",
-      instantActivation: "Sofortige Aktivierung über den autorisierten Händler Paddle",
+      instantActivation: "Sofortige Aktivierung mit Sicherheit auf Bankniveau",
       comparePlans: "Alle Tarifmerkmale vergleichen",
       faqTitle: "Häufig gestellte Fragen",
       refundGuarantee: "14 Tage Geld-zurück-Garantie"
     },
     tr: {
       title: "Şeffaf ve Egemen Fiyatlandırma Paketleri",
-      subtitle: "Vergi uyumluluğu ve alıcı korumasıyla yetkili satıcı Paddle üzerinden anında aktivasyon.",
+      subtitle: "Banka düzeyinde TLS 1.3 şifreleme, alıcı koruması ve doğrulanmış mutabakat ile anında aktivasyon.",
       monthlyBilling: "Aylık Faturalandırma",
-      annualBilling: "Yıllık Faturalandırma (%20 İndirim)",
+      annualBilling: "Yıllık Faturalandırma (Özel Faturalandırma)",
       startupName: "Startup Paketi",
       startupDesc: "Girişimciler ve yeni kurulan şirketler için temel yapay zeka sözleşme ve risk radarı.",
       smeName: "KOBİ ve Danışman Paketi",
@@ -1636,18 +1636,18 @@ const NAMESPACES_DATA = {
       enterpriseDesc: "Özel yapay zeka modelleri, sınırsız sözleşme denetimi ve M&A iş akışları.",
       perMonth: "/ ay",
       subscribeNow: "Hemen Abone Ol",
-      subscribeViaPaddle: "Kart ile Hemen Abone Ol (Paddle Checkout)",
+      subscribeViaCard: "Kart ile Öde (PayTabs İncelemede)",
       popularBadge: "En Çok Tercih Edilen",
-      instantActivation: "Resmi Satıcı Kaydı Paddle Üzerinden Anında Aktivasyon",
+      instantActivation: "Banka Düzeyinde Güvenlikle Anında Aktivasyon",
       comparePlans: "Tüm Paket Özelliklerini Karşılaştırın",
       faqTitle: "Sıkça Sorulan Sorular",
       refundGuarantee: "14 Günlük Korumalı İade Garantisi"
     },
     zh: {
       title: "透明、合规的主权定价方案",
-      subtitle: "由全球认证法定记录商 (Merchant of Record) Paddle.com 提供即时开通、税务合规与资金安全保障。",
+      subtitle: "采用银行级 TLS 1.3 高强度加密传输，提供买家权益合规审计与多渠道直连清结算。",
       monthlyBilling: "按月订阅",
-      annualBilling: "按年订阅 (享受 8 折优惠)",
+      annualBilling: "按年订阅 (定制对公结算)",
       startupName: "初创企业法务方案 (Startup)",
       startupDesc: "为初创团队及创始人提供核心 AI 智能合同生成与风险雷达初审。",
       smeName: "中小企业与律所方案 (SMEs)",
@@ -1656,9 +1656,9 @@ const NAMESPACES_DATA = {
       enterpriseDesc: "配备专属大模型实例、无限量合同穿透审计及定制并购 (M&A) 工作流。",
       perMonth: "/ 月",
       subscribeNow: "立即订阅",
-      subscribeViaPaddle: "使用信用卡立即订阅 (Paddle Checkout)",
+      subscribeViaCard: "银行卡安全支付 (PayTabs 审核中)",
       popularBadge: "最受欢迎",
-      instantActivation: "通过国际官方记录商 Paddle.com 秒级开通",
+      instantActivation: "企业级高可用安全即时开通",
       comparePlans: "对比全系方案功能矩阵",
       faqTitle: "订阅与支付常见问题解答",
       refundGuarantee: "享有14天合规公平退款保障"
@@ -1669,7 +1669,7 @@ const NAMESPACES_DATA = {
   billing: {
     en: {
       portalTitle: "Account Billing & Subscription Management",
-      portalSubtitle: "Official Merchant Billing Portal — Powered by Paddle.com",
+      portalSubtitle: "Official Sovereign Billing Portal — TLS 1.3 Secured",
       currentPlan: "Current Active Plan",
       planAmount: "Plan Amount",
       startDate: "Start Date",
@@ -1695,13 +1695,13 @@ const NAMESPACES_DATA = {
       keepSubscription: "Keep Subscription",
       confirmCancelBtn: "Cancel Now",
       cancelling: "Cancelling...",
-      merchantProtectionTitle: "Merchant of Record Protection",
-      merchantProtectionDesc: "All digital software subscription payments are securely processed through Paddle.com as the authorized Merchant of Record with automated tax compliance.",
-      supportEmail: "Billing & Refund Support: juristech.solutions@outlook.com"
+      merchantProtectionTitle: "Enterprise Security & Transaction Compliance",
+      merchantProtectionDesc: "All digital transactions are protected via TLS 1.3 encryption and institutional verification. Supporting direct settlements (SWIFT, Binance Pay, InstaPay) with PayTabs card checkout under review.",
+      supportEmail: "Billing & Invoicing Support: founder@juristech.solutions"
     },
     ar: {
       portalTitle: "إدارة الاشتراك والفوترة الرسمية",
-      portalSubtitle: "بوابة الفوترة والدفع الرسمية — تُدار عبر Paddle.com",
+      portalSubtitle: "بوابة الفوترة والدفع السيادية — مشفرة بمعيار TLS 1.3",
       currentPlan: "الخطة الحالية النشطة",
       planAmount: "قيمة الاشتراك",
       startDate: "تاريخ البدء",
@@ -1721,19 +1721,19 @@ const NAMESPACES_DATA = {
       viewInvoice: "عرض الفاتورة",
       cancelSubscription: "إلغاء التجديد التلقائي",
       renewSubscription: "تجديد الاشتراك",
-      upgradePlan: "ترقية الخطة أو تحديث البطاقة",
+      upgradePlan: "ترقية الخطة أو تحديث طريقة الدفع",
       confirmCancelTitle: "تأكيد إلغاء التجديد التلقائي؟",
       confirmCancelDesc: "سيظل بإمكانك استخدام الميزات المدفوعة حتى نهاية فترة الفوترة الحالية. لن يتم تحصيل أي مبالغ جديدة مستقبلاً.",
       keepSubscription: "التراجع والإبقاء على الاشتراك",
       confirmCancelBtn: "تأكيد الإلغاء الآن",
       cancelling: "جاري الإلغاء...",
-      merchantProtectionTitle: "ضمان الأمان والتاجر المعتمد",
-      merchantProtectionDesc: "تُدار جميع المدفوعات والاشتراكات عبر Paddle.com كتاجر سجل معتمد دولياً (Merchant of Record) مع تشفير بنكي وحماية كاملة للمشتري.",
-      supportEmail: "دعم الفوترة والاسترداد: juristech.solutions@outlook.com"
+      merchantProtectionTitle: "حماية المعاملات والامتثال المالي",
+      merchantProtectionDesc: "تُدار جميع العمليات المالية باشتراطات أمان بنكية مشفرة عبر بروتوكول TLS 1.3 مع دعم التحويلات المباشرة (Bank Wire SWIFT، Binance Pay، InstaPay) وبوابة PayTabs للبطاقات الائتمانية قيد المراجعة.",
+      supportEmail: "دعم الفوترة والاسترداد: founder@juristech.solutions"
     },
     fr: {
       portalTitle: "Facturation & Gestion des Abonnements",
-      portalSubtitle: "Portail de facturation officiel — Propulsé par Paddle.com",
+      portalSubtitle: "Portail de facturation souverain officiel — Sécurisé TLS 1.3",
       currentPlan: "Forfait Actuel Actif",
       planAmount: "Montant du forfait",
       startDate: "Date de début",
@@ -1759,13 +1759,13 @@ const NAMESPACES_DATA = {
       keepSubscription: "Conserver l'abonnement",
       confirmCancelBtn: "Résilier maintenant",
       cancelling: "Résiliation en cours...",
-      merchantProtectionTitle: "Protection Marchand de Référence",
-      merchantProtectionDesc: "Tous les paiements sont sécurisés par Paddle.com en tant que Marchand officiel (Merchant of Record).",
-      supportEmail: "Support Facturation : juristech.solutions@outlook.com"
+      merchantProtectionTitle: "Sécurité d'Entreprise & Conformité des Transactions",
+      merchantProtectionDesc: "Toutes les transactions sont protégées par chiffrement TLS 1.3 et vérification institutionnelle (Virements SWIFT, Binance Pay, InstaPay) avec PayTabs en cours d'examen.",
+      supportEmail: "Support Facturation : founder@juristech.solutions"
     },
     es: {
       portalTitle: "Facturación de la Cuenta y Gestión de Suscripción",
-      portalSubtitle: "Portal oficial de facturación — Gestionado por Paddle.com",
+      portalSubtitle: "Portal oficial de facturación soberana — Protegido con TLS 1.3",
       currentPlan: "Plan Activo Actual",
       planAmount: "Importe del plan",
       startDate: "Fecha de inicio",
@@ -1791,13 +1791,13 @@ const NAMESPACES_DATA = {
       keepSubscription: "Mantener suscripción",
       confirmCancelBtn: "Cancelar ahora",
       cancelling: "Cancelando...",
-      merchantProtectionTitle: "Protección Merchant of Record",
-      merchantProtectionDesc: "Todos los pagos son procesados de forma segura a través de Paddle.com como Merchant of Record autorizado.",
-      supportEmail: "Soporte de facturación: juristech.solutions@outlook.com"
+      merchantProtectionTitle: "Seguridad Corporativa y Cumplimiento de Transacciones",
+      merchantProtectionDesc: "Todas las transacciones están protegidas mediante cifrado TLS 1.3 y verificación institucional (SWIFT, Binance Pay, InstaPay) con PayTabs en revisión mercantil.",
+      supportEmail: "Soporte de facturación: founder@juristech.solutions"
     },
     de: {
       portalTitle: "Abrechnung & Abonnementverwaltung",
-      portalSubtitle: "Offizielles Abrechnungsportal — Bereitgestellt von Paddle.com",
+      portalSubtitle: "Offizielles souveränes Abrechnungsportal — TLS 1.3-gesichert",
       currentPlan: "Aktueller Tarif",
       planAmount: "Tarifbetrag",
       startDate: "Startdatum",
@@ -1823,13 +1823,13 @@ const NAMESPACES_DATA = {
       keepSubscription: "Abonnement behalten",
       confirmCancelBtn: "Jetzt kündigen",
       cancelling: "Wird gekündigt...",
-      merchantProtectionTitle: "Merchant of Record Schutz",
-      merchantProtectionDesc: "Alle Zahlungen werden sicher über Paddle.com als autorisierten Händler (Merchant of Record) abgewickelt.",
-      supportEmail: "Abrechnungssupport: juristech.solutions@outlook.com"
+      merchantProtectionTitle: "Unternehmenssicherheit & Transaktions-Compliance",
+      merchantProtectionDesc: "Alle Transaktionen sind durch TLS 1.3-Verschlüsselung und institutionelle Verifizierung geschützt (SWIFT, Binance Pay, InstaPay) mit PayTabs in Händlerprüfung.",
+      supportEmail: "Abrechnungssupport: founder@juristech.solutions"
     },
     tr: {
       portalTitle: "Hesap Faturalandırma ve Abonelik Yönetimi",
-      portalSubtitle: "Resmi Faturalandırma Portalı — Paddle.com tarafından desteklenmektedir",
+      portalSubtitle: "Resmi Egemen Faturalandırma Portalı — TLS 1.3 Korumalı",
       currentPlan: "Mevcut Aktif Paket",
       planAmount: "Paket Tutarı",
       startDate: "Başlangıç Tarihi",
@@ -1855,13 +1855,13 @@ const NAMESPACES_DATA = {
       keepSubscription: "Aboneliği Koru",
       confirmCancelBtn: "Şimdi İptal Et",
       cancelling: "İptal ediliyor...",
-      merchantProtectionTitle: "Yetkili Satıcı Güvencesi",
-      merchantProtectionDesc: "Tüm yazılım aboneliği ödemeleri, yetkili kayıtlı satıcı olarak Paddle.com üzerinden güvenle işlenir.",
-      supportEmail: "Fatura ve İade Desteği: juristech.solutions@outlook.com"
+      merchantProtectionTitle: "Kurumsal Güvenlik ve İşlem Uyumluluğu",
+      merchantProtectionDesc: "Tüm işlemler TLS 1.3 şifreleme ve kurumsal doğrulama ile korunur (SWIFT, Binance Pay, InstaPay) ve PayTabs satıcı incelemesi devam etmektedir.",
+      supportEmail: "Fatura Desteği: founder@juristech.solutions"
     },
     zh: {
       portalTitle: "账户账单与订阅全生命周期管理",
-      portalSubtitle: "官方账单与支付门户 — 由 Paddle.com 官方记录商承保",
+      portalSubtitle: "主权官方账单门户 — TLS 1.3 银行级端到端加密",
       currentPlan: "当前有效订阅方案",
       planAmount: "方案费率",
       startDate: "开通起始日",
@@ -1881,15 +1881,15 @@ const NAMESPACES_DATA = {
       viewInvoice: "查看/下载电子发票",
       cancelSubscription: "取消下期自动续订",
       renewSubscription: "立即续期订阅",
-      upgradePlan: "升级方案 / 更换支付信用卡",
+      upgradePlan: "升级方案 / 更换支付渠道",
       confirmCancelTitle: "确认取消下期自动续订？",
       confirmCancelDesc: "在当前已支付账单周期结束前，您依然享有完整的 VIP 权益。下期将不会发生任何自动扣款。",
       keepSubscription: "保留订阅方案",
       confirmCancelBtn: "确认取消自动续订",
       cancelling: "正在处理取消请求...",
-      merchantProtectionTitle: "官方记录商 (Merchant of Record) 权益保护",
-      merchantProtectionDesc: "所有数字软件订阅均通过 Paddle.com 作为国际权威记录商进行安全结算与合规审计。",
-      supportEmail: "账单及退款咨询专线：juristech.solutions@outlook.com"
+      merchantProtectionTitle: "企业级安全防护与合规结算保障",
+      merchantProtectionDesc: "所有数字交易均受 TLS 1.3 加密与机构真实性审核保护，支持公对公电汇 (SWIFT)、Binance Pay 及 InstaPay 直连清算，PayTabs 信用卡网关商户入网审核中。",
+      supportEmail: "账单及退款咨询专线：founder@juristech.solutions"
     }
   },
 
@@ -1898,12 +1898,12 @@ const NAMESPACES_DATA = {
     en: {
       guardTitle: "Subscriber-Only Sovereign Feature",
       guardSubtitle: "This enterprise AI capability requires an active subscription.",
-      subscribeButton: "Subscribe Now (Paddle Checkout)",
-      openingCheckout: "Opening Secure Checkout...",
+      subscribeButton: "Subscribe Now",
+      openingCheckout: "Redirecting to Pricing & Plans...",
       featureBullet1: "Google AI Pro Sovereign Core & 8-Axis Contract Analysis",
       featureBullet2: "Virtual Dispute Simulation & Autonomous Negotiation",
       featureBullet3: "Unlimited Word/PDF Document Generation & Cryptographic Logs",
-      merchantOfRecord: "Merchant of Record: Paddle.com",
+      merchantOfRecord: "Secure Enterprise Invoicing & TLS 1.3",
       statusActive: "Active",
       statusExpired: "Expired",
       statusCancelled: "Cancelled",
@@ -1917,12 +1917,12 @@ const NAMESPACES_DATA = {
     ar: {
       guardTitle: "ميزة حصرية للمشتركين والعملاء المرخصين",
       guardSubtitle: "تتطلب هذه الإمكانية المتقدمة للذكاء الاصطناعي اشتراكاً نشطاً.",
-      subscribeButton: "اشترك الآن فوراً (Paddle)",
-      openingCheckout: "جاري فتح نافذة الدفع الآمن...",
+      subscribeButton: "اشترك الآن",
+      openingCheckout: "جاري الانتقال لصفحة الخطط والاشتراكات...",
       featureBullet1: "محرك Google AI Pro السيادي وتحليل العقود بـ 8 محاور",
       featureBullet2: "محاكاة النزاعات القضائية والتفاوض الآلي",
       featureBullet3: "تصدير وثائق Word & PDF غير محدود وسجلات مشفرة",
-      merchantOfRecord: "تاجر السجل المعتمد: Paddle.com",
+      merchantOfRecord: "فوترة مؤسسية معتمدة وتشفير TLS 1.3",
       statusActive: "نشط",
       statusExpired: "منتهي",
       statusCancelled: "ملغي",
@@ -1936,12 +1936,12 @@ const NAMESPACES_DATA = {
     fr: {
       guardTitle: "Fonctionnalité Réservée aux Abonnés",
       guardSubtitle: "Cette capacité d'IA d'entreprise nécessite un abonnement actif.",
-      subscribeButton: "S'abonner maintenant (Paddle)",
-      openingCheckout: "Ouverture du paiement sécurisé...",
+      subscribeButton: "S'abonner maintenant",
+      openingCheckout: "Redirection vers les forfaits...",
       featureBullet1: "Cœur Souverain Google AI Pro & Analyse en 8 axes",
       featureBullet2: "Simulation de litiges et négociation autonome",
       featureBullet3: "Génération illimitée de documents Word/PDF et registres chiffrés",
-      merchantOfRecord: "Marchand de référence : Paddle.com",
+      merchantOfRecord: "Facturation d'entreprise sécurisée & TLS 1.3",
       statusActive: "Actif",
       statusExpired: "Expiré",
       statusCancelled: "Annulé",
@@ -1955,12 +1955,12 @@ const NAMESPACES_DATA = {
     es: {
       guardTitle: "Función Exclusiva para Suscriptores",
       guardSubtitle: "Esta capacidad de IA corporativa requiere una suscripción activa.",
-      subscribeButton: "Suscribirse Ahora (Paddle)",
-      openingCheckout: "Abriendo pasarela de pago segura...",
+      subscribeButton: "Suscribirse Ahora",
+      openingCheckout: "Redirigiendo a planes...",
       featureBullet1: "Núcleo Soberano Google AI Pro y análisis en 8 ejes",
       featureBullet2: "Simulación de litigios y negociación autónoma",
       featureBullet3: "Generación ilimitada de documentos Word/PDF y registros cifrados",
-      merchantOfRecord: "Merchant of Record: Paddle.com",
+      merchantOfRecord: "Facturación corporativa segura y TLS 1.3",
       statusActive: "Activo",
       statusExpired: "Expirado",
       statusCancelled: "Cancelado",
@@ -1974,12 +1974,12 @@ const NAMESPACES_DATA = {
     de: {
       guardTitle: "Exklusive Funktion für Abonnenten",
       guardSubtitle: "Diese Enterprise-KI-Funktion erfordert ein aktives Abonnement.",
-      subscribeButton: "Jetzt abonnieren (Paddle)",
-      openingCheckout: "Sicherer Checkout wird geöffnet...",
+      subscribeButton: "Jetzt abonnieren",
+      openingCheckout: "Weiterleitung zu den Tarifen...",
       featureBullet1: "Google AI Pro Sovereign Core & 8-Achsen-Vertragsanalyse",
       featureBullet2: "Virtuelle Streitsimulation & Autonome Verhandlung",
       featureBullet3: "Unbegrenzte Word/PDF-Dokumentenerstellung & Verschlüsselte Protokolle",
-      merchantOfRecord: "Merchant of Record: Paddle.com",
+      merchantOfRecord: "Sichere Unternehmensabrechnung & TLS 1.3",
       statusActive: "Aktiv",
       statusExpired: "Abgelaufen",
       statusCancelled: "Gekündigt",
@@ -1993,12 +1993,12 @@ const NAMESPACES_DATA = {
     tr: {
       guardTitle: "Abonelere Özel Egemen Özellik",
       guardSubtitle: "Bu kurumsal yapay zeka özelliği aktif bir abonelik gerektirir.",
-      subscribeButton: "Hemen Abone Ol (Paddle)",
-      openingCheckout: "Güvenli Ödeme Açılıyor...",
+      subscribeButton: "Hemen Abone Ol",
+      openingCheckout: "Paketlere yönlendiriliyor...",
       featureBullet1: "Google AI Pro Egemen Çekirdeği ve 8 Eksenli Sözleşme Analizi",
       featureBullet2: "Sanal Uyuşmazlık Simülasyonu ve Otonom Müzakere",
       featureBullet3: "Sınırsız Word/PDF Belge Üretimi ve Kriptografik Günlükler",
-      merchantOfRecord: "Yetkili Kayıtlı Satıcı: Paddle.com",
+      merchantOfRecord: "Güvenli Kurumsal Faturalandırma & TLS 1.3",
       statusActive: "Aktif",
       statusExpired: "Süresi Doldu",
       statusCancelled: "İptal Edildi",
@@ -2012,12 +2012,12 @@ const NAMESPACES_DATA = {
     zh: {
       guardTitle: "VIP 订阅用户专属主权高级功能",
       guardSubtitle: "该企业级核心 AI 模块需要已激活的主权订阅方案。",
-      subscribeButton: "立即开通订阅 (Paddle Checkout)",
-      openingCheckout: "正在调起安全支付窗口...",
+      subscribeButton: "立即开通订阅",
+      openingCheckout: "正在跳转至方案详情页...",
       featureBullet1: "Google AI Pro 主权核心引擎与8轴全景穿透分析",
       featureBullet2: "虚拟法律争议推演与自主 AI 智能谈判",
       featureBullet3: "无限量 Word / PDF 官方盖印文档生成与不可篡改审计日志",
-      merchantOfRecord: "官方记录商：Paddle.com",
+      merchantOfRecord: "企业级合规对公发票与 TLS 1.3 加密",
       statusActive: "生效中",
       statusExpired: "已到期",
       statusCancelled: "已取消",
@@ -2190,7 +2190,7 @@ const NAMESPACES_DATA = {
     en: {
       title: "Contact & Institutional Inquiries",
       subtitle: "Direct channels for enterprise partnerships, legal advisory, and technical support.",
-      officialEmail: "Official Inquiries: juristech.solutions@outlook.com",
+      officialEmail: "Official Inquiries: founder@juristech.solutions",
       whatsappSupport: "Direct WhatsApp Line: +201126674337",
       linkedin: "Official LinkedIn Profile",
       headquarters: "JurisTech Solutions Global Headquarters",
@@ -2204,7 +2204,7 @@ const NAMESPACES_DATA = {
     ar: {
       title: "التواصل والمراسلات المؤسسية",
       subtitle: "قنوات مباشرة لشراكات المؤسسات، الاستشارات القانونية، والدعم الفني.",
-      officialEmail: "البريد الإلكتروني الرسمي: juristech.solutions@outlook.com",
+      officialEmail: "البريد الإلكتروني الرسمي: founder@juristech.solutions",
       whatsappSupport: "واتساب الدعم المباشر: +201126674337",
       linkedin: "الصفحة الرسمية على LinkedIn",
       headquarters: "المقر الرئيسي لمنظومة JurisTech Solutions",
@@ -2218,7 +2218,7 @@ const NAMESPACES_DATA = {
     fr: {
       title: "Contact & Relations Institutionnelles",
       subtitle: "Canaux directs pour partenariats, conseils juridiques et assistance technique.",
-      officialEmail: "E-mail officiel : juristech.solutions@outlook.com",
+      officialEmail: "E-mail officiel : founder@juristech.solutions",
       whatsappSupport: "Ligne WhatsApp directe : +201126674337",
       linkedin: "Profil officiel LinkedIn",
       headquarters: "Siège mondial de JurisTech Solutions",
@@ -2232,7 +2232,7 @@ const NAMESPACES_DATA = {
     es: {
       title: "Contacto y Consultas Institucionales",
       subtitle: "Canales directos para alianzas, asesoramiento jurídico y soporte técnico.",
-      officialEmail: "Correo oficial: juristech.solutions@outlook.com",
+      officialEmail: "Correo oficial: founder@juristech.solutions",
       whatsappSupport: "WhatsApp directo: +201126674337",
       linkedin: "Perfil oficial de LinkedIn",
       headquarters: "Sede global de JurisTech Solutions",
@@ -2246,7 +2246,7 @@ const NAMESPACES_DATA = {
     de: {
       title: "Kontakt & Institutionelle Anfragen",
       subtitle: "Direkte Kanäle für Unternehmenspartnerschaften, Rechtsberatung und technischen Support.",
-      officialEmail: "Offizielle E-Mail: juristech.solutions@outlook.com",
+      officialEmail: "Offizielle E-Mail: founder@juristech.solutions",
       whatsappSupport: "Direkter WhatsApp-Kontakt: +201126674337",
       linkedin: "Offizielles LinkedIn-Profil",
       headquarters: "JurisTech Solutions Hauptsitz",
@@ -2260,7 +2260,7 @@ const NAMESPACES_DATA = {
     tr: {
       title: "İletişim ve Kurumsal Başvurular",
       subtitle: "Kurumsal ortaklıklar, hukuki danışmanlık ve teknik destek için doğrudan iletişim kanalları.",
-      officialEmail: "Resmi E-posta: juristech.solutions@outlook.com",
+      officialEmail: "Resmi E-posta: founder@juristech.solutions",
       whatsappSupport: "Doğrudan WhatsApp Hattı: +201126674337",
       linkedin: "Resmi LinkedIn Sayfası",
       headquarters: "JurisTech Solutions Küresel Genel Merkezi",
@@ -2274,7 +2274,7 @@ const NAMESPACES_DATA = {
     zh: {
       title: "联系我们与机构合作垂询",
       subtitle: "面向全球企业级战略合作、法律专家顾问咨询与技术支持的官方直联通道。",
-      officialEmail: "官方联络邮箱：juristech.solutions@outlook.com",
+      officialEmail: "官方联络邮箱：founder@juristech.solutions",
       whatsappSupport: "官方 WhatsApp 直联客服：+201126674337",
       linkedin: "官方 LinkedIn 领英机构主页",
       headquarters: "JurisTech Solutions 全球运营总部",
@@ -2452,7 +2452,7 @@ const NAMESPACES_DATA = {
       lastUpdated: "Last Updated: August 2026",
       termsSummary: "By accessing JurisTech Solutions, you agree to our sovereign platform terms and fair algorithmic usage policies.",
       privacySummary: "We do not sell personal data. All contract text is processed ephemerally or encrypted with AES-256.",
-      refundSummary: "Fair 14-day refund guarantee for software subscriptions processed via Paddle Merchant of Record."
+      refundSummary: "Fair 14-day refund guarantee for software subscriptions processed via verified billing channels."
     },
     ar: {
       title: "الشروط والسياسات القانونية",
@@ -2462,7 +2462,7 @@ const NAMESPACES_DATA = {
       lastUpdated: "آخر تحديث: أغسطس 2026",
       termsSummary: "باستخدامك لمنصة جوريس تك، فإنك توافق على شروط الاستخدام وسياسات الاستخدام العادل للذكاء الاصطناعي.",
       privacySummary: "نحن لا نبيع بيانات المستخدمين. تُعالج كافة النصوص بسرية تامة وتُشفر بنظام AES-256.",
-      refundSummary: "ضمان استرداد عادل خلال 14 يوماً للاشتراكات المدارة عبر تاجر السجل Paddle."
+      refundSummary: "ضمان استرداد عادل خلال 14 يوماً للاشتراكات المدارة عبر قنوات الفوترة المعتمدة."
     },
     fr: {
       title: "Conditions et Politiques Légales",
@@ -2472,7 +2472,7 @@ const NAMESPACES_DATA = {
       lastUpdated: "Dernière mise à jour : Août 2026",
       termsSummary: "En accédant à JurisTech, vous acceptez nos conditions d'utilisation et nos règles d'IA éthique.",
       privacySummary: "Nous ne vendons aucune donnée personnelle. Chiffrement AES-256 garanti.",
-      refundSummary: "Garantie de remboursement de 14 jours via le Marchand de référence Paddle."
+      refundSummary: "Garantie de remboursement équitable sous 14 jours pour les abonnements via les canaux de facturation vérifiés."
     },
     es: {
       title: "Términos y Políticas Legales",
@@ -2482,7 +2482,7 @@ const NAMESPACES_DATA = {
       lastUpdated: "Última actualización: Agosto de 2026",
       termsSummary: "Al acceder a JurisTech, usted acepta nuestros términos de plataforma y políticas de uso ético de IA.",
       privacySummary: "No vendemos datos personales. Todos los contratos se cifran con AES-256.",
-      refundSummary: "Garantía de reembolso de 14 días para suscripciones procesadas a través de Paddle."
+      refundSummary: "Garantía de reembolso de 14 días para suscripciones procesadas a través de canales de facturación verificados."
     },
     de: {
       title: "Rechtliche Bedingungen & Richtlinien",
@@ -2492,7 +2492,7 @@ const NAMESPACES_DATA = {
       lastUpdated: "Zuletzt aktualisiert: August 2026",
       termsSummary: "Durch die Nutzung von JurisTech stimmen Sie unseren Bedingungen und fairen KI-Nutzungsrichtlinien zu.",
       privacySummary: "Wir verkaufen keine personenbezogenen Daten. Verschlüsselung mit AES-256.",
-      refundSummary: "14-tägige Rückerstattungsgarantie über den Händler Paddle."
+      refundSummary: "Faire 14-tägige Rückerstattungsgarantie für Software-Abonnements über verifizierte Abrechnungskanäle."
     },
     tr: {
       title: "Hukuki Şartlar ve Politikalar",
@@ -2502,7 +2502,7 @@ const NAMESPACES_DATA = {
       lastUpdated: "Son Güncelleme: Ağustos 2026",
       termsSummary: "JurisTech'e erişerek platform kullanım şartlarını ve adil yapay zeka kullanım politikalarını kabul etmiş olursunuz.",
       privacySummary: "Kişisel verilerinizi satmıyoruz. Tüm sözleşmeler AES-256 ile şifrelenir.",
-      refundSummary: "Paddle üzerinden yönetilen abonelikler için 14 günlük korumalı iade garantisi."
+      refundSummary: "Doğrulanmış fatura kanalları üzerinden işlenen yazılım abonelikleri için 14 günlük adil iade garantisi."
     },
     zh: {
       title: "法律条款与主权合规政策",
@@ -2512,7 +2512,7 @@ const NAMESPACES_DATA = {
       lastUpdated: "最近修订日期：2026年8月",
       termsSummary: "访问与使用 JurisTech Solutions 即代表您同意遵守主权服务条款与公平算法使用规范。",
       privacySummary: "我们绝不出售用户个人数据。所有合同文本与咨询流水均严格经由 AES-256 高级加密保护。",
-      refundSummary: "经由官方记录商 Paddle 结算的订阅方案均受14天公平合规退款机制保护。"
+      refundSummary: "经由官方合规渠道结算的订阅方案均享受14天公平透明退款机制保护。"
     }
   },
 

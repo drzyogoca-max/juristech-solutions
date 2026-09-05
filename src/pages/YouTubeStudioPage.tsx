@@ -107,8 +107,8 @@ export const YouTubeStudioPage: React.FC = () => {
           'Official YouTube Channel Studio & 2x Daily Video Automation | JurisTech Solutions'
         )}
         description={l(
-          'استوديو إدارة قناة يوتيوب الرسمية للمنصة juristech.solutions@outlook.com بإشراف المستشار د. محمد مصطفى. توليد ونشر فيديوهات قانونية يومية صباحاً ومساءً 100% بالذكاء الاصطناعي.',
-          'Official YouTube Channel Administration for juristech.solutions@outlook.com. Autonomous Morning & Evening AI Video Generation Engine.'
+          'استوديو إدارة قناة يوتيوب الرسمية للمنصة founder@juristech.solutions بإشراف المستشار د. محمد مصطفى. توليد ونشر فيديوهات قانونية يومية صباحاً ومساءً 100% بالذكاء الاصطناعي.',
+          'Official YouTube Channel Administration for founder@juristech.solutions. Autonomous Morning & Evening AI Video Generation Engine.'
         )}
       />
 

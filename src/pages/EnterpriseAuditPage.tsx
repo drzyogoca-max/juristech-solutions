@@ -180,7 +180,7 @@ export default function EnterpriseAuditPage() {
                 <FileText className="w-6 h-6 text-amber-400 shrink-0" />
                 <span className="font-bold text-slate-800 dark:text-slate-200 text-sm truncate">{fileName}</span>
               </div>
-              <button onClick={handleClear} className="p-1 rounded-lg text-slate-600 dark:text-slate-400 hover:text-red-400 hover:bg-slate-100 dark:bg-slate-800 transition-colors">
+              <button onClick={handleClear} aria-label={isRtl ? 'إزالة الملف' : 'Remove file'} className="p-1 rounded-lg text-slate-600 dark:text-slate-400 hover:text-red-400 hover:bg-slate-100 dark:bg-slate-800 transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>

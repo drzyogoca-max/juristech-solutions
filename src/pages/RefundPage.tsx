@@ -15,7 +15,7 @@ import {
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 
-const SUPPORT_EMAIL = 'juristech.solutions@outlook.com';
+const SUPPORT_EMAIL = 'founder@juristech.solutions';
 const LAST_UPDATED = 'August 25, 2026';
 
 const ACCENT_BORDER: Record<string, string> = {

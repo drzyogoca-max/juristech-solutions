@@ -3,7 +3,7 @@
  * ─────────────────────────────────────────────────────────────────────────────
  * JurisTech Solutions — Multi-Gateway Webhook Ingestion & State Machine Engine
  * 100% Atomic PostgreSQL Transaction Pipeline (All-or-Nothing Guarantee)
- * Supports: Paddle (Merchant of Record), PayTabs (MENA), Paymob & Stripe
+ * Supports: PayTabs (MENA & Primary Gateway Under Review), Paymob & Stripe
  */
 
 import crypto from 'crypto';
@@ -90,7 +90,7 @@ function verifyWebhookSignature(provider, body, signature, secret) {
 
   const rawBody = typeof body === 'string' ? body : JSON.stringify(body);
 
-  // 1. Direct hex HMAC-SHA256
+  // 1. Direct hex HMAC-SHA256 (PayTabs & Standard Gateways)
   try {
     const directHmac = crypto.createHmac('sha256', secret).update(rawBody).digest('hex');
     if (signature.length === directHmac.length && crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(directHmac))) {
@@ -98,26 +98,7 @@ function verifyWebhookSignature(provider, body, signature, secret) {
     }
   } catch (e) {}
 
-  // 2. Paddle v2 Signature Format: ts=123456789;h1=hexhash
-  if (signature.includes('ts=') && signature.includes('h1=')) {
-    try {
-      const parts = signature.split(';').reduce((acc, part) => {
-        const [k, v] = part.trim().split('=');
-        if (k && v) acc[k] = v;
-        return acc;
-      }, {});
-
-      if (parts.ts && parts.h1) {
-        const payloadToSign = `${parts.ts}:${rawBody}`;
-        const computedH1 = crypto.createHmac('sha256', secret).update(payloadToSign).digest('hex');
-        if (parts.h1.length === computedH1.length && crypto.timingSafeEqual(Buffer.from(parts.h1), Buffer.from(computedH1))) {
-          return true;
-        }
-      }
-    } catch (e) {}
-  }
-
-  // 3. Stripe Signature Format: t=123456789,v1=hexhash
+  // 2. Stripe Signature Format: t=123456789,v1=hexhash
   if (signature.includes('t=') && signature.includes('v1=')) {
     try {
       const parts = signature.split(',').reduce((acc, part) => {
@@ -150,7 +131,7 @@ export default async function handler(req, res) {
     return res.status(200).json({
       service: 'JurisTech Multi-Gateway Webhook Ingestion Service v3.0 (Atomic RPC)',
       status: 'ONLINE_STANDBY',
-      supportedProviders: ['paddle', 'paytabs', 'paymob', 'stripe'],
+      supportedProviders: ['paytabs', 'paymob', 'stripe'],
       idempotencyArchitecture: 'ATOMIC_POSTGRESQL_TRANSACTION (Dual-Layer Cache + Database RPC)',
       cachedEventsCount: processedEventsCache.size,
       timestamp,
@@ -162,11 +143,11 @@ export default async function handler(req, res) {
   }
 
   try {
-    const provider = (req.query?.provider || 'paddle').toLowerCase();
+    const provider = (req.query?.provider || 'paytabs').toLowerCase();
     const body = req.body || {};
-    const signature = req.headers['paddle-signature'] || req.headers['x-paytabs-signature'] || req.headers['stripe-signature'] || '';
+    const signature = req.headers['x-paytabs-signature'] || req.headers['stripe-signature'] || req.headers['signature'] || '';
 
-    // 1. Extract Event Identity & Payload Data (Supports Paddle v2 and standard formats)
+    // 1. Extract Event Identity & Payload Data
     const eventData = body.data || {};
     const eventId = body.event_id || body.id || eventData.id || body.tran_ref || `EVT-${Date.now()}`;
     const eventType = body.event_type || body.type || 'transaction.completed';
@@ -197,7 +178,7 @@ export default async function handler(req, res) {
       return res.status(401).json({ error: 'Unauthorized: Invalid webhook signature' });
     }
 
-    // 4. Extract and Validate Event Payload (Paddle v2 Schema Compatible)
+    // 4. Extract and Validate Event Payload
     const customData = eventData.custom_data || body.custom_data || {};
     const customerEmail = (
       customData.userEmail ||
@@ -207,12 +188,7 @@ export default async function handler(req, res) {
       'customer@juristech.solutions'
     ).toLowerCase().trim();
 
-    // Map Paddle Price ID / Tier
-    const priceIdFromItem = eventData.items?.[0]?.price?.id;
-    let planTier = (customData.planTier || body.plan_tier || body.plan_id || 'startup').toLowerCase();
-    if (priceIdFromItem === 'pri_01m0ty6sxjj7w0xpm1r07r50ss') {
-      planTier = 'pro';
-    }
+    const planTier = (customData.planTier || body.plan_tier || body.plan_id || 'startup').toLowerCase();
 
     let amountReceived = 49.00;
     if (eventData.details?.totals?.total) {

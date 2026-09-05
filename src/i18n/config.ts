@@ -455,4 +455,5 @@ i18n.on('languageChanged', (lng: string) => {
   persistLocalePreference(normalized);
 });
 
+export { resources };
 export default i18n;

@@ -16,7 +16,7 @@ import {
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 
-const SUPPORT_EMAIL = 'juristech.solutions@outlook.com';
+const SUPPORT_EMAIL = 'founder@juristech.solutions';
 const LAST_UPDATED = 'August 25, 2026';
 
 const ACCENT_BORDER: Record<string, string> = {
@@ -284,12 +284,13 @@ export default function TermsPage() {
     },
     {
       num: 20, icon: <Mail className="w-5 h-5" />, accent: 'sky',
-      enTitle: 'Contact', arTitle: 'التواصل',
+      enTitle: 'Contact & Operations', arTitle: 'التواصل ونموذج التشغيل',
       enBody: (
         <div className="space-y-3">
           <p>For questions regarding these Terms:</p>
           <div className="space-y-1 text-sm text-slate-300">
             <div className="font-bold text-white">JURISTECH</div>
+            <div>Operational Model: Global Digital Platform — Operated remotely</div>
             <div>Website: <a href="https://juristech.solutions" className="text-sky-400 hover:text-sky-300">https://juristech.solutions</a></div>
             <div>Email: <a href={`mailto:${SUPPORT_EMAIL}`} className="text-sky-400 hover:text-sky-300">{SUPPORT_EMAIL}</a></div>
           </div>
@@ -300,6 +301,7 @@ export default function TermsPage() {
           <p>للاستفسار عن هذه الشروط:</p>
           <div className="space-y-1 text-sm text-slate-300">
             <div className="font-bold text-white">JURISTECH</div>
+            <div>نموذج التشغيل: منصة رقمية عالمية تعمل عن بعد</div>
             <div>الموقع: <a href="https://juristech.solutions" className="text-sky-400 hover:text-sky-300">https://juristech.solutions</a></div>
             <div>البريد: <a href={`mailto:${SUPPORT_EMAIL}`} className="text-sky-400 hover:text-sky-300">{SUPPORT_EMAIL}</a></div>
           </div>

@@ -10,7 +10,7 @@
  * STRICT GOVERNANCE RULES:
  *  • SIMULATION_ONLY = true.
  *  • NO_BILLING_MUTATION = true.
- *  • Zero connection or mutation to Paddle, Stripe, Fawry, Mada, SWIFT, or financialGateway.
+ *  • Zero connection or mutation to PayTabs, Stripe, Fawry, Mada, SWIFT, or financialGateway.
  */
 
 export interface SlaContractSimulationItem {

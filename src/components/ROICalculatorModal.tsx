@@ -42,7 +42,11 @@ export const ROICalculatorModal: React.FC<ROICalculatorModalProps> = ({ isOpen, 
               </h3>
             </div>
           </div>
-          <button onClick={onClose} className="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800">
+          <button
+            onClick={onClose}
+            aria-label={isRtl ? 'إغلاق' : 'Close'}
+            className="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800"
+          >
             <X className="w-5 h-5" />
           </button>
         </div>

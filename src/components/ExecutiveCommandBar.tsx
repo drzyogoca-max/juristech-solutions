@@ -78,7 +78,7 @@ export default function ExecutiveCommandBar({ onOpenSecurity }: ExecutiveCommand
 
           {/* Email Direct */}
           <a
-            href="mailto:Drzyogo.ca@gmail.com?cc=juristech.solutions@outlook.com&subject=Legal%20Advisory%20Inquiry%20-%20JurisTech"
+            href="mailto:founder@juristech.solutions?subject=Legal%20Advisory%20Inquiry%20-%20JurisTech"
             aria-label={l('البريد الرسمي للمستشار', 'Official Email')}
             className="flex-1 sm:flex-initial px-3.5 py-2.5 rounded-2xl bg-sky-600 hover:bg-sky-500 text-white font-black text-xs flex items-center justify-center gap-1.5 transition-all shadow-lg shadow-sky-600/20 active:scale-95 cursor-pointer"
           >

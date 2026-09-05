@@ -1,6 +1,6 @@
 {
   "portalTitle": "Hesap Faturalandırma ve Abonelik Yönetimi",
-  "portalSubtitle": "Resmi Faturalandırma Portalı — Paddle.com tarafından desteklenmektedir",
+  "portalSubtitle": "Resmi Egemen Faturalandırma Portalı — TLS 1.3 Korumalı",
   "currentPlan": "Mevcut Aktif Paket",
   "planAmount": "Paket Tutarı",
   "startDate": "Başlangıç Tarihi",
@@ -26,7 +26,7 @@
   "keepSubscription": "Aboneliği Koru",
   "confirmCancelBtn": "Şimdi İptal Et",
   "cancelling": "İptal ediliyor...",
-  "merchantProtectionTitle": "Yetkili Satıcı Güvencesi",
-  "merchantProtectionDesc": "Tüm yazılım aboneliği ödemeleri, yetkili kayıtlı satıcı olarak Paddle.com üzerinden güvenle işlenir.",
-  "supportEmail": "Fatura ve İade Desteği: juristech.solutions@outlook.com"
+  "merchantProtectionTitle": "Kurumsal Güvenlik ve İşlem Uyumluluğu",
+  "merchantProtectionDesc": "Tüm işlemler TLS 1.3 şifreleme ve kurumsal doğrulama ile korunur (SWIFT, Binance Pay, InstaPay) ve PayTabs satıcı incelemesi devam etmektedir.",
+  "supportEmail": "Fatura Desteği: founder@juristech.solutions"
 }

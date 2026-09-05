@@ -53,8 +53,8 @@ export default function GdprPrivacyBanner() {
               </div>
               <p className="text-xs text-slate-300 leading-relaxed">
                 {isRtl
-                  ? `تلتزم منصة JurisTech Solutions بالمعايير التشريعية لحماية البيانات والأنظمة المعمول بها في ${jurisdiction?.countryNameAr || 'المملكة الأردنية الهاشمية'}. مخرجات الذكاء الاصطناعي هي استشارات تقنية استرشادية.`
-                  : `JurisTech Solutions adheres to statutory data privacy frameworks in ${jurisdiction?.countryName || 'Jordan'}. AI outputs provide informational and drafting assistance.`}
+                  ? `تلتزم منصة JurisTech Solutions بالمعايير التشريعية لحماية البيانات والأنظمة المعمول بها ${jurisdiction?.countryNameAr ? `في ${jurisdiction.countryNameAr}` : '(GDPR و PDPL)'}. مخرجات الذكاء الاصطناعي هي استشارات تقنية استرشادية.`
+                  : `JurisTech Solutions adheres to statutory data privacy frameworks ${jurisdiction?.countryName ? `in ${jurisdiction.countryName}` : '(GDPR & PDPL)'}. AI outputs provide informational and drafting assistance.`}
               </p>
             </div>
           </div>

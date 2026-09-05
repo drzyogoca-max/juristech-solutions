@@ -1,8 +1,8 @@
 {
   "title": "Planes de Precios Transparentes y Soberanos",
-  "subtitle": "Activación inmediata mediante Paddle como Merchant of Record con cumplimiento fiscal y protección al comprador.",
+  "subtitle": "Activación inmediata con cifrado bancario TLS 1.3, protección al comprador y liquidación verificada.",
   "monthlyBilling": "Facturación mensual",
-  "annualBilling": "Facturación anual (20% de descuento)",
+  "annualBilling": "Facturación anual (Facturación a medida)",
   "startupName": "Plan Startup",
   "startupDesc": "Generación de contratos IA y radar de riesgos para fundadores y empresas emergentes.",
   "smeName": "Plan PYME y Asesores",
@@ -11,9 +11,9 @@
   "enterpriseDesc": "Modelos IA dedicados, auditorías ilimitadas y flujos de trabajo M&A personalizados.",
   "perMonth": "/ mes",
   "subscribeNow": "Suscribirse Ahora",
-  "subscribeViaPaddle": "Suscribirse con Tarjeta (Paddle Checkout)",
+  "subscribeViaCard": "Pagar con Tarjeta (PayTabs en revisión)",
   "popularBadge": "Más Popular",
-  "instantActivation": "Activación inmediata mediante Merchant of Record Paddle",
+  "instantActivation": "Activación inmediata con seguridad de nivel bancario",
   "comparePlans": "Comparar todas las características",
   "faqTitle": "Preguntas Frecuentes",
   "refundGuarantee": "Garantía de reembolso protegida de 14 días"

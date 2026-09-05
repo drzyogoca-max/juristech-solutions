@@ -1,8 +1,8 @@
 {
   "title": "Tarifs Transparents & Forfaits Souverains",
-  "subtitle": "Activation instantanée via Paddle (Marchand officiel) avec conformité fiscale et protection acheteur.",
+  "subtitle": "Activation instantanée avec chiffrement TLS 1.3 bancaire, protection acheteur et règlement sécurisé.",
   "monthlyBilling": "Facturation mensuelle",
-  "annualBilling": "Facturation annuelle (-20%)",
+  "annualBilling": "Facturation annuelle (Facturation sur mesure)",
   "startupName": "Forfait Startup",
   "startupDesc": "Génération de contrats IA et radar des risques pour fondateurs et startups.",
   "smeName": "Forfait PME & Cabinets",
@@ -11,9 +11,9 @@
   "enterpriseDesc": "Modèles dédiés, audits illimités et flux de travail M&A personnalisés.",
   "perMonth": "/ mois",
   "subscribeNow": "S'abonner maintenant",
-  "subscribeViaPaddle": "S'abonner par carte (Paddle Checkout)",
+  "subscribeViaCard": "Payer par carte (PayTabs en cours d'examen)",
   "popularBadge": "Le plus populaire",
-  "instantActivation": "Activation immédiate via le Marchand de référence Paddle",
+  "instantActivation": "Activation immédiate avec sécurité bancaire",
   "comparePlans": "Comparer toutes les fonctionnalités",
   "faqTitle": "Foire Aux Questions",
   "refundGuarantee": "Garantie de remboursement protégée sous 14 jours"

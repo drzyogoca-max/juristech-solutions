@@ -13,6 +13,7 @@ export interface AdminUserSession {
 }
 
 export const OFFICIAL_ADMIN_EMAILS = [
+  'founder@juristech.solutions',
   'drzyogo.ca@gmail.com',
   'juristech.solutions@outlook.com',
   'admin@juristech.solutions',

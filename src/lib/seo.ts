@@ -55,12 +55,12 @@ export const PAGE_SEO: Record<string, PageSEO> = {
   },
   '/contracts': {
     path: '/contracts',
-    titleEn: 'AI Sovereign Smart Contracts Studio & 1M+ Templates Vault | JurisTech',
-    titleAr: 'محرك صياغة العقود الذكية بالذكاء الاصطناعي وخزينة النماذج المليونية | JurisTech',
+    titleEn: 'AI Sovereign Smart Contracts Studio & Verified Templates Vault | JurisTech',
+    titleAr: 'محرك صياغة العقود الذكية بالذكاء الاصطناعي وخزينة النماذج المعتمدة | JurisTech',
     descriptionEn:
-      'Sovereign AI Contract Drafting Studio & 1,000,000+ Legal Templates Vault. Compliant across GCC, Saudi M/191, Jordan, Egypt, US Delaware DGCL, UK & UNCITRAL.',
+      'Sovereign AI Contract Drafting Studio & Verified Legal Templates Vault. Compliant across GCC, Saudi M/191, Jordan, Egypt, US Delaware DGCL, UK & UNCITRAL.',
     descriptionAr:
-      'المحرك الموحد لصياغة وتدقيق العقود الذكية بالذكاء الاصطناعي وخزينة العقود المليونية المعتمدة في السعودية والخليج والأردن ومصر وأمريكا وبريطانيا والتجارة الدولية UNCITRAL.',
+      'المحرك الموحد لصياغة وتدقيق العقود الذكية بالذكاء الاصطناعي وخزينة العقود المعتمدة في السعودية والخليج والأردن ومصر وأمريكا وبريطانيا والتجارة الدولية UNCITRAL.',
     keywords: 'صياغة العقود بالذكاء الاصطناعي, نماذج عقود تجارية, نظام المعاملات المدنية السعودي, القانون المدني الأردني, Delaware smart contract drafting, UNCITRAL CISG contracts, AI legal generator',
     schemaType: 'SoftwareApplication',
   },
@@ -99,12 +99,12 @@ export const PAGE_SEO: Record<string, PageSEO> = {
   },
   '/repository': {
     path: '/repository',
-    titleEn: '1,000,000+ Certified Smart Legal Templates | JurisTech',
+    titleEn: 'Certified Sovereign Smart Legal Templates Vault | JurisTech',
     titleAr: 'مستودع العقود والنماذج الذكية المعتمدة | JurisTech',
     descriptionEn:
-      'Explore 1,000,000+ certified legal contracts, corporate templates, M&A agreements, employment contracts, and SaaS SLAs grounded in global laws.',
+      'Explore certified sovereign legal contracts, corporate templates, M&A agreements, employment contracts, and SaaS SLAs grounded in global laws.',
     descriptionAr:
-      'أضخم مستودع وخزينة عقود ونماذج قانونية بالشرق الأوسط والعالم: تصفح أكثر من 1,000,000 عقد وتوليد وتدقيق فوري بالذكاء الاصطناعي مطابق للأنظمة الدولية.',
+      'مستودع وخزينة عقود ونماذج قانونية ذكية معتمدة: تصفح نماذج العقود وتوليد وتدقيق فوري بالذكاء الاصطناعي مطابق للأنظمة الإقليمية والدولية.',
     keywords: 'legal contracts templates, M&A agreements, certified legal repository',
     schemaType: 'SoftwareApplication',
   },
@@ -157,9 +157,9 @@ export const PAGE_SEO: Record<string, PageSEO> = {
     titleEn: 'Enterprise Subscriptions & Secure Payments | JurisTech',
     titleAr: 'خطط الاشتراك وباقات الشركات | JurisTech Solutions',
     descriptionEn:
-      'Upgrade your corporate legal operations. Secure checkout via PayPal, Credit Card, InstaPay Egypt, and Direct Bank Wire (SWIFT).',
+      'Upgrade your corporate legal operations. Secure settlement via Bank Wire SWIFT, Binance Pay, InstaPay Egypt, and PayTabs Card Checkout (Under Review).',
     descriptionAr:
-      'اشترك الآن في باقات منصة JurisTech Solutions للشركات والمكاتب القانونية — دفع آمن عبر البطاقات الائتمانية والتحويل البنكي المباشر SWIFT و InstaPay.',
+      'اشترك الآن في باقات منصة JurisTech Solutions للشركات والمكاتب القانونية — دفع آمن عبر التحويل البنكي المباشر SWIFT، Binance Pay، InstaPay وبطاقات الائتمان قيد التفعيل.',
     keywords: 'enterprise legaltech subscription, corporate legal pricing, payment portal',
     schemaType: 'SoftwareApplication',
   },
@@ -181,7 +181,7 @@ export const PAGE_SEO: Record<string, PageSEO> = {
     descriptionEn:
       'Learn about JurisTech Solutions — pioneering sovereign legal AI infrastructure and automated contract governance globally.',
     descriptionAr:
-      'تعرّف على منصة JurisTech Solutions — الرائدة إقليمياً وعالمياً في حلول الذكاء الاصطناعي القانوني للشركات وتدقيق العقود المليونية.',
+      'تعرّف على منصة JurisTech Solutions — الرائدة إقليمياً وعالمياً في حلول الذكاء الاصطناعي القانوني للشركات وتدقيق العقود التجارية والمؤسسية.',
     keywords: 'about JurisTech Solutions, sovereign legal AI, legaltech company profile',
     schemaType: 'AboutPage',
   },

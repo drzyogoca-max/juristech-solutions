@@ -319,15 +319,15 @@ class ExecutiveMonitorEngine {
     const unverifiedOrStandbyMetrics: RealityMetric[] = [
       {
         id: 17,
-        pillar: 'Credit Card Payment Gateway (Paddle / PayTabs)',
-        pillarAr: 'بوابات الدفع بالبطاقات الائتمانية الدولية',
+        pillar: 'Credit Card Payment Gateway (PayTabs - Primary Under Review)',
+        pillarAr: 'بوابة الدفع بالبطاقات الائتمانية الدولية (PayTabs قيد المراجعة)',
         category: 'INTEGRATION_STATUS',
-        value: 'NOT_CONNECTED (KYC Pending)',
+        value: 'NOT_CONNECTED (Merchant KYC Pending)',
         status: 'NOT_CONNECTED',
-        sourceSystem: 'Paddle & PayTabs Merchant API',
-        sourceQueryOrFile: 'api/webhooks/paddle standby',
+        sourceSystem: 'PayTabs Merchant Integration API',
+        sourceQueryOrFile: 'api/webhooks/payment?provider=paytabs',
         timestamp,
-        details: 'Awaiting founder application submission & KYC compliance verification.',
+        details: 'Merchant application submitted. Awaiting KYC approval and profile activation.',
       },
       {
         id: 18,
@@ -372,7 +372,7 @@ class ExecutiveMonitorEngine {
         category: 'INTEGRATION_STATUS',
         value: 'MANUAL_INBOX (Outbound Active)',
         status: 'UNVERIFIED',
-        sourceSystem: 'Outlook Mailbox juristech.solutions@outlook.com',
+        sourceSystem: 'Official Mailbox founder@juristech.solutions',
         sourceQueryOrFile: 'IMAP / Webhook listener',
         timestamp,
         details: 'Outbound emails verified; incoming mail checked manually by founder.',
@@ -396,7 +396,7 @@ class ExecutiveMonitorEngine {
     const businessMaturityScore = realMRR > 0 ? Math.min(100, Math.round((realMRR / 5000) * 100)) : 15;
     const realHealthScore = Math.round((technicalHealthScore * 0.5) + (businessMaturityScore * 0.3) + 10); // Honest composite: ~58/100
 
-    const summaryAr = `📊 التقييم الواقعي الصادق: البنية التحتية والبرمجية جاهزة ومستقرة 100% (Technical Score: 100%). الإيرادات الحقيقية الحالية: $0.00 USD مع 0 عملاء مسددين بالبطاقات لحين اكتمال ربط بوابة الدفع الدولية (Paddle / PayTabs).`;
+    const summaryAr = `📊 التقييم الواقعي الصادق: البنية التحتية والبرمجية جاهزة ومستقرة 100% (Technical Score: 100%). الإيرادات الحقيقية الحالية: $0.00 USD مع 0 عملاء مسددين بالبطاقات لحين اكتمال تفعيل بوابة الدفع الدولية PayTabs (طلب الانضمام قيد المراجعة).`;
 
     const report: RealityExecutiveReport = {
       reportId,

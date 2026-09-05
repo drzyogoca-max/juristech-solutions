@@ -22,8 +22,8 @@ export interface SystemEventPayload {
   details?: string;
 }
 
-export const OFFICIAL_ADMIN_EMAIL = 'drzyogo.ca@gmail.com';
-export const OFFICIAL_BACKUP_EMAIL = 'juristech.solutions@outlook.com';
+export const OFFICIAL_ADMIN_EMAIL = 'founder@juristech.solutions';
+export const OFFICIAL_BACKUP_EMAIL = 'founder@juristech.solutions';
 export const TARGET_WHATSAPP_NUMBER = '+201126674337';
 
 /**

@@ -19,20 +19,20 @@ const ROUTE_METADATA = {
   '/': {
     titleAr: 'منصة تحليل العقود بالذكاء الاصطناعي | JurisTech Solutions',
     titleEn: 'AI Contract Analysis & Risk Audit | JurisTech Solutions',
-    descriptionAr: 'منصة JurisTech لتحليل العقود بالذكاء الاصطناعي وكشف الثغرات والبنود التعسفية وإدارة المخاطر القانونية للشركات وصياغة الاتفاقيات واستشارات فورية.',
+    descriptionAr: 'منصة JurisTech لتحليل العقود بالذكاء الاصطناعي وكشف الثغرات والبنود التعسفية وإدارة المخاطر القانونية للشركات وصياغة الاتفاقيات وتحليلات فورية.',
     descriptionEn: 'Premier AI contract review and automated legal document analysis platform. Detect liability traps, audit clauses, and draft sovereign agreements.',
   },
   '/dashboard': {
     titleAr: 'لوحة تحليل العقود وإدارة المخاطر | JurisTech Solutions',
     titleEn: 'Legal AI Dashboard & Risk Intelligence | JurisTech',
-    descriptionAr: 'المنصة الذكية الأولى لتحليل العقود وكشف الثغرات والبنود التعسفية وإدارة المخاطر القانونية للشركات. صياغة العقود التجارية واستشارات قانونية فورية.',
+    descriptionAr: 'المنصة الذكية الأولى لتحليل العقود وكشف الثغرات والبنود التعسفية وإدارة المخاطر القانونية للشركات. صياغة العقود التجارية وتحليلات قانونية ذكية فورية.',
     descriptionEn: 'Enterprise AI contract review dashboard. Instant clause redlining, liability cap analysis, and multi-jurisdictional compliance across US & GCC.',
   },
   '/chat': {
-    titleAr: 'المستشار القانوني الذكي للشركات | JurisTech Solutions',
-    titleEn: '24/7 AI Legal Counsel & Virtual Attorney | JurisTech',
-    descriptionAr: 'مستشارك القانوني الذكي المتاح 24 ساعة: استشارات قانونية موثوقة لحل النزاعات العقدية، فحص شروط الاتفاقيات، وتدقيق أنظمة الشركات والعمل بالسعودية والخليج.',
-    descriptionEn: 'Ask Juris — 24/7 enterprise AI legal counsel for corporate disputes, commercial contract terms, Delaware statutes, Saudi Companies Law & GCC regulations.',
+    titleAr: 'مساعد التحليل القانوني الذكي للشركات | JurisTech Solutions',
+    titleEn: '24/7 AI Contract Intelligence Assistant | JurisTech',
+    descriptionAr: 'مساعدك الذكي المتاح 24 ساعة: تحليل فوري للنزاعات العقدية، فحص شروط الاتفاقيات، وتدقيق أنظمة الشركات والعمل بالسعودية والخليج بالذكاء الاصطناعي.',
+    descriptionEn: 'Ask Juris — 24/7 enterprise AI contract analysis assistant for corporate workflows, commercial contract terms, Delaware statutes, Saudi Companies Law & GCC regulations.',
   },
   '/contracts': {
     titleAr: 'صياغة وتدقيق العقود الذكية للشركات | JurisTech',
@@ -116,7 +116,7 @@ const ROUTE_METADATA = {
     titleAr: 'إدارة قناة يوتيوب الرسمية والنشر اليومي | JurisTech YouTube Studio',
     titleEn: 'Official YouTube Channel Studio & 2x Daily Video Automation | JurisTech',
     descriptionAr: 'استوديو الإدارة التلقائية لقناة يوتيوب الرسمية لمنصة JurisTech Solutions — توليد ونشر فيديوهات قانونية يومية صباحاً ومساءً 100% بالذكاء الاصطناعي.',
-    descriptionEn: 'Official YouTube Channel Studio for juristech.solutions@outlook.com. Automated 2x daily morning & evening video publishing engine.',
+    descriptionEn: 'Official YouTube Channel Studio for founder@juristech.solutions. Automated 2x daily morning & evening video publishing engine.',
   },
   '/youtube': {
     titleAr: 'قناة يوتيوب الرسمية واستوديو الفيديوهات | JurisTech YouTube Channel',
@@ -143,10 +143,10 @@ const ROUTE_METADATA = {
     descriptionEn: 'Upgrade your corporate legal operations. Secure checkout via PayPal, Credit Card, InstaPay Egypt, and Direct Bank Wire (SWIFT).',
   },
   '/support': {
-    titleAr: 'الدعم الفني والاستشارات الفورية | JurisTech',
-    titleEn: '24/7 Client Support & Advisory Helpdesk | JurisTech',
-    descriptionAr: 'فريق الدعم الاستشاري والفني متاح 24 ساعة طوال أيام الأسبوع للإجابة على كافة الاستفسارات التعاقدية وتقديم المساندة الفنية الفورية للعملاء.',
-    descriptionEn: '24/7 technical and legal support desk for enterprise clients and platform subscribers with instant advisory response.',
+    titleAr: 'الدعم الفني ومساندة المنصة 24/7 | JurisTech',
+    titleEn: '24/7 Technical Support & Platform Helpdesk | JurisTech',
+    descriptionAr: 'فريق الدعم الفني والتقني متاح 24 ساعة طوال أيام الأسبوع للإجابة على كافة الاستفسارات البرمجية وتقديم المساندة الفنية الفورية للعملاء.',
+    descriptionEn: '24/7 technical support desk for enterprise clients and platform subscribers with instant software assistance.',
   },
   '/about': {
     titleAr: 'عن المنصة والريادة التشريعية | JurisTech Solutions',
@@ -182,7 +182,7 @@ const ROUTE_METADATA = {
     titleAr: 'شروط وأحكام الاستخدام الرسمية | JurisTech Solutions',
     titleEn: 'Terms of Service & Usage Agreement | JurisTech Solutions',
     descriptionAr: 'الشروط والأحكام الرسمية الحاكمة لاستخدام منصة JurisTech Solutions وحلول الذكاء الاصطناعي القانوني واتفاقيات مستوى الخدمة (SLA).',
-    descriptionEn: 'Official Terms of Service governing platform usage, enterprise SLAs, and AI legal advisory standards for JurisTech Solutions.',
+    descriptionEn: 'Official Terms of Service governing platform usage, enterprise SLAs, and AI software standards for JurisTech Solutions.',
   },
   '/refund': {
     titleAr: 'سياسة الاسترداد وإلغاء الاشتراكات | JurisTech Solutions',
@@ -200,7 +200,7 @@ const ROUTE_METADATA = {
     titleAr: 'إدارة الفوترة والاشتراك والبطاقات | JurisTech Solutions',
     titleEn: 'Account Billing & Subscription Management | JurisTech Solutions',
     descriptionAr: 'لوحة إدارة الفوترة الرسمية، تجديد الاشتراكات، وإيصالات الدفع المشفرة لدى JurisTech Solutions.',
-    descriptionEn: 'Official Merchant billing portal, Paddle subscriptions, and cryptographic payment receipts at JurisTech Solutions.',
+    descriptionEn: 'Official secure billing portal, subscription management, and cryptographic payment receipts at JurisTech Solutions.',
   },
   '/trust': {
     titleAr: 'مركز الثقة والامتثال المؤسسي | JurisTech Solutions',
@@ -280,7 +280,7 @@ function prerenderRoutes() {
         'founder': {
           '@type': 'Person',
           'name': 'Dr. Mohammed Mostafa',
-          'jobTitle': 'Chief Legal Architect & Senior Counsel',
+          'jobTitle': 'Founder & Chairman (PhD in Risk Management)',
           'email': 'Drzyogo.ca@gmail.com',
           'telephone': '+201126674337'
         },
@@ -305,7 +305,7 @@ function prerenderRoutes() {
         '@context': 'https://schema.org',
         '@type': 'Person',
         'name': 'د. محمد مصطفى | Dr. Mohammed Mostafa',
-        'jobTitle': 'Senior Legal Counsel & Chief AI Architect',
+        'jobTitle': 'Founder & Chairman (PhD in Risk Management) | AI Risk Architect',
         'worksFor': {
           '@type': 'Organization',
           'name': 'JurisTech Solutions'

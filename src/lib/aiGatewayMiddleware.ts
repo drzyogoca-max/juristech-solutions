@@ -12,11 +12,11 @@
 
 export const FREE_MSG_LIMIT = 10;
 export const STORAGE_KEY_CHAT = 'ls_free_chat_uses';
-export const OFFICIAL_SUPPORT_EMAIL = 'Drzyogo.ca@gmail.com';
+export const OFFICIAL_SUPPORT_EMAIL = 'founder@juristech.solutions';
 export const EMERGENCY_BUSINESS_LINE = '+1 (800) JURIS-TECH';
 export const SUPPORT_TICKET_URL = '/support';
 export const WHATSAPP_URL = '/support';
-export const WHATSAPP_NUMBER = 'Drzyogo.ca@gmail.com';
+export const WHATSAPP_NUMBER = '+201126674337';
 
 // ── Contract detection keywords (Arabic + English + French + German + Spanish + Chinese + Turkish)
 const CONTRACT_KEYWORDS_GENERATE = [
@@ -161,7 +161,7 @@ function buildContractPreviewAr(query: string): string {
 🔒 **تم إعداد الخطوط العريضة والاستشارة الأولية.**
 للحصول على **النص الكامل والموثق قانونياً للعقد** بصيغة Word/PDF مع التوقيع الرقمي المعتمد، يرجى إتمام عملية الدفع وتفعيل الباقة.
 
-💬 للتواصل الفوري والتذاكر المشفرة: [البريد الرسمي للدعم: Drzyogo.ca@gmail.com](mailto:Drzyogo.ca@gmail.com)`;
+💬 للتواصل الفوري والتذاكر المشفرة: [البريد الرسمي للدعم: founder@juristech.solutions](mailto:founder@juristech.solutions)`;
 }
 
 function buildContractPreviewEn(query: string): string {
@@ -187,7 +187,7 @@ Based on your request, here is the foundational legal structure and governing pr
 🔒 **Outline and initial advisory prepared.**
 To receive the **complete, legally certified contract document** in Word/PDF format with certified digital signature, please complete payment and activate your subscription.
 
-💬 Instant escalation & encrypted support: [Drzyogo.ca@gmail.com](mailto:Drzyogo.ca@gmail.com)`;
+💬 Instant escalation & encrypted support: [founder@juristech.solutions](mailto:founder@juristech.solutions)`;
 }
 
 function buildContractPreviewFr(query: string): string {

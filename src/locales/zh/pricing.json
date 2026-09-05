@@ -1,8 +1,8 @@
 {
   "title": "透明、合规的主权定价方案",
-  "subtitle": "由全球认证法定记录商 (Merchant of Record) Paddle.com 提供即时开通、税务合规与资金安全保障。",
+  "subtitle": "采用银行级 TLS 1.3 高强度加密传输，提供买家权益合规审计与多渠道直连清结算。",
   "monthlyBilling": "按月订阅",
-  "annualBilling": "按年订阅 (享受 8 折优惠)",
+  "annualBilling": "按年订阅 (定制对公结算)",
   "startupName": "初创企业法务方案 (Startup)",
   "startupDesc": "为初创团队及创始人提供核心 AI 智能合同生成与风险雷达初审。",
   "smeName": "中小企业与律所方案 (SMEs)",
@@ -11,9 +11,9 @@
   "enterpriseDesc": "配备专属大模型实例、无限量合同穿透审计及定制并购 (M&A) 工作流。",
   "perMonth": "/ 月",
   "subscribeNow": "立即订阅",
-  "subscribeViaPaddle": "使用信用卡立即订阅 (Paddle Checkout)",
+  "subscribeViaCard": "银行卡安全支付 (PayTabs 审核中)",
   "popularBadge": "最受欢迎",
-  "instantActivation": "通过国际官方记录商 Paddle.com 秒级开通",
+  "instantActivation": "企业级高可用安全即时开通",
   "comparePlans": "对比全系方案功能矩阵",
   "faqTitle": "订阅与支付常见问题解答",
   "refundGuarantee": "享有14天合规公平退款保障"

@@ -16,7 +16,7 @@ export interface BinancePayModalProps {
   packagePrice: number;
 }
 
-const BINANCE_MERCHANT_EMAIL = 'Drzyogo.ca@gmail.com';
+const BINANCE_MERCHANT_EMAIL = 'founder@juristech.solutions';
 const BINANCE_USER_ID = 'User-444da';
 const SESSION_EXPIRE_SECONDS = 15 * 60; // 15 minutes
 
@@ -257,7 +257,7 @@ export default function BinancePayModal({
                       onError={(e) => {
                         // Fallback to generated QR via API
                         (e.target as HTMLImageElement).src =
-                          `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(`binancepay://pay?uid=444da&merchant=Drzyogo.ca%40gmail.com`)}&color=0f172a&bgcolor=ffffff&qzone=1&format=png`;
+                          `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(`binancepay://pay?uid=444da&merchant=founder%40juristech.solutions`)}&color=0f172a&bgcolor=ffffff&qzone=1&format=png`;
                         setQrLoaded(true);
                       }}
                       className={`w-full h-full object-contain rounded-xl transition-opacity duration-300 ${qrLoaded ? 'opacity-100' : 'opacity-0'}`}

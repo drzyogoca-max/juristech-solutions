@@ -181,7 +181,7 @@ export default function B2BProposalPage() {
                   <span>💬 {isRtl ? 'تواصل عبر واتساب' : 'WhatsApp Direct'}</span>
                 </a>
                 <a
-                  href={`mailto:Drzyogo.ca@gmail.com?cc=juristech.solutions@outlook.com&subject=${encodeURIComponent(`B2B Proposal Request - ${proposal.companyName}`)}&body=${encodeURIComponent(proposal.proposalContent.slice(0, 500))}`}
+                  href={`mailto:founder@juristech.solutions?subject=${encodeURIComponent(`B2B Proposal Request - ${proposal.companyName}`)}&body=${encodeURIComponent(proposal.proposalContent.slice(0, 500))}`}
                   className="flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-lg"
                 >
                   <span>📧 {isRtl ? 'إرسال بالإيميل' : 'Email Direct'}</span>

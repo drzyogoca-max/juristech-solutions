@@ -235,7 +235,7 @@ Authorized by JurisTech Supreme Legal Architecture Engine.
                   <FileText className="w-5 h-5 text-amber-400 shrink-0" />
                   <span className="text-sm font-bold text-slate-200 truncate">{fileName}</span>
                 </div>
-                <button onClick={clearFile} className="text-slate-400 hover:text-rose-400 transition-colors p-1.5 rounded-xl hover:bg-slate-800 cursor-pointer">
+                <button onClick={clearFile} aria-label={isRtl ? 'إزالة الملف' : 'Remove file'} className="text-slate-400 hover:text-rose-400 transition-colors p-1.5 rounded-xl hover:bg-slate-800 cursor-pointer">
                   <X className="w-4 h-4" />
                 </button>
               </div>

@@ -18,7 +18,7 @@ import fs from 'fs';
 // Setup Mock Environment Variables for deterministic execution
 process.env.CRON_SECRET = 'p0_test_cron_secret_789xyz';
 process.env.ADMIN_SECRET_KEY = 'p0_test_admin_secret_456abc';
-process.env.PADDLE_WEBHOOK_SECRET = 'p0_test_paddle_secret_123def';
+process.env.PAYTABS_WEBHOOK_SECRET = 'p0_test_paytabs_secret_123def';
 
 let passedCount = 0;
 let totalCount = 0;
@@ -120,7 +120,7 @@ async function runTests() {
   const whRes1 = createMockRes();
   await paymentWebhook({
     method: 'POST',
-    query: { provider: 'paddle' },
+    query: { provider: 'paytabs' },
     headers: {},
     body: testPayload
   }, whRes1);
@@ -130,21 +130,21 @@ async function runTests() {
   const whRes2 = createMockRes();
   await paymentWebhook({
     method: 'POST',
-    query: { provider: 'paddle' },
-    headers: { 'paddle-signature': 'invalid_forged_signature_hash_xyz' },
+    query: { provider: 'paytabs' },
+    headers: { 'x-paytabs-signature': 'invalid_forged_signature_hash_xyz' },
     body: testPayload
   }, whRes2);
   assertTest(whRes2._status === 401, 'Webhook: Tampered signature returns 401', `Got status ${whRes2._status}`);
 
   // C. Valid Signature -> Accepted & Processed
   const rawBody = JSON.stringify(testPayload);
-  const validSignature = crypto.createHmac('sha256', process.env.PADDLE_WEBHOOK_SECRET).update(rawBody).digest('hex');
+  const validSignature = crypto.createHmac('sha256', process.env.PAYTABS_WEBHOOK_SECRET).update(rawBody).digest('hex');
 
   const whRes3 = createMockRes();
   await paymentWebhook({
     method: 'POST',
-    query: { provider: 'paddle' },
-    headers: { 'paddle-signature': validSignature },
+    query: { provider: 'paytabs' },
+    headers: { 'x-paytabs-signature': validSignature },
     body: testPayload
   }, whRes3);
   assertTest(whRes3._status === 200 && whRes3._data?.success === true, 'Webhook: Valid HMAC signature accepted with 200 OK');
@@ -153,8 +153,8 @@ async function runTests() {
   const whRes4 = createMockRes();
   await paymentWebhook({
     method: 'POST',
-    query: { provider: 'paddle' },
-    headers: { 'paddle-signature': validSignature },
+    query: { provider: 'paytabs' },
+    headers: { 'x-paytabs-signature': validSignature },
     body: testPayload
   }, whRes4);
   assertTest(whRes4._status === 200 && whRes4._data?.duplicate === true, 'Webhook: Duplicate event rejected idempotently (no duplicate activation)');

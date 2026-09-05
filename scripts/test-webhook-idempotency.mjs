@@ -119,7 +119,7 @@ async function runTestSuite() {
 
   // ── TEST 1: Fresh Webhook Processing ──
   const instance1 = new WebhookHandlerInstance('INST-01', sharedDb);
-  const res1 = await instance1.processWebhook('paddle', 'evt_1001', 'payment.succeeded', 49.00);
+  const res1 = await instance1.processWebhook('paytabs', 'evt_1001', 'payment.succeeded', 49.00);
   if (res1.result === 'PROCESSED_SUCCESS' && instance1.processedPaymentsCount === 1) {
     console.log('✅ TEST 1 PASSED: Fresh Webhook processed successfully.');
     passedTests++;
@@ -128,7 +128,7 @@ async function runTestSuite() {
   }
 
   // ── TEST 2: Sequential Duplicate Webhook on Same Instance ──
-  const res2 = await instance1.processWebhook('paddle', 'evt_1001', 'payment.succeeded', 49.00);
+  const res2 = await instance1.processWebhook('paytabs', 'evt_1001', 'payment.succeeded', 49.00);
   if (res2.result === 'ALREADY_PROCESSED_IN_MEMORY' && instance1.processedPaymentsCount === 1) {
     console.log('✅ TEST 2 PASSED: Sequential duplicate blocked by Layer 1 (In-Memory).');
     passedTests++;
@@ -155,7 +155,7 @@ async function runTestSuite() {
 
   // ── TEST 4: Server Restart Simulation (Memory Cleared -> Blocked by DB) ──
   instance1.restart(); // Wipe in-memory Set
-  const res4 = await instance1.processWebhook('paddle', 'evt_1001', 'payment.succeeded', 49.00);
+  const res4 = await instance1.processWebhook('paytabs', 'evt_1001', 'payment.succeeded', 49.00);
   if (res4.result === 'ALREADY_PROCESSED_IN_DATABASE' && instance1.processedPaymentsCount === 2) {
     console.log('✅ TEST 4 PASSED: Server restart wiped memory, but Layer 2 (Database-Backed) blocked duplicate.');
     passedTests++;
@@ -165,7 +165,7 @@ async function runTestSuite() {
 
   // ── TEST 5: Multi-Instance Distributed Serverless Simulation ──
   const instance2 = new WebhookHandlerInstance('INST-02', sharedDb);
-  const res5 = await instance2.processWebhook('paddle', 'evt_1001', 'payment.succeeded', 49.00);
+  const res5 = await instance2.processWebhook('paytabs', 'evt_1001', 'payment.succeeded', 49.00);
   if (res5.result === 'ALREADY_PROCESSED_IN_DATABASE' && instance2.processedPaymentsCount === 0) {
     console.log('✅ TEST 5 PASSED: Separate Instance 2 blocked duplicate via Shared Database constraint.');
     passedTests++;

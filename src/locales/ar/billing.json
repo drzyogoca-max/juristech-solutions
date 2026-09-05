@@ -1,6 +1,6 @@
 {
   "portalTitle": "إدارة الاشتراك والفوترة الرسمية",
-  "portalSubtitle": "بوابة الفوترة والدفع الرسمية — تُدار عبر Paddle.com",
+  "portalSubtitle": "بوابة الفوترة والدفع السيادية — مشفرة بمعيار TLS 1.3",
   "currentPlan": "الخطة الحالية النشطة",
   "planAmount": "قيمة الاشتراك",
   "startDate": "تاريخ البدء",
@@ -20,13 +20,13 @@
   "viewInvoice": "عرض الفاتورة",
   "cancelSubscription": "إلغاء التجديد التلقائي",
   "renewSubscription": "تجديد الاشتراك",
-  "upgradePlan": "ترقية الخطة أو تحديث البطاقة",
+  "upgradePlan": "ترقية الخطة أو تحديث طريقة الدفع",
   "confirmCancelTitle": "تأكيد إلغاء التجديد التلقائي؟",
   "confirmCancelDesc": "سيظل بإمكانك استخدام الميزات المدفوعة حتى نهاية فترة الفوترة الحالية. لن يتم تحصيل أي مبالغ جديدة مستقبلاً.",
   "keepSubscription": "التراجع والإبقاء على الاشتراك",
   "confirmCancelBtn": "تأكيد الإلغاء الآن",
   "cancelling": "جاري الإلغاء...",
-  "merchantProtectionTitle": "ضمان الأمان والتاجر المعتمد",
-  "merchantProtectionDesc": "تُدار جميع المدفوعات والاشتراكات عبر Paddle.com كتاجر سجل معتمد دولياً (Merchant of Record) مع تشفير بنكي وحماية كاملة للمشتري.",
-  "supportEmail": "دعم الفوترة والاسترداد: juristech.solutions@outlook.com"
+  "merchantProtectionTitle": "حماية المعاملات والامتثال المالي",
+  "merchantProtectionDesc": "تُدار جميع العمليات المالية باشتراطات أمان بنكية مشفرة عبر بروتوكول TLS 1.3 مع دعم التحويلات المباشرة (Bank Wire SWIFT، Binance Pay، InstaPay) وبوابة PayTabs للبطاقات الائتمانية قيد المراجعة.",
+  "supportEmail": "دعم الفوترة والاسترداد: founder@juristech.solutions"
 }

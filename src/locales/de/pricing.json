@@ -1,8 +1,8 @@
 {
   "title": "Transparente, souveräne Tarifpläne",
-  "subtitle": "Sofortige Freischaltung über Paddle als Merchant of Record mit Steuerkonformität und Käuferschutz.",
+  "subtitle": "Sofortige Freischaltung mit TLS 1.3-Verschlüsselung nach Bankenstandard, Käuferschutz und direkter Abrechnung.",
   "monthlyBilling": "Monatliche Abrechnung",
-  "annualBilling": "Jährliche Abrechnung (20% Rabatt)",
+  "annualBilling": "Jährliche Abrechnung (Individuelle Rechnungsstellung)",
   "startupName": "Startup-Tarif",
   "startupDesc": "Wesentliche KI-Vertragsgenerierung und Risikoradar für Gründer und Startups.",
   "smeName": "KMU- & Kanzlei-Tarif",
@@ -11,9 +11,9 @@
   "enterpriseDesc": "Dedizierte KI-Modelle, unbegrenzte Vertragsaudits und M&A-Workflows.",
   "perMonth": "/ Monat",
   "subscribeNow": "Jetzt abonnieren",
-  "subscribeViaPaddle": "Jetzt mit Karte abonnieren (Paddle Checkout)",
+  "subscribeViaCard": "Mit Karte zahlen (PayTabs in Prüfung)",
   "popularBadge": "Sehr beliebt",
-  "instantActivation": "Sofortige Aktivierung über den autorisierten Händler Paddle",
+  "instantActivation": "Sofortige Aktivierung mit Sicherheit auf Bankniveau",
   "comparePlans": "Alle Tarifmerkmale vergleichen",
   "faqTitle": "Häufig gestellte Fragen",
   "refundGuarantee": "14 Tage Geld-zurück-Garantie"

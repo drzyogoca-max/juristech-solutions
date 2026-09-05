@@ -35,7 +35,7 @@ export const LIVE_PAYMENT_KEYS = {
   stripeLivePublishableKey: import.meta.env.VITE_STRIPE_LIVE_PUBLISHABLE_KEY || '',
   tapPaymentsLiveSecretKey: 'SERVER_MANAGED', // 🔒 Processed securely on server-side webhook/RPC only
   binancePayUid: '557019549',
-  binancePayEmail: 'Drzyogo.ca@gmail.com',
+  binancePayEmail: 'founder@juristech.solutions',
   status: 'ACTIVE_LIVE_VERIFIED',
   merchantName: 'JurisTech Solutions / LegalShield Regional',
 };
@@ -388,7 +388,7 @@ export async function verifyAndApprovePendingSWIFTWire(targetEmailOrTxnId: strin
   // Trigger Instant Email Notification Dispatch to Owner & Client
   try {
     await sendEmailNotification({
-      toEmail: 'Drzyogo.ca@gmail.com',
+      toEmail: 'founder@juristech.solutions',
       subjectAr: `⚡ إشعار وتأكيد حوالة بنكية SWIFT مكتملة: ${txn.userName}`,
       subjectEn: `⚡ Confirmed SWIFT Wire Transfer: ${txn.userName} ($${txn.amountUSD} USD)`,
       bodyAr: `تم فحص ومطابقة الحوالة البنكية وتأكيد تحويل الأموال بنجاح:\n\nالعميل: ${txn.userName} (${txn.userEmail})\nالباقة: ${txn.planName}\nالمبلغ: $${txn.amountUSD} USD\nرقم الحوالة: ${txn.sha256Hash}\nالبنك المستفيد: بنك البركة - فرع الحديقة الدولية\nرقم الحساب: EG310022012880211102491757001`,

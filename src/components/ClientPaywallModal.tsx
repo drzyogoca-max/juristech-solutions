@@ -165,14 +165,14 @@ export default function ClientPaywallModal({
                   {isRtl ? 'الاشتراك المؤسسي الشامل' : 'Enterprise Pro Pass'}
                 </span>
                 <span className="text-xs font-black text-amber-300 bg-amber-500/20 px-2 py-0.5 rounded-full border border-amber-500/30">
-                  {isRtl ? 'شامل الاستشارات' : 'Full Suite'}
+                  {isRtl ? 'الميزات الكاملة' : 'Full Suite'}
                 </span>
               </div>
               <div className="text-2xl font-black text-white mt-1">
                 {prices.pro[currency]} <span className="text-xs text-slate-400 font-normal">{isRtl ? '/ شهر' : '/ mo'}</span>
               </div>
               <p className="text-[11px] text-slate-400 mt-1">
-                {isRtl ? 'تنزيل بلا حدود + المستشار الذكي + التعديل الاحترافي + ختم د. محمد مصطفى' : 'Unlimited Word downloads + AI Legal Counsel + Custom Redlines'}
+                {isRtl ? 'تنزيل غير محدود + مساعد الذكاء الاصطناعي + تدقيق الصياغة + ختم المصادقة الرقمية' : 'Unlimited Word downloads + AI Workflow Assistant + Automated Redlines + Digital Verification'}
               </p>
             </div>
           </div>

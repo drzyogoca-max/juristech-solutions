@@ -50,7 +50,7 @@ export default function RbacUserManagementModal({ isOpen, onClose }: RbacUserMan
       id: 'rule-all-sites',
       titleAr: '1. السيادة والتحكم الشامل بكافة المواقع (All Websites & Domains Governance)',
       titleEn: '1. Universal Cross-Website Super Admin Access',
-      descAr: 'يمتلك حساب السوبر أدمن (Dr. Mohammad Mustafa - drzyogo.ca@gmail.com) صلاحيات مطلقة وغير مقيدة على كافة نطاقات ومواقع المنصة (www.juristech.solutions، لوحات التحكم، وخدمات الـ API).',
+      descAr: 'يمتلك حساب السوبر أدمن (Dr. Mohammad Mustafa - founder@juristech.solutions) صلاحيات مطلقة وغير مقيدة على كافة نطاقات ومواقع المنصة (www.juristech.solutions، لوحات التحكم، وخدمات الـ API).',
       descEn: 'Super Admin holds unconditional access across all domains, sub-sites, APIs, and client portals with zero restrictions.',
       icon: Globe,
       color: 'text-cyan-400 border-cyan-500/30 bg-cyan-500/10'
@@ -158,9 +158,7 @@ export default function RbacUserManagementModal({ isOpen, onClose }: RbacUserMan
                   {isRtl ? 'معلومات اعتماد السوبر أدمن المعتمد للمنظومة:' : 'Official Certified Super Admin Identity:'}
                 </h4>
                 <div className="text-xs text-slate-300 font-mono flex flex-wrap gap-2">
-                  <span className="text-white font-bold">drzyogo.ca@gmail.com</span>
-                  <span>|</span>
-                  <span>juristech.solutions@outlook.com</span>
+                  <span className="text-white font-bold">founder@juristech.solutions</span>
                 </div>
               </div>
             </div>

@@ -169,7 +169,7 @@ export const generateAndDispatchOffer = async (clientData: ClientDataPayload): P
               <div class="sig-title">Chief Executive & Chief Financial Officer (CEO / CFO)</div>
               <div class="sig-org">JurisTech Solutions | Sovereign AI Legal & Risk Infrastructure</div>
               <div class="sig-contact">
-                <strong>Executive Contact:</strong> <a href="mailto:drzyogo.ca@gmail.com" style="color: #38bdf8; text-decoration: none;">drzyogo.ca@gmail.com</a> | <a href="mailto:juristech.solutions@outlook.com" style="color: #38bdf8; text-decoration: none;">juristech.solutions@outlook.com</a><br>
+                <strong>Executive Contact:</strong> <a href="mailto:founder@juristech.solutions" style="color: #38bdf8; text-decoration: none;">founder@juristech.solutions</a><br>
                 <strong>Official Portal:</strong> <a href="https://www.juristech.solutions" style="color: #38bdf8; text-decoration: none;">https://www.juristech.solutions</a>
               </div>
               
@@ -202,11 +202,11 @@ export const generateAndDispatchOffer = async (clientData: ClientDataPayload): P
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         to: email,
-        bcc: ['drzyogo.ca@gmail.com', 'juristech.solutions@outlook.com'],
-        adminCopy: 'drzyogo.ca@gmail.com',
-        replyTo: 'juristech.solutions@outlook.com',
+        bcc: ['founder@juristech.solutions'],
+        adminCopy: 'founder@juristech.solutions',
+        replyTo: 'founder@juristech.solutions',
         subject: dynamicSubject,
-        text: `CONFIDENTIAL EXECUTIVE PROPOSAL FOR ${name.toUpperCase()}\n\nOBJECT: Strategic Legal AI Infrastructure & Financial Risk Mitigation\n\nAddressed to: Chief Executive Officer & Chief Financial Officer\nOffered by: Dr. Mohammad Mustafa, Chairman & Chief Legal Architect | JurisTech Solutions\n\nExecutive Inquiries: juristech.solutions@outlook.com\nOfficial Portal: https://www.juristech.solutions`,
+        text: `CONFIDENTIAL EXECUTIVE PROPOSAL FOR ${name.toUpperCase()}\n\nOBJECT: Strategic Legal AI Infrastructure & Financial Risk Mitigation\n\nAddressed to: Chief Executive Officer & Chief Financial Officer\nOffered by: Dr. Mohammad Mustafa, Chairman & Chief Legal Architect | JurisTech Solutions\n\nExecutive Inquiries: founder@juristech.solutions\nOfficial Portal: https://www.juristech.solutions`,
         html: finalHtml,
       }),
     });
