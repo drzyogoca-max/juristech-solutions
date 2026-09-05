@@ -27,17 +27,17 @@
     },
     {
       "source": "/youtube",
-      "destination": "/youtube-studio",
+      "destination": "/video-hub",
       "permanent": false
     },
     {
       "source": "/youtube-channel",
-      "destination": "/youtube-studio",
+      "destination": "/video-hub",
       "permanent": false
     },
     {
       "source": "/channel",
-      "destination": "/youtube-studio",
+      "destination": "/video-hub",
       "permanent": false
     },
     {
