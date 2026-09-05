@@ -121,7 +121,7 @@ function MainAppContent() {
   const [isBlocked, setIsBlocked] = useState(false);
   const { isAdmin } = useAuth();
   const location = useLocation();
-  const { lang, isRtl } = usePlatformLocale();
+  const { lang, isRtl, changeLocale } = usePlatformLocale();
 
   // Auxiliary Widgets Mounted Only Upon User Interaction or Idle Timeout (Sub-500ms FCP/LCP Guarantee)
   const [showAuxWidgets, setShowAuxWidgets] = useState(false);
@@ -142,10 +142,9 @@ function MainAppContent() {
   useEffect(() => {
     const urlLocale = getLocaleFromUrl(location.pathname);
     if (urlLocale && urlLocale !== lang) {
-      setDocumentLanguage(urlLocale);
-      persistLocalePreference(urlLocale);
+      changeLocale(urlLocale);
     }
-  }, [location.pathname, lang]);
+  }, [location.pathname, lang, changeLocale]);
 
   // ── Defer Auxiliary Floating Widgets (Chatbot, Radar) for High Speed Insights ──
   useEffect(() => {
@@ -318,7 +317,14 @@ function MainAppContent() {
                   <Route path={`${prefix}/need-diagnostic`} element={<Navigate to={`${prefix}/deal-shield`} replace />} />
                   <Route path={`${prefix}/deal-simulator`} element={<Navigate to={`${prefix}/deal-shield`} replace />} />
                   <Route path={`${prefix}/clash-simulator`} element={<Navigate to={`${prefix}/deal-shield`} replace />} />
-                  <Route path={`${prefix}/youtube-studio`} element={<YouTubeStudioPage />} />
+                  <Route
+                    path={`${prefix}/youtube-studio`}
+                    element={
+                      <ProtectedAdminRoute>
+                        <YouTubeStudioPage />
+                      </ProtectedAdminRoute>
+                    }
+                  />
                   <Route path={`${prefix}/youtube`} element={<Navigate to={`${prefix}/youtube-studio`} replace />} />
                   <Route path={`${prefix}/youtube-channel`} element={<Navigate to={`${prefix}/youtube-studio`} replace />} />
                   <Route path={`${prefix}/company-formation`} element={<CompanyFormationPage />} />
@@ -348,15 +354,15 @@ function MainAppContent() {
                   <Route path={`${prefix}/compliance`} element={<Navigate to={`${prefix}/legal-compliance`} replace />} />
                   <Route path={`${prefix}/regulatory`} element={<Navigate to={`${prefix}/legal-compliance`} replace />} />
                   <Route path={`${prefix}/regulatory-framework`} element={<Navigate to={`${prefix}/legal-compliance`} replace />} />
-                  <Route path={`${prefix}/marketing`} element={<SocialMarketingPage />} />
                   <Route
-                    path={`${prefix}/reports`}
+                    path={`${prefix}/marketing`}
                     element={
                       <ProtectedAdminRoute>
-                        <ReportsPage />
+                        <SocialMarketingPage />
                       </ProtectedAdminRoute>
                     }
                   />
+                  <Route path={`${prefix}/reports`} element={<ReportsPage />} />
                   <Route path={`${prefix}/blocked`} element={<BlockedPage />} />
                   <Route path={`${prefix}/social-marketing`} element={<Navigate to={`${prefix}/marketing`} replace />} />
                   <Route path={`${prefix}/sovereign-ai-hub`} element={<AdvancedAIHubPage />} />

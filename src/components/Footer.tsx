@@ -71,7 +71,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link to="/repository" className="hover:text-cyan-300 transition-colors block py-0.5">
-                  {l('مستودع المليون عقد المؤسسي', 'Mega 1M+ Contracts Repository')}
+                  {l('مستودع العقود والبيانات القانونية', 'Contracts & Legal Data Lake')}
                 </Link>
               </li>
               <li>
@@ -140,8 +140,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/youtube-studio" className="hover:text-purple-300 transition-colors block py-0.5 text-red-400 font-bold">
-                  {l('إدارة قناة يوتيوب الرسمية 📺', 'YouTube Studio & Daily Automation 📺')}
+                <Link to="/reports" className="hover:text-purple-300 transition-colors block py-0.5">
+                  {l('التقارير القانونية والتحليلات', 'Strategic Legal Reports')}
                 </Link>
               </li>
               <li>
@@ -198,8 +198,8 @@ export default function Footer() {
           <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
           <p className="leading-relaxed m-0 font-medium">
             {l(
-              'تنبيه نظامي: منصة JurisTech Solutions منظومة ذكاء اصطناعي قانونية استرشادية، ولا تُعد بديلاً عن المشورة القانونية المباشرة من محامٍ مرخص في دائرتك القضائية.',
-              'Statutory Notice: JurisTech Solutions is an AI legal intelligence and document generation platform and does not constitute formal legal representation.'
+              'تنبيه نظامي: منصة JurisTech Solutions هي منصة برمجيات تقنية قانونية (Legal Tech SaaS) تقدم أدوات أتمتة العقود والمساعدة التشريعية، ولا تُعد مكتب محاماة ولا تقدم استشارات أو تمثيلاً قانونياً ينشئ علاقة بين محامٍ وموكل. يُرجى مراجعة محامٍ مرخص في دائرتك القضائية للمراجعة والتمثيل الرسمي.',
+              'Statutory Notice: JurisTech Solutions is a legal technology SaaS platform providing automated workflows and statutory assistance. It is NOT a law firm and does not provide legal representation or create an attorney-client relationship. Consult licensed legal counsel in your jurisdiction for formal representation.'
             )}
           </p>
         </div>

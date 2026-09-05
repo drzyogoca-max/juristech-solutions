@@ -5,7 +5,7 @@ import {
   Home, MessageSquare, FileText, AlertTriangle, Library, Handshake, Users,
   Building2, Video, CreditCard, Headphones, Share2, Menu, X, Shield, ShieldCheck,
   BarChart3, DollarSign, Search, Scale, Globe, Phone, Crown, ChevronDown,
-  Sparkles, Zap, Star, ArrowRight, Lock, Palette, Mail, ShieldAlert, Edit3, Briefcase, Youtube
+  Sparkles, Zap, Star, ArrowRight, Lock, Palette, Mail, ShieldAlert, Edit3, Briefcase, Youtube, Layers
 } from 'lucide-react';
 import LanguageSwitcher from './LanguageSwitcher';
 import ThemeSwitcher from './ThemeSwitcher';
@@ -38,20 +38,18 @@ const VISITOR_LINKS = [
 ];
 
 const SUBSCRIBER_LINKS = [
-  { to: '/youtube-studio', icon: Youtube, key: 'youtubeStudio' },
   { to: '/deal-shield', icon: Sparkles, key: 'dealShield' },
   { to: '/contracts', icon: FileText, key: 'contracts' },
+  { to: '/templates', icon: Layers, key: 'templates' },
   { to: '/risk', icon: AlertTriangle, key: 'risk' },
   { to: '/vault', icon: Lock, key: 'vault' },
   { to: '/negotiation', icon: Handshake, key: 'negotiation' },
   { to: '/enterprise-audit', icon: Building2, key: 'enterpriseAudit' },
   { to: '/investigate', icon: Search, key: 'investigate' },
-  { to: '/lead-radar', icon: Users, key: 'leadRadar' },
   { to: '/video-hub', icon: Video, key: 'videoHub' },
   { to: '/company-formation', icon: Building2, key: 'companyFormation' },
   { to: '/acquisition', icon: Briefcase, key: 'acquisition' },
-  { to: '/sponsors-ads', icon: DollarSign, key: 'sponsorsAds' },
-  { to: '/social-marketing', icon: Share2, key: 'socialMarketing' },
+  { to: '/b2b-proposals', icon: Briefcase, key: 'b2bProposals' },
   { to: '/reports', icon: BarChart3, key: 'reports' },
 ];
 
@@ -154,14 +152,14 @@ export default function Navbar() {
             <div className="hidden sm:block">
               <div className="flex items-center gap-1.5">
                 <span className="text-base font-black text-slate-900 dark:text-white group-hover:text-cyan-400 transition-colors tracking-tight leading-none block">
-                  JurisTech Solutions <span className="text-cyan-400">| حلول جوريس تك</span>
+                  JurisTech Solutions {isRtl ? <span className="text-cyan-400">| حلول جوريس تك</span> : <span className="text-cyan-400">| Sovereign Legal AI</span>}
                 </span>
                 <span className="text-[9px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-1.5 py-0.5 rounded-md">
-                  {i18n.language === 'ar' ? 'المنصة الموحدة' : i18n.language === 'fr' ? 'Plateforme Unifiée' : i18n.language === 'de' ? 'Einheitliche Plattform' : i18n.language === 'es' ? 'Plataforma Unificada' : i18n.language === 'zh' ? '统一平台' : i18n.language === 'tr' ? 'Birleşik Platform' : 'Unified Platform'}
+                  {l('المنصة الموحدة', 'Unified Platform')}
                 </span>
               </div>
               <span className="text-[9px] font-sans text-slate-500 dark:text-slate-400 block font-bold tracking-wider uppercase mt-0.5">
-                {i18n.language === 'ar' ? 'المنظومة القانونية والذكاء الاصطناعي الشامل' : i18n.language === 'fr' ? 'ÉCOSYSTÈME JURIDIQUE IA COMPLET' : i18n.language === 'de' ? 'VOLLSTÄNDIGES KI-RECHTSÖKOSYSTEM' : i18n.language === 'es' ? 'ECOSISTEMA LEGAL INTEGRAL CON IA' : i18n.language === 'zh' ? '主权AI全栈法律生态系统' : i18n.language === 'tr' ? 'YAPAY ZEKA DESTEKLİ HUKUK EKOSİSTEMİ' : 'AI-POWERED LEGAL ECOSYSTEM'}
+                {l('المنظومة القانونية والذكاء الاصطناعي الشامل', 'Sovereign Legal Intelligence & Contract OS')}
               </span>
             </div>
           </Link>

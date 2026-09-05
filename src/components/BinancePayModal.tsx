@@ -5,6 +5,7 @@ import {
   QrCode, AlertCircle, ExternalLink
 } from 'lucide-react';
 import { activateUserSubscription, BillingTransaction } from '../lib/financialGateway';
+import { supabase } from '../lib/supabaseClient';
 import DigitalInvoiceModal from './DigitalInvoiceModal';
 import { trackBinancePayEvent } from '../lib/marketingTracker';
 
@@ -84,29 +85,36 @@ export default function BinancePayModal({
     setIsProcessing(true);
     trackBinancePayEvent('payment_submitted', { amountUSD: packagePrice, email: subscriberEmail });
     try {
-      let planId: 'startup' | 'sme' | 'enterprise' = 'startup';
-      const pkgLower = packageName.toLowerCase();
-      if (pkgLower.includes('enterprise') || packagePrice >= 250) {
-        planId = 'enterprise';
-      } else if (pkgLower.includes('sme') || packagePrice >= 100) {
-        planId = 'sme';
-      } else {
-        planId = 'startup';
+      // Record in Supabase payments table as pending review
+      const refId = binanceTxId.trim() || `BPAY-${Date.now()}`;
+      await supabase.from('payments').insert({
+        amount: packagePrice,
+        status: 'قيد المراجعة والتدقيق المالي (Pending Audit)',
+        paypal_order_id: refId,
+        user_email: subscriberEmail.trim(),
+        payment_method: 'Binance Pay (USDT)',
+      });
+
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        await supabase.from('payment_receipts').insert({
+          transaction_ref: refId,
+          claimed_amount: packagePrice,
+          claimed_date: new Date().toISOString(),
+          plan_name: packageName,
+          status: 'pending_review',
+          user_id: user?.id || null,
+        });
+      } catch (receiptErr) {
+        console.warn('payment_receipts optional audit log note:', receiptErr);
       }
 
-      const { transaction } = await activateUserSubscription({
-        userEmail: subscriberEmail.trim(),
-        userName: subscriberName.trim() || subscriberEmail.split('@')[0],
-        planId,
-        paymentMethod: 'Binance Pay (USDT)',
-        amountUSD: packagePrice,
-      });
-      trackBinancePayEvent('payment_verified', { amountUSD: packagePrice, txId: transaction.id, email: subscriberEmail });
-      setActiveInvoice(transaction);
+      trackBinancePayEvent('payment_submitted', { amountUSD: packagePrice, txId: refId, email: subscriberEmail });
       setIsCompleted(true);
     } catch (err) {
       trackBinancePayEvent('payment_failed', { amountUSD: packagePrice, error: String(err) });
-      console.error('Binance Pay activation error:', err);
+      console.error('Binance Pay submission error:', err);
+      alert(isRtl ? 'حدث خطأ في تسجيل عملية التحويل، يرجى المحاولة لاحقاً.' : 'Error recording payment transfer. Please try again.');
     } finally {
       setIsProcessing(false);
     }
@@ -400,41 +408,41 @@ export default function BinancePayModal({
                 {isProcessing ? (
                   <>
                     <div className="w-4 h-4 border-2 border-slate-900 border-t-transparent rounded-full animate-spin" />
-                    {isRtl ? 'جاري التحقق والتفعيل الفوري...' : 'Verifying & Activating...'}
+                    {isRtl ? 'جاري تسجيل المعاملة للتدقيق...' : 'Submitting for Audit...'}
                   </>
                 ) : (
                   <>
                     <Lock className="w-4 h-4" />
-                    {isRtl ? 'تأكيد التحويل وتفعيل الاشتراك فوراً' : 'Confirm & Activate Subscription'}
+                    {isRtl ? 'تسجيل بيانات التحويل للتدقيق المالي' : 'Submit Transfer for Verification'}
                   </>
                 )}
               </button>
             </div>
           )}
 
-          {/* ── SUCCESS STATE ── */}
+          {/* ── SUCCESS / PENDING STATE ── */}
           {isCompleted && (
             <div className="px-6 py-10 flex flex-col items-center text-center space-y-4">
-              <div className="w-16 h-16 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center">
-                <CheckCircle2 className="w-9 h-9 text-emerald-400" />
+              <div className="w-16 h-16 rounded-full bg-amber-500/15 border border-amber-500/30 flex items-center justify-center">
+                <CheckCircle2 className="w-9 h-9 text-amber-400" />
               </div>
               <h3 className="text-xl font-black text-slate-900 dark:text-white">
-                {isRtl ? '✅ تم تفعيل الاشتراك بنجاح!' : '✅ Subscription Activated!'}
+                {isRtl ? '📋 تم إرسال بيانات الدفع للمراجعة' : '📋 Payment Submitted for Verification'}
               </h3>
-              <p className="text-sm text-slate-500 dark:text-slate-400 font-mono max-w-xs">
+              <p className="text-sm text-slate-500 dark:text-slate-400 font-sans max-w-sm leading-relaxed">
                 {isRtl
-                  ? `تم إرسال الفاتورة الرسمية ومفاتيح الوصول إلى: ${subscriberEmail}`
-                  : `Invoice & access keys sent to: ${subscriberEmail}`}
+                  ? `تم تسجيل معرف التحويل (${binanceTxId || 'Binance Pay'}) لحساب ${subscriberEmail}. سيقوم فريق التدقيق المالي بمطابقة التحويل في محفظة بينانس وتفعيل اشتراكك في باقة (${packageName}) فوراً.`
+                  : `Transaction reference (${binanceTxId || 'Binance Pay'}) recorded for ${subscriberEmail}. Our financial audit team will verify the payment in Binance Pay and activate your (${packageName}) plan.`}
               </p>
-              <div className="flex items-center gap-1.5 text-xs text-emerald-500 font-bold bg-emerald-500/10 border border-emerald-500/20 px-4 py-2 rounded-full">
+              <div className="flex items-center gap-1.5 text-xs text-amber-500 font-bold bg-amber-500/10 border border-amber-500/20 px-4 py-2 rounded-full">
                 <ShieldCheck className="w-3.5 h-3.5" />
-                {isRtl ? 'معاملة محمية ومشفرة بالكامل' : 'Secured & Encrypted Transaction'}
+                {isRtl ? 'قيد التدقيق والتحقق المالي' : 'Under Financial Verification'}
               </div>
               <button
                 onClick={onClose}
-                className="mt-2 px-8 py-3 rounded-2xl bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 dark:hover:bg-slate-700 text-white font-black text-sm transition-colors border border-slate-700"
+                className="mt-2 px-8 py-3 rounded-2xl bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 dark:hover:bg-slate-700 text-white font-black text-sm transition-colors border border-slate-700 cursor-pointer"
               >
-                {isRtl ? 'إغلاق ومتابعة المنصة' : 'Close & Continue'}
+                {isRtl ? 'إغلاق ومتابعة المنصة' : 'Close & Return to Platform'}
               </button>
             </div>
           )}

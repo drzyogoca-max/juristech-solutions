@@ -649,7 +649,6 @@ export default function VideoHubPage() {
                   key={key}
                   onClick={() => {
                     setSelectedLang(key);
-                    i18n.changeLanguage(key);
                     aiVoiceSynthesizer.unlockAudio();
                   }}
                   className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer ${

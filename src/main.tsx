@@ -19,10 +19,14 @@ if ('caches' in window) {
   });
 }
 
+import { LocaleProvider } from './context/LocaleContext';
+
 const rootElement = document.getElementById('root')!;
 const app = (
   <BrowserRouter>
-    <App />
+    <LocaleProvider>
+      <App />
+    </LocaleProvider>
   </BrowserRouter>
 );
 

@@ -190,14 +190,14 @@ ${policyInput}`;
       icon: Globe,
       content: `
         <div class="p-4 bg-cyan-500/10 border border-cyan-500/30 rounded-xl mb-3">
-          <p class="font-bold text-cyan-400">Global Headquarters & Primary Legal Jurisdiction:</p>
-          <p>JurisTech Solutions is headquartered in <strong>Amman, Hashemite Kingdom of Jordan</strong>. All operations, technology rights, and statutory agreements are subject to the exclusive jurisdiction of the courts of the Hashemite Kingdom of Jordan.</p>
+          <p class="font-bold text-cyan-400">Independent Legal Technology SaaS Platform:</p>
+          <p>JurisTech Solutions is an independent legal technology SaaS platform engineered by Senior Legal Counsel & Chief AI Architect Dr. Mohammed Mostafa (Contact: Drzyogo.ca@gmail.com | +201126674337). All proprietary models, codebases, and intellectual property are protected under applicable international IP conventions.</p>
         </div>
       `,
       contentAr: `
         <div class="p-4 bg-cyan-500/10 border border-cyan-500/30 rounded-xl mb-3">
-          <p class="font-bold text-cyan-400">المقر الرئيسي والولاية القضائية الحصرية:</p>
-          <p>يقع المقر التشغيلي الرئيسي لمنصة JurisTech Solutions في <strong>المملكة الأردنية الهاشمية — عمّان</strong>. وتخضع المنصة وجميع اتفاقياتها ونصوصها التشغيلية وحماية الملكية الفكرية حصرياً لاختصاص محاكم المملكة الأردنية الهاشمية والقوانين والأنظمة الأردنية النافذة (مثل قانون حماية حق المؤلف رقم 22 والقوانين ذات الصلة).</p>
+          <p class="font-bold text-cyan-400">كيان برمجيات تقني قانوني مستقل (Legal Tech SaaS):</p>
+          <p>تُعد منصة JurisTech Solutions منظومة برمجيات تقنية قانونية سحابية مستقلة، تم تطويرها وهندستها بإشراف المستشار القانوني د. محمد مصطفى (تواصل: Drzyogo.ca@gmail.com | هاتف: 201126674337+). وتعتبر كافة الأصول البرمجية والنماذج الذكية وحقوق الملكية الفكرية ملكية تكنولوجية خاصة ومحمية قانونياً.</p>
         </div>
       `
     },
@@ -280,17 +280,17 @@ ${policyInput}`;
       icon: Globe,
       content: `
         <div class="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl mb-3">
-          <p class="font-bold text-emerald-400">Official Legal Headquarters & Governing Law:</p>
-          <p><strong>The global headquarters of JurisTech Solutions is established in Amman, Hashemite Kingdom of Jordan.</strong></p>
+          <p class="font-bold text-emerald-400">Platform Identity & Operational Governance:</p>
+          <p><strong>JurisTech Solutions operates as a cloud-based, cross-border legal engineering SaaS platform.</strong></p>
         </div>
-        <p>The use of JurisTech Solutions, its contracts, and digital services is governed by and construed in accordance with the statutory laws, e-transaction regulations, and commercial codes of the Hashemite Kingdom of Jordan. The competent courts in Amman, Jordan shall have exclusive jurisdiction over any legal disputes.</p>
+        <p>The platform provides multi-jurisdictional compliance tools covering GCC, Egypt, US, and international UNCITRAL/ICC frameworks. Contract generation and execution are subject to the agreed governing law designated in each respective customer agreement or selected jurisdiction.</p>
       `,
       contentAr: `
         <div class="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl mb-3">
-          <p class="font-bold text-emerald-400">المقر الرئيسي والتشريع الحاكم للمنصة:</p>
-          <p><strong>يقع المقر الرئيسي والمركز القانوني الإقليمي لمنصة JurisTech Solutions في العاصمة عمّان — المملكة الأردنية الهاشمية.</strong></p>
+          <p class="font-bold text-emerald-400">هوية المنصة وحوكمة العمليات التقنية:</p>
+          <p><strong>تعمل منصة JurisTech Solutions كمنظومة سحابية دولية لحلول وهندسة البرمجيات القانونية (SaaS).</strong></p>
         </div>
-        <p>يخضع استخدام منصة JurisTech Solutions وكافة عقودها وخدماتها التقنية لأحكام التشريعات والأنظمة النافذة في المملكة الأردنية الهاشمية (بما فيها قانون المعاملات الإلكترونية وقانون الشركات). وتنعقد الولاية القضائية الحصرية لنظر أي نزاعات أمام المحاكم المختصة في مدينة عمّان — المملكة الأردنية الهاشمية.</p>
+        <p>توفر المنصة أدوات التدقيق والامتثال متعددة الولايات القضائية (دول مجلس التعاون الخليجي، مصر، الولايات المتحدة، والمعايير الدولية UNCITRAL/ICC). وتخضع العقود والاتفاقيات المولدة للقانون المختار والمحدد في كل وثيقة على حدة وفق إرادة المتعاقدين.</p>
       `
     }
   ];

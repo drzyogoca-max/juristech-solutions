@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Zap, CheckCircle, FileText, Lock, ShieldCheck, CheckCircle2, AlertTriangle, ArrowRight, X, Sparkles, Building2 } from 'lucide-react';
-import { activateUserSubscription } from '../lib/financialGateway';
+import { supabase } from '../lib/supabaseClient';
 
 export interface InstaPayModalProps {
   isOpen: boolean;
@@ -60,18 +60,34 @@ export default function InstaPayModal({
     setError('');
 
     try {
-      // Activate subscription in Financial Gateway
-      await activateUserSubscription({
-        userEmail: subscriberEmail.trim(),
-        planId: packageId === 'enterprise' ? 'enterprise' : packageId === 'sme' ? 'sme' : 'startup',
-        paymentMethod: 'Bank Wire SWIFT',
-        amountUSD: packagePrice,
+      // Record payment in Supabase payments table with pending verification status
+      await supabase.from('payments').insert({
+        amount: packagePrice,
+        status: 'قيد المراجعة والتدقيق المالي (Pending Audit)',
+        paypal_order_id: senderNameOrReference.trim(),
+        user_email: subscriberEmail.trim(),
+        payment_method: 'InstaPay Egypt',
       });
+
+      // Also record in payment_receipts if table is available
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        await supabase.from('payment_receipts').insert({
+          transaction_ref: senderNameOrReference.trim(),
+          claimed_amount: packagePrice,
+          claimed_date: new Date().toISOString(),
+          plan_name: packageName,
+          status: 'pending_review',
+          user_id: user?.id || null,
+        });
+      } catch (receiptErr) {
+        console.warn('payment_receipts optional audit log note:', receiptErr);
+      }
 
       setSuccess(true);
       if (onSuccess) onSuccess();
     } catch (err: any) {
-      setError(err.message || (isRtl ? 'حدث خطأ في تأكيد المعاملة' : 'Error confirming transaction'));
+      setError(err.message || (isRtl ? 'حدث خطأ في تسجيل المعاملة' : 'Error submitting transaction for audit'));
     } finally {
       setSubmitting(false);
     }
@@ -90,10 +106,10 @@ export default function InstaPayModal({
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="text-lg font-black text-white">
-                  {isRtl ? 'الدفع الفوري عبر إنستا باي (InstaPay Egypt)' : 'Instant Payment via InstaPay Egypt'}
+                  {isRtl ? 'الدفع عبر إنستا باي (InstaPay Egypt)' : 'Payment via InstaPay Egypt'}
                 </h3>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                  {isRtl ? 'تفعيل فوري' : 'Instant Activation'}
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                  {isRtl ? 'مراجعة وتأكيد' : 'Audit & Verification'}
                 </span>
               </div>
               <p className="text-xs text-slate-400 mt-0.5">
@@ -109,25 +125,28 @@ export default function InstaPayModal({
           </button>
         </div>
 
-        {/* SUCCESS SCREEN */}
+        {/* SUCCESS / PENDING AUDIT SCREEN */}
         {success ? (
-          <div className="p-6 rounded-2xl bg-emerald-950/60 border border-emerald-500/40 text-center space-y-4 animate-in zoom-in-95 duration-300">
+          <div className="p-6 rounded-2xl bg-slate-950 border border-emerald-500/40 text-center space-y-4 animate-in zoom-in-95 duration-300">
             <div className="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center mx-auto">
-              <CheckCircle2 className="w-10 h-10 animate-bounce" />
+              <CheckCircle2 className="w-10 h-10" />
             </div>
             <h4 className="text-xl font-black text-white">
-              {isRtl ? 'تم تسجيل المعاملة وتفعيل الاشتراك بنجاح! 🎉' : 'Transaction Registered & Subscription Activated! 🎉'}
+              {isRtl ? 'تم تسجيل إشعار التحويل بنجاح! 📋' : 'Transfer Details Submitted for Verification! 📋'}
             </h4>
             <p className="text-xs text-slate-300 leading-relaxed">
               {isRtl
-                ? `تم إشعار الإدارة ومطابقة التحويل عبر رقم إنستا باي ${INSTAPAY_PHONE}. تم فتح كافة الصلاحيات لحسابك (${subscriberEmail}).`
-                : `Notification sent to administration. Account (${subscriberEmail}) unlocked with full unlimited access.`}
+                ? `تم تسجيل طلبك برقم المرجع: (${senderNameOrReference}). سيقوم فريق التدقيق المالي بالتحقق من الإيداع عبر إنستا باي لحسابك (${subscriberEmail}) وتفعيل اشتراكك في باقة (${packageName}) خلال ساعات العمل.`
+                : `Your transfer reference (${senderNameOrReference}) has been registered. Financial audit will verify the deposit for (${subscriberEmail}) and activate your (${packageName}) subscription promptly.`}
             </p>
+            <div className="p-3 rounded-xl bg-slate-900 border border-amber-500/30 text-xs text-amber-300 font-mono">
+              {isRtl ? 'الحالة الحالية: قيد المراجعة والتدقيق المالي' : 'Current Status: Pending Financial Audit'}
+            </div>
             <button
               onClick={onClose}
               className="w-full py-3 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs transition-all shadow-lg cursor-pointer"
             >
-              {isRtl ? 'الذهاب للوحة التحكم وبدء الاستخدام' : 'Go to Dashboard & Launch Platform'}
+              {isRtl ? 'إغلاق ومتابعة المنصة' : 'Close & Return to Platform'}
             </button>
           </div>
         ) : (

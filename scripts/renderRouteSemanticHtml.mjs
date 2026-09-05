@@ -321,7 +321,7 @@ export function getSemanticHtmlForRoute(routePath) {
           <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl text-right max-w-4xl mx-auto my-8 space-y-3">
             <h3 class="text-lg font-bold text-sky-400 m-0">طرق الدفع والفوترة المعتمدة:</h3>
             <p class="text-xs text-slate-300 leading-relaxed">
-              ندعم الدفع الآمن المباشر عبر بطاقات Visa و Mastercard و Apple Pay عبر بوابة <strong>Stripe Live</strong> المعتمدة، إضافة إلى الدفع الفوري عبر بوابة <strong>Tap Payments</strong>، والتحويل البنكي وحوالات InstaPay الرسمية لحسابات الشركات مع إصدار الفواتير الأولية المعتمدة (Proforma Invoices).
+              ندعم الدفع الإلكتروني المعتمد عبر بوابة <strong>Paddle</strong> والبطاقات الائتمانية، والعملات الرقمية عبر <strong>Binance Pay</strong>، والتحويل الفوري عبر <strong>InstaPay</strong> لحسابات مصر، إضافة إلى التحويل البنكي وحوالات <strong>SWIFT</strong> الرسمية لحسابات الشركات مع إصدار الفواتير الأولية المعتمدة (Proforma Invoices).
             </p>
           </div>
         </section>
@@ -409,16 +409,16 @@ export function getSemanticHtmlForRoute(routePath) {
         <!-- Platform Live Metrics -->
         <section class="grid grid-cols-2 sm:grid-cols-4 gap-4 my-8">
           <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl text-center shadow">
-            <span class="text-2xl sm:text-3xl font-black text-sky-400 block">1,000,000+</span>
-            <span class="text-xs text-slate-400">عقد معتمد بالنظام</span>
+            <span class="text-2xl sm:text-3xl font-black text-sky-400 block">أرشيف شامل</span>
+            <span class="text-xs text-slate-400">نماذج وعقود قانونية معتمدة</span>
           </div>
           <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl text-center shadow">
-            <span class="text-2xl sm:text-3xl font-black text-emerald-400 block">84,200+</span>
-            <span class="text-xs text-slate-400">تقرير مخاطر تم إنجازه</span>
+            <span class="text-2xl sm:text-3xl font-black text-emerald-400 block">فحص ذكي فوري</span>
+            <span class="text-xs text-slate-400">تدقيق المخاطر والبنود التعسفية</span>
           </div>
           <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl text-center shadow">
-            <span class="text-2xl sm:text-3xl font-black text-purple-400 block">450,000+</span>
-            <span class="text-xs text-slate-400">استشارة ذكاء اصطناعي</span>
+            <span class="text-2xl sm:text-3xl font-black text-purple-400 block">تأصيل فقهي وقضائي</span>
+            <span class="text-xs text-slate-400">استشارات ذكاء اصطناعي 24/7</span>
           </div>
           <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl text-center shadow">
             <span class="text-2xl sm:text-3xl font-black text-amber-400 block">35+ دولة</span>
@@ -437,8 +437,8 @@ export function getSemanticHtmlForRoute(routePath) {
               <p class="text-xs text-slate-400 leading-relaxed m-0">استشارات قانونية فورية وتأصيل تشريعي شامل عبر 35+ اختصاص قضائي وفق أنظمة الشركات والعمل والتحكيم التجاري.</p>
             </article>
             <article class="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow">
-              <h3 class="text-base font-bold text-emerald-400 mb-2"><a href="/repository" class="text-emerald-400 hover:text-emerald-300 no-underline">2. مستودع العقود والنماذج المليوني</a></h3>
-              <p class="text-xs text-slate-400 leading-relaxed m-0">مكتبة شاملة تضم أكثر من 1,000,000 عقد ونموذج قانوني معتمد ومحدث لعام 2026 مع توليد فوري وتصدير Word و PDF.</p>
+              <h3 class="text-base font-bold text-emerald-400 mb-2"><a href="/repository" class="text-emerald-400 hover:text-emerald-300 no-underline">2. مستودع العقود والبيانات القانونية</a></h3>
+              <p class="text-xs text-slate-400 leading-relaxed m-0">مكتبة شاملة تضم آلاف العقود والنماذج القانونية المعتمدة والمحدثة لعام 2026 مع توليد فوري وتصدير Word و PDF.</p>
             </article>
             <article class="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow">
               <h3 class="text-base font-bold text-purple-400 mb-2"><a href="/templates" class="text-purple-400 hover:text-purple-300 no-underline">3. استوديو الصياغة والنماذج التفاعلية</a></h3>
@@ -477,8 +477,8 @@ export function getSemanticHtmlForRoute(routePath) {
               <p class="text-xs text-slate-400 leading-relaxed m-0">صفقات الاستحواذ وعقود نقل الملكية الفكرية والتراخيص الدولية المتوافقة مع قوانين الملكية الفكرية العالمية WIPO.</p>
             </article>
             <article class="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow">
-              <h3 class="text-base font-bold text-purple-400 mb-2"><a href="/lead-radar" class="text-purple-400 hover:text-purple-300 no-underline">12. مرصد رادار استقطاب العملاء والجذب</a></h3>
-              <p class="text-xs text-slate-400 leading-relaxed m-0">تتبع وتحليل تفاعلات العملاء المحتملين والجذب التلقائي بالذكاء الاصطناعي للمكاتب القانونية والشركات الاستشارية.</p>
+              <h3 class="text-base font-bold text-purple-400 mb-2"><a href="/deal-shield" class="text-purple-400 hover:text-purple-300 no-underline">12. ديل شيلد 360™ وتشخيص الاحتياج</a></h3>
+              <p class="text-xs text-slate-400 leading-relaxed m-0">محاكاة التعارض وفحص أمان الصفقات والتشخيص الاستباقي لاحتياجات الشركة القانونية والعقود الإلزامية.</p>
             </article>
           </div>
         </section>

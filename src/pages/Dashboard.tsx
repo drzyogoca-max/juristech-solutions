@@ -97,12 +97,12 @@ export default function Dashboard() {
   const [loadingMetrics, setLoadingMetrics] = useState(!dashboardMetricsCache);
   const [stats, setStats] = useState(
     dashboardMetricsCache?.stats || {
-      contracts: 1000000,
-      riskReports: 84200,
-      aiRequests: 450000,
-      activeUsers: 12500,
-      totalVisits: 890000,
-      disbursements: 50000,
+      contracts: 0,
+      riskReports: 0,
+      aiRequests: 0,
+      activeUsers: 0,
+      totalVisits: 0,
+      disbursements: 0,
     }
   );
 
@@ -140,15 +140,15 @@ export default function Dashboard() {
         const reviewQueue = getReviewQueueItems();
 
         const verifiedReceiptsCount = reviewQueue.filter(q => q.status === 'approved').length;
-        const totalSubscribersCount = crmLeads.length + archivedLeads.length + 10;
-        const totalPayingCustomersCount = (paymentsCount || 0) + verifiedReceiptsCount + 4;
-        const totalVisitsCount = Math.max(visitorSummary.totalPageViewsCount || 0, (contractsCount || 0) + (riskCount || 0) + (chatCount || 0) + 195);
-        const totalPaidAmount = (verifiedPayments || []).reduce((acc, p) => acc + (p.amount || 0), 0) + (verifiedReceiptsCount * 174) + 50000;
+        const totalSubscribersCount = crmLeads.length + archivedLeads.length;
+        const totalPayingCustomersCount = (paymentsCount || 0) + verifiedReceiptsCount;
+        const totalVisitsCount = visitorSummary.totalPageViewsCount || ((contractsCount || 0) + (riskCount || 0) + (chatCount || 0));
+        const totalPaidAmount = (verifiedPayments || []).reduce((acc, p) => acc + (p.amount || 0), 0) + (verifiedReceiptsCount * 139);
 
         const newStats = {
-          contracts: Math.max(1000000 + (contractsCount || 0), 1000014),
-          riskReports: Math.max(84200 + (riskCount || 0), 84210),
-          aiRequests: Math.max(450000 + (chatCount || 0), 450120),
+          contracts: contractsCount || 0,
+          riskReports: riskCount || 0,
+          aiRequests: chatCount || 0,
           activeUsers: totalSubscribersCount,
           totalVisits: totalVisitsCount,
           disbursements: totalPaidAmount,

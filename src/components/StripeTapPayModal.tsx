@@ -74,10 +74,10 @@ export default function StripeTapPayModal({ plan, onClose, onSuccess }: StripeTa
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="font-black text-white text-base sm:text-lg">
-                  {isRtl ? 'بوابة الدفع الإلكتروني المباشر (Stripe & Tap)' : 'Live Card Gateway (Stripe & Tap)'}
+                  {isRtl ? 'بوابة البطاقات الائتمانية (Sandbox / بيئة تجريبية)' : 'Card Gateway (Sandbox / Test Mode)'}
                 </h3>
-                <span className="text-[10px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
-                  Live Active
+                <span className="text-[10px] bg-amber-500/20 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
+                  Sandbox Test
                 </span>
               </div>
               <p className="text-xs text-slate-400">
@@ -95,19 +95,29 @@ export default function StripeTapPayModal({ plan, onClose, onSuccess }: StripeTa
 
         {/* Modal Content */}
         <div className="p-6 space-y-6">
+          {/* Sandbox Notice Banner */}
+          <div className="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-200 flex items-start gap-2.5">
+            <span className="text-amber-400 font-bold text-sm">⚠️</span>
+            <p className="leading-relaxed">
+              {isRtl
+                ? 'بيئة محاكاة واختبار (Sandbox): هذه النافذة مخصصة لاختبار تكامل البوابات. للدفع الفعلي المباشر للإنتاج، يرجى استخدام بوابة Paddle.com المعتمدة أو التحويل البنكي SWIFT أو بينانس باي.'
+                : 'Sandbox Simulation: This modal is for payment gateway testing. For verified production payments, please use official Paddle.com checkout, Bank Wire SWIFT, or Binance Pay.'}
+            </p>
+          </div>
+
           {isSuccess ? (
             /* Success View */
             <div className="text-center py-6 space-y-4">
-              <div className="w-16 h-16 bg-emerald-500/20 border border-emerald-500/40 rounded-full flex items-center justify-center mx-auto text-emerald-400 animate-bounce">
+              <div className="w-16 h-16 bg-emerald-500/20 border border-emerald-500/40 rounded-full flex items-center justify-center mx-auto text-emerald-400">
                 <CheckCircle2 className="w-10 h-10" />
               </div>
               <h4 className="text-xl font-black text-white">
-                {isRtl ? 'تم عملية الدفع والتفعيل بنجاح! ⚡' : 'Payment Successfully Processed! ⚡'}
+                {isRtl ? 'تمت المحاكاة التجريبية بنجاح! ⚡' : 'Sandbox Simulation Completed! ⚡'}
               </h4>
               <p className="text-sm text-slate-300 max-w-sm mx-auto">
                 {isRtl
-                  ? `تم الخصم بنجاح وتفعيل اشتراك ${plan.name} لحسابك فوراً وتوليد الفاتورة الرقمية الحية.`
-                  : `Payment cleared via live gateway. Your ${plan.name} subscription is now active.`}
+                  ? `تم تسجيل اختبار المحاكاة التجريبية لباقة ${plan.name} وتوليد السجل التجريبي بنجاح.`
+                  : `Sandbox simulation test completed for ${plan.name}.`}
               </p>
 
               <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 text-xs font-mono space-y-2 text-right" dir="ltr">
@@ -121,15 +131,15 @@ export default function StripeTapPayModal({ plan, onClose, onSuccess }: StripeTa
                 </div>
                 <div className="flex justify-between text-slate-400">
                   <span>Gateway Status:</span>
-                  <strong className="text-blue-400">VERIFIED LIVE (Stripe / Tap)</strong>
+                  <strong className="text-amber-400">SANDBOX TEST (Stripe / Tap Simulator)</strong>
                 </div>
               </div>
 
               <button
                 onClick={onClose}
-                className="w-full py-3.5 px-6 rounded-2xl bg-emerald-500 hover:bg-emerald-400 font-extrabold text-slate-950 transition-all shadow-lg text-sm cursor-pointer"
+                className="w-full py-3.5 px-6 rounded-2xl bg-amber-500 hover:bg-amber-400 font-extrabold text-slate-950 transition-all shadow-lg text-sm cursor-pointer"
               >
-                {isRtl ? 'الانتقال إلى لوحة التحكم والبدء' : 'Go to Dashboard'}
+                {isRtl ? 'إغلاق ومتابعة المنصة' : 'Close & Return'}
               </button>
             </div>
           ) : (

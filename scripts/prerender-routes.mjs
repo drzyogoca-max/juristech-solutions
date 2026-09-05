@@ -59,10 +59,10 @@ const ROUTE_METADATA = {
     descriptionEn: 'Bank-grade encrypted legal document repository with automated expiry alerts, OCR search, and multi-jurisdictional compliance tracking.',
   },
   '/repository': {
-    titleAr: 'مستودع العقود والنماذج الذكية المعتمدة | JurisTech',
-    titleEn: '1,000,000+ Certified Smart Legal Templates | JurisTech',
-    descriptionAr: 'أضخم مستودع وخزينة عقود ونماذج قانونية بالشرق الأوسط والعالم: تصفح أكثر من 1,000,000 عقد وتوليد وتدقيق فوري بالذكاء الاصطناعي مطابق للأنظمة الدولية.',
-    descriptionEn: 'Explore 1,000,000+ certified legal contracts, corporate templates, M&A agreements, employment contracts, and SaaS SLAs grounded in global laws.',
+    titleAr: 'مستودع العقود والبيانات القانونية المؤسسية | JurisTech',
+    titleEn: 'Enterprise Legal Contracts & Document Repository | JurisTech',
+    descriptionAr: 'مستودع وخزينة العقود والوثائق القانونية المعتمدة: تصفح وتوليد وتدقيق فوري بالذكاء الاصطناعي مطابق للأنظمة الدولية.',
+    descriptionEn: 'Explore certified legal contracts, corporate templates, M&A agreements, and SaaS SLAs grounded in global laws.',
   },
   '/templates': {
     titleAr: 'استوديو النماذج والتوليد القانوني | JurisTech',
@@ -105,6 +105,12 @@ const ROUTE_METADATA = {
     titleEn: 'DealShield 360™ | AI Client Need Discovery & Cross-Border Deal Simulator',
     descriptionAr: 'استكشاف الاحتياجات القانونية الماسة للشركات ومحاكاة التعارض التشريعي بين الأنظمة الدولية (السعودية، الإمارات، أمريكا ديلاوير، بريطانيا) وصياغة البنود التوافقية الموحدة.',
     descriptionEn: 'Sovereign AI enterprise need diagnostic intake and cross-border statutory clash simulator for M&A, VC joint ventures, and international commercial deals.',
+  },
+  '/acquisition': {
+    titleAr: 'استشارات الاندماج والاستحواذ الذكي | JurisTech Solutions',
+    titleEn: 'M&A Deal Room & Acquisition Intelligence | JurisTech',
+    descriptionAr: 'منظومة حوكمة صفقات الاندماج والاستحواذ، الفحص النافي للجهالة، وتقييم مخاطر التوافق التنظيمي للمؤسسات.',
+    descriptionEn: 'M&A intelligence, virtual deal room workflows, due diligence auditing, and regulatory risk scoring.',
   },
   '/youtube-studio': {
     titleAr: 'إدارة قناة يوتيوب الرسمية والنشر اليومي | JurisTech YouTube Studio',
@@ -313,35 +319,28 @@ function prerenderRoutes() {
       },
       {
         '@context': 'https://schema.org',
-        '@type': 'LegalService',
-        'name': 'JurisTech Solutions - Sovereign AI Legal Tech',
+        '@type': 'SoftwareApplication',
+        'name': 'JurisTech Solutions',
+        'alternateName': 'JurisTech Sovereign AI LegalTech SaaS',
+        'applicationCategory': 'BusinessApplication',
+        'operatingSystem': 'All modern web browsers (Chrome, Safari, Edge, Firefox)',
         'url': BASE_URL,
-        'logo': `${BASE_URL}/favicon.ico`,
+        'logo': `${BASE_URL}/logo.png`,
         'image': `${BASE_URL}/og-image.jpg`,
-        'priceRange': '$$$',
-        'telephone': '+201126674337',
-        'email': 'Drzyogo.ca@gmail.com',
-        'address': {
-          '@type': 'PostalAddress',
-          'streetAddress': 'King Fahd Road, Al Olaya',
-          'addressLocality': 'Riyadh',
-          'addressRegion': 'Riyadh Region',
-          'postalCode': '12211',
-          'addressCountry': 'SA'
+        'description': 'Independent cross-border Legal Tech SaaS platform providing AI contract analysis, certified smart drafting, risk scoring radar, and enterprise compliance workflows.',
+        'offers': {
+          '@type': 'AggregateOffer',
+          'priceCurrency': 'USD',
+          'lowPrice': '49.00',
+          'highPrice': '349.00',
+          'offerCount': '3'
         },
-        'geo': {
-          '@type': 'GeoCoordinates',
-          'latitude': 24.7136,
-          'longitude': 46.6753
+        'provider': {
+          '@type': 'Organization',
+          'name': 'JurisTech Solutions',
+          'url': BASE_URL
         },
-        'openingHoursSpecification': {
-          '@type': 'OpeningHoursSpecification',
-          'dayOfWeek': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-          'opens': '00:00',
-          'closes': '23:59'
-        },
-        'areaServed': ['SA', 'AE', 'EG', 'QA', 'KW', 'JO', 'BH', 'OM', 'IQ', 'DE', 'FR', 'ES', 'GB', 'CN', 'IN', 'ZA'],
-        'serviceType': 'صياغة العقود بالذكاء الاصطناعي, تأسيس الشركات والامتثال التشريعي, فحص وتدقيق مخاطر العقود, المستشار القانوني الذكي الفوري'
+        'softwareRequirements': 'Modern web browser with JavaScript enabled'
       },
       {
         '@context': 'https://schema.org',

@@ -149,27 +149,8 @@ export async function openPaddleCheckout(options: PaddleCheckoutOptions = {}): P
   const paddle = await loadPaddleScript();
 
   if (!paddle || !paddle.Checkout) {
-    // If Paddle CDN is blocked or unavailable in network, open direct fallback checkout modal
-    console.warn('[Paddle.js] Direct overlay unavailable, executing fallback activation.');
-    const result = await activateUserSubscription({
-      userEmail,
-      userName,
-      planId: planTier,
-      paymentMethod: 'Credit Card / Gateway',
-      amountUSD,
-    });
-    savePaddleSubscription({
-      customerId: `ctm_demo_${Date.now()}`,
-      subscriptionId: `sub_paddle_demo_${Date.now()}`,
-      priceId,
-      status: 'active',
-      currentPeriodStart: new Date().toISOString(),
-      currentPeriodEnd: new Date(Date.now() + 30 * 86400000).toISOString(),
-      cancelAtPeriodEnd: false,
-      updatedAt: new Date().toISOString(),
-    });
-    if (options.onSuccess) options.onSuccess(result);
-    return;
+    console.error('[Paddle.js] Secure checkout gateway unavailable.');
+    throw new Error('Payment gateway service is currently unreachable. Please check your connection, disable ad-blockers, or use an alternative payment method (Bank Wire / Binance Pay / InstaPay).');
   }
 
   paddle.Checkout.open({

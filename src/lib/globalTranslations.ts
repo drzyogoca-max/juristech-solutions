@@ -142,7 +142,8 @@ export interface GlobalUITexts {
     independenceDisclaimer: string;
     copyright: string;
     allRightsReserved: string;
-    ammanHq: string;
+    headquarters: string;
+    ammanHq?: string;
   };
 }
 
@@ -258,10 +259,11 @@ export const GLOBAL_TRANSLATIONS: Record<SupportedLang, GlobalUITexts> = {
       exportPdf: 'تحميل العقد بصيغة PDF',
     },
     footer: {
-      independenceDisclaimer: 'إشعار واستقلالية قانونية رسمية: منصة JurisTech Solutions هي كيان تقني مستقل 100% يدار ومسجل في المملكة الأردنية الهاشمية (عمّان). المنصة ليست فرعاً أو مرتبطة بشركة LegalShield USA أو علامات تجارية أخرى.',
+      independenceDisclaimer: 'إشعار واستقلالية قانونية: منصة JurisTech Solutions هي منصة برمجيات تقنية قانونية (Legal Tech SaaS) مستقلة 100%. المنصة ليست مكتب محاماة ولا تقدم استشارات أو تمثيلاً قانونياً ينشئ علاقة بين محامٍ وموكل، وليست فرعاً أو مرتبطة بشركة LegalShield USA أو علامات تجارية أخرى.',
       copyright: 'جميع الحقوق محفوظة قانونياً — حلول التقنية القانونية السيادية.',
       allRightsReserved: 'جميع الحقوق محفوظة',
-      ammanHq: 'المقر الإقليمي: المملكة الأردنية الهاشمية - عمّان',
+      headquarters: 'منصة حلول التقنية القانونية السيادية',
+      ammanHq: 'منصة حلول التقنية القانونية السيادية',
     },
   },
 
@@ -376,10 +378,11 @@ export const GLOBAL_TRANSLATIONS: Record<SupportedLang, GlobalUITexts> = {
       exportPdf: 'Download PDF',
     },
     footer: {
-      independenceDisclaimer: 'Official Notice & Trademark Independence: JurisTech Solutions is a 100% sovereign, independent technology platform headquartered in Amman, Jordan. Not affiliated with LegalShield USA or other trademark entities.',
+      independenceDisclaimer: 'Official Notice & Statutory Independence: JurisTech Solutions is an independent cross-border Legal Tech SaaS platform. JurisTech is not a law firm, does not provide legal representation or formal legal advice, and is not affiliated with LegalShield USA or other trademark entities.',
       copyright: 'All Rights Reserved — Sovereign LegalTech Software.',
       allRightsReserved: 'All Rights Reserved',
-      ammanHq: 'Regional HQ: Amman, Hashemite Kingdom of Jordan',
+      headquarters: 'JurisTech Solutions | Cross-Border Legal Tech Platform',
+      ammanHq: 'JurisTech Solutions | Cross-Border Legal Tech Platform',
     },
   },
 
@@ -494,10 +497,11 @@ export const GLOBAL_TRANSLATIONS: Record<SupportedLang, GlobalUITexts> = {
       exportPdf: 'PDF herunterladen',
     },
     footer: {
-      independenceDisclaimer: 'Offizieller Hinweis zur Unabhängigkeit: JurisTech Solutions ist eine 100% unabhängige Technologieplattform mit Hauptsitz in Amman, Jordanien. Keine Verbindung zu LegalShield USA oder Drittmarken.',
+      independenceDisclaimer: 'Offizieller Hinweis zur Unabhängigkeit: JurisTech Solutions ist eine unabhängige grenzüberschreitende LegalTech-SaaS-Plattform. JurisTech ist keine Anwaltskanzlei, bietet keine Rechtsvertretung und steht in keiner Verbindung zu LegalShield USA oder Drittmarken.',
       copyright: 'Alle Rechte vorbehalten — Souveräne LegalTech-Software.',
       allRightsReserved: 'Alle Rechte vorbehalten',
-      ammanHq: 'Regionaler Hauptsitz: Amman, Haschemitisches Königreich Jordanien',
+      headquarters: 'JurisTech Solutions | Grenzüberschreitende LegalTech-Plattform',
+      ammanHq: 'JurisTech Solutions | Grenzüberschreitende LegalTech-Plattform',
     },
   },
 
@@ -612,10 +616,11 @@ export const GLOBAL_TRANSLATIONS: Record<SupportedLang, GlobalUITexts> = {
       exportPdf: 'Télécharger PDF',
     },
     footer: {
-      independenceDisclaimer: 'Avis officiel d’indépendance : JurisTech Solutions est une plateforme technologique souveraine et indépendante à 100%, basée à Amman, Jordanie. Aucune affiliation avec LegalShield USA.',
+      independenceDisclaimer: 'Avis officiel d’indépendance : JurisTech Solutions est une plateforme SaaS LegalTech transfrontalière indépendante. JurisTech n’est pas un cabinet d’avocats, ne fournit pas de représentation juridique et n’est pas affiliée à LegalShield USA.',
       copyright: 'Tous droits réservés — Logiciel LegalTech Souverain.',
       allRightsReserved: 'Tous droits réservés',
-      ammanHq: 'Siège régional : Amman, Royaume hachémite de Jordanie',
+      headquarters: 'JurisTech Solutions | Plateforme LegalTech Transfrontalière',
+      ammanHq: 'JurisTech Solutions | Plateforme LegalTech Transfrontalière',
     },
   },
 
@@ -730,10 +735,11 @@ export const GLOBAL_TRANSLATIONS: Record<SupportedLang, GlobalUITexts> = {
       exportPdf: 'Descargar PDF',
     },
     footer: {
-      independenceDisclaimer: 'Aviso oficial de independencia: JurisTech Solutions es una plataforma tecnológica 100% independiente con sede en Ammán, Jordania. Sin relación con LegalShield USA.',
+      independenceDisclaimer: 'Aviso oficial de independencia: JurisTech Solutions es una plataforma SaaS LegalTech transfronteriza independiente. JurisTech no es un bufete de abogados, no proporciona representación legal y no está afiliada a LegalShield USA.',
       copyright: 'Todos los derechos reservados — Software LegalTech Soberano.',
       allRightsReserved: 'Todos los derechos reservados',
-      ammanHq: 'Sede regional: Ammán, Reino Hachemita de Jordania',
+      headquarters: 'JurisTech Solutions | Plataforma LegalTech Transfronteriza',
+      ammanHq: 'JurisTech Solutions | Plataforma LegalTech Transfronteriza',
     },
   },
 
@@ -848,10 +854,11 @@ export const GLOBAL_TRANSLATIONS: Record<SupportedLang, GlobalUITexts> = {
       exportPdf: '下载PDF文档',
     },
     footer: {
-      independenceDisclaimer: '官方独立声明：JurisTech Solutions 是一家总部设在约旦安曼的100%独立主权科技平台。与美国LegalShield公司或其他商标实体无任何关联。',
+      independenceDisclaimer: '官方独立声明：JurisTech Solutions 是一家独立的跨境法律科技SaaS平台。JurisTech不是律师事务所，不提供正式法律代表或法律意见，与美国LegalShield公司无任何关联。',
       copyright: '版权所有 — 主权法律科技软件系统。',
       allRightsReserved: '版权所有',
-      ammanHq: '区域总部：约旦哈希姆王国 - 安曼',
+      headquarters: 'JurisTech Solutions | 跨境法律科技平台',
+      ammanHq: 'JurisTech Solutions | 跨境法律科技平台',
     },
   },
 
@@ -966,10 +973,11 @@ export const GLOBAL_TRANSLATIONS: Record<SupportedLang, GlobalUITexts> = {
       exportPdf: 'PDF İndir',
     },
     footer: {
-      independenceDisclaimer: 'Resmi Bağımsızlık Bildirimi: JurisTech Solutions, merkezi Ürdün’ün Amman kentinde bulunan %100 bağımsız egemen bir teknoloji platformudur. LegalShield USA ile hiçbir bağı yoktur.',
+      independenceDisclaimer: 'Resmi Bağımsızlık Bildirimi: JurisTech Solutions, bağımsız bir sınır ötesi LegalTech SaaS platformudur. JurisTech bir hukuk bürosu değildir, yasal temsil sağlamaz ve LegalShield USA ile hiçbir bağı yoktur.',
       copyright: 'Tüm Hakları Saklıdır — Egemen LegalTech Yazılımı.',
       allRightsReserved: 'Tüm Hakları Saklıdır',
-      ammanHq: 'Bölgesel Merkez: Amman, Ürdün Haşimi Krallığı',
+      headquarters: 'JurisTech Solutions | Sınır Ötesi Hukuk Teknolojileri Platformu',
+      ammanHq: 'JurisTech Solutions | Sınır Ötesi Hukuk Teknolojileri Platformu',
     },
   },
 };

@@ -19,7 +19,15 @@ import { SupportedLang, normalizeLanguage } from './languageHelper';
 export type { SupportedLang };
 export { normalizeLanguage };
 import { GLOBAL_TRANSLATIONS, GlobalUITexts } from './globalTranslations';
+import { useLocale } from '../context/LocaleContext';
 
+import enMessages from '../../messages/en.json';
+import arMessages from '../../messages/ar.json';
+import frMessages from '../../messages/fr.json';
+import esMessages from '../../messages/es.json';
+import deMessages from '../../messages/de.json';
+import trMessages from '../../messages/tr.json';
+import zhMessages from '../../messages/zh.json';
 
 import { legalLexiconEngine } from '../services/legalLexiconEvolutionEngine';
 
@@ -493,19 +501,191 @@ const DICTIONARY: Record<string, Record<SupportedLang, string>> = {
     zh: '官方认证企业赞助商',
     tr: 'Resmi Kurumsal Sponsor',
   },
+  'dealshield 360': {
+    ar: 'ديل شيلد 360™ وتشخيص الاحتياج',
+    en: 'DealShield 360™ & Need Diagnostic',
+    de: 'DealShield 360™ & Bedarfsdiagnose',
+    fr: 'DealShield 360™ et Diagnostic des Besoins',
+    es: 'DealShield 360™ y Diagnóstico de Necesidades',
+    zh: 'DealShield 360™与法律需求深度诊断',
+    tr: 'DealShield 360™ ve İhtiyaç Teşhisi',
+  },
+  'm&a deal intelligence': {
+    ar: 'استخبارات الاندماج والاستحواذ وحماية الاستثمار',
+    en: 'M&A Deal Intelligence & Takeover Defense',
+    de: 'M&A Deal Intelligence & Übernahmeschutz',
+    fr: 'Intelligence M&A & Protection des Investissements',
+    es: 'Inteligencia en M&A y Protección de Inversiones',
+    zh: '并购尽职调查与跨境投融资保护',
+    tr: 'Şirket Birleşme ve Devralma İstihbaratı',
+  },
+  'b2b proposals engine': {
+    ar: 'محرك عروض الصفقات والمناقصات B2B',
+    en: 'Enterprise B2B Proposals Engine',
+    de: 'B2B-Angebotsgenerator für Unternehmen',
+    fr: 'Moteur de Propositions Commerciales B2B',
+    es: 'Motor de Propuestas Comerciales B2B',
+    zh: '企业级B2B竞标方案智能引擎',
+    tr: 'Kurumsal B2B Teklif Motoru',
+  },
+  'dispute mediation': {
+    ar: 'محاكي التفاوض وفض النزاعات الذكي',
+    en: 'AI Negotiation & Dispute Mediation',
+    de: 'KI-Verhandlung & Streitbeilegung',
+    fr: 'Négociation IA & Médiation des Litiges',
+    es: 'Negociación IA y Mediación de Disputas',
+    zh: 'AI谈判模拟与商事争议调解',
+    tr: 'Yapay Zeka Müzakere ve Uyuşmazlık Çözümü',
+  },
+  'due diligence audit': {
+    ar: 'التدقيق الشامل والفحص النافي للجهالة',
+    en: 'Enterprise Due Diligence Audit',
+    de: 'Enterprise Due-Diligence-Prüfung',
+    fr: 'Audit Préalable et Due Diligence d’Entreprise',
+    es: 'Auditoría Due Diligence Empresarial',
+    zh: '企业全面尽职调查与法务风控审计',
+    tr: 'Kurumsal Durum Tespiti (Due Diligence) Denetimi',
+  },
+  'sovereign multi-llm': {
+    ar: 'منصة الذكاء الاصطناعي السيادي متعدد النماذج',
+    en: 'Sovereign Multi-LLM AI Hub',
+    de: 'Souveräner Multi-LLM-KI-Hub',
+    fr: 'Hub IA Souverain Multi-LLM',
+    es: 'Centro IA Soberano Multi-LLM',
+    zh: '主权多模型AI法务综合平台',
+    tr: 'Egemen Çok Modelli Yapay Zeka Merkezi',
+  },
+  'zero-knowledge vault': {
+    ar: 'الخزنة المشفرة بانعدام المعرفة ZK',
+    en: 'Encrypted Zero-Knowledge Vault',
+    de: 'Zero-Knowledge-Verschlüsselter Tresor',
+    fr: 'Coffre-fort Crypté à Connaissance Nulle',
+    es: 'Bóveda Cifrada de Conocimiento Cero',
+    zh: '零知识加密主权文档保管库',
+    tr: 'Sıfır Bilgi Şifreli Güvenli Kasa',
+  },
+  'strategic reports': {
+    ar: 'التقارير القانونية والتحليلات الاستراتيجية',
+    en: 'Strategic Legal Reports & Analytics',
+    de: 'Strategische Rechtsberichte & Analysen',
+    fr: 'Rapports Juridiques Stratégiques & Analyses',
+    es: 'Informes Jurídicos Estratégicos y Analítica',
+    zh: '战略法务深度分析报告与数据洞察',
+    tr: 'Stratejik Hukuki Raporlar ve Analitik',
+  },
+  'commercial arbitration': {
+    ar: 'التحكيم التجاري الدولي والمحاكاة القضائية',
+    en: 'International Commercial Arbitration Concierge',
+    de: 'Internationale Schiedsgerichtsbarkeit & Simulation',
+    fr: 'Conciergerie d’Arbitrage Commercial International',
+    es: 'Concierge de Arbitraje Comercial Internacional',
+    zh: '国际商事仲裁与模拟审判中心',
+    tr: 'Uluslararası Ticari Tahkim Masası',
+  },
+  'pricing plans': {
+    ar: 'خطط الأسعار والاشتراكات',
+    en: 'Pricing Plans & Subscriptions',
+    de: 'Preise & Abonnements',
+    fr: 'Tarifs et Abonnements',
+    es: 'Planes de Precios y Suscripciones',
+    zh: '价格方案与企业订阅',
+    tr: 'Fiyatlandırma ve Abonelik Planları',
+  },
+  'startup plan': {
+    ar: 'باقة الشركات الناشئة',
+    en: 'Startup Plan',
+    de: 'Startup-Tarif',
+    fr: 'Forfait Startup',
+    es: 'Plan Startup',
+    zh: '初创企业版',
+    tr: 'Girişim Planı',
+  },
+  'sme plan': {
+    ar: 'باقة الشركات المتوسطة (SME)',
+    en: 'SME Professional Plan',
+    de: 'KMU-Tarif',
+    fr: 'Forfait PME',
+    es: 'Plan PYME',
+    zh: '中型企业专业版',
+    tr: 'KOBİ Profesyonel Planı',
+  },
+  'enterprise plan': {
+    ar: 'باقة المؤسسات الكبرى',
+    en: 'Enterprise Sovereign Plan',
+    de: 'Enterprise-Tarif',
+    fr: 'Forfait Entreprise',
+    es: 'Plan Corporativo',
+    zh: '集团主权旗舰版',
+    tr: 'Kurumsal Egemen Plan',
+  },
+  'deal room plan': {
+    ar: 'باقة غرفة الصفقات والاستحواذ',
+    en: 'M&A Deal Room Plan',
+    de: 'M&A Deal-Room-Tarif',
+    fr: 'Forfait Deal Room M&A',
+    es: 'Plan Deal Room M&A',
+    zh: '并购交易室专属版',
+    tr: 'Birleşme ve Devralma İşlem Odası Planı',
+  },
+  'all rights reserved': {
+    ar: 'جميع الحقوق محفوظة',
+    en: 'All Rights Reserved',
+    de: 'Alle Rechte vorbehalten',
+    fr: 'Tous droits réservés',
+    es: 'Todos los derechos reservados',
+    zh: '版权所有 保留所有权利',
+    tr: 'Tüm hakları saklıdır',
+  },
+  'search contracts': {
+    ar: 'بحث في العقود والنماذج القانونية...',
+    en: 'Search contracts and legal templates...',
+    de: 'Verträge und rechtliche Vorlagen suchen...',
+    fr: 'Rechercher des contrats et modèles juridiques...',
+    es: 'Buscar contratos y plantillas jurídicas...',
+    zh: '搜索合同与专业法律模板...',
+    tr: 'Sözleşme ve yasal şablonlarda ara...',
+  },
+  'terms of service': {
+    ar: 'شروط الخدمة',
+    en: 'Terms of Service',
+    de: 'Nutzungsbedingungen',
+    fr: 'Conditions d’utilisation',
+    es: 'Términos de Servicio',
+    zh: '服务条款',
+    tr: 'Kullanım Şartları',
+  },
+  'privacy policy': {
+    ar: 'سياسة الخصوصية',
+    en: 'Privacy Policy',
+    de: 'Datenschutzrichtlinie',
+    fr: 'Politique de confidentialité',
+    es: 'Política de Privacidad',
+    zh: '隐私政策',
+    tr: 'Gizlilik Politikası',
+  },
 };
 
 // Pre-indexed reverse lookup map from GLOBAL_TRANSLATIONS for instant O(1) multi-language resolution
 const REVERSE_GLOBAL_MAP: Map<string, Record<SupportedLang, string>> = new Map();
 
-// Build reverse index from GLOBAL_TRANSLATIONS at module load
+// Build reverse index from GLOBAL_TRANSLATIONS and root messages at module load
 (function initGlobalTranslationIndex() {
   try {
     const allLangs: SupportedLang[] = ['ar', 'en', 'de', 'fr', 'es', 'zh', 'tr'];
     const baseAr = GLOBAL_TRANSLATIONS.ar;
     const baseEn = GLOBAL_TRANSLATIONS.en;
 
-    const traverse = (objAr: any, objEn: any, path: string[] = []) => {
+    const allMsgSources: Record<SupportedLang, any> = {
+      ar: arMessages.translation || arMessages,
+      en: enMessages.translation || enMessages,
+      de: deMessages.translation || deMessages,
+      fr: frMessages.translation || frMessages,
+      es: esMessages.translation || esMessages,
+      zh: zhMessages.translation || zhMessages,
+      tr: trMessages.translation || trMessages,
+    };
+
+    const traverse = (objAr: any, objEn: any, sourceRoot: any, path: string[] = []) => {
       if (!objAr || typeof objAr !== 'object') return;
       for (const k of Object.keys(objAr)) {
         const valAr = objAr[k];
@@ -513,7 +693,7 @@ const REVERSE_GLOBAL_MAP: Map<string, Record<SupportedLang, string>> = new Map()
         if (typeof valAr === 'string') {
           const entry: Record<SupportedLang, string> = {} as any;
           allLangs.forEach(lang => {
-            let cur = GLOBAL_TRANSLATIONS[lang];
+            let cur = sourceRoot[lang];
             for (const p of path) { cur = cur?.[p]; }
             entry[lang] = cur?.[k] || (lang === 'ar' ? valAr : valEn || valAr);
           });
@@ -522,12 +702,16 @@ const REVERSE_GLOBAL_MAP: Map<string, Record<SupportedLang, string>> = new Map()
           const normEn = (valEn || '').trim().toLowerCase();
           if (normAr) REVERSE_GLOBAL_MAP.set(normAr, entry);
           if (normEn) REVERSE_GLOBAL_MAP.set(normEn, entry);
+          const normK = k.trim().toLowerCase();
+          if (normK && !REVERSE_GLOBAL_MAP.has(normK)) REVERSE_GLOBAL_MAP.set(normK, entry);
         } else if (typeof valAr === 'object') {
-          traverse(valAr, objEn?.[k], [...path, k]);
+          traverse(valAr, objEn?.[k], sourceRoot, [...path, k]);
         }
       }
     };
-    traverse(baseAr, baseEn, []);
+
+    traverse(baseAr, baseEn, GLOBAL_TRANSLATIONS, []);
+    traverse(allMsgSources.ar, allMsgSources.en, allMsgSources, []);
   } catch (e) {
     console.warn('[Translator] Reverse index init bypassed:', e);
   }
@@ -636,25 +820,10 @@ export function formatCurrency(
  * Universal React Hook for 100% Reactive Multi-Language Support
  */
 export function usePlatformLocale() {
+  const localeCtx = useLocale();
   const { i18n, t } = useTranslation();
-  const [currentLang, setCurrentLang] = useState<SupportedLang>(normalizeLanguage(i18n.language));
-
-  useEffect(() => {
-    setCurrentLang(normalizeLanguage(i18n.language));
-  }, [i18n.language]);
-
-  useEffect(() => {
-    const onCustomLangChange = (e: Event) => {
-      const customEvent = e as CustomEvent<{ lang: string }>;
-      if (customEvent.detail?.lang) {
-        setCurrentLang(normalizeLanguage(customEvent.detail.lang));
-      }
-    };
-    window.addEventListener('juristech_lang_change', onCustomLangChange);
-    return () => window.removeEventListener('juristech_lang_change', onCustomLangChange);
-  }, []);
-
-  const isRtl = currentLang === 'ar';
+  const currentLang = (localeCtx?.currentLocale || normalizeLanguage(i18n.language)) as SupportedLang;
+  const isRtl = localeCtx ? localeCtx.isRtl : currentLang === 'ar';
   const gt = GLOBAL_TRANSLATIONS[currentLang] || GLOBAL_TRANSLATIONS.en;
 
   const l = (arText: string, enText: string): string => {
@@ -675,6 +844,14 @@ export function usePlatformLocale() {
     return formatCurrency(amount, currency, currentLang);
   };
 
+  const changeLocale = (target: SupportedLang) => {
+    if (localeCtx) {
+      localeCtx.changeLocale(target as any);
+    } else {
+      i18n.changeLanguage(target);
+    }
+  };
+
   /**
    * Feed new client/visitor statutory interactions into legal language self-learning
    */
@@ -692,6 +869,7 @@ export function usePlatformLocale() {
     formatCurr,
     t,
     i18n,
+    changeLocale,
     learnFromClientInteraction,
     legalLexiconEngine,
   };

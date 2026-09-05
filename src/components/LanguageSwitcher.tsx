@@ -26,13 +26,16 @@ import {
   normalizeLanguageCode,
 } from '../i18n';
 
+import { useLocale } from '../context/LocaleContext';
+
 interface Props {
   className?: string;
   variant?: 'navbar' | 'compact' | 'footer' | 'settings';
 }
 
 export default function LanguageSwitcher({ className = '', variant = 'navbar' }: Props) {
-  const { i18n, t } = useTranslation();
+  const { t } = useTranslation();
+  const { currentLocale, changeLocale, isRtl } = useLocale();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -41,9 +44,8 @@ export default function LanguageSwitcher({ className = '', variant = 'navbar' }:
   const dropdownRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  const currentLang = normalizeLanguageCode(i18n.language || (typeof window !== 'undefined' ? localStorage.getItem('juristech.locale') || 'en' : 'en'));
+  const currentLang = currentLocale;
   const currentMeta = SUPPORTED_LANGUAGES[currentLang] || SUPPORTED_LANGUAGES.en;
-  const isRtl = isRtlLanguage(currentLang);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -63,16 +65,10 @@ export default function LanguageSwitcher({ className = '', variant = 'navbar' }:
       return;
     }
 
-    // 1. Change i18n language
-    i18n.changeLanguage(targetCode);
+    // 1. Centralized LocaleContext update (handles i18n, storage, html lang & dir, event)
+    changeLocale(targetCode);
 
-    // 2. Persist preference
-    persistLocalePreference(targetCode);
-
-    // 3. Update document language & direction
-    setDocumentLanguage(targetCode);
-
-    // 4. Update URL route if using locale prefixes, preserving path & search params
+    // 2. Update URL route if using locale prefixes, preserving path & search params
     const currentPath = location.pathname;
     const currentSearch = location.search;
     const currentHash = location.hash;
