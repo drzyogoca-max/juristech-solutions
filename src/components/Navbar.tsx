@@ -12,6 +12,7 @@ import LanguageSwitcher from './LanguageSwitcher';
 import ThemeSwitcher from './ThemeSwitcher';
 import AlertBell from './AlertBell';
 import { useAuth } from '../lib/authContext';
+import { useSubscription } from '../hooks/useSubscription';
 import { detectVisitorJurisdiction, JurisdictionInfo } from '../lib/jurisdiction';
 import { usePlatformLocale } from '../lib/universalTranslator';
 
@@ -72,6 +73,7 @@ export default function Navbar() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { isAdmin, user, signOut } = useAuth();
+  const { tier } = useSubscription();
 
   const [isOpen, setIsOpen] = useState(false);
   const [showMoreMenu, setShowMoreMenu] = useState(false);
@@ -256,12 +258,31 @@ export default function Navbar() {
               </button>
             ) : (
               <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-800/90 border border-cyan-500/30 text-xs text-white shadow-sm">
-                <div className="w-5 h-5 rounded-full bg-gradient-to-tr from-cyan-400 to-indigo-500 text-slate-950 font-black text-[10px] flex items-center justify-center select-none shrink-0">
-                  {(user.email?.[0] || 'U').toUpperCase()}
-                </div>
-                <span className="hidden md:inline font-mono text-[11px] text-slate-300 max-w-[110px] truncate" title={user.email}>
-                  {user.email?.split('@')[0]}
-                </span>
+                <Link
+                  to="/billing"
+                  className="flex items-center gap-1.5 hover:opacity-85 transition-opacity"
+                  title={l('بوابة العميل والفوترة', 'Customer Billing Portal')}
+                >
+                  <div className="w-5 h-5 rounded-full bg-gradient-to-tr from-cyan-400 to-indigo-500 text-slate-950 font-black text-[10px] flex items-center justify-center select-none shrink-0">
+                    {(user.email?.[0] || 'U').toUpperCase()}
+                  </div>
+                  <span className="hidden md:inline font-mono text-[11px] text-slate-300 max-w-[110px] truncate" title={user.email}>
+                    {user.email?.split('@')[0]}
+                  </span>
+                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold font-mono border ${
+                    tier === 'Enterprise'
+                      ? 'bg-amber-500/20 border-amber-500/40 text-amber-300'
+                      : tier === 'SMEs'
+                      ? 'bg-indigo-500/20 border-indigo-500/40 text-indigo-300'
+                      : tier === 'Startup'
+                      ? 'bg-cyan-500/20 border-cyan-500/40 text-cyan-300'
+                      : tier === 'Pro'
+                      ? 'bg-purple-500/20 border-purple-500/40 text-purple-300'
+                      : 'bg-slate-700/50 border-slate-600/50 text-slate-400'
+                  }`}>
+                    {tier}
+                  </span>
+                </Link>
                 <button
                   onClick={() => signOut()}
                   className="p-1 rounded-lg hover:bg-slate-700 text-slate-400 hover:text-rose-400 transition-colors cursor-pointer"
