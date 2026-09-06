@@ -24,6 +24,7 @@ import SEO from '../components/SEO';
 import { searchRAGDatabase } from '../data/ragDatabase';
 import { trackChatInteraction } from '../lib/marketingTracker';
 import { getSystemContextForLanguage } from '../lib/languageHelper';
+import { useSaaS } from '../context/SaaSContext';
 
 
 interface Message {
@@ -429,6 +430,7 @@ export default function ChatPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { contractState, setContractData } = useContract();
+  const { organization, workspace } = useSaaS();
 
   async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -649,7 +651,13 @@ ${contractText}`;
     setStatus('idle');
     setShowPaywall(false);
   
-    supabase.from('chat_messages').insert({ session_id: sessionId, role: 'user', content }).then();
+    supabase.from('chat_messages').insert({
+      session_id: sessionId,
+      role: 'user',
+      content,
+      organization_id: organization?.id || null,
+      workspace_id: workspace?.id || null,
+    }).then();
   
     const activeJurisdiction = overrideJurisdiction !== undefined ? overrideJurisdiction : jurisdiction;
     const countryCode = activeJurisdiction?.countryCode || 'GLOBAL';
@@ -718,7 +726,13 @@ ${contractText}`;
       try { localStorage.setItem(STORAGE_KEY, String(newUsed)); } catch { /* ignore */ }
       setMessages(prev => [...prev, { role: 'assistant', content: result, lang: activeLang, showCTA: true }]);
       setStatus('connected');
-      supabase.from('chat_messages').insert({ session_id: sessionId, role: 'assistant', content: result }).then();
+      supabase.from('chat_messages').insert({
+        session_id: sessionId,
+        role: 'assistant',
+        content: result,
+        organization_id: organization?.id || null,
+        workspace_id: workspace?.id || null,
+      }).then();
       if (newUsed >= FREE_QUERY_LIMIT) {
         setTimeout(() => setShowSubscriptionModal(true), 2000);
       }

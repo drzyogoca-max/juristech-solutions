@@ -80,6 +80,8 @@ export function hasPermission(role: SaaSRole | null | undefined, permission: Saa
   return permissions ? permissions.includes(permission) : false;
 }
 
+export const canRolePerform = hasPermission;
+
 /**
  * Get all permissions assigned to a canonical role.
  */
@@ -87,6 +89,8 @@ export function getPermissionsForRole(role: SaaSRole | null | undefined): SaaSPe
   if (!role) return [];
   return [...(ROLE_PERMISSIONS[role] || [])];
 }
+
+export const getRolePermissions = getPermissionsForRole;
 
 /**
  * Backward compatibility bridge:

@@ -17,9 +17,11 @@ import SEO from '../components/SEO';
 import { ContractAnalysisEngine, Deep8AxisAuditReport, AuditAxisResult } from '../services/contractAnalysisEngine';
 import VisualRedlineDiffModal from '../components/VisualRedlineDiffModal';
 import { usePlatformLocale } from '../lib/universalTranslator';
+import { useSaaS } from '../context/SaaSContext';
 
 export default function RiskPage() {
   const { l, isRtl } = usePlatformLocale();
+  const { organization, workspace } = useSaaS();
   const { contractState, setContractData, updateAuditResults, clearContractData } = useContract();
 
   const [contractText, setContractText] = useState(contractState.extractedText || '');
@@ -111,6 +113,8 @@ export default function RiskPage() {
           risk_score: report.overallScore,
           missing_clauses: report.axes.map(a => a.axisNameEn),
           recommendations: report.strategicDealRecommendationsEn,
+          organization_id: organization?.id || null,
+          workspace_id: workspace?.id || null,
         });
       } catch {}
     } catch (err) {

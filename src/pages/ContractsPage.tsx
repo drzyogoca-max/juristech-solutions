@@ -29,6 +29,7 @@ import { matchNicheTopic } from '../lib/contracts/nicheTopicDatabase';
 import { getJurisdictionProfile, enforceStrictJurisdictionText } from '../lib/jurisdictionResolver';
 import { usePlatformLocale, formatNumber } from '../lib/universalTranslator';
 import { Link, useSearchParams } from 'react-router-dom';
+import { useSaaS } from '../context/SaaSContext';
 
 // ── MAJOR GLOBAL JURISDICTION HUBS ──────────────────────────────────────────
 export const GLOBAL_JURISDICTION_PILLS = [
@@ -138,6 +139,7 @@ interface AutoAuditReport {
 export default function ContractsPage({ initialTab }: { initialTab?: 'studio' | 'vault' }) {
   const { l, isRtl, formatNum, formatCurr, i18n } = usePlatformLocale();
   const [searchParams, setSearchParams] = useSearchParams();
+  const { organization, workspace } = useSaaS();
 
   // Active View Tab: 'studio' (AI Drafting) vs 'vault' (1M+ Repository)
   const [activeTab, setActiveTab] = useState<'studio' | 'vault'>(
@@ -365,6 +367,8 @@ Language: ${i18n.language === 'ar' ? 'Arabic (العربية الفصحى الق
         party_b: partyB,
         contract_type: selectedType,
         content: finalizedContract,
+        organization_id: organization?.id || null,
+        workspace_id: workspace?.id || null,
       });
 
     } catch (err) {

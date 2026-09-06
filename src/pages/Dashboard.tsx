@@ -21,6 +21,7 @@ import { crmService } from '../services/crmService';
 import { getReviewQueueItems } from '../lib/reviewQueueService';
 import { getActiveGlobalTranslations } from '../lib/globalTranslations';
 import { usePlatformLocale } from '../lib/universalTranslator';
+import { useSaaS } from '../context/SaaSContext';
 
 import WorkflowDashboard from '../components/WorkflowDashboard';
 import DashboardChatbotMagnet from '../components/DashboardChatbotMagnet';
@@ -79,6 +80,7 @@ export default function Dashboard() {
   const { l, isRtl, gt, t, i18n, formatNum, formatCurr } = usePlatformLocale();
   const navigate = useNavigate();
   const { isAdmin } = useAuth();
+  const { organization, workspace } = useSaaS();
   const { jurisdiction, adaptiveConfig } = useAdaptiveUI();
   const { contractState, clearContractData, setContractData, updateAuditResults } = useContract();
 
@@ -296,6 +298,8 @@ export default function Dashboard() {
         risk_score: parsed.riskScore,
         missing_clauses: parsed.items.map((i) => i.clause),
         recommendations: parsed.items.map((i) => (isRtl ? i.suggestedRedlineAr : i.suggestedRedlineEn)),
+        organization_id: organization?.id || null,
+        workspace_id: workspace?.id || null,
       });
     } catch (err) {
       console.error('Audit execution error:', err);

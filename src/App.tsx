@@ -11,6 +11,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import Footer from './components/Footer';
 import MobileBottomNav from './components/MobileBottomNav';
 import { AuthProvider, useAuth } from './lib/authContext';
+import { SaaSProvider } from './context/SaaSContext';
 import { ContractProvider } from './context/ContractContext';
 import { checkLibyaGeoBlock } from './lib/geoBlock';
 import UpdateBanner from './components/UpdateBanner';
@@ -727,9 +728,11 @@ export default function App() {
   return (
     <HelmetProvider>
       <AuthProvider>
-        <ContractProvider>
-          <MainAppContent />
-        </ContractProvider>
+        <SaaSProvider>
+          <ContractProvider>
+            <MainAppContent />
+          </ContractProvider>
+        </SaaSProvider>
       </AuthProvider>
     </HelmetProvider>
   );

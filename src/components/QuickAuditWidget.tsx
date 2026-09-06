@@ -10,6 +10,7 @@ import { extractPDFTextMultiStage, detectDocumentLanguage } from '../lib/pdfExtr
 import { useContract } from '../context/ContractContext';
 import { usePlatformLocale } from '../lib/universalTranslator';
 import VoiceInput from './VoiceInput';
+import { useSaaS } from '../context/SaaSContext';
 
 export interface QuickAuditResult {
   riskScore: number;
@@ -27,9 +28,10 @@ export interface QuickAuditResult {
   }>;
 }
 
-export default function QuickAuditWidget() {
+export default function QuickAuditWidget({ sourceFileName, sourceContractText, onAuditComplete }: any) {
   const { l, isRtl } = usePlatformLocale();
   const navigate = useNavigate();
+  const { organization, workspace } = useSaaS();
 
   const { contractState, setContractData, updateAuditResults, clearContractData } = useContract();
 
@@ -174,6 +176,8 @@ ${targetText}`;
         risk_score: parsed.riskScore,
         missing_clauses: parsed.items.map((i) => i.clause),
         recommendations: parsed.items.map((i) => (isTargetArabic ? i.suggestedRedlineAr : i.suggestedRedlineEn)),
+        organization_id: organization?.id || null,
+        workspace_id: workspace?.id || null,
       });
     } catch (err) {
       console.error('Widget audit execution error:', err);

@@ -23,6 +23,9 @@ const CompanyProfileModal = lazy(() => import('./CompanyProfileModal'));
 const LegalConsultationBookingModal = lazy(() => import('./LegalConsultationBookingModal'));
 const TwoFactorAuthModal = lazy(() => import('./TwoFactorAuthModal'));
 const RbacUserManagementModal = lazy(() => import('./RbacUserManagementModal'));
+const TeamManagementModal = lazy(() => import('./team/TeamManagementModal'));
+import OrganizationSwitcher from './tenancy/OrganizationSwitcher';
+import WorkspaceSwitcher from './tenancy/WorkspaceSwitcher';
 
 // ─── Nav link groups (Visitor & Subscriber separated) ────────────────────────
 const VISITOR_LINKS = [
@@ -78,6 +81,7 @@ export default function Navbar() {
   const [showConsultationModal, setShowConsultationModal] = useState(false);
   const [show2FAModal, setShow2FAModal] = useState(false);
   const [showRbacModal, setShowRbacModal] = useState(false);
+  const [showTeamModal, setShowTeamModal] = useState(false);
   const [activeJurisdiction, setActiveJurisdiction] = useState<JurisdictionInfo | null>(null);
   const [scrolled, setScrolled] = useState(false);
 
@@ -270,11 +274,11 @@ export default function Navbar() {
                           <span className="leading-snug">{gt.nav.security2FA}</span>
                         </button>
                         <button
-                          onClick={() => { setShowMoreMenu(false); setShowRbacModal(true); }}
+                          onClick={() => { setShowMoreMenu(false); setShowTeamModal(true); }}
                           className="flex items-center gap-2 text-xs font-semibold px-3 py-2 rounded-xl text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-all text-start"
                         >
                           <Users className="w-3.5 h-3.5 text-purple-400 shrink-0" />
-                          <span className="leading-snug">{gt.nav.rbacRoles}</span>
+                          <span className="leading-snug">{isRtl ? 'إدارة الفريق والصلاحيات' : 'Team Governance & RBAC'}</span>
                         </button>
                       </div>
                     </div>
@@ -382,6 +386,12 @@ export default function Navbar() {
 
           {/* ── Right Controls ────────────────────────────────────────────── */}
           <div className="flex items-center gap-2 shrink-0">
+            {/* Multi-Tenant Tenancy Switchers */}
+            <div className="hidden lg:flex items-center gap-1.5">
+              <OrganizationSwitcher />
+              <WorkspaceSwitcher />
+            </div>
+
             <AlertBell />
             <ThemeSwitcher />
             <LanguageSwitcher />
@@ -435,6 +445,12 @@ export default function Navbar() {
               >
                 <X className="w-5 h-5" />
               </button>
+            </div>
+
+            {/* Mobile Tenancy Switchers */}
+            <div className="p-3 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2">
+              <OrganizationSwitcher />
+              <WorkspaceSwitcher />
             </div>
 
             {/* Action buttons */}
@@ -579,6 +595,12 @@ export default function Navbar() {
           <RbacUserManagementModal
             isOpen={showRbacModal}
             onClose={() => setShowRbacModal(false)}
+          />
+        )}
+        {showTeamModal && (
+          <TeamManagementModal
+            isOpen={showTeamModal}
+            onClose={() => setShowTeamModal(false)}
           />
         )}
       </Suspense>
