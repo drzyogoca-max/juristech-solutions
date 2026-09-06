@@ -3,20 +3,21 @@ import { useLocation, Link } from 'react-router-dom';
 import {
   Home, MessageSquare, FileText, AlertTriangle, Shield,
   Lock, CreditCard, Video, BarChart3, HelpCircle, X,
-  Building2, Scale, Zap, Sparkles, ChevronRight
+  Building2, Scale, Zap, Sparkles, ChevronRight, User, LogIn, LogOut
 } from 'lucide-react';
 import TwoFactorAuthModal from './TwoFactorAuthModal';
+import CustomerAuthModal from './CustomerAuthModal';
 import { useAuth } from '../lib/authContext';
 import { usePlatformLocale } from '../lib/universalTranslator';
 
 export default function MobileBottomNav() {
   const { l, isRtl } = usePlatformLocale();
   const location = useLocation();
-  const { isAdmin } = useAuth();
-
+  const { isAdmin, user, signOut } = useAuth();
 
   const [showDrawer, setShowDrawer] = useState(false);
   const [show2FA, setShow2FA] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
 
   const currentPath = location.pathname;
 
@@ -130,6 +131,50 @@ export default function MobileBottomNav() {
               </button>
             </div>
 
+            {/* Customer Account / Login Banner */}
+            <div className="p-4 rounded-2xl bg-gradient-to-r from-slate-950 to-slate-900 border border-slate-800 flex items-center justify-between gap-3 shadow-lg">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-xl bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">
+                  <User className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="text-xs font-black text-white flex items-center gap-1.5">
+                    <span>{user ? (user.email?.split('@')[0] || l('حسابي', 'My Account')) : l('تسجيل الدخول / حساب جديد', 'Account Login / Sign Up')}</span>
+                    {user && (
+                      <span className="px-1.5 py-0.2 rounded text-[8px] bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-bold">CLIENT</span>
+                    )}
+                  </div>
+                  <p className="text-[10px] text-slate-400 mt-0.5 font-mono truncate max-w-[170px]">
+                    {user ? user.email : l('سجل دخولك لحفظ جلساتك ومستنداتك', 'Sign in to preserve sessions & docs')}
+                  </p>
+                </div>
+              </div>
+              {!user ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowDrawer(false);
+                    setShowAuthModal(true);
+                  }}
+                  className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 text-slate-950 text-xs font-black shrink-0 transition-all shadow-md active:scale-95 cursor-pointer flex items-center gap-1"
+                >
+                  <LogIn className="w-3.5 h-3.5" />
+                  <span>{l('دخول', 'Login')}</span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => {
+                    signOut();
+                  }}
+                  className="px-3 py-2 rounded-xl bg-slate-800 hover:bg-rose-500/20 text-slate-300 hover:text-rose-400 text-xs font-bold shrink-0 transition-all border border-slate-700 cursor-pointer flex items-center gap-1"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                  <span>{l('خروج', 'Logout')}</span>
+                </button>
+              )}
+            </div>
+
             {/* 2FA Quick Action Banner */}
             <div className="p-4 rounded-2xl bg-gradient-to-r from-cyan-950/60 to-indigo-950/60 border border-cyan-500/30 flex items-center justify-between gap-3 shadow-lg">
               <div className="flex items-center gap-3">
@@ -202,6 +247,14 @@ export default function MobileBottomNav() {
         <TwoFactorAuthModal
           isOpen={show2FA}
           onClose={() => setShow2FA(false)}
+        />
+      )}
+
+      {/* Customer Auth Modal */}
+      {showAuthModal && (
+        <CustomerAuthModal
+          isOpen={showAuthModal}
+          onClose={() => setShowAuthModal(false)}
         />
       )}
     </>

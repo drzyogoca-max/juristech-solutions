@@ -5,7 +5,8 @@ import {
   Home, MessageSquare, FileText, AlertTriangle, Library, Handshake, Users,
   Building2, Video, CreditCard, Headphones, Share2, Menu, X, Shield, ShieldCheck,
   BarChart3, DollarSign, Search, Scale, Globe, Phone, Crown, ChevronDown,
-  Sparkles, Zap, Star, ArrowRight, Lock, Palette, Mail, ShieldAlert, Edit3, Briefcase, Youtube, Layers
+  Sparkles, Zap, Star, ArrowRight, Lock, Palette, Mail, ShieldAlert, Edit3, Briefcase, Youtube, Layers,
+  LogIn, LogOut
 } from 'lucide-react';
 import LanguageSwitcher from './LanguageSwitcher';
 import ThemeSwitcher from './ThemeSwitcher';
@@ -24,6 +25,7 @@ const LegalConsultationBookingModal = lazy(() => import('./LegalConsultationBook
 const TwoFactorAuthModal = lazy(() => import('./TwoFactorAuthModal'));
 const RbacUserManagementModal = lazy(() => import('./RbacUserManagementModal'));
 const TeamManagementModal = lazy(() => import('./team/TeamManagementModal'));
+const CustomerAuthModal = lazy(() => import('./CustomerAuthModal'));
 import OrganizationSwitcher from './tenancy/OrganizationSwitcher';
 import WorkspaceSwitcher from './tenancy/WorkspaceSwitcher';
 
@@ -69,8 +71,7 @@ export default function Navbar() {
   const { l, isRtl, gt, t, i18n } = usePlatformLocale();
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const { isAdmin } = useAuth();
-
+  const { isAdmin, user, signOut } = useAuth();
 
   const [isOpen, setIsOpen] = useState(false);
   const [showMoreMenu, setShowMoreMenu] = useState(false);
@@ -82,6 +83,8 @@ export default function Navbar() {
   const [show2FAModal, setShow2FAModal] = useState(false);
   const [showRbacModal, setShowRbacModal] = useState(false);
   const [showTeamModal, setShowTeamModal] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authModalMode, setAuthModalMode] = useState<'login' | 'signup'>('login');
   const [activeJurisdiction, setActiveJurisdiction] = useState<JurisdictionInfo | null>(null);
   const [scrolled, setScrolled] = useState(false);
 
@@ -129,6 +132,13 @@ export default function Navbar() {
         {showThemeModal && <ThemeFontSelectorModal isOpen={showThemeModal} onClose={() => setShowThemeModal(false)} />}
         {showCompanyModal && <CompanyProfileModal isOpen={showCompanyModal} onClose={() => setShowCompanyModal(false)} />}
         {showConsultationModal && <LegalConsultationBookingModal isOpen={showConsultationModal} onClose={() => setShowConsultationModal(false)} />}
+        {showAuthModal && (
+          <CustomerAuthModal
+            isOpen={showAuthModal}
+            onClose={() => setShowAuthModal(false)}
+            initialMode={authModalMode}
+          />
+        )}
       </Suspense>
 
       {/* ─── Main Navbar ────────────────────────────────────────────────────── */}
@@ -231,6 +241,38 @@ export default function Navbar() {
               <span>{l('الفوترة', 'Billing')}</span>
             </Link>
 
+            {/* Customer Authentication Control */}
+            {!user ? (
+              <button
+                onClick={() => {
+                  setAuthModalMode('login');
+                  setShowAuthModal(true);
+                }}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-cyan-500/20 to-indigo-500/20 hover:from-cyan-500/30 hover:to-indigo-500/30 text-cyan-300 border border-cyan-500/40 text-xs font-bold transition-all shadow-sm cursor-pointer"
+                title={l('تسجيل الدخول أو إنشاء حساب جديد', 'Log In or Create Account')}
+              >
+                <LogIn className="w-3.5 h-3.5 text-cyan-400" />
+                <span>{l('تسجيل الدخول', 'Log In')}</span>
+              </button>
+            ) : (
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-800/90 border border-cyan-500/30 text-xs text-white shadow-sm">
+                <div className="w-5 h-5 rounded-full bg-gradient-to-tr from-cyan-400 to-indigo-500 text-slate-950 font-black text-[10px] flex items-center justify-center select-none shrink-0">
+                  {(user.email?.[0] || 'U').toUpperCase()}
+                </div>
+                <span className="hidden md:inline font-mono text-[11px] text-slate-300 max-w-[110px] truncate" title={user.email}>
+                  {user.email?.split('@')[0]}
+                </span>
+                <button
+                  onClick={() => signOut()}
+                  className="p-1 rounded-lg hover:bg-slate-700 text-slate-400 hover:text-rose-400 transition-colors cursor-pointer"
+                  title={l('تسجيل الخروج', 'Log Out')}
+                  aria-label={l('تسجيل الخروج', 'Log Out')}
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            )}
+
             {/* Unified "المزيد" (More Menu) Button & Dropdown */}
             <div className="relative">
               <button
@@ -280,6 +322,30 @@ export default function Navbar() {
                           <Users className="w-3.5 h-3.5 text-purple-400 shrink-0" />
                           <span className="leading-snug">{isRtl ? 'إدارة الفريق والصلاحيات' : 'Team Governance & RBAC'}</span>
                         </button>
+                        {!user ? (
+                          <button
+                            onClick={() => {
+                              setShowMoreMenu(false);
+                              setAuthModalMode('login');
+                              setShowAuthModal(true);
+                            }}
+                            className="flex items-center gap-2 text-xs font-semibold px-3 py-2 rounded-xl text-cyan-600 dark:text-cyan-400 hover:bg-cyan-500/10 transition-all text-start"
+                          >
+                            <LogIn className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                            <span className="leading-snug">{l('تسجيل الدخول / إنشاء حساب', 'Sign In / Create Account')}</span>
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => {
+                              setShowMoreMenu(false);
+                              signOut();
+                            }}
+                            className="flex items-center gap-2 text-xs font-semibold px-3 py-2 rounded-xl text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 transition-all text-start"
+                          >
+                            <LogOut className="w-3.5 h-3.5 text-rose-400 shrink-0" />
+                            <span className="leading-snug">{l('تسجيل الخروج من الحساب', 'Sign Out')}</span>
+                          </button>
+                        )}
                       </div>
                     </div>
 
