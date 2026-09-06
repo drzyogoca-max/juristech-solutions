@@ -2,12 +2,16 @@
  * src/hooks/useSubscription.ts
  * ─────────────────────────────────────────────────────────────────────────────
  * Subscription & Entitlement State Hook for JurisTech Solutions
- * Fully decoupled from third-party vendor SDKs. Provider-neutral state machine.
+ * Sprint 03B-1: Database-Backed Subscription Read Path
+ * 
+ * Single Source of Truth: public.subscriptions (filtered by auth.users.id)
+ * Fail-Safe Fallback: Free Trial (zero paid escalation on DB errors or guest sessions)
+ * Privileged Override: Admins & Lawyers maintain enterprise operational access
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../lib/authContext';
-import { getStoredSubscriptions, cancelSubscriptionNow, UserSubscription } from '../lib/financialGateway';
+import { supabase } from '../lib/supabaseClient';
 
 export interface SubscriptionState {
   isSubscriber: boolean;
@@ -22,51 +26,200 @@ export interface SubscriptionState {
   refresh: () => void;
 }
 
+export interface DbSubscription {
+  id: string;
+  user_id: string;
+  plan_id: string;
+  plan_name: string;
+  status: string;
+  receipt_id?: string | null;
+  activated_at?: string | null;
+  expires_at?: string | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+}
+
+/**
+ * Normalizes database plan_id / plan_name to canonical application plan tier
+ */
+export function mapPlanIdToTier(planId?: string | null, planName?: string | null): 'Free Trial' | 'Startup' | 'SMEs' | 'Pro' | 'Enterprise' {
+  const combined = `${planId || ''} ${planName || ''}`.trim().toLowerCase();
+  if (!combined) return 'Free Trial';
+  if (combined.includes('enterprise') || combined.includes('مؤسسات') || combined.includes('كبرى')) return 'Enterprise';
+  if (combined.includes('sme') || combined.includes('متوسطة')) return 'SMEs';
+  if (combined.includes('pro') || combined.includes('احترافي')) return 'Pro';
+  if (combined.includes('startup') || combined.includes('ناشئة') || combined.includes('صغرى') || combined.includes('رواد')) return 'Startup';
+  return 'Startup';
+}
+
+/**
+ * Maps database subscription status to UI display status
+ */
+export function mapDbStatus(status?: string | null): 'Active' | 'Expired' | 'Pending Renewal' | 'Cancelled' {
+  if (!status) return 'Expired';
+  const clean = status.trim().toLowerCase();
+  if (clean === 'active') return 'Active';
+  if (clean === 'cancelled' || clean === 'canceled') return 'Cancelled';
+  if (clean === 'pending' || clean === 'pending_renewal') return 'Pending Renewal';
+  if (clean === 'expired') return 'Expired';
+  return 'Expired';
+}
+
+/**
+ * Validates whether a database subscription record is active and unexpired
+ */
+export function isSubscriptionActive(sub: DbSubscription | null): boolean {
+  if (!sub) return false;
+  if (sub.status?.toLowerCase() !== 'active') return false;
+  if (!sub.expires_at) return true; // Null expires_at represents indefinite active term
+  const expiry = new Date(sub.expires_at);
+  if (isNaN(expiry.getTime())) return false;
+  return expiry.getTime() > Date.now();
+}
+
 export function useSubscription(): SubscriptionState {
   const { user, isAdmin, isLawyer } = useAuth();
   const [loading, setLoading] = useState(true);
-  const [activeSub, setActiveSub] = useState<UserSubscription | null>(null);
+  const [dbSub, setDbSub] = useState<DbSubscription | null>(null);
 
-  function evaluate() {
+  const userId = user?.id || null;
+  const isPrivilegedRole = Boolean(isAdmin || isLawyer);
+
+  const fetchSubscription = useCallback(async () => {
+    if (!userId) {
+      setDbSub(null);
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
-    const email = user?.email?.toLowerCase() || localStorage.getItem('juristech_last_login_email') || '';
-    const allSubs = getStoredSubscriptions();
-    const userSub = allSubs.find((s) => s.userEmail.toLowerCase() === email && s.status === 'Active') || allSubs.find((s) => s.status === 'Active') || null;
+    try {
+      const { data, error } = await supabase
+        .from('subscriptions')
+        .select('id, user_id, plan_id, plan_name, status, receipt_id, activated_at, expires_at, created_at, updated_at')
+        .eq('user_id', userId)
+        .maybeSingle();
 
-    setActiveSub(userSub);
-    setLoading(false);
-  }
+      if (error) {
+        console.warn('[useSubscription] DB read error, failing safe to free trial:', error.message);
+        setDbSub(null);
+      } else {
+        setDbSub(data as DbSubscription | null);
+      }
+    } catch (err: any) {
+      console.warn('[useSubscription] Unexpected query exception, failing safe to free trial:', err?.message || err);
+      setDbSub(null);
+    } finally {
+      setLoading(false);
+    }
+  }, [userId]);
 
   useEffect(() => {
-    evaluate();
+    let isMounted = true;
 
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === 'juristech_user_subscriptions') {
-        evaluate();
+    async function load() {
+      if (!userId) {
+        if (isMounted) {
+          setDbSub(null);
+          setLoading(false);
+        }
+        return;
       }
-    };
-    window.addEventListener('storage', handleStorage);
-    return () => window.removeEventListener('storage', handleStorage);
-  }, [user]);
 
-  // Admins & Lawyers have full access by role
-  const isPrivilegedRole = isAdmin || isLawyer;
-  const isLocalActive = activeSub?.status === 'Active' && activeSub.daysLeft > 0;
-  const isSubscriber = isPrivilegedRole || isLocalActive;
+      setLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from('subscriptions')
+          .select('id, user_id, plan_id, plan_name, status, receipt_id, activated_at, expires_at, created_at, updated_at')
+          .eq('user_id', userId)
+          .maybeSingle();
 
-  const tier = activeSub?.tier || (isPrivilegedRole ? 'Enterprise' : 'Free Trial');
-  const status = activeSub?.status || (isPrivilegedRole ? 'Active' : 'Expired');
-  const daysLeft = activeSub?.daysLeft || (isPrivilegedRole ? 365 : 0);
-  const startDate = activeSub?.startDate || new Date().toISOString().substring(0, 10);
-  const endDate = activeSub?.endDate || new Date(Date.now() + 30 * 86400000).toISOString().substring(0, 10);
-  const paymentMethod = activeSub?.paymentMethod || 'None';
-
-  async function cancelSubscription() {
-    if (activeSub) {
-      cancelSubscriptionNow(activeSub.id);
+        if (isMounted) {
+          if (error) {
+            console.warn('[useSubscription] DB read error, failing safe to free trial:', error.message);
+            setDbSub(null);
+          } else {
+            setDbSub(data as DbSubscription | null);
+          }
+        }
+      } catch (err: any) {
+        if (isMounted) {
+          console.warn('[useSubscription] Unexpected query exception, failing safe to free trial:', err?.message || err);
+          setDbSub(null);
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
     }
-    evaluate();
+
+    load();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [userId]);
+
+  // Entitlement Evaluation Logic
+  const isDbActive = isSubscriptionActive(dbSub);
+  const isSubscriber = isPrivilegedRole || isDbActive;
+
+  // Plan Tier Derivation
+  const rawTier = dbSub ? mapPlanIdToTier(dbSub.plan_id, dbSub.plan_name) : 'Free Trial';
+  const tier: 'Free Trial' | 'Startup' | 'SMEs' | 'Pro' | 'Enterprise' = isPrivilegedRole
+    ? 'Enterprise'
+    : (isDbActive ? rawTier : 'Free Trial');
+
+  // Status Derivation
+  const rawStatus = dbSub ? mapDbStatus(dbSub.status) : 'Expired';
+  const effectiveStatus = (dbSub && dbSub.status?.toLowerCase() === 'active' && !isDbActive)
+    ? 'Expired'
+    : rawStatus;
+  const status: 'Active' | 'Expired' | 'Pending Renewal' | 'Cancelled' = isPrivilegedRole
+    ? 'Active'
+    : (isDbActive ? 'Active' : effectiveStatus);
+
+  // Remaining Period Days
+  let daysLeft = 0;
+  if (isPrivilegedRole) {
+    daysLeft = 365;
+  } else if (isDbActive && dbSub) {
+    if (dbSub.expires_at) {
+      const expiry = new Date(dbSub.expires_at);
+      daysLeft = Math.max(0, Math.ceil((expiry.getTime() - Date.now()) / (1000 * 60 * 60 * 24)));
+    } else {
+      daysLeft = 365;
+    }
   }
+
+  // Dates
+  const startDate = dbSub?.activated_at
+    ? new Date(dbSub.activated_at).toISOString().substring(0, 10)
+    : new Date().toISOString().substring(0, 10);
+
+  const endDate = dbSub?.expires_at
+    ? new Date(dbSub.expires_at).toISOString().substring(0, 10)
+    : new Date(Date.now() + 30 * 86400000).toISOString().substring(0, 10);
+
+  const paymentMethod = dbSub?.receipt_id
+    ? 'Verified Payment Receipt'
+    : (isDbActive ? 'Active Subscription' : 'None');
+
+  const cancelSubscription = useCallback(async () => {
+    if (dbSub?.id && userId) {
+      try {
+        await supabase
+          .from('subscriptions')
+          .update({ status: 'cancelled', updated_at: new Date().toISOString() })
+          .eq('id', dbSub.id)
+          .eq('user_id', userId);
+      } catch (err) {
+        console.warn('[useSubscription] cancel subscription error:', err);
+      }
+    }
+    await fetchSubscription();
+  }, [dbSub?.id, userId, fetchSubscription]);
 
   return {
     isSubscriber,
@@ -78,6 +231,6 @@ export function useSubscription(): SubscriptionState {
     paymentMethod,
     loading,
     cancelSubscription,
-    refresh: evaluate,
+    refresh: fetchSubscription,
   };
 }
