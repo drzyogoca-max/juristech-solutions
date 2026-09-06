@@ -195,10 +195,14 @@ export default function AdminReceiptReviewPage() {
 
       if (supaData && Array.isArray(supaData)) {
         for (const s of supaData) {
-          const exists = items.some((item) => item.transaction_ref === s.transaction_ref || item.id === s.id);
-          if (!exists) {
+          const existingIndex = items.findIndex((item) => item.transaction_ref === s.transaction_ref || item.id === s.id);
+          if (existingIndex >= 0) {
+            if (s.id) {
+              items[existingIndex].id = s.id;
+            }
+          } else {
             items.push({
-              id: s.id || `SUPA-${Math.random().toString(36).substr(2, 6)}`,
+              id: s.id,
               transaction_ref: s.transaction_ref || 'SWIFT-ONLINE',
               user_email: s.user_id || 'client@firm.com',
               user_name: s.user_id ? s.user_id.split('@')[0] : 'Corporate User',
@@ -272,9 +276,30 @@ export default function AdminReceiptReviewPage() {
   async function handleApprove(item: EnhancedQueueItem) {
     setProcessingId(item.id);
     try {
-      await auditApproveReceipt(item.id, 'chairman@juristech.solutions (د. محمد مصطفى)');
-      showBannerMessage(isRtl ? `✅ تم اعتماد الإيصال ${item.transaction_ref} وتفعيل اشتراك العميل بنجاح!` : `✅ Receipt ${item.transaction_ref} approved & subscription activated!`);
-      await fetchReceipts();
+      const result = await auditApproveReceipt(item.id, 'Approved by Admin (د. محمد مصطفى)');
+      if (result.success) {
+        const planDisplay = result.plan_name || item.plan_name || 'Active Plan';
+        const msg = result.idempotent
+          ? (isRtl
+              ? `ℹ️ الإيصال ${item.transaction_ref} تم اعتماده مسبقاً (${planDisplay}).`
+              : `ℹ️ Receipt ${item.transaction_ref} was already approved (${planDisplay}).`)
+          : (isRtl
+              ? `✅ تم اعتماد الإيصال ${item.transaction_ref} وتفعيل اشتراك ${planDisplay} للعميل بنجاح!`
+              : `✅ Receipt ${item.transaction_ref} approved & ${planDisplay} subscription activated!`);
+        showBannerMessage(msg);
+        await fetchReceipts();
+      } else {
+        const errMsg = isRtl
+          ? `❌ فشل اعتماد الإيصال: ${result.error || 'خطأ غير معروف في معالجة الاعتماد'}`
+          : `❌ Approval failed: ${result.error || 'Unknown error during approval'}`;
+        showBannerMessage(errMsg);
+      }
+    } catch (err: any) {
+      console.error('[AdminReceiptReview] Approval exception:', err);
+      const errMsg = isRtl
+        ? `❌ حدث خطأ غير متوقع أثناء الاعتماد: ${err.message || 'خطأ في الاتصال'}`
+        : `❌ Unexpected approval error: ${err.message || 'Network error'}`;
+      showBannerMessage(errMsg);
     } finally {
       setProcessingId(null);
     }
@@ -299,16 +324,46 @@ export default function AdminReceiptReviewPage() {
     if (!overrideItem) return;
     setProcessingId(overrideItem.id);
     try {
-      await sovereignOverrideReceipt(
-        overrideItem.id,
-        overrideStatus,
-        overrideNote.trim() || 'قرار سيادي مباشر من د. محمد مصطفى (Chairman Sovereign Decision)',
-        'chairman@juristech.solutions (د. محمد مصطفى)'
-      );
-      showBannerMessage(isRtl ? `👑 تم تنفيذ القرار السيادي وتحديث حالة الإيصال إلى (${overrideStatus})!` : `👑 Sovereign override executed! Status set to ${overrideStatus}.`);
+      if (overrideStatus === 'approved') {
+        const result = await auditApproveReceipt(
+          overrideItem.id,
+          overrideNote.trim() || 'قرار سيادي مباشر من د. محمد مصطفى (Chairman Sovereign Decision)'
+        );
+        if (result.success) {
+          showBannerMessage(
+            isRtl
+              ? `👑 تم تنفيذ القرار السيادي واعتماد الإيصال وتفعيل الاشتراك بنجاح!`
+              : `👑 Sovereign approval executed & subscription activated successfully!`
+          );
+        } else {
+          showBannerMessage(
+            isRtl
+              ? `❌ فشل تنفيذ القرار السيادي: ${result.error || 'خطأ في الاعتماد'}`
+              : `❌ Sovereign approval failed: ${result.error || 'Approval error'}`
+          );
+        }
+      } else {
+        await sovereignOverrideReceipt(
+          overrideItem.id,
+          overrideStatus,
+          overrideNote.trim() || 'قرار سيادي مباشر من د. محمد مصطفى (Chairman Sovereign Decision)',
+          'chairman@juristech.solutions (د. محمد مصطفى)'
+        );
+        showBannerMessage(
+          isRtl
+            ? `👑 تم تنفيذ القرار السيادي وتحديث حالة الإيصال إلى (${overrideStatus})!`
+            : `👑 Sovereign override executed! Status set to ${overrideStatus}.`
+        );
+      }
       setOverrideItem(null);
       setOverrideNote('');
       await fetchReceipts();
+    } catch (err: any) {
+      showBannerMessage(
+        isRtl
+          ? `❌ خطأ أثناء تنفيذ القرار السيادي: ${err.message || 'خطأ في الاتصال'}`
+          : `❌ Sovereign override error: ${err.message || 'Network error'}`
+      );
     } finally {
       setProcessingId(null);
     }
