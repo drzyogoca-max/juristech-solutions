@@ -2,7 +2,7 @@
  * paymentProviderAdapter.ts
  * ─────────────────────────────────────────────────────────────────────────────
  * JurisTech Solutions — Multi-Gateway Payment Orchestration & Adapter Engine
- * Supports: PayTabs (MENA & Primary Gateway Under Review), Paymob (Egypt), Stripe & Manual Settlement
+ * Supports: Active Direct Channels (SWIFT, Binance Pay, InstaPay), PayTabs (Under Review), Stripe (Not Available — No Account)
  * 
  * Standardized Unified Interface:
  *  - createCheckout()
@@ -86,7 +86,10 @@ export class PaymentProviderAdapter {
   public getProviderStatus(provider: SupportedPaymentProvider): {
     provider: SupportedPaymentProvider;
     isConnected: boolean;
+    isAvailable: boolean;
     mode: 'LIVE' | 'SANDBOX' | 'NOT_CONFIGURED';
+    statusLabelEn: string;
+    statusLabelAr: string;
     missingRequirements: string[];
   } {
     switch (provider) {
@@ -94,36 +97,60 @@ export class PaymentProviderAdapter {
         return {
           provider: 'paytabs',
           isConnected: false,
+          isAvailable: false,
           mode: 'NOT_CONFIGURED',
+          statusLabelEn: 'UNDER REVIEW',
+          statusLabelAr: 'قيد مراجعة حساب التاجر (PayTabs)',
           missingRequirements: ['MERCHANT_KYC_APPROVAL', 'PAYTABS_PROFILE_ID', 'PAYTABS_SERVER_KEY'],
         };
       case 'paymob':
         return {
           provider: 'paymob',
           isConnected: false,
+          isAvailable: false,
           mode: 'NOT_CONFIGURED',
+          statusLabelEn: 'NOT CONFIGURED',
+          statusLabelAr: 'غير مهيأ',
           missingRequirements: ['PAYMOB_API_KEY', 'PAYMOB_INTEGRATION_ID', 'PAYMOB_IFRAME_ID'],
         };
       case 'stripe':
         return {
           provider: 'stripe',
           isConnected: false,
+          isAvailable: false,
           mode: 'NOT_CONFIGURED',
-          missingRequirements: ['STRIPE_SECRET_KEY', 'STRIPE_WEBHOOK_SECRET', 'US_OR_UK_ENTITY'],
+          statusLabelEn: 'NOT AVAILABLE — NO STRIPE ACCOUNT',
+          statusLabelAr: 'غير متاح — لا يوجد حساب Stripe حالياً',
+          missingRequirements: ['NO_STRIPE_ACCOUNT', 'NOT_AVAILABLE'],
         };
       case 'manual_swift':
+        return {
+          provider: 'manual_swift',
+          isConnected: true,
+          isAvailable: true,
+          mode: 'LIVE',
+          statusLabelEn: 'ACTIVE — SWIFT WIRE TRANSFER',
+          statusLabelAr: 'متاح ونشط — تحويل بنكي رسمي SWIFT',
+          missingRequirements: [],
+        };
       case 'binance_pay':
         return {
-          provider,
+          provider: 'binance_pay',
           isConnected: true,
+          isAvailable: true,
           mode: 'LIVE',
+          statusLabelEn: 'ACTIVE — BINANCE PAY (USDT)',
+          statusLabelAr: 'متاح ونشط — بينانس باي المباشر',
           missingRequirements: [],
         };
       default:
         return {
           provider,
           isConnected: false,
+          isAvailable: false,
           mode: 'NOT_CONFIGURED',
+          statusLabelEn: 'UNKNOWN PROVIDER',
+          statusLabelAr: 'مزود غير معروف',
           missingRequirements: ['UNKNOWN_PROVIDER'],
         };
     }
@@ -167,7 +194,35 @@ export class PaymentProviderAdapter {
       };
     }
 
-    // Automated Card Providers (Standby Adapter Mode)
+    // Handle Stripe: Strictly NOT AVAILABLE (No Stripe Account)
+    if (options.provider === 'stripe') {
+      return {
+        provider: 'stripe',
+        sessionId,
+        checkoutUrl: '/payment?provider=stripe&status=not_available',
+        amountUSD: plan.priceUSD,
+        currency: 'USD',
+        status: 'PENDING_CONFIG',
+        providerConfigStatus: 'NOT_CONNECTED',
+        instructions: 'Stripe is not available — JurisTech does not currently have an active Stripe account. Please use Bank Wire SWIFT, Binance Pay, InstaPay, or Proforma Invoice.',
+      };
+    }
+
+    // Handle PayTabs: UNDER REVIEW
+    if (options.provider === 'paytabs') {
+      return {
+        provider: 'paytabs',
+        sessionId,
+        checkoutUrl: '/payment?provider=paytabs&status=under_review',
+        amountUSD: plan.priceUSD,
+        currency: 'USD',
+        status: 'PENDING_CONFIG',
+        providerConfigStatus: 'NOT_CONNECTED',
+        instructions: 'PayTabs card checkout is currently under merchant compliance review. Please use Bank Wire SWIFT, Binance Pay, InstaPay, or Proforma Invoice.',
+      };
+    }
+
+    // Automated Card Providers (Standby Adapter Mode for other providers)
     const status = this.getProviderStatus(options.provider);
     return {
       provider: options.provider,
@@ -177,7 +232,7 @@ export class PaymentProviderAdapter {
       currency: 'USD',
       status: 'PENDING_CONFIG',
       providerConfigStatus: status.isConnected ? 'LIVE' : 'NOT_CONNECTED',
-      instructions: `Provider ${options.provider.toUpperCase()} adapter ready. Awaiting Merchant Account KYC activation.`,
+      instructions: `Provider ${options.provider.toUpperCase()} is not available.`,
     };
   }
 
@@ -201,6 +256,20 @@ export class PaymentProviderAdapter {
         planId: 'startup',
         timestamp,
         rawResponse: { type: 'manual_receipt_review' },
+      };
+    }
+
+    if (provider === 'stripe') {
+      return {
+        transactionId,
+        provider: 'stripe',
+        isVerified: false,
+        status: 'FAILED',
+        amountUSD: 0,
+        customerEmail: '',
+        planId: 'startup',
+        timestamp,
+        rawResponse: { error: 'NOT_AVAILABLE — JurisTech does not currently have an active Stripe account' },
       };
     }
 
