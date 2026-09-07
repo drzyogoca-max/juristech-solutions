@@ -27,6 +27,7 @@ import {
 import SEO from '../components/SEO';
 import { usePlatformLocale } from '../lib/universalTranslator';
 import { exportDocumentMultiFormat } from '../lib/documentExporter';
+import PremiumFeatureGuard from '../components/PremiumFeatureGuard';
 import {
   runClientNeedDiagnostic,
   simulateCrossBorderDeal,
@@ -243,6 +244,11 @@ Official Contact: founder@juristech.solutions | +201126674337
 
       {/* Main Content Area */}
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
+        <PremiumFeatureGuard
+          requiredTier="Enterprise"
+          featureNameEn="Cross-Border Deal Simulation & Clash Diagnostic"
+          featureNameAr="محاكاة الصفقات العابرة للحدود وتشخيص النزاعات"
+        >
         {activeMode === 'diagnostic' ? (
           /* ── MODE 1: NEED DIAGNOSTIC INTAKE ── */
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -756,6 +762,7 @@ Official Contact: founder@juristech.solutions | +201126674337
             )}
           </div>
         )}
+        </PremiumFeatureGuard>
       </main>
     </div>
   );

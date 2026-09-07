@@ -16,6 +16,7 @@ import AdSponsorBanner from '../components/AdSponsorBanner';
 import { runSelfHealingMAAudit, EnterpriseAuditResult } from '../lib/ragEnterpriseAgent';
 import { erpIntegrationService, ERPConfig } from '../lib/erpIntegrationService';
 import SEO from '../components/SEO';
+import PremiumFeatureGuard from '../components/PremiumFeatureGuard';
 
 export default function EnterpriseAuditPage() {
   const { i18n } = useTranslation();
@@ -119,8 +120,13 @@ export default function EnterpriseAuditPage() {
           </p>
         </div>
 
-        {/* Audit Tier Selection Cards */}
-        <div className="grid md:grid-cols-3 gap-4">
+        <PremiumFeatureGuard
+          requiredTier="Enterprise"
+          featureNameEn="Institutional M&A Audit & Deal Structuring"
+          featureNameAr="التدقيق المؤسسي لصفقات الاندماج والاستحواذ"
+        >
+          {/* Audit Tier Selection Cards */}
+          <div className="grid md:grid-cols-3 gap-4">
           {[
             {
               tier: 500,
@@ -436,6 +442,7 @@ export default function EnterpriseAuditPage() {
             })}
           </div>
         </div>
+        </PremiumFeatureGuard>
       </div>
     </main>
   );

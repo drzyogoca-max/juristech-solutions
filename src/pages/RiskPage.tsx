@@ -18,6 +18,7 @@ import { ContractAnalysisEngine, Deep8AxisAuditReport, AuditAxisResult } from '.
 import VisualRedlineDiffModal from '../components/VisualRedlineDiffModal';
 import { usePlatformLocale } from '../lib/universalTranslator';
 import { useSaaS } from '../context/SaaSContext';
+import PremiumFeatureGuard from '../components/PremiumFeatureGuard';
 
 export default function RiskPage() {
   const { l, isRtl } = usePlatformLocale();
@@ -192,11 +193,16 @@ Authorized by JurisTech Supreme Legal Architecture Engine.
           )}
         </div>
 
-        {/* Autonomous Proactive Compliance & Risk Engine Banner */}
-        <AutonomousRiskPanel />
+        <PremiumFeatureGuard
+          requiredTier="Startup"
+          featureNameEn="8-Axis Statutory Contract Risk Audit"
+          featureNameAr="الفحص والتدقيق التشريعي للعقود بـ 8 محاور"
+        >
+          {/* Autonomous Proactive Compliance & Risk Engine Banner */}
+          <AutonomousRiskPanel />
 
-        {/* 30+ Country Jurisdiction Selector */}
-        <div className="bg-slate-900/90 p-5 rounded-3xl border border-slate-800 space-y-3 shadow-xl">
+          {/* 30+ Country Jurisdiction Selector */}
+          <div className="bg-slate-900/90 p-5 rounded-3xl border border-slate-800 space-y-3 shadow-xl">
           <label className="text-xs font-extrabold text-slate-300 flex items-center gap-2">
             <Globe className="w-4 h-4 text-amber-400" />
             <span>{l('اختر الدولة والنظام التشريعي النافذ لإجراء فحص المخاطر طبقاً للوائحها:', 'Select Governing Jurisdiction for Risk Audit:')}</span>
@@ -442,6 +448,7 @@ Authorized by JurisTech Supreme Legal Architecture Engine.
             </div>
           </div>
         )}
+        </PremiumFeatureGuard>
       </div>
 
       {/* 🔍 Visual Redline Diff Modal */}

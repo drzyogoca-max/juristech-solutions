@@ -22,6 +22,7 @@ import {
 } from '../lib/sovereignCryptoEngine';
 import { usePlatformLocale } from '../lib/universalTranslator';
 import { exportDocumentMultiFormat } from '../lib/documentExporter';
+import PremiumFeatureGuard from '../components/PremiumFeatureGuard';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 interface VaultDocument {
@@ -289,7 +290,12 @@ export default function VaultPage() {
   return (
     <main className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-950 text-slate-100 font-sans" dir={isRtl ? 'rtl' : 'ltr'}>
       <SEO />
-      <div className="max-w-6xl mx-auto space-y-8">
+      <PremiumFeatureGuard
+        requiredTier="Enterprise"
+        featureNameAr="خزنة المستندات المشفرة والأمن السيادي"
+        featureNameEn="Sovereign Cryptographic Document Vault"
+      >
+        <div className="max-w-6xl mx-auto space-y-8">
 
         {/* ── Header ─────────────────────────────────────────────────── */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 p-6 rounded-3xl bg-gradient-to-r from-slate-900 via-slate-900 to-indigo-950/40 border border-slate-800 shadow-2xl">
@@ -560,6 +566,7 @@ export default function VaultPage() {
           </div>
         </div>
       </div>
+      </PremiumFeatureGuard>
 
       {/* ── View Document Modal ──────────────────────────────────────────── */}
       {viewingDoc && (

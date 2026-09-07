@@ -427,9 +427,15 @@ export default function AdvancedAIHubPage() {
         </div>
       </div>
 
-      {/* 🏛️ 2. JURISDICTION SELECTOR STRIP */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full mt-6">
-        <div className="card-lawtech-lux rounded-2xl p-4 border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <PremiumFeatureGuard
+          requiredTier="Enterprise"
+          featureNameEn="Sovereign Legal AI Hub"
+          featureNameAr="منصة الذكاء الاصطناعي السيادي"
+        >
+          {/* 🏛️ 2. JURISDICTION SELECTOR STRIP */}
+          <div className="w-full">
+            <div className="card-lawtech-lux rounded-2xl p-4 border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div className="flex items-center gap-2.5">
             <Globe className="w-5 h-5 text-cyan-400 shrink-0" />
             <div>
@@ -759,6 +765,8 @@ export default function AdvancedAIHubPage() {
           </div>
         </div>
 
+          </div>
+        </PremiumFeatureGuard>
       </div>
 
     </div>
