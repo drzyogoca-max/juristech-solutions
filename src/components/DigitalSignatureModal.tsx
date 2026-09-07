@@ -30,6 +30,7 @@ export default function DigitalSignatureModal({
   const [role, setRole] = useState('Authorized Signatory');
   const [provider, setProvider] = useState<'DocuSign' | 'AdobeSign' | 'eIDAS_Internal'>('eIDAS_Internal');
   const [isSigning, setIsSigning] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   if (!isOpen) return null;
 
@@ -37,6 +38,7 @@ export default function DigitalSignatureModal({
     e.preventDefault();
     if (!name || !email) return;
 
+    setErrorMessage('');
     setIsSigning(true);
     try {
       const result = await eSignatureService.executeDigitalSignature({
@@ -50,8 +52,9 @@ export default function DigitalSignatureModal({
 
       onSigned(result);
       onClose();
-    } catch (err) {
+    } catch (err: any) {
       console.error('Signature failure:', err);
+      setErrorMessage(err?.message || 'Signature verification failed. Please check your credentials.');
     } finally {
       setIsSigning(false);
     }
@@ -134,6 +137,13 @@ export default function DigitalSignatureModal({
               {t('eSignature.auditNote', 'A cryptographic SHA-256 hash timestamp will be saved into the legal audit trail upon completion.')}
             </p>
           </div>
+
+          {errorMessage && (
+            <div className="p-3 bg-rose-500/10 border border-rose-500/30 rounded-xl text-xs text-rose-400 font-semibold flex items-center gap-2">
+              <X className="w-4 h-4 flex-shrink-0" />
+              <span>{errorMessage}</span>
+            </div>
+          )}
 
           <div className="flex items-center justify-end gap-3 pt-2">
             <button
