@@ -125,14 +125,14 @@ export const TIER_ENTITLEMENTS: Record<string, { en: string[]; ar: string[] }> =
   },
   'Free Trial': {
     en: [
-      'Basic AI Legal Consultation (3 inquiries / day)',
-      'Standard Contract Risk Diagnostic Preview (1 document)',
+      'Basic AI Legal Consultation (5 inquiries / day)',
+      'Standard Contract Risk Diagnostic Preview (2 total drafts)',
       'Standard Legal Notice & Disclaimer Watermark',
       'Public Regulatory Framework Exploration',
     ],
     ar: [
-      'استشارات قانونية أساسية بالذكاء الاصطناعي (3 استفسارات يومياً)',
-      'معاينة تشخيص مخاطر العقود الأساسية (مستند واحد)',
+      'استشارات قانونية بالذكاء الاصطناعي (5 استفسارات يومياً)',
+      'معاينة وتوليد العقود الأساسية (عقدين تجريبيين مدى الحياة)',
       'علامة مائية معتمدة على الوثائق التجريبية',
       'استكشاف الأطر التنظيمية والتشريعية العامة',
     ],
@@ -452,9 +452,11 @@ export default function BillingPage() {
                   ? 'bg-cyan-500/20 border-cyan-500/40 text-cyan-300'
                   : tier === 'Pro'
                   ? 'bg-purple-500/20 border-purple-500/40 text-purple-300'
+                  : status === 'Active'
+                  ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300'
                   : 'bg-slate-800 border-slate-700 text-slate-400'
               }`}>
-                {tier}
+                {tier === 'Free Trial' ? (status === 'Active' ? l('تجربة مجانية (نشطة)', 'Free Trial (Active)') : l('تجربة مجانية (منتهية)', 'Free Trial (Expired)')) : tier}
               </span>
             </div>
           </div>
@@ -489,22 +491,32 @@ export default function BillingPage() {
                 </div>
                 <div>
                   <span className="text-xs text-slate-400 font-medium uppercase tracking-wider block">
-                    {l('الخطة الحالية', 'Current Active Plan')}
+                    {tier === 'Free Trial' ? l('حالة التقييم التجريبي', 'Evaluation Plan') : l('الخطة الحالية', 'Current Active Plan')}
                   </span>
                   <h3 className="text-xl font-black text-white">
-                    {tier} Legal AI Retainer
+                    {tier === 'Free Trial'
+                      ? (status === 'Active'
+                          ? l('تجربة مجانية — نشطة (تقييم 14 يوماً)', 'Free Trial — Active (14-day evaluation)')
+                          : l('انتهت التجربة المجانية', 'Free Trial (Evaluation Expired)'))
+                      : `${tier} Legal AI Retainer`}
                   </h3>
                 </div>
               </div>
 
               <span className={`px-3 py-1 rounded-full text-xs font-bold font-mono border ${
-                status === 'Active'
-                  ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300'
-                  : isCancelled
-                  ? 'bg-amber-500/20 border-amber-500/40 text-amber-300'
-                  : 'bg-red-500/20 border-red-500/40 text-red-300'
+                tier === 'Free Trial'
+                  ? (status === 'Active'
+                      ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300'
+                      : 'bg-red-500/20 border-red-500/40 text-red-300')
+                  : (status === 'Active'
+                      ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300'
+                      : isCancelled
+                      ? 'bg-amber-500/20 border-amber-500/40 text-amber-300'
+                      : 'bg-red-500/20 border-red-500/40 text-red-300')
               }`}>
-                {status === 'Active' ? '● Active' : isCancelled ? '● Cancelled' : '● Expired'}
+                {tier === 'Free Trial'
+                  ? (status === 'Active' ? '● Free Trial — Active' : '● Trial Expired')
+                  : (status === 'Active' ? '● Active' : isCancelled ? '● Cancelled' : '● Expired')}
               </span>
             </div>
 
@@ -512,20 +524,34 @@ export default function BillingPage() {
               <div className="space-y-1">
                 <span className="text-slate-500 block">{l('قيمة الاشتراك', 'Plan Amount')}</span>
                 <span className="font-mono font-bold text-white text-sm">
-                  {planPricing.formatted} <span className="text-xs text-slate-400 font-normal">{isRtl ? planPricing.periodAr : planPricing.periodEn}</span>
+                  {tier === 'Free Trial' ? (
+                    <span className="text-emerald-400 font-mono">{l('0$ (تقييم 14 يوماً)', '$0.00 (14-day evaluation)')}</span>
+                  ) : (
+                    <>
+                      {planPricing.formatted} <span className="text-xs text-slate-400 font-normal">{isRtl ? planPricing.periodAr : planPricing.periodEn}</span>
+                    </>
+                  )}
                 </span>
               </div>
               <div className="space-y-1">
-                <span className="text-slate-500 block">{l('تاريخ البدء', 'Start Date')}</span>
+                <span className="text-slate-500 block">
+                  {tier === 'Free Trial' ? l('بداية التقييم', 'Trial Start') : l('تاريخ البدء', 'Start Date')}
+                </span>
                 <span className="font-mono text-slate-300">{startDate}</span>
               </div>
               <div className="space-y-1">
-                <span className="text-slate-500 block">{l('تاريخ التجديد', 'Renewal Date')}</span>
-                <span className="font-mono font-bold text-cyan-400">{endDate}</span>
+                <span className="text-slate-500 block">
+                  {tier === 'Free Trial' ? l('نهاية التقييم', 'Trial Expiry') : l('تاريخ التجديد', 'Renewal Date')}
+                </span>
+                <span className={`font-mono font-bold ${tier === 'Free Trial' ? (status === 'Active' ? 'text-amber-300' : 'text-slate-500') : 'text-cyan-400'}`}>
+                  {endDate}
+                </span>
               </div>
               <div className="space-y-1">
                 <span className="text-slate-500 block">{l('الأيام المتبقية', 'Days Remaining')}</span>
-                <span className="font-mono font-black text-amber-400">{daysLeft} days</span>
+                <span className={`font-mono font-black ${status === 'Active' ? 'text-amber-400' : 'text-red-400'}`}>
+                  {daysLeft} {l('يوم', 'days')}
+                </span>
               </div>
             </div>
 
@@ -553,7 +579,11 @@ export default function BillingPage() {
                   className="px-6 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-amber-500/20 active:scale-95 transition-all cursor-pointer"
                 >
                   <Sparkles className="w-4 h-4" />
-                  <span>{l('تفعيل / تجديد الخطة', 'Subscribe / Upgrade Plan')}</span>
+                  <span>
+                    {tier === 'Free Trial'
+                      ? l('الترقية إلى باقة مدفوعة', 'Upgrade to Paid Plan')
+                      : l('تفعيل / تجديد الخطة', 'Subscribe / Upgrade Plan')}
+                  </span>
                 </button>
               ) : (
                 <>
@@ -634,7 +664,7 @@ export default function BillingPage() {
               </h3>
             </div>
             <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-slate-800 text-slate-300 border border-slate-700">
-              {status}
+              {tier === 'Free Trial' ? (status === 'Active' ? 'Free Trial — Active' : 'Trial Expired') : status}
             </span>
           </div>
 

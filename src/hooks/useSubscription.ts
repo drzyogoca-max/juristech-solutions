@@ -39,6 +39,55 @@ export interface DbSubscription {
   updated_at?: string | null;
 }
 
+export interface TrialLifecycleState {
+  isTrialActive: boolean;
+  daysLeft: number;
+  startDate: string;
+  endDate: string;
+}
+
+export const TRIAL_DURATION_DAYS = 14;
+
+/**
+ * Derives stateless trial lifecycle attributes from authenticated user.created_at
+ * Used strictly when no database subscription row exists.
+ */
+export function calculateTrialLifecycle(userCreatedAt?: string | null, nowMs: number = Date.now()): TrialLifecycleState {
+  if (!userCreatedAt) {
+    return {
+      isTrialActive: false,
+      daysLeft: 0,
+      startDate: new Date(nowMs).toISOString().substring(0, 10),
+      endDate: new Date(nowMs).toISOString().substring(0, 10),
+    };
+  }
+  const createdDate = new Date(userCreatedAt);
+  const createdMs = createdDate.getTime();
+  if (isNaN(createdMs)) {
+    return {
+      isTrialActive: false,
+      daysLeft: 0,
+      startDate: new Date(nowMs).toISOString().substring(0, 10),
+      endDate: new Date(nowMs).toISOString().substring(0, 10),
+    };
+  }
+
+  const durationMs = TRIAL_DURATION_DAYS * 24 * 60 * 60 * 1000;
+  const trialEndMs = createdMs + durationMs;
+  const isTrialActive = nowMs < trialEndMs;
+
+  const daysLeft = isTrialActive
+    ? Math.min(TRIAL_DURATION_DAYS, Math.max(1, Math.ceil((trialEndMs - nowMs) / (1000 * 60 * 60 * 24))))
+    : 0;
+
+  return {
+    isTrialActive,
+    daysLeft,
+    startDate: new Date(createdMs).toISOString().substring(0, 10),
+    endDate: new Date(trialEndMs).toISOString().substring(0, 10),
+  };
+}
+
 /**
  * Normalizes database plan_id / plan_name to canonical application plan tier
  */
@@ -171,14 +220,26 @@ export function useSubscription(): SubscriptionState {
     ? 'Enterprise'
     : (isDbActive ? rawTier : 'Free Trial');
 
-  // Status Derivation
-  const rawStatus = dbSub ? mapDbStatus(dbSub.status) : 'Expired';
-  const effectiveStatus = (dbSub && dbSub.status?.toLowerCase() === 'active' && !isDbActive)
-    ? 'Expired'
-    : rawStatus;
-  const status: 'Active' | 'Expired' | 'Pending Renewal' | 'Cancelled' = isPrivilegedRole
-    ? 'Active'
-    : (isDbActive ? 'Active' : effectiveStatus);
+  // Trial evaluation (stateless fallback for authenticated users without active DB subscription row)
+  const trialLifecycle = calculateTrialLifecycle(user?.created_at);
+
+  // Status Derivation: Database-backed paid subscriptions and privileged roles take absolute precedence
+  let status: 'Active' | 'Expired' | 'Pending Renewal' | 'Cancelled';
+  if (isPrivilegedRole) {
+    status = 'Active';
+  } else if (isDbActive && dbSub) {
+    status = 'Active';
+  } else if (dbSub) {
+    // Database record exists but is not active (cancelled, expired, pending renewal)
+    const rawStatus = mapDbStatus(dbSub.status);
+    status = (rawStatus === 'Active') ? 'Expired' : rawStatus;
+  } else if (userId) {
+    // Authenticated user with NO database subscription row: evaluate 14-day trial window
+    status = trialLifecycle.isTrialActive ? 'Active' : 'Expired';
+  } else {
+    // Unauthenticated guest session
+    status = 'Expired';
+  }
 
   // Remaining Period Days
   let daysLeft = 0;
@@ -191,20 +252,25 @@ export function useSubscription(): SubscriptionState {
     } else {
       daysLeft = 365;
     }
+  } else if (!dbSub && userId) {
+    // Authenticated user on stateless 14-day trial
+    daysLeft = trialLifecycle.daysLeft;
   }
 
   // Dates
   const startDate = dbSub?.activated_at
     ? new Date(dbSub.activated_at).toISOString().substring(0, 10)
-    : new Date().toISOString().substring(0, 10);
+    : (userId ? trialLifecycle.startDate : new Date().toISOString().substring(0, 10));
 
   const endDate = dbSub?.expires_at
     ? new Date(dbSub.expires_at).toISOString().substring(0, 10)
-    : new Date(Date.now() + 30 * 86400000).toISOString().substring(0, 10);
+    : (userId ? trialLifecycle.endDate : new Date(Date.now() + 30 * 86400000).toISOString().substring(0, 10));
 
   const paymentMethod = dbSub?.receipt_id
     ? 'Verified Payment Receipt'
-    : (isDbActive ? 'Active Subscription' : 'None');
+    : isDbActive
+    ? 'Active Subscription'
+    : (!dbSub && userId && trialLifecycle.isTrialActive ? 'Free Trial (14-Day Evaluation)' : 'None');
 
   const cancelSubscription = useCallback(async () => {
     if (dbSub?.id && userId) {
