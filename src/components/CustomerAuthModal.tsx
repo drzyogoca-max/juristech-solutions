@@ -14,17 +14,20 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../lib/authContext';
 import { usePlatformLocale } from '../lib/universalTranslator';
+import TrialOnboardingModal from './TrialOnboardingModal';
 
 export interface CustomerAuthModalProps {
   isOpen: boolean;
   onClose: () => void;
   initialMode?: 'login' | 'signup';
+  onSignupSuccess?: () => void;
 }
 
 export default function CustomerAuthModal({
   isOpen,
   onClose,
   initialMode = 'login',
+  onSignupSuccess,
 }: CustomerAuthModalProps) {
   const { l, isRtl } = usePlatformLocale();
   const { signIn, signUp } = useAuth();
@@ -38,11 +41,13 @@ export default function CustomerAuthModal({
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   useEffect(() => {
     setMode(initialMode);
     setErrorMsg(null);
     setSuccessMsg(null);
+    setShowOnboarding(false);
   }, [initialMode, isOpen]);
 
   // Lock body scroll when modal is open
@@ -65,6 +70,18 @@ export default function CustomerAuthModal({
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
+
+  if (showOnboarding) {
+    return (
+      <TrialOnboardingModal
+        isOpen={true}
+        onClose={() => {
+          setShowOnboarding(false);
+          onClose();
+        }}
+      />
+    );
+  }
 
   if (!isOpen) return null;
 
@@ -144,11 +161,16 @@ export default function CustomerAuthModal({
 
         if (data?.session) {
           setSuccessMsg(
-            l('تم إنشاء الحساب وتسجيل الدخول بنجاح!', 'Account created and signed in successfully!')
+            l('تم إنشاء الحساب وتسجيل الدخول بنجاح! جاري تحضير التجربة المجانية...', 'Account created and signed in successfully! Preparing your trial...')
           );
           setTimeout(() => {
-            onClose();
-          }, 1200);
+            if (onSignupSuccess) {
+              onSignupSuccess();
+              onClose();
+            } else {
+              setShowOnboarding(true);
+            }
+          }, 800);
         } else if (data?.user) {
           setSuccessMsg(
             l(
@@ -157,8 +179,13 @@ export default function CustomerAuthModal({
             )
           );
           setTimeout(() => {
-            onClose();
-          }, 2000);
+            if (onSignupSuccess) {
+              onSignupSuccess();
+              onClose();
+            } else {
+              setShowOnboarding(true);
+            }
+          }, 1500);
         }
       } else {
         const { data, error } = await signIn(cleanEmail, password);

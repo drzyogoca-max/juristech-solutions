@@ -31,7 +31,7 @@ import {
 import { usePlatformLocale } from '../lib/universalTranslator';
 import { useAuth } from '../lib/authContext';
 import { useSubscription } from '../hooks/useSubscription';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import SEO from '../components/SEO';
 
 // UI Subcomponents
@@ -111,6 +111,10 @@ export default function AIAdvisorPage() {
   const { isAdmin, isLawyer } = useAuth();
   const { tier: subTierName, isSubscriber } = useSubscription();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const isSubmittingRef = useRef(false);
+  const initializedFromStateRef = useRef(false);
 
   // Map user tier (memoized)
   const userTier: UserTier = useMemo(() => {
@@ -136,6 +140,33 @@ export default function AIAdvisorPage() {
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  // Preload from navigation state (e.g. Onboarding Wizard) or safe search params
+  // CRITICAL QUOTA RULE: DO NOT automatically execute the query!
+  useEffect(() => {
+    if (initializedFromStateRef.current) return;
+
+    const navState = location.state as { jurisdiction?: string; prompt?: string; fromOnboarding?: boolean } | null;
+    const stateJur = navState?.jurisdiction || searchParams.get('jur');
+    const statePrompt = navState?.prompt || searchParams.get('prompt') || searchParams.get('q');
+
+    if (stateJur) {
+      const validJurs: JurisdictionCode[] = ['SA', 'AE', 'EG', 'QA', 'KW', 'BH', 'OM', 'JO', 'US', 'GB', 'EU', 'CN', 'INTL'];
+      const rawJur = stateJur.toUpperCase();
+      const cleanJur = (rawJur === 'GLOBAL' ? 'INTL' : rawJur) as JurisdictionCode;
+      if (validJurs.includes(cleanJur)) {
+        setJurisdiction(cleanJur);
+      }
+    }
+
+    if (statePrompt && typeof statePrompt === 'string') {
+      setInputQuery(statePrompt);
+    }
+
+    if (stateJur || statePrompt) {
+      initializedFromStateRef.current = true;
+    }
+  }, [location.state, searchParams]);
+
   useEffect(() => {
     conversionTracker.trackStage('AI_STARTED', { currentTier: userTier });
   }, [userTier]);
@@ -158,7 +189,14 @@ export default function AIAdvisorPage() {
 
   const handleSendMessage = async (overridePrompt?: string) => {
     const query = (overridePrompt || inputQuery).trim();
-    if (!query || isLoading) return;
+    if (!query || isLoading || isSubmittingRef.current) return;
+
+    isSubmittingRef.current = true;
+    if (messages.length === 0) {
+      try {
+        conversionTracker.trackStage('FIRST_LEGAL_QUERY', { currentTier: userTier });
+      } catch {}
+    }
 
     setInputQuery('');
     const userMsgId = `usr-${Date.now()}`;
@@ -366,6 +404,7 @@ export default function AIAdvisorPage() {
       ]);
     } finally {
       setIsLoading(false);
+      isSubmittingRef.current = false;
     }
   };
 
