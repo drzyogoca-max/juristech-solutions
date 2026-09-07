@@ -6,7 +6,7 @@
  */
 const nodemailer = require('nodemailer');
 
-const RESEND_KEY = Buffer.from('cmVfUEVMeUZVRnZfR01SNHFQaDNNaDh4RWhSaWtDQVRhU0NL', 'base64').toString('utf-8');
+const RESEND_KEY = Buffer.from('[REDACTED - use process.env.RESEND_API_KEY]', 'base64').toString('utf-8');
 
 const SMTP_CONFIG = {
   host: 'smtp-mail.outlook.com',

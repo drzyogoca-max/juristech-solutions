@@ -1,7 +1,7 @@
 const https = require('https');
 
 async function sendProposalViaResend() {
-  const RESEND_API_KEY = Buffer.from('cmVfUEVMeUZVRnZfR01SNHFQaDNNaDh4RWhSaWtDQVRhU0NL', 'base64').toString('utf-8');
+  const RESEND_API_KEY = Buffer.from('[REDACTED - use process.env.RESEND_API_KEY]', 'base64').toString('utf-8');
   const TARGET_EMAIL = 'drzyogo.ca@gmail.com';
   const OFFICIAL_ADMIN = 'juristech.solutions@outlook.com';
 

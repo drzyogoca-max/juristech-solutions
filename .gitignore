@@ -7,3 +7,9 @@ node_modules
 
 .vercel
 .env*
+
+# Scratch/test scripts (may contain secrets)
+scrtach_*.cjs
+scratch_*.cjs
+test_resend*.cjs
+test_smtp*.cjs

@@ -1,4 +1,4 @@
-const key = Buffer.from('cmVfUEVMeUZVRnZfR01SNHFQaDNNaDh4RWhSaWtDQVRhU0NL', 'base64').toString('utf-8');
+const key = Buffer.from('[REDACTED - use process.env.RESEND_API_KEY]', 'base64').toString('utf-8');
 
 async function send() {
   const res = await fetch('https://api.resend.com/emails', {
