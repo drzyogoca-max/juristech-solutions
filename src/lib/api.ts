@@ -3,6 +3,7 @@ import { solveLegalPrompt } from '../services/engine-ai/legalIntelligenceEngine'
 import { executeWithConcurrencyQueue } from './concurrencyManager';
 import { findFastSemanticMatch, recordAndLearnQuery } from './aiSelfLearningEngine';
 import { getSystemContextForLanguage } from './languageHelper';
+import { supabase } from './supabaseClient';
 
 
 const SUPABASE_URL = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_URL) || '';
@@ -52,6 +53,17 @@ export async function callAIWithHistory(
   return executeWithConcurrencyQueue(executionKey, async () => {
     const lang = (forceLang as SupportedLanguage) || detectPromptLanguage(lastUserMsg);
 
+    // Resolve Authorization Bearer token from active Supabase session
+    let authHeaders: Record<string, string> = {};
+    try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      if (sessionData?.session?.access_token) {
+        authHeaders['Authorization'] = `Bearer ${sessionData.session.access_token}`;
+      }
+    } catch {
+      // Unauthenticated session
+    }
+
     // ── Tier 1: Serverless Edge API Endpoint (/api/chat) with 9s Timeout
     try {
       const controller = new AbortController();
@@ -59,7 +71,7 @@ export async function callAIWithHistory(
 
       const res = await fetch('/api/chat', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Language': lang },
+        headers: { 'Content-Type': 'application/json', 'X-Language': lang, ...authHeaders },
         body: JSON.stringify({
           message: lastUserMsg,
           prompt: lastUserMsg,
@@ -92,7 +104,7 @@ export async function callAIWithHistory(
 
       const res = await fetch('/api/ai', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Language': lang },
+        headers: { 'Content-Type': 'application/json', 'X-Language': lang, ...authHeaders },
         body: JSON.stringify({
           prompt: lastUserMsg,
           message: lastUserMsg,
