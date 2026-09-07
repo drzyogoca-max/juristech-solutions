@@ -14,7 +14,7 @@ export const config = {
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-admin-token',
   'Content-Type': 'application/json',
 };
 
@@ -27,16 +27,106 @@ const YOUTUBE_SCOPES = [
   'https://www.googleapis.com/auth/userinfo.email',
 ].join(' ');
 
-export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.setHeader('Content-Type', 'application/json');
+const OFFICIAL_ADMIN_EMAILS = [
+  'drzyogo.ca@gmail.com',
+  'juristech.solutions@outlook.com',
+  'admin@juristech.solutions',
+];
 
-  if (req.method === 'OPTIONS') return res.status(200).end();
+/**
+ * Server-side administrative authorization guard
+ * Validates approved server secret or cryptographically verified Supabase admin session
+ */
+async function verifyAdminAuth(req) {
+  const authHeader =
+    (typeof req.headers?.get === 'function'
+      ? req.headers.get('Authorization') || req.headers.get('authorization')
+      : req.headers?.['authorization'] || req.headers?.['Authorization']) || '';
+
+  const adminToken =
+    (typeof req.headers?.get === 'function'
+      ? req.headers.get('x-admin-token') || req.headers.get('X-Admin-Token')
+      : req.headers?.['x-admin-token'] || req.headers?.['X-Admin-Token']) || '';
+
+  const serverSecret = process.env.ADMIN_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+  if (serverSecret && (authHeader === `Bearer ${serverSecret}` || adminToken === serverSecret)) {
+    return { authorized: true, reason: 'SERVER_SECRET' };
+  }
+
+  if (authHeader.startsWith('Bearer ')) {
+    const jwt = authHeader.replace('Bearer ', '').trim();
+    const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
+    const anonKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+
+    if (supabaseUrl && anonKey && jwt) {
+      try {
+        const uRes = await fetch(`${supabaseUrl.replace(/\/$/, '')}/auth/v1/user`, {
+          headers: { Authorization: `Bearer ${jwt}`, apikey: anonKey },
+        });
+        if (uRes.ok) {
+          const uData = await uRes.json();
+          const email = (uData?.email || '').toLowerCase().trim();
+          const appRole = uData?.app_metadata?.role;
+          const userRole = uData?.user_metadata?.role;
+          const isAdmin =
+            OFFICIAL_ADMIN_EMAILS.includes(email) ||
+            appRole === 'admin' ||
+            appRole === 'super-admin' ||
+            userRole === 'admin';
+
+          if (isAdmin) {
+            return { authorized: true, reason: 'ADMIN_JWT', user: uData };
+          }
+        }
+      } catch (e) {
+        // fail-closed
+      }
+    }
+  }
+
+  return { authorized: false, reason: 'UNAUTHORIZED' };
+}
+
+function sendResponse(res, statusCode, data) {
+  if (res && typeof res.status === 'function') {
+    return res.status(statusCode).json(data);
+  }
+  return new Response(JSON.stringify(data), {
+    status: statusCode,
+    headers: CORS_HEADERS,
+  });
+}
+
+export default async function handler(req, res) {
+  if (res && typeof res.setHeader === 'function') {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-admin-token');
+    res.setHeader('Content-Type', 'application/json');
+  }
+
+  if (req.method === 'OPTIONS') {
+    if (res && typeof res.status === 'function') return res.status(200).end();
+    return new Response(null, { status: 200, headers: CORS_HEADERS });
+  }
 
   try {
-    const action = req.query?.action || (typeof req.body === 'object' ? req.body.action : undefined) || 'status';
+    let body = {};
+    if (typeof req.json === 'function') {
+      try {
+        body = await req.json();
+      } catch (e) {}
+    } else if (typeof req.body === 'string') {
+      try {
+        body = JSON.parse(req.body);
+      } catch (e) {}
+    } else if (typeof req.body === 'object' && req.body !== null) {
+      body = req.body;
+    }
+
+    const url = req.url ? new URL(req.url, 'http://localhost') : null;
+    const queryAction = req.query?.action || (url ? url.searchParams.get('action') : null);
+    const action = queryAction || body?.action || (req.method === 'GET' ? 'get_auth_url' : 'status');
 
     // 1. Get OAuth Auth Link for 1-click Google Authorization
     if (action === 'get_auth_url' || req.method === 'GET') {
@@ -50,7 +140,7 @@ export default async function handler(req, res) {
         state: 'juristech_youtube_auth',
       }).toString();
 
-      return res.status(200).json({
+      return sendResponse(res, 200, {
         success: true,
         status: 'OAUTH_CONFIGURED',
         authUrl,
@@ -60,13 +150,20 @@ export default async function handler(req, res) {
       });
     }
 
-    // 2. Exchange OAuth Code for Tokens
+    // 2. Exchange OAuth Code for Tokens (Privileged: Requires Verified Admin Authorization)
     if (action === 'exchange_code') {
-      const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+      const auth = await verifyAdminAuth(req);
+      if (!auth.authorized) {
+        return sendResponse(res, 401, {
+          success: false,
+          error: 'Unauthorized: Administrative authorization required to exchange OAuth tokens',
+        });
+      }
+
       const { code } = body || {};
 
       if (!code) {
-        return res.status(400).json({ success: false, error: 'Missing OAuth authorization code' });
+        return sendResponse(res, 400, { success: false, error: 'Missing OAuth authorization code' });
       }
 
       const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
@@ -83,10 +180,10 @@ export default async function handler(req, res) {
 
       const tokens = await tokenRes.json();
       if (tokens.error) {
-        return res.status(400).json({ success: false, error: tokens.error_description || tokens.error });
+        return sendResponse(res, 400, { success: false, error: tokens.error_description || tokens.error });
       }
 
-      return res.status(200).json({
+      return sendResponse(res, 200, {
         success: true,
         status: 'TOKENS_OBTAINED',
         accessToken: tokens.access_token,
@@ -97,12 +194,11 @@ export default async function handler(req, res) {
 
     // 3. Publish / Upload YouTube Video Payload
     if (action === 'publish_video' && req.method === 'POST') {
-      const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
       const { title, description, tags, categoryId, slot } = body || {};
 
       console.log(`[YouTube API Upload Service] Publishing video (${slot}): ${title}`);
 
-      return res.status(200).json({
+      return sendResponse(res, 200, {
         success: true,
         status: 'VIDEO_QUEUED_FOR_YOUTUBE',
         message: `Video queued and uploaded to Official YouTube Channel (juristech.solutions@outlook.com)`,
@@ -112,7 +208,7 @@ export default async function handler(req, res) {
       });
     }
 
-    return res.status(200).json({
+    return sendResponse(res, 200, {
       success: true,
       status: 'YOUTUBE_SERVICE_READY',
       clientId: GOOGLE_CLIENT_ID,
@@ -120,6 +216,14 @@ export default async function handler(req, res) {
     });
   } catch (err) {
     console.error('[/api/youtube-upload] Error:', err);
-    return res.status(500).json({ success: false, error: err?.message || 'Server error' });
+    return sendResponse(res, 500, { success: false, error: err?.message || 'Server error' });
   }
+}
+
+export async function POST(req, res) {
+  return handler(req, res);
+}
+
+export async function GET(req, res) {
+  return handler(req, res);
 }
