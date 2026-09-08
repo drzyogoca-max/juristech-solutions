@@ -243,8 +243,8 @@ export default function ContractLibraryGate({ contract, isOpen, onClose }: Contr
               <Sparkles className="w-5 h-5 fill-slate-950 flex-shrink-0" />
               <span>
                 {isRtl
-                  ? 'ترقية الاشتراك وفتح تحميل جميع العقود المليونية (من $29/شهرياً)'
-                  : 'Upgrade Subscription & Unlock 1M+ Contracts (From $29/mo)'}
+                  ? 'ترقية الاشتراك وفتح تحميل جميع العقود المليونية (من $49/شهرياً)'
+                  : 'Upgrade Subscription & Unlock 1M+ Contracts (From $49/mo)'}
               </span>
               <ArrowRight className={`w-4 h-4 flex-shrink-0 ${isRtl ? 'rotate-180' : ''}`} />
             </button>

@@ -27,12 +27,12 @@ export const AccessUpgradeModal: React.FC<AccessUpgradeModalProps> = ({
 
   const tierMap: Record<UserTier, { name: string; price: string; planKey: 'startup' | 'sme' | 'enterprise' | 'pro' }> = {
     free: { name: 'Free Trial', price: '$0', planKey: 'startup' },
-    startup: { name: 'Startup Tier', price: '$19 / mo', planKey: 'startup' },
-    sme: { name: 'SME Professional', price: '$49 / mo', planKey: 'sme' },
-    pro: { name: 'Pro Counsel', price: '$99 / mo', planKey: 'pro' },
-    enterprise: { name: 'Enterprise Corporate', price: '$299 / mo', planKey: 'enterprise' },
-    lawyer: { name: 'Lawyer Suite', price: '$99 / mo', planKey: 'pro' },
-    admin: { name: 'Master Sovereign', price: '$299 / mo', planKey: 'enterprise' },
+    startup: { name: 'Startup Tier', price: '$49 / mo', planKey: 'startup' },
+    sme: { name: 'SME & Growth', price: '$139 / mo', planKey: 'sme' },
+    pro: { name: 'SME & Growth', price: '$139 / mo', planKey: 'sme' },
+    enterprise: { name: 'Enterprise Sovereign', price: '$349 / mo', planKey: 'enterprise' },
+    lawyer: { name: 'SME & Growth', price: '$139 / mo', planKey: 'sme' },
+    admin: { name: 'Enterprise Sovereign', price: '$349 / mo', planKey: 'enterprise' },
   };
 
   const targetTier = tierMap[requiredTier] || tierMap.startup;
