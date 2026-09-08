@@ -84,6 +84,14 @@ export async function callAIWithHistory(
       });
       clearTimeout(timeout);
 
+      if (res.status === 429) {
+        const errData = await res.json().catch(() => ({}));
+        const err = new Error(errData.message || 'Daily AI query limit reached (5/5).');
+        (err as any).code = 'QUOTA_EXCEEDED';
+        (err as any).status = 429;
+        throw err;
+      }
+
       if (res.ok) {
         const data = await res.json();
         const output = (data.reply || data.result || data.response || '').trim();
@@ -94,6 +102,9 @@ export async function callAIWithHistory(
         }
       }
     } catch (e: any) {
+      if (e?.code === 'QUOTA_EXCEEDED' || e?.status === 429) {
+        throw e;
+      }
       // Fast fallback to direct API
     }
 
@@ -116,6 +127,14 @@ export async function callAIWithHistory(
       });
       clearTimeout(timeout);
 
+      if (res.status === 429) {
+        const errData = await res.json().catch(() => ({}));
+        const err = new Error(errData.message || 'Daily AI query limit reached (5/5).');
+        (err as any).code = 'QUOTA_EXCEEDED';
+        (err as any).status = 429;
+        throw err;
+      }
+
       if (res.ok) {
         const data = await res.json();
         const output = (data.reply || data.result || data.response || '').trim();
@@ -125,7 +144,10 @@ export async function callAIWithHistory(
           return output;
         }
       }
-    } catch (tier2Err) {
+    } catch (tier2Err: any) {
+      if (tier2Err?.code === 'QUOTA_EXCEEDED' || tier2Err?.status === 429) {
+        throw tier2Err;
+      }
       // Fallback to Tier 3
     }
 

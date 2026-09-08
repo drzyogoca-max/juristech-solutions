@@ -31,6 +31,7 @@ import {
 import { usePlatformLocale } from '../lib/universalTranslator';
 import { useAuth } from '../lib/authContext';
 import { useSubscription } from '../hooks/useSubscription';
+import { useDailyQuota } from '../hooks/useDailyQuota';
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import SEO from '../components/SEO';
 
@@ -127,6 +128,9 @@ export default function AIAdvisorPage() {
     return 'free';
   }, [isAdmin, isLawyer, subTierName]);
 
+  const isTrial = userTier === 'free';
+  const dailyQuota = useDailyQuota(isTrial);
+
   // State
   const [taskMode, setTaskMode] = useState<SelectedTaskMode>('AUTO');
   const [jurisdiction, setJurisdiction] = useState<JurisdictionCode>('UNKNOWN');
@@ -190,6 +194,14 @@ export default function AIAdvisorPage() {
   const handleSendMessage = async (overridePrompt?: string) => {
     const query = (overridePrompt || inputQuery).trim();
     if (!query || isLoading || isSubmittingRef.current) return;
+
+    if (isTrial && dailyQuota.remaining === 0) {
+      handleUpgradeClick(
+        isAr ? 'الترقية لمتابعة الاستشارات القانونية اليومية' : 'Daily AI Consultations Limit Reached',
+        'startup'
+      );
+      return;
+    }
 
     isSubmittingRef.current = true;
     if (messages.length === 0) {
@@ -388,20 +400,52 @@ export default function AIAdvisorPage() {
           },
         ]);
       }
+
+      if (isTrial) {
+        dailyQuota.refresh().catch(() => {});
+      }
     } catch (err: any) {
-      setMessages([
-        ...newMessages,
-        {
-          id: `err-${Date.now()}`,
-          sender: 'assistant',
-          text: isAr
-            ? '⚠️ تعذر إتمام المعالجة الذكية حالياً. يرجى التحقق من اتصال الشبكة أو إعادة المحاولة.'
-            : '⚠️ Processing could not be completed. Please check your connection or retry.',
-          timestamp: new Date().toISOString(),
-          taskMode: 'AUTO',
-          sourceVerificationStatus: 'INSUFFICIENT',
-        },
-      ]);
+      const isQuotaExceeded =
+        err?.code === 'QUOTA_EXCEEDED' ||
+        err?.status === 429 ||
+        (typeof err?.message === 'string' && err.message.toLowerCase().includes('limit reached'));
+
+      if (isQuotaExceeded) {
+        if (isTrial) {
+          dailyQuota.refresh().catch(() => {});
+        }
+        handleUpgradeClick(
+          isAr ? 'استنفاد الحصة اليومية المجانية (5/5)' : 'Daily Quota Limit Reached (5/5)',
+          'startup'
+        );
+        setMessages([
+          ...newMessages,
+          {
+            id: `err-${Date.now()}`,
+            sender: 'assistant',
+            text: isAr
+              ? '🔒 لقد وصلت إلى الحد الأقصى للاستشارات اليومية المجانية (5 استشارات اليوم). للمتابعة دون انقطاع والحصول على استشارات غير محدودة، يرجى ترقية حسابك إلى إحدى الباقات الاحترافية.'
+              : '🔒 You have reached your daily free consultation limit (5 queries today). To continue without interruption and unlock unlimited AI legal intelligence, please upgrade your plan.',
+            timestamp: new Date().toISOString(),
+            taskMode: 'AUTO',
+            sourceVerificationStatus: 'INSUFFICIENT',
+          },
+        ]);
+      } else {
+        setMessages([
+          ...newMessages,
+          {
+            id: `err-${Date.now()}`,
+            sender: 'assistant',
+            text: isAr
+              ? '⚠️ تعذر إتمام المعالجة الذكية حالياً. يرجى التحقق من اتصال الشبكة أو إعادة المحاولة.'
+              : '⚠️ Processing could not be completed. Please check your connection or retry.',
+            timestamp: new Date().toISOString(),
+            taskMode: 'AUTO',
+            sourceVerificationStatus: 'INSUFFICIENT',
+          },
+        ]);
+      }
     } finally {
       setIsLoading(false);
       isSubmittingRef.current = false;
@@ -422,7 +466,8 @@ export default function AIAdvisorPage() {
           lang={lang as SupportedAILang}
           isRtl={isRtl}
           userTier={userTier}
-          onUpgradeClick={() => handleUpgradeClick('All AI Features', 'startup')}
+          onUpgradeClick={() => handleUpgradeClick(isAr ? 'ترقية الباقة' : 'Daily AI Consultations', 'startup')}
+          quota={isTrial ? dailyQuota : undefined}
         />
 
         {/* Task & Jurisdiction Controls Bar */}
@@ -589,6 +634,29 @@ export default function AIAdvisorPage() {
 
           {/* ── Input Box & Action Bar ── */}
           <div className="sticky bottom-4 z-20">
+            {isTrial && dailyQuota.isExhausted && (
+              <div
+                data-testid="quota-exhausted-banner"
+                className="mb-2 p-3 rounded-xl bg-rose-950/80 border border-rose-800 text-rose-200 text-xs flex items-center justify-between shadow-lg backdrop-blur-md"
+              >
+                <div className="flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+                  <span>
+                    {isAr
+                      ? 'لقد استهلكت جميع استشاراتك المجانية لليوم (5 / 5). قم بترقية حسابك للوصول غير المحدود.'
+                      : 'You have used all free queries for today (5 / 5). Upgrade your account for unlimited access.'}
+                  </span>
+                </div>
+                <button
+                  onClick={() => handleUpgradeClick(isAr ? 'ترقية الباقة' : 'Daily Quota Exhausted', 'startup')}
+                  data-testid="quota-banner-upgrade-btn"
+                  className="px-3 py-1 bg-rose-500 hover:bg-rose-400 text-white font-bold rounded-lg transition-all shrink-0 cursor-pointer shadow-sm text-xs"
+                >
+                  {isAr ? 'ترقية الآن' : 'Upgrade Now'}
+                </button>
+              </div>
+            )}
+
             <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-2 sm:p-3 shadow-2xl backdrop-blur-xl focus-within:border-cyan-500/60 transition-all">
               <form
                 onSubmit={(e) => {
@@ -602,7 +670,11 @@ export default function AIAdvisorPage() {
                   value={inputQuery}
                   onChange={(e) => setInputQuery(e.target.value)}
                   placeholder={
-                    isAr
+                    isTrial && dailyQuota.isExhausted
+                      ? isAr
+                        ? '🔒 نفدت الحصة اليومية (5 / 5) — يرجى الترقية لمتابعة الاستشارات...'
+                        : '🔒 Daily quota reached (5 / 5) — please upgrade to continue...'
+                      : isAr
                       ? 'اطرح استفسارك القانوني، أو الصق بنداً تعاقدياً، أو اطلب صياغة مسودة...'
                       : 'Ask a legal question, paste a contract clause, or request a document draft...'
                   }
