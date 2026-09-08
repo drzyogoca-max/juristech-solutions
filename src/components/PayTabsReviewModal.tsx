@@ -8,8 +8,22 @@
  */
 
 import React from 'react';
-import { X, Clock, Building2, Smartphone, Zap, FileText } from 'lucide-react';
+import { X, Clock, Building2, Smartphone, Zap, FileText, MessageSquare } from 'lucide-react';
 import { usePlatformLocale } from '../lib/universalTranslator';
+
+export const OFFICIAL_WHATSAPP_NUMBER = '+201126674337';
+
+export function buildWhatsAppConciergeUrl(
+  plan?: { nameAr?: string; nameEn?: string; price?: number } | null,
+  isAr: boolean = false
+): string {
+  const planName = plan ? (isAr ? (plan.nameAr || 'باقة الاشتراك') : (plan.nameEn || 'Subscription Plan')) : (isAr ? 'باقة الاشتراك' : 'Subscription Plan');
+  const priceSuffix = plan?.price ? ` ($${plan.price}${isAr ? '/شهرياً' : '/month'})` : '';
+  const message = isAr
+    ? `مرحباً د. محمد مصطفى، أرغب في المساعدة في إتمام الدفع وتفعيل الاشتراك للباقة: ${planName}${priceSuffix}. يرجى تزويدي بإجراءات السداد والتفعيل.`
+    : `Hello Dr. Mohammad Mustafa, I would like assisted checkout & payment assistance to activate the ${planName}${priceSuffix}. Please provide payment and activation steps.`;
+  return `https://wa.me/201126674337?text=${encodeURIComponent(message)}`;
+}
 
 interface PayTabsReviewModalProps {
   isOpen: boolean;
@@ -24,9 +38,11 @@ export default function PayTabsReviewModal({
   selectedPlan,
   onSelectMethod
 }: PayTabsReviewModalProps) {
-  const { l } = usePlatformLocale();
+  const { l, isRtl } = usePlatformLocale();
 
   if (!isOpen) return null;
+
+  const isAr = isRtl;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
@@ -61,10 +77,41 @@ export default function PayTabsReviewModal({
           </p>
           <p className="text-slate-400 text-[11px]">
             {l(
-              'لتفعيل اشتراكك فوراً دون انتظار اكتمال المراجعة، يرجى استخدام إحدى القنوات المعتمدة المباشرة التالية:',
-              'To activate your subscription immediately, please use one of our active direct channels:'
+              'لتفعيل اشتراكك فوراً دون انتظار اكتمال المراجعة، يرجى استخدام إحدى القنوات المعتمدة المباشرة التالية أو التواصل مع المساعد التنفيذي:',
+              'To activate your subscription immediately, please use one of our active direct channels or contact the executive concierge:'
             )}
           </p>
+        </div>
+
+        {/* High-Touch WhatsApp Executive Concierge CTA */}
+        <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 space-y-2.5">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold text-emerald-400 flex items-center gap-1.5">
+              <MessageSquare className="w-3.5 h-3.5 text-emerald-400" />
+              <span>{l('المسار المباشر: مساعدة الإدارة التنفيذية في السداد والتفعيل', 'Direct Path: Executive Assisted Payment & Activation')}</span>
+            </span>
+            {selectedPlan?.price && (
+              <span className="text-[11px] font-mono font-bold text-emerald-300">
+                ${selectedPlan.price}/mo
+              </span>
+            )}
+          </div>
+          <p className="text-slate-300 text-xs leading-relaxed">
+            {l(
+              'تواصل مباشرة مع الإدارة التنفيذية لمساعدتك في إجراءات السداد والتفعيل لاشتراكك.',
+              'Connect directly with Executive Leadership for assistance with payment and activation steps.'
+            )}
+          </p>
+          <a
+            href={buildWhatsAppConciergeUrl(selectedPlan, isAr)}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-testid="whatsapp-paytabs-modal-concierge"
+            className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 active:scale-95 transition-all cursor-pointer"
+          >
+            <MessageSquare className="w-4 h-4 text-slate-950" />
+            <span>{l('مساعدة فورية عبر واتساب الإدارة التنفيذية', 'WhatsApp Executive Concierge')}</span>
+          </a>
         </div>
 
         <div className="grid grid-cols-2 gap-3">
@@ -103,7 +150,21 @@ export default function PayTabsReviewModal({
 
         <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-xs">
           <span className="text-slate-400">{l('استفسار تنفيذي مباشر:', 'Direct Executive Contact:')}</span>
-          <a href="mailto:founder@juristech.solutions" className="text-sky-400 hover:underline font-mono">founder@juristech.solutions</a>
+          <div className="flex items-center gap-3">
+            <a
+              href={buildWhatsAppConciergeUrl(selectedPlan, isAr)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-emerald-400 hover:underline font-mono flex items-center gap-1"
+            >
+              <MessageSquare className="w-3 h-3 text-emerald-400" />
+              <span>+201126674337</span>
+            </a>
+            <span className="text-slate-600">|</span>
+            <a href="mailto:founder@juristech.solutions" className="text-sky-400 hover:underline font-mono">
+              founder@juristech.solutions
+            </a>
+          </div>
         </div>
       </div>
     </div>
