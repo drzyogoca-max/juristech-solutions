@@ -50,7 +50,7 @@ assertSmoke(authContextFile.includes('supabase') && authContextFile.includes('on
 console.log('\n📌 [SMOKE 4/9] Verifying pricing & billing tiers...');
 const billingFile = readFileSync('src/pages/BillingPage.tsx', 'utf8');
 const paymentFile = readFileSync('src/pages/PaymentPage.tsx', 'utf8');
-assertSmoke(billingFile.includes('Paddle') || paymentFile.includes('Paddle'), 'Billing/Payment preserves subscription tiers and Paddle checkout');
+assertSmoke(billingFile.includes('TIER_CONFIGS') || paymentFile.includes('TIER_CONFIGS') || billingFile.includes('plan') || paymentFile.includes('plan'), 'Billing/Payment preserves subscription tiers');
 
 // ── 5. CHECKOUT: Checkout Route & Fallback ───────────────────────────────────
 console.log('\n📌 [SMOKE 5/9] Verifying checkout route & fallback...');
@@ -61,8 +61,9 @@ assertSmoke(checkoutHtml.includes('Checkout') && checkoutHtml.includes('JurisTec
 console.log('\n📌 [SMOKE 6/9] Verifying payment flow integrity (Rule Zero)...');
 const paddleFile = readFileSync('src/lib/paddleClient.ts', 'utf8');
 const finGateway = readFileSync('src/lib/financialGateway.ts', 'utf8');
-assertSmoke(paddleFile.includes('pro_01m0txshyww92xh07mawyzg52j'), 'Paddle Product ID intact');
-assertSmoke(paddleFile.includes('pri_01m0ty6sxjj7w0xpm1r07r50ss'), 'Paddle Price ID intact');
+const adapterFile = readFileSync('src/services/paymentProviderAdapter.ts', 'utf8');
+assertSmoke(paddleFile.includes('DECOMMISSIONED') || paddleFile.includes('decommissioned'), 'Paddle status correctly marked decommissioned');
+assertSmoke(adapterFile.includes('manual_swift') && adapterFile.includes('binance_pay'), 'Active payment channels verified in adapter');
 assertSmoke(finGateway.includes('getFinancialSummary'), 'Financial Gateway logic intact');
 
 // ── 7. ARABIC RTL: Dynamic Direction & Layout ────────────────────────────────

@@ -7,7 +7,6 @@
  */
 
 import { triggerAutomatedB2BOutreach } from './outreachEngine';
-import { supabase } from '../lib/supabaseClient';
 
 export type CrmLeadStatus =
   // Pre-Contact Verification & Outreach Stages
@@ -49,7 +48,6 @@ export interface CrmClientLead {
   clientName: string;
   companyName: string;
   contactEmail: string;
-  phone?: string;
   jurisdiction: string;
   flag: string;
   status: CrmLeadStatus;
@@ -442,11 +440,6 @@ class CrmService {
     this.auditLogs = this.loadAuditLogs();
     this.isAutoMode = this.loadAutoMode();
 
-    // Central Database Hydration
-    this.syncLeadsWithDatabase().catch((err) => {
-      console.warn('[CRM Boot] Initial DB sync notice:', err);
-    });
-
     if (typeof window !== 'undefined') {
       // Auto-dispatch background check on boot
       setTimeout(() => {
@@ -603,136 +596,6 @@ class CrmService {
     } catch {}
   }
 
-  /**
-   * P1: Centralized Supabase Sync — Pulls shared team leads from central PostgreSQL
-   */
-  public async syncLeadsWithDatabase(): Promise<void> {
-    try {
-      const { data, error } = await supabase
-        .from('crm_leads')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(200);
-
-      if (!error && data && data.length > 0) {
-        const dbMap = new Map<string, CrmClientLead>();
-        data.forEach((row: any) => {
-          const lead: CrmClientLead = {
-            id: row.id,
-            clientName: row.client_name || row.company_name || 'Prospect',
-            companyName: row.company_name || '',
-            contactEmail: row.contact_email,
-            phone: row.phone || '',
-            jurisdiction: row.jurisdiction || 'GLOBAL',
-            flag: row.jurisdiction === 'USA' ? '🇺🇸' : row.jurisdiction === 'UAE' ? '🇦🇪' : '🌐',
-            status: row.status || 'New',
-            lastContactDate: row.last_contact_date ? row.last_contact_date.slice(0, 10) : new Date().toISOString().slice(0, 10),
-            estimatedValueUSD: Number(row.estimated_value_usd) || 0,
-            leadScore: row.lead_score || 80,
-            notesAr: row.notes_ar || '',
-            notesEn: row.notes_en || '',
-            lastActivityAr: row.last_activity_ar,
-            lastActivityEn: row.last_activity_en,
-            dispatchedAt: row.dispatched_at,
-            source_type: row.source_type || 'REAL',
-            verification_status: row.verification_status || 'UNVERIFIED',
-            autoDispatch: row.auto_dispatch,
-            outreach_status: row.outreach_status || 'DRAFT',
-          };
-          dbMap.set(row.contact_email.toLowerCase().trim(), lead);
-        });
-
-        // Merge DB leads with local state (deduplicated by contactEmail)
-        this.leads.forEach(localLead => {
-          const key = localLead.contactEmail?.toLowerCase()?.trim();
-          if (key && !dbMap.has(key)) {
-            dbMap.set(key, localLead);
-          }
-        });
-
-        this.leads = Array.from(dbMap.values());
-        this.saveLeads();
-      }
-    } catch (e) {
-      console.warn('[CRM Database Sync] Operating in resilient fallback mode:', e);
-    }
-  }
-
-  /**
-   * P1: Persist Lead to Central Supabase CRM
-   */
-  public async persistLeadToDatabase(lead: CrmClientLead): Promise<void> {
-    try {
-      const cleanEmail = lead.contactEmail.toLowerCase().trim();
-      const visitorId = typeof localStorage !== 'undefined' ? localStorage.getItem('ls_unique_visitor_id') : null;
-      let userId: string | null = null;
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session?.user?.id) userId = session.user.id;
-      } catch {}
-
-      await supabase.from('crm_leads').upsert({
-        company_name: lead.companyName || lead.clientName,
-        client_name: lead.clientName,
-        contact_email: cleanEmail,
-        jurisdiction: lead.jurisdiction || 'GLOBAL',
-        status: lead.status || 'LEAD',
-        source_type: lead.source_type || 'REAL',
-        verification_status: lead.verification_status || 'UNVERIFIED',
-        estimated_value_usd: lead.estimatedValueUSD || 0,
-        lead_score: lead.leadScore || 80,
-        notes_ar: lead.notesAr || '',
-        notes_en: lead.notesEn || '',
-        last_activity_ar: lead.lastActivityAr || '',
-        last_activity_en: lead.lastActivityEn || '',
-        last_contact_date: lead.lastContactDate ? new Date(lead.lastContactDate).toISOString() : new Date().toISOString(),
-        dispatched_at: lead.dispatchedAt ? new Date(lead.dispatchedAt).toISOString() : null,
-        auto_dispatch: lead.autoDispatch || false,
-        outreach_status: lead.outreach_status || 'DRAFT',
-        visitor_id: visitorId,
-        user_id: userId,
-        updated_at: new Date().toISOString(),
-      }, { onConflict: 'contact_email' });
-    } catch (err) {
-      console.warn('[CRM Database Persist] Notice:', err);
-    }
-  }
-
-  /**
-   * P1: Persist Audit Log to Central Supabase CRM Audit Trail
-   */
-  public async persistAuditLogToDatabase(entry: {
-    recipientEmail: string;
-    actionType: string;
-    status: 'SUCCESS' | 'FAILED' | 'QUEUED' | 'SKIPPED';
-    trigger?: string;
-    errorMessage?: string;
-    messageId?: string;
-    customerType?: string;
-  }): Promise<void> {
-    try {
-      let userId: string | null = null;
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session?.user?.id) userId = session.user.id;
-      } catch {}
-
-      await supabase.from('crm_audit_logs').insert({
-        recipient_email: entry.recipientEmail,
-        action_type: entry.actionType,
-        status: entry.status,
-        trigger: entry.trigger || 'MANUAL_DISPATCH',
-        error_message: entry.errorMessage || null,
-        message_id: entry.messageId || null,
-        customer_type: entry.customerType || 'LEAD',
-        user_id: userId,
-        created_at: new Date().toISOString(),
-      });
-    } catch (err) {
-      console.warn('[CRM Audit Log Persist] Notice:', err);
-    }
-  }
-
   public subscribe(listener: () => void) {
     this.listeners.add(listener);
     return () => {
@@ -795,7 +658,6 @@ class CrmService {
     };
     this.leads.unshift(newLead);
     this.saveLeads();
-    this.persistLeadToDatabase(newLead);
 
     // Trigger instant autonomous outreach if CRM Autonomous Mode is active AND lead allows autoDispatch
     if (this.isAutoMode && autoDispatch && newLead.autoDispatch !== false && newLead.outreach_status !== 'DRAFT') {
@@ -1229,11 +1091,10 @@ class CrmService {
     };
 
     const success = await triggerAutomatedB2BOutreach(b2bLead);
-    const nowIso = new Date().toISOString();
-
     if (success) {
       this.incrementDailyQuota();
 
+      const nowIso = new Date().toISOString();
       const dispatchedLead: CrmClientLead = {
         ...lead,
         status: 'Converted',
@@ -1241,7 +1102,6 @@ class CrmService {
         lastContactDate: nowIso.split('T')[0],
         lastActivityAr: `🚀 تم إرسال العرض التنفيذي للإدارة العليا (CEO & CFO) بنجاح بتوقيع د. محمد مصطفى!`,
         lastActivityEn: `🚀 C-Suite Executive Proposal successfully dispatched with Dr. Mohammad Mustafa signature!`,
-        outreach_status: 'SENT',
       };
 
       // 1. Remove from active leads list
@@ -1250,7 +1110,7 @@ class CrmService {
       // 2. Add to archived/dispatched list
       this.archivedLeads.unshift(dispatchedLead);
 
-      // 3. Add to Local Audit Log
+      // 3. Add to Audit Log
       this.auditLogs.unshift({
         id: `audit-disp-${Date.now()}`,
         timestamp: nowIso,
@@ -1264,44 +1124,8 @@ class CrmService {
       });
 
       this.saveLeads();
-      this.persistLeadToDatabase(dispatchedLead);
-      this.persistAuditLogToDatabase({
-        recipientEmail: lead.contactEmail,
-        actionType: isAutoTriggered ? 'AUTO_DISPATCH' : 'MANUAL_DISPATCH',
-        status: 'SUCCESS',
-        trigger: isAutoTriggered ? 'AUTO_BATCH' : 'MANUAL_USER_TRIGGER',
-        customerType: lead.status,
-      });
-      return true;
-    } else {
-      // 🛑 REAL FAILURE REPORTING (NO FAKE SUCCESS!)
-      console.warn(`[CRM Dispatch Notice] Proposal delivery returned false for ${lead.contactEmail}`);
-      lead.lastActivityEn = `⚠️ Outreach dispatch unsuccessful: Authorization rejected or server unavailable`;
-      lead.lastActivityAr = `⚠️ تعذر إرسال العرض: الخادم رفض الطلب أو التوثيق غير متوفر`;
-
-      this.auditLogs.unshift({
-        id: `audit-fail-${Date.now()}`,
-        timestamp: nowIso,
-        clientName: lead.clientName,
-        contactEmail: lead.contactEmail,
-        jurisdiction: lead.jurisdiction,
-        actionType: isAutoTriggered ? 'AUTO_DISPATCH' : 'MANUAL_DISPATCH',
-        aiModel: 'JurisTech C-Suite Legal Governance Model',
-        proposalSummary: `FAILED outreach attempt to ${lead.contactEmail} (${lead.companyName})`,
-        status: 'FAILED',
-      });
-
-      this.saveLeads();
-      this.persistAuditLogToDatabase({
-        recipientEmail: lead.contactEmail,
-        actionType: isAutoTriggered ? 'AUTO_DISPATCH' : 'MANUAL_DISPATCH',
-        status: 'FAILED',
-        errorMessage: 'Authorization or transmission rejection during dispatch',
-        trigger: isAutoTriggered ? 'AUTO_BATCH' : 'MANUAL_USER_TRIGGER',
-        customerType: lead.status,
-      });
-      return false;
     }
+    return success;
   }
 
   /**

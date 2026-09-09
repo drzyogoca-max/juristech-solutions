@@ -216,14 +216,7 @@ const OFFICIAL_SYSTEM_EMAILS = [
   'contact@juristech.solutions',
 ];
 
-const ALLOWED_TRANSACTIONAL_TYPES = [
-  'CONSULTATION_BOOKING',
-  'RECEIPT_NOTIFICATION',
-  'LEAD_INQUIRY',
-  'AUTHENTICATION_OTP',
-];
-
-async function checkEmailAuthorization(req, targetEmail, body = {}) {
+async function checkEmailAuthorization(req, targetEmail) {
   const authHeader = req.headers?.['authorization'] || req.headers?.get?.('authorization') || '';
   const adminToken = req.headers?.['x-admin-token'] || req.headers?.get?.('x-admin-token') || '';
   const cronSecret = req.headers?.['x-cron-secret'] || req.headers?.get?.('x-cron-secret') || '';
@@ -235,11 +228,11 @@ async function checkEmailAuthorization(req, targetEmail, body = {}) {
     return { authorized: true, reason: 'OFFICIAL_SYSTEM_DESTINATION' };
   }
 
-  // 2. Server Secret Authorization (CRM, cron, automated scripts, admin actions)
+  // 2. Server Secret Authorization (CRM, cron, automated scripts)
   const validSecrets = [
     process.env.ADMIN_SECRET_KEY,
     process.env.CRON_SECRET,
-    process.env.SUPABASE_SERVICE_ROLE_KEY,
+    process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJ_REDACTED_FOR_SECURITY',
   ].filter(Boolean);
 
   for (const sec of validSecrets) {
@@ -271,17 +264,6 @@ async function checkEmailAuthorization(req, targetEmail, body = {}) {
       } catch (err) {
         console.warn('[Email Auth Check] Supabase JWT validation error:', err.message);
       }
-    }
-  }
-
-  // 4. Legitimate Inbound/Transactional Event Guard
-  // Permits customer-facing transactional templates (Receipt, Consultation, Lead Inquiry)
-  // while preventing open-relay spam: subject must contain [JurisTech Solutions], and rate-limits apply.
-  const transactionalType = body?.transactionalType || body?.payload?.transactionalType;
-  if (transactionalType && ALLOWED_TRANSACTIONAL_TYPES.includes(transactionalType)) {
-    const subj = body?.subject || '';
-    if (subj.includes('JurisTech Solutions') || subj.includes('LegalShield')) {
-      return { authorized: true, reason: `VALIDATED_TRANSACTIONAL_${transactionalType}` };
     }
   }
 
@@ -362,7 +344,7 @@ async function handleNodeRequest(req, res) {
     }
 
     // ── Anti-Open Relay Authorization Enforcement ──
-    const authCheck = await checkEmailAuthorization(req, targetEmail, body);
+    const authCheck = await checkEmailAuthorization(req, targetEmail);
     if (!authCheck.authorized) {
       console.warn(`[SendEmail 401] Unauthorized outbound dispatch to ${targetEmail} blocked from IP ${ip}`);
       return res.status(401).json({
@@ -455,7 +437,7 @@ async function handleEdgeRequest(req) {
     }
 
     // ── Anti-Open Relay Authorization Enforcement ──
-    const authCheck = await checkEmailAuthorization(req, targetEmail, body);
+    const authCheck = await checkEmailAuthorization(req, targetEmail);
     if (!authCheck.authorized) {
       return new Response(
         JSON.stringify({
@@ -510,7 +492,7 @@ async function processEmailDispatch(targetEmail, emailSubject, text, html, reply
     };
   }
 
-  const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
+  const RESEND_API_KEY = process.env.RESEND_API_KEY || 're_REDACTED_FOR_SECURITY';
   const EMAIL_FROM = process.env.EMAIL_FROM || 'onboarding@resend.dev';
   const SMTP_HOST = process.env.SMTP_HOST || 'smtp-mail.outlook.com';
   const SMTP_PORT = parseInt(process.env.SMTP_PORT || '587', 10);

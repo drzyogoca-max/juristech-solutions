@@ -66,6 +66,7 @@ const ContractsPage = lazy(() => import('./pages/ContractsPage'));
 const ContractsRepositoryPage = lazy(() => import('./pages/ContractsRepositoryPage'));
 const RiskPage = lazy(() => import('./pages/RiskPage'));
 const TemplatesPage = lazy(() => import('./pages/TemplatesPage'));
+const POALibraryPage = lazy(() => import('./pages/POALibraryPage'));
 const NegotiationPage = lazy(() => import('./pages/NegotiationPage'));
 const InvestigationPage = lazy(() => import('./pages/InvestigationPage'));
 const LeadRadarPage = lazy(() => import('./pages/LeadRadarPage'));
@@ -302,6 +303,9 @@ function MainAppContent() {
                   <Route path={`${prefix}/investigation`} element={<Navigate to={`${prefix}/investigate`} replace />} />
                   <Route path={`${prefix}/templates`} element={<TemplatesPage />} />
                   <Route path={`${prefix}/templates-library`} element={<Navigate to={`${prefix}/templates`} replace />} />
+                  <Route path={`${prefix}/poa-library`} element={<POALibraryPage />} />
+                  <Route path={`${prefix}/power-of-attorney`} element={<Navigate to={`${prefix}/poa-library`} replace />} />
+                  <Route path={`${prefix}/wakala`} element={<Navigate to={`${prefix}/poa-library`} replace />} />
                   <Route path={`${prefix}/negotiation`} element={<NegotiationPage />} />
                   <Route path={`${prefix}/negotiate`} element={<Navigate to={`${prefix}/negotiation`} replace />} />
                   <Route path={`${prefix}/e-signature-room`} element={<Navigate to={`${prefix}/negotiation`} replace />} />

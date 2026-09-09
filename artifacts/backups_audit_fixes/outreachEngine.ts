@@ -34,7 +34,7 @@ export interface ClientDataPayload {
  * 100% Pure Corporate English Executive Proposals for CEOs & CFOs
  * Zero-Human Intervention Autonomous Outreach
  */
-export const generateAndDispatchOffer = async (clientData: ClientDataPayload): Promise<{ success: boolean; generatedHtml: string; messageId?: string; error?: string }> => {
+export const generateAndDispatchOffer = async (clientData: ClientDataPayload): Promise<{ success: boolean; generatedHtml: string; messageId?: string }> => {
   const { name, requirement, email, jurisdiction } = clientData;
   console.log(`[AI Dispatcher Engine] 🚀 Triggering C-Suite executive proposal for: ${name} (${email}) | Jurisdiction: ${jurisdiction || 'Global'}`);
 
@@ -196,24 +196,11 @@ export const generateAndDispatchOffer = async (clientData: ClientDataPayload): P
   let finalHtml = buildLuxuryProposalHtml(name, requirement, jurisdiction || 'Global Commercial Corridor');
 
   try {
-    // 1. Direct HTTP Dispatch via /api/send-email with proper Auth headers
-    const authHeaders: Record<string, string> = { 'Content-Type': 'application/json' };
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.access_token) {
-        authHeaders['Authorization'] = `Bearer ${session.access_token}`;
-      }
-      const adminToken = typeof sessionStorage !== 'undefined' ? sessionStorage.getItem('juristech_admin_session_token') : '';
-      if (adminToken) {
-        authHeaders['x-admin-token'] = adminToken;
-      }
-    } catch {}
-
+    // 1. Direct HTTP Dispatch via /api/send-email with mandatory Admin BCC copy
     const res = await fetch('/api/send-email', {
       method: 'POST',
-      headers: authHeaders,
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        transactionalType: 'B2B_OUTREACH',
         to: email,
         bcc: ['founder@juristech.solutions'],
         adminCopy: 'founder@juristech.solutions',
@@ -224,19 +211,6 @@ export const generateAndDispatchOffer = async (clientData: ClientDataPayload): P
       }),
     });
 
-    let resJson: any = {};
-    try { resJson = await res.json(); } catch {}
-
-    const isSuccess = res.ok && resJson.success !== false;
-
-    if (!isSuccess) {
-      console.warn('[AI Dispatcher Engine] Server rejected outreach dispatch:', res.status, resJson);
-      return {
-        success: false,
-        generatedHtml: finalHtml,
-        error: resJson.error || resJson.message || `Server returned HTTP ${res.status}`,
-      };
-    }
 
     // 2. Audit Logging in Supabase
     try {
@@ -256,16 +230,15 @@ export const generateAndDispatchOffer = async (clientData: ClientDataPayload): P
     });
 
     return {
-      success: true,
+      success: res.ok,
       generatedHtml: finalHtml,
-      messageId: resJson.messageId || `MSG-EXEC-${Date.now()}`,
+      messageId: `MSG-EXEC-${Date.now()}`,
     };
-  } catch (err: any) {
+  } catch (err) {
     console.error('[AI Dispatcher Engine] Error during executive offer dispatch:', err);
     return {
       success: false,
       generatedHtml: finalHtml,
-      error: err?.message || 'Network error during dispatch',
     };
   }
 };

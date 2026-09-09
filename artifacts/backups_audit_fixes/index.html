@@ -127,12 +127,15 @@
     </script>
 
 
-    <!-- Geofencing Script -->
+    <!-- Libya Geofencing Firewall Script -->
     <script>
       (function() {
         try {
           var tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || '').toLowerCase();
-          var isBlocked = (tz.indexOf('tripoli') !== -1 || tz.indexOf('libya') !== -1) ||
+          var langs = (navigator.languages || [navigator.language || '']).join(',').toLowerCase();
+          var isBlocked = tz.indexOf('tripoli') !== -1 ||
+                          tz.indexOf('libya') !== -1 ||
+                          langs.indexOf('-ly') !== -1 ||
                           window.location.search.indexOf('geo=LY') !== -1 ||
                           sessionStorage.getItem('juristech_geo_blocked') === 'LY';
           if (isBlocked) {

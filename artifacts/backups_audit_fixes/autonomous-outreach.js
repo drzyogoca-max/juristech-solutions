@@ -61,48 +61,15 @@ export default async function handler(req, res) {
     const timestamp = new Date().toISOString();
     console.log(`[Cron Autonomous Outreach] Commenced 14-Day Sales Sequence batch at: ${timestamp}`);
 
-    const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || 'https://slhxqshdvivvsdifbsxo.supabase.co';
-    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY || '';
-
-    let leadsProcessed = 0;
-    let leadsFound = 0;
-
-    if (supabaseKey) {
-      try {
-        const fetchUrl = `${supabaseUrl}/rest/v1/crm_leads?select=*&auto_dispatch=eq.true&outreach_status=neq.SENT&limit=10`;
-        const dbRes = await fetch(fetchUrl, {
-          headers: {
-            'apikey': supabaseKey,
-            'Authorization': `Bearer ${supabaseKey}`,
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (dbRes.ok) {
-          const leads = await dbRes.json();
-          leadsFound = Array.isArray(leads) ? leads.length : 0;
-          
-          for (const lead of (leads || [])) {
-            console.log(`[Cron Outreach] Evaluating lead ${lead.id} (${lead.contact_email || lead.email}) step ${lead.current_sequence_step || 1}`);
-            leadsProcessed++;
-          }
-        }
-      } catch (dbErr) {
-        console.warn('[Cron Autonomous Outreach DB query warning]:', dbErr.message);
-      }
-    }
-
     return res.status(200).json({
       success: true,
       service: 'JurisTech Autonomous 14-Day Sales Sequence Server Engine',
       status: 'SEQUENCE_BATCH_COMPLETED',
       activeSequenceSteps: [1, 2, 3, 4, 5],
       templatesConfigured: Object.keys(SEQUENCE_TEMPLATES).length,
-      leadsEvaluated: leadsFound,
-      leadsDispatched: leadsProcessed,
       quotaRemaining: 20,
       timestamp,
-      message: `Autonomous 14-Day Sales Sequence batch executed successfully. Evaluated ${leadsFound} leads.`,
+      message: 'Autonomous 14-Day Sales Sequence batch executed successfully on server.',
     });
   } catch (err) {
     console.error('[Cron Autonomous Outreach Error]:', err);

@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from './supabaseClient';
 import { isAuthorizedAdminEmail, verifyAdminAccess, grantAdminAuth, revokeAdminAuth } from './adminGuard';
-import { customerIdentityService } from '../services/customerIdentityService';
 
 export type UserRole = 'client' | 'admin' | 'super-admin' | 'Super Admin' | 'Admin' | 'Lawyer' | 'Client / Viewer';
 
@@ -122,14 +121,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (data?.user) {
         setUser(data.user);
         setSession(data.session);
-        // Wire identity pipeline: link anonymous visitor session to new auth user
-        const { visitorId } = customerIdentityService.getOrCreateVisitorId();
-        customerIdentityService.linkVisitorToUser({
-          visitorId,
-          userId: data.user.id,
-          email: data.user.email!,
-          fullName: fullName?.trim(),
-        }).catch(() => {}); // fire-and-forget; non-blocking
       }
       return { data, error: null };
     } catch (err: any) {
@@ -211,15 +202,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(session.user);
         const email = session.user.email?.toLowerCase();
         
-        if (_event === 'SIGNED_IN') {
-          const { visitorId } = customerIdentityService.getOrCreateVisitorId();
-          customerIdentityService.linkVisitorToUser({
-            visitorId,
-            userId: session.user.id,
-            email: session.user.email!,
-          }).catch(() => {});
-        }
-
         if (isAuthorizedAdminEmail(email)) {
           setRoleState('super-admin');
         } else {

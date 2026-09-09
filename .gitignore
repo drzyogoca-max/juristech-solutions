@@ -3,6 +3,8 @@ node_modules
 .env
 .env.*
 .next 
+.env.*
+.next 
 .DS_Store
 *.code-workspace
 
@@ -14,3 +16,4 @@ scrtach_*.cjs
 scratch_*.cjs
 test_resend*.cjs
 test_smtp*.cjs
+supabase/.temp/

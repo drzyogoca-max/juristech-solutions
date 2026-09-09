@@ -242,6 +242,36 @@ export async function dispatchSystemNotification(payload: SystemEventPayload): P
   return true;
 }
 
+/**
+ * Generate 2FA WhatsApp OTP Details & Instant Link
+ */
+export function create2FAWhatsAppDetails(otpCode: string, targetNumber: string = TARGET_WHATSAPP_NUMBER): {
+  targetPhone: string;
+  whatsappUrl: string;
+  whatsappMessage: string;
+} {
+  const cleanPhone = targetNumber.replace(/[^0-9]/g, '');
+  const whatsappMessage = [
+    `*🔐 JurisTech Solutions — رمز المصادقة الثنائية (2FA OTP)*`,
+    `━━━━━━━━━━━━━━━━━━━`,
+    `رمز التحقق الخاص بك لتسجيل الدخول للإدارة العليا هو:`,
+    `👉 *${otpCode}* 👈`,
+    ``,
+    `⏱️ *الصلاحية:* 5 دقائق فقط`,
+    `🔒 *حساب الإدارة:* drzyogo.ca@gmail.com`,
+    `🛡️ *بوابة الدخول:* https://www.juristech.solutions/admin`,
+    `━━━━━━━━━━━━━━━━━━━`,
+  ].join('\n');
+
+  const whatsappUrl = `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(whatsappMessage)}`;
+
+  return {
+    targetPhone: targetNumber,
+    whatsappUrl,
+    whatsappMessage,
+  };
+}
+
 // Backward compatibility aliases for legacy call sites
 export type WhatsAppEventPayload = SystemEventPayload;
 export const dispatchWhatsAppNotification = dispatchSystemNotification;
