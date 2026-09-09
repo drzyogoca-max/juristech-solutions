@@ -6,6 +6,14 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
+-- ─── 0. PROFILES TABLE (DEFENSIVE INITIALIZATION) ──────────────────────────────
+CREATE TABLE IF NOT EXISTS public.profiles (
+    id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+    role TEXT DEFAULT 'client',
+    full_name TEXT,
+    updated_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now())
+);
+
 -- ─── 1. CENTRALIZED CRM LEADS TABLE ──────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS public.crm_leads (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -60,17 +68,23 @@ CREATE INDEX IF NOT EXISTS idx_crm_audit_logs_lead ON public.crm_audit_logs (lea
 CREATE INDEX IF NOT EXISTS idx_crm_audit_logs_email ON public.crm_audit_logs (recipient_email);
 
 -- ─── 3. ENHANCE CUSTOMERS & SUBSCRIPTIONS WITH AUTH USER & VISITOR LINK ───────
-ALTER TABLE public.customers
-    ADD COLUMN IF NOT EXISTS user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
-    ADD COLUMN IF NOT EXISTS visitor_id TEXT,
-    ADD COLUMN IF NOT EXISTS customer_status TEXT DEFAULT 'LEAD';
+DO $$ 
+BEGIN 
+    IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'customers') THEN
+        ALTER TABLE public.customers
+            ADD COLUMN IF NOT EXISTS user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+            ADD COLUMN IF NOT EXISTS visitor_id TEXT,
+            ADD COLUMN IF NOT EXISTS customer_status TEXT DEFAULT 'LEAD';
+        CREATE INDEX IF NOT EXISTS idx_customers_user_id ON public.customers (user_id);
+        CREATE INDEX IF NOT EXISTS idx_customers_visitor_id ON public.customers (visitor_id);
+    END IF;
 
-ALTER TABLE public.subscriptions
-    ADD COLUMN IF NOT EXISTS user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL;
-
-CREATE INDEX IF NOT EXISTS idx_customers_user_id ON public.customers (user_id);
-CREATE INDEX IF NOT EXISTS idx_customers_visitor_id ON public.customers (visitor_id);
-CREATE INDEX IF NOT EXISTS idx_subscriptions_user_id ON public.subscriptions (user_id);
+    IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'subscriptions') THEN
+        ALTER TABLE public.subscriptions
+            ADD COLUMN IF NOT EXISTS user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL;
+        CREATE INDEX IF NOT EXISTS idx_subscriptions_user_id ON public.subscriptions (user_id);
+    END IF;
+END $$;
 
 -- ─── 4. FIX RLS ON VISITOR LOGS (TELEMETRY) ──────────────────────────────────
 ALTER TABLE IF EXISTS public.visitor_logs ENABLE ROW LEVEL SECURITY;
