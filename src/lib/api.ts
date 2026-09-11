@@ -217,9 +217,9 @@ function synthesizeDynamicLegalResponse(prompt: string, lang: SupportedLanguage,
                      fullContext.includes('.docx') ||
                      fullContext.includes('check it') ||
                      fullContext.includes('reports') ||
-                     fullContext.includes('تدقيق') ||
-                     fullContext.includes('فحص') ||
-                     (prompt.includes('عقد') && prompt.length < 150);
+                     fullContext.includes('تقرير تدقيق') ||
+                     fullContext.includes('فحص مستند') ||
+                     fullContext.includes('تدقيق العقد المرفق');
 
   if (isDocAudit) {
     const filenameMatch = fullContext.match(/\[ATTACHED CONTRACT DOCUMENT:\s*"([^"]+)"\]/i) ||
@@ -315,7 +315,7 @@ Please type your legal inquiry or attach a document for instant statutory analys
   }
 
   // 1. Specialized Multi-Turn Contract Generation & Legal Solver
-  const isSpecializedContract = /(car|vehicle|auto|motor|سيارة|مركب|شاحنة|موتوسيكل|عربيه|عربية|مبايعة|nda|non-disclosure|confidential|سرية|عدم إفصاح|عدم افصاح|حفظ السرية|employment|job|employee|labor|عمل|توظيف|موظف|عقد عمل|rent|lease|tenant|landlord|apartment|property|إيجار|ايجار|عقار|شقة|فيلا|أرض|محل|مكتب|توريد|شراء بضاعة|supply|مورد|برمجة|تطبيق|موقع|software|سورس كود|شراكة|تأسيس شركة|partnership|قرض|سلف|دين|loan|إقرار دين|اقرار دين|تعديل|عدل|غير|اضف|أضف|شرط جزائي|غرامة|توثيق|شهر عقاري|تسجيل|مرور|نقل ملكية)/i.test(p);
+  const isSpecializedContract = /(car|vehicle|auto|motor|سيارة|مركب|شاحنة|موتوسيكل|عربيه|عربية|مبايعة|nda|non-disclosure|confidential|سرية|عدم إفصاح|عدم افصاح|حفظ السرية|employment|job|employee|labor|عمل|توظيف|موظف|عقد عمل|rent|lease|tenant|landlord|apartment|property|إيجار|ايجار|عقار|شقة|فيلا|أرض|محل|مكتب|توريد|شراء بضاعة|supply|مورد|برمجة|تطبيق|موقع|software|سورس كود|شراكة|تأسيس شركة|partnership|قرض|سلف|دين|loan|إقرار دين|اقرار دين|power of attorney|poa|agency|wakala|mandate|وكالة|توكيل|تفويض|وكالة عامة|وكالة خاصة|تعديل|عدل|غير|اضف|أضف|شرط جزائي|غرامة|توثيق|شهر عقاري|تسجيل|مرور|نقل ملكية)/i.test(p);
   if (isSpecializedContract) {
     return solveLegalPrompt(prompt, lang);
   }

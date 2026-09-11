@@ -40,6 +40,23 @@
       })();
     </script>
 
+    <!-- 0ms Zero-Latency Locale & Direction Synchronizer (7 Supported Languages: ar, en, fr, es, de, tr, zh) -->
+    <script>
+      (function() {
+        try {
+          var validLangs = ['ar', 'en', 'fr', 'es', 'de', 'tr', 'zh'];
+          var stored = localStorage.getItem('i18nextLng') || localStorage.getItem('app_locale');
+          var lang = 'ar';
+          if (stored) {
+            var s = stored.toLowerCase().slice(0, 2);
+            if (validLangs.indexOf(s) !== -1) lang = s;
+          }
+          document.documentElement.lang = lang;
+          document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+        } catch(e) {}
+      })();
+    </script>
+
 
 
 
@@ -199,6 +216,25 @@
             document.documentElement.classList.remove('dark');
           }
         } catch (e) {}
+      })();
+    </script>
+
+    <!-- 0ms Immediate Locale & Direction Synchronizer (Prevents FOUC & Direction Jump) -->
+    <script>
+      (function() {
+        try {
+          var stored = localStorage.getItem('juristech.locale') || localStorage.getItem('locale');
+          var path = (window.location.pathname || '').toLowerCase();
+          var match = path.match(/^\/(en|ar|fr|es|de|tr|zh)(\/|$)/);
+          var lang = match ? match[1] : (stored || 'en');
+          var isRtl = lang === 'ar';
+          document.documentElement.lang = lang;
+          document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+          if (document.body) {
+            document.body.lang = lang;
+            document.body.dir = isRtl ? 'rtl' : 'ltr';
+          }
+        } catch(e) {}
       })();
     </script>
 

@@ -16,13 +16,14 @@ import ContractAnalysisSkeleton from '../components/ContractAnalysisSkeleton';
 import HeartbeatBackground from '../components/HeartbeatBackground';
 import SEO from '../components/SEO';
 import { useAuth } from '../lib/authContext';
-import { getVisitorAnalyticsSummary } from '../lib/visitorTracker';
+import { getVisitorAnalyticsSummary, syncVisitorLogsWithSupabase, purgeSyntheticVisitorLogs } from '../lib/visitorTracker';
 import { crmService } from '../services/crmService';
 import { getReviewQueueItems } from '../lib/reviewQueueService';
 import { getActiveGlobalTranslations } from '../lib/globalTranslations';
 import { usePlatformLocale } from '../lib/universalTranslator';
 import { useSaaS } from '../context/SaaSContext';
 
+import WorkspaceOrganizationHub from '../components/tenancy/WorkspaceOrganizationHub';
 import WorkflowDashboard from '../components/WorkflowDashboard';
 import DashboardChatbotMagnet from '../components/DashboardChatbotMagnet';
 import USCompetitorMatchBanner from '../components/USCompetitorMatchBanner';
@@ -35,6 +36,7 @@ const InteractiveCustomerJourneyMap = lazy(() => import('../components/Interacti
 const InteractiveSassGlobalMap = lazy(() => import('../components/InteractiveSassGlobalMap'));
 const CaseStudiesSection = lazy(() => import('../components/CaseStudiesSection'));
 const TwoFactorSecurityModal = lazy(() => import('../components/TwoFactorSecurityModal'));
+const TeamManagementModal = lazy(() => import('../components/team/TeamManagementModal'));
 
 
 interface ActivityItem {
@@ -77,7 +79,7 @@ let dashboardMetricsCache: {
 } | null = null;
 
 export default function Dashboard() {
-  const { l, isRtl, gt, t, i18n, formatNum, formatCurr } = usePlatformLocale();
+  const { l, isRtl, gt, t, i18n, formatNum, formatCurr, lang } = usePlatformLocale();
   const navigate = useNavigate();
   const { isAdmin } = useAuth();
   const { organization, workspace } = useSaaS();
@@ -94,6 +96,7 @@ export default function Dashboard() {
   const [activeVectorFilter, setActiveVectorFilter] = useState<'All' | 'Financial' | 'Operational' | 'IP' | 'Regulatory'>('All');
   const [errorMsg, setErrorMsg] = useState('');
   const [showSecurityModal, setShowSecurityModal] = useState(false);
+  const [showTeamModal, setShowTeamModal] = useState(false);
 
   // Metrics State
   const [loadingMetrics, setLoadingMetrics] = useState(!dashboardMetricsCache);
@@ -105,6 +108,7 @@ export default function Dashboard() {
       activeUsers: 0,
       totalVisits: 0,
       disbursements: 0,
+      payingCustomers: 0,
     }
   );
 
@@ -112,6 +116,9 @@ export default function Dashboard() {
 
   useEffect(() => {
     async function loadDashboardData() {
+      // Purge any legacy synthetic logs from localStorage
+      purgeSyntheticVisitorLogs();
+
       if (dashboardMetricsCache && Date.now() - dashboardMetricsCache.timestamp < 30000) {
         setStats(dashboardMetricsCache.stats);
         setActivities(dashboardMetricsCache.activities);
@@ -119,6 +126,9 @@ export default function Dashboard() {
       }
 
       try {
+        // Sync authentic database logs from Supabase
+        await syncVisitorLogsWithSupabase().catch(() => []);
+
         const [
           { count: contractsCount },
           { count: riskCount },
@@ -144,7 +154,7 @@ export default function Dashboard() {
         const verifiedReceiptsCount = reviewQueue.filter(q => q.status === 'approved').length;
         const totalSubscribersCount = crmLeads.length + archivedLeads.length;
         const totalPayingCustomersCount = (paymentsCount || 0) + verifiedReceiptsCount;
-        const totalVisitsCount = visitorSummary.totalPageViewsCount || ((contractsCount || 0) + (riskCount || 0) + (chatCount || 0));
+        const totalVisitsCount = visitorSummary.totalPageViewsCount;
         const totalPaidAmount = (verifiedPayments || []).reduce((acc, p) => acc + (p.amount || 0), 0) + (verifiedReceiptsCount * 139);
 
         const newStats = {
@@ -176,8 +186,8 @@ export default function Dashboard() {
             mergedActivities.push({
               id: c.id,
               type: 'contract',
-              title: isRtl ? `تم إنشاء عقد ${c.contract_type}` : `Generated ${c.contract_type}`,
-              details: isRtl ? `بين ${c.party_a} و ${c.party_b}` : `Between ${c.party_a} and ${c.party_b}`,
+              title: l(`تم إنشاء عقد ${c.contract_type}`, `Generated ${c.contract_type}`),
+              details: l(`بين ${c.party_a} و ${c.party_b}`, `Between ${c.party_a} and ${c.party_b}`),
               date: c.created_at,
             });
           });
@@ -188,8 +198,8 @@ export default function Dashboard() {
             mergedActivities.push({
               id: r.id,
               type: 'risk',
-              title: isRtl ? `تم تحليل مخاطر مستند` : `Analyzed contract risk`,
-              details: `${r.file_name || 'نص يدوي'} - ${isRtl ? 'درجة المخاطر' : 'Risk Score'}: ${r.risk_score}%`,
+              title: l('تم تحليل مخاطر مستند', 'Analyzed contract risk'),
+              details: `${r.file_name || l('نص يدوي', 'Manual text')} - ${l('درجة المخاطر', 'Risk Score')}: ${r.risk_score}%`,
               date: r.created_at,
             });
           });
@@ -222,17 +232,17 @@ export default function Dashboard() {
       const leadsCount = crmService.getLeads().length + crmService.getArchivedLeads().length;
       setStats(prev => ({
         ...prev,
-        totalVisits: Math.max(prev.totalVisits, summary.totalPageViewsCount || prev.totalVisits + 1),
-        activeUsers: Math.max(prev.activeUsers, leadsCount + 10),
+        totalVisits: summary.totalPageViewsCount,
+        activeUsers: leadsCount,
       }));
     }, 10000);
 
     return () => clearInterval(liveTick);
-  }, [isRtl]);
+  }, [lang]);
 
   async function executeInlineAudit(textToAudit: string, sourceFileName?: string) {
     if (!textToAudit.trim()) {
-      alert(isRtl ? 'يرجى إدخال أو رفع بنود العقد أولاً.' : 'Please paste or upload contract text first.');
+      alert(l('يرجى إدخال أو رفع بنود العقد أولاً.', 'Please paste or upload contract text first.'));
       return;
     }
 
@@ -303,7 +313,7 @@ export default function Dashboard() {
       });
     } catch (err) {
       console.error('Audit execution error:', err);
-      setErrorMsg(isRtl ? 'حدث خطأ أثناء إجراء الفحص الذكي.' : 'Error executing AI audit.');
+      setErrorMsg(l('حدث خطأ أثناء إجراء الفحص الذكي.', 'Error executing AI audit.'));
     } finally {
       setAuditing(false);
     }
@@ -313,7 +323,7 @@ export default function Dashboard() {
     { label: gt.dashboard.statContracts, value: stats.contracts, color: 'text-cyan-400', icon: FileText, bg: 'bg-cyan-500/10 border-cyan-500/20' },
     { label: gt.dashboard.statVisitorsToday, value: stats.totalVisits, color: 'text-blue-400', icon: Globe, bg: 'bg-blue-500/10 border-blue-500/20' },
     { label: gt.dashboard.statSubscribers, value: stats.activeUsers, color: 'text-purple-400', icon: Users, bg: 'bg-purple-500/10 border-purple-500/20' },
-    { label: gt.dashboard.statLicensedEntities, value: stats.payingCustomers || 8, color: 'text-emerald-400', icon: CreditCard, bg: 'bg-emerald-500/10 border-emerald-500/20' },
+    { label: gt.dashboard.statLicensedEntities, value: stats.payingCustomers ?? 0, color: 'text-emerald-400', icon: CreditCard, bg: 'bg-emerald-500/10 border-emerald-500/20' },
     { label: gt.dashboard.statRiskReports, value: stats.riskReports, color: 'text-amber-400', icon: AlertTriangle, bg: 'bg-amber-500/10 border-amber-500/20' },
     { label: gt.dashboard.statAiQueries, value: stats.aiRequests, color: 'text-indigo-400', icon: Zap, bg: 'bg-indigo-500/10 border-indigo-500/20' },
   ];
@@ -408,6 +418,9 @@ export default function Dashboard() {
           <DashboardChatbotMagnet
             onContractUploaded={(text, filename) => executeInlineAudit(text, filename)}
           />
+
+          {/* 🏢 Enterprise Multi-Tenant Workspaces & Organizations Hub */}
+          <WorkspaceOrganizationHub onOpenTeamModal={() => setShowTeamModal(true)} />
 
           {/* Session Workspace & Recent Audits Card */}
           <div className="card-lawtech-lux rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-2xl space-y-4 font-sans">
@@ -902,6 +915,13 @@ export default function Dashboard() {
       {showSecurityModal && (
         <Suspense fallback={null}>
           <TwoFactorSecurityModal isOpen={showSecurityModal} onClose={() => setShowSecurityModal(false)} />
+        </Suspense>
+      )}
+
+      {/* Team & RBAC Management Modal */}
+      {showTeamModal && (
+        <Suspense fallback={null}>
+          <TeamManagementModal isOpen={showTeamModal} onClose={() => setShowTeamModal(false)} />
         </Suspense>
       )}
     </main>

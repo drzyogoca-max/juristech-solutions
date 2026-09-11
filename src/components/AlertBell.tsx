@@ -13,7 +13,6 @@
  *   • Arabic / English RTL/LTR support
  */
 import React, { useState, useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Bell, X, CheckCheck, AlertTriangle, Info, RefreshCw, Clock, ArrowRight,
@@ -23,6 +22,7 @@ import {
   LegalAlert, getStoredAlerts, getUnreadCount, markAsRead, markAllRead,
   dismissAlert, seedPlatformAlerts, syncAlertsFromSupabase, resolveAlert
 } from '../lib/alertsManager';
+import { usePlatformLocale } from '../lib/universalTranslator';
 
 const ALERT_TYPE_ICONS: Record<string, React.ReactNode> = {
   contract_renewal: <Clock className="w-3.5 h-3.5" />,
@@ -119,8 +119,7 @@ const DETAILED_AI_ANALYSIS: Record<string, {
 };
 
 export default function AlertBell() {
-  const { i18n } = useTranslation();
-  const isRtl = i18n.language === 'ar';
+  const { l, isRtl, lang } = usePlatformLocale();
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
@@ -200,7 +199,7 @@ export default function AlertBell() {
       <button
         onClick={() => setOpen(o => !o)}
         className="relative p-2.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:text-white hover:border-cyan-500/30 transition-all shadow-md active:scale-95"
-        aria-label={isRtl ? 'التنبيهات القانونية الاستباقية' : 'Proactive Legal Alerts'}
+        aria-label={l('التنبيهات القانونية الاستباقية', 'Proactive Legal Alerts')}
       >
         <Bell className={`w-4 h-4 ${open ? 'text-cyan-400 animate-pulse' : ''}`} />
         {unread > 0 && (
@@ -222,10 +221,10 @@ export default function AlertBell() {
           <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 dark:border-slate-800 bg-slate-950/60 font-sans">
             <div className="flex items-center gap-2 text-xs font-bold text-slate-900 dark:text-white">
               <Sparkles className="w-4 h-4 text-cyan-400 animate-pulse" />
-              {isRtl ? 'التنبيهات القانونية الاستباقية' : 'Proactive Legal Alerts'}
+              {l('التنبيهات القانونية الاستباقية', 'Proactive Legal Alerts')}
               {unread > 0 && (
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-500/20 text-red-400 border border-red-500/30">
-                  {unread} {isRtl ? 'جديد' : 'new'}
+                  {unread} {l('جديد', 'new')}
                 </span>
               )}
             </div>
@@ -233,8 +232,8 @@ export default function AlertBell() {
             <div className="flex items-center gap-1">
               <button
                 onClick={handleSync}
-                aria-label={isRtl ? 'تحديث التنبيهات' : 'Sync alerts'}
-                title={isRtl ? 'تحديث' : 'Sync'}
+                aria-label={l('تحديث التنبيهات', 'Sync alerts')}
+                title={l('تحديث', 'Sync')}
                 className="p-1.5 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:text-white hover:bg-slate-100 dark:bg-slate-800 transition-all"
               >
                 <RefreshCw className={`w-3.5 h-3.5 ${syncing ? 'animate-spin' : ''}`} />
@@ -243,8 +242,8 @@ export default function AlertBell() {
               {unread > 0 && (
                 <button
                   onClick={handleMarkAllRead}
-                  aria-label={isRtl ? 'تعليم الكل كمقروء' : 'Mark all read'}
-                  title={isRtl ? 'قراءة الكل' : 'Mark all read'}
+                  aria-label={l('تعليم الكل كمقروء', 'Mark all read')}
+                  title={l('قراءة الكل', 'Mark all read')}
                   className="p-1.5 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:text-white hover:bg-slate-100 dark:bg-slate-800 transition-all"
                 >
                   <CheckCheck className="w-3.5 h-3.5" />
@@ -253,7 +252,7 @@ export default function AlertBell() {
 
               <button
                 onClick={() => setOpen(false)}
-                aria-label={isRtl ? 'إغلاق قائمة التنبيهات' : 'Close alerts menu'}
+                aria-label={l('إغلاق قائمة التنبيهات', 'Close alerts menu')}
                 className="p-1.5 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:text-white hover:bg-slate-100 dark:bg-slate-800 transition-all"
               >
                 <X className="w-3.5 h-3.5" />
@@ -265,7 +264,7 @@ export default function AlertBell() {
           <div className="px-4 py-2 bg-gradient-to-r from-emerald-950/60 via-slate-900 to-cyan-950/60 border-b border-emerald-500/30 flex items-center justify-between gap-2 text-[10px] font-mono">
             <div className="flex items-center gap-1.5 text-emerald-400 font-bold">
               <Sparkles className="w-3 h-3 text-emerald-400 animate-pulse" />
-              <span>{isRtl ? 'نظام الحقن التلقائي الذكي مفعل (Full Automation Active)' : 'Automated Smart Injection Active'}</span>
+              <span>{l('نظام الحقن التلقائي الذكي مفعل', 'Automated Smart Injection Active')}</span>
             </div>
             <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-extrabold border border-emerald-500/40">
               ● AUTO-SYNC
@@ -275,10 +274,10 @@ export default function AlertBell() {
           {/* Category Filter Tabs */}
           <div className="flex items-center gap-1 p-2 bg-slate-950/40 border-b border-slate-200 dark:border-slate-800 text-[10px] font-bold overflow-x-auto">
             {[
-              { id: 'all', labelAr: 'الكل', labelEn: 'All' },
-              { id: 'unread', labelAr: `معلق (${unread})`, labelEn: `Pending (${unread})` },
-              { id: 'updates', labelAr: 'تحديثات قانونية', labelEn: 'Legal Updates' },
-              { id: 'renewals', labelAr: 'تجديد عقود', labelEn: 'Renewals' },
+              { id: 'all', label: l('الكل', 'All') },
+              { id: 'unread', label: `${l('معلق', 'Pending')} (${unread})` },
+              { id: 'updates', label: l('تحديثات قانونية', 'Legal Updates') },
+              { id: 'renewals', label: l('تجديد عقود', 'Renewals') },
             ].map(tab => (
               <button
                 key={tab.id}
@@ -286,10 +285,10 @@ export default function AlertBell() {
                 className={`px-2.5 py-1 rounded-xl whitespace-nowrap transition-all ${
                   filter === tab.id
                     ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30'
-                    : 'text-slate-500 dark:text-slate-400 dark:text-slate-400 hover:text-slate-700 dark:text-slate-300'
+                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:text-slate-300'
                 }`}
               >
-                {isRtl ? tab.labelAr : tab.labelEn}
+                {tab.label}
               </button>
             ))}
           </div>
@@ -299,7 +298,7 @@ export default function AlertBell() {
             {filteredAlerts.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-10 gap-2 text-slate-600">
                 <Shield className="w-8 h-8 opacity-40" />
-                <span className="text-xs">{isRtl ? 'لا توجد تنبيهات في هذا القسم' : 'No alerts in this view'}</span>
+                <span className="text-xs">{l('لا توجد تنبيهات في هذا القسم', 'No alerts in this view')}</span>
               </div>
             ) : (
               filteredAlerts.map(alert => {
@@ -325,19 +324,19 @@ export default function AlertBell() {
                         <div className="flex items-center gap-1.5 mb-1">
                           <span className={`inline-flex items-center gap-1 text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md border ${ALERT_PRIORITY_COLORS[alert.priority]}`}>
                             {ALERT_TYPE_ICONS[alert.alert_type]}
-                            {isRtl
-                              ? { contract_renewal: 'تجديد', legal_update: 'تحديث قانوني', platform_notice: 'إشعار منصة', session_expiry: 'انتهاء جلسة' }[alert.alert_type]
-                              : { contract_renewal: 'Renewal', legal_update: 'Legal Update', platform_notice: 'Notice', session_expiry: 'Session' }[alert.alert_type]
-                            }
+                            {l(
+                              { contract_renewal: 'تجديد', legal_update: 'تحديث قانوني', platform_notice: 'إشعار منصة', session_expiry: 'انتهاء جلسة' }[alert.alert_type] || alert.alert_type,
+                              { contract_renewal: 'Renewal', legal_update: 'Legal Update', platform_notice: 'Notice', session_expiry: 'Session' }[alert.alert_type] || alert.alert_type
+                            )}
                           </span>
                         </div>
 
                         <p className={`text-xs font-bold leading-tight ${isPending ? 'text-slate-900 dark:text-white' : 'text-slate-600 dark:text-slate-400'}`}>
-                          {isRtl ? alert.title_ar : alert.title_en}
+                          {l(alert.title_ar, alert.title_en)}
                         </p>
 
                         <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-1 leading-relaxed line-clamp-2">
-                          {isRtl ? alert.description_ar : alert.description_en}
+                          {l(alert.description_ar, alert.description_en)}
                         </p>
 
                         {/* Action Buttons — Automated Fix */}
@@ -352,7 +351,7 @@ export default function AlertBell() {
                               className="inline-flex items-center gap-1 text-[11px] font-black text-emerald-300 hover:text-emerald-200 transition-all bg-emerald-500/20 border border-emerald-500/40 px-2.5 py-1 rounded-xl hover:bg-emerald-500/30 shadow-sm"
                             >
                               <Sparkles className="w-3 h-3 text-emerald-400" />
-                              <span>{isRtl ? '⚡ حقن وتطبيق التحديث تلقائياً' : '⚡ Auto-Inject & Apply'}</span>
+                              <span>{l('⚡ حقن وتطبيق التحديث تلقائياً', '⚡ Auto-Inject & Apply')}</span>
                             </button>
                           ) : (
                             <span className="inline-flex items-center gap-1 text-[10px] font-mono text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
@@ -365,14 +364,14 @@ export default function AlertBell() {
                             onClick={(e) => handleOpenDetails(alert, e)}
                             className="text-[10px] text-cyan-400 hover:underline font-bold"
                           >
-                            {isRtl ? 'عرض التفاصيل' : 'View Details'}
+                            {l('عرض التفاصيل', 'View Details')}
                           </button>
                         </div>
                       </div>
 
                       <button
                         onClick={(e) => { e.stopPropagation(); handleDismiss(alert.id); }}
-                        aria-label={isRtl ? 'تجاهل التنبيه' : 'Dismiss alert'}
+                        aria-label={l('تجاهل التنبيه', 'Dismiss alert')}
                         className="p-1 rounded-lg text-slate-600 hover:text-red-400 hover:bg-red-500/10 transition-all shrink-0"
                       >
                         <X className="w-3.5 h-3.5" />
@@ -387,7 +386,7 @@ export default function AlertBell() {
           {/* Footer */}
           <div className="px-4 py-2.5 bg-slate-950/80 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between font-sans">
             <span className="text-[10px] text-slate-400">
-              {isRtl ? `${alerts.length} تنبيه إجمالاً` : `${alerts.length} total alerts`}
+              {alerts.length} {l('تنبيه إجمالاً', 'total alerts')}
             </span>
 
             <Link
@@ -395,7 +394,7 @@ export default function AlertBell() {
               onClick={() => setOpen(false)}
               className="text-[10px] font-bold text-cyan-400 hover:underline flex items-center gap-1"
             >
-              {isRtl ? 'خزنة المستندات' : 'Document Vault'}
+              {l('خزنة المستندات', 'Document Vault')}
               <ArrowRight className={`w-3 h-3 ${isRtl ? 'rotate-180' : ''}`} />
             </Link>
           </div>
@@ -417,17 +416,17 @@ export default function AlertBell() {
                 </div>
                 <div>
                   <span className={`inline-block text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md border mb-1 ${ALERT_PRIORITY_COLORS[selectedAlert.priority]}`}>
-                    {isRtl ? 'تحليل الذكاء الاصطناعي التشريعي' : 'AI Statutory Analysis'}
+                    {l('تحليل الذكاء الاصطناعي التشريعي', 'AI Statutory Analysis')}
                   </span>
                   <h3 className="text-lg font-bold text-slate-900 dark:text-white leading-tight">
-                    {isRtl ? selectedAlert.title_ar : selectedAlert.title_en}
+                    {l(selectedAlert.title_ar, selectedAlert.title_en)}
                   </h3>
                 </div>
               </div>
 
               <button
                 onClick={() => setSelectedAlert(null)}
-                aria-label={isRtl ? 'إغلاق نافذة التفاصيل' : 'Close details modal'}
+                aria-label={l('إغلاق نافذة التفاصيل', 'Close details modal')}
                 className="p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:text-white hover:bg-slate-100 dark:bg-slate-800 transition-all shrink-0"
               >
                 <X className="w-5 h-5" />
@@ -436,8 +435,8 @@ export default function AlertBell() {
 
             {/* Original Alert Text */}
             <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
-              <p className="font-semibold text-slate-800 dark:text-slate-200 mb-1">{isRtl ? 'نص التنبيه الأصلي:' : 'Original Alert Text:'}</p>
-              {isRtl ? selectedAlert.description_ar : selectedAlert.description_en}
+              <p className="font-semibold text-slate-800 dark:text-slate-200 mb-1">{l('نص التنبيه الأصلي:', 'Original Alert Text:')}</p>
+              {l(selectedAlert.description_ar, selectedAlert.description_en)}
             </div>
 
             {/* AI Analysis Breakdown */}
@@ -449,10 +448,10 @@ export default function AlertBell() {
                   <div className="p-4 rounded-2xl bg-indigo-950/30 border border-indigo-500/20 space-y-1.5">
                     <div className="flex items-center gap-2 text-xs font-black text-indigo-400">
                       <Sparkles className="w-4 h-4" />
-                      {isRtl ? 'الملخص التشريعي للتحديث' : 'Executive Statutory Summary'}
+                      {l('الملخص التشريعي للتحديث', 'Executive Statutory Summary')}
                     </div>
                     <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
-                      {isRtl ? analysis.summaryAr : analysis.summaryEn}
+                      {l(analysis.summaryAr, analysis.summaryEn)}
                     </p>
                   </div>
 
@@ -460,10 +459,10 @@ export default function AlertBell() {
                   <div className="space-y-2">
                     <h4 className="text-xs font-black text-slate-900 dark:text-white flex items-center gap-2">
                       <AlertTriangle className="w-4 h-4 text-amber-400" />
-                      {isRtl ? 'الأثر المتوقع على العقود والعمليات:' : 'Impact on Active Agreements & Ops:'}
+                      {l('الأثر المتوقع على العقود والعمليات:', 'Impact on Active Agreements & Ops:')}
                     </h4>
                     <div className="space-y-1.5">
-                      {(isRtl ? analysis.impactAr : analysis.impactEn).map((imp, idx) => (
+                      {(lang === 'ar' ? analysis.impactAr : analysis.impactEn).map((imp, idx) => (
                         <div key={idx} className="flex items-start gap-2 text-xs text-slate-700 dark:text-slate-300 bg-slate-950/60 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800">
                           <span className="text-cyan-400 font-bold">•</span>
                           <span>{imp}</span>
@@ -476,10 +475,10 @@ export default function AlertBell() {
                   <div className="space-y-2">
                     <h4 className="text-xs font-black text-slate-900 dark:text-white flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                      {isRtl ? 'خطوات الامتثال الفورية الموصى بها:' : 'Recommended Immediate Action Steps:'}
+                      {l('خطوات الامتثال الفورية الموصى بها:', 'Recommended Immediate Action Steps:')}
                     </h4>
                     <div className="space-y-1.5">
-                      {(isRtl ? analysis.actionsAr : analysis.actionsEn).map((act, idx) => (
+                      {(lang === 'ar' ? analysis.actionsAr : analysis.actionsEn).map((act, idx) => (
                         <div key={idx} className="flex items-start gap-2 text-xs text-slate-700 dark:text-slate-300 bg-slate-950/60 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800">
                           <span className="w-4 h-4 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-black flex items-center justify-center shrink-0">
                             {idx + 1}
@@ -495,7 +494,7 @@ export default function AlertBell() {
                     <div className="p-3.5 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-between gap-3 text-xs flex-wrap">
                       <div className="flex items-center gap-2 text-indigo-300 font-bold">
                         <Sparkles className="w-4 h-4 text-indigo-400 shrink-0 animate-pulse" />
-                        <span>{isRtl ? 'نظام الأتمتة الكاملة جاهز لحقن التحديث تلقائياً دون تدخل يدوي' : 'Full Automation System Ready to Auto-Inject Updates'}</span>
+                        <span>{l('نظام الأتمتة الكاملة جاهز لحقن التحديث تلقائياً دون تدخل يدوي', 'Full Automation System Ready to Auto-Inject Updates')}</span>
                       </div>
                       <button
                         onClick={() => {
@@ -506,14 +505,14 @@ export default function AlertBell() {
                         className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-500 hover:from-indigo-400 hover:to-cyan-400 text-slate-950 font-black text-xs shadow-md transition-all active:scale-95 flex items-center gap-1.5"
                       >
                         <Zap className="w-3.5 h-3.5" />
-                        <span>{isRtl ? '⚡ تأكيد الحقن التلقائي' : '⚡ Confirm Auto-Injection'}</span>
+                        <span>{l('⚡ تأكيد الحقن التلقائي', '⚡ Confirm Auto-Injection')}</span>
                       </button>
                     </div>
                   ) : (
                     <div className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-between gap-3 text-xs">
                       <div className="flex items-center gap-2 text-emerald-400 font-bold">
                         <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                        <span>{isRtl ? 'تم حقن التحديثات تلقائياً وتوثيقها في سجل التدقيق بنجاح' : 'Automatically Injected & Logged in Audit Trail'}</span>
+                        <span>{l('تم حقن التحديثات تلقائياً وتوثيقها في سجل التدقيق بنجاح', 'Automatically Injected & Logged in Audit Trail')}</span>
                       </div>
                       <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono text-[10px] font-black shrink-0">
                         ✓ EXECUTED
@@ -532,7 +531,7 @@ export default function AlertBell() {
                       className="flex-1 flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-950 font-black text-xs hover:opacity-90 transition-all shadow-lg shadow-emerald-500/20"
                     >
                       <Zap className="w-4 h-4" />
-                      {isRtl ? 'عرض سجل الفحص والامتثال المباشر' : 'View Instant Audit & Compliance Log'}
+                      {l('عرض سجل الفحص والامتثال المباشر', 'View Instant Audit & Compliance Log')}
                     </button>
 
                     <button
@@ -543,7 +542,7 @@ export default function AlertBell() {
                       className="px-4 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold text-xs hover:text-slate-900 dark:text-white transition-all flex items-center gap-1.5"
                     >
                       <Brain className="w-4 h-4 text-cyan-400" />
-                      {isRtl ? 'استشر AI' : 'Consult AI'}
+                      {l('استشر AI', 'Consult AI')}
                     </button>
                   </div>
                 </div>

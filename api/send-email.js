@@ -348,7 +348,23 @@ async function handleNodeRequest(req, res) {
     }
 
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
-    const { to, subject, text, html, replyTo, forceSend } = body || {};
+    let { to, subject, text, html, replyTo, forceSend } = body || {};
+
+    // ── Security Hardening: Strip forceSend in autonomous production workflows ──
+    const isCronOrAutonomous = Boolean(
+      req.headers?.['x-cron-secret'] ||
+      req.headers?.['x-cron-job'] ||
+      body?.isAutonomous ||
+      body?.cronSource
+    );
+    if (isCronOrAutonomous || forceSend) {
+      const devSecret = process.env.DEVELOPER_TEST_KEY || process.env.ADMIN_SECRET_KEY;
+      const providedDevKey = req.headers?.['x-developer-test-key'] || req.headers?.get?.('x-developer-test-key');
+      const isDevTesting = devSecret && providedDevKey === devSecret;
+      if (!isDevTesting) {
+        forceSend = false; // Strictly disallow forceSend in autonomous/production operations
+      }
+    }
 
     const targetEmail = to;
     const emailSubject = subject || 'JurisTech Solutions — Legal Intelligence Platform';
