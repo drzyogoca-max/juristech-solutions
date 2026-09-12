@@ -69,6 +69,10 @@ export class LegalResearchAgent {
     const jurisdiction = options.forceJurisdiction || detectedJur;
     const domain = options.forceDomain || detectLegalDomain(query);
 
+    // Hard jurisdiction firewall: never synthesize from a different jurisdiction.
+    if (options.forceJurisdiction && detectedJur !== 'UNKNOWN' && detectedJur !== options.forceJurisdiction) {
+      return { statutes: [], citations: [], jurisdiction: options.forceJurisdiction, domain, confidenceScore: 0.2, confidenceCalculation: 'heuristic', sourceVerificationStatus: 'SOURCE_NOT_VERIFIED', groundingStatus: 'REQUIRES_VERIFICATION', jurisdictionSafetyStatus: 'JURISDICTION_REQUIRED', clarificationRequired: true, clarificationPrompt: isAr ? 'يوجد تعارض بين الاختصاص المحدد ونص الطلب. يرجى تأكيد الدولة أو الاختصاص القضائي قبل الصياغة.' : 'The selected jurisdiction conflicts with the jurisdiction stated in the request. Please confirm the governing jurisdiction before drafting.' };
+    }
     // 2. Jurisdiction Safety Check (Task 2-E)
     if (jurisdiction === 'UNKNOWN' && !query.toLowerCase().includes('international') && query.split(' ').length > 7) {
       const prompt = isAr

@@ -346,7 +346,7 @@ export function legalResearchAgent(clauseText: string, targetJurisdictionCode?: 
     if (defaultJurStatute) return [defaultJurStatute];
   }
 
-  return [GLOBAL_LEGAL_KNOWLEDGE_BASE[0]];
+  return [];
 }
 
 /**

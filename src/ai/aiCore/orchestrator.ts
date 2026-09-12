@@ -31,6 +31,7 @@ import { checkForHallucination, buildInsufficientSourcesMessage } from '../secur
 import { contextManager } from './contextManager';
 import { ResponseValidator } from './responseValidator';
 import { LegalResearchAgent } from '../agents/legalResearchAgent';
+import { detectJurisdictionFromQuery } from '../retrieval/semanticSearch';
 import { formatCitationBlock } from '../retrieval/citationEngine';
 import { addMessage } from '../memory/conversationMemory';
 
@@ -80,12 +81,17 @@ export class AIOrchestrator {
     // ── 5. Legal Research & Citation Retrieval
     const research = await LegalResearchAgent.executeResearch(cleanQuery, {
       lang,
-      forceJurisdiction: request.forceJurisdiction || sessionCtx.detectedJurisdiction,
+      forceJurisdiction: request.forceJurisdiction || (detectJurisdictionFromQuery(cleanQuery) !== 'UNKNOWN' ? detectJurisdictionFromQuery(cleanQuery) : sessionCtx.detectedJurisdiction),
       forceDomain: request.forceDomain || sessionCtx.legalDomain,
       topK: 4,
     });
 
     const jurisdiction = research.jurisdiction;
+
+    if (research.clarificationRequired) {
+      const clarificationPrompt = research.clarificationPrompt || (isRtl ? 'يرجى تأكيد الاختصاص القضائي قبل المتابعة.' : 'Please confirm the governing jurisdiction before proceeding.');
+      return { summary: clarificationPrompt, legalAnalysis: clarificationPrompt, applicableRules: [], risks: [], recommendedActions: [isRtl ? 'أكد الدولة أو الولاية القضائية' : 'Confirm the governing jurisdiction'], sources: [], confidenceScore: research.confidenceScore, confidenceCalculation: 'heuristic', sourceVerificationStatus: 'SOURCE_NOT_VERIFIED', groundingStatus: 'REQUIRES_VERIFICATION', hallucinationGuardTriggered: true, lang, isRtl, jurisdiction, legalDomain: research.domain, clarificationRequired: true, clarificationPrompt };
+    }
     const domain = research.domain;
     const citations = research.citations;
     const applicableRules = research.statutes;
