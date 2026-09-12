@@ -18,7 +18,7 @@ const CORS_HEADERS = {
   'Content-Type': 'application/json',
 };
 
-const GOOGLE_CLIENT_ID = process.env.YOUTUBE_CLIENT_ID || '420720999238-8hcb6ng6802jukmi9088uu8k5950etn5.apps.googleusercontent.com';
+const GOOGLE_CLIENT_ID = process.env.YOUTUBE_CLIENT_ID || '';
 const GOOGLE_CLIENT_SECRET = process.env.YOUTUBE_CLIENT_SECRET || '';
 const REDIRECT_URI = 'https://www.juristech.solutions/youtube-studio';
 const YOUTUBE_SCOPES = [
@@ -86,11 +86,11 @@ export default async function handler(req, res) {
         return res.status(400).json({ success: false, error: tokens.error_description || tokens.error });
       }
 
-      return res.status(200).json({
-        success: true,
-        status: 'TOKENS_OBTAINED',
-        accessToken: tokens.access_token,
-        refreshToken: tokens.refresh_token,
+      return res.status(501).json({
+        success: false,
+        status: 'YOUTUBE_TOKEN_STORAGE_NOT_CONFIGURED',
+        tokenReceived: Boolean(tokens.access_token),
+        refreshTokenReceived: Boolean(tokens.refresh_token),
         expiresIn: tokens.expires_in,
       });
     }
@@ -100,15 +100,10 @@ export default async function handler(req, res) {
       const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
       const { title, description, tags, categoryId, slot } = body || {};
 
-      console.log(`[YouTube API Upload Service] Publishing video (${slot}): ${title}`);
-
-      return res.status(200).json({
-        success: true,
-        status: 'VIDEO_QUEUED_FOR_YOUTUBE',
-        message: `Video queued and uploaded to Official YouTube Channel (juristech.solutions@outlook.com)`,
-        videoId: `yt_live_${Date.now()}`,
-        videoUrl: `https://www.youtube.com/watch?v=yt_live_${Date.now()}`,
-        timestamp: new Date().toISOString(),
+      return res.status(503).json({
+        success: false,
+        status: 'YOUTUBE_PUBLISH_REQUIRES_AUTH',
+        error: 'YouTube publishing is disabled until secure server-side OAuth token storage and a real upload implementation are configured.',
       });
     }
 

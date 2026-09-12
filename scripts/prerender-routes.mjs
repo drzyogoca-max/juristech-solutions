@@ -223,8 +223,8 @@ function prerenderRoutes() {
     }
 
     const metadata = ROUTE_METADATA[routePath] || {};
-    const pageTitle = metadata.titleAr || metadata.titleEn || 'منصة تحليل العقود بالذكاء الاصطناعي | JurisTech Solutions';
-    const pageDesc = metadata.descriptionAr || metadata.descriptionEn || 'المنصة الذكية لتحليل العقود وكشف الثغرات وإدارة المخاطر القانونية للشركات واستشارات فورية.';
+    const pageTitle = metadata.titleEn || metadata.titleAr || 'منصة تحليل العقود بالذكاء الاصطناعي | JurisTech Solutions';
+    const pageDesc = metadata.descriptionEn || metadata.descriptionAr || 'المنصة الذكية لتحليل العقود وكشف الثغرات وإدارة المخاطر القانونية للشركات واستشارات فورية.';
     const canonicalUrl = `${BASE_URL}${routePath === '/' ? '/' : routePath}`;
 
     let routeHtml = baseHtml;
@@ -241,9 +241,7 @@ function prerenderRoutes() {
     routeHtml = routeHtml.replace(/<link\s+[^>]*rel=["']alternate["'][^>]*>/gi, '');
 
     // 2. Generate canonical and hreflangs
-    const hreflangTags = LANGS.map(lang => {
-      return `<link rel="alternate" hreflang="${lang}" href="${canonicalUrl}" />`;
-    }).join('\n    ');
+    const hreflangTags = ''; // Locale alternates require distinct crawlable URLs.
 
     // 3. Schema.org JSON-LD structured data with full Organization, Identity, LocalBusiness, and FAQ graph
     const jsonLdBlock = `
@@ -256,7 +254,7 @@ function prerenderRoutes() {
         'description': pageDesc,
         'url': canonicalUrl,
         'dateModified': '2026-08-21T18:30:00Z',
-        'inLanguage': ['ar', 'en'],
+        'inLanguage': 'en',
         'isPartOf': {
           '@type': 'WebSite',
           'name': 'JurisTech Solutions',
@@ -395,7 +393,11 @@ function prerenderRoutes() {
 
     // 5. Inject Rich Semantic HTML inside <div id="root"></div> for 100% LLM Readability & 0% Rendering Delta
     const semanticContent = getSemanticHtmlForRoute(routePath);
-    routeHtml = routeHtml.replace(/<div id="root">[\s\S]*?<\/div>/i, `<div id="root">${semanticContent}</div>`);
+    if (routeHtml.includes('<div id="root"></div>')) {
+      routeHtml = routeHtml.replace('<div id="root"></div>', `<div id="root">${semanticContent}</div>`);
+    } else {
+      routeHtml = routeHtml.replace(/<div id="root">[\s\S]*?<\/div>/i, `<div id="root">${semanticContent}</div>`);
+    }
 
     const targetFilePath = path.join(routeDir, 'index.html');
     fs.writeFileSync(targetFilePath, routeHtml, 'utf-8');
@@ -407,7 +409,11 @@ function prerenderRoutes() {
     let notFoundHtml = baseHtml;
     const notFoundSemantic = getSemanticHtmlForRoute('/404');
     notFoundHtml = notFoundHtml.replace(/<title>[\s\S]*?<\/title>/i, '<title>404: الصفحة غير موجودة | JurisTech Solutions</title>');
-    notFoundHtml = notFoundHtml.replace(/<div id="root">[\s\S]*?<\/div>/i, `<div id="root">${notFoundSemantic}</div>`);
+    if (notFoundHtml.includes('<div id="root"></div>')) {
+      notFoundHtml = notFoundHtml.replace('<div id="root"></div>', `<div id="root">${notFoundSemantic}</div>`);
+    } else {
+      notFoundHtml = notFoundHtml.replace(/<div id="root">[\s\S]*?<\/div>/i, `<div id="root">${notFoundSemantic}</div>`);
+    }
     fs.writeFileSync(path.join(DIST_DIR, '404.html'), notFoundHtml, 'utf-8');
     console.log('[Prerender SEO] Dedicated 404.html generated successfully.');
   } catch (e) {

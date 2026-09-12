@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" class="dark">
+<html lang="en" dir="ltr" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
 
     <meta name="google-site-verification" content="Csa-WN6QHwEIlH3lycEdcdsy5CznqwYzyJOq-PbjIpg" />
-    <title>منصة تحليل العقود بالذكاء الاصطناعي | JurisTech Solutions</title>
+    <title>AI Contract Analysis &amp; Risk Audit | JurisTech Solutions</title>
     <link rel="canonical" href="https://www.juristech.solutions/" id="canonical-url" />
 
     <!-- 👑 Sovereign Official Favicon & App Icons -->
@@ -27,28 +27,12 @@
 
 
 
-    <!-- 0ms Immediate Canonical Domain Redirection Guard (Legal Solution / Apex -> www.juristech.solutions) -->
-    <script>
-      (function() {
-        try {
-          var h = window.location.hostname.toLowerCase();
-          if (h && (h.indexOf('legalshield') !== -1 || h.indexOf('legalsolution') !== -1 || h === 'juristech.solutions')) {
-            var target = 'https://www.juristech.solutions' + window.location.pathname + window.location.search + window.location.hash;
-            window.location.replace(target);
-          }
-        } catch(e) {}
-      })();
-    </script>
-
-
-
-
     <!-- Preconnect & Asynchronous Non-Blocking Fonts for Low FCP & Zero CLS -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;600;700&display=swap" media="print" onload="this.media='all'" />
     <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;600;700&display=swap" />
     </noscript>
 
     <!-- Critical CSS for Layout Containment & Instant FCP/CLS Stability -->
@@ -59,93 +43,42 @@
         min-height: 100vh;
         background-color: #020617;
         color: #f8fafc;
+        font-family: 'Cairo', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
         text-rendering: optimizeLegibility;
         -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
       }
       #root {
         min-height: 100vh;
         display: flex;
         flex-direction: column;
+        contain: paint;
       }
       img {
         content-visibility: auto;
       }
     </style>
 
-    <!-- Asynchronously Deferred Third-Party Pixels (Never Blocks Main Thread / INP) -->
+    <!-- Fast Inline Bootstrap Guard (Domain Redirect + Geofencing + Dark Theme) -->
     <script>
-      function initTrackingPixels() {
-        if (window._trackingInitialized) return;
-        window._trackingInitialized = true;
-
-        // Deferred GA4
-        var gtm = document.createElement('script');
-        gtm.src = 'https://www.googletagmanager.com/gtag/js?id=G-311560459';
-        gtm.async = true;
-        document.head.appendChild(gtm);
-
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-311560459', { send_page_view: true });
-
-        // Deferred Meta Pixel
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '109283746598273');
-        fbq('track', 'PageView');
-
-        // Deferred LinkedIn Insight
-        _linkedin_partner_id = "7896543";
-        window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
-        window._linkedin_data_partner_ids.push(_linkedin_partner_id);
-        var li = document.createElement('script');
-        li.type = 'text/javascript';
-        li.async = true;
-        li.src = 'https://snap.licdn.com/li.lms-analytics/insight.min.js';
-        document.head.appendChild(li);
-      }
-
-      if ('requestIdleCallback' in window) {
-        window.requestIdleCallback(function() {
-          setTimeout(initTrackingPixels, 3000);
-        }, { timeout: 5000 });
-      } else {
-        window.addEventListener('load', function() {
-          setTimeout(initTrackingPixels, 3000);
-        });
-      }
-      ['scroll', 'touchstart', 'click'].forEach(function(ev) {
-        window.addEventListener(ev, initTrackingPixels, { once: true, passive: true });
-      });
-    </script>
-
-
-    <!-- Libya Geofencing Firewall Script -->
-    <script>
-      (function() {
-        try {
-          var tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || '').toLowerCase();
-          var langs = (navigator.languages || [navigator.language || '']).join(',').toLowerCase();
-          var isBlocked = tz.indexOf('tripoli') !== -1 ||
-                          tz.indexOf('libya') !== -1 ||
-                          langs.indexOf('-ly') !== -1 ||
-                          window.location.search.indexOf('geo=LY') !== -1 ||
-                          sessionStorage.getItem('juristech_geo_blocked') === 'LY';
-          if (isBlocked) {
-            sessionStorage.setItem('juristech_geo_blocked', 'LY');
-            if (window.location.pathname !== '/blocked') {
-              window.location.replace('/blocked');
-            }
-          }
-        } catch (e) {}
-      })();
+      try {
+        var h = window.location.hostname.toLowerCase();
+        if (h && (h.indexOf('legalshield') !== -1 || h.indexOf('legalsolution') !== -1 || h === 'juristech.solutions')) {
+          window.location.replace('https://www.juristech.solutions' + window.location.pathname + window.location.search + window.location.hash);
+        }
+        var tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || '').toLowerCase();
+        var langs = (navigator.languages || [navigator.language || '']).join(',').toLowerCase();
+        if (tz.indexOf('tripoli') !== -1 || tz.indexOf('libya') !== -1 || langs.indexOf('-ly') !== -1 || window.location.search.indexOf('geo=LY') !== -1 || sessionStorage.getItem('juristech_geo_blocked') === 'LY') {
+          sessionStorage.setItem('juristech_geo_blocked', 'LY');
+          if (window.location.pathname !== '/blocked') window.location.replace('/blocked');
+        }
+        var th = localStorage.getItem('theme');
+        if (th === 'dark' || (!th && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        } else if (th === 'light') {
+          document.documentElement.classList.remove('dark');
+        }
+      } catch (e) {}
     </script>
     
     <!-- Meta Descriptions & High-Volume B2B Problem SEO -->
@@ -190,44 +123,7 @@
     <link rel="alternate" hreflang="hi-IN" href="https://www.juristech.solutions/" />
     <link rel="alternate" hreflang="x-default" href="https://www.juristech.solutions/" />
 
-    <!-- Theme Initialization Script -->
-    <script>
-      (function() {
-        try {
-          var localTheme = localStorage.getItem('theme');
-          var sysTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
-          if (localTheme === 'dark' || (!localTheme && sysTheme)) {
-            document.documentElement.classList.add('dark');
-          } else {
-            document.documentElement.classList.remove('dark');
-          }
-        } catch (e) {}
-      })();
-    </script>
 
-    <!-- Dynamic Canonical URL Synchronizer (Guarantees Exactly ONE Canonical Tag in DOM) -->
-    <script>
-      (function() {
-        try {
-          var targetDomain = 'https://www.juristech.solutions';
-          var cleanPath = window.location.pathname.replace(/\/$/, '') || '/';
-          var fullCanonical = targetDomain + cleanPath;
-          var canonicals = document.querySelectorAll("link[rel='canonical']");
-          if (canonicals.length > 0) {
-            canonicals[0].setAttribute('href', fullCanonical);
-            for (var i = 1; i < canonicals.length; i++) {
-              canonicals[i].remove();
-            }
-          } else {
-            var link = document.createElement('link');
-            link.rel = 'canonical';
-            link.id = 'canonical-url';
-            link.href = fullCanonical;
-            document.head.appendChild(link);
-          }
-        } catch (e) {}
-      })();
-    </script>
 
     <!-- Open Graph & Twitter Cards -->
     <meta property="og:type" content="website" />
@@ -379,34 +275,53 @@
         </p>
       </div>
     </noscript>
-    <div id="root">
-      <div style="min-height: 100vh; background-color: #070b14; display: flex; align-items: center; justify-content: center; color: #38bdf8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-        <div style="text-align: center; padding: 20px;">
-          <div style="width: 48px; height: 48px; border: 3px solid rgba(56, 189, 248, 0.2); border-top-color: #38bdf8; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px auto;"></div>
-          <div style="font-size: 16px; font-weight: 800; letter-spacing: 0.5px; color: #f8fafc;">JurisTech Solutions ⚖️</div>
-          <div style="font-size: 12px; color: #64748b; margin-top: 6px;">Sovereign AI Legal & Risk Infrastructure</div>
-        </div>
-      </div>
-    </div>
-    <style>
-      @keyframes spin { to { transform: rotate(360deg); } }
-    </style>
+    <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     
-    <!-- PWA Service Worker Registration -->
+    <!-- Deferred Third-Party Pixels & Service Worker (Idle Loading) -->
     <script>
-      (function () {
-        if (!('serviceWorker' in navigator)) return;
+      function initTrackingPixels() {
+        if (window._trackingInitialized) return;
+        window._trackingInitialized = true;
+        try {
+          var gtm = document.createElement('script');
+          gtm.src = 'https://www.googletagmanager.com/gtag/js?id=G-311560459';
+          gtm.async = true;
+          document.head.appendChild(gtm);
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-311560459', { send_page_view: true });
+
+          !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
+          fbq('init', '109283746598273');
+          fbq('track', 'PageView');
+
+          _linkedin_partner_id = "7896543";
+          window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
+          window._linkedin_data_partner_ids.push(_linkedin_partner_id);
+          var li = document.createElement('script');
+          li.type = 'text/javascript';
+          li.async = true;
+          li.src = 'https://snap.licdn.com/li.lms-analytics/insight.min.js';
+          document.head.appendChild(li);
+        } catch (e) {}
+      }
+
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(function() { setTimeout(initTrackingPixels, 3500); }, { timeout: 6000 });
+      } else {
+        window.addEventListener('load', function() { setTimeout(initTrackingPixels, 3500); });
+      }
+      ['scroll', 'touchstart', 'click'].forEach(function(ev) {
+        window.addEventListener(ev, initTrackingPixels, { once: true, passive: true });
+      });
+
+      if ('serviceWorker' in navigator) {
         window.addEventListener('load', function () {
-          navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' })
-            .then(function (registration) {
-              console.log('[JurisTech PWA] SW registered. Scope:', registration.scope);
-            })
-            .catch(function (err) {
-              console.warn('[JurisTech PWA] SW registration failed:', err);
-            });
+          navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' }).catch(function(){});
         });
-      })();
+      }
     </script>
   </body>
 </html>

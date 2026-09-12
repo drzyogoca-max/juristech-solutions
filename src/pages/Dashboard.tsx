@@ -10,8 +10,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAdaptiveUI } from '../hooks/useAdaptiveUI';
 import { callAI } from '../lib/api';
 import { useContract } from '../context/ContractContext';
-import InstitutionalTrustBadgeBar from '../components/InstitutionalTrustBadgeBar';
-import QuickAuditWidget from '../components/QuickAuditWidget';
 import ContractAnalysisSkeleton from '../components/ContractAnalysisSkeleton';
 import HeartbeatBackground from '../components/HeartbeatBackground';
 import SEO from '../components/SEO';
@@ -23,11 +21,16 @@ import { getActiveGlobalTranslations } from '../lib/globalTranslations';
 import { usePlatformLocale } from '../lib/universalTranslator';
 
 import WorkflowDashboard from '../components/WorkflowDashboard';
-import DashboardChatbotMagnet from '../components/DashboardChatbotMagnet';
-import USCompetitorMatchBanner from '../components/USCompetitorMatchBanner';
-import ExecutiveCommandBar from '../components/ExecutiveCommandBar';
-import SovereignServicesCatalog from '../components/SovereignServicesCatalog';
 import ErrorBoundary from '../components/ErrorBoundary';
+
+// ── Lazy Loaded Heavy Above-The-Fold But Non-Critical Components ──
+const DashboardChatbotMagnet = lazy(() => import('../components/DashboardChatbotMagnet'));
+const USCompetitorMatchBanner = lazy(() => import('../components/USCompetitorMatchBanner'));
+const ExecutiveCommandBar = lazy(() => import('../components/ExecutiveCommandBar'));
+const SovereignServicesCatalog = lazy(() => import('../components/SovereignServicesCatalog'));
+const InstitutionalTrustBadgeBar = lazy(() => import('../components/InstitutionalTrustBadgeBar'));
+const QuickAuditWidget = lazy(() => import('../components/QuickAuditWidget'));
+
 
 // ── Lazy Loaded Heavy Below-The-Fold Sections ──
 const InteractiveCustomerJourneyMap = lazy(() => import('../components/InteractiveCustomerJourneyMap'));
@@ -108,12 +111,18 @@ export default function Dashboard() {
 
   const [activities, setActivities] = useState<ActivityItem[]>(dashboardMetricsCache?.activities || []);
 
+  // Deferred non-critical widgets — mount after FCP to keep TBT low
+  const [showDeferredWidgets, setShowDeferredWidgets] = useState(false);
+
   useEffect(() => {
+    let liveTickTimer: ReturnType<typeof setInterval> | null = null;
+
     async function loadDashboardData() {
       if (dashboardMetricsCache && Date.now() - dashboardMetricsCache.timestamp < 30000) {
         setStats(dashboardMetricsCache.stats);
         setActivities(dashboardMetricsCache.activities);
         setLoadingMetrics(false);
+        return;
       }
 
       try {
@@ -211,21 +220,38 @@ export default function Dashboard() {
       }
     }
 
-    loadDashboardData();
+    // Defer all data loading + non-critical widget mounting to after first paint
+    const scheduleWork = () => {
+      setShowDeferredWidgets(true);
+      loadDashboardData();
+      // Live Telemetry Tick — starts after data load, pauses on hidden tab
+      liveTickTimer = setInterval(() => {
+        if (typeof document !== 'undefined' && document.hidden) return;
+        const summary = getVisitorAnalyticsSummary();
+        const leadsCount = crmService.getLeads().length + crmService.getArchivedLeads().length;
+        setStats(prev => ({
+          ...prev,
+          totalVisits: Math.max(prev.totalVisits, summary.totalPageViewsCount || prev.totalVisits + 1),
+          activeUsers: Math.max(prev.activeUsers, leadsCount + 10),
+        }));
+      }, 10000);
+    };
 
-    // Live Telemetry Tick (runs every 10s and pauses when browser tab is inactive)
-    const liveTick = setInterval(() => {
-      if (typeof document !== 'undefined' && document.hidden) return;
-      const summary = getVisitorAnalyticsSummary();
-      const leadsCount = crmService.getLeads().length + crmService.getArchivedLeads().length;
-      setStats(prev => ({
-        ...prev,
-        totalVisits: Math.max(prev.totalVisits, summary.totalPageViewsCount || prev.totalVisits + 1),
-        activeUsers: Math.max(prev.activeUsers, leadsCount + 10),
-      }));
-    }, 10000);
+    let idleHandle: number | null = null;
+    if ('requestIdleCallback' in window) {
+      idleHandle = (window as any).requestIdleCallback(scheduleWork, { timeout: 2000 });
+    } else {
+      idleHandle = setTimeout(scheduleWork, 500) as unknown as number;
+    }
 
-    return () => clearInterval(liveTick);
+    return () => {
+      if ('requestIdleCallback' in window && idleHandle !== null) {
+        (window as any).cancelIdleCallback(idleHandle);
+      } else if (idleHandle !== null) {
+        clearTimeout(idleHandle as unknown as ReturnType<typeof setTimeout>);
+      }
+      if (liveTickTimer !== null) clearInterval(liveTickTimer);
+    };
   }, [isRtl]);
 
   async function executeInlineAudit(textToAudit: string, sourceFileName?: string) {
@@ -380,9 +406,9 @@ export default function Dashboard() {
         {/* ──────────────────────────────────────────────────────────────────── */}
         {/* SECTION 1: 🗺️ GLOBAL INTERACTIVE SAAS MAP & CUSTOMER JOURNEY         */}
         {/* ──────────────────────────────────────────────────────────────────── */}
-        <section id="sec-map" className="space-y-6 pt-2">
+        <section id="sec-map" className="space-y-6 pt-2 min-h-[580px] overflow-hidden" style={{ contain: 'layout style' }}>
           {/* World-Class SaaS Interactive Map — wrapped in ErrorBoundary & Suspense to prevent page crash */}
-          <Suspense fallback={<div className="h-64 w-full rounded-3xl bg-slate-900/50 animate-pulse border border-slate-800 flex items-center justify-center text-slate-500 text-xs font-mono">Loading Global SaaS Map...</div>}>
+          <Suspense fallback={<div className="min-h-[580px] w-full rounded-3xl bg-slate-900/50 animate-pulse border border-slate-800 flex items-center justify-center text-slate-500 text-xs font-mono">Loading Global SaaS Map...</div>}>
             <ErrorBoundary>
               <InteractiveSassGlobalMap />
             </ErrorBoundary>
@@ -399,11 +425,15 @@ export default function Dashboard() {
         {/* SECTION 2: ⚡ AI CONTRACT STUDIO & INSTANT RISK RADAR WORKSPACE       */}
         {/* ──────────────────────────────────────────────────────────────────── */}
         <section id="sec-studio" className="space-y-6 pt-2">
-          
-          {/* Top AI Chatbot Magnet */}
-          <DashboardChatbotMagnet
-            onContractUploaded={(text, filename) => executeInlineAudit(text, filename)}
-          />
+
+          {/* Top AI Chatbot Magnet — deferred after first paint */}
+          {showDeferredWidgets && (
+            <Suspense fallback={null}>
+              <DashboardChatbotMagnet
+                onContractUploaded={(text, filename) => executeInlineAudit(text, filename)}
+              />
+            </Suspense>
+          )}
 
           {/* Session Workspace & Recent Audits Card */}
           <div className="card-lawtech-lux rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-2xl space-y-4 font-sans">
@@ -512,8 +542,14 @@ export default function Dashboard() {
               </div>
             </div>
 
-            {/* Quick Audit Drag & Drop Uploader */}
-            <QuickAuditWidget />
+            {/* Quick Audit Drag & Drop Uploader — deferred after first paint */}
+            {showDeferredWidgets ? (
+              <Suspense fallback={null}>
+                <QuickAuditWidget />
+              </Suspense>
+            ) : (
+              <div className="h-32 rounded-2xl bg-slate-900/50 border border-slate-800 animate-pulse" />
+            )}
 
             {/* Workflow Steps Guide */}
             <WorkflowDashboard />
@@ -629,19 +665,29 @@ export default function Dashboard() {
         {/* SECTION 3: 🏛️ 18 SOVEREIGN LEGAL SERVICES DIRECTORY                  */}
         {/* ──────────────────────────────────────────────────────────────────── */}
         <section id="sec-services" className="space-y-6 pt-2">
-          {/* Complete 18 Services Catalog */}
-          <SovereignServicesCatalog />
+          {/* Complete 18 Services Catalog — deferred after first paint */}
+          {showDeferredWidgets ? (
+            <Suspense fallback={<div className="h-64 rounded-3xl bg-slate-900/50 border border-slate-800 animate-pulse" />}>
+              <SovereignServicesCatalog />
+            </Suspense>
+          ) : (
+            <div className="h-64 rounded-3xl bg-slate-900/50 border border-slate-800 animate-pulse" />
+          )}
 
-          {/* US Competitor Match Banner */}
-          <USCompetitorMatchBanner />
+          {/* US Competitor Match Banner — deferred after first paint */}
+          {showDeferredWidgets && (
+            <Suspense fallback={null}>
+              <USCompetitorMatchBanner />
+            </Suspense>
+          )}
         </section>
 
         {/* ──────────────────────────────────────────────────────────────────── */}
         {/* SECTION 4: 💼 REAL CASE STUDIES & SUBSCRIPTION TIERS (30% DISCOUNT)  */}
         {/* ──────────────────────────────────────────────────────────────────── */}
-        <section id="sec-cases" className="space-y-6 pt-2">
+        <section id="sec-cases" className="space-y-6 pt-2" style={{ contain: 'layout style' }}>
           {/* Real-World Multimillion Dollar Dispute Case Studies */}
-          <Suspense fallback={<div className="h-48 w-full rounded-3xl bg-slate-900/50 animate-pulse border border-slate-800" />}>
+          <Suspense fallback={<div className="min-h-[300px] w-full rounded-3xl bg-slate-900/50 animate-pulse border border-slate-800" />}>
             <CaseStudiesSection />
           </Suspense>
 
@@ -882,13 +928,21 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* 👑 EXECUTIVE COMMAND BAR & DIRECT ADVISORY CHANNELS (ANCHORED AT BOTTOM) */}
-          <div className="pt-4">
-            <ExecutiveCommandBar onOpenSecurity={() => setShowSecurityModal(true)} />
-          </div>
+          {/* 👑 EXECUTIVE COMMAND BAR — deferred after first paint */}
+          {showDeferredWidgets && (
+            <div className="pt-4">
+              <Suspense fallback={null}>
+                <ExecutiveCommandBar onOpenSecurity={() => setShowSecurityModal(true)} />
+              </Suspense>
+            </div>
+          )}
 
-          {/* Institutional Trust Badges */}
-          <InstitutionalTrustBadgeBar />
+          {/* Institutional Trust Badges — deferred after first paint */}
+          {showDeferredWidgets && (
+            <Suspense fallback={null}>
+              <InstitutionalTrustBadgeBar />
+            </Suspense>
+          )}
 
         </section>
 

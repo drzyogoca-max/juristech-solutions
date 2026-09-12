@@ -51,40 +51,68 @@ export async function POST(req) {
 
     console.log(`[Resend Webhook] Received ${eventType} for ${targetEmail} | Subject: "${subject}"`);
 
- let scoreDelta = 0;
- let newStatus = 'ENGAGED';
- let activityText = '';
+    let scoreDelta = 0;
+    let newStatus = 'ENGAGED';
+    let activityText = '';
 
- if (eventType === 'email.opened') {
- scoreDelta = 10;
- activityText = 'تم فتح البريد الإلكتروني (+10 نقاط) — تفاعل إيجابي';
- } else if (eventType === 'email.clicked') {
- scoreDelta = 20;
- activityText = 'تم النقر على رابط في البريد الإلكتروني (+20 نقطة) — تفاعل عالي';
- } else if (eventType === 'email.bounced') {
- scoreDelta = -30;
- newStatus = 'Disqualified';
- activityText = 'فشل تسليم البريد (Bounced) — عنوان غير صالح';
- }
+    if (eventType === 'email.opened') {
+      scoreDelta = 10;
+      activityText = 'تم فتح البريد الإلكتروني (+10 نقاط) — تفاعل إيجابي';
+    } else if (eventType === 'email.clicked') {
+      scoreDelta = 20;
+      activityText = 'تم النقر على رابط في البريد الإلكتروني (+20 نقطة) — تفاعل عالي';
+    } else if (eventType === 'email.bounced') {
+      scoreDelta = -30;
+      newStatus = 'Disqualified';
+      activityText = 'فشل تسليم البريد (Bounced) — عنوان غير صالح';
+    }
 
- // Process notification if Hot Lead
- const isHotEngagement = scoreDelta >= 20;
+    // ── Log webhook event to Supabase for the Frequency Guard ──
+    if (targetEmail && eventType) {
+      const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
+      const SUPABASE_KEY = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+      if (SUPABASE_URL && SUPABASE_KEY) {
+        try {
+          const subjectTag = `[${eventType.toUpperCase().replace('EMAIL.', '')}]`;
+          await fetch(`${SUPABASE_URL}/rest/v1/email_dispatch_log`, {
+            method: 'POST',
+            headers: {
+              apikey: SUPABASE_KEY,
+              Authorization: `Bearer ${SUPABASE_KEY}`,
+              'Content-Type': 'application/json',
+              Prefer: 'return=minimal',
+            },
+            body: JSON.stringify({
+              recipient: targetEmail.toLowerCase().trim(),
+              subject: subjectTag,
+              provider: `Resend Webhook Telemetry: ${eventType}`,
+              dispatched_at: new Date().toISOString(),
+            }),
+          });
+        } catch (dbErr) {
+          console.error('[Resend Webhook DB Log Error]:', dbErr.message);
+        }
+      }
+    }
 
- return Response.json(
- {
- received: true,
- eventType,
- targetEmail,
- scoreDelta,
- statusAssigned: newStatus,
- activityLogged: activityText,
- isHotEngagement,
- timestamp: new Date().toISOString(),
- },
- { status: 200, headers: CORS_HEADERS }
- );
- } catch (err) {
- console.error('[Resend Webhook Error]:', err.message);
- return Response.json({ error: 'Internal Webhook Processing Error', details: err.message }, { status: 500, headers: CORS_HEADERS });
- }
+    // Process notification if Hot Lead
+    const isHotEngagement = scoreDelta >= 20;
+
+    return Response.json(
+      {
+        received: true,
+        eventType,
+        targetEmail,
+        scoreDelta,
+        statusAssigned: newStatus,
+        activityLogged: activityText,
+        isHotEngagement,
+        timestamp: new Date().toISOString(),
+      },
+      { status: 200, headers: CORS_HEADERS }
+    );
+  } catch (err) {
+    console.error('[Resend Webhook Error]:', err.message);
+    return Response.json({ error: 'Internal Webhook Processing Error', details: err.message }, { status: 500, headers: CORS_HEADERS });
+  }
 }

@@ -3,6 +3,7 @@ import { X, Copy, Check, ShieldCheck, ArrowRight, ArrowLeft, Download, Sparkles,
 import { AuditAxisResult } from '../services/contractAnalysisEngine';
 import { usePlatformLocale } from '../lib/universalTranslator';
 import { exportDocumentMultiFormat } from '../lib/documentExporter';
+import { aiAnalytics } from '../analytics/aiAnalytics';
 
 interface VisualRedlineDiffModalProps {
   isOpen: boolean;
@@ -27,6 +28,15 @@ export default function VisualRedlineDiffModal({
     navigator.clipboard.writeText(textToCopy);
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);
+
+    // Phase 3B: Track copy as REDLINE_ACCEPTED (strongest adoption signal)
+    aiAnalytics.trackEvent({
+      eventName: 'REDLINE_ACCEPTED',
+      feature: 'contract_analysis',
+      userTier: 'pro',
+      locale: isRtl ? 'ar' as any : 'en' as any,
+      success: true,
+    });
   };
 
   const handleExportRedline = () => {

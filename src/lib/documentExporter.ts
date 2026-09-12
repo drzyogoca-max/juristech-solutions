@@ -1,4 +1,3 @@
-import { exportLegalContractPDF } from './pdfExporter';
 import { deferToNextTick } from './asyncWorkerEngine';
 import { getJurisdictionProfile } from './jurisdictionResolver';
 import { generateAndDownloadWordDocument } from '../utils/export-utils';
@@ -19,11 +18,13 @@ export function exportDocumentMultiFormat(
   const jurProfile = getJurisdictionProfile(jurisdictionCode || (isRtl ? 'JO' : 'US'));
 
   if (format === 'pdf') {
-    deferToNextTick(() => {
+    deferToNextTick(async () => {
+      const { exportLegalContractPDF } = await import('./pdfExporter');
       exportLegalContractPDF(content, title, partyA, partyB, undefined, undefined, undefined, isRtl ? 'ar' : 'en');
     });
     return;
   }
+
 
   deferToNextTick(() => {
     // ── 1. TXT EXPORT ────────────────────────────────────────────────────────

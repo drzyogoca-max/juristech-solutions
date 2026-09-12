@@ -55,7 +55,7 @@ export function useAdaptiveUI() {
           const isGCC = gccCountries.includes(country);
 
           // Geo-Radar Auto-Language & RTL/LTR Sync if user has not explicitly locked locale
-          const userHasExplicitLocale = localStorage.getItem('locale_explicit');
+          const userHasExplicitLocale = true; // Public default is English; geo must never silently change locale.
           if (!userHasExplicitLocale) {
             let suggestedLocale = 'en';
 

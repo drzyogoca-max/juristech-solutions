@@ -111,7 +111,7 @@ const YouTubeGrowthWidget = lazy(() => import('./components/YouTubeGrowthWidget'
 
 function RouteFallback() {
   return (
-    <div className="min-h-[50vh] flex items-center justify-center p-8 text-cyan-400">
+    <div className="min-h-[calc(100vh-80px)] flex items-center justify-center p-8 text-cyan-400">
       <Loader2 className="w-7 h-7 animate-spin opacity-80" />
     </div>
   );
@@ -176,62 +176,79 @@ function MainAppContent() {
       if (blocked) setIsBlocked(true);
     });
 
-    // 🔒 Safe Performance Optimization:
-    // Heavy background engines, autonomous outreach & hourly ad campaigns
-    // are frozen on visitor browsers and delegated to backend cron / explicit admin control.
-    if (!FEATURE_FLAGS.ENABLE_CLIENT_BACKGROUND_ENGINES) {
-      return;
-    }
-
-    const runDeferredWorkers = async () => {
+    // ── Category A: Safe client-side services — always run, deferred ──────────
+    // These do not make external calls, do not run loops, and are safe in browser.
+    const runCategoryA = async () => {
       try {
         const { initVersionManager } = await import('./lib/versionManager');
         const { enforceArchiveModeGuard } = await import('./lib/archiveModeGuard');
-        const { runSovereignDataPurification } = await import('./lib/dataPurificationEngine');
-        const { runDailyAIKnowledgeOptimizer } = await import('./lib/aiSelfLearningEngine');
-        const { startStealthAgents } = await import('./services/stealth-agents');
-        const { startRadarEngineAutomation } = await import('./services/radarEngine');
-        const { startAutonomousRiskEngine } = await import('./services/autonomousRiskEngine');
-        const { startSelfHealingRadarWorker } = await import('./lib/selfHealingEngine');
-        const { startHourlyAdCampaignEngine } = await import('./services/hourlyAdCampaignEngine');
         const { ProactiveAlertsEngine } = await import('./lib/proactiveAlertsEngine');
-        const { initGlobalScalingEngine } = await import('./lib/globalScalingEngine');
-        const { runSWIFTWireCrossAudit } = await import('./services/wireTransferAuditor');
-        const { scheduleDailyAudit } = await import('./services/dailyAuditReportEngine');
-        const { autonomousCSuiteOutreachEngine } = await import('./services/autonomousCSuiteOutreachEngine');
-
-        const { masterExecutiveAutopilot } = await import('./services/masterExecutiveAutopilot');
-        const { executiveMonitorEngine } = await import('./services/executiveMonitorEngine');
 
         initVersionManager();
         enforceArchiveModeGuard();
-        runSovereignDataPurification();
-        runDailyAIKnowledgeOptimizer();
-
-        startStealthAgents();
-        startRadarEngineAutomation();
-        startAutonomousRiskEngine();
-        startSelfHealingRadarWorker();
-        startHourlyAdCampaignEngine();
         ProactiveAlertsEngine.startWorker();
-
-        initGlobalScalingEngine();
-        runSWIFTWireCrossAudit();
-        scheduleDailyAudit();
-        autonomousCSuiteOutreachEngine.autoRunDailyBatch();
-        masterExecutiveAutopilot.startAutopilot();
-        executiveMonitorEngine.startDailyMonitoring();
       } catch (e) {
-        console.warn('[Performance Boot] Background engine deferred init:', e);
+        console.warn('[Boot] Category A init:', e);
       }
     };
 
     if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
-      (window as any).requestIdleCallback(() => setTimeout(runDeferredWorkers, 4000), { timeout: 6000 });
+      (window as any).requestIdleCallback(() => setTimeout(runCategoryA, 2000), { timeout: 5000 });
     } else {
-      setTimeout(runDeferredWorkers, 4500);
+      setTimeout(runCategoryA, 2500);
+    }
+
+    // ── Category B/C: Heavy/autonomous/server engines — remain frozen client-side ─
+    // These are handled by /api/cron/ paths. DO NOT reactivate in browser.
+    if (!FEATURE_FLAGS.ENABLE_CLIENT_BACKGROUND_ENGINES) {
+      return;
+    }
+
+    const runServerEngines = async () => {
+      try {
+        // B: Move to server/cron (currently no-op client-side)
+        const { startRadarEngineAutomation } = await import('./services/radarEngine');
+        const { startAutonomousRiskEngine } = await import('./services/autonomousRiskEngine');
+        const { startSelfHealingRadarWorker } = await import('./lib/selfHealingEngine');
+        const { scheduleDailyAudit } = await import('./services/dailyAuditReportEngine');
+        const { executiveMonitorEngine } = await import('./services/executiveMonitorEngine');
+
+        // C: Server-only — should never reach here (flag is false)
+        const { runSovereignDataPurification } = await import('./lib/dataPurificationEngine');
+        const { runDailyAIKnowledgeOptimizer } = await import('./lib/aiSelfLearningEngine');
+        const { startStealthAgents } = await import('./services/stealth-agents');
+        const { startHourlyAdCampaignEngine } = await import('./services/hourlyAdCampaignEngine');
+        const { initGlobalScalingEngine } = await import('./lib/globalScalingEngine');
+        const { runSWIFTWireCrossAudit } = await import('./services/wireTransferAuditor');
+        const { autonomousCSuiteOutreachEngine } = await import('./services/autonomousCSuiteOutreachEngine');
+        const { masterExecutiveAutopilot } = await import('./services/masterExecutiveAutopilot');
+
+        startRadarEngineAutomation();
+        startAutonomousRiskEngine();
+        startSelfHealingRadarWorker();
+        scheduleDailyAudit();
+        executiveMonitorEngine.startDailyMonitoring();
+
+        runSovereignDataPurification();
+        runDailyAIKnowledgeOptimizer();
+        startStealthAgents();
+        startHourlyAdCampaignEngine();
+        initGlobalScalingEngine();
+        runSWIFTWireCrossAudit();
+        autonomousCSuiteOutreachEngine.autoRunDailyBatch();
+        masterExecutiveAutopilot.startAutopilot();
+      } catch (e) {
+        console.warn('[Performance Boot] Server engine deferred init:', e);
+      }
+    };
+
+    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+      (window as any).requestIdleCallback(() => setTimeout(runServerEngines, 4000), { timeout: 6000 });
+    } else {
+      setTimeout(runServerEngines, 4500);
     }
   }, []);
+
 
   // ── 2. Route Trackers & Google Analytics 4 (GA4) Page Views ───────────────
   useEffect(() => {
@@ -278,6 +295,7 @@ function MainAppContent() {
           <Navbar />
 
 
+        <main className="flex-1 min-h-[calc(100vh-80px)] w-full flex flex-col">
           <Suspense fallback={<RouteFallback />}>
             <Routes>
               {/* Common Single-Source-of-Truth Route Definitions */}
@@ -693,6 +711,7 @@ function MainAppContent() {
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </Suspense>
+        </main>
 
           <Suspense fallback={null}>
             <LeadCaptureModal />

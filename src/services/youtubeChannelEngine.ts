@@ -57,13 +57,13 @@ export class YouTubeChannelEngine {
     channelName: 'JurisTech Solutions — Sovereign AI Legal Intelligence',
     channelHandle: '@JurisTechSolutions',
     officialEmail: 'juristech.solutions@outlook.com',
-    status: 'CONFIGURED',
+    status: 'PENDING_OAUTH_BINDING',
     subscribersCount: 0,
     totalVideosPublished: 0,
     totalViews: 0,
     dailyVideosSchedule: '2 Videos / Day (Morning 9 AM & Evening 6 PM UTC)',
-    lastPublishedTimestamp: new Date().toISOString(),
-    nextScheduledVideoTimestamp: new Date(Date.now() + 12 * 3600 * 1000).toISOString(),
+    lastPublishedTimestamp: '',
+    nextScheduledVideoTimestamp: '',
     oauthClientId: '420720999238-8hcb6ng6802jukmi9088uu8k5950etn5.apps.googleusercontent.com',
     oauthProjectId: 'gen-lang-client-0627816917',
     oauthRedirectUri: 'https://www.juristech.solutions/youtube-studio',
@@ -136,11 +136,11 @@ Visit juristech.solutions or contact juristech.solutions@outlook.com to activate
         { timestamp: '00:50 - 00:58', visualDescription: 'Official Contact Card: juristech.solutions@outlook.com & WhatsApp +201126674337', textOverlay: 'Activate VIP Deal Room Pass at www.juristech.solutions' },
       ],
       thumbnailPrompt: 'Ultra-realistic futuristic AI legal briefing room, golden scales of justice glowing cyan, text: AI CONTRACT AUDIT 60s',
-      status: 'PUBLISHED',
-      youtubeVideoId: '',
-      youtubeUrl: 'https://www.youtube.com/@JurisTechSolutions',
-      viewsCount: 1420,
-      leadConversionsCount: 14,
+      status: 'SCHEDULED',
+      youtubeVideoId: undefined,
+      youtubeUrl: undefined,
+      viewsCount: undefined,
+      leadConversionsCount: undefined,
     };
 
     const eveningVid: YouTubeVideoPost = {
@@ -175,11 +175,11 @@ Claim your VIP Deal Room Pass now at juristech.solutions or email juristech.solu
         { timestamp: '02:30 - 03:00', visualDescription: 'Dr. Mohammad Mustafa Executive Signature Card & Direct WhatsApp', textOverlay: 'Direct Email: juristech.solutions@outlook.com' },
       ],
       thumbnailPrompt: 'Corporate CFO inspecting glowing holographic AI legal risk radar, text: C-SUITE LEGAL AI GUIDE',
-      status: 'PUBLISHED',
-      youtubeVideoId: '',
-      youtubeUrl: 'https://www.youtube.com/@JurisTechSolutions',
-      viewsCount: 2890,
-      leadConversionsCount: 22,
+      status: 'SCHEDULED',
+      youtubeVideoId: undefined,
+      youtubeUrl: undefined,
+      viewsCount: undefined,
+      leadConversionsCount: undefined,
     };
 
     this.videos = [morningVid, eveningVid];
@@ -227,11 +227,11 @@ Dr. Mohammad Mustafa, PhD — Founder & Executive Chairman.`,
         { timestamp: '00:15 - 00:45', visualDescription: 'DealShield 360™ Live Execution', textOverlay: 'Sub-Second Contract Risk Index' },
       ],
       thumbnailPrompt: 'Cybernetic legal courtroom with neon cyan scales of justice, 4K render',
-      status: 'PUBLISHED',
-      youtubeVideoId: '',
-      youtubeUrl: 'https://www.youtube.com/@JurisTechSolutions',
-      viewsCount: Math.floor(150 + Math.random() * 800),
-      leadConversionsCount: Math.floor(2 + Math.random() * 12),
+      status: 'SCHEDULED',
+      youtubeVideoId: undefined,
+      youtubeUrl: undefined,
+      viewsCount: undefined,
+      leadConversionsCount: undefined,
     };
 
     // Replace existing slot for today or prepend
@@ -242,9 +242,8 @@ Dr. Mohammad Mustafa, PhD — Founder & Executive Chairman.`,
       this.videos.unshift(newVideo);
     }
 
-    this.channelStats.totalVideosPublished += 1;
-    this.channelStats.totalViews += newVideo.viewsCount || 350;
-    this.channelStats.lastPublishedTimestamp = new Date().toISOString();
+    // Do not increment published/view counters until YouTube confirms a real publication.
+    this.channelStats.lastPublishedTimestamp = '';
     this.saveState();
 
     return newVideo;

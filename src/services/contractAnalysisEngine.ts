@@ -23,6 +23,18 @@ export interface AuditAxisResult {
   executiveRedlineEn: string;
 }
 
+export interface DynamicRedline {
+  severity: 'Critical' | 'High';
+  originalClauseAr: string;
+  originalClauseEn: string;
+  riskExplanationAr: string;
+  riskExplanationEn: string;
+  proposedCounterClauseAr: string;
+  proposedCounterClauseEn: string;
+  negotiationRationaleAr: string;
+  negotiationRationaleEn: string;
+}
+
 export interface Deep8AxisAuditReport {
   documentTitle: string;
   auditTimestamp: string;
@@ -44,6 +56,7 @@ export interface Deep8AxisAuditReport {
   governingLawAnalysisEn: string;
   disputeResolutionRecommendationAr: string;
   disputeResolutionRecommendationEn: string;
+  dynamicRedlines: DynamicRedline[];
 }
 
 export class ContractAnalysisEngine {
@@ -112,8 +125,23 @@ Return a single strict JSON object matching this structure:
   "governingLawAnalysisAr": "string",
   "governingLawAnalysisEn": "string",
   "disputeResolutionRecommendationAr": "string",
-  "disputeResolutionRecommendationEn": "string"
+  "disputeResolutionRecommendationEn": "string",
+  "dynamicRedlines": [
+    {
+      "severity": "Critical" | "High",
+      "originalClauseAr": "string",
+      "originalClauseEn": "string",
+      "riskExplanationAr": "string",
+      "riskExplanationEn": "string",
+      "proposedCounterClauseAr": "string (AI-assisted draft requiring lawyer review)",
+      "proposedCounterClauseEn": "string (AI-assisted draft requiring lawyer review)",
+      "negotiationRationaleAr": "string",
+      "negotiationRationaleEn": "string"
+    }
+  ]
 }
+
+CRITICAL: For EVERY High or Critical risk identified (especially uncapped liability, unlimited indemnity, one-sided termination, or unfavorable payment default clauses), you MUST generate a corresponding object in the \`dynamicRedlines\` array. Do NOT invent statutes. Clearly label outputs as AI-assisted drafts requiring lawyer review. Preserve the original context.
 
 Contract Text to Audit:
 ${contractText.slice(0, 15000)}`;
@@ -284,6 +312,19 @@ ${contractText.slice(0, 15000)}`;
       governingLawAnalysisEn: 'The contract adheres to basic bilateral principles but requires strict statutory alignment to prevent invalidation before commercial courts.',
       disputeResolutionRecommendationAr: 'يوصى بشدة بالتحكيم المؤسسي وفق قواعد مركز القاهرة الإقليمي (CRCICA) أو المركز السعودي (SCCA) بمحكم فردي في غضون 6 أشهر.',
       disputeResolutionRecommendationEn: 'Strongly recommend institutional arbitration under CRCICA / SCCA / DIAC rules with a sole arbitrator within an expedited 6-month timeline.',
+      dynamicRedlines: [
+        ...(hasLiabilityCap ? [] : [{
+          severity: 'Critical' as const,
+          originalClauseAr: 'لم يتم العثور على بند صريح يقيد المسؤولية المالية.',
+          originalClauseEn: 'No explicit financial liability limitation clause found.',
+          riskExplanationAr: 'غياب السقف يعرض الشركة لمخاطر مطالبات غير محدودة والأضرار التبعية غير المباشرة.',
+          riskExplanationEn: 'Absence of an aggregate liability cap exposes the company to unlimited claims and indirect consequential damages.',
+          proposedCounterClauseAr: 'لا يجوز أن تتجاوز المسؤولية الإجمالية التراكمية لأي من الطرفين إجمالي المبالغ المدفوعة بموجب هذا العقد خلال الـ 12 شهراً الماضية. يُستبعد التعويض عن أي ضرر غير مباشر أو تبعي. (مسودة ذكاء اصطناعي تتطلب مراجعة قانونية)',
+          proposedCounterClauseEn: 'Neither Party’s aggregate liability shall exceed 100% of fees paid under this Agreement in the 12 months preceding the claim. Indirect and consequential damages are strictly excluded. (AI-assisted draft requiring lawyer review)',
+          negotiationRationaleAr: 'حماية الميزانية العمومية للشركة من الأضرار المفتوحة مع الحفاظ على حق الطرف الآخر في التعويض المباشر.',
+          negotiationRationaleEn: 'Protects the corporate balance sheet from open-ended damages while preserving the counterparty’s right to direct actual damages.'
+        }])
+      ]
     };
   }
 }

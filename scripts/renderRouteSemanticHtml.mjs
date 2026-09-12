@@ -426,97 +426,34 @@ export function getSemanticHtmlForRoute(routePath) {
           </div>
         </section>
 
-        <!-- 18 Sovereign Legal Services Directory -->
-        <section class="my-10">
-          <h2 class="text-2xl font-black text-slate-100 border-b-2 border-sky-600 pb-2 mb-6">
-            دليل الخدمات والأنظمة القانونية السيادية الكاملة (18 خدمة مفعلة)
-          </h2>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <article class="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow">
-              <h3 class="text-base font-bold text-sky-400 mb-2"><a href="/chat" class="text-sky-400 hover:text-sky-300 no-underline">1. المستشار التشريعي الذكي المباشر</a></h3>
-              <p class="text-xs text-slate-400 leading-relaxed m-0">استشارات قانونية فورية وتأصيل تشريعي شامل عبر 35+ اختصاص قضائي وفق أنظمة الشركات والعمل والتحكيم التجاري.</p>
-            </article>
-            <article class="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow">
-              <h3 class="text-base font-bold text-emerald-400 mb-2"><a href="/repository" class="text-emerald-400 hover:text-emerald-300 no-underline">2. مستودع العقود والنماذج المليوني</a></h3>
-              <p class="text-xs text-slate-400 leading-relaxed m-0">مكتبة شاملة تضم أكثر من 1,000,000 عقد ونموذج قانوني معتمد ومحدث لعام 2026 مع توليد فوري وتصدير Word و PDF.</p>
-            </article>
-            <article class="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow">
-              <h3 class="text-base font-bold text-purple-400 mb-2"><a href="/templates" class="text-purple-400 hover:text-purple-300 no-underline">3. استوديو الصياغة والنماذج التفاعلية</a></h3>
-              <p class="text-xs text-slate-400 leading-relaxed m-0">نماذج مؤسسية رصينة بنظام الشركاء المعتمدين وتدقيق المخاطر وتصدير نظيف لملفات Word خالية من الفراغات والأخطاء.</p>
-            </article>
-            <article class="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow">
-              <h3 class="text-base font-bold text-teal-400 mb-2"><a href="/contracts" class="text-teal-400 hover:text-teal-300 no-underline">4. صانع ومولد العقود السيادية</a></h3>
-              <p class="text-xs text-slate-400 leading-relaxed m-0">توليد عقود تجارية مخصصة محكمة مع عزل لغوي نقي 100% وقفل الاختصاص القضائي Jurisdiction Lock.</p>
-            </article>
-            <article class="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow">
-              <h3 class="text-base font-bold text-amber-400 mb-2"><a href="/risk" class="text-amber-400 hover:text-amber-300 no-underline">5. مدقق المخاطر وكشف الثغرات</a></h3>
-              <p class="text-xs text-slate-400 leading-relaxed m-0">فحص استباقي كاشف للشروط الجزائية والمسؤوليات غير المحدودة والبنود التعسفية واقتراح الصياغات البديلة المعتمدة.</p>
-            </article>
-            <article class="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow">
-              <h3 class="text-base font-bold text-rose-400 mb-2"><a href="/enterprise-audit" class="text-rose-400 hover:text-rose-300 no-underline">6. تدقيق الشركات والاندماج والاستحواذ</a></h3>
-              <p class="text-xs text-slate-400 leading-relaxed m-0">فحص نافي للجهالة وحوكمة الصفقات الكبرى لبيوت الاستثمار وصناديق رأس المال الجريء وفق معايير الحوكمة العالمية.</p>
-            </article>
-            <article class="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow">
-              <h3 class="text-base font-bold text-blue-400 mb-2"><a href="/negotiation" class="text-blue-400 hover:text-blue-300 no-underline">7. محاكي التفاوض والردود القانونية</a></h3>
-              <p class="text-xs text-slate-400 leading-relaxed m-0">صياغة ردود تفاوضية متوازنة وتبريرات قانونية لحسم الصفقات وتفادي المآزق التعاقدية وتسريع توقيع العقود.</p>
-            </article>
-            <article class="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow">
-              <h3 class="text-base font-bold text-indigo-400 mb-2"><a href="/vault" class="text-indigo-400 hover:text-indigo-300 no-underline">8. الخزنة المشفرة AES-256 والتوقيع</a></h3>
-              <p class="text-xs text-slate-400 leading-relaxed m-0">توقيع إلكتروني معتمد وطوابع زمنية موثقة SHA-256 وأرشفة آمنة لا مركزية مع تشفير طرف لطرف End-to-End.</p>
-            </article>
-            <article class="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow">
-              <h3 class="text-base font-bold text-sky-400 mb-2"><a href="/sovereign-ai-hub" class="text-sky-400 hover:text-sky-300 no-underline">9. مركز Google AI Pro السيادي التنبؤي</a></h3>
-              <p class="text-xs text-slate-400 leading-relaxed m-0">الاستحواذ التنبؤي M&A، المحاكاة القضائية وتوقع نسب كسب القضايا، كشف التزوير والاحتيال، والامتثال العابر للحدود.</p>
-            </article>
-            <article class="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow">
-              <h3 class="text-base font-bold text-emerald-400 mb-2"><a href="/company-formation" class="text-emerald-400 hover:text-emerald-300 no-underline">10. تأسيس المنشآت والشركات</a></h3>
-              <p class="text-xs text-slate-400 leading-relaxed m-0">صياغة عقود التأسيس والأنظمة الأساسية واتفاقيات الشركاء وفق أنظمة الشركات والاستثمار في السعودية والإمارات ومصر.</p>
-            </article>
-            <article class="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow">
-              <h3 class="text-base font-bold text-amber-400 mb-2"><a href="/b2b-proposals" class="text-amber-400 hover:text-amber-300 no-underline">11. العروض المؤسسية B2B والتراخيص</a></h3>
-              <p class="text-xs text-slate-400 leading-relaxed m-0">صفقات الاستحواذ وعقود نقل الملكية الفكرية والتراخيص الدولية المتوافقة مع قوانين الملكية الفكرية العالمية WIPO.</p>
-            </article>
-            <article class="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow">
-              <h3 class="text-base font-bold text-purple-400 mb-2"><a href="/lead-radar" class="text-purple-400 hover:text-purple-300 no-underline">12. مرصد رادار استقطاب العملاء والجذب</a></h3>
-              <p class="text-xs text-slate-400 leading-relaxed m-0">تتبع وتحليل تفاعلات العملاء المحتملين والجذب التلقائي بالذكاء الاصطناعي للمكاتب القانونية والشركات الاستشارية.</p>
-            </article>
-          </div>
-        </section>
+        <!-- SEO Service Directory (lightweight — reduced DOM) -->
+          <section aria-label="الخدمات القانونية السيادية">
+            <h2 class="text-xl font-black text-slate-100 mb-4">خدمات JurisTech السيادية (18 خدمة)</h2>
+            <nav aria-label="دليل الخدمات">
+              <ul class="list-none p-0 m-0 space-y-1 text-sm">
+                <li><a href="/chat" class="text-sky-400 no-underline">المستشار التشريعي الذكي المباشر</a></li>
+                <li><a href="/repository" class="text-emerald-400 no-underline">مستودع العقود والنماذج المليوني</a></li>
+                <li><a href="/templates" class="text-purple-400 no-underline">استوديو الصياغة والنماذج التفاعلية</a></li>
+                <li><a href="/contracts" class="text-teal-400 no-underline">صانع ومولد العقود السيادية</a></li>
+                <li><a href="/risk" class="text-amber-400 no-underline">مدقق المخاطر وكشف الثغرات</a></li>
+                <li><a href="/enterprise-audit" class="text-rose-400 no-underline">تدقيق الشركات والاندماج</a></li>
+                <li><a href="/negotiation" class="text-blue-400 no-underline">محاكي التفاوض القانوني</a></li>
+                <li><a href="/vault" class="text-indigo-400 no-underline">الخزنة المشفرة AES-256</a></li>
+                <li><a href="/sovereign-ai-hub" class="text-sky-400 no-underline">مركز Google AI Pro السيادي</a></li>
+                <li><a href="/company-formation" class="text-emerald-400 no-underline">تأسيس المنشآت والشركات</a></li>
+                <li><a href="/b2b-proposals" class="text-amber-400 no-underline">العروض المؤسسية B2B</a></li>
+                <li><a href="/lead-radar" class="text-purple-400 no-underline">مرصد رادار العملاء</a></li>
+                <li><a href="/deal-shield" class="text-cyan-400 no-underline">رادار الصفقات DealShield</a></li>
+                <li><a href="/legal-compliance" class="text-green-400 no-underline">الامتثال التشريعي</a></li>
+                <li><a href="/payment" class="text-yellow-400 no-underline">باقات الاشتراك</a></li>
+                <li><a href="/trust" class="text-slate-300 no-underline">مركز الثقة والأمان</a></li>
+                <li><a href="/about" class="text-slate-300 no-underline">عن JurisTech Solutions</a></li>
+                <li><a href="/support" class="text-slate-300 no-underline">الدعم الفني 24/7</a></li>
+              </ul>
+            </nav>
+          </section>
 
-        <!-- Subscription Packages -->
-        <section class="my-10">
-          <h2 class="text-2xl font-black text-slate-100 border-b-2 border-sky-600 pb-2 mb-6">
-            باقات الاشتراك المخصصة للمؤسسات والشركات (خصم 30% لعام 2026)
-          </h2>
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl flex flex-col justify-between">
-              <div>
-                <h3 class="text-lg font-bold text-sky-400">باقة الشركات الصغرى والناشئة</h3>
-                <span class="text-3xl font-black text-white block my-2 font-mono">$49 <span class="text-xs text-slate-400 font-normal">/ شهرياً</span></span>
-                <p class="text-xs text-slate-400 leading-relaxed">المستشار الذكي ومولد العقود حتى 10 عقود شهرياً مع تصدير Word و PDF وتغطية إقليمية.</p>
-              </div>
-              <a href="/payment" class="bg-sky-600 hover:bg-sky-500 text-white text-center py-2.5 rounded-xl font-bold text-xs no-underline mt-4 block">اشتراك الباقة ($49)</a>
-            </div>
-            <div class="bg-slate-900 border-2 border-indigo-600 p-6 rounded-3xl flex flex-col justify-between shadow-xl">
-              <div>
-                <span class="bg-indigo-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full inline-block mb-2">⭐ الأكثر طلباً</span>
-                <h3 class="text-lg font-bold text-indigo-400">باقة الشركات المتوسطة والنمو</h3>
-                <span class="text-3xl font-black text-white block my-2 font-mono">$139 <span class="text-xs text-slate-400 font-normal">/ شهرياً</span></span>
-                <p class="text-xs text-slate-400 leading-relaxed">Google AI Pro، التفاوض الآلي، المحاكاة القضائية، و50 عقداً شهرياً وتغطية 9 دول.</p>
-              </div>
-              <a href="/payment" class="bg-indigo-600 hover:bg-indigo-500 text-white text-center py-2.5 rounded-xl font-bold text-xs no-underline mt-4 block">اشتراك الباقة ($139)</a>
-            </div>
-            <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl flex flex-col justify-between">
-              <div>
-                <h3 class="text-lg font-bold text-amber-400">باقة المؤسسات السيادية</h3>
-                <span class="text-3xl font-black text-white block my-2 font-mono">$349 <span class="text-xs text-slate-400 font-normal">/ شهرياً</span></span>
-                <p class="text-xs text-slate-400 leading-relaxed">الاستحواذ M&A غير المحدود، كشف التزوير والاحتيال، الامتثال الدولي، ودعم تنفيذي 24/7.</p>
-              </div>
-              <a href="/payment" class="bg-amber-600 hover:bg-amber-500 text-white text-center py-2.5 rounded-xl font-bold text-xs no-underline mt-4 block">اشتراك الباقة ($349)</a>
-            </div>
-          </div>
-        </section>
-
+        </div>
       </main>
       ${commonFooter}
     `;

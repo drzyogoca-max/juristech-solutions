@@ -42,13 +42,11 @@ const PAGES = [
   { url: '/legal/privacy-policy.html', priority: '0.90', changefreq: 'monthly' },
 ];
 
-const LANGS = ['ar-SA', 'ar-AE', 'ar-EG', 'ar-KW', 'ar-QA', 'en-US', 'en-EU', 'de-DE', 'fr-FR', 'es-ES', 'zh-CN', 'tr-TR', 'x-default'];
+const LANGS = []; // Locale alternates require distinct crawlable URLs.
 
 export function generateSitemap() {
   const xmlEntries = PAGES.map((p) => {
-    const hreflangs = LANGS.map(
-      (lang) => `    <xhtml:link rel="alternate" hreflang="${lang}" href="${BASE_URL}${p.url}"/>`
-    ).join('\n');
+    const hreflangs = '';
 
     return `  <url>
     <loc>${BASE_URL}${p.url}</loc>

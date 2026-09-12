@@ -69,11 +69,11 @@ export default defineConfig({
             if (id.includes('lucide-react')) {
               return 'vendor-icons';
             }
-            if (id.includes('docx')) {
-              return 'vendor-docx';
-            }
-            if (id.includes('html2canvas')) {
-              return 'vendor-html2canvas';
+            // jspdf, html2canvas, docx, tesseract.js are NOT in manualChunks.
+            // They are only imported dynamically (on user action), so Vite creates
+            // natural async chunks that are NOT added to initial modulepreload.
+            if (id.includes('nodemailer')) {
+              return 'vendor-mail';
             }
             if (id.includes('recharts') ||
                 id.includes('d3')) {

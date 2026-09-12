@@ -1,7 +1,7 @@
-/**
+﻿/**
  * src/ai/retrieval/semanticSearch.ts
- * ─────────────────────────────────────────────────────────────────────────────
- * JurisTech Solutions — Contextual Retrieval Engine over GLOBAL_LEGAL_KNOWLEDGE_BASE
+ * â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+ * JurisTech Solutions â€” Contextual Retrieval Engine over GLOBAL_LEGAL_KNOWLEDGE_BASE
  * Specification: JURISTECH-AI-P0 Phase P0-3
  *
  * Implements multilingual lexical-semantic correlation, synonym expansion,
@@ -36,50 +36,50 @@ export interface ISemanticSearchProvider {
 }
 
 const JURISDICTION_KEYWORDS: Record<JurisdictionCode, string[]> = {
-  SA: ['saudi', 'سعودية', 'ksa', 'riyadh', 'الرياض', 'zatca', 'scca', 'saoudite', 'saudí', 'suudi', '沙特'],
-  AE: ['uae', 'إمارات', 'dubai', 'دبي', 'abu dhabi', 'difc', 'adgm', 'diac', 'émirats', 'emiratos', 'bae', '阿联酋'],
-  EG: ['egypt', 'مصر', 'cairo', 'القاهرة', 'crcica', 'gafi', 'eta', 'égypte', 'egipto', 'ägypten', 'mısır', '埃及'],
-  QA: ['qatar', 'قطر', 'doha', 'الدوحة', 'qfc', 'katarlı', '卡塔尔'],
-  KW: ['kuwait', 'الكويت', 'koweit', 'kuveyt', '科威特'],
-  BH: ['bahrain', 'البحرين', 'bcdr', 'bahreïn', 'bahrein', '巴林'],
-  OM: ['oman', 'عمان', 'muscat', 'مسقط', 'umman', '阿曼'],
-  JO: ['jordan', 'الأردن', 'amman', 'ccd', 'jordanie', 'jordania', 'jordanien', 'ürdün', '约旦'],
-  INTL: ['international', 'دولي', 'cisg', 'uncitral', 'icc', 'incoterms', 'internacional', 'uluslararası', '国际'],
-  GB: ['uk', 'england', 'britain', 'lcia', 'ucta', 'royaume-uni', 'reino unido', 'großbritannien', 'ingiltere', '英国'],
-  US: ['usa', 'united states', 'delaware', 'sec', 'ucc', 'états-unis', 'estados unidos', 'usa', 'abd', '美国'],
-  EU: ['europe', 'gdpr', 'french', 'german', 'bgb', 'européenne', 'europa', 'avrupa', '欧盟'],
-  SG: ['singapore', 'سنغافورة', 'siac', 'singapour', 'singapur', 'singapur', '新加坡'],
-  TR: ['turkey', 'تركيا', 'turkish', 'turquie', 'turquía', 'türkei', 'türkiye', '土耳其'],
-  CN: ['china', 'الصين', 'hong kong', 'hkiac', 'cietac', 'chine', 'çine', 'çin', '中国'],
+  SA: ['saudi', 'Ø³Ø¹ÙˆØ¯ÙŠØ©', 'ksa', 'riyadh', 'Ø§Ù„Ø±ÙŠØ§Ø¶', 'zatca', 'scca', 'saoudite', 'saudÃ­', 'suudi', 'æ²™ç‰¹'],
+  AE: ['uae', 'Ø¥Ù…Ø§Ø±Ø§Øª', 'dubai', 'Ø¯Ø¨ÙŠ', 'abu dhabi', 'difc', 'adgm', 'diac', 'Ã©mirats', 'emiratos', 'bae', 'é˜¿è”é…‹'],
+  EG: ['egypt', 'Ù…ØµØ±', 'cairo', 'Ø§Ù„Ù‚Ø§Ù‡Ø±Ø©', 'crcica', 'gafi', 'eta', 'Ã©gypte', 'egipto', 'Ã¤gypten', 'mÄ±sÄ±r', 'åŸƒåŠ'],
+  QA: ['qatar', 'Ù‚Ø·Ø±', 'doha', 'Ø§Ù„Ø¯ÙˆØ­Ø©', 'qfc', 'katarlÄ±', 'å¡å¡”å°”'],
+  KW: ['kuwait', 'Ø§Ù„ÙƒÙˆÙŠØª', 'koweit', 'kuveyt', 'ç§‘å¨ç‰¹'],
+  BH: ['bahrain', 'Ø§Ù„Ø¨Ø­Ø±ÙŠÙ†', 'bcdr', 'bahreÃ¯n', 'bahrein', 'å·´æž—'],
+  OM: ['oman', 'Ø¹Ù…Ø§Ù†', 'muscat', 'Ù…Ø³Ù‚Ø·', 'umman', 'é˜¿æ›¼'],
+  JO: ['jordan', 'jordanian', 'jordanian law', 'Ø§Ù„Ø£Ø±Ø¯Ù†', 'Ø§Ù„Ø£Ø±Ø¯Ù†ÙŠ', 'Ø§Ø±Ø¯Ù†ÙŠ', 'Ø£Ø±Ø¯Ù†ÙŠ', 'Ø§Ù„Ù‚Ø§Ù†ÙˆÙ† Ø§Ù„Ø£Ø±Ø¯Ù†ÙŠ', 'Ø§Ù„Ù…Ù…Ù„ÙƒØ© Ø§Ù„Ø£Ø±Ø¯Ù†ÙŠØ©', 'Ø¹Ù…Ø§Ù†', 'ccd', 'jordanie', 'jordania', 'jordanien', 'Ã¼rdÃ¼n', 'çº¦æ—¦'],
+  INTL: ['international', 'Ø¯ÙˆÙ„ÙŠ', 'cisg', 'uncitral', 'icc', 'incoterms', 'internacional', 'uluslararasÄ±', 'å›½é™…'],
+  GB: ['uk', 'england', 'britain', 'lcia', 'ucta', 'royaume-uni', 'reino unido', 'groÃŸbritannien', 'ingiltere', 'è‹±å›½'],
+  US: ['usa', 'united states', 'delaware', 'sec', 'ucc', 'Ã©tats-unis', 'estados unidos', 'usa', 'abd', 'ç¾Žå›½'],
+  EU: ['europe', 'gdpr', 'french', 'german', 'bgb', 'europÃ©enne', 'europa', 'avrupa', 'æ¬§ç›Ÿ'],
+  SG: ['singapore', 'Ø³Ù†ØºØ§ÙÙˆØ±Ø©', 'siac', 'singapour', 'singapur', 'singapur', 'æ–°åŠ å¡'],
+  TR: ['turkey', 'ØªØ±ÙƒÙŠØ§', 'turkish', 'turquie', 'turquÃ­a', 'tÃ¼rkei', 'tÃ¼rkiye', 'åœŸè€³å…¶'],
+  CN: ['china', 'Ø§Ù„ØµÙŠÙ†', 'hong kong', 'hkiac', 'cietac', 'chine', 'Ã§ine', 'Ã§in', 'ä¸­å›½'],
   UNKNOWN: [],
 };
 
 const DOMAIN_KEYWORDS: Record<LegalDomain, string[]> = {
-  corporate: ['company', 'شركة', 'incorporation', 'تأسيس', 'shareholder', 'governance', 'société', 'sociedad', 'gesellschaft', 'şirket', '公司'],
-  labor: ['employment', 'عمل', 'employee', 'موظف', 'salary', 'termination', 'فصل', 'travail', 'laboral', 'arbeitsrecht', 'iş hukuku', '劳动'],
-  ip: ['intellectual property', 'ملكية فكرية', 'patent', 'copyright', 'trademark', 'brevet', 'patente', 'patent', 'fikri mülkiyet', '知识产权'],
-  criminal: ['criminal', 'جزائي', 'fraud', 'احتيال', 'penal', 'pénal', 'strafrecht', 'ceza hukuku', '刑法'],
-  compliance: ['gdpr', 'compliance', 'امتثال', 'regulatory', 'zatca', 'eta', 'aml', 'conformité', 'cumplimiento', 'uyumluluk', '合规'],
-  contract: ['contract', 'عقد', 'clause', 'بند', 'agreement', 'اتفاقية', 'liability', 'contrat', 'contrato', 'vertrag', 'sözleşme', '合同'],
-  real_estate: ['property', 'عقار', 'real estate', 'lease', 'إيجار', 'mortgage', 'immobilier', 'inmobiliario', 'gayrimenkul', '房地产'],
-  banking: ['bank', 'بنك', 'swift', 'wire', 'loan', 'قرض', 'banque', 'banco', 'banka', '银行'],
-  tax: ['tax', 'ضريبة', 'vat', 'زكاة', 'income tax', 'customs', 'impôt', 'impuesto', 'steuer', 'vergi', '税务'],
-  arbitration: ['arbitration', 'تحكيم', 'dispute', 'نزاع', 'mediation', 'arbitrage', 'arbitraje', 'schiedsverfahren', 'tahkim', '仲裁'],
-  company_formation: ['formation', 'تأسيس', 'register', 'تسجيل', 'license', 'startup', 'création', 'constitución', 'gründung', 'kuruluş', '公司设立'],
+  corporate: ['company', 'Ø´Ø±ÙƒØ©', 'incorporation', 'ØªØ£Ø³ÙŠØ³', 'shareholder', 'governance', 'sociÃ©tÃ©', 'sociedad', 'gesellschaft', 'ÅŸirket', 'å…¬å¸'],
+  labor: ['employment', 'Ø¹Ù…Ù„', 'employee', 'Ù…ÙˆØ¸Ù', 'salary', 'termination', 'ÙØµÙ„', 'travail', 'laboral', 'arbeitsrecht', 'iÅŸ hukuku', 'åŠ³åŠ¨'],
+  ip: ['intellectual property', 'Ù…Ù„ÙƒÙŠØ© ÙÙƒØ±ÙŠØ©', 'patent', 'copyright', 'trademark', 'brevet', 'patente', 'patent', 'fikri mÃ¼lkiyet', 'çŸ¥è¯†äº§æƒ'],
+  criminal: ['criminal', 'Ø¬Ø²Ø§Ø¦ÙŠ', 'fraud', 'Ø§Ø­ØªÙŠØ§Ù„', 'penal', 'pÃ©nal', 'strafrecht', 'ceza hukuku', 'åˆ‘æ³•'],
+  compliance: ['gdpr', 'compliance', 'Ø§Ù…ØªØ«Ø§Ù„', 'regulatory', 'zatca', 'eta', 'aml', 'conformitÃ©', 'cumplimiento', 'uyumluluk', 'åˆè§„'],
+  contract: ['contract', 'Ø¹Ù‚Ø¯', 'clause', 'Ø¨Ù†Ø¯', 'agreement', 'Ø§ØªÙØ§Ù‚ÙŠØ©', 'liability', 'contrat', 'contrato', 'vertrag', 'sÃ¶zleÅŸme', 'åˆåŒ'],
+  real_estate: ['property', 'Ø¹Ù‚Ø§Ø±', 'real estate', 'lease', 'Ø¥ÙŠØ¬Ø§Ø±', 'mortgage', 'immobilier', 'inmobiliario', 'gayrimenkul', 'æˆ¿åœ°äº§'],
+  banking: ['bank', 'Ø¨Ù†Ùƒ', 'swift', 'wire', 'loan', 'Ù‚Ø±Ø¶', 'banque', 'banco', 'banka', 'é“¶è¡Œ'],
+  tax: ['tax', 'Ø¶Ø±ÙŠØ¨Ø©', 'vat', 'Ø²ÙƒØ§Ø©', 'income tax', 'customs', 'impÃ´t', 'impuesto', 'steuer', 'vergi', 'ç¨ŽåŠ¡'],
+  arbitration: ['arbitration', 'ØªØ­ÙƒÙŠÙ…', 'dispute', 'Ù†Ø²Ø§Ø¹', 'mediation', 'arbitrage', 'arbitraje', 'schiedsverfahren', 'tahkim', 'ä»²è£'],
+  company_formation: ['formation', 'ØªØ£Ø³ÙŠØ³', 'register', 'ØªØ³Ø¬ÙŠÙ„', 'license', 'startup', 'crÃ©ation', 'constituciÃ³n', 'grÃ¼ndung', 'kuruluÅŸ', 'å…¬å¸è®¾ç«‹'],
   general: [],
 };
 
 const STOP_WORDS = new Set([
   'the','a','an','is','in','on','at','to','for','of','and','or',
-  'من','في','على','إلى','عن','مع','هذا','هذه','التي','الذي',
+  'Ù…Ù†','ÙÙŠ','Ø¹Ù„Ù‰','Ø¥Ù„Ù‰','Ø¹Ù†','Ù…Ø¹','Ù‡Ø°Ø§','Ù‡Ø°Ù‡','Ø§Ù„ØªÙŠ','Ø§Ù„Ø°ÙŠ',
   'de','la','le','les','et','un','une','der','die','das','und','ist',
-  'el','la','los','las','es','bir','ve','ile','bu','的','在','和','是'
+  'el','la','los','las','es','bir','ve','ile','bu','çš„','åœ¨','å’Œ','æ˜¯'
 ]);
 
 function tokenize(text: string): string[] {
   return text
     .toLowerCase()
-    .replace(/[،,;:()\[\]{}'".«»]/g, ' ')
+    .replace(/[ØŒ,;:()\[\]{}'".Â«Â»]/g, ' ')
     .split(/\s+/)
     .filter(t => t.length > 1 && !STOP_WORDS.has(t));
 }
@@ -176,7 +176,18 @@ export function semanticSearch(query: string, options: SearchOptions = {}): Sema
 }
 
 export function detectJurisdictionFromQuery(query: string): JurisdictionCode {
-  const lower = query.toLowerCase();
+  const lower = query.toLowerCase().trim();
+  const explicitPriority: Array<[JurisdictionCode, string[]]> = [
+    ['JO', ['jordanian law', 'law of jordan', 'القانون الأردني', 'القانون الاردني', 'المملكة الأردنية', 'الأردن', 'الاردن', 'الأردني', 'الاردني', 'jordan']],
+    ['SA', ['saudi law', 'law of saudi arabia', 'السعودية', 'السعودي', 'saudi arabia']],
+    ['AE', ['uae law', 'law of the uae', 'الإمارات', 'الامارات', 'الإمارات العربية المتحدة', 'uae']],
+    ['EG', ['egyptian law', 'law of egypt', 'القانون المصري', 'مصر', 'المصري', 'egypt']],
+    ['GB', ['english law', 'law of england', 'uk law', 'قانون إنجلترا', 'بريطانيا', 'england', 'united kingdom']],
+    ['US', ['us law', 'u.s. law', 'american law', 'delaware law', 'القانون الأمريكي', 'أمريكا', 'united states']],
+  ];
+  for (const [code, phrases] of explicitPriority) {
+    if (phrases.some(phrase => lower.includes(phrase))) return code;
+  }
   const scores: Partial<Record<JurisdictionCode, number>> = {};
   for (const [code, keywords] of Object.entries(JURISDICTION_KEYWORDS) as [JurisdictionCode, string[]][]) {
     if (code === 'UNKNOWN') continue;
@@ -184,7 +195,9 @@ export function detectJurisdictionFromQuery(query: string): JurisdictionCode {
     if (hits > 0) scores[code] = hits;
   }
   if (Object.keys(scores).length === 0) return 'UNKNOWN';
-  return Object.entries(scores).sort(([, a], [, b]) => (b ?? 0) - (a ?? 0))[0][0] as JurisdictionCode;
+  const ordered = Object.entries(scores).sort(([, a], [, b]) => (b ?? 0) - (a ?? 0));
+  if (ordered.length > 1 && ordered[0][1] === ordered[1][1]) return 'UNKNOWN';
+  return ordered[0][0] as JurisdictionCode;
 }
 
 export function detectLegalDomain(query: string): LegalDomain {

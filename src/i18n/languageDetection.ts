@@ -106,10 +106,7 @@ export function detectInitialLanguage(userProfileLanguage?: string): SupportedLa
     if (profileLocale) return profileLocale;
   }
 
-  // 4. Browser language
-  const browserLocale = getBrowserLocale();
-  if (browserLocale) return browserLocale;
-
-  // 5. English fallback
+  // English is the public default; browser and geo signals must not silently switch locale.
+  // Users can explicitly select another locale with the language switcher.
   return DEFAULT_LANGUAGE;
 }

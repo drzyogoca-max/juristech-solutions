@@ -476,6 +476,105 @@ async function handleEdgeRequest(req) {
 // In-memory recipient deduplication set to block duplicate email spam
 const dispatchedRecipientsRegistry = new Set();
 
+// ── Layer 3: Outreach Frequency Guard (P0) ─────────────────────────────────────
+// Durable, Supabase-backed guard enforcing ONE active sequence per contact.
+// Checks: permanent suppression, active engagement, cooldown, active sequence, duplicate campaign.
+// Fails open if Supabase is unreachable.
+const COOLDOWN_DAYS = 7;
+const ACTIVE_SEQUENCE_DAYS = 14;
+
+async function outreachFrequencyGuard(cleanEmail, emailSubject) {
+  const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
+  const SUPABASE_KEY = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+
+  if (!SUPABASE_URL || !SUPABASE_KEY) {
+    console.warn('[FrequencyGuard] Supabase not configured — FAIL OPEN');
+    return { allowed: true, reason: 'SUPABASE_NOT_CONFIGURED' };
+  }
+
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/email_dispatch_log?recipient=eq.${encodeURIComponent(cleanEmail)}&order=dispatched_at.desc`,
+      {
+        method: 'GET',
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${SUPABASE_KEY}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (!res.ok) {
+      console.warn(`[FrequencyGuard] Supabase returned ${res.status} — FAIL OPEN`);
+      return { allowed: true, reason: 'SUPABASE_ERROR_FAIL_OPEN' };
+    }
+
+    const records = await res.json();
+
+    if (!records || records.length === 0) {
+      return { allowed: true, reason: 'NO_PRIOR_HISTORY' };
+    }
+
+    // 1. Permanent Suppression: BOUNCED or UNSUBSCRIBED
+    const suppressed = records.find(r =>
+      r.subject && (r.subject.includes('[BOUNCED]') || r.subject.includes('[UNSUBSCRIBED]'))
+    );
+    if (suppressed) {
+      return { allowed: false, reason: 'RECIPIENT_PERMANENTLY_SUPPRESSED', detail: suppressed.subject };
+    }
+
+    // 2. Active Engagement: REPLIED, CLICKED, MEETING, PROPOSAL → stop automation
+    const engaged = records.find(r =>
+      r.subject && (
+        r.subject.includes('[REPLIED]') ||
+        r.subject.includes('[CLICKED]') ||
+        r.subject.includes('[MEETING]') ||
+        r.subject.includes('[PROPOSAL]')
+      )
+    );
+    if (engaged) {
+      return { allowed: false, reason: 'ACTIVE_ENGAGEMENT_STOP', detail: engaged.subject };
+    }
+
+    // 3. Duplicate Campaign: same subject already sent to same recipient
+    const normalizedSubject = (emailSubject || '').toLowerCase().trim();
+    const duplicate = records.find(r => {
+      const existingSubject = (r.subject || '').toLowerCase().trim();
+      // Skip system tags like [BOUNCED], [BLOCKED:...] etc.
+      if (existingSubject.startsWith('[')) return false;
+      return existingSubject === normalizedSubject;
+    });
+    if (duplicate) {
+      return { allowed: false, reason: 'DUPLICATE_CAMPAIGN_BLOCKED', detail: duplicate.subject };
+    }
+
+    const now = Date.now();
+    const cooldownCutoff = now - (COOLDOWN_DAYS * 24 * 60 * 60 * 1000);
+    const sequenceCutoff = now - (ACTIVE_SEQUENCE_DAYS * 24 * 60 * 60 * 1000);
+
+    // Filter to real sends only (exclude system tags)
+    const realSends = records.filter(r => r.subject && !r.subject.startsWith('['));
+
+    // 4. 7-day Cooldown: any real send in last 7 days
+    const recentSend = realSends.find(r => new Date(r.dispatched_at).getTime() > cooldownCutoff);
+    if (recentSend) {
+      return { allowed: false, reason: 'COOLDOWN_ACTIVE_7D', detail: `Last send: ${recentSend.dispatched_at}` };
+    }
+
+    // 5. Active Sequence: any real send in last 14 days → block new sequence
+    const activeSend = realSends.find(r => new Date(r.dispatched_at).getTime() > sequenceCutoff);
+    if (activeSend) {
+      return { allowed: false, reason: 'ACTIVE_SEQUENCE_IN_PROGRESS', detail: `Active since: ${activeSend.dispatched_at}` };
+    }
+
+    return { allowed: true, reason: 'ALL_CHECKS_PASSED' };
+  } catch (err) {
+    console.error('[FrequencyGuard] Error querying Supabase — FAIL OPEN:', err.message);
+    return { allowed: true, reason: 'QUERY_ERROR_FAIL_OPEN' };
+  }
+}
+
 // ── Shared Email Processing & Dispatch Cascade ────────────────────────────────
 async function processEmailDispatch(targetEmail, emailSubject, text, html, replyTo, forceSend = false) {
   const cleanEmail = targetEmail?.toLowerCase()?.trim();
@@ -490,6 +589,28 @@ async function processEmailDispatch(targetEmail, emailSubject, text, html, reply
       message: `✅ Skipped duplicate dispatch to ${cleanEmail} (Already contacted).`,
       timestamp: new Date().toISOString(),
     };
+  }
+
+  // ── Layer 3: Durable Outreach Frequency Guard ──────────────────────────────
+  if (!forceSend && !isAdminEmail && cleanEmail) {
+    const guardResult = await outreachFrequencyGuard(cleanEmail, emailSubject);
+    if (!guardResult.allowed) {
+      console.log(`[FrequencyGuard] BLOCKED ${cleanEmail} — Reason: ${guardResult.reason} | ${guardResult.detail || ''}`);
+      // Record the block in audit log
+      try {
+        await recordEmailDispatch(cleanEmail, `[BLOCKED:${guardResult.reason}] ${emailSubject || ''}`, 'FREQUENCY_GUARD');
+      } catch (_) { /* audit best-effort */ }
+      return {
+        success: true,
+        status: `BLOCKED_${guardResult.reason}`,
+        recipient: cleanEmail,
+        message: `🛑 Outreach blocked for ${cleanEmail}: ${guardResult.reason}`,
+        guardReason: guardResult.reason,
+        guardDetail: guardResult.detail || null,
+        timestamp: new Date().toISOString(),
+      };
+    }
+    console.log(`[FrequencyGuard] ALLOWED ${cleanEmail} — ${guardResult.reason}`);
   }
 
   const RESEND_API_KEY = process.env.RESEND_API_KEY || '';

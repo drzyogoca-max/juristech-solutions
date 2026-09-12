@@ -2,14 +2,23 @@ import React, { useEffect, useState } from 'react';
 
 export default function HeartbeatBackground() {
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
+    const timer = setTimeout(() => setReady(true), 2500);
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     setReducedMotion(mediaQuery.matches);
     const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
     mediaQuery.addEventListener('change', handler);
-    return () => mediaQuery.removeEventListener('change', handler);
+    return () => {
+      clearTimeout(timer);
+      mediaQuery.removeEventListener('change', handler);
+    };
   }, []);
+
+  if (!ready) {
+    return <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-slate-950" />;
+  }
 
   return (
     <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-slate-50 dark:bg-slate-950">

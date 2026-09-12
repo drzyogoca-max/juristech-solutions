@@ -13,7 +13,7 @@
 
 import { initDailyAutoUpdater } from './dailyAutoUpdater';
 
-export const CURRENT_APP_VERSION = '2026.08.28-LIVE-1787904607589';
+export const CURRENT_APP_VERSION = '2026.09.12-LIVE-1789174920712';
 
 const CHECK_INTERVAL_MS         = 60_000;               // Poll every 60 s
 const VERSION_ENDPOINT          = '/version.json';      // Served from /public
@@ -54,9 +54,13 @@ export function enforceGlobalForceUpdate() {
 
   try {
     const savedVersion = localStorage.getItem(LS_VERSION_KEY);
+    if (!savedVersion) {
+      stampCurrentVersion();
+      return;
+    }
     if (savedVersion !== CURRENT_APP_VERSION) {
       console.warn(`[Global Force-Update] Version mismatch: ${savedVersion} → ${CURRENT_APP_VERSION}. Purging caches...`);
-      localStorage.setItem(LS_VERSION_KEY, CURRENT_APP_VERSION);
+      stampCurrentVersion();
       localStorage.setItem('ls_app_version', CURRENT_APP_VERSION);
 
       // 1. Purge CacheStorage

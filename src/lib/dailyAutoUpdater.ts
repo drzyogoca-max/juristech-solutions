@@ -1,14 +1,14 @@
-/**
+﻿/**
  * src/lib/dailyAutoUpdater.ts
- * ─────────────────────────────────────────────────────────────────────────────
- * JurisTech Solutions — Autonomous Daily Self-Updating AI & Legal Engine
+ * â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+ * JurisTech Solutions â€” Autonomous Daily Self-Updating AI & Legal Engine
  * Domain: https://juristech.solutions
  * 
  * Features:
- *  • Automatic daily AI model retraining & vector database refresh
- *  • Daily automated IndexNow ping to Bing, Yandex, Naver, Seznam
- *  • Dynamic version audit update & cache optimization
- *  • Continuous learning from client search queries & contract requests
+ *  â€¢ Automatic daily AI model retraining & vector database refresh
+ *  â€¢ Daily automated IndexNow ping to Bing, Yandex, Naver, Seznam
+ *  â€¢ Dynamic version audit update & cache optimization
+ *  â€¢ Continuous learning from client search queries & contract requests
  */
 
 export interface DailyUpdateStatus {
@@ -29,7 +29,7 @@ export function executeDailyAutoUpdate(): DailyUpdateStatus {
   if (typeof window === 'undefined') {
     return {
       lastUpdated: new Date().toISOString(),
-      indexedContractsCount: 1000042,
+      indexedContractsCount: 0,
       aiEngineStatus: 'HEALTHY_TRAINED',
       indexNowStatus: 'SUCCESS_200',
       autoUpdateEnabled: true,
@@ -39,7 +39,7 @@ export function executeDailyAutoUpdate(): DailyUpdateStatus {
   const todayStr = new Date().toISOString().split('T')[0];
   let currentStatus: DailyUpdateStatus = {
     lastUpdated: todayStr,
-    indexedContractsCount: 1000042,
+    indexedContractsCount: 0,
     aiEngineStatus: 'HEALTHY_TRAINED',
     indexNowStatus: 'SUCCESS_200',
     autoUpdateEnabled: true,

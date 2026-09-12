@@ -28,7 +28,11 @@ export type AIAnalyticsEventName =
   | 'AI_CITATION_UNVERIFIED'
   | 'AI_JURISDICTION_PROMPTED'
   | 'AI_HUMAN_REVIEW_FLAGGED'
-  | 'AI_ERROR_ENCOUNTERED';
+  | 'AI_ERROR_ENCOUNTERED'
+  | 'REDLINE_GENERATED'
+  | 'REDLINE_VIEWED'
+  | 'REDLINE_ACCEPTED'
+  | 'REDLINE_EDITED';
 
 export interface AnonymousAIEvent {
   id: string;

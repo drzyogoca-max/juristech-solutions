@@ -14,8 +14,9 @@ import VoiceInput from '../components/VoiceInput';
 import ContractAnalysisSkeleton from '../components/ContractAnalysisSkeleton';
 import AutonomousRiskPanel from '../components/AutonomousRiskPanel';
 import SEO from '../components/SEO';
-import { ContractAnalysisEngine, Deep8AxisAuditReport, AuditAxisResult } from '../services/contractAnalysisEngine';
+import { ContractAnalysisEngine, Deep8AxisAuditReport, AuditAxisResult, DynamicRedline } from '../services/contractAnalysisEngine';
 import VisualRedlineDiffModal from '../components/VisualRedlineDiffModal';
+import { aiAnalytics } from '../analytics/aiAnalytics';
 import { usePlatformLocale } from '../lib/universalTranslator';
 
 export default function RiskPage() {
@@ -94,6 +95,7 @@ export default function RiskPage() {
     }
     setLoading(true);
     setError('');
+    const auditStart = Date.now();
 
     try {
       const targetJur = jurisdiction?.countryNameAr || 'Egypt / GCC / International';
@@ -103,6 +105,22 @@ export default function RiskPage() {
         targetJur
       );
       setAuditReport(report);
+
+      // ── Phase 3B: Track Dynamic Redline generation ──
+      const latencyMs = Date.now() - auditStart;
+      const redlineCount = report.dynamicRedlines?.length ?? 0;
+      const detectedLang = /[\u0600-\u06FF]/.test(textToAnalyze) ? 'ar' : 'en';
+
+      aiAnalytics.trackEvent({
+        eventName: 'REDLINE_GENERATED',
+        feature: 'contract_analysis',
+        userTier: 'pro',
+        locale: detectedLang as any,
+        jurisdiction: (jurisdiction?.countryCode || 'UNKNOWN') as any,
+        durationMs: latencyMs,
+        confidenceScore: report.overallScore / 100,
+        success: redlineCount > 0,
+      });
 
       // Save to Supabase telemetry if available
       try {
@@ -114,6 +132,15 @@ export default function RiskPage() {
         });
       } catch {}
     } catch (err) {
+      // ── Track AI errors ──
+      aiAnalytics.trackEvent({
+        eventName: 'AI_ERROR_ENCOUNTERED',
+        feature: 'contract_analysis',
+        userTier: 'pro',
+        locale: 'en',
+        durationMs: Date.now() - auditStart,
+        success: false,
+      });
       setError(l('حدث خطأ أثناء إجراء الفحص التشريعي.', 'An error occurred during statutory risk analysis.'));
     } finally {
       setLoading(false);
@@ -410,6 +437,14 @@ Authorized by JurisTech Supreme Legal Architecture Engine.
                       onClick={() => {
                         setSelectedAxisForDiff(axis);
                         setShowDiffModal(true);
+                        aiAnalytics.trackEvent({
+                          eventName: 'REDLINE_VIEWED',
+                          feature: 'contract_analysis',
+                          userTier: 'pro',
+                          locale: isRtl ? 'ar' as any : 'en' as any,
+                          jurisdiction: (jurisdiction?.countryCode || 'UNKNOWN') as any,
+                          success: true,
+                        });
                       }}
                       className="w-full py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-bold text-cyan-400 hover:text-cyan-300 flex items-center justify-center gap-1.5 transition-all cursor-pointer"
                     >
