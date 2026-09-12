@@ -50,8 +50,8 @@ export const POA_LIBRARY: POATemplate[] = [
     usageContextEn: 'Used as a drafting starting point for general representation during extended absence, subject to mandatory local notarization.',
     legalBasisAr: 'أحكام عقد الوكالة العامة في القانون المدني والتشريعات المنظمة لأعمال الكاتب العدل والتوثيق',
     legalBasisEn: 'Civil Code provisions governing Agency Contracts & statutory Notary Public regulations',
-    downloads: 14200,
-    rating: 8.7,
+    downloads: 0,
+    rating: 0,
     templateAr: `================================================================================
 نموذج مسودة: وكالة عامة مطلقة (لأغراض الصياغة والاسترشاد)
 ================================================================================
@@ -168,8 +168,8 @@ ${POA_DISCLAIMER_EN}
     usageContextEn: 'Used to draft authorization for designated property transactions; requires deed registration and formal land department filing.',
     legalBasisAr: 'التشريعات العقارية وأنظمة التسجيل العيني وإفراغ الصكوك العقارية والتوثيق العدلي',
     legalBasisEn: 'Real Property Registration Statutes, Land Registry Title Transfer Codes & Notarial Law',
-    downloads: 21800,
-    rating: 9.1,
+    downloads: 0,
+    rating: 0,
     templateAr: `================================================================================
 نموذج مسودة: وكالة عقارية خاصة (لأغراض الصياغة والاسترشاد)
 ================================================================================
@@ -270,8 +270,8 @@ ${POA_DISCLAIMER_EN}
     usageContextEn: 'Used to draft authorizations for specific banking institutions; subject to central bank regulations and mandatory bank-specific mandates.',
     legalBasisAr: 'قوانين المعاملات المصرفية والأوراق التجارية وتعليمات البنك المركزي ذات الصلة بمكافحة غسل الأموال وتفويض الحسابات',
     legalBasisEn: 'Banking & Commercial Paper Acts, Central Bank KYC/AML Mandates, and Financial Delegation Guidelines',
-    downloads: 9600,
-    rating: 8.5,
+    downloads: 0,
+    rating: 0,
     templateAr: `================================================================================
 نموذج مسودة: وكالة مصرفية ومالية خاصة (لأغراض الصياغة والاسترشاد)
 ================================================================================
@@ -370,8 +370,8 @@ ${POA_DISCLAIMER_EN}
     usageContextEn: 'Used to mandate licensed bar counsel; statutory rules require express specific authorization for settlement, confession, and arbitration.',
     legalBasisAr: 'قوانين المحاماة وأصول المحاكمات المدنية والتجارية والتشريعات المنظمة لحق الدفاع والتمثيل القضائي',
     legalBasisEn: 'Bar Association Acts, Civil and Commercial Procedure Codes, and Statutory Litigation Representation Rules',
-    downloads: 18400,
-    rating: 9.2,
+    downloads: 0,
+    rating: 0,
     templateAr: `================================================================================
 نموذج مسودة: وكالة قضائية خاصة بالتقاضي (لأغراض الصياغة والاسترشاد)
 ================================================================================
@@ -472,8 +472,8 @@ ${POA_DISCLAIMER_EN}
     usageContextEn: 'Used to delegate company formation, Articles of Association execution, and commercial registry filings on behalf of founders.',
     legalBasisAr: 'قوانين الشركات التجارية ولوائح السجل التجاري وأنظمة الاستثمار والتوثيق المعتمدة',
     legalBasisEn: 'Companies Acts, Commercial Register Ordinances, and Corporate Governance Regulations',
-    downloads: 7300,
-    rating: 8.4,
+    downloads: 0,
+    rating: 0,
     templateAr: `================================================================================
 نموذج مسودة: وكالة تأسيس شركات وتمثيل تجاري (لأغراض الصياغة والاسترشاد)
 ================================================================================
@@ -570,8 +570,8 @@ ${POA_DISCLAIMER_EN}
     usageContextEn: 'Used to delegate motor vehicle title registration and customs clearance before port and traffic departments.',
     legalBasisAr: 'قوانين السير والمرور وأنظمة الجمارك الموحدة ولوائح استيراد وتصدير المركبات والبضائع',
     legalBasisEn: 'Traffic & Motor Vehicle Acts, Unified Customs Law, and Port Authority Regulations',
-    downloads: 12100,
-    rating: 8.0,
+    downloads: 0,
+    rating: 0,
     templateAr: `================================================================================
 نموذج مسودة: وكالة خاصة بالمركبات والتخليص الجمركي (لأغراض الصياغة والاسترشاد)
 ================================================================================
@@ -670,8 +670,8 @@ ${POA_DISCLAIMER_EN}
     usageContextEn: 'Used among lawful heirs before personal status courts and probate registries; strictly subject to minor guardianship statutory restrictions.',
     legalBasisAr: 'قوانين الأحوال الشخصية وأحكام المواريث والتركات والتشريعات المنظمة لحماية أموال القاصرين والغيّب',
     legalBasisEn: 'Personal Status Codes, Probate and Succession Laws, and Statutory Guardianship Regulations',
-    downloads: 8900,
-    rating: 8.6,
+    downloads: 0,
+    rating: 0,
     templateAr: `================================================================================
 نموذج مسودة: وكالة خاصة بحصر الإرث وقسمة التركة (لأغراض الصياغة والاسترشاد)
 ================================================================================
@@ -766,8 +766,8 @@ ${POA_DISCLAIMER_EN}
     usageContextEn: 'Used to fulfill border control, immigration, and airline requirements for accompanied minor travel.',
     legalBasisAr: 'قوانين الأحوال الشخصية ونظام وثائق السفر وتعليمات إدارات الإقامة والحدود المنظمة لسفر القاصرين',
     legalBasisEn: 'Personal Status Law (Custody/Guardianship), Passports and Border Control Acts, and International Minor Travel Regulations',
-    downloads: 16700,
-    rating: 8.2,
+    downloads: 0,
+    rating: 0,
     templateAr: `================================================================================
 نموذج مسودة: إذن سفر قاصر وموافقة الولي الشرعي (لأغراض الصياغة والاسترشاد)
 ================================================================================
@@ -870,8 +870,8 @@ ${POA_DISCLAIMER_EN}
     usageContextEn: 'Used to designate a healthcare decision-maker in the event of medical incapacity under applicable patient rights legislation.',
     legalBasisAr: 'تشريعات المسؤولية الطبية وحقوق المريض وقوانين الولاية على النفس والأخلاقيات الحيوية المعتمدة',
     legalBasisEn: 'Healthcare Decisions Acts, Medical Consent Statutes, and Patient Self-Determination Regulations',
-    downloads: 5100,
-    rating: 8.3,
+    downloads: 0,
+    rating: 0,
     templateAr: `================================================================================
 نموذج مسودة: وكالة رعاية صحية وتفويض طبي (لأغراض الصياغة والاسترشاد)
 ================================================================================
@@ -964,8 +964,8 @@ ${POA_DISCLAIMER_EN}
     usageContextEn: 'Used to authorize accredited IP agents before national and international patent/trademark offices; subject to Apostille/consular legalization in cross-border filings.',
     legalBasisAr: 'قوانين حماية الملكية الصناعية وحق المؤلف واتفاقيات باريس وتريبس (TRIPS) ونظام معاهدة التعاون بشأن البراءات (PCT)',
     legalBasisEn: 'Patent & Trademark Acts, Paris Convention, TRIPS Agreement, and WIPO/PCT Administrative Regulations',
-    downloads: 3400,
-    rating: 8.8,
+    downloads: 0,
+    rating: 0,
     templateAr: `================================================================================
 نموذج مسودة: وكالة خاصة بالملكية الفكرية (لأغراض الصياغة والاسترشاد)
 ================================================================================

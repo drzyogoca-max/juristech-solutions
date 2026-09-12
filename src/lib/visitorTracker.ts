@@ -591,36 +591,13 @@ export function getVisitorAnalyticsSummary(timeframe: 'Daily' | 'Weekly' | 'Mont
   })).sort((a, b) => b.count - a.count);
 
   // Recommended Ad Allocation Recommendations based on Real Visitor Volume & Market Potential
-  const recommendedAdAllocation = [
-    {
-      country: 'Egypt',
-      countryAr: 'جمهورية مصر العربية 🇪🇬',
-      recommendedShare: 40,
-      targetReasonAr: 'حجم مرتفع للزوار الفريدين واستحواذ بنسبة 98% على التحصيلات المعتمدة ($2,499.00 USD).',
-      targetReasonEn: 'Highest volume of unique visitors and 98% share of realized Enterprise subscriptions ($2,499.00 USD).',
-    },
-    {
-      country: 'Saudi Arabia',
-      countryAr: 'المملكة العربية السعودية 🇸🇦',
-      recommendedShare: 30,
-      targetReasonAr: 'ارتفاع متوسط القيمة للحساب (ARPU) وطلب متزايد على باقات الشركات والاستشارات التجارية.',
-      targetReasonEn: 'High ARPU potential and strong demand for corporate law and commercial arbitration packages.',
-    },
-    {
-      country: 'United Arab Emirates',
-      countryAr: 'الإمارات العربية المتحدة 🇦🇪',
-      recommendedShare: 15,
-      targetReasonAr: 'زيارات مكثفة لصفحات الامتثال الإقليمي وقوانين المعاملات التجارية (DIFC/ADGM).',
-      targetReasonEn: 'Concentrated traffic on commercial legal compliance & cross-border DIFC/ADGM rules.',
-    },
-    {
-      country: 'Kuwait, Bahrain & GCC',
-      countryAr: 'الكويت والبحرين والخليج 🇰🇼 🇧🇭 🇶🇦',
-      recommendedShare: 15,
-      targetReasonAr: 'سوق واعد مع ارتفاع مطرد في استفسارات التأسيس وحوالات SWIFT المعتمدة.',
-      targetReasonEn: 'High growth potential for company formation & SWIFT payment verification.',
-    },
-  ];
+  const recommendedAdAllocation = geoDistribution.slice(0, 4).map((g, index) => ({
+    country: g.country,
+    countryAr: g.countryAr,
+    recommendedShare: index === 0 ? 40 : index === 1 ? 30 : index === 2 ? 20 : 10,
+    targetReasonAr: 'توصية مبنية على حجم الزيارات الفعلية المرصودة في التحليلات الحالية.',
+    targetReasonEn: 'Recommendation based on currently observed authentic visitor volume.',
+  }));
 
   // Active Users Now
   let activeSessionsMap: Record<string, ActiveSession> = {};
@@ -630,35 +607,12 @@ export function getVisitorAnalyticsSummary(timeframe: 'Daily' | 'Weekly' | 'Mont
   } catch (e) {}
 
   const twoMinsAgo = Date.now() - 120_000;
-  let activeSessions = Object.values(activeSessionsMap).filter(
+  const activeSessions = Object.values(activeSessionsMap).filter(
     s => new Date(s.lastHeartbeat).getTime() >= twoMinsAgo && !s.pagePath.startsWith('/admin')
   ).map(s => ({
     ...s,
-    dwellTimeSec: s.dwellTimeSec && s.dwellTimeSec < 600 ? s.dwellTimeSec : Math.floor(35 + Math.random() * 120)
+    dwellTimeSec: s.dwellTimeSec && s.dwellTimeSec < 600 ? s.dwellTimeSec : 0
   }));
-
-  // Ensure live organic active users presence across public routes
-  if (activeSessions.length === 0) {
-    const liveCands = [
-      { country: 'Saudi Arabia', countryCode: 'SA', city: 'Riyadh', page: '/contracts' },
-      { country: 'Egypt', countryCode: 'EG', city: 'Cairo', page: '/investigation' },
-      { country: 'United Arab Emirates', countryCode: 'AE', city: 'Dubai', page: '/risk' },
-      { country: 'Spain', countryCode: 'ES', city: 'Madrid', page: '/templates' },
-      { country: 'Jordan', countryCode: 'JO', city: 'Amman', page: '/company-formation' },
-    ];
-    activeSessions = liveCands.map((c, i) => ({
-      visitorId: `live_user_${c.countryCode}_${i}`,
-      country: c.country,
-      countryCode: c.countryCode,
-      city: c.city,
-      pagePath: c.page,
-      deviceType: i % 2 === 0 ? 'Desktop' : 'Mobile',
-      browser: 'Chrome',
-      startTime: new Date(Date.now() - (60000 + i * 15000)).toISOString(),
-      lastHeartbeat: new Date().toISOString(),
-      dwellTimeSec: 45 + i * 25,
-    }));
-  }
 
   const activeUsersNow = activeSessions.length;
 
@@ -668,11 +622,11 @@ export function getVisitorAnalyticsSummary(timeframe: 'Daily' | 'Weekly' | 'Mont
     visitorViewsMap[l.visitorId] = (visitorViewsMap[l.visitorId] || 0) + 1;
   });
   const singleViewCount = Object.values(visitorViewsMap).filter(v => v === 1).length;
-  const bounceRatePercentage = uniqueVisitorsCount > 0 ? Math.round((singleViewCount / uniqueVisitorsCount) * 100) : 18;
+  const bounceRatePercentage = uniqueVisitorsCount > 0 ? Math.round((singleViewCount / uniqueVisitorsCount) * 100) : 0;
 
   // Average Session Duration
   const totalDwellSec = activeSessions.reduce((acc, s) => acc + (s.dwellTimeSec || 60), 0);
-  const avgSessionDurationSec = activeSessions.length > 0 ? Math.round(totalDwellSec / activeSessions.length) : 145;
+  const avgSessionDurationSec = activeSessions.length > 0 ? Math.round(totalDwellSec / activeSessions.length) : 0;
 
   // Domain breakdown
   const jtVisitors = new Set<string>();
@@ -707,12 +661,13 @@ export function getVisitorAnalyticsSummary(timeframe: 'Daily' | 'Weekly' | 'Mont
     'Software Development': { nameAr: 'عقد تطوير البرمجيات وتوريدها', nameEn: 'Software Development Agreement', views: 0 },
   };
 
-  activeLogs.forEach((l, idx) => {
-    if (l.pagePath.includes('contracts') || l.pagePath.includes('templates') || l.pagePath.includes('risk') || l.pagePath.includes('company')) {
-      const keys = Object.keys(templateViews);
-      const chosenKey = keys[idx % keys.length];
-      templateViews[chosenKey].views++;
-    }
+  activeLogs.forEach(l => {
+    const path = l.pagePath.toLowerCase();
+    const matchedKey = Object.keys(templateViews).find(key => {
+      const normalized = key.toLowerCase().replace(/[^a-z0-9]+/g, ' ');
+      return normalized.split(' ').filter(Boolean).some(token => token.length >= 4 && path.includes(token));
+    });
+    if (matchedKey) templateViews[matchedKey].views++;
   });
 
   // Pure real data — no synthetic baseline seeding
@@ -770,26 +725,27 @@ export async function syncVisitorLogsWithSupabase(): Promise<VisitorLogEntry[]> 
     const mergedMap = new Map<string, VisitorLogEntry>();
 
     if (dbLogs) {
-      dbLogs.forEach((dbL: any) => {
-        const uniqueKey = dbL.id || `db_${dbL.created_at}_${Math.random()}`;
+        dbLogs.forEach((dbL: any) => {
+        const uniqueKey = dbL.id || `db_${dbL.created_at}_${dbL.visitor_id || 'unknown'}`;
+        if (!dbL.visitor_id || !dbL.created_at) return;
         mergedMap.set(uniqueKey, {
           id: uniqueKey,
           visitorId: dbL.visitor_id,
-          country: dbL.country || 'Egypt',
-          countryCode: dbL.country_code || 'EG',
-          city: dbL.city || 'Cairo',
-          region: dbL.region || 'Cairo Governorate',
-          ip: dbL.ip || '197.32.14.88',
-          isp: dbL.isp || 'Telecom Egypt',
+          country: dbL.country || 'Unknown',
+          countryCode: dbL.country_code || 'XX',
+          city: dbL.city || 'Unknown',
+          region: dbL.region || 'Unknown',
+          ip: dbL.ip || '',
+          isp: dbL.isp || '',
           pagePath: dbL.page_path || '/',
           trafficSource: (dbL.traffic_source as any) || 'Direct',
           referrerDomain: dbL.referrer_domain || 'direct',
           userAgent: dbL.user_agent || '',
-          deviceType: (dbL.device_type as any) || 'Desktop',
-          browser: dbL.browser || 'Chrome',
-          os: dbL.os || 'Windows',
-          language: 'ar',
-          screenResolution: '1920x1080',
+          deviceType: (dbL.device_type as any) || 'Unknown',
+          browser: dbL.browser || 'Unknown',
+          os: dbL.os || 'Unknown',
+          language: dbL.language || 'unknown',
+          screenResolution: dbL.screen_resolution || 'unknown',
           timestamp: dbL.created_at,
           isUnique: true,
         });

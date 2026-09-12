@@ -339,7 +339,8 @@ export type GeneratedDocumentTemplateType =
   | 'Legal Notice'
   | 'Compliance Report'
   | 'Policy Draft'
-  | 'Executive Legal Summary';
+  | 'Executive Legal Summary'
+  | 'Power of Attorney';
 
 export type DocumentGenerationStatus = 'DRAFT' | 'VERIFIED_SOURCES' | 'REQUIRES_REVIEW';
 

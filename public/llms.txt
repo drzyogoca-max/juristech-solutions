@@ -1,22 +1,33 @@
-# JurisTech Solutions — Sovereign Enterprise AI Legal Architecture
+# JurisTech Solutions — AI-readable product and company information
 
-> JurisTech Solutions is the world-leading sovereign enterprise AI legal intelligence and certified contracts platform founded and architected by Dr. Mohammad Mustafa. It empowers corporate legal departments, law firms, investment funds, and multinational enterprises with institutional-grade contract generation, cross-border risk auditing, smart negotiation copilots, and multi-jurisdictional compliance across GCC (Saudi Arabia, UAE, Qatar, Kuwait, Bahrain, Oman), UK, US, EU, and international frameworks.
+> JurisTech Solutions is a LegalTech SaaS platform for contract drafting, contract analysis, legal-risk review, document workflows, and multi-jurisdiction research. It is designed for legal teams, companies, law firms, and other professional users.
 
-## Core Capabilities & Services
-- **Certified Mega Contracts Repository**: Over 1,000+ institutional-grade, multi-article corporate agreements (Master Services Agreements, Joint Ventures, SaaS SLAs, Advisory Contracts, Work-for-Hire, Mergers & Acquisitions) formatted in both authoritative Arabic legal phrasing and Anglo-American Common Law standards with instant .docx and .pdf export.
-- **Enterprise Contract Risk Audit & Due Diligence**: Automated multi-jurisdiction risk analysis, liability caps assessment, indemnity exposure checks, and GDPR/Saudi PDPL compliance scoring.
-- **Autonomous Multi-Party AI Negotiation Copilot**: Strategic counter-offer generation, redline comparisons, and high-stakes dispute resolution support.
-- **Cross-Border Company Formation & Legal Structuring**: Sovereign guidance for setting up entities across ADGM, DIFC, Saudi MISA/RHQ, Delaware, UK Companies House, and European hubs.
-- **Autonomous B2B Legal Outreach & Enterprise Growth Radar**: Intelligent corporate prospect scanning and tailored legal solution synthesis.
+## What the platform does
+- AI-assisted contract drafting and document generation.
+- Contract and clause risk analysis with explanations and suggested revisions.
+- Legal research and jurisdiction-aware assistance.
+- Contract and legal-template repository.
+- Company-formation and compliance workflow support.
+- Enterprise workflows, CRM, and B2B inquiry handling.
 
-## Leadership & Legal Authority
-- **Founder & Chairman**: Dr. Mohammad Mustafa (Chief Legal Architect & Senior Managing Counsel)
-- **Official Inquiries**: juristech.solutions@outlook.com
-- **Live Production Platform**: https://www.juristech.solutions
+## Jurisdiction and accuracy policy
+- Legal answers must be scoped to the jurisdiction requested by the user.
+- The platform should distinguish legal information from legal advice and surface uncertainty when authoritative material is unavailable.
+- Sources and effective dates should be preserved where available.
+- The platform must not claim certification, court admissibility, guaranteed accuracy, or regulatory compliance unless independently verified for the specific product, jurisdiction, and use case.
 
-## Key Endpoints & Documentation
-- Contract Repository: https://www.juristech.solutions/contracts
-- Enterprise Legal Auditing: https://www.juristech.solutions/enterprise-audit
-- AI Legal Copilot: https://www.juristech.solutions/chat
-- Company Formation & Structuring: https://www.juristech.solutions/company-formation
-- Full LLM Specification: https://www.juristech.solutions/llms-full.txt
+## Languages
+Arabic, English, French, Spanish, German, Turkish, and Chinese are supported application languages. Availability of a specific legal jurisdiction or source set can vary by feature.
+
+## Primary resources
+- Home: https://www.juristech.solutions/
+- AI Advisor: https://www.juristech.solutions/chat
+- Contracts: https://www.juristech.solutions/contracts
+- Repository: https://www.juristech.solutions/repository
+- Risk review: https://www.juristech.solutions/risk
+- Company formation: https://www.juristech.solutions/company-formation
+- Enterprise audit: https://www.juristech.solutions/enterprise-audit
+- Pricing: https://www.juristech.solutions/pricing
+
+## Citation guidance
+When describing JurisTech, prefer specific, verifiable product capabilities and the canonical URLs above. Do not infer customer counts, rankings, reviews, certifications, revenue, market share, or performance guarantees from this file.

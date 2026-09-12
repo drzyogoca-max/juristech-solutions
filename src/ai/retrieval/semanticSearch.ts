@@ -1,4 +1,4 @@
-﻿/**
+/**
  * src/ai/retrieval/semanticSearch.ts
  * â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
  * JurisTech Solutions â€” Contextual Retrieval Engine over GLOBAL_LEGAL_KNOWLEDGE_BASE
@@ -42,8 +42,8 @@ const JURISDICTION_KEYWORDS: Record<JurisdictionCode, string[]> = {
   QA: ['qatar', 'Ù‚Ø·Ø±', 'doha', 'Ø§Ù„Ø¯ÙˆØ­Ø©', 'qfc', 'katarlÄ±', 'å¡å¡”å°”'],
   KW: ['kuwait', 'Ø§Ù„ÙƒÙˆÙŠØª', 'koweit', 'kuveyt', 'ç§‘å¨ç‰¹'],
   BH: ['bahrain', 'Ø§Ù„Ø¨Ø­Ø±ÙŠÙ†', 'bcdr', 'bahreÃ¯n', 'bahrein', 'å·´æž—'],
-  OM: ['oman', 'Ø¹Ù…Ø§Ù†', 'muscat', 'Ù…Ø³Ù‚Ø·', 'umman', 'é˜¿æ›¼'],
-  JO: ['jordan', 'jordanian', 'jordanian law', 'Ø§Ù„Ø£Ø±Ø¯Ù†', 'Ø§Ù„Ø£Ø±Ø¯Ù†ÙŠ', 'Ø§Ø±Ø¯Ù†ÙŠ', 'Ø£Ø±Ø¯Ù†ÙŠ', 'Ø§Ù„Ù‚Ø§Ù†ÙˆÙ† Ø§Ù„Ø£Ø±Ø¯Ù†ÙŠ', 'Ø§Ù„Ù…Ù…Ù„ÙƒØ© Ø§Ù„Ø£Ø±Ø¯Ù†ÙŠØ©', 'Ø¹Ù…Ø§Ù†', 'ccd', 'jordanie', 'jordania', 'jordanien', 'Ã¼rdÃ¼n', 'çº¦æ—¦'],
+  OM: ['oman', 'muscat', 'muscat', 'Ù…Ø³Ù‚Ø·', 'umman', 'é˜¿æ›¼'],
+  JO: ['jordan', 'jordanian', 'jordanian law', 'Ø§Ù„Ø£Ø±Ø¯Ù†', 'Ø§Ù„Ø£Ø±Ø¯Ù†ÙŠ', 'Ø§Ø±Ø¯Ù†ÙŠ', 'Ø£Ø±Ø¯Ù†ÙŠ', 'Ø§Ù„Ù‚Ø§Ù†ÙˆÙ† Ø§Ù„Ø£Ø±Ø¯Ù†ÙŠ', 'Ø§Ù„Ù…Ù…Ù„ÙƒØ© Ø§Ù„Ø£Ø±Ø¯Ù†ÙŠØ©', 'ccd', 'jordanie', 'jordania', 'jordanien', 'Ã¼rdÃ¼n', 'çº¦æ—¦'],
   INTL: ['international', 'Ø¯ÙˆÙ„ÙŠ', 'cisg', 'uncitral', 'icc', 'incoterms', 'internacional', 'uluslararasÄ±', 'å›½é™…'],
   GB: ['uk', 'england', 'britain', 'lcia', 'ucta', 'royaume-uni', 'reino unido', 'groÃŸbritannien', 'ingiltere', 'è‹±å›½'],
   US: ['usa', 'united states', 'delaware', 'sec', 'ucc', 'Ã©tats-unis', 'estados unidos', 'usa', 'abd', 'ç¾Žå›½'],
@@ -178,7 +178,7 @@ export function semanticSearch(query: string, options: SearchOptions = {}): Sema
 export function detectJurisdictionFromQuery(query: string): JurisdictionCode {
   const lower = query.toLowerCase().trim();
   const explicitPriority: Array<[JurisdictionCode, string[]]> = [
-    ['JO', ['jordanian law', 'law of jordan', 'القانون الأردني', 'القانون الاردني', 'المملكة الأردنية', 'الأردن', 'الاردن', 'الأردني', 'الاردني', 'jordan']],
+    ['JO', ['jordanian law', 'law of jordan', 'القانون الأردني', 'القانون الاردني', 'المملكة الأردنية', 'الأردن', 'الاردن', 'الأردني', 'الاردني', 'jordan', 'amman']],
     ['SA', ['saudi law', 'law of saudi arabia', 'السعودية', 'السعودي', 'saudi arabia']],
     ['AE', ['uae law', 'law of the uae', 'الإمارات', 'الامارات', 'الإمارات العربية المتحدة', 'uae']],
     ['EG', ['egyptian law', 'law of egypt', 'القانون المصري', 'مصر', 'المصري', 'egypt']],

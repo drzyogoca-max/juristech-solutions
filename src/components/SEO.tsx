@@ -128,277 +128,49 @@ export default function SEO({
           {
             '@context': 'https://schema.org',
             '@type': 'WebSite',
-            'url': baseUrl,
-            'name': 'JurisTech Solutions & LegalShield',
-            'alternateName': ['LegalShield Solution', 'JurisTech AI Legal'],
+            '@id': baseUrl + '/#website',
+            'url': baseUrl + '/',
+            'name': 'JurisTech Solutions',
             'description': description,
-            'publisher': {
-              '@type': 'Organization',
-              'name': 'JurisTech Solutions & LegalShield Ecosystem',
-              'url': baseUrl,
-              'logo': `${baseUrl}/logo.png`,
-              'email': 'founder@juristech.solutions',
-              'sameAs': [
-                'https://www.linkedin.com/in/juristech-solutions-14954b427/',
-                'https://www.tiktok.com/@juristech.solutio6',
-                'https://legalshieldsolution.online'
-              ]
-            },
+            'inLanguage': lang,
+            'publisher': { '@id': baseUrl + '/#organization' }
+          },
+          {
+            '@context': 'https://schema.org',
+            '@type': 'Organization',
+            '@id': baseUrl + '/#organization',
+            'name': 'JurisTech Solutions',
+            'url': baseUrl + '/',
+            'logo': baseUrl + '/logo.png'
           },
           {
             '@context': 'https://schema.org',
             '@type': 'SoftwareApplication',
-            'name': 'JurisTech AI Legal Assistant & Sovereign Contract Risk Analysis Suite',
-            'operatingSystem': 'Web, iOS, Android, Cloud API',
-            'applicationCategory': ['LegalTech', 'AI Contract Analysis', 'Automated Risk Assessment Software', 'Enterprise Sovereign Legal AI'],
-            'featureList': [
-              'AI-powered contract risk scoring',
-              'Automated legal document analysis platform for enterprise law firms',
-              'Delaware LLC & Saudi Companies Law 2026 statutory audit',
-              'Instant court-admissible redlines & DOCX zero-whitespace exporter',
-              'Sub-second UNCITRAL & GCC commercial code cross-examination'
-            ],
-            'offers': {
-              '@type': 'Offer',
-              'price': '0.00',
-              'priceCurrency': 'USD',
-              'availability': 'https://schema.org/InStock',
-            },
-            'aggregateRating': {
-              '@type': 'AggregateRating',
-              'ratingValue': '4.9',
-              'bestRating': '5',
-              'worstRating': '1',
-              'ratingCount': '2450',
-              'reviewCount': '1890',
-            },
-            'review': [
-              {
-                '@type': 'Review',
-                'reviewRating': {
-                  '@type': 'Rating',
-                  'ratingValue': '5',
-                  'bestRating': '5',
-                },
-                'author': {
-                  '@type': 'Person',
-                  'name': 'Sarah Mitchell'
-                },
-                'datePublished': '2025-11-15',
-                'reviewBody': 'JurisTech AI saved our legal team hours every week. The AI-powered contract risk scoring is incredibly accurate and the 50-state template library is unmatched.'
-              },
-              {
-                '@type': 'Review',
-                'reviewRating': {
-                  '@type': 'Rating',
-                  'ratingValue': '5',
-                  'bestRating': '5',
-                },
-                'author': {
-                  '@type': 'Person',
-                  'name': 'Ahmed Al-Rashidi'
-                },
-                'datePublished': '2025-12-02',
-                'reviewBody': 'The automated legal document analysis platform provides precise statutory references for GCC and US jurisdictions. Essential tool for cross-border corporate transactions.'
-              },
-              {
-                '@type': 'Review',
-                'reviewRating': {
-                  '@type': 'Rating',
-                  'ratingValue': '5',
-                  'bestRating': '5',
-                },
-                'author': {
-                  '@type': 'Person',
-                  'name': 'Jennifer Kowalski'
-                },
-                'datePublished': '2026-01-20',
-                'reviewBody': 'Outstanding platform for contract lifecycle management. The risk analysis AI caught a critical liability clause our attorneys missed. Highly recommended.'
-              }
-            ]
-          },
-          {
-            '@context': 'https://schema.org',
-            '@type': 'LegalService',
-            'name': 'JurisTech Solutions & LegalShield Sovereign AI Legal Platform',
-            'image': `${baseUrl}/logo.png`,
-            'priceRange': '$49 - $349/mo',
-            'telephone': '+201126674337',
-            'url': baseUrl,
-            'areaServed': ['United States', 'US-CA', 'US-NY', 'US-TX', 'US-FL', 'US-DE', 'United Kingdom', 'European Union', 'GCC', 'Saudi Arabia', 'United Arab Emirates', 'Egypt', 'Jordan', 'Oman', 'Kuwait', 'Qatar', 'Bahrain'],
-            'knowsAbout': [
-              'AI-powered contract risk scoring',
-              'Automated legal document analysis platform for enterprise law firms',
-              'US Federal & State Contract Law',
-              'Delaware Corporate Law',
-              'Saudi Companies Law 2026',
-              'DIFC & ADGM Commercial Regulations',
-              'UNCITRAL & CISG International Commercial Law',
-              'Contract Risk Redlining & E-Signatures'
-            ]
-          },
-          {
-            '@context': 'https://schema.org',
-            '@type': 'FAQPage',
-            'mainEntity': [
-              {
-                '@type': 'Question',
-                'name': 'What is JurisTech Solutions and how does its AI-powered contract risk scoring work?',
-                'acceptedAnswer': {
-                  '@type': 'Answer',
-                  'text': 'JurisTech Solutions is an enterprise LegalTech platform providing AI-powered contract risk scoring, clause vulnerability detection, liability cap inspection, and sovereign legal compliance across US, UK, EU, and GCC commercial law frameworks.'
-                }
-              },
-              {
-                '@type': 'Question',
-                'name': 'How does automated legal document analysis benefit enterprise law firms and corporate legal teams?',
-                'acceptedAnswer': {
-                  '@type': 'Answer',
-                  'text': 'Automated legal document analysis enables law firms and in-house counsel to audit multi-page commercial contracts in sub-second speed, identifying hidden indemnification traps, uncapped liabilities, and non-compliant terms while generating court-admissible redlines.'
-                }
-              },
-              {
-                '@type': 'Question',
-                'name': 'كيف تساعد منصة تحليل العقود بالذكاء الاصطناعي في كشف المخاطر القانونية للشركات؟',
-                'acceptedAnswer': {
-                  '@type': 'Answer',
-                  'text': 'تقوم منصة JurisTech بفحص بنود المسؤولية المالية والتعويضات غير المحدودة وغرامات التأخير وشروط عدم المنافسة ومقارنتها بالأنظمة واللوائح السيادية لحماية المنشأة من النزاعات القضائية وتوفير الصياغات البديلة المعتمدة.'
-                }
-              },
-              {
-                '@type': 'Question',
-                'name': 'Does JurisTech support 50 US States, Delaware LLC incorporation, and GCC statutory codes?',
-                'acceptedAnswer': {
-                  '@type': 'Answer',
-                  'text': 'Yes, JurisTech includes a sovereign legal engine ground in Delaware General Corporation Law, all 50 US state contract statutes, Saudi Companies Law 2026, DIFC/ADGM rules, and UNCITRAL commercial principles.'
-                }
-              },
-              {
-                '@type': 'Question',
-                'name': 'Are exported Word (.docx) documents guaranteed 100% compliant with RTL/LTR language direction and zero whitespace gaps?',
-                'acceptedAnswer': {
-                  '@type': 'Answer',
-                  'text': 'Yes! All Word (.docx) exports generated by JurisTech feature automated bidirectional formatting (RTL for Arabic, LTR for Western/Asian languages) and clean line compression for zero whitespace gaps.'
-                }
-              }
-            ]
-          },
-
-          {
-            '@context': 'https://schema.org',
-            '@type': 'HowTo',
-            'name': 'How to Automate Contracts with JurisTech AI',
-            'step': [
-              {
-                '@type': 'HowToStep',
-                'name': 'Upload or Select a Template',
-                'text': 'Upload your existing contract or select from our 200+ verified templates.'
-              },
-              {
-                '@type': 'HowToStep',
-                'name': 'AI Risk Scanning',
-                'text': 'Our AI identifies missing clauses, non-compliance, and hidden risks instantly.'
-              },
-              {
-                '@type': 'HowToStep',
-                'name': 'E-Sign and Vault Storage',
-                'text': 'Use secure AES-256 digital signatures and store your documents safely.'
-              }
-            ]
-          },
-          {
-            '@context': 'https://schema.org',
-            '@type': 'Product',
-            'name': 'JurisTech Enterprise AI Legal Shield',
-            'image': `${baseUrl}/logo.png`,
-            'description': 'AI-driven contract lifecycle management and risk mitigation for enterprises.',
-            'brand': {
-              '@type': 'Brand',
-              'name': 'JurisTech Solutions'
-            },
-            'aggregateRating': {
-              '@type': 'AggregateRating',
-              'ratingValue': '4.9',
-              'bestRating': '5',
-              'worstRating': '1',
-              'ratingCount': '2450',
-              'reviewCount': '1890'
-            },
-            'review': [
-              {
-                '@type': 'Review',
-                'reviewRating': {
-                  '@type': 'Rating',
-                  'ratingValue': '5',
-                  'bestRating': '5',
-                },
-                'author': {
-                  '@type': 'Person',
-                  'name': 'Marcus Thompson'
-                },
-                'datePublished': '2025-10-18',
-                'reviewBody': 'JurisTech Enterprise streamlined our entire contract review process. The AI flagged compliance issues across 3 jurisdictions in under 2 seconds. An indispensable tool for our legal operations team.'
-              },
-              {
-                '@type': 'Review',
-                'reviewRating': {
-                  '@type': 'Rating',
-                  'ratingValue': '5',
-                  'bestRating': '5',
-                },
-                'author': {
-                  '@type': 'Person',
-                  'name': 'Fatima Al-Zahraa'
-                },
-                'datePublished': '2025-12-28',
-                'reviewBody': 'Exceptional platform for GCC cross-border legal compliance. The SWIFT receipt audit and fraud detection features are particularly powerful for our treasury operations.'
-              },
-              {
-                '@type': 'Review',
-                'reviewRating': {
-                  '@type': 'Rating',
-                  'ratingValue': '5',
-                  'bestRating': '5',
-                },
-                'author': {
-                  '@type': 'Person',
-                  'name': 'David Chen'
-                },
-                'datePublished': '2026-02-10',
-                'reviewBody': 'Best AI legal platform on the market. Replaced our $400/hr outside counsel for routine contract reviews. ROI was immediate and the accuracy rivals top law firms.'
-              }
-            ],
-            'offers': {
-              '@type': 'Offer',
-              'price': '49.00',
-              'priceCurrency': 'USD',
-              'priceValidUntil': '2027-12-31',
-              'availability': 'https://schema.org/InStock',
-              'url': `${baseUrl}/payment`
-            }
-          },
-          {
-            '@context': 'https://schema.org',
-            '@type': 'Article',
-            'headline': title,
+            '@id': baseUrl + '/#software',
+            'name': 'JurisTech Solutions',
+            'url': baseUrl + '/',
+            'applicationCategory': 'BusinessApplication',
+            'operatingSystem': 'Web',
             'description': description,
-            'image': `${baseUrl}/logo.png`,
-            'datePublished': '2026-01-01T00:00:00+00:00',
-            'dateModified': new Date().toISOString(),
-            'mainEntityOfPage': pageUrl,
-            'author': {
-              '@type': 'Organization',
-              'name': 'JurisTech AI Legal Solutions',
-              'url': baseUrl
-            },
-            'publisher': {
-              '@type': 'Organization',
-              'name': 'JurisTech Solutions',
-              'logo': {
-                '@type': 'ImageObject',
-                'url': `${baseUrl}/logo.png`
-              }
-            }
+            'featureList': [
+              'AI-assisted contract drafting',
+              'Contract and clause risk analysis',
+              'Jurisdiction-aware legal research',
+              'Legal and contract template repository',
+              'Company formation and compliance workflows',
+              'Enterprise legal workflow support'
+            ],
+            'publisher': { '@id': baseUrl + '/#organization' }
+          },
+          {
+            '@context': 'https://schema.org',
+            '@type': 'WebPage',
+            '@id': pageUrl + '#webpage',
+            'url': pageUrl,
+            'name': title,
+            'description': description,
+            'inLanguage': lang,
+            'isPartOf': { '@id': baseUrl + '/#website' }
           }
         ])}
       </script>

@@ -9,6 +9,7 @@
  */
 
 import { LegalResearchAgent } from '../agents/legalResearchAgent';
+import { POA_LIBRARY, POA_DISCLAIMER_AR, POA_DISCLAIMER_EN } from '../../data/powerOfAttorneyLibrary';
 import { checkAccess } from '../security/accessControl';
 import { sanitizeInput } from '../security/privacyGuard';
 import type {
@@ -55,6 +56,7 @@ export class DocumentGenerator {
 
     const isAr = lang === 'ar';
     const isRtl = lang === 'ar';
+    const generationNowIso = new Date().toISOString();
 
     // ── 1. Access Control Check
     const access = checkAccess('document_generator', userTier);
@@ -108,6 +110,34 @@ export class DocumentGenerator {
     if (jurisdiction === 'UNKNOWN') placeholders.push('[JURISDICTION]');
 
     // ── 5. Generate Template Sections
+    if (templateType === 'Power of Attorney') {
+      const poa = POA_LIBRARY.find(t => t.jurisdictions.includes(jurisdiction));
+      if (!poa) {
+        return this.buildGatedDocument(documentTitle, templateType, lang, isRtl, 'No jurisdiction-specific POA template is available; drafting stopped.');
+      }
+      const body = lang === 'ar' ? poa.templateAr : poa.templateEn;
+      const disclaimer = lang === 'ar' ? POA_DISCLAIMER_AR : POA_DISCLAIMER_EN;
+      const content = body.replace(/\$\{POA_DISCLAIMER_(?:AR|EN)\}/g, disclaimer);
+      const poaSections = [{ heading: lang === 'ar' ? poa.titleAr : poa.titleEn, body: content }];
+      const nowIso = generationNowIso;
+      return {
+        documentId: `doc-${Date.now().toString(36)}`,
+        documentTitle: `${documentTitle} (${lang === 'ar' ? 'مسودة قيد المراجعة' : 'DRAFT FOR REVIEW'})`,
+        templateType,
+        documentStatus: citations.length ? 'VERIFIED_SOURCES' : 'REQUIRES_REVIEW',
+        jurisdiction,
+        governingLaw: jurisdiction === 'JO' ? (lang === 'ar' ? 'القانون الأردني ومتطلبات التوثيق الرسمية في الأردن' : 'Jordanian law and applicable official notarization requirements in Jordan') : governingLawStr,
+        content,
+        sections: poaSections,
+        placeholders, citations, sourceVerificationStatus,
+        confidenceScore: citations.length ? 0.85 : 0.35,
+        confidenceCalculation: 'heuristic',
+        metadata: { generatedAt: nowIso, language: lang, jurisdiction, documentType: templateType, sourceVerificationStatus, confidence: citations.length ? 0.85 : 0.35, requiresHumanReview: true, version: '1.1-poa-library' },
+        lang, isRtl
+      };
+    }
+
+    // ── 5a. Generate standard template sections
     const sections = this.buildTemplateSections(
       templateType,
       { partyA, partyB, dateStr, valueStr, jurStr, governingLawStr, cleanTerms, citations },
@@ -272,6 +302,34 @@ export class DocumentGenerator {
             body: isAr
               ? `تنفيذ التوصيات وتحديث السجلات والسياسات الداخلية لضمان تجنب الجزاءات المالية.`
               : `Execute corrective actions and update governance policies to ensure complete penalty avoidance.`,
+          },
+        ];
+
+      case 'Power of Attorney':
+        return [
+          {
+            heading: isAr ? 'بيانات الموكل والوكيل' : 'Principal & Attorney-in-Fact',
+            body: isAr
+              ? `الموكل: ${ctx.partyA}\nالوكيل: ${ctx.partyB}\nتاريخ السريان: ${ctx.dateStr}\nالاختصاص: ${ctx.jurStr}`
+              : `Principal: ${ctx.partyA}\nAttorney-in-Fact: ${ctx.partyB}\nEffective Date: ${ctx.dateStr}\nJurisdiction: ${ctx.jurStr}`,
+          },
+          {
+            heading: isAr ? 'نطاق التفويض' : 'Scope of Authority',
+            body: isAr
+              ? `يُصاغ نطاق التفويض بناءً على الصلاحيات التي يحددها الموكل صراحةً، ولا تُفترض صلاحيات خاصة غير منصوص عليها. ${citationNotes}`
+              : `The authority granted must be expressly defined by the principal; special powers must not be presumed where they are not stated. ${citationNotes}`,
+          },
+          {
+            heading: isAr ? 'المدة والإلغاء والتوثيق' : 'Term, Revocation & Formalities',
+            body: isAr
+              ? `تحدد مدة الوكالة وآلية الإلغاء ومتطلبات التوثيق أو التصديق وفق ${ctx.governingLawStr}. يجب استكمال أي متطلبات رسمية قبل الاعتماد على المسودة.`
+              : `The term, revocation mechanism, and notarization/legalization requirements must be determined under ${ctx.governingLawStr}. Complete all applicable formalities before relying on the draft.`,
+          },
+          {
+            heading: isAr ? 'التوقيع والمراجعة' : 'Execution & Review',
+            body: isAr
+              ? `هذه مسودة قانونية وليست وثيقة موثقة. يجب مراجعة الصلاحيات والنصوص والمراجع من محامٍ مرخص أو الجهة التوثيقية المختصة في الولاية المحددة.`
+              : `This is a legal drafting framework, not a notarized instrument. A licensed lawyer or competent notarial authority in the selected jurisdiction must review the powers, text, and cited sources before execution.`,
           },
         ];
 

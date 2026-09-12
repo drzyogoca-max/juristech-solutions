@@ -361,7 +361,15 @@ export function legalDraftingAgent(
   const isIPClause = clauseText.includes('الملكية الفكرية') || clauseText.includes('IP') || clauseText.includes('أسرار العمل');
   const isJurisdictionClause = clauseText.includes('ديلاوير') || clauseText.includes('Delaware') || clauseText.includes('الاختصاص القضائي');
 
-  const primaryStatute = statutes[0] || GLOBAL_LEGAL_KNOWLEDGE_BASE[0];
+  const primaryStatute = statutes[0];
+  if (!primaryStatute) {
+    return {
+      redlineAr: 'تعذر إنشاء صياغة قانونية مستندة إلى مصدر تشريعي موثوق للاختصاص المحدد. يجب تأكيد الاختصاص وتوفير مصدر قانوني قابل للتحقق قبل الصياغة.',
+      redlineEn: 'A jurisdiction-grounded redline cannot be generated because no verified statutory source was retrieved. Confirm the governing jurisdiction and obtain a verifiable legal source before drafting.',
+      reasoningAr: 'لم يتم العثور على مصدر تشريعي موثوق كافٍ؛ تم إيقاف الصياغة لمنع إدخال قانون من اختصاص مختلف.',
+      reasoningEn: 'No sufficiently verified statutory source was retrieved; drafting is stopped to prevent cross-jurisdiction contamination.'
+    };
+  }
 
   if (isPenaltyTrap) {
     return {

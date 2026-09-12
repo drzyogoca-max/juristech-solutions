@@ -47,6 +47,7 @@ import { AccessUpgradeModal } from '../components/ai-advisor/AccessUpgradeModal'
 import { aiOrchestrator } from '../ai/aiCore/orchestrator';
 import { contextManager } from '../ai/aiCore/contextManager';
 import { LegalResearchAgent } from '../ai/agents/legalResearchAgent';
+import { detectJurisdictionFromQuery } from '../ai/retrieval/semanticSearch';
 import { ContractAgent } from '../ai/agents/contractAgent';
 import { ComplianceAgent } from '../ai/agents/complianceAgent';
 import { DocumentAgent } from '../ai/agents/documentAgent';
@@ -227,7 +228,8 @@ export default function AIAdvisorPage() {
 
     try {
       // ── Dispatch According to Selected Task Mode ──
-      const targetJur = jurisdiction !== 'UNKNOWN' ? jurisdiction : undefined;
+      const detectedQueryJur = detectJurisdictionFromQuery(query);
+      const targetJur = jurisdiction !== 'UNKNOWN' ? jurisdiction : (detectedQueryJur !== 'UNKNOWN' ? detectedQueryJur : undefined);
       const targetLang: SupportedAILang = (['ar', 'en', 'fr', 'es', 'de', 'tr', 'zh'].includes(lang) ? lang : 'en') as SupportedAILang;
 
       if (taskMode === 'CONTRACT_ANALYSIS') {
@@ -315,7 +317,9 @@ export default function AIAdvisorPage() {
       } else if (taskMode === 'DOCUMENT_GENERATION') {
         const gen = await DocumentGenerator.generateLegalDraft({
           documentTitle: 'Client Legal Draft',
-          templateType: query.toLowerCase().includes('contract')
+          templateType: /power\\s+of\\s+attorney|poa|وكالة|توكيل/i.test(query)
+            ? 'Power of Attorney'
+            : query.toLowerCase().includes('contract')
             ? 'Contract Draft'
             : query.toLowerCase().includes('notice')
             ? 'Legal Notice'
