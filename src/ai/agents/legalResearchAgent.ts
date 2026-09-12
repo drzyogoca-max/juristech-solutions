@@ -1,7 +1,7 @@
 ﻿/**
  * src/ai/agents/legalResearchAgent.ts
- * â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
- * JurisTech Solutions â€” Legal Research Agent (Facade Layer)
+ * ─────────────────────────────────────────────────────────────────────────────
+ * JurisTech Solutions — Legal Research Agent (Facade Layer)
  * Specification: JURISTECH-AI-P0 Phase P0-2, Task 2-A, Task 2-E & Task 2-F
  *
  * Acts as a strict Facade / Adapter over the existing `legalRAGOrchestrator.ts`
@@ -76,7 +76,7 @@ export class LegalResearchAgent {
     // 2. Jurisdiction Safety Check (Task 2-E)
     if (jurisdiction === 'UNKNOWN' && !query.toLowerCase().includes('international') && query.split(' ').length > 7) {
       const prompt = isAr
-        ? 'ÙŠØ±Ø¬Ù‰ ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ø¯ÙˆÙ„Ø© Ø£Ùˆ Ø§Ù„ÙˆÙ„Ø§ÙŠØ© Ø§Ù„Ù‚Ø¶Ø§Ø¦ÙŠØ© Ø§Ù„Ù…Ø¹Ù†ÙŠØ© (Ù…Ø«Ù„: Ø§Ù„Ø³Ø¹ÙˆØ¯ÙŠØ©ØŒ Ø§Ù„Ø¥Ù…Ø§Ø±Ø§ØªØŒ Ù…ØµØ±ØŒ Ø§Ù„Ø£Ø±Ø¯Ù†ØŒ Ø¨Ø±ÙŠØ·Ø§Ù†ÙŠØ§ØŒ Ø£Ù…Ø±ÙŠÙƒØ§) Ù„Ø¶Ù…Ø§Ù† Ø¯Ù‚Ø© Ø§Ù„Ø§Ø³ØªÙ†Ø§Ø¯ Ø§Ù„ØªØ´Ø±ÙŠØ¹ÙŠ.'
+        ? 'يرجى تحديد الدولة أو الولاية القضائية المعنية (مثل: السعودية، الإمارات، مصر، الأردن، بريطانيا، أمريكا) لضمان دقة الاستناد التشريعي.'
         : 'Please specify the governing country or legal jurisdiction (e.g., Saudi Arabia, UAE, Egypt, UK, US Delaware) to ensure accurate statutory grounding.';
 
       return {

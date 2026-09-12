@@ -82,7 +82,7 @@ export default function AIHeartbeatWidget() {
         <div className="flex items-center gap-2 text-cyan-400">
           <Activity className="w-4 h-4 animate-pulse" />
           <span className="text-xs font-black uppercase tracking-wider text-slate-900 dark:text-white flex items-center gap-1.5">
-            {isRtl ? 'Ù…Ø±Ø§Ù‚Ø¨ Ø§Ù„Ù†Ø¸Ø§Ù… âš¡' : 'System Heartbeat Monitor'}
+            {isRtl ? 'مراقب النظام ⚡' : 'System Heartbeat Monitor'}
           </span>
         </div>
         <div className="flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-full">
@@ -110,7 +110,7 @@ export default function AIHeartbeatWidget() {
         <div className="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/80 space-y-0.5 min-w-0 stat-card-responsive">
           <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-400">
             <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shrink-0" />
-            <span className="text-[10px] font-bold truncate">{isRtl ? 'Ø§Ù„Ø¬Ù„Ø³Ø§Øª Ø§Ù„Ù†Ø´Ø·Ø©' : 'Active Sessions'}</span>
+            <span className="text-[10px] font-bold truncate">{isRtl ? 'الجلسات النشطة' : 'Active Sessions'}</span>
           </div>
           <div className="text-sm sm:text-base font-black text-cyan-400 font-mono stat-number-responsive">{stats.activeSessions}</div>
         </div>
@@ -118,7 +118,7 @@ export default function AIHeartbeatWidget() {
         <div className="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/80 space-y-0.5 min-w-0 stat-card-responsive">
           <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-400">
             <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse shrink-0" />
-            <span className="text-[10px] font-bold truncate">{isRtl ? 'Ø·Ù„Ø¨Ø§Øª Ø§Ù„ÙŠÙˆÙ…' : 'Daily Requests'}</span>
+            <span className="text-[10px] font-bold truncate">{isRtl ? 'طلبات اليوم' : 'Daily Requests'}</span>
           </div>
           <div className="text-sm sm:text-base font-black text-slate-900 dark:text-white font-mono stat-number-responsive">{stats.queriesToday.toLocaleString()}</div>
         </div>
@@ -126,7 +126,7 @@ export default function AIHeartbeatWidget() {
         <div className="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/80 space-y-0.5 min-w-0 stat-card-responsive">
           <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-400">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse shrink-0" />
-            <span className="text-[10px] font-bold truncate">{isRtl ? 'Ø£Ø­Ø¯Ø§Ø« Ø§Ù„Ø±Ø§Ø¯Ø§Ø±' : 'Radar Events'}</span>
+            <span className="text-[10px] font-bold truncate">{isRtl ? 'أحداث الرادار' : 'Radar Events'}</span>
           </div>
           <div className="text-sm sm:text-base font-black text-amber-400 font-mono stat-number-responsive">{stats.radarEvents}</div>
         </div>
@@ -134,7 +134,7 @@ export default function AIHeartbeatWidget() {
         <div className="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/80 space-y-0.5 min-w-0 stat-card-responsive">
           <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-400">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
-            <span className="text-[10px] font-bold truncate">{isRtl ? 'ÙˆÙ‚Øª Ø§Ù„ØªØ´ØºÙŠÙ„' : 'Uptime'}</span>
+            <span className="text-[10px] font-bold truncate">{isRtl ? 'وقت التشغيل' : 'Uptime'}</span>
           </div>
           <div className="text-sm sm:text-base font-black text-emerald-400 font-mono stat-number-responsive">{stats.uptime}%</div>
         </div>

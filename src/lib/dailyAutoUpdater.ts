@@ -1,14 +1,14 @@
 ﻿/**
  * src/lib/dailyAutoUpdater.ts
- * â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
- * JurisTech Solutions â€” Autonomous Daily Self-Updating AI & Legal Engine
+ * ─────────────────────────────────────────────────────────────────────────────
+ * JurisTech Solutions — Autonomous Daily Self-Updating AI & Legal Engine
  * Domain: https://juristech.solutions
  * 
  * Features:
- *  â€¢ Automatic daily AI model retraining & vector database refresh
- *  â€¢ Daily automated IndexNow ping to Bing, Yandex, Naver, Seznam
- *  â€¢ Dynamic version audit update & cache optimization
- *  â€¢ Continuous learning from client search queries & contract requests
+ *  • Automatic daily AI model retraining & vector database refresh
+ *  • Daily automated IndexNow ping to Bing, Yandex, Naver, Seznam
+ *  • Dynamic version audit update & cache optimization
+ *  • Continuous learning from client search queries & contract requests
  */
 
 export interface DailyUpdateStatus {
