@@ -111,7 +111,7 @@ export default function Dashboard() {
 
   const [activities, setActivities] = useState<ActivityItem[]>(dashboardMetricsCache?.activities || []);
 
-  // Deferred non-critical widgets � mount after FCP to keep TBT low
+  // Deferred non-critical widgets  mount after FCP to keep TBT low
   const [showDeferredWidgets, setShowDeferredWidgets] = useState(false);
 
   useEffect(() => {
@@ -224,7 +224,7 @@ export default function Dashboard() {
     const scheduleWork = () => {
       setShowDeferredWidgets(true);
       loadDashboardData();
-      // Live Telemetry Tick � starts after data load, pauses on hidden tab
+      // Live Telemetry Tick  starts after data load, pauses on hidden tab
       liveTickTimer = setInterval(() => {
         if (typeof document !== 'undefined' && document.hidden) return;
         const summary = getVisitorAnalyticsSummary();
@@ -256,7 +256,7 @@ export default function Dashboard() {
 
   async function executeInlineAudit(textToAudit: string, sourceFileName?: string) {
     if (!textToAudit.trim()) {
-      alert(isRtl ? 'يرجى إدخال أو ر�ع بنود العقد أولاً.' : 'Please paste or upload contract text first.');
+      alert(isRtl ? 'يرجى إدخال أو رفع بنود العقد أولاً.' : 'Please paste or upload contract text first.');
       return;
     }
 
@@ -301,7 +301,7 @@ export default function Dashboard() {
       });
     } catch (err) {
       console.error('Audit execution error:', err);
-      setErrorMsg(isRtl ? 'حدث خطأ أثناء إجراء ال�حص الذكي.' : 'Error executing AI audit.');
+      setErrorMsg(isRtl ? 'حدث خطأ أثناء إجراء الفحص الذكي.' : 'Error executing AI audit.');
     } finally {
       setAuditing(false);
     }
@@ -360,14 +360,14 @@ export default function Dashboard() {
           })}
         </div>
 
-        {/* 🎛� 3. INSTANT SECTION NAVIGATOR (SMOOTH SCROLL TO ALL 5 CORE SECTIONS) */}
+        {/* 🎛️ 3. INSTANT SECTION NAVIGATOR (SMOOTH SCROLL TO ALL 5 CORE SECTIONS) */}
         <div className="bg-slate-900/90 backdrop-blur-xl rounded-2xl p-2 border border-slate-800 flex items-center gap-2 overflow-x-auto no-scrollbar shadow-xl sticky top-4 z-40">
           {[
-            { targetId: 'sec-map', labelAr: '🗺� الخريطة الت�اعلية والأنظمة', labelEn: '🗺� Global SaaS Map' },
+            { targetId: 'sec-map', labelAr: '🗺️ الخريطة التفاعلية والأنظمة', labelEn: '🗺️ Global SaaS Map' },
             { targetId: 'sec-studio', labelAr: '⚡ استوديو العقود والتدقيق', labelEn: '⚡ Contract Studio' },
-            { targetId: 'sec-services', labelAr: '��� دليل الخدمات السيادية (18)', labelEn: '��� 18 Services Directory' },
+            { targetId: 'sec-services', labelAr: '️️ دليل الخدمات السيادية (18)', labelEn: '️️ 18 Services Directory' },
             { targetId: 'sec-cases', labelAr: '💼 دراسات الحالة والأسعار', labelEn: '💼 Case Studies & Pricing' },
-            { targetId: 'sec-security', labelAr: '� الأمان والامتثال والتحقق', labelEn: '� Security & Governance' },
+            { targetId: 'sec-security', labelAr: '🛡️ الأمان والامتثال والتحقق', labelEn: '🛡️ Security & Governance' },
           ].map((nav, idx) => (
             <button
               key={idx}
@@ -380,10 +380,10 @@ export default function Dashboard() {
         </div>
 
         {/* ──────────────────────────────────────────────────────────────────── */}
-        {/* SECTION 1: 🗺� GLOBAL INTERACTIVE SAAS MAP & CUSTOMER JOURNEY         */}
+        {/* SECTION 1: 🗺️ GLOBAL INTERACTIVE SAAS MAP & CUSTOMER JOURNEY         */}
         {/* ──────────────────────────────────────────────────────────────────── */}
         <section id="sec-map" className="space-y-6 pt-2 min-h-[580px] overflow-hidden" style={{ contain: 'layout style' }}>
-          {/* World-Class SaaS Interactive Map � wrapped in ErrorBoundary & Suspense to prevent page crash */}
+          {/* World-Class SaaS Interactive Map  wrapped in ErrorBoundary & Suspense to prevent page crash */}
           <Suspense fallback={<div className="min-h-[580px] w-full rounded-3xl bg-slate-900/50 animate-pulse border border-slate-800 flex items-center justify-center text-slate-500 text-xs font-mono">Loading Global SaaS Map...</div>}>
             <ErrorBoundary>
               <InteractiveSassGlobalMap />
@@ -402,7 +402,7 @@ export default function Dashboard() {
         {/* ──────────────────────────────────────────────────────────────────── */}
         <section id="sec-studio" className="space-y-6 pt-2">
 
-          {/* Top AI Chatbot Magnet � deferred after first paint */}
+          {/* Top AI Chatbot Magnet  deferred after first paint */}
           {showDeferredWidgets && (
             <Suspense fallback={null}>
               <DashboardChatbotMagnet
@@ -420,20 +420,20 @@ export default function Dashboard() {
                 </div>
                 <div>
                   <h2 className="text-base sm:text-lg font-bold text-white">
-                    {l('مستنداتي وعمليات التدقيق �ي هذه الجلسة', 'My Session Documents & Recent Audits')}
+                    {l('مستنداتي وعمليات التدقيق في هذه الجلسة', 'My Session Documents & Recent Audits')}
                   </h2>
                   <p className="text-xs text-slate-400">
-                    {l('إدارة المستندات الم�حوصة مؤخراً ومتابعة تقارير المخاطر', 'Manage analyzed contracts and active risk reports')}
+                    {l('إدارة المستندات المفحوصة مؤخراً ومتابعة تقارير المخاطر', 'Manage analyzed contracts and active risk reports')}
                   </p>
                 </div>
               </div>
               {contractState?.fileName && (
                 <button
                   onClick={() => clearContractData()}
-                  aria-label={l('ت�ريغ الجلسة الحالية', 'Clear current session')}
+                  aria-label={l('تفريغ الجلسة الحالية', 'Clear current session')}
                   className="text-xs font-bold text-slate-400 hover:text-red-400 transition-colors px-3 py-1.5 rounded-xl bg-slate-800/80 border border-slate-700 cursor-pointer"
                 >
-                  {l('ت�ريغ الجلسة', 'Clear Session')}
+                  {l('تفريغ الجلسة', 'Clear Session')}
                 </button>
               )}
             </div>
@@ -447,7 +447,7 @@ export default function Dashboard() {
                   <div>
                     <h3 className="text-sm font-bold text-white">{contractState.fileName}</h3>
                     <div className="flex items-center gap-2 mt-1 text-xs text-slate-400">
-                      <span>{l('تم الر�ع:', 'Uploaded:')} {contractState.uploadedAt ? new Date(contractState.uploadedAt).toLocaleTimeString() : l('الآن', 'Just now')}</span>
+                      <span>{l('تم الرفع:', 'Uploaded:')} {contractState.uploadedAt ? new Date(contractState.uploadedAt).toLocaleTimeString() : l('الآن', 'Just now')}</span>
                       {contractState.auditResults && (
                         <span className="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 font-bold border border-emerald-500/30">
                           {l(`مؤشر المخاطر: ${contractState.auditResults.riskScore}%`, `Risk: ${contractState.auditResults.riskScore}%`)}
@@ -460,7 +460,7 @@ export default function Dashboard() {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => navigate('/risk')}
-                    aria-label={l('عرض التقرير الت�صيلي', 'View Full Report')}
+                    aria-label={l('عرض التقرير التفصيلي', 'View Full Report')}
                     className="px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs transition-all shadow-md cursor-pointer"
                   >
                     {l('عرض التقرير', 'View Report')}
@@ -471,7 +471,7 @@ export default function Dashboard() {
               <div className="py-6 px-4 text-center space-y-2 rounded-2xl bg-slate-950/60 border border-dashed border-slate-800">
                 <p className="text-xs text-slate-400">
                   {l(
-                    'لا توجد مستندات م�حوصة �ي الجلسة الحالية. ار�ع عقدك عبر الأداة أدناه للبدء ال�وري.',
+                    'لا توجد مستندات مفحوصة في الجلسة الحالية. ارفع عقدك عبر الأداة أدناه للبدء الفوري.',
                     'No documents audited in current session yet. Upload contract below to get started.'
                   )}
                 </p>
@@ -487,10 +487,10 @@ export default function Dashboard() {
               <div>
                 <h2 className="text-lg font-bold text-white flex items-center gap-2">
                   <Globe className="w-5 h-5 text-cyan-400" />
-                  <span>{l('مسار ر�ع العقود والتحليل القانوني ال�وري', 'Contract Upload & Instant Legal Risk Analysis')}</span>
+                  <span>{l('مسار رفع العقود والتحليل القانوني الفوري', 'Contract Upload & Instant Legal Risk Analysis')}</span>
                 </h2>
                 <p className="text-xs text-slate-400 mt-1">
-                  {l('حدد النظام التشريعي المستهد� لإجراء ال�حص وصياغة البنود �ورياً:', 'Select governing jurisdiction for localized legal auditing:')}
+                  {l('حدد النظام التشريعي المستهدف لإجراء الفحص وصياغة البنود فورياً:', 'Select governing jurisdiction for localized legal auditing:')}
                 </p>
               </div>
 
@@ -499,7 +499,7 @@ export default function Dashboard() {
                   { id: 'GCC', nameAr: 'الخليج العربي (GCC)', nameEn: 'GCC Rules' },
                   { id: 'EU', nameAr: 'أوروبا (EU GDPR)', nameEn: 'EU GDPR' },
                   { id: 'US', nameAr: 'أمريكا (US VC)', nameEn: 'US Common' },
-                  { id: 'NAFRICA', nameAr: 'شمال أ�ريقيا', nameEn: 'N. Africa' },
+                  { id: 'NAFRICA', nameAr: 'شمال أفريقيا', nameEn: 'N. Africa' },
                   { id: 'GLOBAL', nameAr: 'دولياً (UNCITRAL)', nameEn: 'Global' },
                 ].map((reg) => (
                   <button
@@ -518,7 +518,7 @@ export default function Dashboard() {
               </div>
             </div>
 
-            {/* Quick Audit Drag & Drop Uploader � deferred after first paint */}
+            {/* Quick Audit Drag & Drop Uploader  deferred after first paint */}
             {showDeferredWidgets ? (
               <Suspense fallback={null}>
                 <QuickAuditWidget />
@@ -555,10 +555,10 @@ export default function Dashboard() {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => navigate('/risk')}
-                    aria-label={l('�تح التقرير الشامل والتصدير', 'Open Full Audit & Export Report')}
+                    aria-label={l('فتح التقرير الشامل والتصدير', 'Open Full Audit & Export Report')}
                     className="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center gap-2 transition-all shadow-md cursor-pointer"
                   >
-                    <span>{l('�تح التقرير الشامل والتصدير', 'Open Full Audit & Export Report')}</span>
+                    <span>{l('فتح التقرير الشامل والتصدير', 'Open Full Audit & Export Report')}</span>
                     <ArrowRight className={`w-3.5 h-3.5 ${isRtl ? 'rotate-180' : ''}`} />
                   </button>
                 </div>
@@ -569,7 +569,7 @@ export default function Dashboard() {
                 <div className="flex items-center justify-between font-bold text-cyan-300">
                   <span className="flex items-center gap-1.5">
                     <Sparkles className="w-4 h-4 text-cyan-400" />
-                    <span>{l('ش�ا�ية الذكاء الاصطناعي ومؤشرات الثقة القانونية', 'Explainable AI & Statutory Trust Layer')}</span>
+                    <span>{l('شفافية الذكاء الاصطناعي ومؤشرات الثقة القانونية', 'Explainable AI & Statutory Trust Layer')}</span>
                   </span>
                   <span className="bg-cyan-500/20 text-cyan-300 px-2.5 py-0.5 rounded-full border border-cyan-500/40 font-sans text-[11px] font-bold">
                     {l('تأصيل تشريعي معتمد', 'Verified Statutory Code')}
@@ -579,13 +579,13 @@ export default function Dashboard() {
                   <div>
                     <span className="font-bold text-white block mb-0.5">{l('📌 السند التشريعي المعتمد:', '📌 Source Statutory Reference:')}</span>
                     <span className="text-[11px] font-sans text-slate-300">
-                      {l('المواد (223 و224 مدني) والأنظمة التجارية النا�ذة لدول مجلس التعاون وشمال أ�ريقيا.', 'Civil Code Articles & Applicable Commercial Codes for MENA & Regional Statutory Law.')}
+                      {l('المواد (223 و224 مدني) والأنظمة التجارية النافذة لدول مجلس التعاون وشمال أفريقيا.', 'Civil Code Articles & Applicable Commercial Codes for MENA & Regional Statutory Law.')}
                     </span>
                   </div>
                   <div>
-                    <span className="font-bold text-white block mb-0.5">{l('💡 الا�تراضات الحاكمة للتحليل:', '💡 Underlying Legal Assumptions:')}</span>
+                    <span className="font-bold text-white block mb-0.5">{l('💡 الافتراضات الحاكمة للتحليل:', '💡 Underlying Legal Assumptions:')}</span>
                     <span className="text-[11px] font-sans text-slate-300">
-                      {l('ا�تراض النوايا التجارية الحسنة وحماية أطرا� الات�اق ضد البنود التعس�ية غير المتكا�ئة.', 'Assumes arm-length commercial transaction requiring bilateral liability protection.')}
+                      {l('افتراض النوايا التجارية الحسنة وحماية أطراف الاتفاق ضد البنود التعسفية غير المتكافئة.', 'Assumes arm-length commercial transaction requiring bilateral liability protection.')}
                     </span>
                   </div>
                 </div>
@@ -594,7 +594,7 @@ export default function Dashboard() {
               {/* Vector Filters */}
               <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
                 <span className="text-xs font-bold text-slate-400 shrink-0 ml-1">
-                  {l('تص�ية المحاور:', 'Filter Vectors:')}
+                  {l('تصفية المحاور:', 'Filter Vectors:')}
                 </span>
                 {['All', 'Financial', 'Operational', 'IP', 'Regulatory'].map((vectorKey) => (
                   <button
@@ -638,10 +638,10 @@ export default function Dashboard() {
         </section>
 
         {/* ──────────────────────────────────────────────────────────────────── */}
-        {/* SECTION 3: ��� 18 SOVEREIGN LEGAL SERVICES DIRECTORY                  */}
+        {/* SECTION 3: ️️ 18 SOVEREIGN LEGAL SERVICES DIRECTORY                  */}
         {/* ──────────────────────────────────────────────────────────────────── */}
         <section id="sec-services" className="space-y-6 pt-2">
-          {/* Complete 18 Services Catalog � deferred after first paint */}
+          {/* Complete 18 Services Catalog  deferred after first paint */}
           {showDeferredWidgets ? (
             <Suspense fallback={<div className="h-64 rounded-3xl bg-slate-900/50 border border-slate-800 animate-pulse" />}>
               <SovereignServicesCatalog />
@@ -650,7 +650,7 @@ export default function Dashboard() {
             <div className="h-64 rounded-3xl bg-slate-900/50 border border-slate-800 animate-pulse" />
           )}
 
-          {/* US Competitor Match Banner � deferred after first paint */}
+          {/* US Competitor Match Banner  deferred after first paint */}
           {showDeferredWidgets && (
             <Suspense fallback={null}>
               <USCompetitorMatchBanner />
@@ -675,10 +675,10 @@ export default function Dashboard() {
                 <span>{l('حزم الاشتراكات المخصومة بنسبة 30%', '30% Discounted Subscription Packages')}</span>
               </span>
               <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-                {l('اختر الباقة المناسبة لمؤسستك وابدأ الاستشارة ال�ورية', 'Select Your Tier & Unlock Institutional Intelligence')}
+                {l('اختر الباقة المناسبة لمؤسستك وابدأ الاستشارة الفورية', 'Select Your Tier & Unlock Institutional Intelligence')}
               </h2>
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                {l('جميع الباقات مصممة لتو�ير أقصى قدر من الك�اءة مع �تح آلي آمن عبر بوابة Binance Pay أو الحوالات المعتمدة أو إنستا باي.', 'All tiers feature zero-touch automated Binance Pay deployment, SWIFT & InstaPay processing.')}
+                {l('جميع الباقات مصممة لتوفير أقصى قدر من الكفاءة مع فتح آلي آمن عبر بوابة Binance Pay أو الحوالات المعتمدة أو إنستا باي.', 'All tiers feature zero-touch automated Binance Pay deployment, SWIFT & InstaPay processing.')}
               </p>
             </div>
 
@@ -704,7 +704,7 @@ export default function Dashboard() {
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-sky-400 shrink-0" />
-                      <span>{l('ر�ع وتدقيق حتى 10 عقود شهرياً (PDF, Word)', 'Up to 10 contract checks (PDF, Word)')}</span>
+                      <span>{l('رفع وتدقيق حتى 10 عقود شهرياً (PDF, Word)', 'Up to 10 contract checks (PDF, Word)')}</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-sky-400 shrink-0" />
@@ -748,11 +748,11 @@ export default function Dashboard() {
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-indigo-400 shrink-0" />
-                      <span>{l('وكلاء الت�اوض الآلي + المحاكاة القضائية للنزاعات', 'Autonomous AI Negotiation & Court Simulation')}</span>
+                      <span>{l('وكلاء التفاوض الآلي + المحاكاة القضائية للنزاعات', 'Autonomous AI Negotiation & Court Simulation')}</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-indigo-400 shrink-0" />
-                      <span>{l('ر�ع وتدقيق حتى 50 عقداً شهرياً مع تصدير Word و PDF', 'Up to 50 contracts/month with Word/PDF export')}</span>
+                      <span>{l('رفع وتدقيق حتى 50 عقداً شهرياً مع تصدير Word و PDF', 'Up to 50 contracts/month with Word/PDF export')}</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-indigo-400 shrink-0" />
@@ -760,7 +760,7 @@ export default function Dashboard() {
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-indigo-400 shrink-0" />
-                      <span>{l('تش�ير متقدم AES-256 والمصادقة الثنائية 2FA TOTP', 'Advanced AES-256 + 2FA TOTP Security')}</span>
+                      <span>{l('تشفير متقدم AES-256 والمصادقة الثنائية 2FA TOTP', 'Advanced AES-256 + 2FA TOTP Security')}</span>
                     </li>
                   </ul>
                 </div>
@@ -789,11 +789,11 @@ export default function Dashboard() {
                   <ul className="space-y-2 text-xs text-slate-300">
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
-                      <span>{l('الاستحواذ الذكي التنبؤي M&A وتقييم ص�قات EBITDA', 'Predictive M&A Intelligence & EBITDA Valuations')}</span>
+                      <span>{l('الاستحواذ الذكي التنبؤي M&A وتقييم صفقات EBITDA', 'Predictive M&A Intelligence & EBITDA Valuations')}</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
-                      <span>{l('كش� التزوير والاحتيال بالقياس النصي الحيوي (Forensic Fraud)', 'Stylometric Fraud & Tampering Forensics')}</span>
+                      <span>{l('كشف التزوير والاحتيال بالقياس النصي الحيوي (Forensic Fraud)', 'Stylometric Fraud & Tampering Forensics')}</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
@@ -801,11 +801,11 @@ export default function Dashboard() {
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
-                      <span>{l('عقود غير محدودة + خزنة E2EE مش�رة + تكامل كامل ERP', 'Unlimited contracts, E2EE Vault & Full ERP APIs')}</span>
+                      <span>{l('عقود غير محدودة + خزنة E2EE مشفرة + تكامل كامل ERP', 'Unlimited contracts, E2EE Vault & Full ERP APIs')}</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
-                      <span>{l('دعم تن�يذي مباشر 24/7 مع المستشار القانوني د. محمد مصط�ى', '24/7 Dedicated Senior Counsel Concierge (Dr. Mohammad Mustafa)')}</span>
+                      <span>{l('دعم تنفيذي مباشر 24/7 مع المستشار القانوني د. محمد مصطفى', '24/7 Dedicated Senior Counsel Concierge (Dr. Mohammad Mustafa)')}</span>
                     </li>
                   </ul>
                 </div>
@@ -822,7 +822,7 @@ export default function Dashboard() {
 
 
         {/* ──────────────────────────────────────────────────────────────────── */}
-        {/* SECTION 5: � SECURITY GOVERNANCE & ENCRYPTION CERTIFICATIONS       */}
+        {/* SECTION 5: 🛡️ SECURITY GOVERNANCE & ENCRYPTION CERTIFICATIONS       */}
         {/* ──────────────────────────────────────────────────────────────────── */}
         <section id="sec-security" className="space-y-6 pt-2">
           <div className="card-lawtech-lux rounded-3xl p-6 sm:p-8 border border-emerald-500/20 shadow-2xl space-y-6">
@@ -834,14 +834,14 @@ export default function Dashboard() {
                     <ShieldCheck className="w-5 h-5" />
                   </span>
                   <span className="text-xs font-black uppercase tracking-widest text-emerald-400">
-                    {l('حوكمة الأمان والتش�ير البنكي', 'Bank-Grade E2EE & Statutory Governance')}
+                    {l('حوكمة الأمان والتشفير البنكي', 'Bank-Grade E2EE & Statutory Governance')}
                   </span>
                 </div>
                 <h2 className="text-xl sm:text-2xl font-black text-white">
                   {l('بروتوكولات حماية بيانات العقود والامتثال العالمي', 'End-to-End Encryption & Privacy Protocol')}
                 </h2>
                 <p className="text-xs text-slate-300">
-                  {l('تش�ير كامل على جانب العميل يضمن عدم وصول أي طر� ثالث إلى نصوص ومستندات أعمالك.', 'Zero-knowledge client-side encryption ensuring total privacy and statutory confidentiality.')}
+                  {l('تشفير كامل على جانب العميل يضمن عدم وصول أي طرف ثالث إلى نصوص ومستندات أعمالك.', 'Zero-knowledge client-side encryption ensuring total privacy and statutory confidentiality.')}
                 </p>
               </div>
 
@@ -859,10 +859,10 @@ export default function Dashboard() {
               <div className="p-5 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2">
                 <div className="flex items-center gap-2 text-emerald-400 font-bold text-xs">
                   <Lock className="w-4 h-4" />
-                  <span>{l('تش�ير AES-GCM 256-bit', 'AES-256 Bit Encryption')}</span>
+                  <span>{l('تشفير AES-GCM 256-bit', 'AES-256 Bit Encryption')}</span>
                 </div>
                 <p className="text-xs text-slate-400 leading-relaxed">
-                  {l('تش�ير �وري لكا�ة المل�ات والعقود قبل ر�عها للخوادم المش�رة.', 'Military-grade encryption applied to every document prior to secure transit.')}
+                  {l('تشفير فوري لكافة الملفات والعقود قبل رفعها للخوادم المشفرة.', 'Military-grade encryption applied to every document prior to secure transit.')}
                 </p>
               </div>
 
@@ -882,7 +882,7 @@ export default function Dashboard() {
                   <span>{l('عزل نماذج الذكاء الاصطناعي', 'Isolated AI Processing')}</span>
                 </div>
                 <p className="text-xs text-slate-400 leading-relaxed">
-                  {l('ضمان عدم تدريب أي نماذج عامة على بيانات أو ص�قات أو عقود شركتك.', 'Zero AI training on proprietary customer data, contracts or business clauses.')}
+                  {l('ضمان عدم تدريب أي نماذج عامة على بيانات أو صفقات أو عقود شركتك.', 'Zero AI training on proprietary customer data, contracts or business clauses.')}
                 </p>
               </div>
             </div>
@@ -892,19 +892,19 @@ export default function Dashboard() {
               <div className="flex items-center gap-3">
                 <Lock className="w-5 h-5 text-sky-400" />
                 <span className="text-xs font-bold text-white">
-                  {l('هل ترغب �ي ح�ظ مستنداتك �ي الخزنة المش�رة؟', 'Access your encrypted sovereign vault?')}
+                  {l('هل ترغب في حفظ مستنداتك في الخزنة المشفرة؟', 'Access your encrypted sovereign vault?')}
                 </span>
               </div>
               <Link
                 to="/vault"
                 className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-sky-400 border border-sky-500/30 text-xs font-bold transition-all"
               >
-                {l('�تح الخزنة المش�رة', 'Open Vault')}
+                {l('فتح الخزنة المشفرة', 'Open Vault')}
               </Link>
             </div>
           </div>
 
-          {/* 👑 EXECUTIVE COMMAND BAR � deferred after first paint */}
+          {/* 👑 EXECUTIVE COMMAND BAR  deferred after first paint */}
           {showDeferredWidgets && (
             <div className="pt-4">
               <Suspense fallback={null}>
@@ -913,7 +913,7 @@ export default function Dashboard() {
             </div>
           )}
 
-          {/* Institutional Trust Badges � deferred after first paint */}
+          {/* Institutional Trust Badges  deferred after first paint */}
           {showDeferredWidgets && (
             <Suspense fallback={null}>
               <InstitutionalTrustBadgeBar />
