@@ -57,7 +57,7 @@ export default function RbacUserManagementModal({ isOpen, onClose }: RbacUserMan
     },
     {
       id: 'rule-gratis-ai',
-      titleAr: '2. استخدام غير محدود لمحركات الذكاء الاصطناعي (Unlimited Google AI Pro & M&A)',
+      titleAr: '2. استخدام غير محدود لمحركات الذكاء الاصطناعي (Unlimited JurisTech AI & M&A)',
       titleEn: '2. Unlimited High-Tier AI & M&A Sovereign Engines',
       descAr: 'تخطي مجاني فوري لكافة جدران الدفع وتوليد لا نهائي لتقارير الاستحواذ M&A، المحاكاة القضائية، كشف التزوير والاحتيال، وتصدير ملفات Word و PDF.',
       descEn: 'Full bypass of all subscription paywalls with unlimited runs of Google Gemini Pro Ultra, M&A Intelligence, and litigation simulation.',

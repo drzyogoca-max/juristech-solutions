@@ -97,7 +97,7 @@ export function getSemanticHtmlForRoute(routePath) {
             <li><a href="/contracts" class="text-slate-400 hover:text-white no-underline">صانع ومولد العقود</a></li>
             <li><a href="/risk" class="text-slate-400 hover:text-white no-underline">مدقق المخاطر والبنود التعسفية</a></li>
             <li><a href="/repository" class="text-slate-400 hover:text-white no-underline">مستودع العقود والنماذج</a></li>
-            <li><a href="/sovereign-ai-hub" class="text-slate-400 hover:text-white no-underline">مركز Google AI Pro السيادي</a></li>
+            <li><a href="/sovereign-ai-hub" class="text-slate-400 hover:text-white no-underline">مركز JurisTech AI السيادي</a></li>
           </ul>
         </div>
         <div>
@@ -282,7 +282,7 @@ export function getSemanticHtmlForRoute(routePath) {
                   <span class="text-xs text-slate-400 font-mono"> / شهرياً</span>
                 </div>
                 <ul class="text-xs text-slate-300 space-y-3 my-6 list-none p-0">
-                  <li class="flex items-center gap-2">✓ استشارات غير محدودة من Google AI Pro</li>
+                  <li class="flex items-center gap-2">✓ استشارات غير محدودة من JurisTech AI</li>
                   <li class="flex items-center gap-2">✓ صياغة وتوليد 50 عقداً شهرياً</li>
                   <li class="flex items-center gap-2">✓ فحص المخاطر عبر 8 متجهات قانونية شمولية</li>
                   <li class="flex items-center gap-2">✓ غرف التفاوض الآلي والتعديلات الذكية (Redlining)</li>
@@ -439,7 +439,7 @@ export function getSemanticHtmlForRoute(routePath) {
                 <li><a href="/enterprise-audit" class="text-rose-400 no-underline">تدقيق الشركات والاندماج</a></li>
                 <li><a href="/negotiation" class="text-blue-400 no-underline">محاكي التفاوض القانوني</a></li>
                 <li><a href="/vault" class="text-indigo-400 no-underline">الخزنة المشفرة AES-256</a></li>
-                <li><a href="/sovereign-ai-hub" class="text-sky-400 no-underline">مركز Google AI Pro السيادي</a></li>
+                <li><a href="/sovereign-ai-hub" class="text-sky-400 no-underline">مركز JurisTech AI السيادي</a></li>
                 <li><a href="/company-formation" class="text-emerald-400 no-underline">تأسيس المنشآت والشركات</a></li>
                 <li><a href="/b2b-proposals" class="text-amber-400 no-underline">العروض المؤسسية B2B</a></li>
                 <li><a href="/lead-radar" class="text-purple-400 no-underline">مرصد رادار العملاء</a></li>

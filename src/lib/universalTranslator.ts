@@ -98,14 +98,14 @@ const DICTIONARY: Record<string, Record<SupportedLang, string>> = {
     zh: '加密保险库',
     tr: 'Şifreli Kasa',
   },
-  'google ai pro': {
-    ar: '⭐ محرك Google AI Pro',
-    en: '⭐ Google AI Pro',
-    de: '⭐ Google AI Pro',
-    fr: '⭐ Google AI Pro',
-    es: '⭐ Google AI Pro',
-    zh: '⭐ Google AI Pro',
-    tr: '⭐ Google AI Pro',
+  'JurisTech AI': {
+    ar: '⭐ محرك JurisTech AI',
+    en: '⭐ JurisTech AI',
+    de: '⭐ JurisTech AI',
+    fr: '⭐ JurisTech AI',
+    es: '⭐ JurisTech AI',
+    zh: '⭐ JurisTech AI',
+    tr: '⭐ JurisTech AI',
   },
   'company formation': {
     ar: 'تأسيس الشركات وحوكمتها',

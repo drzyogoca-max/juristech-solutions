@@ -982,7 +982,7 @@ const NAMESPACES_DATA = {
       exportHistory: "Export Dialogue (.txt / .pdf)",
       groundingActive: "100% Statutory Grounding Active",
       eightAxisAnalysis: "8-Axis Legal Framework Analysis",
-      modelEngine: "Engine: Google AI Pro Sovereign Core"
+      modelEngine: "Engine: JurisTech AI Legal Engine"
     },
     ar: {
       assistantTitle: "المستشار القانوني الذكي التنفيذي",
@@ -995,7 +995,7 @@ const NAMESPACES_DATA = {
       exportHistory: "تصدير المحادثة (.txt / .pdf)",
       groundingActive: "تأصيل تشريعي 100% نشط",
       eightAxisAnalysis: "تحليل قانوني شامل بـ 8 محاور",
-      modelEngine: "المحرك: Google AI Pro Sovereign Core"
+      modelEngine: "المحرك: JurisTech AI Legal Engine"
     },
     fr: {
       assistantTitle: "Conseiller Juridique IA Senior",
@@ -1008,7 +1008,7 @@ const NAMESPACES_DATA = {
       exportHistory: "Exporter l'historique (.txt / .pdf)",
       groundingActive: "Ancrage législatif 100% actif",
       eightAxisAnalysis: "Cadre d'analyse juridique en 8 axes",
-      modelEngine: "Moteur : Google AI Pro Sovereign Core"
+      modelEngine: "Moteur : JurisTech AI Legal Engine"
     },
     es: {
       assistantTitle: "Asesor Legal IA Ejecutivo Senior",
@@ -1021,7 +1021,7 @@ const NAMESPACES_DATA = {
       exportHistory: "Exportar conversación (.txt / .pdf)",
       groundingActive: "Fundamentación legal 100% activa",
       eightAxisAnalysis: "Análisis legal en 8 ejes",
-      modelEngine: "Motor: Google AI Pro Sovereign Core"
+      modelEngine: "Motor: JurisTech AI Legal Engine"
     },
     de: {
       assistantTitle: "Leitender KI-Rechtsberater",
@@ -1034,7 +1034,7 @@ const NAMESPACES_DATA = {
       exportHistory: "Verlauf exportieren (.txt / .pdf)",
       groundingActive: "100% gesetzlich fundiert aktiv",
       eightAxisAnalysis: "8-Achsen-Rechtsanalyserahmen",
-      modelEngine: "Engine: Google AI Pro Sovereign Core"
+      modelEngine: "Engine: JurisTech AI Legal Engine"
     },
     tr: {
       assistantTitle: "Kıdemli Yönetici Yapay Zeka Hukuk Danışmanı",
@@ -1047,7 +1047,7 @@ const NAMESPACES_DATA = {
       exportHistory: "Görüşmeyi Dışa Aktar (.txt / .pdf)",
       groundingActive: "%100 Mevzuat Temeli Aktif",
       eightAxisAnalysis: "8 Eksenli Hukuki Analiz Çerçevesi",
-      modelEngine: "Motor: Google AI Pro Sovereign Core"
+      modelEngine: "Motor: JurisTech AI Legal Engine"
     },
     zh: {
       assistantTitle: "高级执行级 AI 法律顾问",
@@ -1060,7 +1060,7 @@ const NAMESPACES_DATA = {
       exportHistory: "导出对话记录 (.txt / .pdf)",
       groundingActive: "100% 法定依据校验已激活",
       eightAxisAnalysis: "8 轴全景法律框架分析",
-      modelEngine: "核心引擎：Google AI Pro Sovereign Core"
+      modelEngine: "核心引擎：JurisTech AI Legal Engine"
     }
   },
 
@@ -1900,7 +1900,7 @@ const NAMESPACES_DATA = {
       guardSubtitle: "This enterprise AI capability requires an active subscription.",
       subscribeButton: "Subscribe Now",
       openingCheckout: "Redirecting to Pricing & Plans...",
-      featureBullet1: "Google AI Pro Sovereign Core & 8-Axis Contract Analysis",
+      featureBullet1: "JurisTech AI Legal Engine & 8-Axis Contract Analysis",
       featureBullet2: "Virtual Dispute Simulation & Autonomous Negotiation",
       featureBullet3: "Unlimited Word/PDF Document Generation & Cryptographic Logs",
       merchantOfRecord: "Secure Enterprise Invoicing & TLS 1.3",
@@ -1919,7 +1919,7 @@ const NAMESPACES_DATA = {
       guardSubtitle: "تتطلب هذه الإمكانية المتقدمة للذكاء الاصطناعي اشتراكاً نشطاً.",
       subscribeButton: "اشترك الآن",
       openingCheckout: "جاري الانتقال لصفحة الخطط والاشتراكات...",
-      featureBullet1: "محرك Google AI Pro السيادي وتحليل العقود بـ 8 محاور",
+      featureBullet1: "محرك JurisTech AI السيادي وتحليل العقود بـ 8 محاور",
       featureBullet2: "محاكاة النزاعات القضائية والتفاوض الآلي",
       featureBullet3: "تصدير وثائق Word & PDF غير محدود وسجلات مشفرة",
       merchantOfRecord: "فوترة مؤسسية معتمدة وتشفير TLS 1.3",
@@ -1938,7 +1938,7 @@ const NAMESPACES_DATA = {
       guardSubtitle: "Cette capacité d'IA d'entreprise nécessite un abonnement actif.",
       subscribeButton: "S'abonner maintenant",
       openingCheckout: "Redirection vers les forfaits...",
-      featureBullet1: "Cœur Souverain Google AI Pro & Analyse en 8 axes",
+      featureBullet1: "Cœur Souverain JurisTech AI & Analyse en 8 axes",
       featureBullet2: "Simulation de litiges et négociation autonome",
       featureBullet3: "Génération illimitée de documents Word/PDF et registres chiffrés",
       merchantOfRecord: "Facturation d'entreprise sécurisée & TLS 1.3",
@@ -1957,7 +1957,7 @@ const NAMESPACES_DATA = {
       guardSubtitle: "Esta capacidad de IA corporativa requiere una suscripción activa.",
       subscribeButton: "Suscribirse Ahora",
       openingCheckout: "Redirigiendo a planes...",
-      featureBullet1: "Núcleo Soberano Google AI Pro y análisis en 8 ejes",
+      featureBullet1: "Núcleo Soberano JurisTech AI y análisis en 8 ejes",
       featureBullet2: "Simulación de litigios y negociación autónoma",
       featureBullet3: "Generación ilimitada de documentos Word/PDF y registros cifrados",
       merchantOfRecord: "Facturación corporativa segura y TLS 1.3",
@@ -1976,7 +1976,7 @@ const NAMESPACES_DATA = {
       guardSubtitle: "Diese Enterprise-KI-Funktion erfordert ein aktives Abonnement.",
       subscribeButton: "Jetzt abonnieren",
       openingCheckout: "Weiterleitung zu den Tarifen...",
-      featureBullet1: "Google AI Pro Sovereign Core & 8-Achsen-Vertragsanalyse",
+      featureBullet1: "JurisTech AI Legal Engine & 8-Achsen-Vertragsanalyse",
       featureBullet2: "Virtuelle Streitsimulation & Autonome Verhandlung",
       featureBullet3: "Unbegrenzte Word/PDF-Dokumentenerstellung & Verschlüsselte Protokolle",
       merchantOfRecord: "Sichere Unternehmensabrechnung & TLS 1.3",
@@ -1995,7 +1995,7 @@ const NAMESPACES_DATA = {
       guardSubtitle: "Bu kurumsal yapay zeka özelliği aktif bir abonelik gerektirir.",
       subscribeButton: "Hemen Abone Ol",
       openingCheckout: "Paketlere yönlendiriliyor...",
-      featureBullet1: "Google AI Pro Egemen Çekirdeği ve 8 Eksenli Sözleşme Analizi",
+      featureBullet1: "JurisTech AI Egemen Çekirdeği ve 8 Eksenli Sözleşme Analizi",
       featureBullet2: "Sanal Uyuşmazlık Simülasyonu ve Otonom Müzakere",
       featureBullet3: "Sınırsız Word/PDF Belge Üretimi ve Kriptografik Günlükler",
       merchantOfRecord: "Güvenli Kurumsal Faturalandırma & TLS 1.3",
@@ -2014,7 +2014,7 @@ const NAMESPACES_DATA = {
       guardSubtitle: "该企业级核心 AI 模块需要已激活的主权订阅方案。",
       subscribeButton: "立即开通订阅",
       openingCheckout: "正在跳转至方案详情页...",
-      featureBullet1: "Google AI Pro 主权核心引擎与8轴全景穿透分析",
+      featureBullet1: "JurisTech AI 主权核心引擎与8轴全景穿透分析",
       featureBullet2: "虚拟法律争议推演与自主 AI 智能谈判",
       featureBullet3: "无限量 Word / PDF 官方盖印文档生成与不可篡改审计日志",
       merchantOfRecord: "企业级合规对公发票与 TLS 1.3 加密",
