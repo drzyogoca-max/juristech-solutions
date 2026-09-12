@@ -192,9 +192,25 @@ import zhValidation from '../locales/zh/validation.json';
 import zhAdmin from '../locales/zh/admin.json';
 import zhAccessibility from '../locales/zh/accessibility.json';
 
+// Import root messages for unified 7-language coverage
+import enMessages from '../../messages/en.json';
+import arMessages from '../../messages/ar.json';
+import frMessages from '../../messages/fr.json';
+import esMessages from '../../messages/es.json';
+import deMessages from '../../messages/de.json';
+import trMessages from '../../messages/tr.json';
+import zhMessages from '../../messages/zh.json';
+
 const resources = {
   en: {
-    common: enCommon,
+    common: { ...enCommon, ...enMessages.translation },
+    translation: enMessages.translation,
+    Nav: enMessages.translation?.Nav || {},
+    Dashboard: enMessages.translation?.Dashboard || {},
+    Chat: enMessages.translation?.Chat || {},
+    Risk: enMessages.translation?.Risk || {},
+    Reports: enMessages.translation?.Reports || {},
+    Payment: enMessages.translation?.Payment || {},
     navigation: enNavigation,
     home: enHome,
     auth: enAuth,
@@ -219,7 +235,14 @@ const resources = {
     accessibility: enAccessibility,
   },
   ar: {
-    common: arCommon,
+    common: { ...arCommon, ...arMessages.translation },
+    translation: arMessages.translation,
+    Nav: arMessages.translation?.Nav || {},
+    Dashboard: arMessages.translation?.Dashboard || {},
+    Chat: arMessages.translation?.Chat || {},
+    Risk: arMessages.translation?.Risk || {},
+    Reports: arMessages.translation?.Reports || {},
+    Payment: arMessages.translation?.Payment || {},
     navigation: arNavigation,
     home: arHome,
     auth: arAuth,
@@ -244,7 +267,14 @@ const resources = {
     accessibility: arAccessibility,
   },
   fr: {
-    common: frCommon,
+    common: { ...frCommon, ...frMessages.translation },
+    translation: frMessages.translation,
+    Nav: frMessages.translation?.Nav || {},
+    Dashboard: frMessages.translation?.Dashboard || {},
+    Chat: frMessages.translation?.Chat || {},
+    Risk: frMessages.translation?.Risk || {},
+    Reports: frMessages.translation?.Reports || {},
+    Payment: frMessages.translation?.Payment || {},
     navigation: frNavigation,
     home: frHome,
     auth: frAuth,
@@ -269,7 +299,14 @@ const resources = {
     accessibility: frAccessibility,
   },
   es: {
-    common: esCommon,
+    common: { ...esCommon, ...esMessages.translation },
+    translation: esMessages.translation,
+    Nav: esMessages.translation?.Nav || {},
+    Dashboard: esMessages.translation?.Dashboard || {},
+    Chat: esMessages.translation?.Chat || {},
+    Risk: esMessages.translation?.Risk || {},
+    Reports: esMessages.translation?.Reports || {},
+    Payment: esMessages.translation?.Payment || {},
     navigation: esNavigation,
     home: esHome,
     auth: esAuth,
@@ -294,7 +331,14 @@ const resources = {
     accessibility: esAccessibility,
   },
   de: {
-    common: deCommon,
+    common: { ...deCommon, ...deMessages.translation },
+    translation: deMessages.translation,
+    Nav: deMessages.translation?.Nav || {},
+    Dashboard: deMessages.translation?.Dashboard || {},
+    Chat: deMessages.translation?.Chat || {},
+    Risk: deMessages.translation?.Risk || {},
+    Reports: deMessages.translation?.Reports || {},
+    Payment: deMessages.translation?.Payment || {},
     navigation: deNavigation,
     home: deHome,
     auth: deAuth,
@@ -319,7 +363,14 @@ const resources = {
     accessibility: deAccessibility,
   },
   tr: {
-    common: trCommon,
+    common: { ...trCommon, ...trMessages.translation },
+    translation: trMessages.translation,
+    Nav: trMessages.translation?.Nav || {},
+    Dashboard: trMessages.translation?.Dashboard || {},
+    Chat: trMessages.translation?.Chat || {},
+    Risk: trMessages.translation?.Risk || {},
+    Reports: trMessages.translation?.Reports || {},
+    Payment: trMessages.translation?.Payment || {},
     navigation: trNavigation,
     home: trHome,
     auth: trAuth,
@@ -344,7 +395,14 @@ const resources = {
     accessibility: trAccessibility,
   },
   zh: {
-    common: zhCommon,
+    common: { ...zhCommon, ...zhMessages.translation },
+    translation: zhMessages.translation,
+    Nav: zhMessages.translation?.Nav || {},
+    Dashboard: zhMessages.translation?.Dashboard || {},
+    Chat: zhMessages.translation?.Chat || {},
+    Risk: zhMessages.translation?.Risk || {},
+    Reports: zhMessages.translation?.Reports || {},
+    Payment: zhMessages.translation?.Payment || {},
     navigation: zhNavigation,
     home: zhHome,
     auth: zhAuth,
@@ -397,4 +455,5 @@ i18n.on('languageChanged', (lng: string) => {
   persistLocalePreference(normalized);
 });
 
+export { resources };
 export default i18n;

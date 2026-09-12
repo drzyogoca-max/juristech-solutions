@@ -4,6 +4,7 @@ import VoiceInput from './VoiceInput';
 import { extractPDFTextMultiStage } from '../lib/pdfExtractor';
 import { GLOBAL_CURRENCIES, ARBITRATION_VENUES } from '../lib/contracts/globalMatrix';
 import { JURISDICTION_PROFILES, getJurisdictionProfile } from '../lib/jurisdictionResolver';
+import { supabase } from '../lib/supabaseClient';
 
 
 interface JurisdictionOption {
@@ -107,9 +108,23 @@ export default function SmartContractEngine() {
   const handleGenerateContract = async () => {
     setLoading(true);
     try {
+      // Resolve Authorization Bearer token from active Supabase session
+      let authHeaders: Record<string, string> = {};
+      try {
+        const { data: sessionData } = await supabase.auth.getSession();
+        if (sessionData?.session?.access_token) {
+          authHeaders['Authorization'] = `Bearer ${sessionData.session.access_token}`;
+        }
+      } catch {
+        // Unauthenticated session
+      }
+
       const res = await fetch('/api/contracts/generate-engine', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...authHeaders,
+        },
         body: JSON.stringify({
           contractType,
           jurisdiction: selectedJurisdiction,
@@ -121,6 +136,17 @@ export default function SmartContractEngine() {
           language: i18n.language,
         }),
       });
+
+      if (res.status === 401) {
+        setGeneratedContract('يجب تسجيل الدخول لإنشاء وتوليد العقود القانونية (401 Unauthorized).');
+        return;
+      }
+      if (res.status === 429) {
+        const errData = await res.json().catch(() => ({}));
+        setGeneratedContract(errData.message || 'تم استنفاد الحد الأقصى لتوليد العقود لباقة اشتراكك (429 Quota Exceeded). يرجى الترقية من صفحة الاشتراك.');
+        return;
+      }
+
       const data = await res.json();
       setGeneratedContract(data.contractText || data.reply || 'تم توليد العقد بنجاح.');
     } catch (err) {
@@ -129,6 +155,7 @@ export default function SmartContractEngine() {
       setLoading(false);
     }
   };
+
 
   // Export Contract (Word .doc or Text .txt)
   const handleExportFile = (format: 'word' | 'txt') => {
@@ -153,7 +180,7 @@ export default function SmartContractEngine() {
   const handleEmailContract = () => {
     const subject = encodeURIComponent(`وثيقة العقد السيادي المعتمد (${jurProfile.countryAr}) - JurisTech Solutions`);
     const body = encodeURIComponent(generatedContract);
-    window.location.href = `mailto:juristech.solutions@outlook.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:founder@juristech.solutions?subject=${subject}&body=${body}`;
   };
 
   return (

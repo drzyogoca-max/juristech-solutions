@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, KeyboardEvent, FormEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import { callAI } from '../lib/api';
 
 interface Message {
@@ -7,10 +8,15 @@ interface Message {
 }
 
 export default function LegalChatWidget() {
+  const { i18n } = useTranslation();
+  const isRtl = i18n.language === 'ar';
+
   const [messages, setMessages] = useState<Message[]>([
     {
       sender: 'ai',
-      text: 'أهلاً بك. أنا المستشار القانوني الذكي لمنصة JurisTech Solutions. تفطّل بطرح استفسارك القانوني، العقدي، أو المتعلق بإدارة المخاطر للبدء فوراً.'
+      text: isRtl
+        ? 'أهلاً بك. أنا المستشار القانوني الذكي لمنصة JurisTech Solutions. تفطّل بطرح استفسارك القانوني، العقدي، أو المتعلق بإدارة المخاطر للبدء فوراً.'
+        : 'Welcome. I am the JurisTech Solutions AI Legal Concierge. Feel free to ask any question regarding contracts, cross-border corporate governance, or risk mitigation to begin.'
     }
   ]);
   const [input, setInput] = useState('');
@@ -31,10 +37,18 @@ export default function LegalChatWidget() {
     setLoading(true);
 
     try {
-      const reply = await callAI(userText, 'ar');
+      const reply = await callAI(userText, isRtl ? 'ar' : 'en');
       setMessages(prev => [...prev, { sender: 'ai', text: reply }]);
     } catch {
-      setMessages(prev => [...prev, { sender: 'ai', text: 'أنا مستشارك التشريعي الذكي من JurisTech. استلمت استفسارك وسأزودك بالمزيد من التفاصيل والأنظمة المباشرة.' }]);
+      setMessages(prev => [
+        ...prev,
+        {
+          sender: 'ai',
+          text: isRtl
+            ? 'أنا مستشارك التشريعي الذكي من JurisTech. استلمت استفسارك وسأزودك بالمزيد من التفاصيل والأنظمة المباشرة.'
+            : 'I am your JurisTech AI Legal Counsel. Inquiry received; referencing active statutory frameworks.'
+        }
+      ]);
     } finally {
       setLoading(false);
     }
@@ -48,14 +62,14 @@ export default function LegalChatWidget() {
   };
 
   return (
-    <div className="flex flex-col h-[550px] w-full max-w-4xl mx-auto bg-slate-950 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden p-4 font-sans text-slate-100" dir="rtl">
+    <div className="flex flex-col h-[550px] w-full max-w-4xl mx-auto bg-slate-950 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden p-4 font-sans text-slate-100" dir={isRtl ? 'rtl' : 'ltr'}>
       <div className="bg-slate-900 border-b border-slate-800 px-4 py-3 flex items-center justify-between rounded-t-xl">
         <span className="text-amber-400 font-bold text-sm tracking-wide flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
           JurisTech AI Legal Concierge & Risk Engine
         </span>
         <span className="text-xs bg-blue-900/80 text-blue-200 border border-blue-700/50 px-2.5 py-1 rounded-full font-mono">
-          Active Repository
+          {isRtl ? 'المستودع التشريعي النشط' : 'Active Repository'}
         </span>
       </div>
 
@@ -71,7 +85,7 @@ export default function LegalChatWidget() {
           <div className="flex justify-start">
             <div className="bg-slate-900 text-slate-400 border border-slate-800 px-4 py-3 rounded-xl text-xs animate-pulse flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />
-              المستشار الذكي يحلل الاستفسار ويستدعي المواد من المستودع القانوني...
+              {isRtl ? 'المستشار الذكي يحلل الاستفسار ويستدعي المواد من المستودع القانوني...' : 'AI Legal Counsel analyzing inquiry against statutory repository...'}
             </div>
           </div>
         )}
@@ -84,11 +98,16 @@ export default function LegalChatWidget() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="اكتب استفسارك القانوني للشركات أو العقود أو المخاطر..."
+          placeholder={isRtl ? 'اكتب استفسارك القانوني للشركات أو العقود أو المخاطر...' : 'Ask about corporate contracts, jurisdiction rules, or risk mitigation...'}
           className="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-amber-500 transition placeholder:text-slate-500"
         />
-        <button type="submit" disabled={loading} className="bg-amber-500 hover:bg-amber-600 active:scale-95 disabled:opacity-50 text-slate-950 font-bold px-6 py-3 rounded-xl text-sm transition shrink-0 shadow-lg shadow-amber-500/20">
-          إرسال
+        <button
+          type="submit"
+          disabled={loading}
+          aria-label={isRtl ? 'إرسال' : 'Send'}
+          className="bg-amber-500 hover:bg-amber-600 active:scale-95 disabled:opacity-50 text-slate-950 font-bold px-6 py-3 rounded-xl text-sm transition shrink-0 shadow-lg shadow-amber-500/20"
+        >
+          {isRtl ? 'إرسال' : 'Send'}
         </button>
       </form>
     </div>

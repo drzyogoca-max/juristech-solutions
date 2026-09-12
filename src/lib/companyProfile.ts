@@ -38,10 +38,10 @@ const DEFAULT_PROFILE: CompanyProfile = {
   legalStructure: 'شركة مساهمة (S.A.E / Corp)',
   country: 'مصر (مقر رئيسي) / الولايات المتحدة (فرع دولي)',
   address: 'برج الأمل التجاري، الحي المالي، القاهرة / وادي السيليكون، كاليفورنيا',
-  signatoryName: 'د. أحمد صلاح الدين',
-  signatoryTitle: 'الرئيس التنفيذي والمفوض بالتوقيع',
-  signatoryEmail: 'Drzyogo.ca@gmail.com',
-  signatoryPhone: '+1 (800) JURIS-TECH (Official Emergency Line)',
+  signatoryName: 'د. محمد مصطفى',
+  signatoryTitle: 'المؤسس ورئيس مجلس الإدارة',
+  signatoryEmail: 'founder@juristech.solutions',
+  signatoryPhone: '+201126674337',
   attachedDocuments: [
     {
       id: 'doc-1',

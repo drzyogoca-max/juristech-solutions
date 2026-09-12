@@ -25,11 +25,11 @@ export const ADVISORS: LegalAdvisor[] = [
   {
     id: 'advisor-1',
     nameAr: 'د. محمد مصطفى',
-    nameEn: 'Dr. Mohammed Mustafa',
-    titleAr: 'مستشار استراتيجي | دكتوراه إدارة المخاطر',
-    titleEn: 'Strategic Advisor | PhD Risk Management',
-    specialtyAr: 'الاستشارات الاستراتيجية الحصرية، حوكمة المخاطر القانونية والتشريعية للمؤسسات والشركات',
-    specialtyEn: 'Exclusive Strategic Advisory, Legal & Regulatory Risk Governance',
+    nameEn: 'Dr. Mohammad Mustafa',
+    titleAr: 'المؤسس ورئيس مجلس الإدارة | دكتوراه إدارة المخاطر',
+    titleEn: 'Founder & Chairman | PhD Risk Management',
+    specialtyAr: 'الإشراف الاستراتيجي وحوكمة المخاطر التعاقدية وهندسة حلول التقنية القانونية LegalTech SaaS',
+    specialtyEn: 'Strategic Governance, Contractual Risk Management & LegalTech SaaS Architecture',
     countryFlag: '🏛️ ⚖️',
   },
 ];
@@ -128,7 +128,7 @@ export default function LegalConsultationBookingModal({ isOpen, onClose }: Props
               {ui.consultation.confirmedDesc}
             </p>
             <div className="p-4 bg-slate-100 dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800 text-xs font-mono text-cyan-700 dark:text-cyan-400 font-bold max-w-md mx-auto">
-              Ref ID: {confirmedBookingId || 'LS-BOOK-CONFIRMED'} • Direct Target: juristech.solutions@outlook.com
+              Ref ID: {confirmedBookingId || 'LS-BOOK-CONFIRMED'} • Direct Target: founder@juristech.solutions
             </div>
             <button
               onClick={() => {

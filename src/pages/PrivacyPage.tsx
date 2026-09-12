@@ -15,7 +15,7 @@ import {
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 
-const DPO_EMAIL = 'juristech.solutions@outlook.com';
+const DPO_EMAIL = 'founder@juristech.solutions';
 const LAST_UPDATED = 'August 25, 2026';
 
 const ACCENT_BORDER: Record<string, string> = {

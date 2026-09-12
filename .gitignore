@@ -1,9 +1,19 @@
 dist 
 node_modules 
-.env 
+.env
+.env.*
+.next 
+.env.*
 .next 
 .DS_Store
 *.code-workspace
 
 .vercel
 .env*
+
+# Scratch/test scripts (may contain secrets)
+scrtach_*.cjs
+scratch_*.cjs
+test_resend*.cjs
+test_smtp*.cjs
+supabase/.temp/

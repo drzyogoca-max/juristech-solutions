@@ -11,6 +11,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import Footer from './components/Footer';
 import MobileBottomNav from './components/MobileBottomNav';
 import { AuthProvider, useAuth } from './lib/authContext';
+import { SaaSProvider } from './context/SaaSContext';
 import { ContractProvider } from './context/ContractContext';
 import { checkLibyaGeoBlock } from './lib/geoBlock';
 import UpdateBanner from './components/UpdateBanner';
@@ -65,6 +66,7 @@ const ContractsPage = lazy(() => import('./pages/ContractsPage'));
 const ContractsRepositoryPage = lazy(() => import('./pages/ContractsRepositoryPage'));
 const RiskPage = lazy(() => import('./pages/RiskPage'));
 const TemplatesPage = lazy(() => import('./pages/TemplatesPage'));
+const POALibraryPage = lazy(() => import('./pages/POALibraryPage'));
 const NegotiationPage = lazy(() => import('./pages/NegotiationPage'));
 const InvestigationPage = lazy(() => import('./pages/InvestigationPage'));
 const LeadRadarPage = lazy(() => import('./pages/LeadRadarPage'));
@@ -121,7 +123,7 @@ function MainAppContent() {
   const [isBlocked, setIsBlocked] = useState(false);
   const { isAdmin } = useAuth();
   const location = useLocation();
-  const { lang, isRtl } = usePlatformLocale();
+  const { lang, isRtl, changeLocale } = usePlatformLocale();
 
   // Auxiliary Widgets Mounted Only Upon User Interaction or Idle Timeout (Sub-500ms FCP/LCP Guarantee)
   const [showAuxWidgets, setShowAuxWidgets] = useState(false);
@@ -142,10 +144,9 @@ function MainAppContent() {
   useEffect(() => {
     const urlLocale = getLocaleFromUrl(location.pathname);
     if (urlLocale && urlLocale !== lang) {
-      setDocumentLanguage(urlLocale);
-      persistLocalePreference(urlLocale);
+      changeLocale(urlLocale);
     }
-  }, [location.pathname, lang]);
+  }, [location.pathname, lang, changeLocale]);
 
   // ── Defer Auxiliary Floating Widgets (Chatbot, Radar) for High Speed Insights ──
   useEffect(() => {
@@ -320,6 +321,9 @@ function MainAppContent() {
                   <Route path={`${prefix}/investigation`} element={<Navigate to={`${prefix}/investigate`} replace />} />
                   <Route path={`${prefix}/templates`} element={<TemplatesPage />} />
                   <Route path={`${prefix}/templates-library`} element={<Navigate to={`${prefix}/templates`} replace />} />
+                  <Route path={`${prefix}/poa-library`} element={<POALibraryPage />} />
+                  <Route path={`${prefix}/power-of-attorney`} element={<Navigate to={`${prefix}/poa-library`} replace />} />
+                  <Route path={`${prefix}/wakala`} element={<Navigate to={`${prefix}/poa-library`} replace />} />
                   <Route path={`${prefix}/negotiation`} element={<NegotiationPage />} />
                   <Route path={`${prefix}/negotiate`} element={<Navigate to={`${prefix}/negotiation`} replace />} />
                   <Route path={`${prefix}/e-signature-room`} element={<Navigate to={`${prefix}/negotiation`} replace />} />
@@ -336,7 +340,14 @@ function MainAppContent() {
                   <Route path={`${prefix}/need-diagnostic`} element={<Navigate to={`${prefix}/deal-shield`} replace />} />
                   <Route path={`${prefix}/deal-simulator`} element={<Navigate to={`${prefix}/deal-shield`} replace />} />
                   <Route path={`${prefix}/clash-simulator`} element={<Navigate to={`${prefix}/deal-shield`} replace />} />
-                  <Route path={`${prefix}/youtube-studio`} element={<YouTubeStudioPage />} />
+                  <Route
+                    path={`${prefix}/youtube-studio`}
+                    element={
+                      <ProtectedAdminRoute>
+                        <YouTubeStudioPage />
+                      </ProtectedAdminRoute>
+                    }
+                  />
                   <Route path={`${prefix}/youtube`} element={<Navigate to={`${prefix}/youtube-studio`} replace />} />
                   <Route path={`${prefix}/youtube-channel`} element={<Navigate to={`${prefix}/youtube-studio`} replace />} />
                   <Route path={`${prefix}/company-formation`} element={<CompanyFormationPage />} />
@@ -366,15 +377,15 @@ function MainAppContent() {
                   <Route path={`${prefix}/compliance`} element={<Navigate to={`${prefix}/legal-compliance`} replace />} />
                   <Route path={`${prefix}/regulatory`} element={<Navigate to={`${prefix}/legal-compliance`} replace />} />
                   <Route path={`${prefix}/regulatory-framework`} element={<Navigate to={`${prefix}/legal-compliance`} replace />} />
-                  <Route path={`${prefix}/marketing`} element={<SocialMarketingPage />} />
                   <Route
-                    path={`${prefix}/reports`}
+                    path={`${prefix}/marketing`}
                     element={
                       <ProtectedAdminRoute>
-                        <ReportsPage />
+                        <SocialMarketingPage />
                       </ProtectedAdminRoute>
                     }
                   />
+                  <Route path={`${prefix}/reports`} element={<ReportsPage />} />
                   <Route path={`${prefix}/blocked`} element={<BlockedPage />} />
                   <Route path={`${prefix}/social-marketing`} element={<Navigate to={`${prefix}/marketing`} replace />} />
                   <Route path={`${prefix}/sovereign-ai-hub`} element={<AdvancedAIHubPage />} />
@@ -740,9 +751,11 @@ export default function App() {
   return (
     <HelmetProvider>
       <AuthProvider>
-        <ContractProvider>
-          <MainAppContent />
-        </ContractProvider>
+        <SaaSProvider>
+          <ContractProvider>
+            <MainAppContent />
+          </ContractProvider>
+        </SaaSProvider>
       </AuthProvider>
     </HelmetProvider>
   );

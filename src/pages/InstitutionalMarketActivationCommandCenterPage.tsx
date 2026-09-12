@@ -220,7 +220,7 @@ export default function InstitutionalMarketActivationCommandCenterPage() {
               </div>
               <div className="bg-slate-950 p-4 rounded border border-slate-800 space-y-2">
                 <span className="font-bold text-slate-200">Financial Gateway Isolation</span>
-                <p className="text-slate-400">Paddle, Stripe, Fawry, and Mada remain 100% frozen with zero migrations.</p>
+                <p className="text-slate-400">PayTabs, Stripe, Fawry, and Mada remain 100% frozen with zero migrations.</p>
                 <div className="text-emerald-400 font-semibold">FINANCIAL_GATEWAY_FROZEN = true</div>
                 <div className="text-emerald-400 font-semibold">NO_AUTONOMOUS_FINANCIAL_DECISION = true</div>
               </div>

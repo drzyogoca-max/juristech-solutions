@@ -16,7 +16,7 @@ import {
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 
-const SUPPORT_EMAIL = 'juristech.solutions@outlook.com';
+const SUPPORT_EMAIL = 'founder@juristech.solutions';
 const LAST_UPDATED = 'August 25, 2026';
 
 const ACCENT_BORDER: Record<string, string> = {
@@ -59,22 +59,22 @@ export default function TermsPage() {
     {
       num: 1, icon: <BookOpen className="w-5 h-5" />, accent: 'blue',
       enTitle: 'About JURISTECH', arTitle: 'عن جوريستك',
-      enBody: <p>JURISTECH is a software-as-a-service (SaaS) platform providing digital legal technology and business workflow tools. The Service may include AI-assisted legal technology, document intelligence, workflow automation, compliance-related tools, business management functionality, reporting, and related software features.</p>,
-      arBody: <p>جوريستك هي منصة برمجيات كخدمة (SaaS) تقدم تقنيات قانونية رقمية وأدوات أتمتة سير العمل التجاري، بما يشمل التقنية القانونية المعززة بالذكاء الاصطناعي، وذكاء المستندات، وأتمتة المهام، وأدوات الامتثال، وإدارة الأعمال، والتقارير.</p>,
+      enBody: <p>JURISTECH is a software-as-a-service (SaaS) platform providing digital legal technology, automated legal analysis tools, and business workflow software. The Service may include AI-assisted legal technology, document intelligence, workflow automation, compliance-related tools, business management functionality, reporting, and related software features.</p>,
+      arBody: <p>جوريستك هي منصة برمجيات كخدمة (SaaS) تقدم تقنيات قانونية رقمية وأدوات التحليل القانوني الآلي وأتمتة سير العمل التجاري، بما يشمل التقنية القانونية المعززة بالذكاء الاصطناعي، وذكاء المستندات، وأتمتة المهام، وأدوات الامتثال، وإدارة الأعمال، والتقارير.</p>,
     },
     {
       num: 2, icon: <ShieldAlert className="w-5 h-5" />, accent: 'amber',
       enTitle: 'Not Legal Advice', arTitle: 'ليس استشارة قانونية',
       enBody: (
         <div className="space-y-2">
-          <p>JURISTECH is a technology platform and does not itself provide legal advice, legal representation, or attorney-client services.</p>
-          <p className="text-slate-400">Information, documents, summaries, recommendations, or AI-generated outputs provided through the Service are technology-assisted outputs and should not be treated as a substitute for advice from a qualified lawyer or other appropriately licensed professional. You are responsible for reviewing and independently verifying information before relying on it.</p>
+          <p>JURISTECH is a technology platform providing automated legal analysis tools and does not itself provide legal advice, legal representation, or attorney-client services.</p>
+          <p className="text-slate-400">Information, documents, summaries, recommendations, or AI-generated outputs provided through the Service are technology-assisted outputs of automated legal analysis tools and should not be treated as a substitute for advice from a qualified lawyer or other appropriately licensed professional. You are responsible for reviewing and independently verifying information before relying on it.</p>
         </div>
       ),
       arBody: (
         <div className="space-y-2">
-          <p>جوريستك منصة تقنية ولا تقدم استشارات قانونية أو تمثيلاً قانونياً أو خدمات محاماة.</p>
-          <p className="text-slate-400">المعلومات والمستندات والملخصات والتوصيات والمخرجات المولّدة بالذكاء الاصطناعي عبر الخدمة هي مخرجات تقنية مساعدة ولا تُعدّ بديلاً عن استشارة محامٍ مرخص أو متخصص معتمد. أنت مسؤول عن مراجعة المعلومات والتحقق منها بصورة مستقلة.</p>
+          <p>جوريستك منصة تقنية تقدم أدوات التحليل القانوني الآلي ولا تقدم استشارات قانونية أو تمثيلاً قانونياً أو خدمات محاماة.</p>
+          <p className="text-slate-400">المعلومات والمستندات والملخصات والتوصيات والمخرجات المولّدة عبر أدوات التحليل القانوني الآلي بالذكاء الاصطناعي في الخدمة هي مخرجات تقنية مساعدة ولا تُعدّ بديلاً عن استشارة محامٍ مرخص أو متخصص معتمد. أنت مسؤول عن مراجعة المعلومات والتحقق منها بصورة مستقلة.</p>
         </div>
       ),
     },
@@ -284,12 +284,13 @@ export default function TermsPage() {
     },
     {
       num: 20, icon: <Mail className="w-5 h-5" />, accent: 'sky',
-      enTitle: 'Contact', arTitle: 'التواصل',
+      enTitle: 'Contact & Operations', arTitle: 'التواصل ونموذج التشغيل',
       enBody: (
         <div className="space-y-3">
           <p>For questions regarding these Terms:</p>
           <div className="space-y-1 text-sm text-slate-300">
             <div className="font-bold text-white">JURISTECH</div>
+            <div>Operational Model: Global Digital Platform — Operated remotely</div>
             <div>Website: <a href="https://juristech.solutions" className="text-sky-400 hover:text-sky-300">https://juristech.solutions</a></div>
             <div>Email: <a href={`mailto:${SUPPORT_EMAIL}`} className="text-sky-400 hover:text-sky-300">{SUPPORT_EMAIL}</a></div>
           </div>
@@ -300,6 +301,7 @@ export default function TermsPage() {
           <p>للاستفسار عن هذه الشروط:</p>
           <div className="space-y-1 text-sm text-slate-300">
             <div className="font-bold text-white">JURISTECH</div>
+            <div>نموذج التشغيل: منصة رقمية عالمية تعمل عن بعد</div>
             <div>الموقع: <a href="https://juristech.solutions" className="text-sky-400 hover:text-sky-300">https://juristech.solutions</a></div>
             <div>البريد: <a href={`mailto:${SUPPORT_EMAIL}`} className="text-sky-400 hover:text-sky-300">{SUPPORT_EMAIL}</a></div>
           </div>

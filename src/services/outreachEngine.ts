@@ -34,7 +34,7 @@ export interface ClientDataPayload {
  * 100% Pure Corporate English Executive Proposals for CEOs & CFOs
  * Zero-Human Intervention Autonomous Outreach
  */
-export const generateAndDispatchOffer = async (clientData: ClientDataPayload): Promise<{ success: boolean; generatedHtml: string; messageId?: string }> => {
+export const generateAndDispatchOffer = async (clientData: ClientDataPayload): Promise<{ success: boolean; generatedHtml: string; messageId?: string; error?: string }> => {
   const { name, requirement, email, jurisdiction } = clientData;
   console.log(`[AI Dispatcher Engine] 🚀 Triggering C-Suite executive proposal for: ${name} (${email}) | Jurisdiction: ${jurisdiction || 'Global'}`);
 
@@ -169,7 +169,7 @@ export const generateAndDispatchOffer = async (clientData: ClientDataPayload): P
               <div class="sig-title">Chief Executive & Chief Financial Officer (CEO / CFO)</div>
               <div class="sig-org">JurisTech Solutions | Sovereign AI Legal & Risk Infrastructure</div>
               <div class="sig-contact">
-                <strong>Executive Contact:</strong> <a href="mailto:drzyogo.ca@gmail.com" style="color: #38bdf8; text-decoration: none;">drzyogo.ca@gmail.com</a> | <a href="mailto:juristech.solutions@outlook.com" style="color: #38bdf8; text-decoration: none;">juristech.solutions@outlook.com</a><br>
+                <strong>Executive Contact:</strong> <a href="mailto:founder@juristech.solutions" style="color: #38bdf8; text-decoration: none;">founder@juristech.solutions</a><br>
                 <strong>Official Portal:</strong> <a href="https://www.juristech.solutions" style="color: #38bdf8; text-decoration: none;">https://www.juristech.solutions</a>
               </div>
               
@@ -196,21 +196,47 @@ export const generateAndDispatchOffer = async (clientData: ClientDataPayload): P
   let finalHtml = buildLuxuryProposalHtml(name, requirement, jurisdiction || 'Global Commercial Corridor');
 
   try {
-    // 1. Direct HTTP Dispatch via /api/send-email with mandatory Admin BCC copy
+    // 1. Direct HTTP Dispatch via /api/send-email with proper Auth headers
+    const authHeaders: Record<string, string> = { 'Content-Type': 'application/json' };
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.access_token) {
+        authHeaders['Authorization'] = `Bearer ${session.access_token}`;
+      }
+      const adminToken = typeof sessionStorage !== 'undefined' ? sessionStorage.getItem('juristech_admin_session_token') : '';
+      if (adminToken) {
+        authHeaders['x-admin-token'] = adminToken;
+      }
+    } catch {}
+
     const res = await fetch('/api/send-email', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: authHeaders,
       body: JSON.stringify({
+        transactionalType: 'B2B_OUTREACH',
         to: email,
-        bcc: ['drzyogo.ca@gmail.com', 'juristech.solutions@outlook.com'],
-        adminCopy: 'drzyogo.ca@gmail.com',
-        replyTo: 'juristech.solutions@outlook.com',
+        bcc: ['founder@juristech.solutions'],
+        adminCopy: 'founder@juristech.solutions',
+        replyTo: 'founder@juristech.solutions',
         subject: dynamicSubject,
-        text: `CONFIDENTIAL EXECUTIVE PROPOSAL FOR ${name.toUpperCase()}\n\nOBJECT: Strategic Legal AI Infrastructure & Financial Risk Mitigation\n\nAddressed to: Chief Executive Officer & Chief Financial Officer\nOffered by: Dr. Mohammad Mustafa, Chairman & Chief Legal Architect | JurisTech Solutions\n\nExecutive Inquiries: juristech.solutions@outlook.com\nOfficial Portal: https://www.juristech.solutions`,
+        text: `CONFIDENTIAL EXECUTIVE PROPOSAL FOR ${name.toUpperCase()}\n\nOBJECT: Strategic Legal AI Infrastructure & Financial Risk Mitigation\n\nAddressed to: Chief Executive Officer & Chief Financial Officer\nOffered by: Dr. Mohammad Mustafa, Chairman & Chief Legal Architect | JurisTech Solutions\n\nExecutive Inquiries: founder@juristech.solutions\nOfficial Portal: https://www.juristech.solutions`,
         html: finalHtml,
       }),
     });
 
+    let resJson: any = {};
+    try { resJson = await res.json(); } catch {}
+
+    const isSuccess = res.ok && resJson.success !== false;
+
+    if (!isSuccess) {
+      console.warn('[AI Dispatcher Engine] Server rejected outreach dispatch:', res.status, resJson);
+      return {
+        success: false,
+        generatedHtml: finalHtml,
+        error: resJson.error || resJson.message || `Server returned HTTP ${res.status}`,
+      };
+    }
 
     // 2. Audit Logging in Supabase
     try {
@@ -230,15 +256,16 @@ export const generateAndDispatchOffer = async (clientData: ClientDataPayload): P
     });
 
     return {
-      success: res.ok,
+      success: true,
       generatedHtml: finalHtml,
-      messageId: `MSG-EXEC-${Date.now()}`,
+      messageId: resJson.messageId || `MSG-EXEC-${Date.now()}`,
     };
-  } catch (err) {
+  } catch (err: any) {
     console.error('[AI Dispatcher Engine] Error during executive offer dispatch:', err);
     return {
       success: false,
       generatedHtml: finalHtml,
+      error: err?.message || 'Network error during dispatch',
     };
   }
 };

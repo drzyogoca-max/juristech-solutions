@@ -189,6 +189,22 @@ export const MEGA_CATEGORIES: MegaCategory[] = [
       { key: 'telemedicine', nameAr: 'الطب عن بُعد', nameEn: 'Telemedicine' },
     ],
   },
+  {
+    key: 'islamic-finance',
+    nameAr: 'التمويل الإسلامي والصيرفة الشرعية',
+    nameEn: 'Islamic Finance & Sharia-Compliant Banking',
+    icon: '🕌',
+    color: 'from-emerald-700 to-teal-800',
+    contractCount: 54000,
+    subcategories: [
+      { key: 'murabaha', nameAr: 'عقود المرابحة', nameEn: 'Murabaha Contracts' },
+      { key: 'ijara', nameAr: 'عقود الإجارة الإسلامية', nameEn: 'Ijara (Islamic Leasing)' },
+      { key: 'musharaka', nameAr: 'عقود المشاركة', nameEn: 'Musharaka (Partnership Finance)' },
+      { key: 'sukuk', nameAr: 'صكوك إسلامية', nameEn: 'Sukuk (Islamic Bonds)' },
+      { key: 'istisna', nameAr: 'عقود الاستصناع', nameEn: 'Istisna (Manufacturing Finance)' },
+      { key: 'wakala', nameAr: 'عقود الوكالة الاستثمارية', nameEn: 'Wakala (Investment Agency)' },
+    ],
+  },
 ];
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -205,7 +221,7 @@ export const MEGA_CONTRACT_TEMPLATES: MegaContractTemplate[] = [
     descriptionAr: 'عقد تأسيس متكامل مطابق لقانون الشركات الأردني رقم 22 لسنة 1997 مع كافة متطلبات دائرة مراقبة الشركات (CCD).',
     descriptionEn: 'Full LLC incorporation compliant with Jordanian Companies Law No. 22/1997 and CCD requirements.',
     jurisdictions: ['JO', 'GLOBAL'],
-    downloads: 18240, rating: 10.0, pagesCount: 12, clausesCount: 22,
+    downloads: 18240, rating: 8.3, pagesCount: 12, clausesCount: 22,
     tags: ['LLC', 'تأسيس', 'أردن', 'CCD', 'شركاء'],
     templateAr: `================================================================================
 عقد تأسيس ونظام أساسي لشركة ذات مسؤولية محدودة (ذ.م.م)
@@ -259,7 +275,7 @@ Digitally Certified Signatures: [Party A] | [Party B]`,
     descriptionAr: 'عقد تأسيس مطابق لنظام الشركات السعودي الجديد مرسوم ملكي م/132 ومنصة أعمال.',
     descriptionEn: 'Saudi Companies Law 2022 compliant LLC formation via Saudi Business Center platform.',
     jurisdictions: ['SA', 'GLOBAL'],
-    downloads: 14500, rating: 10.0, pagesCount: 10, clausesCount: 18,
+    downloads: 14500, rating: 7.8, pagesCount: 10, clausesCount: 18,
     tags: ['LLC', 'السعودية', 'م/132', 'SCCA', 'تأسيس'],
     templateAr: `================================================================================
 عقد تأسيس شركة ذات مسؤولية محدودة — المملكة العربية السعودية
@@ -302,7 +318,7 @@ Party B: [PARTY_B] | CR: [PARTY_B_TAX]
     descriptionAr: 'عقد تأسيس LLC إماراتي مطابق للقانون الاتحادي رقم 32 لسنة 2021 مع متطلبات وزارة الاقتصاد والإمارة.',
     descriptionEn: 'UAE Federal Commercial Companies Law No. 32/2021 compliant LLC formation with DED registration.',
     jurisdictions: ['AE', 'GLOBAL'],
-    downloads: 12300, rating: 10.0, pagesCount: 14, clausesCount: 24,
+    downloads: 12300, rating: 8.5, pagesCount: 14, clausesCount: 24,
     tags: ['UAE', 'LLC', 'DED', 'الإمارات', 'تأسيس شركة'],
     templateAr: `================================================================================
 عقد تأسيس شركة ذات مسؤولية محدودة — الإمارات العربية المتحدة
@@ -341,7 +357,7 @@ Founder B: [PARTY_B] | ID: [PARTY_B_TAX]
     descriptionAr: 'اتفاقية شركاء ومساهمين متكاملة تشمل حقوق التصويت وحق الشفعة والخروج.',
     descriptionEn: 'Comprehensive shareholders agreement covering voting rights, pre-emption, tag-along and drag-along.',
     jurisdictions: ['GLOBAL', 'JO', 'SA', 'AE', 'EG', 'US'],
-    downloads: 9800, rating: 10.0, pagesCount: 20, clausesCount: 35,
+    downloads: 9800, rating: 9.2, pagesCount: 20, clausesCount: 35,
     tags: ['shareholders', 'مساهمين', 'حوكمة', 'أسهم'],
     templateAr: `================================================================================
 اتفاقية الشركاء والمساهمين الدولية
@@ -385,7 +401,7 @@ Total Capital: ([VALUE]) [CURRENCY]
     descriptionAr: 'عقد عمل فردي يحدد فترة التجربة (حد أقصى 90 يوماً) والأجر والإشعار والتأمين طبقاً للقانون الأردني.',
     descriptionEn: 'Standard employment capping probation to 90 days with severance per Jordanian Labor Law 8/1996.',
     jurisdictions: ['JO'],
-    downloads: 22500, rating: 10.0, pagesCount: 8, clausesCount: 15,
+    downloads: 22500, rating: 8.1, pagesCount: 8, clausesCount: 15,
     tags: ['عقد عمل', 'أردن', 'قانون العمل', 'فترة تجربة'],
     templateAr: `================================================================================
 عقد عمل فردي
@@ -434,7 +450,7 @@ Employee: [PARTY_B] | National ID: [PARTY_B_TAX]
     descriptionAr: 'عقد عمل سعودي مطابق لنظام العمل الصادر بالمرسوم الملكي م/51 مع اشتراطات السعودة ومكتب العمل.',
     descriptionEn: 'Saudi Employment Contract compliant with Labor Law M/51 and Saudization (Nitaqat) requirements.',
     jurisdictions: ['SA'],
-    downloads: 19800, rating: 10.0, pagesCount: 9, clausesCount: 17,
+    downloads: 19800, rating: 8.0, pagesCount: 9, clausesCount: 17,
     tags: ['عقد عمل', 'السعودية', 'نظام العمل', 'نطاقات', 'Nitaqat'],
     templateAr: `================================================================================
 عقد عمل فردي — المملكة العربية السعودية
@@ -477,7 +493,7 @@ Employee: [PARTY_B] | Iqama/ID: [PARTY_B_TAX]
     descriptionAr: 'عقد عمل تنفيذي دولي يشمل الحوافز والبونص والمزايا الاستثنائية ومكافأة التنافسية.',
     descriptionEn: 'Premium executive employment with equity incentives, bonus scheme, non-compete and golden handshake.',
     jurisdictions: ['GLOBAL', 'US', 'EU', 'AE', 'JO', 'SA'],
-    downloads: 7600, rating: 10.0, pagesCount: 18, clausesCount: 30,
+    downloads: 7600, rating: 9.4, pagesCount: 18, clausesCount: 30,
     tags: ['CEO', 'executive', 'C-suite', 'bonus', 'تنفيذي'],
     templateAr: `================================================================================
 عقد عمل إداري وتنفيذي دولي (Executive Employment Agreement)
@@ -520,7 +536,7 @@ Title: [Executive Title — CEO/CFO/COO/CTO]
     descriptionAr: 'عقد عمل حر يحدد العلاقة القانونية كمقاول مستقل وليس موظفاً، مع تحديد الملكية الفكرية.',
     descriptionEn: 'IC agreement establishing non-employment relationship, IP ownership, and payment milestones.',
     jurisdictions: ['GLOBAL', 'US', 'EU', 'JO', 'SA', 'AE', 'EG'],
-    downloads: 15200, rating: 10.0, pagesCount: 7, clausesCount: 14,
+    downloads: 15200, rating: 7.6, pagesCount: 7, clausesCount: 14,
     tags: ['freelance', 'مقاول', 'independent', 'IP', 'مستقل'],
     templateAr: `================================================================================
 عقد مقاول مستقل / عمل حر
@@ -562,7 +578,7 @@ Contractor: [PARTY_B] | ID: [PARTY_B_TAX]
     descriptionAr: 'اتفاقية سرية تبادلية تحمي الأسرار التجارية والبيانات الفنية لمدة 5 سنوات مع حق التقاضي المستعجل.',
     descriptionEn: 'Bulletproof mutual NDA protecting trade secrets and technical IP for 5 years with injunctive relief.',
     jurisdictions: ['GLOBAL', 'JO', 'SA', 'AE', 'EG', 'US', 'EU', 'GB'],
-    downloads: 28900, rating: 10.0, pagesCount: 6, clausesCount: 12,
+    downloads: 28900, rating: 7.5, pagesCount: 6, clausesCount: 12,
     tags: ['NDA', 'سرية', 'confidentiality', 'trade secrets', 'إفصاح'],
     templateAr: `================================================================================
 اتفاقية عدم إفصاح وحماية السرية التبادلية (Mutual NDA)
@@ -604,7 +620,7 @@ Party B: [PARTY_B] | ID: [PARTY_B_TAX]
     descriptionAr: 'عقد تطوير برمجيات شامل يغطي الملكية الفكرية والضمان والتسليم وإدارة التغييرات.',
     descriptionEn: 'Comprehensive software development contract with IP ownership, warranty, delivery schedule, and change management.',
     jurisdictions: ['GLOBAL', 'US', 'EU', 'JO', 'SA', 'AE'],
-    downloads: 11400, rating: 10.0, pagesCount: 16, clausesCount: 28,
+    downloads: 11400, rating: 9.0, pagesCount: 16, clausesCount: 28,
     tags: ['software', 'برمجيات', 'development', 'Agile', 'IP'],
     templateAr: `================================================================================
 عقد تطوير وتصميم برمجيات
@@ -647,7 +663,7 @@ Total Value: ([VALUE]) [CURRENCY]
     descriptionAr: 'عقد SaaS يضمن 99.9% تشغيل، سقف مسؤولية 100%، وامتثال GDPR + AES-256.',
     descriptionEn: 'SaaS agreement with 99.9% uptime guarantee, 100% fee liability cap, and GDPR/AES-256 compliance.',
     jurisdictions: ['GLOBAL', 'US', 'EU', 'JO', 'SA', 'AE'],
-    downloads: 9100, rating: 10.0, pagesCount: 14, clausesCount: 26,
+    downloads: 9100, rating: 8.8, pagesCount: 14, clausesCount: 26,
     tags: ['SaaS', 'SLA', 'cloud', 'GDPR', 'uptime'],
     templateAr: `================================================================================
 عقد خدمات برمجيات كخدمة (SaaS MSA) واتفاقية مستوى الخدمة (SLA)
@@ -691,7 +707,7 @@ Subscription: ([VALUE]) [CURRENCY]/year
     descriptionAr: 'اتفاقية استثمار SAFE تحول مبالغ المستثمر إلى أسهم عند جولة تمويل قادمة بخصم أو سقف تقييم.',
     descriptionEn: 'Standard SAFE converting investor funding into equity at next priced round with discount or cap.',
     jurisdictions: ['GLOBAL', 'US', 'JO', 'SA', 'AE', 'EG'],
-    downloads: 8400, rating: 10.0, pagesCount: 8, clausesCount: 14,
+    downloads: 8400, rating: 7.9, pagesCount: 8, clausesCount: 14,
     tags: ['SAFE', 'startup', 'investment', 'equity', 'Y-Combinator'],
     templateAr: `================================================================================
 اتفاقية الاستثمار بالأسهم المستقبلية (SAFE Agreement)
@@ -732,7 +748,7 @@ Purchase Amount: ([VALUE]) [CURRENCY]
     descriptionAr: 'وثيقة شروط استثمار رأس المال الجريء تحدد هيكل الجولة، التقييم، وحقوق المستثمر.',
     descriptionEn: 'VC term sheet defining round structure, valuation, investor rights, and liquidation preferences.',
     jurisdictions: ['GLOBAL', 'US', 'EU', 'JO', 'SA', 'AE'],
-    downloads: 5600, rating: 10.0, pagesCount: 12, clausesCount: 22,
+    downloads: 5600, rating: 8.3, pagesCount: 12, clausesCount: 22,
     tags: ['VC', 'term sheet', 'investment', 'Series A', 'startup'],
     templateAr: `================================================================================
 وثيقة شروط الاستثمار الجريء (Non-Binding Term Sheet)
@@ -777,7 +793,7 @@ This Term Sheet is non-binding and for negotiation purposes only.`,
     descriptionAr: 'عقد خدمات رئيسي يحكم جميع عقود البيانات الفردية (SOW) بين المزود والعميل.',
     descriptionEn: 'MSA governing all individual Statements of Work between service provider and client.',
     jurisdictions: ['GLOBAL', 'US', 'EU', 'JO', 'SA', 'AE', 'EG'],
-    downloads: 13700, rating: 10.0, pagesCount: 15, clausesCount: 25,
+    downloads: 13700, rating: 9.0, pagesCount: 15, clausesCount: 25,
     tags: ['MSA', 'services', 'SLA', 'commercial', 'خدمات'],
     templateAr: `================================================================================
 عقد الخدمات الرئيسي (Master Service Agreement — MSA)
@@ -820,7 +836,7 @@ Estimated Total Value: ([VALUE]) [CURRENCY]
     descriptionAr: 'عقد توريد وتوزيع شامل يحدد المناطق الحصرية والأهداف البيعية وشروط الإرجاع.',
     descriptionEn: 'Distribution agreement covering exclusive territories, sales targets, returns, and brand protection.',
     jurisdictions: ['GLOBAL', 'JO', 'SA', 'AE', 'EG', 'US'],
-    downloads: 8200, rating: 10.0, pagesCount: 13, clausesCount: 22,
+    downloads: 8200, rating: 8.7, pagesCount: 13, clausesCount: 22,
     tags: ['distribution', 'توزيع', 'supply chain', 'vendor', 'توريد'],
     templateAr: `================================================================================
 عقد توريد وتوزيع تجاري
@@ -863,7 +879,7 @@ Estimated Annual Value: ([VALUE]) [CURRENCY]
     descriptionAr: 'عقد استشارات مهنية يحدد الأتعاب وملكية المخرجات وسرية المعلومات وتضارب المصالح.',
     descriptionEn: 'Consulting agreement defining fees, deliverables, IP ownership, confidentiality, and conflict of interest.',
     jurisdictions: ['GLOBAL', 'JO', 'SA', 'AE', 'EG', 'US', 'EU'],
-    downloads: 10300, rating: 10.0, pagesCount: 10, clausesCount: 18,
+    downloads: 10300, rating: 8.2, pagesCount: 10, clausesCount: 18,
     tags: ['consulting', 'استشارات', 'management', 'advisory'],
     templateAr: `================================================================================
 عقد استشارات مهنية وإدارية
@@ -907,7 +923,7 @@ Fees: ([VALUE]) [CURRENCY]
     descriptionAr: 'عقد بيع بضائع شامل بين شركتين يتضمن شروط التسليم والدفع والضمان والقوة القاهرة وفقاً للقوانين المحلية والدولية.',
     descriptionEn: 'Comprehensive B2B sale of goods covering delivery Incoterms, payment, warranties, force majeure, adaptable to local & international law.',
     jurisdictions: ['GLOBAL', 'JO', 'SA', 'AE', 'EG', 'QA', 'KW', 'BH', 'OM', 'US', 'UK', 'EU'],
-    downloads: 24600, rating: 10.0, pagesCount: 18, clausesCount: 32,
+    downloads: 24600, rating: 9.5, pagesCount: 18, clausesCount: 32,
     tags: ['بيع', 'sale', 'B2B', 'goods', 'بضائع', 'شركات', 'company', 'Incoterms'],
     templateAr: `================================================================================
 عقد بيع بضائع بين شركات
@@ -1133,7 +1149,7 @@ Witness 1: ______________________ Witness 2: ______________________`,
     descriptionAr: 'عقد بيع خدمات مهنية أو تشغيلية بين شركتين يشمل التسليمات ومعايير الأداء SLA وشروط الملكية الفكرية.',
     descriptionEn: 'Corporate services sale agreement with SLAs, deliverables, IP assignment, and multi-jurisdiction compliance.',
     jurisdictions: ['GLOBAL', 'JO', 'SA', 'AE', 'EG', 'US', 'UK', 'EU'],
-    downloads: 15200, rating: 10.0, pagesCount: 14, clausesCount: 26,
+    downloads: 15200, rating: 9.0, pagesCount: 14, clausesCount: 26,
     tags: ['بيع خدمات', 'services sale', 'B2B', 'SLA', 'corporate'],
     templateAr: `================================================================================
 عقد بيع خدمات بين شركات
@@ -1198,7 +1214,7 @@ Governed by the laws of [JURISDICTION]. Disputes resolved by arbitration.`,
     descriptionAr: 'عقد بيع من شركة لفرد يشمل حقوق المستهلك والإرجاع والضمان وحماية البيانات الشخصية وفقاً لقوانين حماية المستهلك.',
     descriptionEn: 'Business-to-Consumer sale agreement with full consumer rights, cooling-off period, warranty, return policy, and data protection.',
     jurisdictions: ['GLOBAL', 'JO', 'SA', 'AE', 'EG', 'QA', 'KW', 'US', 'UK', 'EU'],
-    downloads: 31400, rating: 10.0, pagesCount: 12, clausesCount: 24,
+    downloads: 31400, rating: 8.9, pagesCount: 12, clausesCount: 24,
     tags: ['بيع', 'فرد', 'مستهلك', 'B2C', 'individual', 'consumer', 'حماية المستهلك'],
     templateAr: `================================================================================
 عقد بيع بضائع (من شركة إلى فرد / مستهلك)
@@ -1349,7 +1365,7 @@ Buyer: __________________________ Date: ___________`,
     descriptionAr: 'عقد بيع خاص بين شخصين طبيعيين يشمل وصف المبيع والثمن والتسليم والضمان والمسؤولية.',
     descriptionEn: 'Private sale contract between two natural persons covering item description, price, delivery, condition warranty, and liability.',
     jurisdictions: ['GLOBAL', 'JO', 'SA', 'AE', 'EG', 'QA', 'KW', 'US', 'UK', 'EU'],
-    downloads: 28900, rating: 10.0, pagesCount: 6, clausesCount: 14,
+    downloads: 28900, rating: 8.3, pagesCount: 6, clausesCount: 14,
     tags: ['بيع', 'أفراد', 'خاص', 'individual', 'private sale', 'C2C'],
     templateAr: `================================================================================
 عقد بيع خاص بين أفراد
@@ -1439,7 +1455,7 @@ Witness 1: _______________ Witness 2: _______________`,
     descriptionAr: 'عقد بيع دولي متوافق مع اتفاقية الأمم المتحدة بشأن عقود البيع الدولي للبضائع (CISG) مع شروط Incoterms 2020.',
     descriptionEn: 'International sale of goods compliant with the UN Convention on International Sale of Goods (CISG/Vienna Convention) with Incoterms 2020.',
     jurisdictions: ['GLOBAL', 'CISG', 'JO', 'SA', 'AE', 'EG', 'US', 'UK', 'EU', 'CN', 'JP', 'KR', 'IN'],
-    downloads: 19800, rating: 10.0, pagesCount: 22, clausesCount: 38,
+    downloads: 19800, rating: 9.6, pagesCount: 22, clausesCount: 38,
     tags: ['دولي', 'CISG', 'فيينا', 'international', 'cross-border', 'Incoterms', 'تجارة دولية'],
     templateAr: `================================================================================
 عقد بيع دولي للبضائع
@@ -1550,7 +1566,7 @@ If exchange rate fluctuates more than [FOREX_THRESHOLD]%, renegotiation applies.
     descriptionAr: 'عقد بيع بالتقسيط يشمل جدول الأقساط والفائدة/الربح والضمانات وشروط التخلف عن السداد وفقاً للقوانين المحلية والشريعة الإسلامية.',
     descriptionEn: 'Installment sale with payment schedule, interest/profit margin, collateral, default terms — Sharia & conventional law compliant.',
     jurisdictions: ['GLOBAL', 'JO', 'SA', 'AE', 'EG', 'QA', 'KW', 'US', 'EU'],
-    downloads: 22300, rating: 10.0, pagesCount: 14, clausesCount: 28,
+    downloads: 22300, rating: 9.3, pagesCount: 14, clausesCount: 28,
     tags: ['تقسيط', 'installment', 'أقساط', 'hire-purchase', 'بيع آجل', 'مرابحة'],
     templateAr: `================================================================================
 عقد بيع بالتقسيط
@@ -1665,7 +1681,7 @@ Guarantor: _______________ Date: _________________`,
     descriptionAr: 'عقد بيع مركبة متكامل يشمل بيانات المركبة والفحص الفني وشروط نقل الملكية وفقاً لقوانين المرور والنقل.',
     descriptionEn: 'Vehicle sale agreement covering VIN, technical inspection, title transfer, and transport authority requirements.',
     jurisdictions: ['GLOBAL', 'JO', 'SA', 'AE', 'EG', 'QA', 'KW', 'US', 'UK'],
-    downloads: 34500, rating: 10.0, pagesCount: 8, clausesCount: 16,
+    downloads: 34500, rating: 8.6, pagesCount: 8, clausesCount: 16,
     tags: ['سيارة', 'مركبة', 'vehicle', 'car', 'بيع سيارة', 'نقل ملكية'],
     templateAr: `================================================================================
 عقد بيع مركبة / سيارة
@@ -1750,7 +1766,7 @@ Witness: ________________ Date: _________________`,
     descriptionAr: 'عقد بيع عقار شامل يغطي الوصف العقاري والثمن وشروط التمويل ونقل الملكية والرهون وتقرير التقييم.',
     descriptionEn: 'Comprehensive real property sale covering legal description, price, financing, title transfer, liens, and appraisal.',
     jurisdictions: ['GLOBAL', 'JO', 'SA', 'AE', 'EG', 'QA', 'KW', 'US', 'UK', 'EU'],
-    downloads: 27100, rating: 10.0, pagesCount: 20, clausesCount: 34,
+    downloads: 27100, rating: 9.4, pagesCount: 20, clausesCount: 34,
     tags: ['عقار', 'بيع عقار', 'real estate', 'property sale', 'شراء', 'أرض', 'شقة'],
     templateAr: `================================================================================
 عقد بيع عقار
@@ -1849,7 +1865,7 @@ Governed by [JURISDICTION] — relevant Land Registry and property courts.`,
     descriptionAr: 'عقد بيع إلكتروني متوافق مع قوانين التجارة الإلكترونية وحماية المستهلك الرقمي وسياسات الإرجاع والخصوصية.',
     descriptionEn: 'E-commerce B2C sale agreement compliant with e-commerce laws, digital consumer protection, return policies, and privacy regulations.',
     jurisdictions: ['GLOBAL', 'JO', 'SA', 'AE', 'EG', 'US', 'UK', 'EU'],
-    downloads: 38200, rating: 10.0, pagesCount: 10, clausesCount: 22,
+    downloads: 38200, rating: 8.8, pagesCount: 10, clausesCount: 22,
     tags: ['تجارة إلكترونية', 'e-commerce', 'أونلاين', 'online', 'رقمي', 'digital', 'متجر'],
     templateAr: `================================================================================
 عقد بيع إلكتروني (التجارة الإلكترونية)
@@ -1942,7 +1958,7 @@ Governed by e-commerce laws of [JURISDICTION].`,
     descriptionAr: 'عقد إيجار تجاري شامل يحدد الأجرة والمدة والصيانة والرهن وشروط التجديد والإنهاء.',
     descriptionEn: 'Commercial lease covering rent, term, maintenance, security deposit, renewal and termination.',
     jurisdictions: ['GLOBAL', 'JO', 'SA', 'AE', 'EG'],
-    downloads: 16800, rating: 10.0, pagesCount: 11, clausesCount: 20,
+    downloads: 16800, rating: 8.5, pagesCount: 11, clausesCount: 20,
     tags: ['lease', 'إيجار', 'commercial', 'عقار', 'real estate'],
     templateAr: `================================================================================
 عقد إيجار مقرات وأماكن تجارية
@@ -1988,7 +2004,7 @@ Security Deposit: [Deposit Amount]
     descriptionAr: 'عقد إيجار سكني يحدد الأجرة والمدة وشروط الاستخدام السكني وأحكام الإنهاء.',
     descriptionEn: 'Residential lease agreement defining rent, term, occupancy conditions, and termination.',
     jurisdictions: ['JO', 'SA', 'AE', 'EG', 'GLOBAL'],
-    downloads: 21000, rating: 10.0, pagesCount: 7, clausesCount: 14,
+    downloads: 21000, rating: 7.7, pagesCount: 7, clausesCount: 14,
     tags: ['residential', 'سكني', 'إيجار', 'lease', 'شقة'],
     templateAr: `================================================================================
 عقد إيجار سكني
@@ -2029,7 +2045,7 @@ Monthly Rent: ([VALUE]) [CURRENCY] | Deposit: [Amount — refundable]
     descriptionAr: 'عقد مقاولة بناء شامل وفق معيار FIDIC Red Book يشمل الجداول الزمنية والغرامات والضمان.',
     descriptionEn: 'FIDIC Red Book construction contract with time schedules, performance bond, and delay penalties.',
     jurisdictions: ['GLOBAL', 'JO', 'SA', 'AE', 'EG'],
-    downloads: 6400, rating: 10.0, pagesCount: 28, clausesCount: 45,
+    downloads: 6400, rating: 9.7, pagesCount: 28, clausesCount: 45,
     tags: ['FIDIC', 'construction', 'بناء', 'مقاولة', 'Red Book'],
     templateAr: `================================================================================
 عقد مقاولة للبناء والأشغال العامة
@@ -2070,7 +2086,7 @@ Contract Sum: ([VALUE]) [CURRENCY]
     descriptionAr: 'عقد قرض مؤسسي يحدد مبلغ الإقراض والفائدة وجدول السداد والضمانات والعقوبات.',
     descriptionEn: 'Corporate loan agreement with principal, interest rate, repayment schedule, collateral, and default penalties.',
     jurisdictions: ['GLOBAL', 'JO', 'SA', 'AE', 'EG', 'US'],
-    downloads: 9300, rating: 10.0, pagesCount: 16, clausesCount: 28,
+    downloads: 9300, rating: 9.1, pagesCount: 16, clausesCount: 28,
     tags: ['loan', 'قرض', 'تمويل', 'interest', 'collateral'],
     templateAr: `================================================================================
 عقد قرض وتمويل مؤسسي
@@ -2114,7 +2130,7 @@ Principal Amount: ([VALUE]) [CURRENCY]
     descriptionAr: 'عقد خدمات طبية بين مؤسسة صحية وجهة متعاقدة يحدد الخدمات والمسؤولية والسرية الطبية.',
     descriptionEn: 'Healthcare services agreement covering medical scope, liability, patient confidentiality, and compliance.',
     jurisdictions: ['JO', 'SA', 'AE', 'EG', 'GLOBAL'],
-    downloads: 4800, rating: 10.0, pagesCount: 14, clausesCount: 24,
+    downloads: 4800, rating: 8.6, pagesCount: 14, clausesCount: 24,
     tags: ['healthcare', 'طبي', 'medical', 'health', 'رعاية صحية'],
     templateAr: `================================================================================
 عقد تقديم خدمات طبية وصحية
@@ -2152,7 +2168,7 @@ Contract Value: ([VALUE]) [CURRENCY]
     descriptionAr: 'عقد عمل نموذجي لتوظيف مسوق عقاري وسيط مرخص، يشمل تفصيل العمولات والالتزام بقوانين الهيئة العامة للعقار والسرية والشرط الجزائي.',
     descriptionEn: 'Standard employment agreement for hiring a licensed real estate broker/marketer, detailing commissions, salary, compliance with real estate regulations, and non-disclosure.',
     jurisdictions: ['GLOBAL', 'SA', 'AE', 'JO', 'EG'],
-    downloads: 8750, rating: 10.0, pagesCount: 8, clausesCount: 15,
+    downloads: 8750, rating: 8.2, pagesCount: 8, clausesCount: 15,
     tags: ['عقار', 'تسويق عقاري', 'مسوق عقاري', 'عمولة', 'real estate marketer', 'marketing', 'broker'],
     templateAr: `================================================================================
 عقد عمل وتوظيف مسوق عقاري (براتب وعمولة)
@@ -2198,6 +2214,307 @@ It has been mutually agreed between the parties as follows:
 4. CONFIDENTIALITY & DATA PROTECTION (NDA): Party B shall maintain strict confidentiality regarding all property listings, buyer databases, pricing, and business secrets of Party A.
 
 5. GOVERNING LAW: Governed exclusively by the labor codes and real estate regulatory statutes of the contracting jurisdiction. Disputes shall be referred to competent local courts and real estate committees.`,
+  },
+  // ── ISLAMIC FINANCE ──────────────────────────────────────────────────────────
+  {
+    id: 'isf-murabaha-gcc',
+    categoryKey: 'islamic-finance', subcategoryKey: 'murabaha',
+    titleAr: 'عقد بيع المرابحة للآمر بالشراء — GCC/خليجي AAOIFI',
+    titleEn: 'Murabaha Sale Agreement — GCC Sharia-Compliant (AAOIFI)',
+    descriptionAr: 'عقد مرابحة شرعي معتمد للتمويل السلعي مع تحديد هامش الربح وجدول السداد وفق معايير AAOIFI الشرعية.',
+    descriptionEn: 'AAOIFI-compliant Murabaha financing agreement with profit margin, repayment schedule, and Sharia board approval mechanism.',
+    jurisdictions: ['SA', 'AE', 'QA', 'KW', 'BH', 'JO', 'GLOBAL'],
+    downloads: 4200, rating: 8.8, pagesCount: 9, clausesCount: 18,
+    tags: ['مرابحة', 'Murabaha', 'AAOIFI', 'إسلامي', 'GCC', 'تمويل'],
+    templateAr: `================================================================================
+عقد بيع المرابحة للآمر بالشراء
+معتمد وفق معايير هيئة AAOIFI الشرعية — ولاية: [JURISDICTION]
+================================================================================
+
+الطرف الأول (الممول — البنك/المؤسسة المالية): [PARTY_A] | السجل: [PARTY_A_TAX]
+الطرف الثاني (العميل الآمر بالشراء): [PARTY_B] | الهوية: [PARTY_B_ID]
+
+البند الأول: موضوع العقد
+يوافق الطرف الأول على شراء الأصل الموصوف في الملحق (أ) من المورد المحدد ثم بيعه للطرف الثاني مرابحةً بالأحكام أدناه.
+
+البند الثاني: الثمن وهامش الربح
+2.1 ثمن الشراء الأصلي: ([VALUE]) [CURRENCY]
+2.2 هامش ربح الطرف الأول: ([PROFIT_RATE]%) من ثمن الشراء
+2.3 الثمن الإجمالي للمرابحة: ([TOTAL_PRICE]) [CURRENCY]
+
+البند الثالث: جدول السداد
+يلتزم الطرف الثاني بسداد الثمن الإجمالي على ([INSTALLMENTS]) دفعة شهرية متساوية بدءاً من [START_DATE].
+
+البند الرابع: الضمانات
+يقدم الطرف الثاني الضمانات التالية: [GUARANTEES]
+
+البند الخامس: التأخر في السداد
+لا يجوز اشتراط أي زيادة على المديون المماطل. يجوز التبرع بمبلغ [CHARITY_AMOUNT] [CURRENCY] لصالح جهة خيرية معتمدة عند التأخر.
+
+البند السادس: الضوابط الشرعية
+يخضع هذا العقد لمعايير AAOIFI وأحكام الشريعة الإسلامية. أي بند مخالف يُعدّ لاغياً.
+
+البند السابع: القانون الواجب التطبيق
+القانون التجاري في [JURISDICTION] والشريعة الإسلامية. النزاعات: [ARBITRATION_CENTER].
+
+توقيع الطرف الأول: [مُعتمد إلكترونياً]    توقيع الطرف الثاني: [مُعتمد إلكترونياً]`,
+    templateEn: `================================================================================
+MURABAHA SALE AGREEMENT
+AAOIFI Sharia Standard No. 8 Compliant | GCC Jurisdiction
+================================================================================
+
+Party A (Financier): [PARTY_A] (CR: [PARTY_A_TAX])
+Party B (Client/Purchaser): [PARTY_B] (ID: [PARTY_B_ID])
+
+1. SUBJECT MATTER: Party A purchases the asset described in Schedule A from the supplier and resells to Party B on Murabaha basis.
+2. PRICING: Cost Price: ([VALUE]) [CURRENCY]. Profit Margin: ([PROFIT_RATE]%). Total Murabaha Price: ([TOTAL_PRICE]) [CURRENCY].
+3. REPAYMENT: ([INSTALLMENTS]) equal monthly installments commencing [START_DATE].
+4. SECURITY: Party B provides collateral: [GUARANTEES].
+5. LATE PAYMENT: No interest charged. Voluntary charity of [CHARITY_AMOUNT] [CURRENCY] to an approved charity may apply upon delay.
+6. SHARIA GOVERNANCE: Subject to AAOIFI Standards and Islamic Sharia principles. Any non-compliant clause is null and void.
+7. GOVERNING LAW: Commercial law of [JURISDICTION] and Islamic Sharia. Disputes: [ARBITRATION_CENTER].
+
+Digitally Certified Signatures: [Party A] | [Party B]`,
+  },
+  {
+    id: 'isf-ijara-property',
+    categoryKey: 'islamic-finance', subcategoryKey: 'ijara',
+    titleAr: 'عقد الإجارة المنتهية بالتمليك — تمويل عقاري إسلامي',
+    titleEn: 'Ijara Muntahia Bittamleek — Islamic Property Finance (AAOIFI)',
+    descriptionAr: 'عقد إجارة إسلامية لتمويل العقارات مع خيار التمليك في نهاية مدة الإيجار وفق معايير AAOIFI الشرعية رقم 9.',
+    descriptionEn: 'Islamic lease-to-own property financing agreement compliant with AAOIFI Sharia Standard No. 9.',
+    jurisdictions: ['SA', 'AE', 'QA', 'KW', 'BH', 'GLOBAL'],
+    downloads: 3100, rating: 8.6, pagesCount: 11, clausesCount: 20,
+    tags: ['إجارة', 'Ijara', 'AAOIFI', 'عقار', 'إسلامي', 'تمليك'],
+    templateAr: `================================================================================
+عقد الإجارة المنتهية بالتمليك
+معتمد وفق معيار AAOIFI الشرعي رقم (9) — ولاية: [JURISDICTION]
+================================================================================
+
+المؤجر (الممول): [PARTY_A] | السجل: [PARTY_A_TAX]
+المستأجر (العميل): [PARTY_B] | الهوية: [PARTY_B_ID]
+
+البند الأول: العقار موضوع الإجارة
+[PROPERTY_DESCRIPTION] — المساحة: [AREA] م² — الموقع: [LOCATION]
+
+البند الثاني: مدة الإجارة والأجرة
+2.1 مدة العقد: ([DURATION]) سنة ابتداءً من [START_DATE]
+2.2 الأجرة السنوية: ([ANNUAL_RENT]) [CURRENCY]
+2.3 الدفعات الشهرية: ([MONTHLY_PAYMENT]) [CURRENCY]
+
+البند الثالث: خيار التمليك
+عند اكتمال جميع دفعات الإجارة، يؤول العقار ملكيةً كاملةً للطرف الثاني بموجب عقد بيع مستقل بمبلغ رمزي ([VALUE]) [CURRENCY].
+
+البند الرابع: الصيانة والتأمين
+تتحمل [PARTY_A] الصيانة الهيكلية الكبرى. يتحمل [PARTY_B] الصيانة اليومية والتأمين التكافلي.
+
+البند الخامس: القانون الواجب التطبيق
+معايير AAOIFI + قانون [JURISDICTION]. النزاعات: [ARBITRATION_CENTER].
+
+توقيع المؤجر: ____________________    توقيع المستأجر: ____________________`,
+    templateEn: `================================================================================
+IJARA MUNTAHIA BITTAMLEEK (LEASE-TO-OWN)
+AAOIFI Sharia Standard No. 9 | Islamic Property Finance
+================================================================================
+
+Lessor (Financier): [PARTY_A] | Lessee (Client): [PARTY_B]
+Property: [PROPERTY_DESCRIPTION] | Area: [AREA] m² | Location: [LOCATION]
+
+1. LEASE TERM: [DURATION] years from [START_DATE]. Monthly rental: ([MONTHLY_PAYMENT]) [CURRENCY].
+2. OWNERSHIP TRANSFER: Upon completion of all payments, full title transfers via separate sale agreement at nominal price of ([VALUE]) [CURRENCY].
+3. MAINTENANCE: Major structural maintenance by Lessor. Day-to-day upkeep and Takaful insurance by Lessee.
+4. GOVERNING LAW: AAOIFI + [JURISDICTION] law. Disputes: [ARBITRATION_CENTER].
+
+Signed: [Party A] | [Party B]`,
+  },
+  {
+    id: 'isf-musharaka-business',
+    categoryKey: 'islamic-finance', subcategoryKey: 'musharaka',
+    titleAr: 'عقد المشاركة المتناقصة — تمويل أعمال إسلامي',
+    titleEn: 'Diminishing Musharaka Business Financing Agreement (AAOIFI)',
+    descriptionAr: 'عقد مشاركة إسلامية للتمويل التجاري مع هيكل المشاركة المتناقصة لنقل الملكية تدريجياً وفق معايير AAOIFI.',
+    descriptionEn: 'AAOIFI-compliant diminishing Musharaka for business financing with gradual equity transfer mechanism.',
+    jurisdictions: ['SA', 'AE', 'QA', 'KW', 'BH', 'JO', 'GLOBAL'],
+    downloads: 1850, rating: 8.4, pagesCount: 10, clausesCount: 17,
+    tags: ['مشاركة', 'Musharaka', 'إسلامي', 'تمويل أعمال', 'متناقصة'],
+    templateAr: `================================================================================
+عقد المشاركة المتناقصة
+معتمد وفق معايير AAOIFI — ولاية: [JURISDICTION]
+================================================================================
+
+طرف التمويل: [PARTY_A] | العميل الشريك: [PARTY_B]
+
+البند الأول: رأس المال والحصص الأولية
+1.1 حصة [PARTY_A]: ([BANK_SHARE_PCT]%) من رأس المال الإجمالي ([VALUE]) [CURRENCY]
+1.2 حصة [PARTY_B]: ([CLIENT_SHARE_PCT]%) من رأس المال الإجمالي
+
+البند الثاني: توزيع الأرباح والخسائر
+تُوزَّع الأرباح بنسبة [PROFIT_RATIO]. تُتحمَّل الخسائر بقدر حصة كل طرف.
+
+البند الثالث: التناقص التدريجي
+يلتزم [PARTY_B] بشراء حصص [PARTY_A] دورياً بسعر السوق العادل حتى اكتمال تملكه الكامل.
+
+البند الرابع: القانون الواجب التطبيق
+معايير AAOIFI + قانون [JURISDICTION]. النزاعات: [ARBITRATION_CENTER].
+
+توقيع: ____________________    توقيع: ____________________`,
+    templateEn: `================================================================================
+DIMINISHING MUSHARAKA AGREEMENT
+AAOIFI Standards | Islamic Business Financing
+================================================================================
+
+Financier: [PARTY_A] | Partner Client: [PARTY_B]
+Total Capital: ([VALUE]) [CURRENCY] — Financier: [BANK_SHARE_PCT]%, Client: [CLIENT_SHARE_PCT]%
+
+1. PROFIT & LOSS: Profit distributed at [PROFIT_RATIO] ratio; losses proportional to equity share.
+2. GRADUAL TRANSFER: Client purchases Financier's units periodically at fair market value until 100% ownership.
+3. GOVERNING LAW: AAOIFI + [JURISDICTION]. Disputes: [ARBITRATION_CENTER].
+
+Signed: [Party A] | [Party B]`,
+  },
+  {
+    id: 'isf-sukuk-issuance',
+    categoryKey: 'islamic-finance', subcategoryKey: 'sukuk',
+    titleAr: 'اتفاقية إصدار الصكوك الإسلامية — AAOIFI/IFSB',
+    titleEn: 'Islamic Sukuk Issuance & Trust Agreement (AAOIFI/IFSB)',
+    descriptionAr: 'اتفاقية إصدار صكوك إسلامية قابلة للتداول مع هيكل الضامن والمُصدر وحامل الصك وفق معايير AAOIFI وIFSB.',
+    descriptionEn: 'AAOIFI/IFSB-compliant Sukuk issuance agreement covering trust structure, coupon distribution, and regulatory compliance.',
+    jurisdictions: ['SA', 'AE', 'QA', 'BH', 'GLOBAL'],
+    downloads: 890, rating: 9.1, pagesCount: 16, clausesCount: 28,
+    tags: ['صكوك', 'Sukuk', 'AAOIFI', 'IFSB', 'إسلامي', 'أوراق مالية'],
+    templateAr: `================================================================================
+اتفاقية إصدار صكوك إسلامية
+معتمدة وفق معايير AAOIFI وIFSB — ولاية: [JURISDICTION]
+================================================================================
+
+المُصدِر: [ISSUER_NAME] | المنظم: [PARTY_A] | أمين الحفظ: [PARTY_B]
+قيمة الإصدار: ([VALUE]) [CURRENCY]
+مدة الصكوك: ([DURATION]) سنة من تاريخ الإصدار [START_DATE]
+
+البند الأول: هيكل الصك وأساس الإصدار
+تُصدَر هذه الصكوك على أساس [SUKUK_STRUCTURE] مرتبطةً بالأصول الموضحة في الملحق (أ).
+
+البند الثاني: التوزيعات الدورية
+يحق لحاملي الصكوك الحصول على توزيعات دورية بنسبة ([DISTRIBUTION_RATE]%) سنوياً تُصرف كل ([PAYMENT_PERIOD]).
+
+البند الثالث: استرداد القيمة الاسمية
+يلتزم المُصدِر باسترداد القيمة الاسمية الكاملة لكل صك عند الاستحقاق.
+
+البند الرابع: القانون الواجب التطبيق
+قوانين [JURISDICTION] ومعايير AAOIFI وIFSB. النزاعات: [ARBITRATION_CENTER].
+
+توقيع: ____________________    توقيع: ____________________`,
+    templateEn: `================================================================================
+ISLAMIC SUKUK ISSUANCE AGREEMENT
+AAOIFI Sharia Standards & IFSB Regulatory Framework
+================================================================================
+
+Issuer: [ISSUER_NAME] | Arranger: [PARTY_A] | Trustee: [PARTY_B]
+Total Issuance: ([VALUE]) [CURRENCY] | Tenor: ([DURATION]) years from [START_DATE]
+
+1. SUKUK STRUCTURE: Issued on [SUKUK_STRUCTURE] basis backed by assets in Schedule A.
+2. PERIODIC DISTRIBUTIONS: [DISTRIBUTION_RATE]% per annum, paid every [PAYMENT_PERIOD].
+3. REDEMPTION: Issuer shall redeem full par value at maturity.
+4. GOVERNING LAW: [JURISDICTION] law + AAOIFI + IFSB. Disputes: [ARBITRATION_CENTER].
+
+Signed: [Issuer] | [Trustee]`,
+  },
+  {
+    id: 'isf-wakala-investment',
+    categoryKey: 'islamic-finance', subcategoryKey: 'wakala',
+    titleAr: 'عقد الوكالة في الاستثمار — وكالة إسلامية AAOIFI',
+    titleEn: 'Wakala Investment Agency Agreement — Sharia Compliant',
+    descriptionAr: 'عقد وكالة استثمارية إسلامية لإدارة الأصول والمحافظ المالية وفق الشريعة الإسلامية ومعايير AAOIFI.',
+    descriptionEn: 'Islamic Wakala agreement for asset management, investment portfolios, and fund management per AAOIFI and Sharia principles.',
+    jurisdictions: ['SA', 'AE', 'QA', 'KW', 'BH', 'GLOBAL'],
+    downloads: 1240, rating: 8.3, pagesCount: 8, clausesCount: 15,
+    tags: ['وكالة', 'Wakala', 'إسلامي', 'استثمار', 'AAOIFI'],
+    templateAr: `================================================================================
+عقد الوكالة في الاستثمار
+معتمد وفق أحكام الفقه الإسلامي ومعايير AAOIFI — ولاية: [JURISDICTION]
+================================================================================
+
+الموكِّل (المستثمر): [PARTY_A] | الوكيل (مدير الاستثمار): [PARTY_B]
+
+البند الأول: نطاق الوكالة
+يوكل الطرف الأول الطرف الثاني في استثمار المبلغ ([VALUE]) [CURRENCY] في [INVESTMENT_SCOPE] وفق الضوابط الشرعية.
+
+البند الثاني: رسوم الوكالة
+يستحق الوكيل رسم وكالة قدره ([AGENCY_FEE_PCT]%) سنوياً من إجمالي الأصول المُدارة.
+
+البند الثالث: توزيع العوائد
+تُوزَّع عوائد الاستثمار على الموكل كاملةً بعد خصم رسم الوكالة المتفق عليه.
+
+البند الرابع: الضوابط الشرعية
+يلتزم الوكيل بعدم استثمار الأموال في قطاعات محرمة (ربا، مقامرة، كحول، أسلحة).
+
+البند الخامس: القانون الواجب التطبيق
+معايير AAOIFI + قانون [JURISDICTION]. النزاعات: [ARBITRATION_CENTER].
+
+توقيع: ____________________    توقيع: ____________________`,
+    templateEn: `================================================================================
+WAKALA INVESTMENT AGENCY AGREEMENT
+Sharia-Compliant | AAOIFI Standards
+================================================================================
+
+Principal (Investor): [PARTY_A] | Agent (Investment Manager): [PARTY_B]
+
+1. SCOPE: Agent is authorized to invest ([VALUE]) [CURRENCY] in [INVESTMENT_SCOPE] per Sharia guidelines.
+2. AGENCY FEE: ([AGENCY_FEE_PCT]%) per annum on total assets under management.
+3. RETURNS: All investment returns distributed to Principal after deducting agency fee.
+4. SHARIA COMPLIANCE: Agent shall NOT invest in prohibited sectors (riba, gambling, alcohol, weapons).
+5. GOVERNING LAW: AAOIFI + [JURISDICTION]. Disputes: [ARBITRATION_CENTER].
+
+Signed: [Party A] | [Party B]`,
+  },
+  {
+    id: 'isf-istisna-construction',
+    categoryKey: 'islamic-finance', subcategoryKey: 'istisna',
+    titleAr: 'عقد الاستصناع الإسلامي — تمويل مشاريع التشييد والتصنيع',
+    titleEn: 'Istisna Manufacturing & Construction Finance Agreement (AAOIFI)',
+    descriptionAr: 'عقد استصناع إسلامي لتمويل مشاريع البناء والتصنيع بتسديد ثمن الأصل حسب مراحل الإنجاز وفق AAOIFI.',
+    descriptionEn: 'Sharia-compliant Istisna agreement for manufacturing and construction project financing with milestone-based progress payments.',
+    jurisdictions: ['SA', 'AE', 'QA', 'KW', 'BH', 'GLOBAL'],
+    downloads: 760, rating: 8.2, pagesCount: 10, clausesCount: 19,
+    tags: ['استصناع', 'Istisna', 'إسلامي', 'بناء', 'تمويل', 'AAOIFI'],
+    templateAr: `================================================================================
+عقد الاستصناع الإسلامي
+معتمد وفق معيار AAOIFI الشرعي رقم (11) — ولاية: [JURISDICTION]
+================================================================================
+
+المستصنِع (المشتري/الممول): [PARTY_A] | الصانع (المقاول): [PARTY_B]
+
+البند الأول: موضوع العقد
+يلتزم الطرف الثاني بتصنيع/تشييد [ASSET_DESCRIPTION] وفق المواصفات التفصيلية في الملحق (أ).
+
+البند الثاني: الثمن وجدول الدفع
+2.1 الثمن الكلي المتفق عليه: ([VALUE]) [CURRENCY]
+2.2 جدول الدفع حسب مراحل الإنجاز: [PAYMENT_SCHEDULE]
+
+البند الثالث: مدة التنفيذ والتسليم
+يلتزم الطرف الثاني بالتسليم في موعد أقصاه [DELIVERY_DATE] وفق المعايير المتفق عليها.
+
+البند الرابع: ضمانات الجودة
+يقدم الطرف الثاني ضمان جودة لمدة ([WARRANTY_PERIOD]) سنة/سنوات بعد التسليم.
+
+البند الخامس: القانون الواجب التطبيق
+معايير AAOIFI + قانون [JURISDICTION]. النزاعات: [ARBITRATION_CENTER].
+
+توقيع: ____________________    توقيع: ____________________`,
+    templateEn: `================================================================================
+ISTISNA MANUFACTURING FINANCE AGREEMENT
+AAOIFI Sharia Standard No. 11 | Construction & Manufacturing Finance
+================================================================================
+
+Purchaser/Financier: [PARTY_A] | Manufacturer/Contractor: [PARTY_B]
+
+1. SUBJECT MATTER: Party B undertakes to manufacture/construct [ASSET_DESCRIPTION] per Schedule A specifications.
+2. PRICE & PAYMENT: Total agreed price ([VALUE]) [CURRENCY]. Payment by milestones: [PAYMENT_SCHEDULE].
+3. DELIVERY: Party B shall deliver by [DELIVERY_DATE] meeting agreed specifications.
+4. WARRANTY: Quality guarantee for ([WARRANTY_PERIOD]) year(s) post-delivery.
+5. GOVERNING LAW: AAOIFI + [JURISDICTION]. Disputes: [ARBITRATION_CENTER].
+
+Signed: [Party A] | [Party B]`,
   },
 ];
 

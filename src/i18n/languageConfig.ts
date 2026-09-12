@@ -112,6 +112,13 @@ export const I18N_NAMESPACES = [
   'validation',
   'admin',
   'accessibility',
+  'translation',
+  'Nav',
+  'Dashboard',
+  'Chat',
+  'Risk',
+  'Reports',
+  'Payment',
 ] as const;
 
 export type I18nNamespace = typeof I18N_NAMESPACES[number];

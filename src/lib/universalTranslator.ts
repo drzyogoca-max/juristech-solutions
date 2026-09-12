@@ -19,7 +19,16 @@ import { SupportedLang, normalizeLanguage } from './languageHelper';
 export type { SupportedLang };
 export { normalizeLanguage };
 import { GLOBAL_TRANSLATIONS, GlobalUITexts } from './globalTranslations';
+import { useLocale } from '../context/LocaleContext';
 
+import enMessages from '../../messages/en.json';
+import arMessages from '../../messages/ar.json';
+import frMessages from '../../messages/fr.json';
+import esMessages from '../../messages/es.json';
+import deMessages from '../../messages/de.json';
+import trMessages from '../../messages/tr.json';
+import zhMessages from '../../messages/zh.json';
+import { resources as allI18nResources } from '../i18n/config';
 
 import { legalLexiconEngine } from '../services/legalLexiconEvolutionEngine';
 
@@ -36,13 +45,13 @@ const DICTIONARY: Record<string, Record<SupportedLang, string>> = {
     tr: 'Kontrol Paneli',
   },
   'ai legal advisor': {
-    ar: 'المستشار القانوني الذكي',
-    en: 'AI Legal Advisor',
-    de: 'KI-Rechtsberater',
-    fr: 'Conseiller Juridique IA',
-    es: 'Asesor Legal IA',
-    zh: 'AI法律顾问',
-    tr: 'Yapay Zeka Hukuk Danışmanı',
+    ar: 'المساعد القانوني الذكي',
+    en: 'AI Legal Assistant',
+    de: 'KI-Rechtsassistent',
+    fr: 'Assistant Juridique IA',
+    es: 'Asistente Legal IA',
+    zh: 'AI法律助手',
+    tr: 'Yapay Zeka Hukuk Asistanı',
   },
   'contract generator': {
     ar: 'صانع ومولد العقود الذكية',
@@ -274,13 +283,13 @@ const DICTIONARY: Record<string, Record<SupportedLang, string>> = {
     tr: 'Risk Raporları',
   },
   'ai queries': {
-    ar: 'استشارات الذكاء الاصطناعي',
-    en: 'AI Queries',
-    de: 'KI-Rechtsanfragen',
-    fr: 'Consultations juridiques IA',
-    es: 'Consultas jurídicas IA',
-    zh: 'AI法律咨询量',
-    tr: 'Yapay Zeka Hukuk Sorguları',
+    ar: 'عمليات التحليل بالذكاء الاصطناعي',
+    en: 'AI Contract Analyses',
+    de: 'KI-Vertragsanalysen',
+    fr: 'Analyses contractuelles IA',
+    es: 'Análisis contractuales IA',
+    zh: 'AI合同智能分析量',
+    tr: 'Yapay Zeka Sözleşme Analizleri',
   },
 
   // Interactive Customer Journey Map
@@ -339,15 +348,32 @@ const DICTIONARY: Record<string, Record<SupportedLang, string>> = {
     tr: 'Aşama 6 / 6: Şifreli Kasa ve Sürekli Yönetişim',
   },
 
-  // Common Actions & CTAs
   'start consultation': {
-    ar: 'بدء استشارة فورية 24/7',
-    en: 'Start Live Consultation 24/7',
-    de: 'Live-Beratung starten 24/7',
-    fr: 'Démarrer consultation en direct 24/7',
-    es: 'Iniciar consulta en vivo 24/7',
-    zh: '开始24/7即时咨询',
-    tr: '7/24 Canlı Danışmanlık Başlat',
+    ar: 'بدء التحليل الذكي 24/7',
+    en: 'Start AI Contract Analysis 24/7',
+    de: 'KI-Vertragsanalyse starten 24/7',
+    fr: 'Démarrer l’analyse IA 24/7',
+    es: 'Iniciar análisis inteligente 24/7',
+    zh: '开始AI智能合约分析',
+    tr: '7/24 Yapay Zeka Analizi Başlat',
+  },
+  'automated legal analysis tools': {
+    ar: 'أدوات التحليل القانوني الآلي',
+    en: 'Automated Legal Analysis Tools',
+    de: 'Automatisierte Rechtsanalyse-Tools',
+    fr: 'Outils d’analyse juridique automatisés',
+    es: 'Herramientas de análisis jurídico automatizado',
+    zh: '自动化法律分析工具',
+    tr: 'Otomatik Hukuki Analiz Araçları',
+  },
+  'platform approved positioning': {
+    ar: 'منصة LegalTech SaaS مدعومة بالذكاء الاصطناعي لصياغة العقود وتحليل المستندات واكتشاف المخاطر ودعم سير العمل القانوني.',
+    en: 'AI-powered LegalTech SaaS software for contract drafting, document analysis, risk detection and legal workflow support.',
+    de: 'KI-gestützte LegalTech-SaaS-Software für Vertragserstellung, Dokumentenanalyse, Risikoerkennung und juristische Workflows.',
+    fr: 'Logiciel SaaS LegalTech basé sur l’IA pour la rédaction de contrats, l’analyse de documents, la détection des risques et les flux juridiques.',
+    es: 'Software LegalTech SaaS con IA para redacción de contratos, análisis documental, detección de riesgos y flujo legal.',
+    zh: '基于人工智能的LegalTech SaaS软件，用于合同起草、文档分析、风险检测及法律工作流支持。',
+    tr: 'Sözleşme hazırlama, belge analizi, risk tespiti ve hukuki iş akışı desteği için yapay zeka destekli LegalTech SaaS yazılımı.',
   },
   'draft contract': {
     ar: 'صياغة عقد تجاري',
@@ -389,10 +415,64 @@ const DICTIONARY: Record<string, Record<SupportedLang, string>> = {
     ar: 'عرض التقرير التفصيلي',
     en: 'View Full Report',
     de: 'Vollständigen Bericht ansehen',
-    fr: 'Voir le rapport complet',
-    es: 'Ver informe completo',
+    fr: 'Voir le rapport détaillé',
+    es: 'Ver informe detallado',
     zh: '查看详细报告',
-    tr: 'Tam Raporu Görüntüle',
+    tr: 'Ayrıntılı Raporu Gör',
+  },
+  'global digital platform — operated remotely': {
+    ar: 'منصة رقمية عالمية — تعمل عن بعد',
+    en: 'Global Digital Platform — Operated remotely',
+    de: 'Globale digitale Plattform — Remote betrieben',
+    fr: 'Plateforme numérique mondiale — Fonctionnement à distance',
+    es: 'Plataforma digital global — Operada de forma remota',
+    zh: '全球数字化平台 — 远程运营',
+    tr: 'Küresel Dijital Platform — Uzaktan işletilmektedir',
+  },
+  'منصة رقمية عالمية — تعمل عن بعد': {
+    ar: 'منصة رقمية عالمية — تعمل عن بعد',
+    en: 'Global Digital Platform — Operated remotely',
+    de: 'Globale digitale Plattform — Remote betrieben',
+    fr: 'Plateforme numérique mondiale — Fonctionnement à distance',
+    es: 'Plataforma digital global — Operada de forma remota',
+    zh: '全球数字化平台 — 远程运营',
+    tr: 'Küresel Dijital Platform — Uzaktan işletilmektedir',
+  },
+  'secure payment methods available at checkout.': {
+    ar: 'طرق دفع إلكترونية آمنة ومعتمدة متاحة عند إتمام الطلب.',
+    en: 'Secure payment methods available at checkout.',
+    de: 'Sichere und verifizierte Zahlungsmethoden beim Checkout verfügbar.',
+    fr: 'Moyens de paiement sécurisés et approuvés disponibles lors de la commande.',
+    es: 'Métodos de pago seguros y aprobados disponibles al completar el pedido.',
+    zh: '结账时提供安全且经过验证的电子支付方式。',
+    tr: 'Ödeme sırasında güvenli ve onaylı ödeme yöntemleri mevcuttur.',
+  },
+  'طرق دفع إلكترونية آمنة ومعتمدة متاحة عند إتمام الطلب.': {
+    ar: 'طرق دفع إلكترونية آمنة ومعتمدة متاحة عند إتمام الطلب.',
+    en: 'Secure payment methods available at checkout.',
+    de: 'Sichere und verifizierte Zahlungsmethoden beim Checkout verfügbar.',
+    fr: 'Moyens de paiement sécurisés et approuvés disponibles lors de la commande.',
+    es: 'Métodos de pago seguros y aprobados disponibles al completar el pedido.',
+    zh: '结账时提供安全且经过验证的电子支付方式。',
+    tr: 'Ödeme sırasında güvenli ve onaylı ödeme yöntemleri mevcuttur.',
+  },
+  'طرق دفع إلكترونية آمنة ومعتمدة متاحة عند إتمام الطلب': {
+    ar: 'طرق دفع إلكترونية آمنة ومعتمدة متاحة عند إتمام الطلب',
+    en: 'Secure payment methods available at checkout',
+    de: 'Sichere und verifizierte Zahlungsmethoden beim Checkout verfügbar',
+    fr: 'Moyens de paiement sécurisés et approuvés disponibles lors de la commande',
+    es: 'Métodos de pago seguros y aprobados disponibles al completar el pedido',
+    zh: '结账时提供安全且经过验证的电子支付方式',
+    tr: 'Ödeme sırasında güvenli ve onaylı ödeme yöntemleri mevcuttur',
+  },
+  'secure payment methods available at checkout': {
+    ar: 'طرق دفع إلكترونية آمنة ومعتمدة متاحة عند إتمام الطلب',
+    en: 'Secure payment methods available at checkout',
+    de: 'Sichere und verifizierte Zahlungsmethoden beim Checkout verfügbar',
+    fr: 'Moyens de paiement sécurisés et approuvés disponibles lors de la commande',
+    es: 'Métodos de pago seguros y aprobados disponibles al completar el pedido',
+    zh: '结账时提供安全且经过验证的电子支付方式',
+    tr: 'Ödeme sırasında güvenli ve onaylı ödeme yöntemleri mevcuttur',
   },
   'clear session': {
     ar: 'تفريغ الجلسة',
@@ -493,19 +573,1106 @@ const DICTIONARY: Record<string, Record<SupportedLang, string>> = {
     zh: '官方认证企业赞助商',
     tr: 'Resmi Kurumsal Sponsor',
   },
+  'dealshield 360': {
+    ar: 'ديل شيلد 360™ وتشخيص الاحتياج',
+    en: 'DealShield 360™ & Need Diagnostic',
+    de: 'DealShield 360™ & Bedarfsdiagnose',
+    fr: 'DealShield 360™ et Diagnostic des Besoins',
+    es: 'DealShield 360™ y Diagnóstico de Necesidades',
+    zh: 'DealShield 360™与法律需求深度诊断',
+    tr: 'DealShield 360™ ve İhtiyaç Teşhisi',
+  },
+  'm&a deal intelligence': {
+    ar: 'استخبارات الاندماج والاستحواذ وحماية الاستثمار',
+    en: 'M&A Deal Intelligence & Takeover Defense',
+    de: 'M&A Deal Intelligence & Übernahmeschutz',
+    fr: 'Intelligence M&A & Protection des Investissements',
+    es: 'Inteligencia en M&A y Protección de Inversiones',
+    zh: '并购尽职调查与跨境投融资保护',
+    tr: 'Şirket Birleşme ve Devralma İstihbaratı',
+  },
+  'b2b proposals engine': {
+    ar: 'محرك عروض الصفقات والمناقصات B2B',
+    en: 'Enterprise B2B Proposals Engine',
+    de: 'B2B-Angebotsgenerator für Unternehmen',
+    fr: 'Moteur de Propositions Commerciales B2B',
+    es: 'Motor de Propuestas Comerciales B2B',
+    zh: '企业级B2B竞标方案智能引擎',
+    tr: 'Kurumsal B2B Teklif Motoru',
+  },
+  'dispute mediation': {
+    ar: 'محاكي التفاوض وفض النزاعات الذكي',
+    en: 'AI Negotiation & Dispute Mediation',
+    de: 'KI-Verhandlung & Streitbeilegung',
+    fr: 'Négociation IA & Médiation des Litiges',
+    es: 'Negociación IA y Mediación de Disputas',
+    zh: 'AI谈判模拟与商事争议调解',
+    tr: 'Yapay Zeka Müzakere ve Uyuşmazlık Çözümü',
+  },
+  'due diligence audit': {
+    ar: 'التدقيق الشامل والفحص النافي للجهالة',
+    en: 'Enterprise Due Diligence Audit',
+    de: 'Enterprise Due-Diligence-Prüfung',
+    fr: 'Audit Préalable et Due Diligence d’Entreprise',
+    es: 'Auditoría Due Diligence Empresarial',
+    zh: '企业全面尽职调查与法务风控审计',
+    tr: 'Kurumsal Durum Tespiti (Due Diligence) Denetimi',
+  },
+  'sovereign multi-llm': {
+    ar: 'منصة الذكاء الاصطناعي السيادي متعدد النماذج',
+    en: 'Sovereign Multi-LLM AI Hub',
+    de: 'Souveräner Multi-LLM-KI-Hub',
+    fr: 'Hub IA Souverain Multi-LLM',
+    es: 'Centro IA Soberano Multi-LLM',
+    zh: '主权多模型AI法务综合平台',
+    tr: 'Egemen Çok Modelli Yapay Zeka Merkezi',
+  },
+  'zero-knowledge vault': {
+    ar: 'الخزنة المشفرة بانعدام المعرفة ZK',
+    en: 'Encrypted Zero-Knowledge Vault',
+    de: 'Zero-Knowledge-Verschlüsselter Tresor',
+    fr: 'Coffre-fort Crypté à Connaissance Nulle',
+    es: 'Bóveda Cifrada de Conocimiento Cero',
+    zh: '零知识加密主权文档保管库',
+    tr: 'Sıfır Bilgi Şifreli Güvenli Kasa',
+  },
+  'strategic reports': {
+    ar: 'التقارير القانونية والتحليلات الاستراتيجية',
+    en: 'Strategic Legal Reports & Analytics',
+    de: 'Strategische Rechtsberichte & Analysen',
+    fr: 'Rapports Juridiques Stratégiques & Analyses',
+    es: 'Informes Jurídicos Estratégicos y Analítica',
+    zh: '战略法务深度分析报告与数据洞察',
+    tr: 'Stratejik Hukuki Raporlar ve Analitik',
+  },
+  'commercial arbitration': {
+    ar: 'التحكيم التجاري الدولي والمحاكاة القضائية',
+    en: 'International Commercial Arbitration Concierge',
+    de: 'Internationale Schiedsgerichtsbarkeit & Simulation',
+    fr: 'Conciergerie d’Arbitrage Commercial International',
+    es: 'Concierge de Arbitraje Comercial Internacional',
+    zh: '国际商事仲裁与模拟审判中心',
+    tr: 'Uluslararası Ticari Tahkim Masası',
+  },
+  'pricing plans': {
+    ar: 'خطط الأسعار والاشتراكات',
+    en: 'Pricing Plans & Subscriptions',
+    de: 'Preise & Abonnements',
+    fr: 'Tarifs et Abonnements',
+    es: 'Planes de Precios y Suscripciones',
+    zh: '价格方案与企业订阅',
+    tr: 'Fiyatlandırma ve Abonelik Planları',
+  },
+  'startup plan': {
+    ar: 'باقة الشركات الناشئة',
+    en: 'Startup Plan',
+    de: 'Startup-Tarif',
+    fr: 'Forfait Startup',
+    es: 'Plan Startup',
+    zh: '初创企业版',
+    tr: 'Girişim Planı',
+  },
+  'sme plan': {
+    ar: 'باقة الشركات المتوسطة (SME)',
+    en: 'SME Professional Plan',
+    de: 'KMU-Tarif',
+    fr: 'Forfait PME',
+    es: 'Plan PYME',
+    zh: '中型企业专业版',
+    tr: 'KOBİ Profesyonel Planı',
+  },
+  'enterprise plan': {
+    ar: 'باقة المؤسسات الكبرى',
+    en: 'Enterprise Sovereign Plan',
+    de: 'Enterprise-Tarif',
+    fr: 'Forfait Entreprise',
+    es: 'Plan Corporativo',
+    zh: '集团主权旗舰版',
+    tr: 'Kurumsal Egemen Plan',
+  },
+  'deal room plan': {
+    ar: 'باقة غرفة الصفقات والاستحواذ',
+    en: 'M&A Deal Room Plan',
+    de: 'M&A Deal-Room-Tarif',
+    fr: 'Forfait Deal Room M&A',
+    es: 'Plan Deal Room M&A',
+    zh: '并购交易室专属版',
+    tr: 'Birleşme ve Devralma İşlem Odası Planı',
+  },
+  'all rights reserved': {
+    ar: 'جميع الحقوق محفوظة',
+    en: 'All Rights Reserved',
+    de: 'Alle Rechte vorbehalten',
+    fr: 'Tous droits réservés',
+    es: 'Todos los derechos reservados',
+    zh: '版权所有 保留所有权利',
+    tr: 'Tüm hakları saklıdır',
+  },
+  'search contracts': {
+    ar: 'بحث في العقود والنماذج القانونية...',
+    en: 'Search contracts and legal templates...',
+    de: 'Verträge und rechtliche Vorlagen suchen...',
+    fr: 'Rechercher des contrats et modèles juridiques...',
+    es: 'Buscar contratos y plantillas jurídicas...',
+    zh: '搜索合同与专业法律模板...',
+    tr: 'Sözleşme ve yasal şablonlarda ara...',
+  },
+  'terms of service': {
+    ar: 'شروط الخدمة',
+    en: 'Terms of Service',
+    de: 'Nutzungsbedingungen',
+    fr: 'Conditions d’utilisation',
+    es: 'Términos de Servicio',
+    zh: '服务条款',
+    tr: 'Kullanım Şartları',
+  },
+  'privacy policy': {
+    ar: 'سياسة الخصوصية',
+    en: 'Privacy Policy',
+    de: 'Datenschutzrichtlinie',
+    fr: 'Politique de confidentialité',
+    es: 'Política de Privacidad',
+    zh: '隐私政策',
+    tr: 'Gizlilik Politikası',
+  },
+
+  // ─── Footer & Sovereign Ecosystem ──────────────────────────────────────────
+  'sovereign ai legal intelligence & enterprise automation': {
+    ar: 'منظومة الذكاء الاصطناعي القانونية السيادية للمؤسسات والشركات',
+    en: 'Sovereign AI Legal Intelligence & Enterprise Automation',
+    de: 'Souveräne KI-Rechtsintelligenz & Unternehmensautomatisierung',
+    fr: 'Intelligence Juridique IA Souveraine & Automatisation d’Entreprise',
+    es: 'Inteligencia Jurídica IA Soberana y Automatización Empresarial',
+    zh: '主权AI法律智能与企业级自动化系统',
+    tr: 'Egemen Yapay Zeka Hukuk İstihbaratı ve Kurumsal Otomasyon',
+  },
+  'منظومة الذكاء الاصطناعي القانونية السيادية للمؤسسات والشركات': {
+    ar: 'منظومة الذكاء الاصطناعي القانونية السيادية للمؤسسات والشركات',
+    en: 'Sovereign AI Legal Intelligence & Enterprise Automation',
+    de: 'Souveräne KI-Rechtsintelligenz & Unternehmensautomatisierung',
+    fr: 'Intelligence Juridique IA Souveraine & Automatisation d’Entreprise',
+    es: 'Inteligencia Jurídica IA Soberana y Automatización Empresarial',
+    zh: '主权AI法律智能与企业级自动化系统',
+    tr: 'Egemen Yapay Zeka Hukuk İstihbaratı ve Kurumsal Otomasyon',
+  },
+  '15+ sovereign frameworks': {
+    ar: 'مطابق لـ 15+ نظام قضائي',
+    en: '15+ Sovereign Frameworks',
+    de: '15+ Souveräne Rechtsordnungen',
+    fr: '15+ Cadres Juridiques Souverains',
+    es: 'Más de 15 Marcos Jurídicos Soberanos',
+    zh: '符合15+项主权法律管辖框架',
+    tr: '15+ Egemen Hukuk Sistemiyle Uyumlu',
+  },
+  'مطابق لـ 15+ نظام قضائي': {
+    ar: 'مطابق لـ 15+ نظام قضائي',
+    en: '15+ Sovereign Frameworks',
+    de: '15+ Souveräne Rechtsordnungen',
+    fr: '15+ Cadres Juridiques Souverains',
+    es: 'Más de 15 Marcos Jurídicos Soberanos',
+    zh: '符合15+项主权法律管辖框架',
+    tr: '15+ Egemen Hukuk Sistemiyle Uyumlu',
+  },
+  'bank-grade aes-256': {
+    ar: 'تشفير بنكي E2EE 256-bit',
+    en: 'Bank-Grade AES-256',
+    de: 'Bankenübliche AES-256-Verschlüsselung',
+    fr: 'Chiffrement Bancaire AES-256',
+    es: 'Cifrado Bancario AES-256',
+    zh: '银行级 AES-256 端到端加密',
+    tr: 'Banka Düzeyinde AES-256 Şifreleme',
+  },
+  'تشفير بنكي e2ee 256-bit': {
+    ar: 'تشفير بنكي E2EE 256-bit',
+    en: 'Bank-Grade AES-256',
+    de: 'Bankenübliche AES-256-Verschlüsselung',
+    fr: 'Chiffrement Bancaire AES-256',
+    es: 'Cifrado Bancario AES-256',
+    zh: '银行级 AES-256 端到端加密',
+    tr: 'Banka Düzeyinde AES-256 Şifreleme',
+  },
+  'e2ee encrypted': {
+    ar: 'مشفر E2EE',
+    en: 'E2EE Encrypted',
+    de: 'E2EE-Verschlüsselt',
+    fr: 'Chiffré E2EE',
+    es: 'Cifrado E2EE',
+    zh: 'E2EE端到端加密',
+    tr: 'E2EE Şifreli',
+  },
+  'مشفر e2ee': {
+    ar: 'مشفر E2EE',
+    en: 'E2EE Encrypted',
+    de: 'E2EE-Verschlüsselt',
+    fr: 'Chiffré E2EE',
+    es: 'Cifrado E2EE',
+    zh: 'E2EE端到端加密',
+    tr: 'E2EE Şifreli',
+  },
+  'contracts studio': {
+    ar: 'صياغة وتدقيق العقود',
+    en: 'Contracts Studio',
+    de: 'Vertragsstudio',
+    fr: 'Studio de Contrats',
+    es: 'Estudio de Contratos',
+    zh: '合同起草与审核工作室',
+    tr: 'Sözleşme Stüdyosu',
+  },
+  'صياغة وتدقيق العقود': {
+    ar: 'صياغة وتدقيق العقود',
+    en: 'Contracts Studio',
+    de: 'Vertragsstudio',
+    fr: 'Studio de Contrats',
+    es: 'Estudio de Contratos',
+    zh: '合同起草与审核工作室',
+    tr: 'Sözleşme Stüdyosu',
+  },
+  'ai contract generator': {
+    ar: 'صانع ومولد العقود الذكية',
+    en: 'AI Contract Generator',
+    de: 'KI-Vertragsgenerator',
+    fr: 'Générateur de Contrats IA',
+    es: 'Generador de Contratos IA',
+    zh: '智能AI合同生成器',
+    tr: 'Yapay Zeka Sözleşme Oluşturucu',
+  },
+  'صانع ومولد العقود الذكية': {
+    ar: 'صانع ومولد العقود الذكية',
+    en: 'AI Contract Generator',
+    de: 'KI-Vertragsgenerator',
+    fr: 'Générateur de Contrats IA',
+    es: 'Generador de Contratos IA',
+    zh: '智能AI合同生成器',
+    tr: 'Yapay Zeka Sözleşme Oluşturucu',
+  },
+  'contracts & legal data lake': {
+    ar: 'مستودع العقود والبيانات القانونية',
+    en: 'Contracts & Legal Data Lake',
+    de: 'Vertrags- & Rechtsdaten-Repository',
+    fr: 'Répertoire de Contrats & Données Juridiques',
+    es: 'Repositorio de Contratos y Datos Jurídicos',
+    zh: '合同与法务数据知识湖',
+    tr: 'Sözleşme ve Hukuki Veri Deposu',
+  },
+  'مستودع العقود والبيانات القانونية': {
+    ar: 'مستودع العقود والبيانات القانونية',
+    en: 'Contracts & Legal Data Lake',
+    de: 'Vertrags- & Rechtsdaten-Repository',
+    fr: 'Répertoire de Contrats & Données Juridiques',
+    es: 'Repositorio de Contratos y Datos Jurídicos',
+    zh: '合同与法务数据知识湖',
+    tr: 'Sözleşme ve Hukuki Veri Deposu',
+  },
+  'verified templates studio': {
+    ar: 'مكتبة النماذج والاتفاقيات الجاهزة',
+    en: 'Verified Templates Studio',
+    de: 'Geprüfte Vorlagenbibliothek',
+    fr: 'Studio de Modèles Vérifiés',
+    es: 'Estudio de Plantillas Verificadas',
+    zh: '官方认证模板与协议库',
+    tr: 'Doğrulanmış Şablon Stüdyosu',
+  },
+  'مكتبة النماذج والاتفاقيات الجاهزة': {
+    ar: 'مكتبة النماذج والاتفاقيات الجاهزة',
+    en: 'Verified Templates Studio',
+    de: 'Geprüfte Vorlagenbibliothek',
+    fr: 'Studio de Modèles Vérifiés',
+    es: 'Estudio de Plantillas Verificadas',
+    zh: '官方认证模板与协议库',
+    tr: 'Doğrulanmış Şablon Stüdyosu',
+  },
+  '24/7 ai legal copilot': {
+    ar: 'المساعد القانوني الذكي 24/7',
+    en: '24/7 AI Legal Copilot',
+    de: '24/7 KI-Rechtsassistent',
+    fr: 'Copilote Juridique IA 24/7',
+    es: 'Copiloto Legal IA 24/7',
+    zh: '24/7全天候AI法律助理',
+    tr: '7/24 Yapay Zeka Hukuk Asistanı',
+  },
+  'المساعد القانوني الذكي 24/7': {
+    ar: 'المساعد القانوني الذكي 24/7',
+    en: '24/7 AI Legal Copilot',
+    de: '24/7 KI-Rechtsassistent',
+    fr: 'Copilote Juridique IA 24/7',
+    es: 'Copiloto Legal IA 24/7',
+    zh: '24/7全天候AI法律助理',
+    tr: '7/24 Yapay Zeka Hukuk Asistanı',
+  },
+  'risk & corporate': {
+    ar: 'إدارة المخاطر والشركات',
+    en: 'Risk & Corporate',
+    de: 'Risikomanagement & Unternehmen',
+    fr: 'Gestion des Risques & Entreprises',
+    es: 'Gestión de Riesgos y Corporativo',
+    zh: '风险管理与企业治理',
+    tr: 'Risk Yönetimi ve Kurumsal İşler',
+  },
+  'إدارة المخاطر والشركات': {
+    ar: 'إدارة المخاطر والشركات',
+    en: 'Risk & Corporate',
+    de: 'Risikomanagement & Unternehmen',
+    fr: 'Gestion des Risques & Entreprises',
+    es: 'Gestión de Riesgos y Corporativo',
+    zh: '风险管理与企业治理',
+    tr: 'Risk Yönetimi ve Kurumsal İşler',
+  },
+  'dealshield 360™ & need radar': {
+    ar: 'رادار الصفقات ومستكشف الاحتياجات (DealShield)',
+    en: 'DealShield 360™ & Need Radar',
+    de: 'DealShield 360™ & Bedarfsradar',
+    fr: 'DealShield 360™ & Radar des Besoins',
+    es: 'DealShield 360™ y Radar de Necesidades',
+    zh: 'DealShield 360™交易雷达与需求诊断',
+    tr: 'DealShield 360™ ve İhtiyaç Radarı',
+  },
+  'رادار الصفقات ومستكشف الاحتياجات (dealshield)': {
+    ar: 'رادار الصفقات ومستكشف الاحتياجات (DealShield)',
+    en: 'DealShield 360™ & Need Radar',
+    de: 'DealShield 360™ & Bedarfsradar',
+    fr: 'DealShield 360™ & Radar des Besoins',
+    es: 'DealShield 360™ y Radar de Necesidades',
+    zh: 'DealShield 360™交易雷达与需求诊断',
+    tr: 'DealShield 360™ ve İhtiyaç Radarı',
+  },
+  'contract risk audit': {
+    ar: 'مدقق المخاطر والبنود التعسفية',
+    en: 'Contract Risk Audit',
+    de: 'Vertragsrisikoprüfung',
+    fr: 'Audit des Risques Contractuels',
+    es: 'Auditoría de Riesgos Contractuales',
+    zh: '合同风险与苛刻条款审计',
+    tr: 'Sözleşme Riski ve Ağır Hüküm Denetimi',
+  },
+  'مدقق المخاطر والبنود التعسفية': {
+    ar: 'مدقق المخاطر والبنود التعسفية',
+    en: 'Contract Risk Audit',
+    de: 'Vertragsrisikoprüfung',
+    fr: 'Audit des Risques Contractuels',
+    es: 'Auditoría de Riesgos Contractuales',
+    zh: '合同风险与苛刻条款审计',
+    tr: 'Sözleşme Riski ve Ağır Hüküm Denetimi',
+  },
+  'company formation (misa / difc)': {
+    ar: 'تأسيس الشركات (MISA / DIFC)',
+    en: 'Company Formation (MISA / DIFC)',
+    de: 'Unternehmensgründung (MISA / DIFC)',
+    fr: 'Création d’Entreprise (MISA / DIFC)',
+    es: 'Constitución de Empresas (MISA / DIFC)',
+    zh: '公司设立与注册 (MISA / DIFC)',
+    tr: 'Şirket Kuruluşu (MISA / DIFC)',
+  },
+  'تأسيس الشركات (misa / difc)': {
+    ar: 'تأسيس الشركات (MISA / DIFC)',
+    en: 'Company Formation (MISA / DIFC)',
+    de: 'Unternehmensgründung (MISA / DIFC)',
+    fr: 'Création d’Entreprise (MISA / DIFC)',
+    es: 'Constitución de Empresas (MISA / DIFC)',
+    zh: '公司设立与注册 (MISA / DIFC)',
+    tr: 'Şirket Kuruluşu (MISA / DIFC)',
+  },
+  'security & vault': {
+    ar: 'الأمان والتحكيم',
+    en: 'Security & Vault',
+    de: 'Sicherheit & Tresor',
+    fr: 'Sécurité & Coffre',
+    es: 'Seguridad y Bóveda',
+    zh: '安全保险库与仲裁',
+    tr: 'Güvenlik ve Kasa',
+  },
+  'الأمان والتحكيم': {
+    ar: 'الأمان والتحكيم',
+    en: 'Security & Vault',
+    de: 'Sicherheit & Tresor',
+    fr: 'Sécurité & Coffre',
+    es: 'Seguridad y Bóveda',
+    zh: '安全保险库与仲裁',
+    tr: 'Güvenlik ve Kasa',
+  },
+  'zero-knowledge encrypted vault': {
+    ar: 'خزنة المستندات المشفرة E2EE',
+    en: 'Zero-Knowledge Encrypted Vault',
+    de: 'Zero-Knowledge Verschlüsselter Tresor',
+    fr: 'Coffre-fort Crypté à Connaissance Nulle',
+    es: 'Bóveda Cifrada de Conocimiento Cero',
+    zh: '零知识端到端加密文档保险库',
+    tr: 'Sıfır Bilgi Şifreli Belge Kasası',
+  },
+  'خزنة المستندات المشفرة e2ee': {
+    ar: 'خزنة المستندات المشفرة E2EE',
+    en: 'Zero-Knowledge Encrypted Vault',
+    de: 'Zero-Knowledge Verschlüsselter Tresor',
+    fr: 'Coffre-fort Crypté à Connaissance Nulle',
+    es: 'Bóveda Cifrada de Conocimiento Cero',
+    zh: '零知识端到端加密文档保险库',
+    tr: 'Sıfır Bilgi Şifreli Belge Kasası',
+  },
+  'ai dispute resolution': {
+    ar: 'مفاوض الصفقات وفض النزاعات',
+    en: 'AI Dispute Resolution',
+    de: 'KI-Streitbeilegung & Verhandlung',
+    fr: 'Résolution des Litiges & Négociation IA',
+    es: 'Resolución de Disputas y Negociación IA',
+    zh: 'AI商事争议解决与交易谈判',
+    tr: 'Yapay Zeka Uyuşmazlık Çözümü',
+  },
+  'مفاوض الصفقات وفض النزاعات': {
+    ar: 'مفاوض الصفقات وفض النزاعات',
+    en: 'AI Dispute Resolution',
+    de: 'KI-Streitbeilegung & Verhandlung',
+    fr: 'Résolution des Litiges & Négociation IA',
+    es: 'Resolución de Disputas y Negociación IA',
+    zh: 'AI商事争议解决与交易谈判',
+    tr: 'Yapay Zeka Uyuşmazlık Çözümü',
+  },
+  'strategic legal reports': {
+    ar: 'التقارير القانونية والتحليلات',
+    en: 'Strategic Legal Reports',
+    de: 'Strategische Rechtsberichte',
+    fr: 'Rapports Juridiques Stratégiques',
+    es: 'Informes Jurídicos Estratégicos',
+    zh: '战略法务报告与深度分析',
+    tr: 'Stratejik Hukuk Raporları',
+  },
+  'التقارير القانونية والتحليلات': {
+    ar: 'التقارير القانونية والتحليلات',
+    en: 'Strategic Legal Reports',
+    de: 'Strategische Rechtsberichte',
+    fr: 'Rapports Juridiques Stratégiques',
+    es: 'Informes Jurídicos Estratégicos',
+    zh: '战略法务报告与深度分析',
+    tr: 'Stratejik Hukuk Raporları',
+  },
+  'media & video studio': {
+    ar: 'استوديو الوسائط والشرح المرئي',
+    en: 'Media & Video Studio',
+    de: 'Medien- & Videostudio',
+    fr: 'Studio Médias & Vidéo',
+    es: 'Estudio de Medios y Video',
+    zh: '多媒体视频与视听工作室',
+    tr: 'Medya ve Video Stüdyosu',
+  },
+  'استوديو الوسائط والشرح المرئي': {
+    ar: 'استوديو الوسائط والشرح المرئي',
+    en: 'Media & Video Studio',
+    de: 'Medien- & Videostudio',
+    fr: 'Studio Médias & Vidéo',
+    es: 'Estudio de Medios y Video',
+    zh: '多媒体视频与视听工作室',
+    tr: 'Medya ve Video Stüdyosu',
+  },
+  'governance & legal': {
+    ar: 'الامتثال والسياسات',
+    en: 'Governance & Legal',
+    de: 'Governance & Recht',
+    fr: 'Gouvernance & Conformité Légale',
+    es: 'Gobernanza y Asuntos Legales',
+    zh: '合规治理与法律政策',
+    tr: 'Yönetişim ve Hukuk Politikaları',
+  },
+  'الامتثال والسياسات': {
+    ar: 'الامتثال والسياسات',
+    en: 'Governance & Legal',
+    de: 'Governance & Recht',
+    fr: 'Gouvernance & Conformité Légale',
+    es: 'Gobernanza y Asuntos Legales',
+    zh: '合规治理与法律政策',
+    tr: 'Yönetişim ve Hukuk Politikaları',
+  },
+  'about us & independence': {
+    ar: 'من نحن والاستقلالية القانونية',
+    en: 'About Us & Independence',
+    de: 'Über uns & Unabhängigkeit',
+    fr: 'À Propos & Indépendance Juridique',
+    es: 'Quiénes Somos e Independencia Legal',
+    zh: '关于我们与独立法律声明',
+    tr: 'Hakkımızda ve Bağımsızlık',
+  },
+  'من نحن والاستقلالية القانونية': {
+    ar: 'من نحن والاستقلالية القانونية',
+    en: 'About Us & Independence',
+    de: 'Über uns & Unabhängigkeit',
+    fr: 'À Propos & Indépendance Juridique',
+    es: 'Quiénes Somos e Independencia Legal',
+    zh: '关于我们与独立法律声明',
+    tr: 'Hakkımızda ve Bağımsızlık',
+  },
+  'refund policy': {
+    ar: 'سياسة استرداد الأموال',
+    en: 'Refund Policy',
+    de: 'Rückerstattungsrichtlinie',
+    fr: 'Politique de Remboursement',
+    es: 'Política de Reembolso',
+    zh: '退款政策',
+    tr: 'İade Politikası',
+  },
+  'سياسة استرداد الأموال': {
+    ar: 'سياسة استرداد الأموال',
+    en: 'Refund Policy',
+    de: 'Rückerstattungsrichtlinie',
+    fr: 'Politique de Remboursement',
+    es: 'Política de Reembolso',
+    zh: '退款政策',
+    tr: 'İade Politikası',
+  },
+  'pdpl & gdpr compliance': {
+    ar: 'الامتثال للائحة GDPR & PDPL',
+    en: 'PDPL & GDPR Compliance',
+    de: 'DSGVO- & PDPL-Konformität',
+    fr: 'Conformité RGPD & PDPL',
+    es: 'Cumplimiento RGPD y PDPL',
+    zh: 'GDPR与PDPL国际合规',
+    tr: 'GDPR ve PDPL Uyumluluğu',
+  },
+  'الامتثال للائحة gdpr & pdpl': {
+    ar: 'الامتثال للائحة GDPR & PDPL',
+    en: 'PDPL & GDPR Compliance',
+    de: 'DSGVO- & PDPL-Konformität',
+    fr: 'Conformité RGPD & PDPL',
+    es: 'Cumplimiento RGPD y PDPL',
+    zh: 'GDPR与PDPL国际合规',
+    tr: 'GDPR ve PDPL Uyumluluğu',
+  },
+  'about': {
+    ar: 'من نحن',
+    en: 'About',
+    de: 'Über uns',
+    fr: 'À Propos',
+    es: 'Quiénes Somos',
+    zh: '关于我们',
+    tr: 'Hakkımızda',
+  },
+  'من نحن': {
+    ar: 'من نحن',
+    en: 'About',
+    de: 'Über uns',
+    fr: 'À Propos',
+    es: 'Quiénes Somos',
+    zh: '关于我们',
+    tr: 'Hakkımızda',
+  },
+  'terms': {
+    ar: 'الشروط',
+    en: 'Terms',
+    de: 'Bedingungen',
+    fr: 'Conditions',
+    es: 'Términos',
+    zh: '服务条款',
+    tr: 'Şartlar',
+  },
+  'الشروط': {
+    ar: 'الشروط',
+    en: 'Terms',
+    de: 'Bedingungen',
+    fr: 'Conditions',
+    es: 'Términos',
+    zh: '服务条款',
+    tr: 'Şartlar',
+  },
+  'privacy': {
+    ar: 'الخصوصية',
+    en: 'Privacy',
+    de: 'Datenschutz',
+    fr: 'Confidentialité',
+    es: 'Privacidad',
+    zh: '隐私政策',
+    tr: 'Gizlilik',
+  },
+  'الخصوصية': {
+    ar: 'الخصوصية',
+    en: 'Privacy',
+    de: 'Datenschutz',
+    fr: 'Confidentialité',
+    es: 'Privacidad',
+    zh: '隐私政策',
+    tr: 'Gizlilik',
+  },
+
+  // ─── Mobile Bottom Navigation ──────────────────────────────────────────────
+  'home': {
+    ar: 'الرئيسية',
+    en: 'Home',
+    de: 'Startseite',
+    fr: 'Accueil',
+    es: 'Inicio',
+    zh: '首页',
+    tr: 'Ana Sayfa',
+  },
+  'advisor': {
+    ar: 'المستشار',
+    en: 'Advisor',
+    de: 'Berater',
+    fr: 'Conseiller',
+    es: 'Asesor',
+    zh: '法律顾问',
+    tr: 'Danışman',
+  },
+  'المستشار': {
+    ar: 'المستشار',
+    en: 'Advisor',
+    de: 'Berater',
+    fr: 'Conseiller',
+    es: 'Asesor',
+    zh: '法律顾问',
+    tr: 'Danışman',
+  },
+  'contracts': {
+    ar: 'العقود AI',
+    en: 'Contracts',
+    de: 'Verträge',
+    fr: 'Contrats',
+    es: 'Contratos',
+    zh: '合同',
+    tr: 'Sözleşmeler',
+  },
+  'العقود ai': {
+    ar: 'العقود AI',
+    en: 'Contracts',
+    de: 'Verträge',
+    fr: 'Contrats',
+    es: 'Contratos',
+    zh: '合同',
+    tr: 'Sözleşmeler',
+  },
+  'risk': {
+    ar: 'المخاطر',
+    en: 'Risk',
+    de: 'Risiko',
+    fr: 'Risque',
+    es: 'Riesgo',
+    zh: '风险',
+    tr: 'Risk',
+  },
+  'المخاطر': {
+    ar: 'المخاطر',
+    en: 'Risk',
+    de: 'Risiko',
+    fr: 'Risque',
+    es: 'Riesgo',
+    zh: '风险',
+    tr: 'Risk',
+  },
+  'encrypted vault (e2ee)': {
+    ar: 'الخزنة المشفرة (E2EE)',
+    en: 'Encrypted Vault (E2EE)',
+    de: 'Verschlüsselter Tresor (E2EE)',
+    fr: 'Coffre-fort Crypté (E2EE)',
+    es: 'Bóveda Cifrada (E2EE)',
+    zh: '加密保险库 (E2EE)',
+    tr: 'Şifreli Kasa (E2EE)',
+  },
+  'الخزنة المشفرة (e2ee)': {
+    ar: 'الخزنة المشفرة (E2EE)',
+    en: 'Encrypted Vault (E2EE)',
+    de: 'Verschlüsselter Tresor (E2EE)',
+    fr: 'Coffre-fort Crypté (E2EE)',
+    es: 'Bóveda Cifrada (E2EE)',
+    zh: '加密保险库 (E2EE)',
+    tr: 'Şifreli Kasa (E2EE)',
+  },
+  'video ad studio': {
+    ar: 'مركز الفيديو والإعلانات',
+    en: 'Video Ad Studio',
+    de: 'Video- & Werbestudio',
+    fr: 'Studio Vidéo & Publicité',
+    es: 'Estudio de Video y Anuncios',
+    zh: '视频与宣传工作室',
+    tr: 'Video Reklam Stüdyosu',
+  },
+  'مركز الفيديو والإعلانات': {
+    ar: 'مركز الفيديو والإعلانات',
+    en: 'Video Ad Studio',
+    de: 'Video- & Werbestudio',
+    fr: 'Studio Vidéo & Publicité',
+    es: 'Estudio de Video y Anuncios',
+    zh: '视频与宣传工作室',
+    tr: 'Video Reklam Stüdyosu',
+  },
+  'enterprise audit': {
+    ar: 'التدقيق المؤسسي',
+    en: 'Enterprise Audit',
+    de: 'Unternehmensprüfung',
+    fr: 'Audit d’Entreprise',
+    es: 'Auditoría Corporativa',
+    zh: '企业全面审计',
+    tr: 'Kurumsal Denetim',
+  },
+  'التدقيق المؤسسي': {
+    ar: 'التدقيق المؤسسي',
+    en: 'Enterprise Audit',
+    de: 'Unternehmensprüfung',
+    fr: 'Audit d’Entreprise',
+    es: 'Auditoría Corporativa',
+    zh: '企业全面审计',
+    tr: 'Kurumsal Denetim',
+  },
+  'global compliance': {
+    ar: 'الامتثال القانوني الدولي',
+    en: 'Global Compliance',
+    de: 'Globale Compliance',
+    fr: 'Conformité Mondiale',
+    es: 'Cumplimiento Global',
+    zh: '全球合规',
+    tr: 'Küresel Uyum',
+  },
+  'الامتثال القانوني الدولي': {
+    ar: 'الامتثال القانوني الدولي',
+    en: 'Global Compliance',
+    de: 'Globale Compliance',
+    fr: 'Conformité Mondiale',
+    es: 'Cumplimiento Global',
+    zh: '全球合规',
+    tr: 'Küresel Uyum',
+  },
+  'forensic reports': {
+    ar: 'التقارير الجنائية الذكية',
+    en: 'Forensic Reports',
+    de: 'Forensische Berichte',
+    fr: 'Rapports Médico-Légaux',
+    es: 'Informes Forenses',
+    zh: '取证与法务分析报告',
+    tr: 'Adli Hukuk Raporları',
+  },
+  'التقارير الجنائية الذكية': {
+    ar: 'التقارير الجنائية الذكية',
+    en: 'Forensic Reports',
+    de: 'Forensische Berichte',
+    fr: 'Rapports Médico-Légaux',
+    es: 'Informes Forenses',
+    zh: '取证与法务分析报告',
+    tr: 'Adli Hukuk Raporları',
+  },
+  'direct support': {
+    ar: 'المساعدة والدعم المباشر',
+    en: 'Direct Support',
+    de: 'Direkter Support',
+    fr: 'Support Direct',
+    es: 'Soporte Directo',
+    zh: '直接在线支持',
+    tr: 'Doğrudan Destek',
+  },
+  'المساعدة والدعم المباشر': {
+    ar: 'المساعدة والدعم المباشر',
+    en: 'Direct Support',
+    de: 'Direkter Support',
+    fr: 'Support Direct',
+    es: 'Soporte Directo',
+    zh: '直接在线支持',
+    tr: 'Doğrudan Destek',
+  },
+
+  // ─── Pricing & Payment Tiers ───────────────────────────────────────────────
+  'sovereign retainer tiers 2026': {
+    ar: 'باقات الاشتراكات والخدمات السيادية لعام 2026',
+    en: 'Sovereign Retainer Tiers 2026',
+    de: 'Souveräne Abonnement-Tarife 2026',
+    fr: 'Forfaits d’Abonnement Souverains 2026',
+    es: 'Planes de Suscripción Soberanos 2026',
+    zh: '2026主权企业订阅与专属服务方案',
+    tr: '2026 Egemen Abonelik Paketleri',
+  },
+  'باقات الاشتراكات والخدمات السيادية لعام 2026': {
+    ar: 'باقات الاشتراكات والخدمات السيادية لعام 2026',
+    en: 'Sovereign Retainer Tiers 2026',
+    de: 'Souveräne Abonnement-Tarife 2026',
+    fr: 'Forfaits d’Abonnement Souverains 2026',
+    es: 'Planes de Suscripción Soberanos 2026',
+    zh: '2026主权企业订阅与专属服务方案',
+    tr: '2026 Egemen Abonelik Paketleri',
+  },
+  'sovereign retainer plans & ': {
+    ar: 'باقات الاشتراك وتفعيل ',
+    en: 'Sovereign Retainer Plans & ',
+    de: 'Souveräne Abonnement-Pläne & ',
+    fr: 'Forfaits d’Abonnement Souverains & ',
+    es: 'Planes de Suscripción Soberanos y ',
+    zh: '订阅方案与激活 ',
+    tr: 'Egemen Abonelik Planları & ',
+  },
+  'باقات الاشتراك وتفعيل ': {
+    ar: 'باقات الاشتراك وتفعيل ',
+    en: 'Sovereign Retainer Plans & ',
+    de: 'Souveräne Abonnement-Pläne & ',
+    fr: 'Forfaits d’Abonnement Souverains & ',
+    es: 'Planes de Suscripción Soberanos y ',
+    zh: '订阅方案与激活 ',
+    tr: 'Egemen Abonelik Planları & ',
+  },
+  'enterprise intelligence': {
+    ar: 'الخدمات الذكية السيادية',
+    en: 'Enterprise Intelligence',
+    de: 'Unternehmensintelligenz',
+    fr: 'Intelligence d’Entreprise',
+    es: 'Inteligencia Empresarial',
+    zh: '企业主权智能',
+    tr: 'Kurumsal Zeka',
+  },
+  'الخدمات الذكية السيادية': {
+    ar: 'الخدمات الذكية السيادية',
+    en: 'Enterprise Intelligence',
+    de: 'Unternehmensintelligenz',
+    fr: 'Intelligence d’Entreprise',
+    es: 'Inteligencia Empresarial',
+    zh: '企业主权智能',
+    tr: 'Kurumsal Zeka',
+  },
+  'included services & sovereign features:': {
+    ar: 'المزايا والخدمات المتضمنة:',
+    en: 'Included Services & Sovereign Features:',
+    de: 'Enthaltene Leistungen & Funktionen:',
+    fr: 'Services & Fonctionnalités Inclus :',
+    es: 'Servicios y Funciones Incluidas:',
+    zh: '包含的服务与主权功能：',
+    tr: 'Dahil Edilen Hizmetler ve Özellikler:',
+  },
+  'المزايا والخدمات المتضمنة:': {
+    ar: 'المزايا والخدمات المتضمنة:',
+    en: 'Included Services & Sovereign Features:',
+    de: 'Enthaltene Leistungen & Funktionen:',
+    fr: 'Services & Fonctionnalités Inclus :',
+    es: 'Servicios y Funciones Incluidas:',
+    zh: '包含的服务与主权功能：',
+    tr: 'Dahil Edilen Hizmetler ve Özellikler:',
+  },
+  'card checkout (paytabs — under review)': {
+    ar: 'الدفع بالبطاقة الائتمانية (PayTabs — قيد المراجعة)',
+    en: 'Card Checkout (PayTabs — Under Review)',
+    de: 'Kartenzahlung (PayTabs — In Prüfung)',
+    fr: 'Paiement par Carte (PayTabs — En Cours d’Examen)',
+    es: 'Pago con Tarjeta (PayTabs — En Revisión)',
+    zh: '信用卡结算 (PayTabs — 审核中)',
+    tr: 'Kredi Kartı ile Ödeme (PayTabs — İncelemede)',
+  },
+  'الدفع بالبطاقة الائتمانية (paytabs — قيد المراجعة)': {
+    ar: 'الدفع بالبطاقة الائتمانية (PayTabs — قيد المراجعة)',
+    en: 'Card Checkout (PayTabs — Under Review)',
+    de: 'Kartenzahlung (PayTabs — In Prüfung)',
+    fr: 'Paiement par Carte (PayTabs — En Cours d’Examen)',
+    es: 'Pago con Tarjeta (PayTabs — En Revisión)',
+    zh: '信用卡结算 (PayTabs — 审核中)',
+    tr: 'Kredi Kartı ile Ödeme (PayTabs — İncelemede)',
+  },
+  'or pay via direct verified channels:': {
+    ar: 'أو سدد عبر القنوات المباشرة المعتمدة:',
+    en: 'Or pay via direct verified channels:',
+    de: 'Oder über verifizierte Direktkanäle bezahlen:',
+    fr: 'Ou payer via des canaux directs vérifiés :',
+    es: 'O pague mediante canales directos verificados:',
+    zh: '或通过官方认证直连渠道支付：',
+    tr: 'Veya doğrulanmış doğrudan kanallarla ödeyin:',
+  },
+  'أو سدد عبر القنوات المباشرة المعتمدة:': {
+    ar: 'أو سدد عبر القنوات المباشرة المعتمدة:',
+    en: 'Or pay via direct verified channels:',
+    de: 'Oder über verifizierte Direktkanäle bezahlen:',
+    fr: 'Ou payer via des canaux directs vérifiés :',
+    es: 'O pague mediante canales directos verificados:',
+    zh: '或通过官方认证直连渠道支付：',
+    tr: 'Veya doğrulanmış doğrudan kanallarla ödeyin:',
+  },
+  'startup legal shield': {
+    ar: 'باقة درع الشركات الناشئة ورواد الأعمال',
+    en: 'Startup Legal Shield',
+    de: 'Startup Legal Shield',
+    fr: 'Bouclier Juridique Startup',
+    es: 'Escudo Legal para Startups',
+    zh: '初创企业法务护盾方案',
+    tr: 'Girişim Hukuk Kalkanı',
+  },
+  'باقة درع الشركات الناشئة ورواد الأعمال': {
+    ar: 'باقة درع الشركات الناشئة ورواد الأعمال',
+    en: 'Startup Legal Shield',
+    de: 'Startup Legal Shield',
+    fr: 'Bouclier Juridique Startup',
+    es: 'Escudo Legal para Startups',
+    zh: '初创企业法务护盾方案',
+    tr: 'Girişim Hukuk Kalkanı',
+  },
+  'smes & growth package': {
+    ar: 'حزمة الشركات المتوسطة والنمو المتسارع',
+    en: 'SMEs & Growth Package',
+    de: 'KMU- & Wachstumspaket',
+    fr: 'Forfait PME & Croissance',
+    es: 'Paquete PYME y Crecimiento',
+    zh: '中型企业与高增长升级方案',
+    tr: 'KOBİ ve Büyüme Paketi',
+  },
+  'حزمة الشركات المتوسطة والنمو المتسارع': {
+    ar: 'حزمة الشركات المتوسطة والنمو المتسارع',
+    en: 'SMEs & Growth Package',
+    de: 'KMU- & Wachstumspaket',
+    fr: 'Forfait PME & Croissance',
+    es: 'Paquete PYME y Crecimiento',
+    zh: '中型企业与高增长升级方案',
+    tr: 'KOBİ ve Büyüme Paketi',
+  },
+  'enterprise sovereignty package': {
+    ar: 'باقة السيادة والحوكمة الشاملة للمؤسسات الكبرى',
+    en: 'Enterprise Sovereignty Package',
+    de: 'Enterprise-Souveränitätspaket',
+    fr: 'Forfait Souveraineté Entreprise',
+    es: 'Paquete Soberanía Empresarial',
+    zh: '大型集团主权与全面治理方案',
+    tr: 'Kurumsal Egemenlik Paketi',
+  },
+  'باقة السيادة والحوكمة الشاملة للمؤسسات الكبرى': {
+    ar: 'باقة السيادة والحوكمة الشاملة للمؤسسات الكبرى',
+    en: 'Enterprise Sovereignty Package',
+    de: 'Enterprise-Souveränitätspaket',
+    fr: 'Forfait Souveraineté Entreprise',
+    es: 'Paquete Soberanía Empresarial',
+    zh: '大型集团主权与全面治理方案',
+    tr: 'Kurumsal Egemenlik Paketi',
+  },
+  'm&a deal room pass': {
+    ar: 'باقة غرفة الصفقات والاستحواذ والاندماج',
+    en: 'M&A Deal Room Pass',
+    de: 'M&A Deal-Room-Pass',
+    fr: 'Pass Deal Room M&A',
+    es: 'Pase Deal Room M&A',
+    zh: '并购交易室专属通行证',
+    tr: 'M&A İşlem Odası Giriş Kartı',
+  },
+  'باقة غرفة الصفقات والاستحواذ والاندماج': {
+    ar: 'باقة غرفة الصفقات والاستحواذ والاندماج',
+    en: 'M&A Deal Room Pass',
+    de: 'M&A Deal-Room-Pass',
+    fr: 'Pass Deal Room M&A',
+    es: 'Pase Deal Room M&A',
+    zh: '并购交易室专属通行证',
+    tr: 'M&A İşlem Odası Giriş Kartı',
+  },
+  '/ month': {
+    ar: '/ شهرياً',
+    en: '/ month',
+    de: '/ Monat',
+    fr: '/ mois',
+    es: '/ mes',
+    zh: '/ 月',
+    tr: '/ ay',
+  },
+  '/ شهرياً': {
+    ar: '/ شهرياً',
+    en: '/ month',
+    de: '/ Monat',
+    fr: '/ mois',
+    es: '/ mes',
+    zh: '/ 月',
+    tr: '/ ay',
+  },
+  '/ one-time deal': {
+    ar: '/ ترخيص صفقة واحدة',
+    en: '/ one-time deal',
+    de: '/ Einmalige Transaktion',
+    fr: '/ transaction unique',
+    es: '/ acuerdo único',
+    zh: '/ 单笔交易授权',
+    tr: '/ tek seferlik işlem',
+  },
+  '/ ترخيص صفقة واحدة': {
+    ar: '/ ترخيص صفقة واحدة',
+    en: '/ one-time deal',
+    de: '/ Einmalige Transaktion',
+    fr: '/ transaction unique',
+    es: '/ acuerdo único',
+    zh: '/ 单笔交易授权',
+    tr: '/ tek seferlik işlem',
+  },
+  'startups & founders': {
+    ar: 'الشركات الناشئة والمؤسسون',
+    en: 'Startups & Founders',
+    de: 'Startups & Gründer',
+    fr: 'Startups & Fondateurs',
+    es: 'Startups y Fondadores',
+    zh: '初创企业与创始人',
+    tr: 'Girişimler ve Kurucular',
+  },
+  'الشركات الناشئة والمؤسسون': {
+    ar: 'الشركات الناشئة والمؤسسون',
+    en: 'Startups & Founders',
+    de: 'Startups & Gründer',
+    fr: 'Startups & Fondateurs',
+    es: 'Startups y Fondadores',
+    zh: '初创企业与创始人',
+    tr: 'Girişimler ve Kurucular',
+  },
+  'smes & growth': {
+    ar: 'الشركات المتوسطة والنمو',
+    en: 'SMEs & Growth',
+    de: 'KMU & Wachstum',
+    fr: 'PME & Croissance',
+    es: 'PYME y Crecimiento',
+    zh: '中小企业与快速增长型公司',
+    tr: 'KOBİ ve Büyüme',
+  },
+  'الشركات المتوسطة والنمو': {
+    ar: 'الشركات المتوسطة والنمو',
+    en: 'SMEs & Growth',
+    de: 'KMU & Wachstum',
+    fr: 'PME & Croissance',
+    es: 'PYME y Crecimiento',
+    zh: '中小企业与快速增长型公司',
+    tr: 'KOBİ ve Büyüme',
+  },
+  'corporates & conglomerates': {
+    ar: 'المؤسسات الكبرى والمجموعات',
+    en: 'Corporates & Conglomerates',
+    de: 'Unternehmen & Konzerne',
+    fr: 'Grandes Entreprises & Groupes',
+    es: 'Corporaciones y Grupos',
+    zh: '大型企业与跨国集团',
+    tr: 'Büyük Şirketler ve Holdingler',
+  },
+  'المؤسسات الكبرى والمجموعات': {
+    ar: 'المؤسسات الكبرى والمجموعات',
+    en: 'Corporates & Conglomerates',
+    de: 'Unternehmen & Konzerne',
+    fr: 'Grandes Entreprises & Groupes',
+    es: 'Corporaciones y Grupos',
+    zh: '大型企业与跨国集团',
+    tr: 'Büyük Şirketler ve Holdingler',
+  },
+  'investment & m&a': {
+    ar: 'الاستثمار والاستحواذ',
+    en: 'Investment & M&A',
+    de: 'Investition & M&A',
+    fr: 'Investissement & M&A',
+    es: 'Inversión y M&A',
+    zh: '投资机构与并购顾问',
+    tr: 'Yatırım ve Birleşme/Devralma',
+  },
+  'الاستثمار والاستحواذ': {
+    ar: 'الاستثمار والاستحواذ',
+    en: 'Investment & M&A',
+    de: 'Investition & M&A',
+    fr: 'Investissement & M&A',
+    es: 'Inversión y M&A',
+    zh: '投资机构与并购顾问',
+    tr: 'Yatırım ve Birleşme/Devralma',
+  },
 };
 
 // Pre-indexed reverse lookup map from GLOBAL_TRANSLATIONS for instant O(1) multi-language resolution
 const REVERSE_GLOBAL_MAP: Map<string, Record<SupportedLang, string>> = new Map();
 
-// Build reverse index from GLOBAL_TRANSLATIONS at module load
+// Build reverse index from GLOBAL_TRANSLATIONS, root messages, and all 23 localized namespaces at module load
 (function initGlobalTranslationIndex() {
   try {
     const allLangs: SupportedLang[] = ['ar', 'en', 'de', 'fr', 'es', 'zh', 'tr'];
     const baseAr = GLOBAL_TRANSLATIONS.ar;
     const baseEn = GLOBAL_TRANSLATIONS.en;
 
-    const traverse = (objAr: any, objEn: any, path: string[] = []) => {
+    const allMsgSources: Record<SupportedLang, any> = {
+      ar: arMessages.translation || arMessages,
+      en: enMessages.translation || enMessages,
+      de: deMessages.translation || deMessages,
+      fr: frMessages.translation || frMessages,
+      es: esMessages.translation || esMessages,
+      zh: zhMessages.translation || zhMessages,
+      tr: trMessages.translation || trMessages,
+    };
+
+    const traverse = (objAr: any, objEn: any, sourceRoot: any, path: string[] = []) => {
       if (!objAr || typeof objAr !== 'object') return;
       for (const k of Object.keys(objAr)) {
         const valAr = objAr[k];
@@ -513,7 +1680,7 @@ const REVERSE_GLOBAL_MAP: Map<string, Record<SupportedLang, string>> = new Map()
         if (typeof valAr === 'string') {
           const entry: Record<SupportedLang, string> = {} as any;
           allLangs.forEach(lang => {
-            let cur = GLOBAL_TRANSLATIONS[lang];
+            let cur = sourceRoot[lang];
             for (const p of path) { cur = cur?.[p]; }
             entry[lang] = cur?.[k] || (lang === 'ar' ? valAr : valEn || valAr);
           });
@@ -522,12 +1689,19 @@ const REVERSE_GLOBAL_MAP: Map<string, Record<SupportedLang, string>> = new Map()
           const normEn = (valEn || '').trim().toLowerCase();
           if (normAr) REVERSE_GLOBAL_MAP.set(normAr, entry);
           if (normEn) REVERSE_GLOBAL_MAP.set(normEn, entry);
+          const normK = k.trim().toLowerCase();
+          if (normK && !REVERSE_GLOBAL_MAP.has(normK)) REVERSE_GLOBAL_MAP.set(normK, entry);
         } else if (typeof valAr === 'object') {
-          traverse(valAr, objEn?.[k], [...path, k]);
+          traverse(valAr, objEn?.[k], sourceRoot, [...path, k]);
         }
       }
     };
-    traverse(baseAr, baseEn, []);
+
+    traverse(baseAr, baseEn, GLOBAL_TRANSLATIONS, []);
+    traverse(allMsgSources.ar, allMsgSources.en, allMsgSources, []);
+    if (allI18nResources && allI18nResources.ar && allI18nResources.en) {
+      traverse(allI18nResources.ar, allI18nResources.en, allI18nResources, []);
+    }
   } catch (e) {
     console.warn('[Translator] Reverse index init bypassed:', e);
   }
@@ -572,7 +1746,23 @@ export function loc(arText: string, enText: string, lang?: string): string {
     if (mapped?.[targetLang]) return mapped[targetLang];
   }
 
-  // 4. Check in Dynamic Legal Lexicon & Terminology Engine (Unicode-safe)
+  // 4. Check with stripped trailing punctuation (colons, periods, exclamation marks)
+  const strippedEn = cleanEn.replace(/[:.!?]+$/, '').trim();
+  const strippedAr = cleanAr.replace(/[:.!?]+$/, '').trim();
+  if (strippedEn && strippedEn !== cleanEn) {
+    if (DICTIONARY[strippedEn]?.[targetLang]) return DICTIONARY[strippedEn][targetLang];
+    if (REVERSE_GLOBAL_MAP.has(strippedEn) && REVERSE_GLOBAL_MAP.get(strippedEn)?.[targetLang]) {
+      return REVERSE_GLOBAL_MAP.get(strippedEn)![targetLang];
+    }
+  }
+  if (strippedAr && strippedAr !== cleanAr) {
+    if (DICTIONARY[strippedAr]?.[targetLang]) return DICTIONARY[strippedAr][targetLang];
+    if (REVERSE_GLOBAL_MAP.has(strippedAr) && REVERSE_GLOBAL_MAP.get(strippedAr)?.[targetLang]) {
+      return REVERSE_GLOBAL_MAP.get(strippedAr)![targetLang];
+    }
+  }
+
+  // 5. Check in Dynamic Legal Lexicon & Terminology Engine (Unicode-safe)
   const cleanEnKey = (enText || '').toLowerCase().replace(/[^a-zA-Z0-9]+/g, '_').replace(/^_+|_+$/g, '');
   if (cleanEnKey) {
     const legalTermByEn = legalLexiconEngine.getTerm(cleanEnKey, targetLang);
@@ -636,25 +1826,10 @@ export function formatCurrency(
  * Universal React Hook for 100% Reactive Multi-Language Support
  */
 export function usePlatformLocale() {
+  const localeCtx = useLocale();
   const { i18n, t } = useTranslation();
-  const [currentLang, setCurrentLang] = useState<SupportedLang>(normalizeLanguage(i18n.language));
-
-  useEffect(() => {
-    setCurrentLang(normalizeLanguage(i18n.language));
-  }, [i18n.language]);
-
-  useEffect(() => {
-    const onCustomLangChange = (e: Event) => {
-      const customEvent = e as CustomEvent<{ lang: string }>;
-      if (customEvent.detail?.lang) {
-        setCurrentLang(normalizeLanguage(customEvent.detail.lang));
-      }
-    };
-    window.addEventListener('juristech_lang_change', onCustomLangChange);
-    return () => window.removeEventListener('juristech_lang_change', onCustomLangChange);
-  }, []);
-
-  const isRtl = currentLang === 'ar';
+  const currentLang = (localeCtx?.currentLocale || normalizeLanguage(i18n.language)) as SupportedLang;
+  const isRtl = localeCtx ? localeCtx.isRtl : currentLang === 'ar';
   const gt = GLOBAL_TRANSLATIONS[currentLang] || GLOBAL_TRANSLATIONS.en;
 
   const l = (arText: string, enText: string): string => {
@@ -675,6 +1850,14 @@ export function usePlatformLocale() {
     return formatCurrency(amount, currency, currentLang);
   };
 
+  const changeLocale = (target: SupportedLang) => {
+    if (localeCtx) {
+      localeCtx.changeLocale(target as any);
+    } else {
+      i18n.changeLanguage(target);
+    }
+  };
+
   /**
    * Feed new client/visitor statutory interactions into legal language self-learning
    */
@@ -692,6 +1875,7 @@ export function usePlatformLocale() {
     formatCurr,
     t,
     i18n,
+    changeLocale,
     learnFromClientInteraction,
     legalLexiconEngine,
   };

@@ -103,8 +103,8 @@ export default function AdminMarketingCRMPage() {
       setCsuiteState(autonomousCSuiteOutreachEngine.getState());
       alert(
         isRtl
-          ? `🚀 تم إرسال ${result.successCount} عروض تنفيذية للـ CEO والـ CFO بنجاح!\nالمتبقي اليوم: ${result.remainingQuota}/20\nالمرسل الرسمي: juristech.solutions@outlook.com بتوقيع د. محمد مصطفى.`
-          : `🚀 Dispatched ${result.successCount} executive proposals to CEOs & CFOs!\nRemaining today: ${result.remainingQuota}/20\nOfficial Sender: juristech.solutions@outlook.com signed by Dr. Mohammad Mustafa.`
+          ? `🚀 تم إرسال ${result.successCount} عروض تنفيذية للـ CEO والـ CFO بنجاح!\nالمتبقي اليوم: ${result.remainingQuota}/20\nالمرسل الرسمي: founder@juristech.solutions بتوقيع د. محمد مصطفى.`
+          : `🚀 Dispatched ${result.successCount} executive proposals to CEOs & CFOs!\nRemaining today: ${result.remainingQuota}/20\nOfficial Sender: founder@juristech.solutions signed by Dr. Mohammad Mustafa.`
       );
     } finally {
       setIsLaunching20(false);
@@ -184,7 +184,7 @@ export default function AdminMarketingCRMPage() {
             </h1>
             <p className="text-sm font-semibold text-slate-500 dark:text-slate-400 flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-emerald-400" />
-              {isRtl ? 'قناة الاتصال الرسمية: juristech.solutions@outlook.com' : 'Official Channel: juristech.solutions@outlook.com'}
+              {isRtl ? 'قناة الاتصال الرسمية: founder@juristech.solutions' : 'Official Channel: founder@juristech.solutions'}
             </p>
           </div>
         </div>
@@ -431,9 +431,9 @@ export default function AdminMarketingCRMPage() {
               <div className="pt-2 flex items-center justify-between flex-wrap gap-2">
                 <div className="flex items-center gap-2 text-xs font-bold text-slate-500">
                   <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                  Sending as: <span className="text-slate-900 dark:text-white">juristech.solutions@outlook.com</span>
+                  Sending as: <span className="text-slate-900 dark:text-white">founder@juristech.solutions</span>
                   <span className="text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20">
-                    BCC: drzyogo.ca@gmail.com
+                    BCC: founder@juristech.solutions
                   </span>
                 </div>
 

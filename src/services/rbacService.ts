@@ -45,7 +45,7 @@ const INITIAL_USERS: UserAccount[] = [
   {
     id: 'usr_lawyer_02',
     email: 'juristech.solutions@outlook.com',
-    fullName: 'Senior Legal Counsel & Advisor',
+    fullName: 'Chief Legal Officer & Advisor',
     role: 'Lawyer',
     isActive: true,
     is_two_factor_enabled: false,

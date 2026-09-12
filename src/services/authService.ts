@@ -10,6 +10,8 @@ export interface UserProfile {
   subscriptionTier: 'free' | 'startup' | 'sme' | 'enterprise';
 }
 
+import { verifyAdminAccess, isAuthorizedAdminEmail, OFFICIAL_ADMIN_EMAILS } from '../lib/adminGuard';
+
 export class AuthService {
   private static instance: AuthService;
 
@@ -35,18 +37,20 @@ export class AuthService {
 
   /** Check if current session has Admin privileges */
   public isAdmin(): boolean {
-    const adminAuthed = localStorage.getItem('ls_admin_authenticated');
-    if (adminAuthed === 'true') return true;
+    if (verifyAdminAccess()) return true;
 
     const user = this.getCurrentUser();
+    if (user?.email && isAuthorizedAdminEmail(user.email)) return true;
     return user?.role === 'admin' || user?.role === 'super-admin';
   }
 
-  /** Validate Admin 2FA Passcode */
+  /** Validate Admin Access via Authorized Admin Whitelist & Session Tokens (Zero Plaintext Secrets) */
   public verifyAdminPasscode(passcode: string): boolean {
-    const validCodes = ['778899', 'admin2026', 'juristech-super-admin'];
-    if (validCodes.includes(passcode.trim())) {
-      localStorage.setItem('ls_admin_authenticated', 'true');
+    // Plain-text passcodes removed per P0 Security Hardening
+    // Requires authenticated admin session or cryptographic admin token verification
+    if (verifyAdminAccess()) return true;
+    const user = this.getCurrentUser();
+    if (user?.email && isAuthorizedAdminEmail(user.email)) {
       return true;
     }
     return false;

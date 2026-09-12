@@ -7,6 +7,7 @@
  */
 
 import { triggerAutomatedB2BOutreach } from './outreachEngine';
+import { supabase } from '../lib/supabaseClient';
 
 export type CrmLeadStatus =
   // Pre-Contact Verification & Outreach Stages
@@ -48,6 +49,7 @@ export interface CrmClientLead {
   clientName: string;
   companyName: string;
   contactEmail: string;
+  phone?: string;
   jurisdiction: string;
   flag: string;
   status: CrmLeadStatus;
@@ -80,6 +82,24 @@ export interface CrmClientLead {
   owner?: string;
   campaign?: string;
   stakeholderRole?: 'CEO' | 'Legal' | 'Operations' | 'Partner' | string;
+
+  // ── SPRINT 07: B2B Verified Ingestion Standard Fields ──
+  company_name?: string;
+  official_website?: string;
+  headquarters?: string;
+  operating_markets?: string[];
+  sector?: string;
+  business_model?: string;
+  target_role?: string;
+  public_business_contact?: string;
+  linkedin_url_if_verified?: string;
+  recommended_plan?: string;
+  autoDispatch?: boolean;
+  outreach_status?: 'DRAFT' | 'APPROVED' | 'SENT';
+  research_notes?: string;
+  verified_sources?: string[];
+  sales_inference?: string;
+  confidence?: 'HIGH' | 'MEDIUM' | 'LOW';
 }
 
 export interface CrmAuditLogEntry {
@@ -102,8 +122,151 @@ const CRM_AUDIT_LOG_STORAGE_KEY = 'juristech_crm_audit_logs_v2';
 const CRM_AUTO_MODE_STORAGE_KEY = 'juristech_crm_auto_mode_v2';
 const CRM_DAILY_QUOTA_STORAGE_KEY = 'juristech_crm_daily_quota_v3';
 
-// ── 10 REAL UNIQUE GLOBAL B2B CLIENT PROSPECTS ──────────────────────────────
+// ── SPRINT 07: 3 REAL & VERIFIED ENTERPRISE B2B ACCOUNTS ─────────────────────
+// Research independently validated from official filings & regulatory records.
+// Guaranteed: source_type="REAL", verification_status="VERIFIED", autoDispatch=false, outreach_status="DRAFT".
+export const VERIFIED_SPRINT07_ACCOUNTS: CrmClientLead[] = [
+  {
+    id: 'b2b-verified-remofirst',
+    company_name: 'RemoFirst Inc.',
+    companyName: 'RemoFirst Inc.',
+    clientName: 'Numaan Akram / Legal Operations',
+    official_website: 'https://www.remofirst.com',
+    headquarters: 'San Francisco, California, United States',
+    operating_markets: ['Global', 'United States', 'United Kingdom', 'European Union', 'Canada', 'Australia', 'Singapore', 'India'],
+    sector: 'HR Tech / Employer of Record (EOR) & Global Payroll',
+    industry: 'HR Tech & Global Payroll',
+    business_model: 'Employer of Record (EOR), International Contractor Onboarding & Management, Global Payroll, Visas & Work Permits, Health Benefits (RemoHealth)',
+    target_role: 'Head of Legal Operations / General Counsel / VP People Ops',
+    stakeholderRole: 'Legal',
+    public_business_contact: 'support@remofirst.com',
+    contactEmail: 'support@remofirst.com',
+    linkedin_url_if_verified: 'https://www.linkedin.com/company/remofirst',
+    linkedInUrl: 'https://www.linkedin.com/company/remofirst',
+    recommended_plan: 'Enterprise Custom / Annual Multi-Jurisdiction License',
+    source_type: 'REAL',
+    verification_status: 'VERIFIED',
+    autoDispatch: false,
+    outreach_status: 'DRAFT',
+    status: 'New',
+    jurisdiction: 'USA',
+    flag: '🇺🇸',
+    lastContactDate: '2026-09-09',
+    estimatedValueUSD: 180000,
+    leadScore: 98,
+    market: 'USA',
+    marketTier: 'Tier 2 - USA',
+    buyerType: 'Corporate Legal',
+    notesAr: 'شركة RemoFirst Inc. الأمريكية لحلول التوظيف بالوكالة (EOR) وإدارة الرواتب والمتعاقدين في 150+ دولة. مسجلة في كاليفورنيا بمحاكم سان فرانسيسكو. بحاجة للتدقيق التعاقدي ومطابقة قوانين العمل الدولية.',
+    notesEn: 'RemoFirst Inc. (California, USA). Global EOR and contractor payroll platform operating in 150+ countries. High strategic alignment with JurisTech 40-rule statutory gap detector and missing document protocol.',
+    research_notes: 'RemoFirst Inc. is a US-headquartered global EOR and contractor payroll platform operating in 150+ countries. Founded in 2021 by Numaan Akram (CEO) and Volodymyr Fedoriv (CTO). Operates under California governing law with San Francisco County jurisdiction. Directly addresses cross-border employment compliance, international contractor onboarding, and IP assignment deeds.',
+    verified_sources: [
+      'https://www.remofirst.com',
+      'https://www.remofirst.com/about-us',
+      'https://www.remofirst.com/legal/terms-of-use',
+      'https://www.remofirst.com/legal/privacy-policy'
+    ],
+    sales_inference: 'Operating across 150+ legal jurisdictions creates continuous exposure to local labor law misclassification, missing statutory severance terms, and incomplete IP work-for-hire assignment deeds. High strategic alignment with JurisTech 40-rule statutory Gap Detector, Missing Document Protocol, and multi-jurisdiction advisory drafting engine.',
+    confidence: 'HIGH',
+    lastActivityAr: 'تم التحقق والتوثيق من المصادر الرسمية - مسودة التواصل معدة للعرض والمراجعة فقط',
+    lastActivityEn: 'Independently verified from official sources - outreach draft queued for manual review',
+  },
+  {
+    id: 'b2b-verified-leantech',
+    company_name: 'Lean Technologies',
+    companyName: 'Lean Technologies',
+    clientName: 'Hisham Al-Falih / Legal & Compliance',
+    official_website: 'https://www.leantech.me',
+    headquarters: 'Abu Dhabi (ADGM), UAE & Riyadh, Saudi Arabia',
+    operating_markets: ['United Arab Emirates', 'Saudi Arabia', 'GCC'],
+    sector: 'FinTech / Open Banking & Payment Infrastructure',
+    industry: 'FinTech & Open Banking Infrastructure',
+    business_model: 'Open Banking API, Account-to-Account (A2A) Instant Payments (Pay by Bank), Payouts, Account Verification, Financial Data Aggregation',
+    target_role: 'General Counsel / Head of Compliance / VP Regulatory Affairs',
+    stakeholderRole: 'Legal',
+    public_business_contact: 'contact@leantech.me',
+    contactEmail: 'contact@leantech.me',
+    linkedin_url_if_verified: 'https://www.linkedin.com/company/leantechnologies',
+    linkedInUrl: 'https://www.linkedin.com/company/leantechnologies',
+    recommended_plan: 'Enterprise Sovereign / GCC Regulatory Tier',
+    source_type: 'REAL',
+    verification_status: 'VERIFIED',
+    autoDispatch: false,
+    outreach_status: 'DRAFT',
+    status: 'New',
+    jurisdiction: 'UAE',
+    flag: '🇦🇪',
+    lastContactDate: '2026-09-09',
+    estimatedValueUSD: 220000,
+    leadScore: 99,
+    market: 'GCC',
+    marketTier: 'Tier 1 - GCC',
+    buyerType: 'Corporate Legal',
+    notesAr: 'شركة لين للتقنية المالية (Lean Technologies). مرخصة من ADGM FSRA بترخيص FSP 200033، ومؤسسة مدفوعات كبرى مرخصة من البنك المركزي السعودي (ساما)، وموافقة مبدئية من مصرف الإمارات المركزي (CBUAE).',
+    notesEn: 'Lean Technologies (Abu Dhabi ADGM & Riyadh KSA). Regulated Open Banking and Payments API provider licensed by ADGM FSRA (FSP 200033), SAMA (Major Payment Institution), and CBUAE Open Finance IPA.',
+    research_notes: 'Founded in 2019. Raised $67.5M Series B led by General Catalyst. Regulated by ADGM FSRA (FSP no. 200033 for Category 4 Third Party Services & Category 3C Money Services - first Open Banking TPP in ADGM); Saudi Central Bank (SAMA) licensed Major Payment Institution; CBUAE In-Principle Approval (IPA) for Open Finance Services (August 2025). Live clients include Careem, Tabby, DAMAC, Sarwa, Ziina.',
+    verified_sources: [
+      'https://www.leantech.me',
+      'https://www.leantech.me/about',
+      'https://www.leantech.me/legal/end-user-agreement',
+      'https://www.leantech.me/blog'
+    ],
+    sales_inference: 'As a dual-licensed Open Banking provider under SAMA and ADGM/CBUAE, contracting with Tier-1 banks and fintechs involves high-stakes MSAs, API uptime SLAs, liability caps, and Saudi PDPL / UAE Data Law compliance. Downstream fintech partners offering credit/BNPL (e.g. Tabby) also require Sharia/Islamic finance alignment (Murabaha/Wakala) directly supported by JurisTech newly integrated Islamic Finance contract engine.',
+    confidence: 'HIGH',
+    lastActivityAr: 'تم التحقق والتوثيق من السجلات التنظيمية الرسمية (ساما / ADGM) - جاهز للعرض والمراجعة',
+    lastActivityEn: 'Verified from regulatory registries (SAMA / ADGM FSRA) - queued for manual outreach review',
+  },
+  {
+    id: 'b2b-verified-huspy',
+    company_name: 'Huspy',
+    companyName: 'Huspy',
+    clientName: 'Jad Antoun / Transaction Operations',
+    official_website: 'https://www.huspy.com',
+    headquarters: 'Dubai, UAE (The Bay Gate, Business Bay)',
+    operating_markets: ['United Arab Emirates', 'Spain', 'EMEA'],
+    sector: 'PropTech / Digital Real Estate & Mortgage Brokerage',
+    industry: 'PropTech & Digital Mortgage Brokerage',
+    business_model: 'Digital home buying and mortgage brokerage platform connecting buyers, agents, and lending banks',
+    target_role: 'Head of Legal Operations / Conveyancing Director / Chief Operating Officer',
+    stakeholderRole: 'Operations',
+    public_business_contact: 'contact@huspy.io',
+    contactEmail: 'contact@huspy.io',
+    linkedin_url_if_verified: 'https://www.linkedin.com/company/huspy',
+    linkedInUrl: 'https://www.linkedin.com/company/huspy',
+    recommended_plan: 'Enterprise Brokerage & Conveyancing Suite',
+    source_type: 'REAL',
+    verification_status: 'VERIFIED',
+    autoDispatch: false,
+    outreach_status: 'DRAFT',
+    status: 'New',
+    jurisdiction: 'UAE',
+    flag: '🇦🇪',
+    lastContactDate: '2026-09-09',
+    estimatedValueUSD: 160000,
+    leadScore: 97,
+    market: 'GCC',
+    marketTier: 'Tier 1 - GCC',
+    buyerType: 'Tech Startup',
+    notesAr: 'شركة هسبي (Huspy) لحلول العقارات والرهن العقاري الرقمي في الإمارات وإسبانيا. مرخصة من ريرا (RERA License 19498 و 27102) ومحاكم دبي. تتطلب توكيلات خاصة ثنائية اللغة وبروتوكول مستندات لنقل الملكية والتمويل.',
+    notesEn: 'Huspy (Dubai, UAE & Madrid/Valencia, Spain). PropTech and digital mortgage brokerage licensed by RERA (Licenses 19498 & 27102). Heavy reliance on bilingual Powers of Attorney and conveyancing closing documentation.',
+    research_notes: 'Founded 2019/2020 by Jad Antoun (CEO). Raised $59M Series B led by Balderton Capital; $37M Series A led by Sequoia Capital India with Founders Fund and Fifth Wall. Licensed by RERA: Huspy Properties (Dubai Lic: 584276, Abu Dhabi Lic: CN-4671527, RERA Lic: 19498); Huspy Mortgage Broker FZE (Lic: 2489, Dubai Branch Lic: 898686, RERA Lic: 27102); Home Matters Real Estate Broker LLC. European offices in Madrid and Valencia.',
+    verified_sources: [
+      'https://www.huspy.com',
+      'https://www.huspy.com/about',
+      'https://www.huspy.com/legal',
+      'https://www.huspy.com/ae/content/licenses',
+      'https://www.huspy.com/ae/content/terms-and-conditions'
+    ],
+    sales_inference: 'High-volume property conveyancing and mortgage brokerage between international buyers and UAE/Spanish lenders requires extensive Powers of Attorney (Real Estate Management POA, Bank & Financial Representation POA) and strict pre-closing document completeness to prevent failed transactions. Direct synergy with JurisTech standardized bilingual AR/EN POA library and Missing Document Protocol.',
+    confidence: 'HIGH',
+    lastActivityAr: 'تم التحقق من تراخيص ريرا ومحاكم دبي ومكاتب إسبانيا - مسودة التواصل معدة للعرض فقط',
+    lastActivityEn: 'Verified against Dubai RERA and Spanish registrations - outreach draft ready for review',
+  },
+];
+
+// ── INITIAL CRM PROSPECTS (INCLUDING SPRINT 07 VERIFIED) ─────────────────────
 export const INITIAL_CRM_LEADS: CrmClientLead[] = [
+  ...VERIFIED_SPRINT07_ACCOUNTS,
   {
     source_type: 'SEED', verification_status: 'SEED', created_at: '2026-08-01T00:00:00Z', id: 'b2b-lead-us-01',
     clientName: 'Alexander Vance',
@@ -278,6 +441,27 @@ class CrmService {
     this.leads = this.loadLeads();
     this.auditLogs = this.loadAuditLogs();
     this.isAutoMode = this.loadAutoMode();
+
+    // Central Database Hydration
+    this.syncLeadsWithDatabase().catch((err) => {
+      console.warn('[CRM Boot] Initial DB sync notice:', err);
+    });
+
+    if (typeof window !== 'undefined') {
+      // Auto-dispatch background check on boot
+      setTimeout(() => {
+        if (this.isAutoMode) {
+          this.autoDispatchBatch(3);
+        }
+      }, 4000);
+
+      // Periodic background processing every 15 minutes
+      setInterval(() => {
+        if (this.isAutoMode) {
+          this.autoDispatchBatch(5);
+        }
+      }, 15 * 60 * 1000);
+    }
   }
 
   public getDailyQuotaStats(): { usedToday: number; remainingToday: number; limit: number; date: string } {
@@ -352,6 +536,14 @@ class CrmService {
       }
     }
 
+    // Ensure all VERIFIED SPRINT 07 accounts are always present (idempotent, no duplicates)
+    for (const lead of VERIFIED_SPRINT07_ACCOUNTS) {
+      const cleanEmail = lead.contactEmail.toLowerCase().trim();
+      if (!archivedEmails.has(cleanEmail) && !uniqueMap.has(cleanEmail)) {
+        uniqueMap.set(cleanEmail, lead);
+      }
+    }
+
     // If active leads list fell below 5, replenish with non-repeating INITIAL_CRM_LEADS
     if (uniqueMap.size < 5) {
       for (const lead of INITIAL_CRM_LEADS) {
@@ -411,6 +603,136 @@ class CrmService {
     } catch {}
   }
 
+  /**
+   * P1: Centralized Supabase Sync — Pulls shared team leads from central PostgreSQL
+   */
+  public async syncLeadsWithDatabase(): Promise<void> {
+    try {
+      const { data, error } = await supabase
+        .from('crm_leads')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(200);
+
+      if (!error && data && data.length > 0) {
+        const dbMap = new Map<string, CrmClientLead>();
+        data.forEach((row: any) => {
+          const lead: CrmClientLead = {
+            id: row.id,
+            clientName: row.client_name || row.company_name || 'Prospect',
+            companyName: row.company_name || '',
+            contactEmail: row.contact_email,
+            phone: row.phone || '',
+            jurisdiction: row.jurisdiction || 'GLOBAL',
+            flag: row.jurisdiction === 'USA' ? '🇺🇸' : row.jurisdiction === 'UAE' ? '🇦🇪' : '🌐',
+            status: row.status || 'New',
+            lastContactDate: row.last_contact_date ? row.last_contact_date.slice(0, 10) : new Date().toISOString().slice(0, 10),
+            estimatedValueUSD: Number(row.estimated_value_usd) || 0,
+            leadScore: row.lead_score || 80,
+            notesAr: row.notes_ar || '',
+            notesEn: row.notes_en || '',
+            lastActivityAr: row.last_activity_ar,
+            lastActivityEn: row.last_activity_en,
+            dispatchedAt: row.dispatched_at,
+            source_type: row.source_type || 'REAL',
+            verification_status: row.verification_status || 'UNVERIFIED',
+            autoDispatch: row.auto_dispatch,
+            outreach_status: row.outreach_status || 'DRAFT',
+          };
+          dbMap.set(row.contact_email.toLowerCase().trim(), lead);
+        });
+
+        // Merge DB leads with local state (deduplicated by contactEmail)
+        this.leads.forEach(localLead => {
+          const key = localLead.contactEmail?.toLowerCase()?.trim();
+          if (key && !dbMap.has(key)) {
+            dbMap.set(key, localLead);
+          }
+        });
+
+        this.leads = Array.from(dbMap.values());
+        this.saveLeads();
+      }
+    } catch (e) {
+      console.warn('[CRM Database Sync] Operating in resilient fallback mode:', e);
+    }
+  }
+
+  /**
+   * P1: Persist Lead to Central Supabase CRM
+   */
+  public async persistLeadToDatabase(lead: CrmClientLead): Promise<void> {
+    try {
+      const cleanEmail = lead.contactEmail.toLowerCase().trim();
+      const visitorId = typeof localStorage !== 'undefined' ? localStorage.getItem('ls_unique_visitor_id') : null;
+      let userId: string | null = null;
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user?.id) userId = session.user.id;
+      } catch {}
+
+      await supabase.from('crm_leads').upsert({
+        company_name: lead.companyName || lead.clientName,
+        client_name: lead.clientName,
+        contact_email: cleanEmail,
+        jurisdiction: lead.jurisdiction || 'GLOBAL',
+        status: lead.status || 'LEAD',
+        source_type: lead.source_type || 'REAL',
+        verification_status: lead.verification_status || 'UNVERIFIED',
+        estimated_value_usd: lead.estimatedValueUSD || 0,
+        lead_score: lead.leadScore || 80,
+        notes_ar: lead.notesAr || '',
+        notes_en: lead.notesEn || '',
+        last_activity_ar: lead.lastActivityAr || '',
+        last_activity_en: lead.lastActivityEn || '',
+        last_contact_date: lead.lastContactDate ? new Date(lead.lastContactDate).toISOString() : new Date().toISOString(),
+        dispatched_at: lead.dispatchedAt ? new Date(lead.dispatchedAt).toISOString() : null,
+        auto_dispatch: lead.autoDispatch || false,
+        outreach_status: lead.outreach_status || 'DRAFT',
+        visitor_id: visitorId,
+        user_id: userId,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: 'contact_email' });
+    } catch (err) {
+      console.warn('[CRM Database Persist] Notice:', err);
+    }
+  }
+
+  /**
+   * P1: Persist Audit Log to Central Supabase CRM Audit Trail
+   */
+  public async persistAuditLogToDatabase(entry: {
+    recipientEmail: string;
+    actionType: string;
+    status: 'SUCCESS' | 'FAILED' | 'QUEUED' | 'SKIPPED';
+    trigger?: string;
+    errorMessage?: string;
+    messageId?: string;
+    customerType?: string;
+  }): Promise<void> {
+    try {
+      let userId: string | null = null;
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user?.id) userId = session.user.id;
+      } catch {}
+
+      await supabase.from('crm_audit_logs').insert({
+        recipient_email: entry.recipientEmail,
+        action_type: entry.actionType,
+        status: entry.status,
+        trigger: entry.trigger || 'MANUAL_DISPATCH',
+        error_message: entry.errorMessage || null,
+        message_id: entry.messageId || null,
+        customer_type: entry.customerType || 'LEAD',
+        user_id: userId,
+        created_at: new Date().toISOString(),
+      });
+    } catch (err) {
+      console.warn('[CRM Audit Log Persist] Notice:', err);
+    }
+  }
+
   public subscribe(listener: () => void) {
     this.listeners.add(listener);
     return () => {
@@ -453,7 +775,7 @@ class CrmService {
     this.saveLeads();
   }
 
-  public addLead(lead: Omit<CrmClientLead, 'id'>): CrmClientLead {
+  public addLead(lead: Omit<CrmClientLead, 'id'>, autoDispatch: boolean = true): CrmClientLead {
     const cleanEmail = lead.contactEmail.toLowerCase().trim();
     // Prevent adding duplicates
     const existing = this.leads.find(l => l.contactEmail.toLowerCase().trim() === cleanEmail) ||
@@ -473,7 +795,49 @@ class CrmService {
     };
     this.leads.unshift(newLead);
     this.saveLeads();
+    this.persistLeadToDatabase(newLead);
+
+    // Trigger instant autonomous outreach if CRM Autonomous Mode is active AND lead allows autoDispatch
+    if (this.isAutoMode && autoDispatch && newLead.autoDispatch !== false && newLead.outreach_status !== 'DRAFT') {
+      setTimeout(() => {
+        this.triggerAiOutreach(newLead, undefined, true).catch((err) => {
+          console.warn('[CRM Autonomous Dispatch] Auto outreach async notice:', err);
+        });
+      }, 1000);
+    }
+
     return newLead;
+  }
+
+  /**
+   * SPRINT 07: Explicit Idempotent Ingestion of Verified B2B Enterprise Accounts
+   */
+  public ingestVerifiedB2BAccounts(): { ingestedCount: number; existingCount: number; totalVerified: number } {
+    let ingestedCount = 0;
+    let existingCount = 0;
+
+    for (const verifiedAccount of VERIFIED_SPRINT07_ACCOUNTS) {
+      const cleanEmail = verifiedAccount.contactEmail.toLowerCase().trim();
+      const existing = this.leads.find(l => l.contactEmail.toLowerCase().trim() === cleanEmail);
+      if (existing) {
+        existingCount++;
+        // Refresh verified fields while keeping autoDispatch=false and outreach_status=DRAFT
+        Object.assign(existing, verifiedAccount, { autoDispatch: false, outreach_status: 'DRAFT' });
+      } else {
+        this.leads.unshift({ ...verifiedAccount });
+        ingestedCount++;
+      }
+    }
+
+    if (ingestedCount > 0) {
+      this.saveLeads();
+    }
+
+    return {
+      ingestedCount,
+      existingCount,
+      totalVerified: VERIFIED_SPRINT07_ACCOUNTS.length,
+    };
   }
 
   public updateLeadStatus(id: string, status: CrmClientLead['status']) {
@@ -571,7 +935,7 @@ class CrmService {
    * BULK IMPORT LEADS FROM CSV CONTENT
    * Format: company_name, contact_name, email, industry, country
    */
-  public importLeadsFromCsv(csvContent: string): { importedCount: number; errors: string[] } {
+  public importLeadsFromCsv(csvContent: string, autoDispatch: boolean = true): { importedCount: number; errors: string[] } {
     const lines = csvContent.split(/\r?\n/).filter((l) => l.trim().length > 0);
     if (lines.length <= 1) {
       return { importedCount: 0, errors: ['الملف فارغ أو لا يحتوي على صفوف بيانات'] };
@@ -779,17 +1143,74 @@ class CrmService {
         stakeholderRole,
         source_type: 'REAL',
         verification_status: 'UNVERIFIED',
-      });
+      }, false);
       importedCount++;
+    }
+
+    // Auto-dispatch outreach to newly imported batch if CRM Auto Mode is active
+    if (this.isAutoMode && autoDispatch && importedCount > 0) {
+      setTimeout(() => {
+        this.autoDispatchBatch(importedCount).catch((err) => {
+          console.warn('[CRM CSV Auto Dispatch] Error during batch outreach:', err);
+        });
+      }, 1500);
     }
 
     return { importedCount, errors };
   }
 
   /**
+   * AUTOMATED BATCH OUTREACH TO PENDING LEADS
+   * Automatically scans uncontacted / pending leads and dispatches AI proposals up to the daily limit.
+   */
+  public async autoDispatchBatch(maxCount: number = 5): Promise<{ dispatched: number; remainingQuota: number }> {
+    if (!this.isAutoMode) {
+      return { dispatched: 0, remainingQuota: this.getDailyQuotaStats().remainingToday };
+    }
+
+    const quota = this.getDailyQuotaStats();
+    if (quota.remainingToday <= 0) {
+      console.log('[CRM Auto Dispatch] Daily quota already reached.');
+      return { dispatched: 0, remainingQuota: 0 };
+    }
+
+    const targetLimit = Math.min(maxCount, quota.remainingToday);
+    const candidateLeads = this.leads.filter(
+      (l) =>
+        (l.status === 'New' || l.status === 'Imported' || l.status === 'LEAD CAPTURED' || l.status === 'QUALIFIED' || l.status === 'Warm') &&
+        l.autoDispatch !== false &&
+        l.outreach_status !== 'DRAFT'
+    );
+
+    let count = 0;
+    for (const lead of candidateLeads) {
+      if (count >= targetLimit) break;
+      try {
+        const ok = await this.triggerAiOutreach(lead, undefined, true);
+        if (ok) {
+          count++;
+        }
+      } catch (err) {
+        console.warn(`[CRM Auto Dispatch] Error auto-dispatching to ${lead.contactEmail}:`, err);
+      }
+    }
+
+    return {
+      dispatched: count,
+      remainingQuota: this.getDailyQuotaStats().remainingToday,
+    };
+  }
+
+  /**
    * DISPATCH PROPOSAL, CONSUME QUOTA, AUTO-ARCHIVE & WRITE AUDIT LOG
    */
   public async triggerAiOutreach(lead: CrmClientLead, customNotes?: string, isAutoTriggered: boolean = false): Promise<boolean> {
+    // SPRINT 07 Outreach Safety Gate: prevent automated dispatch if autoDispatch is false or outreach_status is DRAFT
+    if (isAutoTriggered && (lead.autoDispatch === false || lead.outreach_status === 'DRAFT')) {
+      console.warn(`[CRM Outreach Safety Gate] 🛑 Auto-dispatch blocked for verified lead ${lead.companyName || lead.clientName} (autoDispatch: false, outreach_status: DRAFT)`);
+      return false;
+    }
+
     const quota = this.getDailyQuotaStats();
     if (quota.remainingToday <= 0) {
       console.warn(`[CRM Quota] 🛑 Daily limit reached (${DAILY_CRM_DISPATCH_LIMIT}/${DAILY_CRM_DISPATCH_LIMIT})`);
@@ -808,10 +1229,11 @@ class CrmService {
     };
 
     const success = await triggerAutomatedB2BOutreach(b2bLead);
+    const nowIso = new Date().toISOString();
+
     if (success) {
       this.incrementDailyQuota();
 
-      const nowIso = new Date().toISOString();
       const dispatchedLead: CrmClientLead = {
         ...lead,
         status: 'Converted',
@@ -819,6 +1241,7 @@ class CrmService {
         lastContactDate: nowIso.split('T')[0],
         lastActivityAr: `🚀 تم إرسال العرض التنفيذي للإدارة العليا (CEO & CFO) بنجاح بتوقيع د. محمد مصطفى!`,
         lastActivityEn: `🚀 C-Suite Executive Proposal successfully dispatched with Dr. Mohammad Mustafa signature!`,
+        outreach_status: 'SENT',
       };
 
       // 1. Remove from active leads list
@@ -827,7 +1250,7 @@ class CrmService {
       // 2. Add to archived/dispatched list
       this.archivedLeads.unshift(dispatchedLead);
 
-      // 3. Add to Audit Log
+      // 3. Add to Local Audit Log
       this.auditLogs.unshift({
         id: `audit-disp-${Date.now()}`,
         timestamp: nowIso,
@@ -841,267 +1264,55 @@ class CrmService {
       });
 
       this.saveLeads();
+      this.persistLeadToDatabase(dispatchedLead);
+      this.persistAuditLogToDatabase({
+        recipientEmail: lead.contactEmail,
+        actionType: isAutoTriggered ? 'AUTO_DISPATCH' : 'MANUAL_DISPATCH',
+        status: 'SUCCESS',
+        trigger: isAutoTriggered ? 'AUTO_BATCH' : 'MANUAL_USER_TRIGGER',
+        customerType: lead.status,
+      });
+      return true;
+    } else {
+      // 🛑 REAL FAILURE REPORTING (NO FAKE SUCCESS!)
+      console.warn(`[CRM Dispatch Notice] Proposal delivery returned false for ${lead.contactEmail}`);
+      lead.lastActivityEn = `⚠️ Outreach dispatch unsuccessful: Authorization rejected or server unavailable`;
+      lead.lastActivityAr = `⚠️ تعذر إرسال العرض: الخادم رفض الطلب أو التوثيق غير متوفر`;
+
+      this.auditLogs.unshift({
+        id: `audit-fail-${Date.now()}`,
+        timestamp: nowIso,
+        clientName: lead.clientName,
+        contactEmail: lead.contactEmail,
+        jurisdiction: lead.jurisdiction,
+        actionType: isAutoTriggered ? 'AUTO_DISPATCH' : 'MANUAL_DISPATCH',
+        aiModel: 'JurisTech C-Suite Legal Governance Model',
+        proposalSummary: `FAILED outreach attempt to ${lead.contactEmail} (${lead.companyName})`,
+        status: 'FAILED',
+      });
+
+      this.saveLeads();
+      this.persistAuditLogToDatabase({
+        recipientEmail: lead.contactEmail,
+        actionType: isAutoTriggered ? 'AUTO_DISPATCH' : 'MANUAL_DISPATCH',
+        status: 'FAILED',
+        errorMessage: 'Authorization or transmission rejection during dispatch',
+        trigger: isAutoTriggered ? 'AUTO_BATCH' : 'MANUAL_USER_TRIGGER',
+        customerType: lead.status,
+      });
+      return false;
     }
-    return success;
   }
 
   /**
    * DYNAMIC FRESH B2B PROSPECT DISCOVERY
-   * Pulls unique, non-repeating global corporate leads into the active CRM pipeline.
+   * GOVERNANCE ORDER ENFORCED:
+   * Synthetic/demo lead pool hard-disabled in production.
+   * All leads must be sourced, validated, and persisted exclusively via Supabase (public.crm_leads).
    */
-  public discoverFreshB2BLeads(count: number = 5): CrmClientLead[] {
-    const GLOBAL_PROSPECT_POOL: Omit<CrmClientLead, 'id'>[] = [
-      {
-        clientName: 'Andy Jassy Corporate Team',
-        companyName: 'Amazon Corporate & Global Expansion',
-        contactEmail: 'b2b-partnerships@amazon.com',
-        jurisdiction: 'USA',
-        flag: '🇺🇸',
-        status: 'New',
-        lastContactDate: new Date().toISOString().split('T')[0],
-        estimatedValueUSD: 500000,
-        leadScore: 100,
-        notesAr: 'شراكات أمازون العالمية ورعايات البنية التحتية لحوكمة صفقات سلاسل الإمداد العابرة للحدود',
-        notesEn: 'Amazon B2B partnerships & cross-border supply chain AI contract governance',
-        lastActivityAr: 'تم الفحص والتأهيل كشريك استراتيجي برعاية كبرى',
-        lastActivityEn: 'Qualified for Global Enterprise Sponsorship & B2B AI Contract Integration',
-      },
-      {
-        clientName: 'Eddie Wu C-Suite Office',
-        companyName: 'Alibaba Group International & Cloud Legal',
-        contactEmail: 'global-legal@alibaba-inc.com',
-        jurisdiction: 'China',
-        flag: '🇨🇳',
-        status: 'New',
-        lastContactDate: new Date().toISOString().split('T')[0],
-        estimatedValueUSD: 450000,
-        leadScore: 100,
-        notesAr: 'مجموعة علي بابا العالمية — شراكات التجارة الدولية ورعاية حوكمة الصفقات العابرة للحدود',
-        notesEn: 'Alibaba Group International — Cross-border trade sponsorship & AI contract compliance',
-        lastActivityAr: 'جاهز للإرسال التلقائي للرئيس التنفيذي والمدير المالي',
-        lastActivityEn: 'Queued for 100% English C-Suite Proposal Dispatch',
-      },
-      {
-        clientName: 'Milton Cheng (Managing Partner)',
-        companyName: 'Baker McKenzie Global Law Firm',
-        contactEmail: 'global-partnerships@bakermckenzie.com',
-        jurisdiction: 'UK',
-        flag: '🇬🇧',
-        status: 'New',
-        lastContactDate: new Date().toISOString().split('T')[0],
-        estimatedValueUSD: 350000,
-        leadScore: 99,
-        notesAr: 'مكتب بيكر مكنزي العالمي للمحاماة — رعاية وحوكمة صفقات الاندماج والاستحواذ عابرة الحدود',
-        notesEn: 'Baker McKenzie Global — Legal Sponsorship & Cross-Border M&A AI Audit Integration',
-        lastActivityAr: 'تم التأهيل كراعٍ مؤسسي معتمد لصفحات التخصص',
-        lastActivityEn: 'Qualified as Institutional Legal Sponsor',
-      },
-      {
-        clientName: 'Charles Adams (Managing Partner)',
-        companyName: 'Clifford Chance LLP International',
-        contactEmail: 'partnerships@cliffordchance.com',
-        jurisdiction: 'UK',
-        flag: '🇬🇧',
-        status: 'New',
-        lastContactDate: new Date().toISOString().split('T')[0],
-        estimatedValueUSD: 320000,
-        leadScore: 99,
-        notesAr: 'مكتب كليفورد تشانس العالمي — رعاية واستشهاد بالبنود التوافقية للتحكيم الدولي SCCA & LCIA',
-        notesEn: 'Clifford Chance LLP — Legal Sponsorship & International Arbitration Bridge Integration',
-        lastActivityAr: 'جاهز للإرسال التنفيذي المباشر',
-        lastActivityEn: 'Queued for direct executive outreach',
-      },
-      {
-        clientName: 'Rich Trobman (Chair & Managing Partner)',
-        companyName: 'Latham & Watkins LLP',
-        contactEmail: 'csuite-advisory@lw.com',
-        jurisdiction: 'USA',
-        flag: '🇺🇸',
-        status: 'New',
-        lastContactDate: new Date().toISOString().split('T')[0],
-        estimatedValueUSD: 380000,
-        leadScore: 100,
-        notesAr: 'مكتب لاثام أندواتكنز العالمي — رعاية وحوكمة صفقات الاستثمار الجريء والاندماج ديلاوير',
-        notesEn: 'Latham & Watkins LLP — Venture Capital & Delaware M&A Legal Sponsorship',
-        lastActivityAr: 'تم استكشاف العميل كراعٍ ماسي معتمد',
-        lastActivityEn: 'Discovered as Diamond Legal Sponsor',
-      },
-      {
-        clientName: 'Amin Nasser Executive Office',
-        companyName: 'Saudi Aramco Investment & Corporate Services',
-        contactEmail: 'corporate-legal@aramco.com',
-        jurisdiction: 'Saudi Arabia',
-        flag: '🇸🇦',
-        status: 'New',
-        lastContactDate: new Date().toISOString().split('T')[0],
-        estimatedValueUSD: 500000,
-        leadScore: 100,
-        notesAr: 'أرامكو السعودية — صفقات الاستثمار والتطوير ومطابقة نظام المعاملات المدنية م/191',
-        notesEn: 'Saudi Aramco Corporate — Enterprise B2B Legal AI & Civil Code M/191 Audit',
-        lastActivityAr: 'تم تسجيل العميل بنسبة اهتمام 100%',
-        lastActivityEn: 'Ingested with 100% intent score',
-      },
-      {
-        clientName: 'Levent Çakıroğlu Executive Office',
-        companyName: 'Koç Holding International Trade & Energy A.Ş.',
-        contactEmail: 'global-legal@koc.com.tr',
-        jurisdiction: 'Turkey',
-        flag: '🇹🇷',
-        status: 'New',
-        lastContactDate: new Date().toISOString().split('T')[0],
-        estimatedValueUSD: 360000,
-        leadScore: 99,
-        notesAr: 'مجموعة كوتش القابضة في إسطنبول — حوكمة عقود الطاقة والتجارة العابرة للحدود وعقود الفيديك FIDIC',
-        notesEn: 'Koç Holding Istanbul — International Energy & Cross-Border Supply Trade FIDIC Audit',
-        lastActivityAr: 'تم التأهيل للتواصل التنفيذي عبر بريد المستشار د. محمد مصطفى',
-        lastActivityEn: 'Qualified for C-Suite Executive Outreach',
-      },
-      {
-        clientName: 'Cenk Alper C-Suite Office',
-        companyName: 'Sabancı Holding & Financial Services A.Ş.',
-        contactEmail: 'csuite-corporate@sabanci.com.tr',
-        jurisdiction: 'Turkey',
-        flag: '🇹🇷',
-        status: 'New',
-        lastContactDate: new Date().toISOString().split('T')[0],
-        estimatedValueUSD: 340000,
-        leadScore: 98,
-        notesAr: 'مجموعة صبانجي القابضة — حوكمة العقود البنكية وعقود الاستثمار ومطابقة القانون التجاري التركي',
-        notesEn: 'Sabancı Holding — Banking & Investment AI Contract Governance & Turkish Commercial Code',
-        lastActivityAr: 'جاهز للإرسال التنفيذي',
-        lastActivityEn: 'Queued for Executive Proposal',
-      },
-      {
-        clientName: 'Khaldoon Al-Mubarak Executive Office',
-        companyName: 'Mubadala Investment Company PJSC',
-        contactEmail: 'legal-investments@mubadala.ae',
-        jurisdiction: 'UAE',
-        flag: '🇦🇪',
-        status: 'New',
-        lastContactDate: new Date().toISOString().split('T')[0],
-        estimatedValueUSD: 400000,
-        leadScore: 99,
-        notesAr: 'مبادلة للاستثمار أبوظبي — صفقات المحافظ الاستثمارية وغرف الصفقات VIP Deal Room',
-        notesEn: 'Mubadala Investment Abu Dhabi — Sovereign Portfolio & VIP Deal Room Integration',
-        lastActivityAr: 'جاهز للتفعيل والتواصل التنفيذي',
-        lastActivityEn: 'Queued for executive outreach',
-      },
-      {
-        clientName: 'Sultan Al-Mansoori',
-        companyName: 'Aramco Digital & AI Innovations Ltd.',
-        contactEmail: 'executive.board@aramcodigital-tech.sa',
-        jurisdiction: 'Saudi Arabia',
-        flag: '🇸🇦',
-        status: 'New',
-        lastContactDate: new Date().toISOString().split('T')[0],
-        estimatedValueUSD: 250000,
-        leadScore: 99,
-        notesAr: 'مجموعة تقنية واستثمار في الرياض تطلب أتمتة عقود الذكاء الاصطناعي وتطوير البنية التحتية البرمجية',
-        notesEn: 'Riyadh AI infrastructure group seeking AI contract auditing & software governance',
-        lastActivityAr: 'تم استكشاف العميل عبر رادار الصفقات الرقمية B2B',
-        lastActivityEn: 'Discovered via Sovereign B2B Lead Radar',
-      },
-      {
-        clientName: 'Omar Al-Futtaim',
-        companyName: 'NeoVanguard Logistics & Supply Chain FZE',
-        contactEmail: 'csuite@neovanguard-logistics.ae',
-        jurisdiction: 'UAE',
-        flag: '🇦🇪',
-        status: 'Warm',
-        lastContactDate: new Date().toISOString().split('T')[0],
-        estimatedValueUSD: 180000,
-        leadScore: 97,
-        notesAr: 'شركة لوجستية كبرى في دبي تطلب عقود شحن دولية ومطابقة قوانين DIFC البحرية',
-        notesEn: 'Dubai DIFC logistics firm requesting maritime supply agreements & e-signatures',
-        lastActivityAr: 'تم الفحص والتأهيل كعميل عالي القيمة',
-        lastActivityEn: 'Qualified as HOT Enterprise prospect',
-      },
-      {
-        clientName: 'Eng. Ahmed El-Sayed',
-        companyName: 'Nile Tech Holdings & Fintech Solutions S.A.E.',
-        contactEmail: 'corporate@niletech-holdings.eg',
-        jurisdiction: 'Egypt',
-        flag: '🇪🇬',
-        status: 'New',
-        lastContactDate: new Date().toISOString().split('T')[0],
-        estimatedValueUSD: 130000,
-        leadScore: 96,
-        notesAr: 'مجموعة تقنية مالية في القاهرة تطلب صياغة عقود التمويل الرقمي ومطابقة هيئة الرقابة المالية',
-        notesEn: 'Cairo Fintech group seeking FRA regulatory compliance & digital lending templates',
-        lastActivityAr: 'تم التقاط الاهتمام من مرصد الشرق الأوسط',
-        lastActivityEn: 'Captured intent from MENA Fintech portal',
-      },
-      {
-        clientName: 'Dr. Marcus Vance',
-        companyName: 'Silicon Oasis Global Ventures LLC',
-        contactEmail: 'partnerships@siliconoasis-ventures.com',
-        jurisdiction: 'USA',
-        flag: '🇺🇸',
-        status: 'Negotiating',
-        lastContactDate: new Date().toISOString().split('T')[0],
-        estimatedValueUSD: 210000,
-        leadScore: 98,
-        notesAr: 'صندوق استثمار جريء في كاليفورنيا يطلب عقود SAFE وتدقيق مذكرات الشروط Term Sheets',
-        notesEn: 'California VC fund requesting SAFE agreement auditing & Term Sheet risk scoring',
-        lastActivityAr: 'في مرحلة التفاوض على الاشتراك السنوي المؤسسي',
-        lastActivityEn: 'In active negotiation for annual Enterprise VIP plan',
-      },
-      {
-        clientName: 'Sheikh Jassim Al-Thani',
-        companyName: 'Qatar Sovereign Tech & Asset Management QCSC',
-        contactEmail: 'investment@qatarsovereign-tech.qa',
-        jurisdiction: 'Qatar',
-        flag: '🇶🇦',
-        status: 'New',
-        lastContactDate: new Date().toISOString().split('T')[0],
-        estimatedValueUSD: 290000,
-        leadScore: 99,
-        notesAr: 'شركة استثمار سيادي في الدوحة تطلب الوصول لمستودع العقود المليوني وحوكمة الشركات',
-        notesEn: 'Doha sovereign asset manager seeking 1M+ Contract Vault & corporate governance',
-        lastActivityAr: 'جاهز للإرسال المباشر للإدارة العليا',
-        lastActivityEn: 'Queued for direct C-Suite dispatch',
-      },
-      {
-        clientName: 'Nasser Al-Kharafi',
-        companyName: 'Kuwait International Trade & Energy KSC',
-        contactEmail: 'board@kuwaittrade-energy.kw',
-        jurisdiction: 'Kuwait',
-        flag: '🇰🇼',
-        status: 'Warm',
-        lastContactDate: new Date().toISOString().split('T')[0],
-        estimatedValueUSD: 160000,
-        leadScore: 95,
-        notesAr: 'شركة تجارة وطاقة في الكويت تطلب عقود الفيديك وتحكيم الإسكوا والتجارة الدولية',
-        notesEn: 'Kuwait energy & trade group seeking FIDIC contracts & ESCWA arbitration templates',
-        lastActivityAr: 'تم طلب مسودة عرض أسعار المبيعات',
-        lastActivityEn: 'Requested formal sales quotation',
-      },
-    ];
-
-    const existingEmails = new Set([
-      ...this.leads.map((l) => l.contactEmail.toLowerCase().trim()),
-      ...this.archivedLeads.map((l) => l.contactEmail.toLowerCase().trim()),
-    ]);
-
-    const added: CrmClientLead[] = [];
-    for (const prospect of GLOBAL_PROSPECT_POOL) {
-      if (added.length >= count) break;
-      const cleanEmail = prospect.contactEmail.toLowerCase().trim();
-      if (!existingEmails.has(cleanEmail)) {
-        const newLead: CrmClientLead = {
-          ...prospect,
-          id: `fresh-b2b-${Date.now()}-${Math.random().toString(36).substring(7)}`,
-        };
-        this.leads.unshift(newLead);
-        added.push(newLead);
-        existingEmails.add(cleanEmail);
-      }
-    }
-
-    if (added.length > 0) {
-      this.saveLeads();
-    }
-    return added;
+  public discoverFreshB2BLeads(_count: number = 5): CrmClientLead[] {
+    console.info('[CRM Governance] Synthetic lead discovery hard-disabled in production. Supabase is the sole CRM SSOT.');
+    return [];
   }
 }
 

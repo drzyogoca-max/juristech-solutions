@@ -15,8 +15,8 @@ export interface EmailTemplate {
   body: string;
 }
 
-const OFFICIAL_EMAIL = 'juristech.solutions@outlook.com';
-const MANDATORY_ADMIN_COPY = 'drzyogo.ca@gmail.com';
+const OFFICIAL_EMAIL = 'founder@juristech.solutions';
+const MANDATORY_ADMIN_COPY = 'founder@juristech.solutions';
 
 /**
  * Automates sending targeted marketing and compliance emails.
@@ -95,7 +95,7 @@ export async function processIncomingEmail(
     Body: ${body}
     
     Classify the intent into one of: [M&A_Inquiry, Contract_Audit_Request, General_Consultation, Spam].
-    Then, draft a highly professional response representing JurisTech Solutions (using juristech.solutions@outlook.com).
+    Then, draft a highly professional response representing JurisTech Solutions (using founder@juristech.solutions).
     Output format:
     INTENT: <classification>
     REPLY: <drafted_response>

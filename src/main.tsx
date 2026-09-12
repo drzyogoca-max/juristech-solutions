@@ -19,9 +19,13 @@ if ('caches' in window) {
   });
 }
 
+import { LocaleProvider } from './context/LocaleContext';
+
 const rootElement = document.getElementById('root')!;
 ReactDOM.createRoot(rootElement).render(
   <BrowserRouter>
-    <App />
+    <LocaleProvider>
+      <App />
+    </LocaleProvider>
   </BrowserRouter>
 );

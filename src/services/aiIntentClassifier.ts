@@ -128,7 +128,7 @@ function scoreKeywords(text: string, keywords: string[]): number {
 // ─── Main Classifier ─────────────────────────────────────────────────────────
 
 export function classifyUserIntent(inboundText: string): IntentAnalysisResult {
-  const officialEmail = 'Drzyogo.ca@gmail.com';
+  const officialEmail = 'founder@juristech.solutions';
   const isRtl = /[\u0600-\u06FF]/.test(inboundText);
 
   const scores: Record<UserIntent, number> = {
@@ -156,8 +156,8 @@ export function classifyUserIntent(inboundText: string): IntentAnalysisResult {
       url: 'https://juristech.solutions/support',
       leadCategory: 'High-Value Consultation Lead',
       reply: isRtl
-        ? `أهلاً بك! يمكنك حجز موعد استشارة قانونية مباشرة مع د. محمد مصطفى ومستشارينا الاستراتيجيين عبر البريد الرسمي (${officialEmail}) أو بوابة الدعم المباشر: https://juristech.solutions/support — يسعدنا تقديم الدعم الفوري لك.`
-        : `Thank you for your interest! Schedule a live consultation with Dr. Mohammad Mustafa and our strategic legal advisors at (${officialEmail}) or book directly at: https://juristech.solutions/support`,
+        ? `أهلاً بك! يمكنك طلب عرض توضيحي لمنظومة الذكاء الاصطناعي العقدي وأتمتة سير العمل عبر البريد الرسمي (${officialEmail}) أو بوابة الدعم: https://juristech.solutions/support — يسعدنا تقديم الدعم الفني لك.`
+        : `Welcome! Request a platform walkthrough of our AI Contract & Workflow Automation suite at (${officialEmail}) or reach out at: https://juristech.solutions/support`,
     },
     PRICING_SUBSCRIPTION: {
       url: 'https://juristech.solutions/payment',

@@ -59,7 +59,7 @@ class EnterpriseRoleHierarchyEngine {
       {
         role: 'SENIOR_COUNSEL',
         rankLevel: 5,
-        titleEn: 'Senior Legal Counsel / Partner',
+        titleEn: 'Chief Legal Officer / Partner',
         titleAr: 'مستشار قانوني أول / شريك قانوني',
         maxSigningAuthorityUSD: 1000000, // $1M USD
         canAuthorizeExternalDispatch: true,

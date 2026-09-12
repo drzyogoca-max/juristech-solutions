@@ -26,13 +26,16 @@ import {
   normalizeLanguageCode,
 } from '../i18n';
 
+import { useLocale } from '../context/LocaleContext';
+
 interface Props {
   className?: string;
   variant?: 'navbar' | 'compact' | 'footer' | 'settings';
 }
 
 export default function LanguageSwitcher({ className = '', variant = 'navbar' }: Props) {
-  const { i18n, t } = useTranslation();
+  const { t } = useTranslation();
+  const { currentLocale, changeLocale, isRtl } = useLocale();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -41,9 +44,8 @@ export default function LanguageSwitcher({ className = '', variant = 'navbar' }:
   const dropdownRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  const currentLang = normalizeLanguageCode(i18n.language || (typeof window !== 'undefined' ? localStorage.getItem('juristech.locale') || 'en' : 'en'));
+  const currentLang = currentLocale;
   const currentMeta = SUPPORTED_LANGUAGES[currentLang] || SUPPORTED_LANGUAGES.en;
-  const isRtl = isRtlLanguage(currentLang);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -63,16 +65,10 @@ export default function LanguageSwitcher({ className = '', variant = 'navbar' }:
       return;
     }
 
-    // 1. Change i18n language
-    i18n.changeLanguage(targetCode);
+    // 1. Centralized LocaleContext update (handles i18n, storage, html lang & dir, event)
+    changeLocale(targetCode);
 
-    // 2. Persist preference
-    persistLocalePreference(targetCode);
-
-    // 3. Update document language & direction
-    setDocumentLanguage(targetCode);
-
-    // 4. Update URL route if using locale prefixes, preserving path & search params
+    // 2. Update URL route if using locale prefixes, preserving path & search params
     const currentPath = location.pathname;
     const currentSearch = location.search;
     const currentHash = location.hash;
@@ -84,6 +80,10 @@ export default function LanguageSwitcher({ className = '', variant = 'navbar' }:
     if (localePrefixMatch) {
       const restOfPath = localePrefixMatch[2] || '';
       newPath = `/${targetCode}${restOfPath}`;
+    } else if (currentPath === '/' || currentPath === '') {
+      newPath = `/${targetCode}/dashboard`;
+    } else {
+      newPath = `/${targetCode}${currentPath}`;
     }
 
     if (newPath !== currentPath) {
@@ -146,7 +146,9 @@ export default function LanguageSwitcher({ className = '', variant = 'navbar' }:
         aria-expanded={isOpen}
         aria-label={t('accessibility.selectLanguage', 'Select interface language')}
         className={`flex items-center gap-2 text-xs font-bold px-3 py-1.5 rounded-xl border transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-cyan-500/50 ${
-          isOpen
+          variant === 'footer'
+            ? 'bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white border-slate-800 hover:border-slate-700 shadow-md'
+            : isOpen
             ? 'bg-slate-800 border-cyan-500 text-white shadow-lg shadow-cyan-500/10'
             : 'bg-slate-900/90 hover:bg-slate-800/90 text-slate-300 hover:text-white border-slate-700/80 hover:border-slate-600'
         }`}
@@ -167,8 +169,10 @@ export default function LanguageSwitcher({ className = '', variant = 'navbar' }:
           role="listbox"
           aria-label={t('accessibility.selectLanguage', 'Select interface language')}
           className={`absolute ${
+            variant === 'footer' ? 'bottom-full mb-2' : 'mt-2'
+          } ${
             isRtl ? 'left-0' : 'right-0'
-          } mt-2 w-52 bg-slate-900 border border-slate-700/90 rounded-2xl shadow-2xl z-50 overflow-hidden backdrop-blur-2xl py-1 animate-in fade-in slide-in-from-top-2 duration-150`}
+          } w-52 bg-slate-900 border border-slate-700/90 rounded-2xl shadow-2xl z-50 overflow-hidden backdrop-blur-2xl py-1 animate-in fade-in duration-150`}
         >
           <div className="px-3 py-1.5 border-b border-slate-800 text-[10px] font-mono text-slate-400 uppercase tracking-wider">
             {t('common.language', 'Language')} / {t('accessibility.selectLanguage', 'Select Language')}

@@ -34,7 +34,7 @@ declare global {
 }
 
 // Global Tracking Configurations
-const GA4_MEASUREMENT_ID = 'G-JURISTECH2026';
+const GA4_MEASUREMENT_ID = 'G-311560459';
 const META_PIXEL_ID = '109283746598273';
 const LINKEDIN_PARTNER_ID = '7896543';
 

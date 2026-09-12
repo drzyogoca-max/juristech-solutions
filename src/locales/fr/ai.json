@@ -5,7 +5,7 @@
   "send": "Envoyer la requête",
   "thinking": "Juris analyse les codes législatifs et confronte la jurisprudence...",
   "disclaimer": "JurisTech IA fournit des orientations juridiques et l'automatisation des flux, pas de conseil juridique direct.",
-  "newSession": "Nouvelle session de consultation",
+  "newSession": "Nouvelle session d’analyse",
   "exportHistory": "Exporter l'historique (.txt / .pdf)",
   "groundingActive": "Ancrage législatif 100% actif",
   "eightAxisAnalysis": "Cadre d'analyse juridique en 8 axes",

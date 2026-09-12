@@ -69,7 +69,7 @@ class LegalContractFabric {
         signatoryPartiesCount: 4,
         contractState: 'HUMAN_LEGAL_APPROVED',
         stateProvenanceProofHash: 'fabric_proof_sha512_33491b827e10a99c88271a6b591827364501928374',
-        humanApprovalAuthorizedBy: 'Senior Legal Counsel (Energy Operations)',
+        humanApprovalAuthorizedBy: 'Chief Legal Officer (Energy Operations)',
         executionTimestamp: '2026-02-26T08:00:00.000Z',
         zeroRawBodyStorageVerified: true,
       },

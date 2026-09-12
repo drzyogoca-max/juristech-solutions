@@ -216,7 +216,14 @@ const OFFICIAL_SYSTEM_EMAILS = [
   'contact@juristech.solutions',
 ];
 
-async function checkEmailAuthorization(req, targetEmail) {
+const ALLOWED_TRANSACTIONAL_TYPES = [
+  'CONSULTATION_BOOKING',
+  'RECEIPT_NOTIFICATION',
+  'LEAD_INQUIRY',
+  'AUTHENTICATION_OTP',
+];
+
+async function checkEmailAuthorization(req, targetEmail, body = {}) {
   const authHeader = req.headers?.['authorization'] || req.headers?.get?.('authorization') || '';
   const adminToken = req.headers?.['x-admin-token'] || req.headers?.get?.('x-admin-token') || '';
   const cronSecret = req.headers?.['x-cron-secret'] || req.headers?.get?.('x-cron-secret') || '';
@@ -228,7 +235,7 @@ async function checkEmailAuthorization(req, targetEmail) {
     return { authorized: true, reason: 'OFFICIAL_SYSTEM_DESTINATION' };
   }
 
-  // 2. Server Secret Authorization (CRM, cron, automated scripts)
+  // 2. Server Secret Authorization (CRM, cron, automated scripts, admin actions)
   const validSecrets = [
     process.env.ADMIN_SECRET_KEY,
     process.env.CRON_SECRET,
@@ -264,6 +271,17 @@ async function checkEmailAuthorization(req, targetEmail) {
       } catch (err) {
         console.warn('[Email Auth Check] Supabase JWT validation error:', err.message);
       }
+    }
+  }
+
+  // 4. Legitimate Inbound/Transactional Event Guard
+  // Permits customer-facing transactional templates (Receipt, Consultation, Lead Inquiry)
+  // while preventing open-relay spam: subject must contain [JurisTech Solutions], and rate-limits apply.
+  const transactionalType = body?.transactionalType || body?.payload?.transactionalType;
+  if (transactionalType && ALLOWED_TRANSACTIONAL_TYPES.includes(transactionalType)) {
+    const subj = body?.subject || '';
+    if (subj.includes('JurisTech Solutions') || subj.includes('LegalShield')) {
+      return { authorized: true, reason: `VALIDATED_TRANSACTIONAL_${transactionalType}` };
     }
   }
 
@@ -330,7 +348,23 @@ async function handleNodeRequest(req, res) {
     }
 
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
-    const { to, subject, text, html, replyTo, forceSend } = body || {};
+    let { to, subject, text, html, replyTo, forceSend } = body || {};
+
+    // ── Security Hardening: Strip forceSend in autonomous production workflows ──
+    const isCronOrAutonomous = Boolean(
+      req.headers?.['x-cron-secret'] ||
+      req.headers?.['x-cron-job'] ||
+      body?.isAutonomous ||
+      body?.cronSource
+    );
+    if (isCronOrAutonomous || forceSend) {
+      const devSecret = process.env.DEVELOPER_TEST_KEY || process.env.ADMIN_SECRET_KEY;
+      const providedDevKey = req.headers?.['x-developer-test-key'] || req.headers?.get?.('x-developer-test-key');
+      const isDevTesting = devSecret && providedDevKey === devSecret;
+      if (!isDevTesting) {
+        forceSend = false; // Strictly disallow forceSend in autonomous/production operations
+      }
+    }
 
     const targetEmail = to;
     const emailSubject = subject || 'JurisTech Solutions — Legal Intelligence Platform';
@@ -344,7 +378,7 @@ async function handleNodeRequest(req, res) {
     }
 
     // ── Anti-Open Relay Authorization Enforcement ──
-    const authCheck = await checkEmailAuthorization(req, targetEmail);
+    const authCheck = await checkEmailAuthorization(req, targetEmail, body);
     if (!authCheck.authorized) {
       console.warn(`[SendEmail 401] Unauthorized outbound dispatch to ${targetEmail} blocked from IP ${ip}`);
       return res.status(401).json({
@@ -437,7 +471,7 @@ async function handleEdgeRequest(req) {
     }
 
     // ── Anti-Open Relay Authorization Enforcement ──
-    const authCheck = await checkEmailAuthorization(req, targetEmail);
+    const authCheck = await checkEmailAuthorization(req, targetEmail, body);
     if (!authCheck.authorized) {
       return new Response(
         JSON.stringify({

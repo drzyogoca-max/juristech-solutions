@@ -40,6 +40,19 @@ const updated = {
   buildTime,
   forcePurge: true,
 };
-writeFileSync(versionFile, JSON.stringify(updated, null, 2));
+
+let written = false;
+for (let attempt = 0; attempt < 5; attempt++) {
+  try {
+    writeFileSync(versionFile, JSON.stringify(updated, null, 2));
+    written = true;
+    break;
+  } catch (e) {
+    Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 100);
+  }
+}
+if (!written) {
+  console.warn('[bump-version] Could not write version.json after retries');
+}
 
 console.log(`\n🚀 [bump-version] GLOBAL APP CACHE PURGE STAMPED → ${newVersion} @ ${buildTime}\n`);

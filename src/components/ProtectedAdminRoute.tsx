@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useAuth } from '../lib/authContext';
-import { ShieldCheck, Lock, Key, ShieldAlert, Mail, RefreshCw, Zap } from 'lucide-react';
+import { ShieldCheck, Lock, Key, ShieldAlert, Mail, RefreshCw, Zap, MessageSquare, PhoneCall, ExternalLink, CheckCircle2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { verifyAdminAccess, grantAdminAuth, isAuthorizedAdminEmail } from '../lib/adminGuard';
 import { dispatch2FAOtpEmail } from '../lib/emailNotifier';
+import { create2FAWhatsAppDetails, TARGET_WHATSAPP_NUMBER } from '../services/engine-ai/whatsappNotifier';
 
 // Pre-computed SHA-256 cryptographic hashes for authorized Chairman passcodes
 const AUTHORIZED_PASSCODE_HASHES = [
@@ -42,6 +43,7 @@ export default function ProtectedAdminRoute({ children }: { children: React.Reac
   const [lockedUntil, setLockedUntil] = useState<number>(0);
   const [isSendingEmail, setIsSendingEmail] = useState(false);
   const [emailStatusMsg, setEmailStatusMsg] = useState('');
+  const [whatsappLink, setWhatsappLink] = useState('');
   const [supabaseSessionVerified, setSupabaseSessionVerified] = useState(false);
   
   const [isAuthed, setIsAuthed] = useState<boolean>(() => {
@@ -80,6 +82,9 @@ export default function ProtectedAdminRoute({ children }: { children: React.Reac
       setFailedAttempts(0);
       setStep2FA(true);
       
+      const waDetails = create2FAWhatsAppDetails(otp, TARGET_WHATSAPP_NUMBER);
+      setWhatsappLink(waDetails.whatsappUrl);
+
       setIsSendingEmail(true);
       setEmailStatusMsg(isRtl ? `جاري إرسال الرمز إلى ${TARGET_OFFICIAL_EMAIL}...` : `Sending OTP code to ${TARGET_OFFICIAL_EMAIL}...`);
       
@@ -101,6 +106,10 @@ export default function ProtectedAdminRoute({ children }: { children: React.Reac
     const newOtp = Math.floor(100000 + Math.random() * 900000).toString();
     setGenerated2FACode(newOtp);
     setOtpExpiry(Date.now() + 10 * 60 * 1000);
+    
+    const waDetails = create2FAWhatsAppDetails(newOtp, TARGET_WHATSAPP_NUMBER);
+    setWhatsappLink(waDetails.whatsappUrl);
+    
     setEmailStatusMsg(isRtl ? `جاري إعادة إرسال رمز جديد إلى ${TARGET_OFFICIAL_EMAIL}...` : `Resending new OTP to ${TARGET_OFFICIAL_EMAIL}...`);
 
     await dispatch2FAOtpEmail(TARGET_OFFICIAL_EMAIL, newOtp);
@@ -205,15 +214,51 @@ export default function ProtectedAdminRoute({ children }: { children: React.Reac
               </h2>
               <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
                 {isRtl
-                  ? `تم توليد رمز أمان مكون من 6 أرقام. يصلح لمدة 5 دقائق فقط.${failedAttempts > 0 ? ` (محاولات متبقية: ${3 - failedAttempts})` : ''}`
-                  : `A 6-digit security code has been generated. Valid for 5 minutes only.${failedAttempts > 0 ? ` (Attempts remaining: ${3 - failedAttempts})` : ''}`}
+                  ? `تم توليد رمز أمان مكون من 6 أرقام. يصلح لمدة 5 دقائق فقط.${failedAttempts > 0 ? ` (محاولات متبقية: ${5 - failedAttempts})` : ''}`
+                  : `A 6-digit security code has been generated. Valid for 5 minutes only.${failedAttempts > 0 ? ` (Attempts remaining: ${5 - failedAttempts})` : ''}`}
               </p>
             </div>
 
+            {/* Dual Channel 1: WhatsApp Direct Delivery */}
+            {whatsappLink && (
+              <div className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 space-y-2 text-xs">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 font-bold text-emerald-400">
+                    <MessageSquare className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span>{isRtl ? 'قناة واتساب المباشرة:' : 'WhatsApp Delivery Channel:'}</span>
+                  </div>
+                  <span className="font-mono text-[11px] text-emerald-400 bg-emerald-500/20 px-2 py-0.5 rounded-md font-bold">
+                    {TARGET_WHATSAPP_NUMBER}
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-300 leading-normal">
+                  {isRtl
+                    ? 'يمكنك استلام وتأكيد رمز 2FA فوراً على هاتفك المسجل عبر واتساب بنقرة واحدة:'
+                    : 'You can receive and view your 2FA OTP code directly on your registered WhatsApp phone:'}
+                </p>
+                <a
+                  href={whatsappLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full mt-1.5 py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-[12px] flex items-center justify-center gap-2 shadow-lg transition-all"
+                >
+                  <MessageSquare className="w-4 h-4 fill-current" />
+                  <span>{isRtl ? 'استلام الرمز فوراً عبر WhatsApp' : 'Receive OTP on WhatsApp'}</span>
+                  <ExternalLink className="w-3 h-3 opacity-80" />
+                </a>
+              </div>
+            )}
+
+            {/* Dual Channel 2: Email Dispatch */}
             <div className="p-3.5 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 space-y-2 text-xs">
-              <div className="flex items-center gap-2 font-bold">
-                <Mail className="w-4 h-4 text-cyan-400 shrink-0" />
-                <span>{isRtl ? 'إشعار البريد الإلكتروني الرسمي:' : 'Official Email Dispatch:'}</span>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 font-bold">
+                  <Mail className="w-4 h-4 text-cyan-400 shrink-0" />
+                  <span>{isRtl ? 'إشعار البريد الإلكتروني الرسمي:' : 'Official Email Dispatch:'}</span>
+                </div>
+                <span className="font-mono text-[11px] text-cyan-400 bg-cyan-500/20 px-2 py-0.5 rounded-md">
+                  {TARGET_OFFICIAL_EMAIL}
+                </span>
               </div>
               <p className="font-mono text-[11px] text-slate-300 leading-normal">
                 {emailStatusMsg || (isRtl ? `تم إرسال الرمز تلقائياً إلى: ${TARGET_OFFICIAL_EMAIL}` : `OTP automatically dispatched to: ${TARGET_OFFICIAL_EMAIL}`)}
@@ -227,19 +272,6 @@ export default function ProtectedAdminRoute({ children }: { children: React.Reac
                 <RefreshCw className={`w-3 h-3 ${isSendingEmail ? 'animate-spin' : ''}`} />
                 <span>{isRtl ? 'إعادة إرسال الرمز إلى البريد الإلكتروني' : 'Resend OTP Code to Email'}</span>
               </button>
-            </div>
-
-            {/* Verified 2FA Security Notice */}
-            <div className="p-4 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 space-y-2 text-xs animate-in fade-in">
-              <div className="flex items-center gap-1.5 font-bold text-indigo-400">
-                <Key className="w-4 h-4 shrink-0 text-indigo-400" />
-                <span>{isRtl ? 'تم إرسال رمز التحقق الثنائي (2FA OTP)' : '2FA Security Code Dispatched'}</span>
-              </div>
-              <p className="text-[11px] text-indigo-200/90 leading-relaxed">
-                {isRtl
-                  ? `تم إرسال رمز التحقق المكون من 6 أرقام بأمان إلى البريد الإلكتروني الرسمي المعتمد: ${TARGET_OFFICIAL_EMAIL}. يرجى فحص صندوق الوارد أو مجلد الرسائل غير المرغوب فيها (Spam).`
-                  : `A 6-digit verification code has been dispatched securely to the authorized administrator email: ${TARGET_OFFICIAL_EMAIL}. Please check your inbox or spam folder.`}
-              </p>
             </div>
 
             <form onSubmit={handleVerify2FA} className="space-y-4">

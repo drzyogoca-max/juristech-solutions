@@ -13,6 +13,7 @@ import {
   Lock,
 } from 'lucide-react';
 import { usePlatformLocale } from '../lib/universalTranslator';
+import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Footer() {
   const { l, isRtl } = usePlatformLocale();
@@ -23,7 +24,7 @@ export default function Footer() {
   return (
     <footer
       dir={isRtl ? 'rtl' : 'ltr'}
-      className="bg-slate-950 text-slate-300 border-t border-slate-800/80 pt-12 pb-24 lg:pb-10 px-4 sm:px-6 lg:px-8 mt-auto font-sans"
+      className="bg-slate-950 text-slate-300 border-t border-slate-800/80 pt-12 pb-32 lg:pb-12 px-4 sm:px-6 lg:px-8 mt-auto font-sans"
     >
       <div className="max-w-7xl mx-auto space-y-8">
         {/* 1. Brand & Value Proposition Row */}
@@ -43,7 +44,15 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 flex-wrap">
+          <div className="flex items-center gap-2.5 flex-wrap">
+            <a
+              href="mailto:founder@juristech.solutions"
+              aria-label="Email JurisTech Official Support"
+              className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-slate-900 text-cyan-300 border border-slate-700/80 hover:border-cyan-500/50 transition-colors font-mono"
+            >
+              <Mail className="w-3.5 h-3.5 text-cyan-400" />
+              <span>founder@juristech.solutions</span>
+            </a>
             <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5" />
               {l('مطابق لـ 15+ نظام قضائي', '15+ Sovereign Frameworks')}
@@ -71,7 +80,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link to="/repository" className="hover:text-cyan-300 transition-colors block py-0.5">
-                  {l('مستودع المليون عقد المؤسسي', 'Mega 1M+ Contracts Repository')}
+                  {l('مستودع العقود والبيانات القانونية', 'Contracts & Legal Data Lake')}
                 </Link>
               </li>
               <li>
@@ -140,8 +149,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/youtube-studio" className="hover:text-purple-300 transition-colors block py-0.5 text-red-400 font-bold">
-                  {l('إدارة قناة يوتيوب الرسمية 📺', 'YouTube Studio & Daily Automation 📺')}
+                <Link to="/reports" className="hover:text-purple-300 transition-colors block py-0.5">
+                  {l('التقارير القانونية والتحليلات', 'Strategic Legal Reports')}
                 </Link>
               </li>
               <li>
@@ -198,17 +207,32 @@ export default function Footer() {
           <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
           <p className="leading-relaxed m-0 font-medium">
             {l(
-              'تنبيه نظامي: منصة JurisTech Solutions منظومة ذكاء اصطناعي قانونية استرشادية، ولا تُعد بديلاً عن المشورة القانونية المباشرة من محامٍ مرخص في دائرتك القضائية.',
-              'Statutory Notice: JurisTech Solutions is an AI legal intelligence and document generation platform and does not constitute formal legal representation.'
+              'تنبيه نظامي: منصة JurisTech Solutions هي منصة برمجيات تقنية قانونية (Legal Tech SaaS) تقدم أدوات أتمتة العقود والمساعدة التشريعية، ولا تُعد مكتب محاماة ولا تقدم استشارات أو تمثيلاً قانونياً ينشئ علاقة بين محامٍ وموكل. يُرجى مراجعة محامٍ مرخص في دائرتك القضائية للمراجعة والتمثيل الرسمي.',
+              'Statutory Notice: JurisTech Solutions is a legal technology SaaS platform providing automated workflows and statutory assistance. It is NOT a law firm and does not provide legal representation or create an attorney-client relationship. Consult licensed legal counsel in your jurisdiction for formal representation.'
             )}
           </p>
         </div>
 
-        {/* 5. Bottom Copyright, Social Links & Security Status */}
-        <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500 border-t border-slate-800/60">
-          <p>© {currentYear} JurisTech Solutions. {l('جميع الحقوق محفوظة', 'All Rights Reserved')}.</p>
+        {/* 5. Bottom Copyright, Social Links, Language Switcher & Security Status */}
+        <div className="pt-4 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500 border-t border-slate-800/60">
+          <div className="flex items-center gap-3 flex-wrap">
+            <p>© {currentYear} JurisTech Solutions. {l('جميع الحقوق محفوظة', 'All Rights Reserved')}.</p>
+            <span className="hidden sm:inline text-slate-800">•</span>
+            <span className="text-slate-400 font-medium">{l('منصة رقمية عالمية — تعمل عن بعد', 'Global Digital Platform — Operated remotely')}</span>
+            <span className="hidden sm:inline text-slate-800">•</span>
+            <Link to="/about" className="hover:text-slate-300 transition-colors">
+              {l('من نحن', 'About')}
+            </Link>
+            <Link to="/terms" className="hover:text-slate-300 transition-colors">
+              {l('الشروط', 'Terms')}
+            </Link>
+            <Link to="/privacy" className="hover:text-slate-300 transition-colors">
+              {l('الخصوصية', 'Privacy')}
+            </Link>
+          </div>
 
           <div className="flex items-center gap-3 flex-wrap">
+            <LanguageSwitcher variant="footer" />
             <a
               href="https://www.linkedin.com/in/juristech-solutions-14954b427/"
               target="_blank"
@@ -229,8 +253,8 @@ export default function Footer() {
               <span className="text-white font-black text-sm">𝕏</span>
               <span>Twitter</span>
             </a>
-            <span className="text-emerald-400 font-bold ml-2">● {l('مشفر E2EE', 'E2EE Encrypted')}</span>
-            <span className="font-mono text-cyan-400 font-bold">v10.8.0</span>
+            <span className="text-emerald-400 font-bold ml-1">● {l('مشفر E2EE', 'E2EE Encrypted')}</span>
+            <span className="font-mono text-cyan-400 font-bold">v10.9.0</span>
           </div>
         </div>
       </div>

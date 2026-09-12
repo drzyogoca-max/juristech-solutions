@@ -35,8 +35,8 @@ export const HumanEscalationTrigger: React.FC<HumanEscalationTriggerProps> = ({
           <Lock className="w-4 h-4 text-cyan-100 shrink-0" />
           <span dir="auto">
             {isRtl
-              ? '🔒 فتح تذكرة دعم مشفرة وتواصل مباشر (Drzyogo.ca@gmail.com)'
-              : '🔒 Open Encrypted Support Ticket (Drzyogo.ca@gmail.com)'}
+              ? '🔒 فتح تذكرة دعم مشفرة وتواصل مباشر (founder@juristech.solutions)'
+              : '🔒 Open Encrypted Support Ticket (founder@juristech.solutions)'}
           </span>
           <ArrowUpRight className="w-4 h-4 text-cyan-200 shrink-0" />
         </button>

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * scripts/run-executive-monitor.mjs
  * ─────────────────────────────────────────────────────────────────────────────
  * JurisTech Solutions — Strict Reality Executive Daily Monitor Runner
@@ -60,7 +60,7 @@ async function runRealityAudit() {
   console.log('\n──────────────────────────────────────────────────────────────────────────');
   console.log('3️⃣  INTEGRATION & GATEWAY STATUS (STANDBY / PENDING ACTIVATION)');
   console.log('──────────────────────────────────────────────────────────────────────────');
-  console.log(`⏳ [17] Credit Card Payment Gateways    : NOT_CONNECTED [Paddle / PayTabs KYC Application Pending]`);
+  console.log(`⏳ [17] Credit Card Payment Gateways    : NOT_CONNECTED [PayTabs Merchant KYC Application Pending]`);
   console.log(`⏳ [18] Live Webhook Event Streams      : STANDBY (0 Ingested) [Endpoints ready, awaiting gateway]`);
   console.log(`⏳ [19] YouTube Analytics API           : NOT_CONNECTED [Channel configured, Data API not connected]`);
   console.log(`⏳ [20] Website Traffic Data API        : NOT_CONNECTED [TRACKING ACTIVE — DATA API NOT CONNECTED]`);

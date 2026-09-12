@@ -100,6 +100,7 @@ User Inquiry: ${queryToSend}`;
       {!isOpen ? (
         <button
           onClick={() => setIsOpen(true)}
+          aria-label={ui.chatbot.triggerBtn || (isRtl ? 'المستشار القانوني الذكي' : 'AI Concierge')}
           className="p-4 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 shadow-2xl flex items-center gap-2 transition-all hover:scale-105 border border-cyan-400/40"
         >
           <Bot className="w-6 h-6 text-slate-950" />
@@ -120,7 +121,11 @@ User Inquiry: ${queryToSend}`;
                 <span className="text-[10px] text-emerald-400 font-mono">{ui.chatbot.connectedStatus}</span>
               </div>
             </div>
-            <button onClick={() => setIsOpen(false)} className="p-1 text-slate-400 hover:text-white">
+            <button
+              onClick={() => setIsOpen(false)}
+              aria-label={isRtl ? 'إغلاق' : 'Close'}
+              className="p-1 text-slate-400 hover:text-white"
+            >
               <X className="w-4 h-4" />
             </button>
           </div>
@@ -167,7 +172,11 @@ User Inquiry: ${queryToSend}`;
           </div>
 
           <form onSubmit={handleSend} className="p-3 bg-slate-900 border-t border-slate-800 flex items-center gap-2">
-            <label className="p-2.5 bg-slate-800 hover:bg-slate-700 text-cyan-400 rounded-xl cursor-pointer transition-colors border border-slate-700 shrink-0" title={ui.chatbot.attachTooltip}>
+            <label
+              className="p-2.5 bg-slate-800 hover:bg-slate-700 text-cyan-400 rounded-xl cursor-pointer transition-colors border border-slate-700 shrink-0"
+              title={ui.chatbot.attachTooltip}
+              aria-label={ui.chatbot.attachTooltip || (isRtl ? 'إرفاق ملف' : 'Attach file')}
+            >
               <Paperclip className="w-4 h-4" />
               <input
                 type="file"
@@ -240,6 +249,7 @@ User Inquiry: ${queryToSend}`;
             <button
               type="submit"
               disabled={loading || !input.trim()}
+              aria-label={isRtl ? 'إرسال' : 'Send'}
               className="p-2.5 bg-cyan-500 hover:bg-cyan-400 disabled:opacity-40 text-slate-950 rounded-xl font-bold transition-all"
             >
               <Send className="w-4 h-4" />

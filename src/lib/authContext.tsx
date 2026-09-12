@@ -1,15 +1,18 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from './supabaseClient';
 import { isAuthorizedAdminEmail, verifyAdminAccess, grantAdminAuth, revokeAdminAuth } from './adminGuard';
+import { customerIdentityService } from '../services/customerIdentityService';
 
 export type UserRole = 'client' | 'admin' | 'super-admin' | 'Super Admin' | 'Admin' | 'Lawyer' | 'Client / Viewer';
 
-interface AuthContextType {
+export interface AuthContextType {
   role: UserRole;
   setRole: (role: UserRole) => void;
   isAdmin: boolean;
   isLawyer: boolean;
   user: any;
+  session: any;
+  isAuthenticated: boolean;
   loading: boolean;
   twoFactorEnabled: boolean;
   is2FAVerified: boolean;
@@ -17,6 +20,10 @@ interface AuthContextType {
   disableTwoFactor: () => void;
   verify2FATokenSession: (token: string) => Promise<boolean>;
   logoutAdmin: () => void;
+  signIn: (email: string, password: string) => Promise<{ data: any; error: any }>;
+  signUp: (email: string, password: string, fullName?: string) => Promise<{ data: any; error: any }>;
+  signOut: () => Promise<{ error: any }>;
+  logout: () => Promise<{ error: any }>;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -25,6 +32,8 @@ const AuthContext = createContext<AuthContextType>({
   isAdmin: false,
   isLawyer: false,
   user: null,
+  session: null,
+  isAuthenticated: false,
   loading: true,
   twoFactorEnabled: false,
   is2FAVerified: false,
@@ -32,6 +41,10 @@ const AuthContext = createContext<AuthContextType>({
   disableTwoFactor: () => {},
   verify2FATokenSession: async () => false,
   logoutAdmin: () => {},
+  signIn: async () => ({ data: null, error: null }),
+  signUp: async () => ({ data: null, error: null }),
+  signOut: async () => ({ error: null }),
+  logout: async () => ({ error: null }),
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -46,6 +59,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   });
 
   const [user, setUser] = useState<any>(null);
+  const [session, setSession] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [twoFactorEnabled, setTwoFactorEnabled] = useState<boolean>(false);
 
@@ -70,9 +84,74 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIs2FAVerified(false);
     setRoleState('client');
     setUser(null);
+    setSession(null);
     try {
       supabase.auth.signOut();
     } catch {}
+  }
+
+  async function signIn(email: string, password: string) {
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email.trim().toLowerCase(),
+        password,
+      });
+      if (error) throw error;
+      if (data?.user) {
+        setUser(data.user);
+        setSession(data.session);
+      }
+      return { data, error: null };
+    } catch (err: any) {
+      return { data: null, error: err };
+    }
+  }
+
+  async function signUp(email: string, password: string, fullName?: string) {
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email: email.trim().toLowerCase(),
+        password,
+        options: {
+          data: {
+            full_name: fullName?.trim() || '',
+          },
+        },
+      });
+      if (error) throw error;
+      if (data?.user) {
+        setUser(data.user);
+        setSession(data.session);
+        // Wire identity pipeline: link anonymous visitor session to new auth user
+        const { visitorId } = customerIdentityService.getOrCreateVisitorId();
+        customerIdentityService.linkVisitorToUser({
+          visitorId,
+          userId: data.user.id,
+          email: data.user.email!,
+          fullName: fullName?.trim(),
+        }).catch(() => {}); // fire-and-forget; non-blocking
+      }
+      return { data, error: null };
+    } catch (err: any) {
+      return { data: null, error: err };
+    }
+  }
+
+  async function signOut() {
+    try {
+      const { error } = await supabase.auth.signOut();
+      setUser(null);
+      setSession(null);
+      if (!verifyAdminAccess()) {
+        setRoleState('client');
+        setIs2FAVerified(false);
+      }
+      return { error: error || null };
+    } catch (err: any) {
+      setUser(null);
+      setSession(null);
+      return { error: err };
+    }
   }
 
   useEffect(() => {
@@ -81,25 +160,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const { data: { session } } = await supabase.auth.getSession();
         if (session?.user) {
           setUser(session.user);
+          setSession(session);
           const email = session.user.email?.toLowerCase();
           
           if (isAuthorizedAdminEmail(email)) {
             setRoleState('super-admin');
           } else {
-            // Check role from profiles table in Supabase
-            const { data: profile } = await supabase
-              .from('profiles')
-              .select('role')
-              .eq('id', session.user.id)
-              .single();
+            // Check role from profiles table in Supabase if table exists
+            try {
+              const { data: profile, error } = await supabase
+                .from('profiles')
+                .select('role')
+                .eq('id', session.user.id)
+                .single();
 
-            if (profile?.role === 'admin' || profile?.role === 'super-admin') {
-              setRoleState(profile.role as UserRole);
-            } else {
+              if (!error && (profile?.role === 'admin' || profile?.role === 'super-admin')) {
+                setRoleState(profile.role as UserRole);
+              } else {
+                setRoleState('client');
+              }
+            } catch {
               setRoleState('client');
             }
           }
         } else {
+          setSession(null);
           // Unauthenticated: Verify if active session token exists in sessionStorage
           if (verifyAdminAccess()) {
             setRoleState('super-admin');
@@ -121,26 +206,41 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     initAuth();
 
     const { data: authListener } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      setSession(session);
       if (session?.user) {
         setUser(session.user);
         const email = session.user.email?.toLowerCase();
         
+        if (_event === 'SIGNED_IN') {
+          const { visitorId } = customerIdentityService.getOrCreateVisitorId();
+          customerIdentityService.linkVisitorToUser({
+            visitorId,
+            userId: session.user.id,
+            email: session.user.email!,
+          }).catch(() => {});
+        }
+
         if (isAuthorizedAdminEmail(email)) {
           setRoleState('super-admin');
         } else {
-          const { data: profile } = await supabase
-            .from('profiles')
-            .select('role')
-            .eq('id', session.user.id)
-            .single();
+          try {
+            const { data: profile, error } = await supabase
+              .from('profiles')
+              .select('role')
+              .eq('id', session.user.id)
+              .single();
 
-          if (profile?.role === 'admin' || profile?.role === 'super-admin') {
-            setRoleState(profile.role as UserRole);
-          } else {
+            if (!error && (profile?.role === 'admin' || profile?.role === 'super-admin')) {
+              setRoleState(profile.role as UserRole);
+            } else {
+              setRoleState('client');
+            }
+          } catch {
             setRoleState('client');
           }
         }
       } else {
+        setSession(null);
         if (!verifyAdminAccess()) {
           setUser(null);
           setRoleState('client');
@@ -191,9 +291,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const isSupabaseAdmin = user !== null && isAuthorizedAdminEmail(user?.email) && (role === 'super-admin' || role === 'admin');
   const isAdmin = isSessionAdmin || isSupabaseAdmin;
   const isLawyer = role === 'Lawyer' || isAdmin;
+  const isAuthenticated = user !== null || isAdmin;
 
   return (
-    <AuthContext.Provider value={{ role, setRole, isAdmin, isLawyer, user, loading, twoFactorEnabled, is2FAVerified, enableTwoFactor, disableTwoFactor, verify2FATokenSession, logoutAdmin }}>
+    <AuthContext.Provider
+      value={{
+        role,
+        setRole,
+        isAdmin,
+        isLawyer,
+        user,
+        session,
+        isAuthenticated,
+        loading,
+        twoFactorEnabled,
+        is2FAVerified,
+        enableTwoFactor,
+        disableTwoFactor,
+        verify2FATokenSession,
+        logoutAdmin,
+        signIn,
+        signUp,
+        signOut,
+        logout: signOut,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

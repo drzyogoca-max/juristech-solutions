@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
+import { usePlatformLocale } from '../lib/universalTranslator';
 import {
   FileText,
   AlertTriangle,
@@ -94,16 +94,16 @@ const ALL_18_SERVICES: ServiceItem[] = [
   },
   {
     id: 'repository',
-    titleAr: 'مستودع المليون عقد المؤسسي',
-    titleEn: 'Mega 1M+ Contracts Repository',
+    titleAr: 'مستودع العقود والبيانات القانونية',
+    titleEn: 'Enterprise Contracts & Legal Data Lake',
     category: 'contracts',
-    descAr: 'أضخم أرشيف رقمي للعقود والاتفاقيات الدولية المصنفة حسب القطاع والاختصاص.',
-    descEn: 'The most comprehensive repository of multi-jurisdictional certified corporate contracts.',
+    descAr: 'أرشيف قانوني شامل للبحث الفوري في آلاف النماذج والعقود المعتمدة دولياً.',
+    descEn: 'Comprehensive multi-jurisdictional legal repository and structured data lake.',
     route: '/repository',
     icon: Library,
     color: 'text-indigo-400 bg-indigo-500/10 border-indigo-500/30',
-    badgeAr: '1,000,000+ عقد',
-    badgeEn: '1M+ Contracts',
+    badgeAr: 'أرشيف شامل',
+    badgeEn: 'Full Archive',
   },
   {
     id: 'templates',
@@ -119,17 +119,17 @@ const ALL_18_SERVICES: ServiceItem[] = [
     badgeEn: 'Instant Download',
   },
   {
-    id: 'lead-radar',
-    titleAr: 'رادار الشركات والفرص التعاقدية B2B',
-    titleEn: 'B2B Enterprise Lead Radar',
-    category: 'corporate',
-    descAr: 'رصد وتحليل الاحتياجات القانونية للشركات وتقديم حلول تعاقدية مخصصة استباقياً.',
-    descEn: 'Autonomous scanning of corporate compliance needs and proactive contract synthesis.',
-    route: '/lead-radar',
-    icon: Radio,
+    id: 'deal-shield',
+    titleAr: 'ديل شيلد 360™ وتشخيص الاحتياج',
+    titleEn: 'DealShield 360™ & Need Diagnostic',
+    category: 'risk',
+    descAr: 'محاكي أمان الصفقات والتعارض وتشخيص الاحتياجات التعاقدية للشركات.',
+    descEn: 'Deal security simulator, conflict checking & proactive legal diagnostic.',
+    route: '/deal-shield',
+    icon: ShieldCheck,
     color: 'text-rose-400 bg-rose-500/10 border-rose-500/30',
-    badgeAr: 'ذكاء الأعمال',
-    badgeEn: 'B2B Intelligence',
+    badgeAr: 'حماية الصفقات',
+    badgeEn: 'Deal Security',
   },
   {
     id: 'b2b-proposals',
@@ -223,17 +223,17 @@ const ALL_18_SERVICES: ServiceItem[] = [
     badgeEn: 'Video Studio',
   },
   {
-    id: 'marketing',
-    titleAr: 'التسويق القانوني التلقائي B2B',
-    titleEn: 'Autonomous Legal Growth Radar',
+    id: 'acquisition',
+    titleAr: 'استخبارات صفقات الاندماج والاستحواذ',
+    titleEn: 'International M&A Deal Intelligence',
     category: 'corporate',
-    descAr: 'إطلاق حملات تفاعلية ذكية لاستهداف الإدارات القانونية ومكاتب المحاماة العالمية.',
-    descEn: 'Autonomous growth engine targeting corporate legal departments across GCC & Europe.',
-    route: '/marketing',
-    icon: Share2,
+    descAr: 'تحليل عمليات الاستحواذ وحماية الاستثمارات العابرة للحدود والتفاوض المؤسسي.',
+    descEn: 'Cross-border acquisition intelligence, takeover defense & investment protection.',
+    route: '/acquisition',
+    icon: Building2,
     color: 'text-orange-400 bg-orange-500/10 border-orange-500/30',
-    badgeAr: 'نمو تلقائي',
-    badgeEn: 'Auto Growth',
+    badgeAr: 'صفقات M&A',
+    badgeEn: 'M&A Deals',
   },
   {
     id: 'reports',
@@ -277,8 +277,7 @@ const ALL_18_SERVICES: ServiceItem[] = [
 ];
 
 export default function SovereignServicesCatalog() {
-  const { t, i18n } = useTranslation();
-  const isRtl = i18n.language === 'ar';
+  const { l, isRtl, t } = usePlatformLocale();
   const navigate = useNavigate();
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -305,14 +304,14 @@ export default function SovereignServicesCatalog() {
               <Sparkles className="w-5 h-5" />
             </span>
             <span className="text-xs font-black uppercase tracking-widest text-sky-400">
-              {isRtl ? 'دليل الخدمات والحلول السيادية الشامل' : '18 Sovereign Legal Services Directory'}
+              {l('دليل الخدمات والحلول السيادية الشامل (18)', '18 Sovereign Legal Services Directory')}
             </span>
           </div>
           <h2 className="text-xl sm:text-2xl font-black text-white mt-1">
-            {isRtl ? 'استعرض وانتقل لأي خدمة قانونية بضغطة زر واحدة' : 'Explore All 18 Institutional Services & AI Engines'}
+            {l('استعرض وانتقل لأي خدمة قانونية بضغطة زر واحدة', 'Explore All 18 Institutional Services & AI Engines')}
           </h2>
           <p className="text-xs text-slate-300">
-            {isRtl ? 'جميع الأدوات مدعومة بالذكاء الاصطناعي ومطابقة للأنظمة القضائية المحلية والدولية.' : 'All tools are AI-powered, statutory compliant, and continuously updated.'}
+            {l('جميع الأدوات مدعومة بالذكاء الاصطناعي ومطابقة للأنظمة القضائية المحلية والدولية.', 'All tools are AI-powered, statutory compliant, and continuously updated.')}
           </p>
         </div>
 
@@ -322,7 +321,7 @@ export default function SovereignServicesCatalog() {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder={isRtl ? 'ابحث في الخدمات...' : 'Search services...'}
+            placeholder={l('ابحث في الخدمات...', 'Search services...')}
             className="w-full py-2.5 px-4 ps-10 pe-4 rounded-2xl bg-slate-900/90 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-sky-400 transition-all shadow-inner"
           />
           <Search className="w-4 h-4 text-slate-400 absolute top-1/2 -translate-y-1/2 start-3 pointer-events-none" />
@@ -333,10 +332,10 @@ export default function SovereignServicesCatalog() {
       <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
         {[
           { id: 'all', labelAr: 'جميع الخدمات (18)', labelEn: 'All Services (18)' },
-          { id: 'contracts', labelAr: '📜 صياغة العقود والنماذج', labelEn: 'Contracts Studio' },
-          { id: 'corporate', labelAr: '🏢 تأسيس الشركات والحوكمة', labelEn: 'Corporate & M&A' },
-          { id: 'risk', labelAr: '🔍 تدقيق المخاطر والتحري', labelEn: 'Risk & Audit' },
-          { id: 'arbitration', labelAr: '⚖️ التحكيم والخزنة المشفرة', labelEn: 'Arbitration & Vault' },
+          { id: 'contracts', labelAr: 'صياغة العقود والنماذج', labelEn: 'Contracts Studio' },
+          { id: 'corporate', labelAr: 'تأسيس الشركات والاستحواذ', labelEn: 'Corporate & M&A' },
+          { id: 'risk', labelAr: 'تدقيق المخاطر والتحري', labelEn: 'Risk & Audit' },
+          { id: 'arbitration', labelAr: 'التحكيم والخزنة المشفرة', labelEn: 'Arbitration & Vault' },
         ].map((cat) => (
           <button
             key={cat.id}
@@ -347,7 +346,7 @@ export default function SovereignServicesCatalog() {
                 : 'bg-slate-900/80 text-slate-400 border-slate-800 hover:text-slate-200'
             }`}
           >
-            {isRtl ? cat.labelAr : cat.labelEn}
+            {l(cat.labelAr, cat.labelEn)}
           </button>
         ))}
       </div>
@@ -368,22 +367,22 @@ export default function SovereignServicesCatalog() {
                     <Icon className="w-5 h-5" />
                   </div>
                   <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-900 text-slate-300 border border-slate-800 group-hover:border-sky-500/30">
-                    {isRtl ? service.badgeAr : service.badgeEn}
+                    {l(service.badgeAr, service.badgeEn)}
                   </span>
                 </div>
 
                 <div>
                   <h3 className="text-sm font-bold text-white group-hover:text-sky-300 transition-colors">
-                    {t(`Nav.${service.id}`) !== `Nav.${service.id}` ? t(`Nav.${service.id}`) : (isRtl ? service.titleAr : service.titleEn)}
+                    {l(service.titleAr, service.titleEn)}
                   </h3>
                   <p className="text-xs text-slate-400 mt-1 leading-relaxed line-clamp-2">
-                    {isRtl ? service.descAr : service.descEn}
+                    {l(service.descAr, service.descEn)}
                   </p>
                 </div>
               </div>
 
               <div className="flex items-center justify-between pt-2 border-t border-slate-900 text-[11px] font-bold text-sky-400 group-hover:text-sky-300">
-                <span>{isRtl ? 'بدء الاستخدام الفوري' : 'Launch Service'}</span>
+                <span>{l('بدء الاستخدام الفوري', 'Launch Service')}</span>
                 <ArrowRight className={`w-3.5 h-3.5 ${isRtl ? 'rotate-180' : ''} group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform`} />
               </div>
             </Link>
@@ -393,12 +392,12 @@ export default function SovereignServicesCatalog() {
 
       {filteredServices.length === 0 && (
         <div className="text-center py-12 text-slate-400 space-y-2">
-          <p className="text-sm font-bold">{isRtl ? 'لا توجد خدمات مطابقة لبحثك.' : 'No services found matching your search.'}</p>
+          <p className="text-sm font-bold">{l('لا توجد خدمات مطابقة لبحثك.', 'No services found matching your search.')}</p>
           <button
             onClick={() => { setSearchQuery(''); setSelectedCategory('all'); }}
-            className="text-xs font-bold text-sky-400 hover:underline"
+            className="text-xs font-bold text-sky-400 hover:underline cursor-pointer"
           >
-            {isRtl ? 'إعادة ضبط البحث' : 'Reset search filter'}
+            {l('إعادة ضبط البحث', 'Reset search filter')}
           </button>
         </div>
       )}

@@ -30,6 +30,6 @@ CREATE POLICY "payments_owner_select" ON public.payments
 
 -- 3. High-Performance Composite Indexes
 CREATE INDEX IF NOT EXISTS idx_contracts_user_created ON public.contracts (user_id, created_at DESC);
-CREATE INDEX IF NOT EXISTSH idx_payments_user_status ON public.payments (user_id, status);
+CREATE INDEX IF NOT EXISTS idx_payments_user_status ON public.payments (user_id, status);
 CREATE INDEX IF NOT EXISTS idx_risk_assessments_user ON public.risk_assessments (user_id);
-CREATE INDEX IF NOT EXISTH idx_visitor_logs_created ON public.visitor_logs (created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_visitor_logs_created ON public.visitor_logs (created_at DESC);

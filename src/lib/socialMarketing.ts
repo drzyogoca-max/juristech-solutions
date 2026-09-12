@@ -59,7 +59,7 @@ const STORAGE_REVIEW_MODE_KEY = 'juristech_auto_engagement_review_mode';
 export const LINKEDIN_OFFICIAL_CONFIG = {
   pageName: 'JURISTECH Solutions',
   partnerId: '7896543',
-  officialEmail: 'Drzyogo.ca@gmail.com',
+  officialEmail: 'founder@juristech.solutions',
   targetAudience: 'Global B2B Enterprises, Law Firms, Corporate Counsel, General Counsel (MENA, GCC, EU, Asia)',
   profileUrl: 'https://www.linkedin.com/in/juristech-solutions-14954b427/',
   status: 'Connected & Active 🟢',

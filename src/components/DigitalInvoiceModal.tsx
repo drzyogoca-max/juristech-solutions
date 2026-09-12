@@ -120,7 +120,7 @@ Status: OFFICIAL E-PAID & ACTIVE`.trim();
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
                 Global Autonomous Legal Advisory Platform<br />
                 Domain: <a href="https://juristech.solutions" target="_blank" rel="noopener noreferrer" className="text-cyan-400 underline">https://juristech.solutions</a><br />
-                Support: <span className="font-mono text-cyan-400">Drzyogo.ca@gmail.com</span>
+                Support: <span className="font-mono text-cyan-400">founder@juristech.solutions</span>
               </p>
             </div>
 

@@ -16,6 +16,7 @@ import AdSponsorBanner from '../components/AdSponsorBanner';
 import { runSelfHealingMAAudit, EnterpriseAuditResult } from '../lib/ragEnterpriseAgent';
 import { erpIntegrationService, ERPConfig } from '../lib/erpIntegrationService';
 import SEO from '../components/SEO';
+import PremiumFeatureGuard from '../components/PremiumFeatureGuard';
 
 export default function EnterpriseAuditPage() {
   const { i18n } = useTranslation();
@@ -119,8 +120,13 @@ export default function EnterpriseAuditPage() {
           </p>
         </div>
 
-        {/* Audit Tier Selection Cards */}
-        <div className="grid md:grid-cols-3 gap-4">
+        <PremiumFeatureGuard
+          requiredTier="Enterprise"
+          featureNameEn="Institutional M&A Audit & Deal Structuring"
+          featureNameAr="التدقيق المؤسسي لصفقات الاندماج والاستحواذ"
+        >
+          {/* Audit Tier Selection Cards */}
+          <div className="grid md:grid-cols-3 gap-4">
           {[
             {
               tier: 500,
@@ -180,7 +186,7 @@ export default function EnterpriseAuditPage() {
                 <FileText className="w-6 h-6 text-amber-400 shrink-0" />
                 <span className="font-bold text-slate-800 dark:text-slate-200 text-sm truncate">{fileName}</span>
               </div>
-              <button onClick={handleClear} className="p-1 rounded-lg text-slate-600 dark:text-slate-400 hover:text-red-400 hover:bg-slate-100 dark:bg-slate-800 transition-colors">
+              <button onClick={handleClear} aria-label={isRtl ? 'إزالة الملف' : 'Remove file'} className="p-1 rounded-lg text-slate-600 dark:text-slate-400 hover:text-red-400 hover:bg-slate-100 dark:bg-slate-800 transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -436,6 +442,7 @@ export default function EnterpriseAuditPage() {
             })}
           </div>
         </div>
+        </PremiumFeatureGuard>
       </div>
     </main>
   );

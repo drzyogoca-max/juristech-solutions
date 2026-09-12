@@ -10,7 +10,7 @@
  *  • Statutory Compliance Scans
  *  • Structured Document Generations
  *
- * STRICT RULE ZERO: Zero modifications to Paddle, Stripe, or financial ledger tables.
+ * STRICT RULE ZERO: Zero modifications to PayTabs, Stripe, or financial ledger tables.
  */
 
 export type QuotaMetricType =

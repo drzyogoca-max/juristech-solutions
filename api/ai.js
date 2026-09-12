@@ -3,6 +3,9 @@
  * JurisTech Solutions | Executive Statutory Legal AI Proxy
  */
 
+import { authenticateRequest } from '../lib/security/backendAuthGuard.js';
+import { enforceUsageQuota } from '../lib/security/subscriptionResolver.js';
+
 export const config = {
   runtime: 'edge',
 };
@@ -26,6 +29,16 @@ export async function POST(req) {
 }
 
 export async function GET(req) {
+  if (req?.method === 'OPTIONS') {
+    return new Response(null, { status: 200, headers: CORS_HEADERS });
+  }
+
+  // ── Universal Server-Side Auth Guard ─────────────────────────────────────────
+  const auth = await authenticateRequest(req, { corsHeaders: CORS_HEADERS });
+  if (!auth.authenticated) {
+    return auth.response;
+  }
+
   return new Response(JSON.stringify({ status: 'ok', service: 'JurisTech Statutory Legal AI Proxy' }), {
     status: 200,
     headers: CORS_HEADERS,
@@ -38,13 +51,27 @@ async function handleEdgeRequest(req) {
     return new Response(null, { status: 200, headers: CORS_HEADERS });
   }
 
+  // ── Universal Server-Side Auth Guard ─────────────────────────────────────────
+  const auth = await authenticateRequest(req, { corsHeaders: CORS_HEADERS });
+  if (!auth.authenticated) {
+    return auth.response;
+  }
+  // Verified user identity derived strictly from backendAuthGuard (client claims ignored)
+  const verifiedUser = auth.user;
+
+  // ── Server-Side Subscription & Usage Enforcement ─────────────────────────────
+  const usage = await enforceUsageQuota(verifiedUser, { corsHeaders: CORS_HEADERS });
+  if (!usage.allowed) {
+    return usage.response;
+  }
+
   try {
     let body = {};
     if (req.method === 'POST') {
       try {
-        body = await req.json();
+        body = typeof req.json === 'function' ? await req.json() : (req.body || {});
       } catch (e) {
-        body = {};
+        body = req.body || {};
       }
     }
 
@@ -90,6 +117,21 @@ async function handleNodeRequest(req, res) {
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
+  }
+
+  // ── Universal Server-Side Auth Guard ─────────────────────────────────────────
+  const auth = await authenticateRequest(req, { corsHeaders: CORS_HEADERS });
+  if (!auth.authenticated) {
+    return res.status(401).json(auth.error);
+  }
+  // Verified user identity derived strictly from backendAuthGuard (client claims ignored)
+  const verifiedUser = auth.user;
+
+  // ── Server-Side Subscription & Usage Enforcement ─────────────────────────────
+  const usage = await enforceUsageQuota(verifiedUser, { corsHeaders: CORS_HEADERS });
+  if (!usage.allowed) {
+    const status = usage.code === 'QUOTA_EXCEEDED' ? 429 : (usage.code === 'INSUFFICIENT_TIER' ? 403 : 500);
+    return res.status(status).json(usage.error);
   }
 
   try {

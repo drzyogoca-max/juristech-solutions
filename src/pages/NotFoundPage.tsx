@@ -55,8 +55,8 @@ export default function NotFoundPage() {
       icon: MessageSquare,
       titleAr: 'المستشار القانوني الذكي 24/7',
       titleEn: 'AI Legal Copilot 24/7',
-      descAr: 'استشارات قانونية وفحص فوري عبر الذكاء الاصطناعي',
-      descEn: 'Statutory advisory & instant smart legal answers',
+      descAr: 'تحليل العقود وفحص المخاطر آلياً عبر الذكاء الاصطناعي',
+      descEn: 'Statutory contract analysis & automated AI risk auditing',
       color: 'text-sky-400 bg-sky-500/10 border-sky-500/30'
     },
     {
@@ -270,7 +270,7 @@ export default function NotFoundPage() {
           <div className="flex items-center gap-2">
             <Crown className="w-4 h-4 text-amber-400 shrink-0" />
             <span>
-              {l('تحتاج لمساعدة قانونية عاجلة؟ تواصل مباشرة مع المستشار د. محمد مصطفى', 'Need urgent legal assistance? Connect with Executive Counsel Dr. Mohammad Mustafa')}
+              {l('هل تواجه مشكلة فنية أو استفساراً في المنصة؟ تواصل مع فريق الدعم الفني', 'Need technical assistance or platform support? Contact our platform support team')}
             </span>
           </div>
 
@@ -284,7 +284,7 @@ export default function NotFoundPage() {
               WhatsApp
             </a>
             <a
-              href="mailto:drzyogo.ca@gmail.com"
+              href="mailto:founder@juristech.solutions"
               className="px-3 py-1.5 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 text-sky-300 border border-sky-500/30 font-bold transition-all"
             >
               Email

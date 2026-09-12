@@ -11,7 +11,7 @@
  */
 
 import { supabase } from './supabaseClient';
-import { activateUserSubscription, cancelSubscriptionNow } from './financialGateway';
+import { cancelSubscriptionNow } from './financialGateway';
 
 export interface FinancialReceiptRecord {
   id: string;
@@ -29,6 +29,19 @@ export interface FinancialReceiptRecord {
   uploaded_at: string;
   audited_at?: string;
   audited_by?: string;
+}
+
+export interface ReceiptApprovalResult {
+  success: boolean;
+  idempotent?: boolean;
+  data?: any;
+  error?: string;
+  receipt_id?: string;
+  user_id?: string;
+  plan_id?: string;
+  plan_name?: string;
+  activated_at?: string;
+  expires_at?: string;
 }
 
 const STORAGE_VAULT_KEY = 'ls_secure_financial_repository';
@@ -144,42 +157,64 @@ export async function saveFinancialReceipt(data: Omit<FinancialReceiptRecord, 'i
 }
 
 /**
- * Financial Admin Audit: Approve SWIFT Receipt and Activate Subscription
+ * Financial Admin Audit: Approve Receipt and Activate Subscription via atomic RPC
+ *
+ * Calls the verified SECURITY DEFINER PostgreSQL function:
+ * public.admin_approve_receipt_and_activate(p_receipt_id, p_admin_notes)
+ *
+ * Direct client-side updates to payments, payment_receipts, and subscriptions
+ * are completely replaced by this single authoritative database transaction.
  */
-export async function auditApproveReceipt(receiptId: string, auditorEmail: string): Promise<boolean> {
-  const records = getFinancialRepositoryRecords();
-  const target = records.find((r) => r.id === receiptId);
+export async function auditApproveReceipt(
+  receiptId: string,
+  adminNotes?: string
+): Promise<ReceiptApprovalResult> {
+  if (!receiptId) {
+    return {
+      success: false,
+      error: 'Receipt ID is required',
+    };
+  }
 
-  if (!target) return false;
-
-  target.status = 'approved';
-  target.audited_at = new Date().toISOString();
-  target.audited_by = auditorEmail;
-
-  saveFinancialRepositoryRecords(records);
-
-  await activateUserSubscription({
-    userEmail: target.user_email,
-    userName: target.user_name,
-    planId: target.amount >= 400 ? 'enterprise' : 'pro',
-    paymentMethod: 'Bank Wire SWIFT',
-    amountUSD: target.amount,
-    receiptUrl: target.receipt_url,
+  // 1. Invoke verified RPC atomically in Supabase (browser sends ONLY p_receipt_id and p_admin_notes)
+  const { data, error } = await supabase.rpc('admin_approve_receipt_and_activate', {
+    p_receipt_id: receiptId,
+    p_admin_notes: adminNotes || null,
   });
 
+  if (error) {
+    console.error('[FinancialRepo] RPC admin_approve_receipt_and_activate error:', error);
+    return {
+      success: false,
+      error: error.message || 'Failed to approve receipt and activate subscription',
+    };
+  }
+
+  // 2. Update non-authoritative local UI state ONLY after RPC success
   try {
-    await supabase
-      .from('payments')
-      .update({ status: 'مفعل ومكتمل (Approved)' })
-      .eq('paypal_order_id', target.transaction_ref);
+    const records = getFinancialRepositoryRecords();
+    const target = records.find((r) => r.id === receiptId || r.transaction_ref === receiptId);
+    if (target) {
+      target.status = 'approved';
+      target.audited_at = new Date().toISOString();
+      target.audited_by = adminNotes || 'Admin Audit';
+      saveFinancialRepositoryRecords(records);
+    }
+  } catch (uiErr) {
+    console.warn('[FinancialRepo] Non-authoritative local UI cache update note:', uiErr);
+  }
 
-    await supabase
-      .from('payment_receipts')
-      .update({ status: 'approved' })
-      .eq('transaction_ref', target.transaction_ref);
-  } catch {}
-
-  return true;
+  return {
+    success: true,
+    idempotent: data?.idempotent ?? false,
+    data,
+    receipt_id: data?.receipt_id || receiptId,
+    user_id: data?.user_id,
+    plan_id: data?.plan_id,
+    plan_name: data?.plan_name,
+    activated_at: data?.activated_at,
+    expires_at: data?.expires_at,
+  };
 }
 
 /**
@@ -254,6 +289,11 @@ export async function sovereignOverrideReceipt(receiptId: string, newStatus: 'pe
     return auditRejectReceipt(receiptId, notes || 'Rejected by Admin', auditorEmail);
   }
 
+  if (newStatus === 'approved') {
+    const res = await auditApproveReceipt(receiptId, notes || 'Sovereign Chairman Decision');
+    return res.success;
+  }
+
   const records = getFinancialRepositoryRecords();
   const target = records.find((r) => r.id === receiptId);
 
@@ -267,17 +307,6 @@ export async function sovereignOverrideReceipt(receiptId: string, newStatus: 'pe
   target.audited_by = auditorEmail;
 
   saveFinancialRepositoryRecords(records);
-
-  if (newStatus === 'approved') {
-    await activateUserSubscription({
-      userEmail: target.user_email,
-      userName: target.user_name,
-      planId: target.amount >= 400 ? 'enterprise' : 'pro',
-      paymentMethod: 'Bank Wire SWIFT',
-      amountUSD: target.amount,
-      receiptUrl: target.receipt_url,
-    });
-  }
 
   return true;
 }

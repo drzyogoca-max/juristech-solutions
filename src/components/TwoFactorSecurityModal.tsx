@@ -112,9 +112,10 @@ export default function TwoFactorSecurityModal({ isOpen, onClose }: TwoFactorSec
   }
 
   function handleDownloadRecovery() {
+    const userAccountEmail = (typeof window !== 'undefined' && (sessionStorage.getItem('juristech_user_email') || localStorage.getItem('juristech_user_email'))) || 'founder@juristech.solutions';
     const text = `================================================================================
 JURISTECH SOLUTIONS — 2FA EMERGENCY RECOVERY CODES & E2EE KEY
-Account: drzyogo.ca@gmail.com
+Account: ${userAccountEmail}
 Generated: ${new Date().toISOString()}
 ================================================================================
 KEEP THIS FILE IN A SECURE OFFLINE VAULT.

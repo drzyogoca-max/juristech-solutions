@@ -1,6 +1,6 @@
 import { detectPromptLanguage, enforceLanguageMirroringPrompt, SupportedLanguage } from './languageDetector';
 import { executeEngineAISearch, EngineAISearchResponse, SearchResultItem } from './engineAISearch';
-import { dispatchWhatsAppNotification, dispatchSystemNotification, WhatsAppEventPayload, SystemEventPayload, TARGET_WHATSAPP_NUMBER, OFFICIAL_ADMIN_EMAIL } from './whatsappNotifier';
+import { dispatchWhatsAppNotification, dispatchSystemNotification, create2FAWhatsAppDetails, WhatsAppEventPayload, SystemEventPayload, TARGET_WHATSAPP_NUMBER, OFFICIAL_ADMIN_EMAIL } from './whatsappNotifier';
 import { solveLegalPrompt, classifyLegalPrompt, generateCarSaleContract, generateNdaContract, generateEmploymentContract, LegalAnalysisResult } from './legalIntelligenceEngine';
 
 export {
@@ -9,6 +9,7 @@ export {
   executeEngineAISearch,
   dispatchWhatsAppNotification,
   dispatchSystemNotification,
+  create2FAWhatsAppDetails,
   solveLegalPrompt,
   classifyLegalPrompt,
   generateCarSaleContract,

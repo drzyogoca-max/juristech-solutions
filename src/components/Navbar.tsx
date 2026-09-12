@@ -5,15 +5,16 @@ import {
   Home, MessageSquare, FileText, AlertTriangle, Library, Handshake, Users,
   Building2, Video, CreditCard, Headphones, Share2, Menu, X, Shield, ShieldCheck,
   BarChart3, DollarSign, Search, Scale, Globe, Phone, Crown, ChevronDown,
-  Sparkles, Zap, Star, ArrowRight, Lock, Palette, Mail, ShieldAlert, Edit3, Briefcase, Youtube
+  Sparkles, Zap, Star, ArrowRight, Lock, Palette, Mail, ShieldAlert, Edit3, Briefcase, Youtube, Layers,
+  LogIn, LogOut
 } from 'lucide-react';
 import LanguageSwitcher from './LanguageSwitcher';
 import ThemeSwitcher from './ThemeSwitcher';
 import AlertBell from './AlertBell';
 import { useAuth } from '../lib/authContext';
+import { useSubscription } from '../hooks/useSubscription';
 import { detectVisitorJurisdiction, JurisdictionInfo } from '../lib/jurisdiction';
 import { usePlatformLocale } from '../lib/universalTranslator';
-import { openPaddleCheckout } from '../lib/paddleClient';
 
 // ── Lazy Loaded Modals & Search Bar for Lightweight Initial Nav Payload ──
 const EngineAISearchBar = lazy(() => import('./EngineAISearchBar'));
@@ -24,6 +25,10 @@ const CompanyProfileModal = lazy(() => import('./CompanyProfileModal'));
 const LegalConsultationBookingModal = lazy(() => import('./LegalConsultationBookingModal'));
 const TwoFactorAuthModal = lazy(() => import('./TwoFactorAuthModal'));
 const RbacUserManagementModal = lazy(() => import('./RbacUserManagementModal'));
+const TeamManagementModal = lazy(() => import('./team/TeamManagementModal'));
+const CustomerAuthModal = lazy(() => import('./CustomerAuthModal'));
+import OrganizationSwitcher from './tenancy/OrganizationSwitcher';
+import WorkspaceSwitcher from './tenancy/WorkspaceSwitcher';
 
 // ─── Nav link groups (Visitor & Subscriber separated) ────────────────────────
 const VISITOR_LINKS = [
@@ -38,20 +43,18 @@ const VISITOR_LINKS = [
 ];
 
 const SUBSCRIBER_LINKS = [
-  { to: '/youtube-studio', icon: Youtube, key: 'youtubeStudio' },
   { to: '/deal-shield', icon: Sparkles, key: 'dealShield' },
   { to: '/contracts', icon: FileText, key: 'contracts' },
+  { to: '/templates', icon: Layers, key: 'templates' },
   { to: '/risk', icon: AlertTriangle, key: 'risk' },
   { to: '/vault', icon: Lock, key: 'vault' },
   { to: '/negotiation', icon: Handshake, key: 'negotiation' },
   { to: '/enterprise-audit', icon: Building2, key: 'enterpriseAudit' },
   { to: '/investigate', icon: Search, key: 'investigate' },
-  { to: '/lead-radar', icon: Users, key: 'leadRadar' },
   { to: '/video-hub', icon: Video, key: 'videoHub' },
   { to: '/company-formation', icon: Building2, key: 'companyFormation' },
   { to: '/acquisition', icon: Briefcase, key: 'acquisition' },
-  { to: '/sponsors-ads', icon: DollarSign, key: 'sponsorsAds' },
-  { to: '/social-marketing', icon: Share2, key: 'socialMarketing' },
+  { to: '/b2b-proposals', icon: Briefcase, key: 'b2bProposals' },
   { to: '/reports', icon: BarChart3, key: 'reports' },
 ];
 
@@ -69,8 +72,8 @@ export default function Navbar() {
   const { l, isRtl, gt, t, i18n } = usePlatformLocale();
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const { isAdmin } = useAuth();
-
+  const { isAdmin, user, signOut } = useAuth();
+  const { tier } = useSubscription();
 
   const [isOpen, setIsOpen] = useState(false);
   const [showMoreMenu, setShowMoreMenu] = useState(false);
@@ -81,6 +84,9 @@ export default function Navbar() {
   const [showConsultationModal, setShowConsultationModal] = useState(false);
   const [show2FAModal, setShow2FAModal] = useState(false);
   const [showRbacModal, setShowRbacModal] = useState(false);
+  const [showTeamModal, setShowTeamModal] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authModalMode, setAuthModalMode] = useState<'login' | 'signup'>('login');
   const [activeJurisdiction, setActiveJurisdiction] = useState<JurisdictionInfo | null>(null);
   const [scrolled, setScrolled] = useState(false);
 
@@ -137,6 +143,13 @@ export default function Navbar() {
         {showThemeModal && <ThemeFontSelectorModal isOpen={showThemeModal} onClose={() => setShowThemeModal(false)} />}
         {showCompanyModal && <CompanyProfileModal isOpen={showCompanyModal} onClose={() => setShowCompanyModal(false)} />}
         {showConsultationModal && <LegalConsultationBookingModal isOpen={showConsultationModal} onClose={() => setShowConsultationModal(false)} />}
+        {showAuthModal && (
+          <CustomerAuthModal
+            isOpen={showAuthModal}
+            onClose={() => setShowAuthModal(false)}
+            initialMode={authModalMode}
+          />
+        )}
       </Suspense>
 
       {/* ─── Main Navbar ────────────────────────────────────────────────────── */}
@@ -163,14 +176,14 @@ export default function Navbar() {
             <div className="hidden sm:block">
               <div className="flex items-center gap-1.5">
                 <span className="text-base font-black text-slate-900 dark:text-white group-hover:text-cyan-400 transition-colors tracking-tight leading-none block">
-                  JurisTech Solutions <span className="text-cyan-400">| حلول جوريس تك</span>
+                  JurisTech Solutions {isRtl ? <span className="text-cyan-400">| حلول جوريس تك</span> : <span className="text-cyan-400">| Sovereign Legal AI</span>}
                 </span>
                 <span className="text-[9px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-1.5 py-0.5 rounded-md">
-                  {i18n.language === 'ar' ? 'المنصة الموحدة' : i18n.language === 'fr' ? 'Plateforme Unifiée' : i18n.language === 'de' ? 'Einheitliche Plattform' : i18n.language === 'es' ? 'Plataforma Unificada' : i18n.language === 'zh' ? '统一平台' : i18n.language === 'tr' ? 'Birleşik Platform' : 'Unified Platform'}
+                  {l('المنصة الموحدة', 'Unified Platform')}
                 </span>
               </div>
               <span className="text-[9px] font-sans text-slate-500 dark:text-slate-400 block font-bold tracking-wider uppercase mt-0.5">
-                {i18n.language === 'ar' ? 'المنظومة القانونية والذكاء الاصطناعي الشامل' : i18n.language === 'fr' ? 'ÉCOSYSTÈME JURIDIQUE IA COMPLET' : i18n.language === 'de' ? 'VOLLSTÄNDIGES KI-RECHTSÖKOSYSTEM' : i18n.language === 'es' ? 'ECOSISTEMA LEGAL INTEGRAL CON IA' : i18n.language === 'zh' ? '主权AI全栈法律生态系统' : i18n.language === 'tr' ? 'YAPAY ZEKA DESTEKLİ HUKUK EKOSİSTEMİ' : 'AI-POWERED LEGAL ECOSYSTEM'}
+                {l('المنظومة القانونية والذكاء الاصطناعي الشامل', 'Sovereign Legal Intelligence & Contract OS')}
               </span>
             </div>
           </Link>
@@ -220,14 +233,14 @@ export default function Navbar() {
               {t('Nav.themeFontLabel')}
             </button>
 
-            {/* Quick Action: Official Subscribe Now via Paddle */}
-            <button
-              onClick={() => openPaddleCheckout()}
+            {/* Quick Action: Official Subscribe Now */}
+            <Link
+              to="/pricing"
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 text-xs font-black shadow-md shadow-amber-500/20 active:scale-95 transition-all cursor-pointer"
             >
               <Crown className="w-3.5 h-3.5" />
               <span>{l('اشترك الآن', 'Subscribe Now')}</span>
-            </button>
+            </Link>
 
             {/* Account Billing Link */}
             <Link
@@ -238,6 +251,57 @@ export default function Navbar() {
               <CreditCard className="w-3.5 h-3.5 text-cyan-400" />
               <span>{l('الفوترة', 'Billing')}</span>
             </Link>
+
+            {/* Customer Authentication Control */}
+            {!user ? (
+              <button
+                onClick={() => {
+                  setAuthModalMode('login');
+                  setShowAuthModal(true);
+                }}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-cyan-500/20 to-indigo-500/20 hover:from-cyan-500/30 hover:to-indigo-500/30 text-cyan-300 border border-cyan-500/40 text-xs font-bold transition-all shadow-sm cursor-pointer"
+                title={l('تسجيل الدخول أو إنشاء حساب جديد', 'Log In or Create Account')}
+              >
+                <LogIn className="w-3.5 h-3.5 text-cyan-400" />
+                <span>{l('تسجيل الدخول', 'Log In')}</span>
+              </button>
+            ) : (
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-800/90 border border-cyan-500/30 text-xs text-white shadow-sm">
+                <Link
+                  to="/billing"
+                  className="flex items-center gap-1.5 hover:opacity-85 transition-opacity"
+                  title={l('بوابة العميل والفوترة', 'Customer Billing Portal')}
+                >
+                  <div className="w-5 h-5 rounded-full bg-gradient-to-tr from-cyan-400 to-indigo-500 text-slate-950 font-black text-[10px] flex items-center justify-center select-none shrink-0">
+                    {(user.email?.[0] || 'U').toUpperCase()}
+                  </div>
+                  <span className="hidden md:inline font-mono text-[11px] text-slate-300 max-w-[110px] truncate" title={user.email}>
+                    {user.email?.split('@')[0]}
+                  </span>
+                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold font-mono border ${
+                    tier === 'Enterprise'
+                      ? 'bg-amber-500/20 border-amber-500/40 text-amber-300'
+                      : tier === 'SMEs'
+                      ? 'bg-indigo-500/20 border-indigo-500/40 text-indigo-300'
+                      : tier === 'Startup'
+                      ? 'bg-cyan-500/20 border-cyan-500/40 text-cyan-300'
+                      : tier === 'Pro'
+                      ? 'bg-purple-500/20 border-purple-500/40 text-purple-300'
+                      : 'bg-slate-700/50 border-slate-600/50 text-slate-400'
+                  }`}>
+                    {tier}
+                  </span>
+                </Link>
+                <button
+                  onClick={() => signOut()}
+                  className="p-1 rounded-lg hover:bg-slate-700 text-slate-400 hover:text-rose-400 transition-colors cursor-pointer"
+                  title={l('تسجيل الخروج', 'Log Out')}
+                  aria-label={l('تسجيل الخروج', 'Log Out')}
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            )}
 
             {/* Unified "المزيد" (More Menu) Button & Dropdown */}
             <div className="relative">
@@ -282,12 +346,36 @@ export default function Navbar() {
                           <span className="leading-snug">{gt.nav.security2FA}</span>
                         </button>
                         <button
-                          onClick={() => { setShowMoreMenu(false); setShowRbacModal(true); }}
+                          onClick={() => { setShowMoreMenu(false); setShowTeamModal(true); }}
                           className="flex items-center gap-2 text-xs font-semibold px-3 py-2 rounded-xl text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-all text-start"
                         >
                           <Users className="w-3.5 h-3.5 text-purple-400 shrink-0" />
-                          <span className="leading-snug">{gt.nav.rbacRoles}</span>
+                          <span className="leading-snug">{isRtl ? 'إدارة الفريق والصلاحيات' : 'Team Governance & RBAC'}</span>
                         </button>
+                        {!user ? (
+                          <button
+                            onClick={() => {
+                              setShowMoreMenu(false);
+                              setAuthModalMode('login');
+                              setShowAuthModal(true);
+                            }}
+                            className="flex items-center gap-2 text-xs font-semibold px-3 py-2 rounded-xl text-cyan-600 dark:text-cyan-400 hover:bg-cyan-500/10 transition-all text-start"
+                          >
+                            <LogIn className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                            <span className="leading-snug">{l('تسجيل الدخول / إنشاء حساب', 'Sign In / Create Account')}</span>
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => {
+                              setShowMoreMenu(false);
+                              signOut();
+                            }}
+                            className="flex items-center gap-2 text-xs font-semibold px-3 py-2 rounded-xl text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 transition-all text-start"
+                          >
+                            <LogOut className="w-3.5 h-3.5 text-rose-400 shrink-0" />
+                            <span className="leading-snug">{l('تسجيل الخروج من الحساب', 'Sign Out')}</span>
+                          </button>
+                        )}
                       </div>
                     </div>
 
@@ -394,6 +482,12 @@ export default function Navbar() {
 
           {/* ── Right Controls ────────────────────────────────────────────── */}
           <div className="flex items-center gap-2 shrink-0">
+            {/* Multi-Tenant Tenancy Switchers */}
+            <div className="hidden lg:flex items-center gap-1.5">
+              <OrganizationSwitcher />
+              <WorkspaceSwitcher />
+            </div>
+
             <AlertBell />
             <ThemeSwitcher />
             <LanguageSwitcher />
@@ -447,6 +541,12 @@ export default function Navbar() {
               >
                 <X className="w-5 h-5" />
               </button>
+            </div>
+
+            {/* Mobile Tenancy Switchers */}
+            <div className="p-3 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2">
+              <OrganizationSwitcher />
+              <WorkspaceSwitcher />
             </div>
 
             {/* Action buttons */}
@@ -591,6 +691,12 @@ export default function Navbar() {
           <RbacUserManagementModal
             isOpen={showRbacModal}
             onClose={() => setShowRbacModal(false)}
+          />
+        )}
+        {showTeamModal && (
+          <TeamManagementModal
+            isOpen={showTeamModal}
+            onClose={() => setShowTeamModal(false)}
           />
         )}
       </Suspense>

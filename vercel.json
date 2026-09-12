@@ -27,17 +27,17 @@
     },
     {
       "source": "/youtube",
-      "destination": "/youtube-studio",
+      "destination": "/video-hub",
       "permanent": false
     },
     {
       "source": "/youtube-channel",
-      "destination": "/youtube-studio",
+      "destination": "/video-hub",
       "permanent": false
     },
     {
       "source": "/channel",
-      "destination": "/youtube-studio",
+      "destination": "/video-hub",
       "permanent": false
     },
     {
@@ -163,11 +163,11 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=0, s-maxage=86400, stale-while-revalidate=604800"
+          "value": "public, max-age=0, must-revalidate"
         },
         {
           "key": "CDN-Cache-Control",
-          "value": "public, s-maxage=86400, stale-while-revalidate=604800"
+          "value": "no-cache"
         },
         {
           "key": "Vary",

@@ -8,7 +8,8 @@
  * - Admin Paywall Exemption Guard
  */
 
-import { verifyAdminOrEnforcePaywall } from '../../lib/security/sovereign-guard.js';
+import { authenticateRequest } from '../../lib/security/backendAuthGuard.js';
+import { verifyAdminOrEnforcePaywall, enforceContractQuota } from '../../lib/security/sovereign-guard.js';
 
 export const config = {
   runtime: 'edge',
@@ -283,42 +284,25 @@ function matchNicheTopic(text) {
   return null;
 }
 
-export async function POST(req) {
-  const startTime = Date.now();
+// ── Core Contract Generation Execution ───────────────────────────────────────
+async function executeContractGeneration({
+  contractType,
+  requestedCurrency,
+  requestedArbitration,
+  partiesData,
+  activeLang,
+  jCode,
+}) {
+  const jurProfile = getJurisdictionProfile(jCode);
+  const effectiveCurrency = requestedCurrency || jurProfile.currencyCode;
+  const effectiveArbitration = requestedArbitration || jurProfile.arbitrationCenterAr;
+  const niche = matchNicheTopic(contractType + ' ' + partiesData);
 
-  try {
-    const body = await req.json().catch(() => ({}));
-    const {
-      contractType = 'B2B Enterprise Agreement',
-      currency: requestedCurrency = '',
-      arbitration: requestedArbitration = '',
-      partiesData = '',
-      userSession,
-      lang = 'ar',
-      language = 'ar',
-      jurisdiction: requestedJurisdiction = '',
-      jurisdictionCode = '',
-    } = body;
-    const activeLang = lang || language || 'ar';
+  const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
+  let fullContractText = '';
 
-    // ── 1. Sovereign Jurisdiction Lock Resolution ────────────────────────────
-    const jCode = (jurisdictionCode || requestedJurisdiction || 'SA').toUpperCase().trim();
-    const jurProfile = getJurisdictionProfile(jCode);
-
-    const effectiveCurrency = requestedCurrency || jurProfile.currencyCode;
-    const effectiveArbitration = requestedArbitration || jurProfile.arbitrationCenterAr;
-
-    // ── 2. Strict Subject & Niche Matching ──────────────────────────────────
-    const niche = matchNicheTopic(contractType + ' ' + partiesData);
-
-    // Verify Supreme Admin permissions
-    const accessCheck = verifyAdminOrEnforcePaywall(userSession);
-
-    const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
-    let fullContractText = '';
-
-    const systemInstructions = {
-      ar: `أنت النظام السيادي الأعلى لصياغة العقود التجارية والمدنية التخصصية لمنصة JurisTech Solutions.
+  const systemInstructions = {
+    ar: `أنت النظام السيادي الأعلى لصياغة العقود التجارية والمدنية التخصصية لمنصة JurisTech Solutions.
 التوجيهات الصارمة الإلزامية:
 1. التقييد الجغرافي الصارم (Jurisdiction Lock): يمنع منعاً باتاً الخلط بين الأنظمة أو ذكر محاكم لا تخص دولة الاختصاص. طبق حصراً قوانين ومراسيم (${jurProfile.countryAr}):
    - القانون الواجب التطبيق: ${jurProfile.governingLawAr}
@@ -330,7 +314,7 @@ export async function POST(req) {
    - في حال كان عقداً إنشائياً/هندسياً، يجب تضمين أوامر التغيير، غرامات التأخير، الاستلام الابتدائي، والضمان العشري.
 3. التخلص التام من الإنشاء والحشو: صغ عقداً مكتملاً 100% متضمناً الديباجة، التعريفات، الالتزامات الجوهرية، الشروط المالية، المسؤولية، القوة القاهرة، والتحكيم بدون اختصار أو نقاط فارغة.`,
 
-      en: `You are the Sovereign Executive Contract Drafting Engine for JurisTech Solutions.
+    en: `You are the Sovereign Executive Contract Drafting Engine for JurisTech Solutions.
 STRICT EXECUTIVE DIRECTIVES:
 1. STRICT JURISDICTION LOCK: You must strictly adhere to the laws and judiciary of (${jurProfile.countryEn}):
    - Governing Law: ${jurProfile.governingLawEn}
@@ -342,61 +326,61 @@ STRICT EXECUTIVE DIRECTIVES:
    - If construction/FIDIC: specify BOQ, milestone schedules, variation order directives, liquidated delay damages, and statutory decennial liability.
 3. ZERO BOILERPLATE FILLER: Produce a 100% complete, execution-ready contract with recitals, operative covenants, financial terms, liability caps, force majeure, and dispute resolution.`,
 
-      fr: `Vous êtes le système souverain de rédaction de contrats de JurisTech Solutions.
+    fr: `Vous êtes le système souverain de rédaction de contrats de JurisTech Solutions.
 DIRECTIVES STRICTES :
 1. Verrouillage de juridiction pour (${jurProfile.countryEn}) avec application exclusive de : ${jurProfile.governingLawEn}.
 2. Correspondance stricte au sujet (${contractType}) avec clauses spécialisées sans formulations génériques.
 3. Rédigez un contrat complet à 100% prêt pour signature.`,
 
-      de: `Sie sind das souveräne Vertragserstellungssystem von JurisTech Solutions.
+    de: `Sie sind das souveräne Vertragserstellungssystem von JurisTech Solutions.
 STRIKTE ANWEISUNGEN:
 1. Strikte Bindung an das Rechtssystem von (${jurProfile.countryEn}): ${jurProfile.governingLawEn}.
 2. Präzise thematische Übereinstimmung mit (${contractType}) ohne generische Floskeln.
 3. Erstellen Sie einen zu 100% vollständigen und rechtssicheren Vertrag.`,
 
-      es: `Usted es el sistema soberano de redacción de contratos de JurisTech Solutions.
+    es: `Usted es el sistema soberano de redacción de contratos de JurisTech Solutions.
 DIRECTIVAS ESTRICTAS:
 1. Bloqueo estricto de jurisdicción para (${jurProfile.countryEn}): ${jurProfile.governingLawEn}.
 2. Coincidencia temática estricta con (${contractType}) con cláusulas altamente especializadas.
 3. Genere un contrato 100% completo y listo para firma.`,
 
-      zh: `您是 JurisTech Solutions 的主权合同起草系统。
+    zh: `您是 JurisTech Solutions 的主权合同起草系统。
 严格指令：
 1. 严格锁定司法管辖区 (${jurProfile.countryEn})，适用法律：${jurProfile.governingLawEn}。
 2. 严格匹配合同主题 (${contractType})，禁止使用空洞模板。
 3. 起草 100% 完整、可直接签署的专业合同。`,
 
-      tr: `JurisTech Solutions Egemen Sözleşme Hazırlama Sistemisiniz.
+    tr: `JurisTech Solutions Egemen Sözleşme Hazırlama Sistemisiniz.
 KESİN TALİMATLAR:
 1. (${jurProfile.countryEn}) için kesin yargı kilidi: ${jurProfile.governingLawEn}.
 2. (${contractType}) konusuyla %100 uyumlu, derinlemesine uzmanlaşmış maddeler.
 3. İmzaya hazır, %100 eksiksiz profesyonel bir sözleşme oluşturun.`
-    };
+  };
 
-    const modelConfirmations = {
-      ar: `فهمت التوجيهات السيادية. سألتزم حصراً بقوانين ومحاكم (${jurProfile.countryAr}) وبنود التخصص الدقيق لموضوع (${contractType}) بدون أي خلط قضائي.`,
-      en: `Understood. I will strictly apply the statutory codes of (${jurProfile.countryEn}) and craft a deep high-niche contract for (${contractType}).`,
-      fr: `Compris. Application stricte du droit de (${jurProfile.countryEn}) pour (${contractType}).`,
-      de: `Verstanden. Strikte Anwendung des Rechts von (${jurProfile.countryEn}) für (${contractType}).`,
-      es: `Entendido. Aplicación estricta de la legislación de (${jurProfile.countryEn}) para (${contractType}).`,
-      zh: `明白。严格适用 (${jurProfile.countryEn}) 法律起草 (${contractType})。`,
-      tr: `Anlaşıldı. (${jurProfile.countryEn}) yasalarını (${contractType}) için kesin olarak uygulayacağım.`
-    };
+  const modelConfirmations = {
+    ar: `فهمت التوجيهات السيادية. سألتزم حصراً بقوانين ومحاكم (${jurProfile.countryAr}) وبنود التخصص الدقيق لموضوع (${contractType}) بدون أي خلط قضائي.`,
+    en: `Understood. I will strictly apply the statutory codes of (${jurProfile.countryEn}) and craft a deep high-niche contract for (${contractType}).`,
+    fr: `Compris. Application stricte du droit de (${jurProfile.countryEn}) pour (${contractType}).`,
+    de: `Verstanden. Strikte Anwendung des Rechts von (${jurProfile.countryEn}) für (${contractType}).`,
+    es: `Entendido. Aplicación estricta de la legislación de (${jurProfile.countryEn}) para (${contractType}).`,
+    zh: `明白。严格适用 (${jurProfile.countryEn}) 法律起草 (${contractType})。`,
+    tr: `Anlaşıldı. (${jurProfile.countryEn}) yasalarını (${contractType}) için kesin olarak uygulayacağım.`
+  };
 
-    const langNames = {
-      ar: 'Arabic (العربية)',
-      en: 'English',
-      fr: 'French (Français)',
-      de: 'German (Deutsch)',
-      es: 'Spanish (Español)',
-      zh: 'Chinese (中文)',
-      tr: 'Turkish (Türkçe)'
-    };
-    const targetLangName = langNames[activeLang] || 'English';
+  const langNames = {
+    ar: 'Arabic (العربية)',
+    en: 'English',
+    fr: 'French (Français)',
+    de: 'German (Deutsch)',
+    es: 'Spanish (Español)',
+    zh: 'Chinese (中文)',
+    tr: 'Turkish (Türkçe)'
+  };
+  const targetLangName = langNames[activeLang] || 'English';
 
-    let promptText = '';
-    if (activeLang === 'ar') {
-      promptText = `قم بصياغة عقد قانوني وتجاري سيادي كلي ومكتمل بنسبة 100% بدون أي اختصار:
+  let promptText = '';
+  if (activeLang === 'ar') {
+    promptText = `قم بصياغة عقد قانوني وتجاري سيادي كلي ومكتمل بنسبة 100% بدون أي اختصار:
 - عنوان وموضوع العقد: ${contractType}
 - الدولة والاختصاص القضائي المقيد حصراً: ${jurProfile.countryAr}
 - القوانين والأنظمة الواجب تطبيقها: ${jurProfile.governingLawAr}
@@ -409,8 +393,8 @@ ${niche ? `\nتوجيهات الموضوع التخصصي الإلزامية:\n$
 1. صغ الديباجة والتمهيد مع الإشارة للنصوص النظامية المعمول بها في ${jurProfile.countryAr}.
 2. اكتب البنود كاملة ومفصلة واذكر الالتزامات بدقة.
 3. التزم باللغة القانونية الرصينة ومطابقة نصوص المحاكم دون أي خلط.`;
-    } else {
-      promptText = `Draft a pristine, 100% complete, legally binding agreement:
+  } else {
+    promptText = `Draft a pristine, 100% complete, legally binding agreement:
 - Contract Title & Subject: ${contractType}
 - Locked Jurisdiction: ${jurProfile.countryEn}
 - Governing Substantive Law: ${jurProfile.governingLawEn}
@@ -420,56 +404,121 @@ ${niche ? `\nتوجيهات الموضوع التخصصي الإلزامية:\n$
 ${niche ? `\nDomain-Specific High-Niche Directives:\n${niche.specializedDirectivesEn}\nMandatory Specialized Clauses:\n${niche.mandatoryClausesEn.map((c, i) => `${i+1}. ${c}`).join('\n')}` : ''}
 
 CRITICAL DIRECTIVE: Draft the entire contract in pristine professional legal ${targetLangName}. Output ONLY the raw contract text, fully written out with all clauses and without placeholders or commentary.`;
-    }
+  }
 
-    if (GEMINI_API_KEY) {
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 16000);
+  if (GEMINI_API_KEY) {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 16000);
 
-        const sysInstr = systemInstructions[activeLang] || systemInstructions.en;
-        const modelConf = modelConfirmations[activeLang] || modelConfirmations.en;
+      const sysInstr = systemInstructions[activeLang] || systemInstructions.en;
+      const modelConf = modelConfirmations[activeLang] || modelConfirmations.en;
 
-        const geminiRes = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [
-                { role: 'user', parts: [{ text: `[SYSTEM INSTRUCTION]: ${sysInstr}` }] },
-                { role: 'model', parts: [{ text: modelConf }] },
-                { role: 'user', parts: [{ text: promptText }] },
-              ],
-              generationConfig: {
-                temperature: 0.1,
-                maxOutputTokens: 3000,
-              },
-            }),
-            signal: controller.signal,
-          }
-        );
-
-        clearTimeout(timeoutId);
-
-        if (geminiRes.ok) {
-          const data = await geminiRes.json();
-          fullContractText = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
+      const geminiRes = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [
+              { role: 'user', parts: [{ text: `[SYSTEM INSTRUCTION]: ${sysInstr}` }] },
+              { role: 'model', parts: [{ text: modelConf }] },
+              { role: 'user', parts: [{ text: promptText }] },
+            ],
+            generationConfig: {
+              temperature: 0.1,
+              maxOutputTokens: 3000,
+            },
+          }),
+          signal: controller.signal,
         }
-      } catch (apiErr) {
-        console.error("Gemini contract generation failed:", apiErr);
+      );
+
+      clearTimeout(timeoutId);
+
+      if (geminiRes.ok) {
+        const data = await geminiRes.json();
+        fullContractText = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
+      }
+    } catch (apiErr) {
+      console.error("Gemini contract generation failed:", apiErr);
+    }
+  }
+
+  if (!fullContractText || fullContractText.trim().length === 0) {
+    fullContractText = getFallbackContractText(contractType, effectiveCurrency, effectiveArbitration, activeLang, jurProfile, niche);
+  }
+
+  return {
+    fullContractText,
+    jurProfile,
+    effectiveCurrency,
+    effectiveArbitration,
+    niche
+  };
+}
+
+// ── Edge Runtime Request Handler ─────────────────────────────────────────────
+async function handleEdgeRequest(req) {
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { status: 200, headers: CORS_HEADERS });
+  }
+
+  // 1. Universal Server-Side Auth Guard
+  const auth = await authenticateRequest(req, { corsHeaders: CORS_HEADERS });
+  if (!auth.authenticated) {
+    return auth.response;
+  }
+  const verifiedUser = auth.user;
+
+  // 2. Server-Side Contract Tier Quota Enforcement (BEFORE Gemini execution)
+  const quota = await enforceContractQuota(verifiedUser, { corsHeaders: CORS_HEADERS });
+  if (!quota.allowed) {
+    return quota.response;
+  }
+
+  // 3. Sovereign Guard Privileged Access Check
+  const accessCheck = verifyAdminOrEnforcePaywall(verifiedUser);
+
+  const startTime = Date.now();
+
+  try {
+    let body = {};
+    if (req.method === 'POST') {
+      try {
+        body = typeof req.json === 'function' ? await req.json() : (req.body || {});
+      } catch (e) {
+        body = req.body || {};
       }
     }
 
-    if (!fullContractText || fullContractText.trim().length === 0) {
-      fullContractText = getFallbackContractText(contractType, effectiveCurrency, effectiveArbitration, activeLang, jurProfile, niche);
-    }
+    const {
+      contractType = 'B2B Enterprise Agreement',
+      currency: requestedCurrency = '',
+      arbitration: requestedArbitration = '',
+      partiesData = '',
+      lang = 'ar',
+      language = 'ar',
+      jurisdiction: requestedJurisdiction = '',
+      jurisdictionCode = '',
+    } = body;
 
-    // Apply paywall limit ONLY for standard limited non-admin users
-    if (accessCheck.paywallActive) {
-      const cutIndex = Math.floor(fullContractText.length * 0.65);
-      fullContractText = fullContractText.substring(0, cutIndex) + getPaywallWarning(activeLang);
-    }
+    const activeLang = lang || language || 'ar';
+    const jCode = (jurisdictionCode || requestedJurisdiction || 'SA').toUpperCase().trim();
+
+    const {
+      fullContractText,
+      jurProfile,
+      effectiveCurrency,
+      effectiveArbitration,
+    } = await executeContractGeneration({
+      contractType,
+      requestedCurrency,
+      requestedArbitration,
+      partiesData,
+      activeLang,
+      jCode,
+    });
 
     const latency = Date.now() - startTime;
 
@@ -483,17 +532,22 @@ CRITICAL DIRECTIVE: Draft the entire contract in pristine professional legal ${t
       arbitration: effectiveArbitration,
       isAdminUnlocked: accessCheck.authorized,
       accessType: accessCheck.accessType,
-      paywallActive: accessCheck.paywallActive,
+      paywallActive: false,
+      tier: quota.tier,
+      currentUsage: quota.currentUsage,
+      limit: quota.limit,
+      periodKey: quota.periodKey,
+      metric: 'contracts_created',
       message: accessCheck.message,
       latencyMs: latency,
       status: "Success"
     }, {
+      status: 200,
       headers: {
         ...CORS_HEADERS,
         'X-Edge-Latency': `${latency}ms`
       }
     });
-
   } catch (error) {
     console.error("Contract Generate Engine Error:", error);
     return Response.json({ 
@@ -501,6 +555,104 @@ CRITICAL DIRECTIVE: Draft the entire contract in pristine professional legal ${t
       latencyMs: Date.now() - startTime
     }, { status: 500, headers: CORS_HEADERS });
   }
+}
+
+// ── Node.js Serverless Request Handler ─────────────────────────────────────────
+async function handleNodeRequest(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Language');
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
+  // 1. Universal Server-Side Auth Guard
+  const auth = await authenticateRequest(req, { corsHeaders: CORS_HEADERS });
+  if (!auth.authenticated) {
+    return res.status(401).json(auth.error);
+  }
+  const verifiedUser = auth.user;
+
+  // 2. Server-Side Contract Tier Quota Enforcement (BEFORE Gemini execution)
+  const quota = await enforceContractQuota(verifiedUser, { corsHeaders: CORS_HEADERS });
+  if (!quota.allowed) {
+    const status = quota.code === 'QUOTA_EXCEEDED' ? 429 : 500;
+    return res.status(status).json(quota.error);
+  }
+
+  // 3. Sovereign Guard Privileged Access Check
+  const accessCheck = verifyAdminOrEnforcePaywall(verifiedUser);
+
+  const startTime = Date.now();
+
+  try {
+    const body = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
+    const {
+      contractType = 'B2B Enterprise Agreement',
+      currency: requestedCurrency = '',
+      arbitration: requestedArbitration = '',
+      partiesData = '',
+      lang = 'ar',
+      language = 'ar',
+      jurisdiction: requestedJurisdiction = '',
+      jurisdictionCode = '',
+    } = body;
+
+    const activeLang = lang || language || 'ar';
+    const jCode = (jurisdictionCode || requestedJurisdiction || 'SA').toUpperCase().trim();
+
+    const {
+      fullContractText,
+      jurProfile,
+      effectiveCurrency,
+      effectiveArbitration,
+    } = await executeContractGeneration({
+      contractType,
+      requestedCurrency,
+      requestedArbitration,
+      partiesData,
+      activeLang,
+      jCode,
+    });
+
+    const latency = Date.now() - startTime;
+
+    return res.status(200).json({
+      contractText: fullContractText,
+      reply: fullContractText,
+      jurisdiction: jurProfile.countryAr,
+      jurisdictionCode: jurProfile.code,
+      governingLaw: jurProfile.governingLawAr,
+      currency: effectiveCurrency,
+      arbitration: effectiveArbitration,
+      isAdminUnlocked: accessCheck.authorized,
+      accessType: accessCheck.accessType,
+      paywallActive: false,
+      tier: quota.tier,
+      currentUsage: quota.currentUsage,
+      limit: quota.limit,
+      periodKey: quota.periodKey,
+      metric: 'contracts_created',
+      message: accessCheck.message,
+      latencyMs: latency,
+      status: "Success"
+    });
+  } catch (error) {
+    console.error("Contract Generate Engine Node Error:", error);
+    return res.status(500).json({ 
+      error: error.message || 'System overload protection triggered.',
+      latencyMs: Date.now() - startTime
+    });
+  }
+}
+
+export async function POST(req, res) {
+  if (res && typeof res.status === 'function') {
+    return handleNodeRequest(req, res);
+  }
+  return handleEdgeRequest(req);
 }
 
 // Helper functions for fallbacks
@@ -610,6 +762,6 @@ function getPaywallWarning(lang) {
   return warnings[lang] || warnings.en;
 }
 
-export default async function handler(req) {
-  return POST(req);
+export default async function handler(req, res) {
+  return POST(req, res);
 }

@@ -124,8 +124,8 @@ export default function CrmClientManagerModal({ isOpen, onClose }: CrmClientMana
     setSelectedLeadForOutreach(lead);
     setCustomProposalNotes(
       isRtl
-        ? `طلب الشراكة والتأهيل القانوني لباقة المؤسسات والوصول إلى 1,000,000+ عقد معتمد وتدقيق المخاطر الذكي وفق اختصاص ${lead.jurisdiction}.`
-        : `Request for enterprise legal partnership, 1,000,000+ contract vault access & AI risk audit under ${lead.jurisdiction} jurisdiction.`
+        ? `طلب الشراكة والتأهيل القانوني لباقة المؤسسات والوصول إلى خزينة النماذج والعقود المعتمدة وتدقيق المخاطر الذكي وفق اختصاص ${lead.jurisdiction}.`
+        : `Request for enterprise legal partnership, verified smart legal contract vault access & AI risk audit under ${lead.jurisdiction} jurisdiction.`
     );
     setEmailSentSuccess(false);
   }
@@ -527,7 +527,7 @@ export default function CrmClientManagerModal({ isOpen, onClose }: CrmClientMana
                 <div className="text-amber-400 font-bold">✍️ ختم التوقيع المعتمد (Certified Digital Signature Stamp):</div>
                 <div className="text-white font-black">د. محمد مصطفى (Dr. Mohammad Mustafa)</div>
                 <div className="text-slate-400">دكتور القانون التجاري الدولي والنمذجة الذكية — رئيس مجلس الإدارة</div>
-                <div className="text-cyan-400">البريد الرسمي المعتمد: Drzyogo.ca@gmail.com | juristech.solutions@outlook.com</div>
+                <div className="text-cyan-400">البريد الرسمي المعتمد: founder@juristech.solutions</div>
               </div>
 
               <div className="flex items-center justify-between pt-2">

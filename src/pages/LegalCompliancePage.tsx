@@ -185,19 +185,19 @@ ${policyInput}`;
       `
     },
     {
-      title: "Hashemite Kingdom of Jordan Legal Jurisdiction & Global HQ",
-      titleAr: "المقر الرئيسي والولاية القضائية (المملكة الأردنية الهاشمية)",
+      title: "Independent Cross-Border SaaS Platform & Global Governance",
+      titleAr: "المنصة السحابية المستقلة والحوكمة المؤسسية الدولية",
       icon: Globe,
       content: `
         <div class="p-4 bg-cyan-500/10 border border-cyan-500/30 rounded-xl mb-3">
-          <p class="font-bold text-cyan-400">Global Headquarters & Primary Legal Jurisdiction:</p>
-          <p>JurisTech Solutions is headquartered in <strong>Amman, Hashemite Kingdom of Jordan</strong>. All operations, technology rights, and statutory agreements are subject to the exclusive jurisdiction of the courts of the Hashemite Kingdom of Jordan.</p>
+          <p class="font-bold text-cyan-400">Independent Legal Technology SaaS Platform:</p>
+          <p>JurisTech Solutions is an independent legal technology SaaS platform founded and engineered by Founder & Chief AI Architect Dr. Mohammad Mustafa (Contact: founder@juristech.solutions | +201126674337). All proprietary models, codebases, and intellectual property are protected under applicable international IP conventions.</p>
         </div>
       `,
       contentAr: `
         <div class="p-4 bg-cyan-500/10 border border-cyan-500/30 rounded-xl mb-3">
-          <p class="font-bold text-cyan-400">المقر الرئيسي والولاية القضائية الحصرية:</p>
-          <p>يقع المقر التشغيلي الرئيسي لمنصة JurisTech Solutions في <strong>المملكة الأردنية الهاشمية — عمّان</strong>. وتخضع المنصة وجميع اتفاقياتها ونصوصها التشغيلية وحماية الملكية الفكرية حصرياً لاختصاص محاكم المملكة الأردنية الهاشمية والقوانين والأنظمة الأردنية النافذة (مثل قانون حماية حق المؤلف رقم 22 والقوانين ذات الصلة).</p>
+          <p class="font-bold text-cyan-400">كيان برمجيات تقني قانوني مستقل (Legal Tech SaaS):</p>
+          <p>تُعد منصة JurisTech Solutions منظومة برمجيات تقنية قانونية سحابية مستقلة، تم تطويرها وهندستها بإشراف وتأسيس د. محمد مصطفى (المؤسس ورئيس مجلس الإدارة وخبير إدارة المخاطر) (تواصل: founder@juristech.solutions | هاتف: 201126674337+). وتعتبر كافة الأصول البرمجية والنماذج الذكية وحقوق الملكية الفكرية ملكية تكنولوجية خاصة ومحمية قانونياً.</p>
         </div>
       `
     },
@@ -262,35 +262,35 @@ ${policyInput}`;
       content: `
         <div class="p-4 bg-cyan-500/10 border border-cyan-500/30 rounded-xl mb-3">
           <p class="font-bold text-cyan-400">Intellectual Property Ownership Notice:</p>
-          <p>All source codes, algorithms, user interface designs, visual assets, trademarks, and documentation of <strong>JurisTech Solutions</strong> are protected under international copyright treaties and the Copyright and Neighboring Rights Law of the Hashemite Kingdom of Jordan (Law No. 22 of 1992 and its amendments).</p>
+          <p>All source codes, algorithms, user interface designs, visual assets, trademarks, and documentation of <strong>JurisTech Solutions</strong> are protected under international copyright treaties and applicable intellectual property laws.</p>
         </div>
-        <p>Copyright © 2026 JurisTech Solutions. All rights reserved. Unauthorized copying, reproduction, decompilation, or distribution of any part of this platform is strictly prohibited and subject to legal prosecution under Jordan IP protection laws.</p>
+        <p>Copyright © 2026 JurisTech Solutions. All rights reserved. Unauthorized copying, reproduction, decompilation, or distribution of any part of this platform is strictly prohibited and subject to legal prosecution under international IP protection laws.</p>
       `,
       contentAr: `
         <div class="p-4 bg-cyan-500/10 border border-cyan-500/30 rounded-xl mb-3">
           <p class="font-bold text-cyan-400">إشعار وحماية الملكية الفكرية الرسمية:</p>
-          <p>جميع الأكواد البرمجية، الخوارزميات، واجهات المستخدم، التصاميم البصرية، والعلامات الخدمية الخاصة بـ <strong>JurisTech Solutions</strong> محمية بموجب المعاهدات الدولية وقانون حماية حق المؤلف والحقوق المجاورة في المملكة الأردنية الهاشمية (قانون رقم 22 لسنة 1992 وتعديلاته).</p>
+          <p>جميع الأكواد البرمجية، الخوارزميات، واجهات المستخدم، التصاميم البصرية، والعلامات الخدمية الخاصة بـ <strong>JurisTech Solutions</strong> محمية بموجب المعاهدات الدولية وقوانين حماية الملكية الفكرية المعمول بها.</p>
         </div>
-        <p>جميع الحقوق محفوظة © 2026 JurisTech Solutions. يُحظر التنسيخ، إعادة الهندسة، الهندسة العكسية، أو توزيع أي جزء من أصول المنصة دون إذن خطي مسبق، ويُعرض المخالف للملاحقة القضائية بموجب قوانين حماية الملكية الفكرية الأردنية والدولية.</p>
+        <p>جميع الحقوق محفوظة © 2026 JurisTech Solutions. يُحظر التنسيخ، إعادة الهندسة، الهندسة العكسية، أو توزيع أي جزء من أصول المنصة دون إذن خطي مسبق، ويُعرض المخالف للملاحقة القضائية بموجب قوانين حماية الملكية الفكرية الدولية.</p>
       `
     },
     {
-      title: "Jurisdiction & Jordan Headquarters",
-      titleAr: "المقر الرئيسي في الأردن والاختصاص القضائي الحصري",
+      title: "Global Digital Platform & Remote Operations",
+      titleAr: "منصة رقمية عالمية والتشغيل عن بعد",
       icon: Globe,
       content: `
         <div class="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl mb-3">
-          <p class="font-bold text-emerald-400">Official Legal Headquarters & Governing Law:</p>
-          <p><strong>The global headquarters of JurisTech Solutions is established in Amman, Hashemite Kingdom of Jordan.</strong></p>
+          <p class="font-bold text-emerald-400">Platform Identity & Operational Governance:</p>
+          <p><strong>JurisTech Solutions operates as a global digital platform operated remotely.</strong></p>
         </div>
-        <p>The use of JurisTech Solutions, its contracts, and digital services is governed by and construed in accordance with the statutory laws, e-transaction regulations, and commercial codes of the Hashemite Kingdom of Jordan. The competent courts in Amman, Jordan shall have exclusive jurisdiction over any legal disputes.</p>
+        <p>The platform provides multi-jurisdictional compliance tools covering GCC, Egypt, US, and international UNCITRAL/ICC frameworks. Contract generation and execution are subject to the agreed governing law designated in each respective customer agreement or selected jurisdiction.</p>
       `,
       contentAr: `
         <div class="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl mb-3">
-          <p class="font-bold text-emerald-400">المقر الرئيسي والتشريع الحاكم للمنصة:</p>
-          <p><strong>يقع المقر الرئيسي والمركز القانوني الإقليمي لمنصة JurisTech Solutions في العاصمة عمّان — المملكة الأردنية الهاشمية.</strong></p>
+          <p class="font-bold text-emerald-400">هوية المنصة وحوكمة العمليات التقنية:</p>
+          <p><strong>منصة JurisTech Solutions هي منصة رقمية عالمية تعمل عن بعد.</strong></p>
         </div>
-        <p>يخضع استخدام منصة JurisTech Solutions وكافة عقودها وخدماتها التقنية لأحكام التشريعات والأنظمة النافذة في المملكة الأردنية الهاشمية (بما فيها قانون المعاملات الإلكترونية وقانون الشركات). وتنعقد الولاية القضائية الحصرية لنظر أي نزاعات أمام المحاكم المختصة في مدينة عمّان — المملكة الأردنية الهاشمية.</p>
+        <p>توفر المنصة أدوات التدقيق والامتثال متعددة الولايات القضائية (دول مجلس التعاون الخليجي، مصر، الولايات المتحدة، والمعايير الدولية UNCITRAL/ICC). وتخضع العقود والاتفاقيات المولدة للقانون المختار والمحدد في كل وثيقة على حدة وفق إرادة المتعاقدين.</p>
       `
     }
   ];

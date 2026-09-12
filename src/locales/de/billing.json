@@ -1,6 +1,6 @@
 {
   "portalTitle": "Abrechnung & Abonnementverwaltung",
-  "portalSubtitle": "Offizielles Abrechnungsportal — Bereitgestellt von Paddle.com",
+  "portalSubtitle": "Offizielles souveränes Abrechnungsportal — TLS 1.3-gesichert",
   "currentPlan": "Aktueller Tarif",
   "planAmount": "Tarifbetrag",
   "startDate": "Startdatum",
@@ -26,7 +26,7 @@
   "keepSubscription": "Abonnement behalten",
   "confirmCancelBtn": "Jetzt kündigen",
   "cancelling": "Wird gekündigt...",
-  "merchantProtectionTitle": "Merchant of Record Schutz",
-  "merchantProtectionDesc": "Alle Zahlungen werden sicher über Paddle.com als autorisierten Händler (Merchant of Record) abgewickelt.",
-  "supportEmail": "Abrechnungssupport: juristech.solutions@outlook.com"
+  "merchantProtectionTitle": "Unternehmenssicherheit & Transaktions-Compliance",
+  "merchantProtectionDesc": "Alle Transaktionen sind durch TLS 1.3-Verschlüsselung und institutionelle Verifizierung geschützt (SWIFT, Binance Pay, InstaPay) mit PayTabs in Händlerprüfung.",
+  "supportEmail": "Abrechnungssupport: founder@juristech.solutions"
 }

@@ -49,10 +49,22 @@ class AuditTrailService {
       // Ignore quota
     }
 
-    // Async push to Supabase audit_trail table
-    supabase.from('audit_trail').insert([entry]).then(({ error }) => {
+    // Async push to Supabase audit_trail table using schema column names
+    const dbRecord = {
+      id: entry.id,
+      action: entry.action,
+      user_id: entry.userId || null,
+      user_email: entry.userEmail || null,
+      contract_id: entry.contractId || null,
+      ip_address: entry.ipAddress || null,
+      details: entry.details || {},
+      timestamp: entry.timestamp,
+      sha256_hash: entry.sha256Hash,
+    };
+
+    supabase.from('audit_trail').insert([dbRecord]).then(({ error }) => {
       if (error) {
-        // Table might be created by migration
+        // Handled silently for client background sync
       }
     });
 

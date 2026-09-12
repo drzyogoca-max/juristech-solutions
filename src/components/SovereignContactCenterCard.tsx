@@ -14,12 +14,12 @@ export default function SovereignContactCenterCard() {
       <div className="flex items-center justify-between flex-wrap gap-4 border-b border-slate-800 pb-4 mb-4">
         <div>
           <h2 className="text-base sm:text-lg font-extrabold text-sky-400 m-0">
-            {l('مركز التواصل المباشر والخدمات السيادية الفورية', 'Sovereign Direct Communication & Advisory Command Center')}
+            {l('مركز الدعم الفني وأتمتة العمليات العقدية', 'Technical Support & Contract Workflow Automation Command Center')}
           </h2>
           <p className="text-xs text-slate-300 mt-1 mb-0">
             {l(
-              'قناة التواصل المباشر مع المستشار د. محمد مصطفى وفريق الخبراء القانونيين للشركات والأفراد 24/7',
-              'Direct advisory corridor with Dr. Mohammad Mustafa & Executive Legal Counsel 24/7'
+              'مركز الدعم الفني والتقني وإدارة منظومة الذكاء الاصطناعي العقدي 24/7',
+              '24/7 Technical Support & AI Contract Workflow Administration'
             )}
           </p>
         </div>
@@ -34,7 +34,7 @@ export default function SovereignContactCenterCard() {
         {/* WhatsApp */}
         <div className="bg-slate-950 border border-emerald-600/40 p-4 rounded-2xl shadow hover:border-emerald-500 transition-colors">
           <strong className="text-emerald-400 block mb-1 text-xs sm:text-sm">
-            {l('💬 واتساب المستشار المباشر:', '💬 Direct WhatsApp Counsel:')}
+            {l('💬 واتساب الدعم الفني المباشر:', '💬 Direct Technical Support WhatsApp:')}
           </strong>
           <a
             href="https://wa.me/201126674337?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%20%D9%85%D9%86%D8%B5%D8%A9%20JurisTech"
@@ -45,23 +45,23 @@ export default function SovereignContactCenterCard() {
             +201126674337
           </a>
           <span className="block text-xs text-slate-400 mt-1">
-            {l('استجابة فورية واستشارات عقدية', 'Instant response & contractual advisory')}
+            {l('استجابة فورية ودعم تشغيلي للمنصة', 'Instant response & platform operational support')}
           </span>
         </div>
 
         {/* Official Email */}
         <div className="bg-slate-950 border border-sky-600/40 p-4 rounded-2xl shadow hover:border-sky-500 transition-colors">
           <strong className="text-sky-400 block mb-1 text-xs sm:text-sm">
-            {l('📧 البريد الرسمي للإدارة:', '📧 Official Executive Email:')}
+            {l('📧 البريد الرسمي للإدارة والتقنية:', '📧 Official Executive & Technical Email:')}
           </strong>
           <a
-            href="mailto:Drzyogo.ca@gmail.com?cc=juristech.solutions@outlook.com&subject=Executive%20Legal%20Advisory"
+            href="mailto:founder@juristech.solutions?subject=Executive%20Technical%20Inquiry"
             className="text-slate-100 font-bold hover:text-sky-300 transition-colors block font-mono select-all text-sm truncate"
           >
-            Drzyogo.ca@gmail.com
+            founder@juristech.solutions
           </a>
           <span className="block text-xs text-slate-400 mt-1">
-            {l('إرسال العقود والاتفاقيات الرسمية', 'Official contracts & corporate agreements')}
+            {l('تنسيق التكامل المؤسسي والاشتراكات', 'Enterprise integration & subscription coordination')}
           </span>
         </div>
 

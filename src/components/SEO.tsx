@@ -137,7 +137,7 @@ export default function SEO({
               'name': 'JurisTech Solutions & LegalShield Ecosystem',
               'url': baseUrl,
               'logo': `${baseUrl}/logo.png`,
-              'email': 'juristech.solutions@outlook.com',
+              'email': 'founder@juristech.solutions',
               'sameAs': [
                 'https://www.linkedin.com/in/juristech-solutions-14954b427/',
                 'https://www.tiktok.com/@juristech.solutio6',
@@ -222,7 +222,7 @@ export default function SEO({
             '@type': 'LegalService',
             'name': 'JurisTech Solutions & LegalShield Sovereign AI Legal Platform',
             'image': `${baseUrl}/logo.png`,
-            'priceRange': '$0 - $49/mo',
+            'priceRange': '$49 - $349/mo',
             'telephone': '+201126674337',
             'url': baseUrl,
             'areaServed': ['United States', 'US-CA', 'US-NY', 'US-TX', 'US-FL', 'US-DE', 'United Kingdom', 'European Union', 'GCC', 'Saudi Arabia', 'United Arab Emirates', 'Egypt', 'Jordan', 'Oman', 'Kuwait', 'Qatar', 'Bahrain'],

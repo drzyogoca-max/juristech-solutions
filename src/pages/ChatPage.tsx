@@ -24,6 +24,7 @@ import SEO from '../components/SEO';
 import { searchRAGDatabase } from '../data/ragDatabase';
 import { trackChatInteraction } from '../lib/marketingTracker';
 import { getSystemContextForLanguage } from '../lib/languageHelper';
+import { useSaaS } from '../context/SaaSContext';
 
 
 interface Message {
@@ -347,7 +348,7 @@ function SubscriptionModal({ lang, onClose }: { lang: SupportedLanguage; onClose
             <Link to="/support" onClick={onClose}
               className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-bold text-sm hover:bg-cyan-500/20 transition-all">
               <Mail className="w-4 h-4" />
-              <span>{isRtl ? 'التواصل المشفر (Drzyogo.ca@gmail.com)' : 'Encrypted Support (Drzyogo.ca@gmail.com)'}</span>
+              <span>{isRtl ? 'التواصل المشفر (founder@juristech.solutions)' : 'Encrypted Support (founder@juristech.solutions)'}</span>
             </Link>
 
             <button onClick={onClose}
@@ -429,6 +430,7 @@ export default function ChatPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { contractState, setContractData } = useContract();
+  const { organization, workspace } = useSaaS();
 
   async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -649,7 +651,13 @@ ${contractText}`;
     setStatus('idle');
     setShowPaywall(false);
   
-    supabase.from('chat_messages').insert({ session_id: sessionId, role: 'user', content }).then();
+    supabase.from('chat_messages').insert({
+      session_id: sessionId,
+      role: 'user',
+      content,
+      organization_id: organization?.id || null,
+      workspace_id: workspace?.id || null,
+    }).then();
   
     const activeJurisdiction = overrideJurisdiction !== undefined ? overrideJurisdiction : jurisdiction;
     const countryCode = activeJurisdiction?.countryCode || 'GLOBAL';
@@ -718,7 +726,13 @@ ${contractText}`;
       try { localStorage.setItem(STORAGE_KEY, String(newUsed)); } catch { /* ignore */ }
       setMessages(prev => [...prev, { role: 'assistant', content: result, lang: activeLang, showCTA: true }]);
       setStatus('connected');
-      supabase.from('chat_messages').insert({ session_id: sessionId, role: 'assistant', content: result }).then();
+      supabase.from('chat_messages').insert({
+        session_id: sessionId,
+        role: 'assistant',
+        content: result,
+        organization_id: organization?.id || null,
+        workspace_id: workspace?.id || null,
+      }).then();
       if (newUsed >= FREE_QUERY_LIMIT) {
         setTimeout(() => setShowSubscriptionModal(true), 2000);
       }

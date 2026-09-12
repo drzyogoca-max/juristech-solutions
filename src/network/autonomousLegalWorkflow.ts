@@ -131,7 +131,7 @@ class AutonomousLegalWorkflowEngine {
       status: 'PENDING_HUMAN_APPROVAL',
       riskScore: isHighValue ? 82 : 45,
       requiresHumanReview: true, // Always enforce human review
-      assignedApproverRole: isHighValue ? 'General Counsel' : 'Senior Legal Counsel',
+      assignedApproverRole: isHighValue ? 'General Counsel' : 'Chief Legal Officer',
       stepsExecuted: [
         {
           stepName: 'Trigger Verification',

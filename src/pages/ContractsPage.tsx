@@ -29,6 +29,9 @@ import { matchNicheTopic } from '../lib/contracts/nicheTopicDatabase';
 import { getJurisdictionProfile, enforceStrictJurisdictionText } from '../lib/jurisdictionResolver';
 import { usePlatformLocale, formatNumber } from '../lib/universalTranslator';
 import { Link, useSearchParams } from 'react-router-dom';
+import { useSaaS } from '../context/SaaSContext';
+import { useAuth } from '../lib/authContext';
+import { useSubscription } from '../hooks/useSubscription';
 
 // ── MAJOR GLOBAL JURISDICTION HUBS ──────────────────────────────────────────
 export const GLOBAL_JURISDICTION_PILLS = [
@@ -138,6 +141,28 @@ interface AutoAuditReport {
 export default function ContractsPage({ initialTab }: { initialTab?: 'studio' | 'vault' }) {
   const { l, isRtl, formatNum, formatCurr, i18n } = usePlatformLocale();
   const [searchParams, setSearchParams] = useSearchParams();
+  const { organization, workspace } = useSaaS();
+  const { user, isAdmin, isLawyer } = useAuth();
+  const { tier } = useSubscription();
+  const isPrivileged = Boolean(isAdmin || isLawyer);
+
+  const [userContractCount, setUserContractCount] = useState<number>(0);
+
+  useEffect(() => {
+    if (!user?.id) return;
+    let isMounted = true;
+    supabase
+      .from('contracts')
+      .select('id', { count: 'exact', head: true })
+      .then(({ count }) => {
+        if (isMounted && typeof count === 'number') {
+          setUserContractCount(count);
+        }
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, [user?.id]);
 
   // Active View Tab: 'studio' (AI Drafting) vs 'vault' (1M+ Repository)
   const [activeTab, setActiveTab] = useState<'studio' | 'vault'>(
@@ -274,7 +299,16 @@ export default function ContractsPage({ initialTab }: { initialTab?: 'studio' | 
       return;
     }
 
-    if (isTrialLimitReached()) {
+    // Multi-Jurisdiction Gate: Cross-border hubs (GLOBAL, EU, US, CN) require SMEs+
+    const CROSS_BORDER_JURISDICTIONS = ['GLOBAL', 'EU', 'US', 'CN'];
+    if (CROSS_BORDER_JURISDICTIONS.includes(selectedJurisdictionCode)) {
+      if (tier !== 'SMEs' && tier !== 'Pro' && tier !== 'Enterprise' && !isPrivileged) {
+        setShowPaywall(true);
+        return;
+      }
+    }
+
+    if (isTrialLimitReached({ tier, contractCount: userContractCount, isPrivileged })) {
       setShowPaywall(true);
       return;
     }
@@ -284,6 +318,7 @@ export default function ContractsPage({ initialTab }: { initialTab?: 'studio' | 
     setAuditReport(null);
     setStudioStep(4);
     incrementTrialUsage();
+    setUserContractCount((prev) => prev + 1);
 
     // Instant pre-render from store baseline for instant responsiveness
     const storeEntry = getContractStoreEntry(selectedType);
@@ -365,6 +400,8 @@ Language: ${i18n.language === 'ar' ? 'Arabic (العربية الفصحى الق
         party_b: partyB,
         contract_type: selectedType,
         content: finalizedContract,
+        organization_id: organization?.id || null,
+        workspace_id: workspace?.id || null,
       });
 
     } catch (err) {
@@ -1005,6 +1042,10 @@ Language: ${i18n.language === 'ar' ? 'Arabic (العربية الفصحى الق
                   <div className="flex items-center gap-2 flex-wrap">
                     <button
                       onClick={() => {
+                        if (tier === 'Free Trial' && !isPrivileged) {
+                          setShowPaywall(true);
+                          return;
+                        }
                         exportLegalContractPDF(generatedContract, selectedType, partyA || (isRtl ? 'الطرف الأول' : 'Party A'), partyB || (isRtl ? 'الطرف الثاني' : 'Party B'), partyASig, partyBSig, sha256Hash, i18n.language);
                       }}
                       className="px-3.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs flex items-center gap-1.5 transition-all shadow-md shadow-emerald-500/20 cursor-pointer"
@@ -1015,6 +1056,10 @@ Language: ${i18n.language === 'ar' ? 'Arabic (العربية الفصحى الق
 
                     <button
                       onClick={() => {
+                        if (tier === 'Free Trial' && !isPrivileged) {
+                          setShowPaywall(true);
+                          return;
+                        }
                         exportDocumentMultiFormat(generatedContract, `${selectedType}_JurisTech`, partyA || (isRtl ? 'الطرف الأول' : 'Party A'), partyB || (isRtl ? 'الطرف الثاني' : 'Party B'), 'docx', isRtl ? 'ar' : 'en', selectedJurisdictionCode);
                       }}
                       className="px-3.5 py-2 rounded-xl bg-blue-500 hover:bg-blue-400 text-white font-black text-xs flex items-center gap-1.5 transition-all cursor-pointer"
@@ -1104,7 +1149,7 @@ Language: ${i18n.language === 'ar' ? 'Arabic (العربية الفصحى الق
               <div className="space-y-1">
                 <span className="text-xs text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
                   <Layers className="w-4 h-4" />
-                  <span>{l('خزينة ومستودع العقود الذكية المليونية', '1,000,000+ Smart Legal Templates Vault')}</span>
+                  <span>{l('خزينة ومستودع العقود الذكية المعتمدة', 'Verified Smart Legal Templates Vault')}</span>
                 </span>
                 <h3 className="text-xl sm:text-2xl font-black text-white">
                   {l('ابحث واستعرض وحمّل أي عقد قانوني معتمد فورياً', 'Instant Search & Download Certified Smart Contracts')}
@@ -1127,7 +1172,7 @@ Language: ${i18n.language === 'ar' ? 'Arabic (العربية الفصحى الق
                 type="text"
                 value={vaultSearchQuery}
                 onChange={(e) => setVaultSearchQuery(e.target.value)}
-                placeholder={isRtl ? 'ابحث في أكثر من 1,000,000 عقد (مثال: اتفاقية مساهمين، عقد مقاولة فيديك، شراء أسهم، استثمار جريء، سرية معلومات)...' : 'Search across 1,000,000+ templates (e.g. Shareholders Agreement, FIDIC Construction, SAFE, NDA, Labor)...'}
+                placeholder={isRtl ? 'ابحث في خزينة العقود المعتمدة (مثال: اتفاقية مساهمين، عقد مقاولة فيديك، شراء أسهم، استثمار جريء، سرية معلومات)...' : 'Search across verified templates (e.g. Shareholders Agreement, FIDIC Construction, SAFE, NDA, Labor)...'}
                 className="w-full py-3.5 pr-12 pl-4 rounded-2xl bg-slate-950 border border-slate-700 text-xs sm:text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-500 shadow-inner"
               />
             </div>

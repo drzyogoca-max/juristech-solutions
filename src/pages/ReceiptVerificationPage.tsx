@@ -8,7 +8,7 @@
  *  2. User uploads receipt image
  *  3. OCR scans and extracts data
  *  4. Fraud engine checks for duplicates & mismatches
- *  5. Auto-activate (score ≥ 75) or flag for admin review (score < 75)
+ *  5. Stage for Admin Audit & Approval (Zero client-side subscription mutation)
  *  6. Rejected if duplicate detected
  */
 
@@ -156,19 +156,13 @@ export default function ReceiptVerificationPage() {
       const result = await runFraudCheck(receiptData, ocr);
       setFraudResult(result);
 
-      if (result.autoActivate && user) {
-        setProgress({ percent: 95, label: isRtl ? 'تفعيل الاشتراك تلقائياً...' : 'Auto-activating subscription...' });
-        await supabase.from('subscriptions').upsert({
-          user_id: user.id,
-          plan_id: planId,
-          plan_name: planName,
-          status: 'active',
-          activated_at: new Date().toISOString(),
-          receipt_id: result.receiptId,
-        });
-      }
+      // SECURITY HARDENING (Sprint 05 Phase 1A):
+      // ZERO client-side authority to mutate or activate subscriptions.
+      // Subscriptions are activated EXCLUSIVELY via server-side admin RPC (admin_approve_receipt_and_activate).
+      // All client-side subscription mutations have been completely eliminated.
+      setProgress({ percent: 95, label: isRtl ? 'تسجيل في طابور التدقيق والاعتماد...' : 'Queuing for admin audit...' });
 
-      setProgress({ percent: 100, label: isRtl ? 'اكتملت العملية' : 'Verification complete' });
+      setProgress({ percent: 100, label: isRtl ? 'اكتمل التحقق والتسجيل' : 'Verification & Staging Complete' });
       setStep('result');
       setVaultRecords(getFinancialRepositoryRecords());
 
@@ -352,7 +346,7 @@ export default function ReceiptVerificationPage() {
                 { icon: FileText, labelAr: 'استخراج البيانات', labelEn: 'Data Extraction', threshold: 60 },
                 { icon: Shield, labelAr: 'فحص التكرار والاحتيال', labelEn: 'Fraud & Duplicate Check', threshold: 65 },
                 { icon: Lock, labelAr: 'تحليل النتائج', labelEn: 'Analyzing Results', threshold: 90 },
-                { icon: Zap, labelAr: 'تفعيل الاشتراك', labelEn: 'Activating Subscription', threshold: 95 },
+                { icon: CheckCircle2, labelAr: 'تسجيل في طابور التدقيق والاعتماد', labelEn: 'Queuing for Admin Audit', threshold: 95 },
               ].map(({ icon: Icon, labelAr, labelEn, threshold }) => {
                 const done = progress.percent > threshold;
                 const active = progress.percent >= threshold && progress.percent <= threshold + 20;
@@ -386,12 +380,12 @@ export default function ReceiptVerificationPage() {
                 <>
                   <CheckCircle2 className="w-12 h-12 text-emerald-400 mx-auto" />
                   <h2 className="text-xl font-black text-emerald-400">
-                    {isRtl ? '✅ تم التحقق بنجاح — الاشتراك مفعّل' : '✅ Verified — Subscription Activated'}
+                    {isRtl ? '✅ تم التحقق المبدئي — بانتظار الاعتماد الإداري' : '✅ Verified — Queued for Admin Approval'}
                   </h2>
                   <p className="text-sm text-slate-700 dark:text-slate-300">
                     {isRtl
-                      ? 'تم التحقق من إيصالك بنجاح وتفعيل اشتراكك تلقائياً. يمكنك البدء فوراً!'
-                      : 'Your receipt has been verified and your subscription is now active. Enjoy!'}
+                      ? 'تم التحقق من إيصالك بنجاح وتسجيله في طابور الاعتماد والتدقيق الإداري. سيتم تفعيل باقتك فور اكتمال المراجعة.'
+                      : 'Your receipt has passed automated verification and has been queued for administrative audit. Your subscription will be activated upon approval.'}
                   </p>
                 </>
               )}

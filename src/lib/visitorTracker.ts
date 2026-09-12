@@ -423,72 +423,37 @@ const COUNTRY_AR_MAP: Record<string, { ar: string; flag: string }> = {
   'DE': { ar: 'ألمانيا 🇩🇪', flag: '🇩🇪' },
 };
 
-// ── 8. True Analytics Summary Aggregator ─────────────────────────────────────
+// ── 8. True Analytics Summary Aggregator (100% Real Session Telemetry) ──────
 
-function generateLiveOrganicVisitorStream(): VisitorLogEntry[] {
-  const targetCountries = [
-    { country: 'Spain', countryCode: 'ES', city: 'Madrid', share: 48 },
-    { country: 'Egypt', countryCode: 'EG', city: 'Cairo', share: 44 },
-    { country: 'Saudi Arabia', countryCode: 'SA', city: 'Riyadh', share: 36 },
-    { country: 'United States', countryCode: 'US', city: 'New York', share: 31 },
-    { country: 'United Arab Emirates', countryCode: 'AE', city: 'Dubai', share: 24 },
-    { country: 'Jordan', countryCode: 'JO', city: 'Amman', share: 19 },
-    { country: 'United Kingdom', countryCode: 'GB', city: 'London', share: 16 },
-  ];
+/**
+ * Filter to identify and purge any historical synthetic logs
+ */
+export function isSyntheticLog(log: VisitorLogEntry): boolean {
+  if (!log) return true;
+  if (log.ip && log.ip.startsWith('197.') && log.ip.endsWith('.88') && log.visitorId?.startsWith('vis_')) {
+    return true;
+  }
+  if (log.visitorId && /^vis_(es|eg|sa|us|ae|jo|gb)_\d+_/i.test(log.visitorId)) {
+    return true;
+  }
+  return false;
+}
 
-  const targetPages = [
-    '/contracts',
-    '/risk',
-    '/company-formation',
-    '/templates',
-    '/negotiation',
-    '/sovereign-ai-hub',
-    '/payment',
-    '/investigation',
-  ];
-
-  const devices: ('Desktop' | 'Mobile' | 'Tablet')[] = ['Desktop', 'Mobile', 'Desktop', 'Mobile', 'Desktop'];
-  const sources: ('Organic Search' | 'Direct' | 'Social Media' | 'Referral' | 'Paid Ads')[] = ['Organic Search', 'Direct', 'Organic Search', 'Social Media', 'Paid Ads'];
-
-  const logs: VisitorLogEntry[] = [];
-  const now = Date.now();
-
-  targetCountries.forEach(c => {
-    for (let i = 0; i < c.share; i++) {
-      const visitorId = `vis_${c.countryCode.toLowerCase()}_${i}_${Math.random().toString(36).substring(2, 6)}`;
-      const pagePath = targetPages[i % targetPages.length];
-      const timeOffset = Math.floor(Math.random() * (14 * 3600 * 1000));
-      const timestamp = new Date(now - timeOffset).toISOString();
-      const deviceType = devices[i % devices.length];
-      const trafficSource = sources[i % sources.length];
-
-      logs.push({
-        id: `log_${visitorId}`,
-        visitorId,
-        country: c.country,
-        countryCode: c.countryCode,
-        city: c.city,
-        region: c.city,
-        ip: `197.${c.share}.${i}.88`,
-        pagePath,
-        trafficSource,
-        referrerDomain: trafficSource === 'Organic Search' ? 'google.com' : trafficSource === 'Social Media' ? 'linkedin.com' : 'direct',
-        userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
-        deviceType,
-        browser: 'Chrome',
-        os: 'Windows',
-        language: 'ar',
-        screenResolution: '1920x1080',
-        timestamp,
-        isUnique: true,
-        isAdminVisit: false,
-        hostDomain: i % 4 === 0 ? 'secondary.juristech.solutions' : 'juristech.solutions',
-        dwellTimeSec: Math.floor(45 + Math.random() * 180),
-      });
+/**
+ * Purge any synthetic visitor logs from local persistence
+ */
+export function purgeSyntheticVisitorLogs(): void {
+  if (typeof window === 'undefined') return;
+  try {
+    const raw = localStorage.getItem(STORAGE_VISITOR_LOGS_KEY);
+    if (raw) {
+      const logs: VisitorLogEntry[] = JSON.parse(raw);
+      const cleaned = logs.filter(l => !isSyntheticLog(l));
+      if (cleaned.length !== logs.length) {
+        localStorage.setItem(STORAGE_VISITOR_LOGS_KEY, JSON.stringify(cleaned));
+      }
     }
-  });
-
-  return logs;
+  } catch (e) {}
 }
 
 export function getVisitorAnalyticsSummary(timeframe: 'Daily' | 'Weekly' | 'Monthly' | 'Yearly' = 'Yearly'): VisitorAnalyticsSummary {
@@ -500,19 +465,11 @@ export function getVisitorAnalyticsSummary(timeframe: 'Daily' | 'Weekly' | 'Mont
     }
   } catch (e) {}
 
+  // Pure authentic logs only — strictly filter out any legacy synthetic logs
+  allLogs = allLogs.filter(l => !isSyntheticLog(l));
+
   let nonAdminLogs = allLogs.filter(l => !l.isAdminVisit);
-
-  // If local visitor logs empty or lacking stream, seed live organic telemetry
-  if (allLogs.length === 0 || nonAdminLogs.length < 10) {
-    const freshOrganicLogs = generateLiveOrganicVisitorStream();
-    allLogs = [...allLogs, ...freshOrganicLogs];
-    nonAdminLogs = allLogs.filter(l => !l.isAdminVisit);
-    try {
-      localStorage.setItem(STORAGE_VISITOR_LOGS_KEY, JSON.stringify(allLogs));
-    } catch (e) {}
-  }
-
-  const adminVisitsFilteredCount = allLogs.filter(l => l.isAdminVisit).length || 46;
+  const adminVisitsFilteredCount = allLogs.filter(l => l.isAdminVisit).length;
 
   // Timeframe calculation
   const now = Date.now();
@@ -842,12 +799,13 @@ export async function syncVisitorLogsWithSupabase(): Promise<VisitorLogEntry[]> 
     const storedRaw = localStorage.getItem('ls_visitor_logs_history');
     const localList: VisitorLogEntry[] = storedRaw ? JSON.parse(storedRaw) : [];
     localList.forEach(log => {
-      if (!mergedMap.has(log.id)) {
+      if (!isSyntheticLog(log) && !mergedMap.has(log.id)) {
         mergedMap.set(log.id, log);
       }
     });
 
     const mergedLogs = Array.from(mergedMap.values())
+      .filter(l => !isSyntheticLog(l))
       .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
       .slice(0, 500);
 
@@ -856,7 +814,8 @@ export async function syncVisitorLogsWithSupabase(): Promise<VisitorLogEntry[]> 
   } catch (err) {
     console.warn('[Visitor Tracker] Supabase logs sync failed:', err);
     const storedRaw = localStorage.getItem('ls_visitor_logs_history');
-    return storedRaw ? JSON.parse(storedRaw) : [];
+    const list: VisitorLogEntry[] = storedRaw ? JSON.parse(storedRaw) : [];
+    return list.filter(l => !isSyntheticLog(l));
   }
 }
 

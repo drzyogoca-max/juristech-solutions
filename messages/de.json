@@ -25,11 +25,11 @@
       "adminDashboard": "Super-Admin-Dashboard",
       "jurisdictionLaw": "Rechtsordnung & Gerichtsstand",
       "companyFiles": "Unternehmensprofil & Dateien",
-      "bookAdvisor": "Berater buchen",
+      "bookAdvisor": "Demo anfordern",
       "themeFontLabel": "Design & Schriftart",
       "whatsapp": "Verschlüsseltes WhatsApp",
-      "liveOnlineConsultation": "Live-Online-Beratung",
-      "directLegislativeAdvisor": "Direkter Gesetzgebungsberater",
+      "liveOnlineConsultation": "Live-Workflow-Sitzung",
+      "directLegislativeAdvisor": "Direkter Gesetzgebungsassistent",
       "companyFormation": "Unternehmensgründung",
       "acquisition": "Internationale M&A-Plattform",
       "sovereignAiHub": "⭐ Souveräne KI Pro",
@@ -81,7 +81,7 @@
       "approveRisk": "Risikoanalyse bestätigen & Vertrag ausstellen",
       "riskApproved": "Risikoanalyse bestätigt & Vertrag ausgestellt",
       "pendingRisk": "Ausstehende Bestätigung der Risikoprüfung",
-      "aiAdvisor": "Internationaler KI-Rechtsberater"
+      "aiAdvisor": "Internationaler KI-Rechtsassistent"
     },
     "Risk": {
       "title": "Intelligente Risiko- & Compliance-Analyse",
@@ -131,10 +131,10 @@
       "savedSuccess": "Unternehmensprofil und Dokumente erfolgreich gespeichert!"
     },
     "Consultation": {
-      "title": "Rechtsberatungstermin vereinbaren",
+      "title": "Workflow-Demo und KI-Analyse vereinbaren",
       "subtitle": "Schriftliches Rechtsgutachten oder Live-Videoberatung buchen",
-      "selectAdvisor": "Rechtsberater auswählen",
-      "consultationType": "Beratungsformat",
+      "selectAdvisor": "Technischen Support auswählen",
+      "consultationType": "Sitzungsformat",
       "emailOpinion": "Schriftliche Stellungnahme per E-Mail",
       "videoCall": "Live-Videositzung",
       "emergencyAudit": "Dringlichkeitsprüfung von Verträgen",
@@ -160,7 +160,7 @@
       "applyClose": "Anwenden & Schließen"
     },
     "Meeting": {
-      "title": "Live-Online-Beratung & KI-Assistenz",
+      "title": "Live-Workflow-Sitzung & KI-Assistent",
       "selectPlatform": "Videoplattform wählen",
       "dateLabel": "Datum",
       "timeLabel": "Uhrzeit",
@@ -199,22 +199,22 @@
     },
     "Payment": {
       "title": "Abonnements & Zahlungsarten",
-      "subtitle": "Sichere Zahlung über PayPal, Banküberweisung (SWIFT) und Binance Pay",
-      "proDesc": "Ideal für Einzelanwälte, Berater und Gründer.",
+      "subtitle": "Sichere und zertifizierte elektronische Zahlungsmethoden beim Checkout verfügbar.",
+      "proDesc": "Ideal für interne Rechtsteams, unabhängige Spezialisten und Gründer.",
       "enterpriseDesc": "Unbegrenzter Zugang für Rechtsabteilungen und Kanzleien.",
       "payWithPayPal": "Mit PayPal Commercial bezahlen",
       "secureNote": "Alle Transaktionen sind mit 256-Bit-SSL-Verschlüsselung geschützt."
     },
     "Support": {
       "title": "Support & Kundenservice",
-      "subtitle": "24/7 KI-gestützter technischer und rechtlicher Support",
+      "subtitle": "Technischer und operativer 24/7-Support",
       "submitTicket": "Ticket erstellen",
       "liveChat": "Live-Chat",
       "faq": "Häufige Fragen (FAQ)"
     },
     "Legal": {
       "title": "Rechtskonformität & Regulatorischer Rahmen",
-      "disclaimer": "JurisTech Solutions bietet hochentwickelte KI-Rechtsinformationen, ersetzt jedoch keine direkte anwaltliche Vertretung vor Gericht.",
+      "disclaimer": "JurisTech Solutions bietet automatisierte juristische Analysewerkzeuge und Software zur Vertragserstellung, erbringt jedoch keine Rechtsberatung oder anwaltliche Vertretung.",
       "dismiss": "Verstanden",
       "viewCompliance": "Konformität einsehen"
     },

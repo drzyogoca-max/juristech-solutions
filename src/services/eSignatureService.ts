@@ -4,6 +4,7 @@
  * Ticket 5: eIDAS-Compliant Global Digital Signature Engine (DocuSign / Adobe Sign)
  */
 
+import { supabase } from '../lib/supabaseClient';
 import { auditTrailService } from './auditTrailService';
 
 export interface SignatureRequest {
@@ -27,37 +28,63 @@ export interface SignatureResult {
 
 class ESignatureService {
   /**
-   * Execute digital signature flow automatically
+   * Execute digital signature via secure server-side endpoint
    */
   public async executeDigitalSignature(req: SignatureRequest): Promise<SignatureResult> {
     console.log('[Ticket 5: eSignature Engine] Executing digital signature via provider:', req.provider || 'eIDAS_Internal');
 
-    const timestamp = new Date().toISOString();
-    const payloadToHash = `${req.contractId}|${req.signatoryEmail}|${req.signatoryName}|${timestamp}`;
-    const hash = await this.hashSHA256(payloadToHash);
+    // 1. Retrieve authenticated Supabase access token
+    const { data: sessionData, error: sessionErr } = await supabase.auth.getSession();
+    const token = sessionData?.session?.access_token;
 
-    const signatureId = `sig_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
+    if (sessionErr || !token) {
+      throw new Error('AUTHENTICATION_REQUIRED: Please sign in to digitally sign contracts.');
+    }
+
+    // 2. Transmit to server-side protected endpoint with Bearer authentication
+    const response = await fetch('/api/contracts/esignature', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        contractId: req.contractId,
+        signerName: req.signatoryName,
+        provider: req.provider || 'eIDAS_Internal',
+      }),
+    });
+
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({}));
+      const message = errData.message || errData.error || `Signature execution failed with status ${response.status}`;
+      throw new Error(message);
+    }
+
+    const data = await response.json();
+    const cert = data.signatureCertificate || {};
 
     const result: SignatureResult = {
-      signatureId,
-      contractId: req.contractId,
-      timestamp,
-      hash,
+      signatureId: cert.signatureId || `sig_${Date.now()}`,
+      contractId: cert.contractId || req.contractId,
+      timestamp: data.timestamp || new Date().toISOString(),
+      hash: data.cryptographicProof || '',
       eIDASCompliant: true,
       status: 'SIGNED',
     };
 
-    // Ticket 6: Automatically log entry in Legal Audit Trail
+    // 3. Record in client-side audit cache
     await auditTrailService.logEvent({
       action: 'SIGNATURE_COMPLETED',
-      userEmail: req.signatoryEmail,
+      userId: cert.signerUserId,
+      userEmail: cert.signerEmail || req.signatoryEmail,
       contractId: req.contractId,
       details: {
-        signatureId,
-        signatoryName: req.signatoryName,
+        signatureId: result.signatureId,
+        signatoryName: cert.signerName || req.signatoryName,
         signatoryRole: req.signatoryRole,
         provider: req.provider || 'eIDAS_Internal',
-        hash,
+        hash: data.cryptographicProof,
       },
     });
 

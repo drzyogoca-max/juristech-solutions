@@ -12,11 +12,68 @@ export const runtime = 'edge';
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Language',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Language, x-admin-token',
   'Content-Type': 'application/json; charset=utf-8',
   'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
   'X-Content-Type-Options': 'nosniff',
 };
+
+const OFFICIAL_ADMIN_EMAILS = [
+  'drzyogo.ca@gmail.com',
+  'juristech.solutions@outlook.com',
+  'admin@juristech.solutions',
+];
+
+/**
+ * Validates administrative authorization via approved server secret or Supabase admin JWT
+ */
+async function verifyAdminAuth(req) {
+  const authHeader =
+    (typeof req.headers?.get === 'function'
+      ? req.headers.get('Authorization') || req.headers.get('authorization')
+      : req.headers?.['authorization'] || req.headers?.['Authorization']) || '';
+
+  const adminToken =
+    (typeof req.headers?.get === 'function'
+      ? req.headers.get('x-admin-token') || req.headers.get('X-Admin-Token')
+      : req.headers?.['x-admin-token'] || req.headers?.['X-Admin-Token']) || '';
+
+  const serverSecret = process.env.ADMIN_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+  if (serverSecret && (authHeader === `Bearer ${serverSecret}` || adminToken === serverSecret)) {
+    return true;
+  }
+
+  if (authHeader.startsWith('Bearer ')) {
+    const jwt = authHeader.replace('Bearer ', '').trim();
+    const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
+    const anonKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+    if (supabaseUrl && anonKey && jwt) {
+      try {
+        const uRes = await fetch(`${supabaseUrl.replace(/\/$/, '')}/auth/v1/user`, {
+          headers: { Authorization: `Bearer ${jwt}`, apikey: anonKey },
+        });
+        if (uRes.ok) {
+          const uData = await uRes.json();
+          const email = (uData?.email || '').toLowerCase().trim();
+          const appRole = uData?.app_metadata?.role;
+          const userRole = uData?.user_metadata?.role;
+          if (
+            (email && OFFICIAL_ADMIN_EMAILS.includes(email)) ||
+            appRole === 'admin' ||
+            appRole === 'super-admin' ||
+            userRole === 'admin'
+          ) {
+            return true;
+          }
+        }
+      } catch (e) {
+        // fail-closed
+      }
+    }
+  }
+
+  return false;
+}
 
 // In-memory / Edge KV simulation for staging proposals and processed lead IDs
 const PROCESSED_LEAD_IDS = new Set(['lead_demo_01']);
@@ -38,7 +95,32 @@ export async function OPTIONS() {
 
 export async function POST(req) {
   try {
-    const { leadCompanyId, companyName, proposalContent, targetEmail } = await req.json();
+    const isAuthorized = await verifyAdminAuth(req);
+    if (!isAuthorized) {
+      return Response.json(
+        { error: 'Unauthorized: Sovereign administrative authorization required' },
+        { status: 401, headers: CORS_HEADERS }
+      );
+    }
+
+    let body = {};
+    if (typeof req.json === 'function') {
+      try {
+        body = await req.json();
+      } catch (parseErr) {
+        return Response.json({ error: 'Malformed JSON payload' }, { status: 400, headers: CORS_HEADERS });
+      }
+    } else if (typeof req.body === 'object' && req.body !== null) {
+      body = req.body;
+    } else if (typeof req.body === 'string') {
+      try {
+        body = JSON.parse(req.body);
+      } catch (parseErr) {
+        return Response.json({ error: 'Malformed JSON payload' }, { status: 400, headers: CORS_HEADERS });
+      }
+    }
+
+    const { leadCompanyId, companyName, proposalContent, targetEmail } = body;
 
     // 1. Verify duplicate lead dispatch prevention
     const isAlreadyProcessed = await checkExistingLeadStatus(leadCompanyId);

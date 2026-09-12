@@ -30,8 +30,8 @@ export default function GlobalTrafficGrowthBanner() {
 
   const shareUrl = typeof window !== 'undefined' ? window.location.href : 'https://juristech.solutions';
   const shareText = isRtl
-    ? '🚀 مستودع وخزينة العقود والنماذج الذكية الموحدة (Google AI Pro Powered) — 1,000,000+ عقد ونموذج قانوني معتمد:'
-    : '🚀 Unified Smart Contracts Vault (Google AI Pro Powered) — 1,000,000+ Verified Contracts:';
+    ? '🚀 مستودع وخزينة العقود والنماذج الذكية الموحدة (Google AI Pro Powered) — خزينة العقود والنماذج المعتمدة:'
+    : '🚀 Unified Smart Contracts Vault (Google AI Pro Powered) — Verified Smart Legal Contracts:';
 
   const handleShare = (platform: 'whatsapp' | 'linkedin' | 'twitter' | 'email') => {
     aiTrafficGrowthEngine.trackReferralShare(platform);

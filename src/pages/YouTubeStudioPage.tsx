@@ -107,8 +107,8 @@ export const YouTubeStudioPage: React.FC = () => {
           'Official YouTube Channel Studio & 2x Daily Video Automation | JurisTech Solutions'
         )}
         description={l(
-          'استوديو إدارة قناة يوتيوب الرسمية للمنصة juristech.solutions@outlook.com بإشراف المستشار د. محمد مصطفى. توليد ونشر فيديوهات قانونية يومية صباحاً ومساءً 100% بالذكاء الاصطناعي.',
-          'Official YouTube Channel Administration for juristech.solutions@outlook.com. Autonomous Morning & Evening AI Video Generation Engine.'
+          'استوديو إدارة قناة يوتيوب الرسمية للمنصة founder@juristech.solutions بإشراف وتأسيس د. محمد مصطفى (المؤسس ورئيس مجلس الإدارة). توليد ونشر فيديوهات قانونية يومية صباحاً ومساءً 100% بالذكاء الاصطناعي.',
+          'Official YouTube Channel Administration for founder@juristech.solutions. Autonomous Morning & Evening AI Video Generation Engine.'
         )}
       />
 
@@ -135,8 +135,8 @@ export const YouTubeStudioPage: React.FC = () => {
             </h1>
             <p className="text-slate-400 text-sm mt-2 max-w-3xl leading-relaxed">
               {l(
-                `الحساب الرسمي للقناة: ${stats.officialEmail} | مدار بالكامل بواسطة الوكيل الذكي ومفوض عن سعادة المستشار د. محمد مصطفى.`,
-                `Official Channel Account: ${stats.officialEmail} | Administered by Executive AI Proxy under authorization of Dr. Mohammad Mustafa.`
+                `الحساب الرسمي للقناة: ${stats.officialEmail} | مدار بالكامل بواسطة الوكيل الذكي ومفوض عن د. محمد مصطفى (المؤسس ورئيس مجلس الإدارة).`,
+                `Official Channel Account: ${stats.officialEmail} | Administered by Executive AI Proxy under authorization of Dr. Mohammad Mustafa (Founder & Chairman).`
               )}
             </p>
           </div>

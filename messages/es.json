@@ -25,11 +25,11 @@
       "adminDashboard": "Panel de Super Administrador",
       "jurisdictionLaw": "Jurisdicción y Ley Aplicable",
       "companyFiles": "Perfil de Empresa y Documentos",
-      "bookAdvisor": "Reservar Asesor",
+      "bookAdvisor": "Solicitar Demo",
       "themeFontLabel": "Tema y Fuente",
       "whatsapp": "WhatsApp Cifrado",
-      "liveOnlineConsultation": "Consulta en Vivo",
-      "directLegislativeAdvisor": "Asesor Legislativo Directo",
+      "liveOnlineConsultation": "Sesión de Flujo de Trabajo en Vivo",
+      "directLegislativeAdvisor": "Asistente Legislativo Directo",
       "companyFormation": "Constitución de Empresas",
       "acquisition": "Plataforma Internacional M&A",
       "sovereignAiHub": "⭐ IA Soberana Pro",
@@ -40,7 +40,7 @@
       "subtitle": "Inteligencia Legal IA Soberana",
       "contracts": "Contratos Generados",
       "riskReports": "Informes de Riesgo",
-      "aiRequests": "Consultas IA",
+      "aiRequests": "Análisis de IA",
       "activeUsers": "Usuarios Activos",
       "howItWorksTitle": "Cómo funciona JurisTech",
       "step1": "Sube o escribe el contrato",
@@ -51,11 +51,11 @@
     "Chat": {
       "title": "Asesor Legal IA Principal",
       "subtitle": "Basado en los códigos civiles, comerciales e internacionales",
-      "placeholder": "Haz una consulta legal en cualquier idioma...",
+      "placeholder": "Escribe tu pregunta o solicitud legal en cualquier idioma...",
       "send": "Enviar",
       "thinking": "Analizando normativas y jurisprudencia...",
       "error": "Error al conectar con el servicio de IA.",
-      "newChat": "Nueva Consulta",
+      "newChat": "Nueva Sesión de Análisis",
       "exportChat": "Exportar Conversación",
       "welcome": "¡Bienvenido! Soy su Asesor Legal Senior de IA en JurisTech Solutions."
     },
@@ -81,7 +81,7 @@
       "approveRisk": "Aprobar Auditoría y Emitir Contrato",
       "riskApproved": "Auditoría Aprobada y Contrato Emitido",
       "pendingRisk": "Pendiente de Aprobación de Riesgos",
-      "aiAdvisor": "Asesor Legal IA Internacional"
+      "aiAdvisor": "Asistente Legal IA Internacional"
     },
     "Risk": {
       "title": "Analizador de Riesgos y Cumplimiento",
@@ -131,10 +131,10 @@
       "savedSuccess": "¡Perfil de empresa y documentos guardados con éxito!"
     },
     "Consultation": {
-      "title": "Programar Consulta Legal",
+      "title": "Programar Sesión de Demostración y Análisis IA",
       "subtitle": "Dictamen Escrito o Sesión de Video con un Abogado Asesor",
-      "selectAdvisor": "Seleccionar Asesor Legal",
-      "consultationType": "Modalidad de Consulta",
+      "selectAdvisor": "Seleccionar Especialista Técnico",
+      "consultationType": "Modalidad de Sesión",
       "emailOpinion": "Dictamen Legal Escrito por Correo",
       "videoCall": "Sesión de Video en Directo",
       "emergencyAudit": "Auditoría Legal de Emergencia",
@@ -144,11 +144,11 @@
       "companyName": "Nombre de la Empresa",
       "preferredDate": "Fecha Preferida",
       "preferredTime": "Hora Preferida",
-      "subjectDetails": "Resumen y Motivo de la Consulta",
+      "subjectDetails": "Resumen y Alcance del Análisis",
       "confirm": "Confirmar y Programar",
       "sending": "Enviando reserva...",
       "instantEmail": "Confirmación inmediata enviada por correo",
-      "confirmedTitle": "¡Consulta confirmada y remitida al asesor!",
+      "confirmedTitle": "¡Solicitud de sesión confirmada con éxito!",
       "done": "Completado"
     },
     "Theme": {
@@ -160,7 +160,7 @@
       "applyClose": "Aplicar y Cerrar"
     },
     "Meeting": {
-      "title": "Consulta en Vivo y Asistente IA",
+      "title": "Sesión de Flujo de Trabajo en Vivo y Asistente IA",
       "selectPlatform": "Seleccionar Plataforma de Video",
       "dateLabel": "Fecha",
       "timeLabel": "Hora",
@@ -199,22 +199,22 @@
     },
     "Payment": {
       "title": "Planes y Métodos de Pago",
-      "subtitle": "Pagos seguros mediante PayPal, Transferencia Bancaria (SWIFT) y Binance Pay",
-      "proDesc": "Ideal para abogados independientes, consultores y fundadores.",
+      "subtitle": "Métodos de pago electrónicos seguros y certificados disponibles al completar el pedido.",
+      "proDesc": "Ideal para equipos legales corporativos, profesionales independientes y fundadores.",
       "enterpriseDesc": "Acceso ilimitado para departamentos jurídicos y firmas.",
       "payWithPayPal": "Pagar con PayPal Commercial",
       "secureNote": "Todas las transacciones están protegidas con cifrado SSL de 256 bits."
     },
     "Support": {
       "title": "Soporte y Atención al Cliente",
-      "subtitle": "Soporte técnico y legal con IA 24/7",
+      "subtitle": "Soporte técnico y operativo 24/7",
       "submitTicket": "Crear Ticket",
       "liveChat": "Chat en Vivo",
       "faq": "Preguntas Frecuentes (FAQ)"
     },
     "Legal": {
       "title": "Cumplimiento Legal y Marco Regulatorio",
-      "disclaimer": "JurisTech Solutions proporciona información y análisis legal de IA altamente cualificado, sin constituir representación directa en tribunales.",
+      "disclaimer": "JurisTech Solutions proporciona herramientas automatizadas de análisis legal y redacción de contratos; no presta asesoramiento jurídico ni sustituye a un abogado.",
       "dismiss": "Entendido",
       "viewCompliance": "Ver Cumplimiento"
     },

@@ -13,7 +13,7 @@ export interface BinancePayMerchantConfig {
 
 export const BINANCE_PAY_CONFIG: BinancePayMerchantConfig = {
   binanceUid: '444da',                          // Official QR User ID (User-444da)
-  merchantEmail: 'Drzyogo.ca@gmail.com',
+  merchantEmail: 'founder@juristech.solutions',
   merchantName: 'JurisTech & LegalShield Global',
   supportedAssets: ['USDT', 'BUSD', 'BNB', 'BTC', 'ETH'],
   status: 'ACTIVE_LIVE',

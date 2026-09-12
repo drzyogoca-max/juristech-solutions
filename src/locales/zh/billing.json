@@ -1,6 +1,6 @@
 {
   "portalTitle": "账户账单与订阅全生命周期管理",
-  "portalSubtitle": "官方账单与支付门户 — 由 Paddle.com 官方记录商承保",
+  "portalSubtitle": "主权官方账单门户 — TLS 1.3 银行级端到端加密",
   "currentPlan": "当前有效订阅方案",
   "planAmount": "方案费率",
   "startDate": "开通起始日",
@@ -20,13 +20,13 @@
   "viewInvoice": "查看/下载电子发票",
   "cancelSubscription": "取消下期自动续订",
   "renewSubscription": "立即续期订阅",
-  "upgradePlan": "升级方案 / 更换支付信用卡",
+  "upgradePlan": "升级方案 / 更换支付渠道",
   "confirmCancelTitle": "确认取消下期自动续订？",
   "confirmCancelDesc": "在当前已支付账单周期结束前，您依然享有完整的 VIP 权益。下期将不会发生任何自动扣款。",
   "keepSubscription": "保留订阅方案",
   "confirmCancelBtn": "确认取消自动续订",
   "cancelling": "正在处理取消请求...",
-  "merchantProtectionTitle": "官方记录商 (Merchant of Record) 权益保护",
-  "merchantProtectionDesc": "所有数字软件订阅均通过 Paddle.com 作为国际权威记录商进行安全结算与合规审计。",
-  "supportEmail": "账单及退款咨询专线：juristech.solutions@outlook.com"
+  "merchantProtectionTitle": "企业级安全防护与合规结算保障",
+  "merchantProtectionDesc": "所有数字交易均受 TLS 1.3 加密与机构真实性审核保护，支持公对公电汇 (SWIFT)、Binance Pay 及 InstaPay 直连清算，PayTabs 信用卡网关商户入网审核中。",
+  "supportEmail": "账单及退款咨询专线：founder@juristech.solutions"
 }

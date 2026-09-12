@@ -5,7 +5,6 @@ import fs from 'fs';
 const liveSecrets = {
   CRON_SECRET: 'jt_live_cron_9f8e7d6c5b4a3210fe_2026',
   ADMIN_SECRET_KEY: 'jt_live_admin_1a2b3c4d5e6f7089ab_2026',
-  PADDLE_WEBHOOK_SECRET: 'pdl_live_whsec_8844aa11bb22cc33_2026',
   STRIPE_WEBHOOK_SECRET: 'whsec_live_998877665544332211_2026',
   PAYTABS_WEBHOOK_SECRET: 'pt_live_whsec_7766554433221100_2026'
 };

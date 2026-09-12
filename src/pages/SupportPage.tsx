@@ -28,7 +28,7 @@ export default function SupportPage() {
   const [tickets, setTickets] = useState<Ticket[]>([
     {
       id: 'TICK-1082',
-      subject: isRtl ? 'استفسار عن تفعيل مفاتيح بوابات Stripe / Tap' : 'Query regarding Stripe / Tap API activation',
+      subject: isRtl ? 'استفسار عن طرق الدفع الإلكترونية المعتمدة' : 'Inquiry regarding approved payment methods',
       category: 'Billing & Payments',
       status: 'Resolved',
       createdAt: 'منذ يومين',
@@ -49,7 +49,7 @@ export default function SupportPage() {
     setTickets([newTicket, ...tickets]);
     setSubmitted(true);
     await dispatchReceiptEmail({
-      clientEmail: 'juristech.solutions@outlook.com',
+      clientEmail: 'founder@juristech.solutions',
       clientRef: subject,
       transactionId: newTicket.id,
       planName: `Support Inquiry (${category})`,
@@ -67,7 +67,7 @@ export default function SupportPage() {
     {
       qAr: 'كيف يعمل نظام التوافق التشريعي الجغرافي (GeoIP)؟',
       qEn: 'How does the GeoIP Automated Legal Jurisdiction work?',
-      aAr: 'يتعرف النظام تلقائياً على دولة الزائر فور دخوله المنصة، ويقوم بتزويد جميع استشارات محرر العقود ومحلل المخاطر بالقوانين واللوائح المحلية المعتمدة في دولتك.',
+      aAr: 'يتعرف النظام تلقائياً على دولة الزائر فور دخوله المنصة، ويقوم بتزويد جميع أدوات ومخرجات محرر العقود ومحلل المخاطر بالقوانين واللوائح المحلية المعتمدة في دولتك.',
       aEn: 'The system auto-detects your country upon entry and feeds all contract generation & risk tools with local statutory laws.',
     },
     {
@@ -143,12 +143,12 @@ export default function SupportPage() {
             <Mail className="w-6 h-6 text-cyan-400 shrink-0" />
             <div>
               <span className="font-bold text-sm block">{isRtl ? 'البريد الرسمي للدعم الإداري' : 'Official Admin Email'}</span>
-              <span className="text-xs text-slate-600 dark:text-slate-400 font-mono">Drzyogo.ca@gmail.com</span>
+              <span className="text-xs text-slate-600 dark:text-slate-400 font-mono">founder@juristech.solutions</span>
             </div>
           </div>
         </div>
 
-        {/* Instant Consultations Module */}
+        {/* Instant Support & Workflow Module */}
         <div className="p-6 rounded-3xl bg-gradient-to-br from-indigo-950 via-slate-900 to-slate-950 border border-indigo-500/40 space-y-4 shadow-xl">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
             <div className="flex items-center gap-3">
@@ -158,14 +158,14 @@ export default function SupportPage() {
               <div>
                 <div className="flex items-center gap-2">
                   <h3 className="font-extrabold text-white text-base">
-                    {isRtl ? 'مسار الاستشارات الفورية المباشرة السريعة' : 'Instant 1-on-1 Legal Consultations'}
+                    {isRtl ? 'مسار الدعم الفني وتدقيق سير العمل الفوري' : 'Instant Technical Support & Workflow Corridor'}
                   </h3>
                   <span className="text-[10px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold">
                     {isRtl ? 'متاح الآن' : 'Live Available'}
                   </span>
                 </div>
                 <p className="text-xs text-slate-400">
-                  {isRtl ? 'تواصل فوري مع مستشار قانوني مختص أو اطلب فحصاً عاجلاً لعقدك خلال دقائق.' : 'Instant escalation path to senior legal counsel for urgent contract reviews.'}
+                  {isRtl ? 'مساندة فنية فورية لمنظومة أتمتة العقود وفحص المخاطر التعاقدية آلياً.' : 'Instant technical support for automated contract workflows and risk audits.'}
                 </p>
               </div>
             </div>
@@ -181,7 +181,7 @@ export default function SupportPage() {
               className="p-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800/80 border border-slate-800 text-start transition-all group"
             >
               <span className="text-xs font-bold text-white block group-hover:text-cyan-300 transition-colors">
-                {isRtl ? '🤖 المستشار الذكي (10 رسائل مجاناً)' : '🤖 AI Legal Chatbot (10 Free Messages)'}
+                {isRtl ? '🤖 مساعد التحليل الذكي (10 رسائل مجاناً)' : '🤖 AI LegalTech Assistant (10 Free Messages)'}
               </span>
               <span className="text-[10px] text-slate-400 block mt-1">
                 {isRtl ? 'رد فوري على أسئلة العقود والقوانين' : 'Instant response on contract clauses'}
@@ -205,10 +205,10 @@ export default function SupportPage() {
               className="p-3.5 rounded-2xl bg-cyan-950/40 hover:bg-cyan-900/40 border border-cyan-500/30 text-start transition-all group"
             >
               <span className="text-xs font-bold text-cyan-400 block group-hover:text-cyan-300 transition-colors">
-                {isRtl ? '🔒 استشارة مشفرة وتصعيد تذكرة عاجلة' : '🔒 Encrypted Counsel & Urgent Ticket'}
+                {isRtl ? '🔒 دعم تقني مشفر وتصعيد تذكرة عاجلة' : '🔒 Encrypted Technical Support Ticket'}
               </span>
               <span className="text-[10px] text-slate-400 block mt-1">
-                {isRtl ? 'تصعيد الحالات المعقدة للمستشار القانوني' : 'Escalate complex cases securely to legal counsel'}
+                {isRtl ? 'تصعيد الحالات التقنية لفريق الدعم الهندسي' : 'Escalate complex technical inquiries to engineering support'}
               </span>
             </button>
           </div>

@@ -22,8 +22,8 @@ export interface SystemEventPayload {
   details?: string;
 }
 
-export const OFFICIAL_ADMIN_EMAIL = 'drzyogo.ca@gmail.com';
-export const OFFICIAL_BACKUP_EMAIL = 'juristech.solutions@outlook.com';
+export const OFFICIAL_ADMIN_EMAIL = 'founder@juristech.solutions';
+export const OFFICIAL_BACKUP_EMAIL = 'founder@juristech.solutions';
 export const TARGET_WHATSAPP_NUMBER = '+201126674337';
 
 /**
@@ -240,6 +240,36 @@ export async function dispatchSystemNotification(payload: SystemEventPayload): P
 
   console.info(`[SystemNotification] ✅ Admin Alert Dispatched to ${OFFICIAL_ADMIN_EMAIL} & WhatsApp:`, titleAr);
   return true;
+}
+
+/**
+ * Generate 2FA WhatsApp OTP Details & Instant Link
+ */
+export function create2FAWhatsAppDetails(otpCode: string, targetNumber: string = TARGET_WHATSAPP_NUMBER): {
+  targetPhone: string;
+  whatsappUrl: string;
+  whatsappMessage: string;
+} {
+  const cleanPhone = targetNumber.replace(/[^0-9]/g, '');
+  const whatsappMessage = [
+    `*🔐 JurisTech Solutions — رمز المصادقة الثنائية (2FA OTP)*`,
+    `━━━━━━━━━━━━━━━━━━━`,
+    `رمز التحقق الخاص بك لتسجيل الدخول للإدارة العليا هو:`,
+    `👉 *${otpCode}* 👈`,
+    ``,
+    `⏱️ *الصلاحية:* 5 دقائق فقط`,
+    `🔒 *حساب الإدارة:* drzyogo.ca@gmail.com`,
+    `🛡️ *بوابة الدخول:* https://www.juristech.solutions/admin`,
+    `━━━━━━━━━━━━━━━━━━━`,
+  ].join('\n');
+
+  const whatsappUrl = `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(whatsappMessage)}`;
+
+  return {
+    targetPhone: targetNumber,
+    whatsappUrl,
+    whatsappMessage,
+  };
 }
 
 // Backward compatibility aliases for legacy call sites

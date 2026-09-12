@@ -3,6 +3,7 @@ import { solveLegalPrompt } from '../services/engine-ai/legalIntelligenceEngine'
 import { executeWithConcurrencyQueue } from './concurrencyManager';
 import { findFastSemanticMatch, recordAndLearnQuery } from './aiSelfLearningEngine';
 import { getSystemContextForLanguage } from './languageHelper';
+import { supabase } from './supabaseClient';
 
 
 const SUPABASE_URL = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_URL) || '';
@@ -52,6 +53,17 @@ export async function callAIWithHistory(
   return executeWithConcurrencyQueue(executionKey, async () => {
     const lang = (forceLang as SupportedLanguage) || detectPromptLanguage(lastUserMsg);
 
+    // Resolve Authorization Bearer token from active Supabase session
+    let authHeaders: Record<string, string> = {};
+    try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      if (sessionData?.session?.access_token) {
+        authHeaders['Authorization'] = `Bearer ${sessionData.session.access_token}`;
+      }
+    } catch {
+      // Unauthenticated session
+    }
+
     // ── Tier 1: Serverless Edge API Endpoint (/api/chat) with 9s Timeout
     try {
       const controller = new AbortController();
@@ -59,7 +71,7 @@ export async function callAIWithHistory(
 
       const res = await fetch('/api/chat', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Language': lang },
+        headers: { 'Content-Type': 'application/json', 'X-Language': lang, ...authHeaders },
         body: JSON.stringify({
           message: lastUserMsg,
           prompt: lastUserMsg,
@@ -72,6 +84,14 @@ export async function callAIWithHistory(
       });
       clearTimeout(timeout);
 
+      if (res.status === 429) {
+        const errData = await res.json().catch(() => ({}));
+        const err = new Error(errData.message || 'Daily AI query limit reached (5/5).');
+        (err as any).code = 'QUOTA_EXCEEDED';
+        (err as any).status = 429;
+        throw err;
+      }
+
       if (res.ok) {
         const data = await res.json();
         const output = (data.reply || data.result || data.response || '').trim();
@@ -82,6 +102,9 @@ export async function callAIWithHistory(
         }
       }
     } catch (e: any) {
+      if (e?.code === 'QUOTA_EXCEEDED' || e?.status === 429) {
+        throw e;
+      }
       // Fast fallback to direct API
     }
 
@@ -92,7 +115,7 @@ export async function callAIWithHistory(
 
       const res = await fetch('/api/ai', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Language': lang },
+        headers: { 'Content-Type': 'application/json', 'X-Language': lang, ...authHeaders },
         body: JSON.stringify({
           prompt: lastUserMsg,
           message: lastUserMsg,
@@ -104,6 +127,14 @@ export async function callAIWithHistory(
       });
       clearTimeout(timeout);
 
+      if (res.status === 429) {
+        const errData = await res.json().catch(() => ({}));
+        const err = new Error(errData.message || 'Daily AI query limit reached (5/5).');
+        (err as any).code = 'QUOTA_EXCEEDED';
+        (err as any).status = 429;
+        throw err;
+      }
+
       if (res.ok) {
         const data = await res.json();
         const output = (data.reply || data.result || data.response || '').trim();
@@ -113,7 +144,10 @@ export async function callAIWithHistory(
           return output;
         }
       }
-    } catch (tier2Err) {
+    } catch (tier2Err: any) {
+      if (tier2Err?.code === 'QUOTA_EXCEEDED' || tier2Err?.status === 429) {
+        throw tier2Err;
+      }
       // Fallback to Tier 3
     }
 
@@ -183,9 +217,9 @@ function synthesizeDynamicLegalResponse(prompt: string, lang: SupportedLanguage,
                      fullContext.includes('.docx') ||
                      fullContext.includes('check it') ||
                      fullContext.includes('reports') ||
-                     fullContext.includes('تدقيق') ||
-                     fullContext.includes('فحص') ||
-                     (prompt.includes('عقد') && prompt.length < 150);
+                     fullContext.includes('تقرير تدقيق') ||
+                     fullContext.includes('فحص مستند') ||
+                     fullContext.includes('تدقيق العقد المرفق');
 
   if (isDocAudit) {
     const filenameMatch = fullContext.match(/\[ATTACHED CONTRACT DOCUMENT:\s*"([^"]+)"\]/i) ||
@@ -281,7 +315,7 @@ Please type your legal inquiry or attach a document for instant statutory analys
   }
 
   // 1. Specialized Multi-Turn Contract Generation & Legal Solver
-  const isSpecializedContract = /(car|vehicle|auto|motor|سيارة|مركب|شاحنة|موتوسيكل|عربيه|عربية|مبايعة|nda|non-disclosure|confidential|سرية|عدم إفصاح|عدم افصاح|حفظ السرية|employment|job|employee|labor|عمل|توظيف|موظف|عقد عمل|rent|lease|tenant|landlord|apartment|property|إيجار|ايجار|عقار|شقة|فيلا|أرض|محل|مكتب|توريد|شراء بضاعة|supply|مورد|برمجة|تطبيق|موقع|software|سورس كود|شراكة|تأسيس شركة|partnership|قرض|سلف|دين|loan|إقرار دين|اقرار دين|تعديل|عدل|غير|اضف|أضف|شرط جزائي|غرامة|توثيق|شهر عقاري|تسجيل|مرور|نقل ملكية)/i.test(p);
+  const isSpecializedContract = /(car|vehicle|auto|motor|سيارة|مركب|شاحنة|موتوسيكل|عربيه|عربية|مبايعة|nda|non-disclosure|confidential|سرية|عدم إفصاح|عدم افصاح|حفظ السرية|employment|job|employee|labor|عمل|توظيف|موظف|عقد عمل|rent|lease|tenant|landlord|apartment|property|إيجار|ايجار|عقار|شقة|فيلا|أرض|محل|مكتب|توريد|شراء بضاعة|supply|مورد|برمجة|تطبيق|موقع|software|سورس كود|شراكة|تأسيس شركة|partnership|قرض|سلف|دين|loan|إقرار دين|اقرار دين|power of attorney|poa|agency|wakala|mandate|وكالة|توكيل|تفويض|وكالة عامة|وكالة خاصة|تعديل|عدل|غير|اضف|أضف|شرط جزائي|غرامة|توثيق|شهر عقاري|تسجيل|مرور|نقل ملكية)/i.test(p);
   if (isSpecializedContract) {
     return solveLegalPrompt(prompt, lang);
   }

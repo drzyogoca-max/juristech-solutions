@@ -18,15 +18,16 @@ import {
 } from 'lucide-react';
 import SEO from '../components/SEO';
 
+import { usePlatformLocale } from '../lib/universalTranslator';
+
 export default function AboutUsPage() {
-  const { i18n } = useTranslation();
-  const isRtl = i18n.language === 'ar';
+  const { l, isRtl } = usePlatformLocale();
 
   return (
     <main dir={isRtl ? 'rtl' : 'ltr'} className="min-h-screen bg-slate-950 text-white selection:bg-cyan-500 selection:text-slate-950 py-12 px-4 sm:px-6 lg:px-8">
       <SEO
-        title={isRtl ? 'من نحن | JurisTech Solutions — الكيان التقني المستقل' : 'About Us | JurisTech Solutions — Independent AI Tech Entity'}
-        description={isRtl ? 'تعرف على الكيان التقني المستقل JurisTech Solutions، المقر القانوني في عمّان، ونظام حوكمة الذكاء الاصطناعي العقدي.' : 'Learn about JurisTech Solutions, the sovereign independent AI Legal platform headquartered in Amman, Jordan.'}
+        title={l('من نحن | JurisTech Solutions — الكيان التقني المستقل', 'About Us | JurisTech Solutions — Independent AI Tech Entity')}
+        description={l('تعرف على الكيان التقني المستقل JurisTech Solutions، هندسة الذكاء الاصطناعي القانوني، ونظام حوكمة العقود.', 'Learn about JurisTech Solutions, the sovereign independent AI Legal SaaS engineering platform.')}
       />
 
       <div className="max-w-6xl mx-auto space-y-12">
@@ -34,19 +35,16 @@ export default function AboutUsPage() {
         <div className="text-center space-y-4">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-mono font-bold tracking-wider uppercase">
             <Building2 className="w-4 h-4" />
-            <span>{isRtl ? 'الكيان التقني المستقل للمنظومة' : 'Sovereign Technical Entity'}</span>
+            <span>{l('الكيان التقني المستقل للمنظومة', 'Sovereign Technical Entity')}</span>
           </div>
           <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-white">
-            {isRtl ? (
-              <>عن المنصة: <span className="text-cyan-400">JurisTech Solutions</span></>
-            ) : (
-              <>About <span className="text-cyan-400">JurisTech Solutions</span></>
-            )}
+            {l('عن المنصة:', 'About')} <span className="text-cyan-400">JurisTech Solutions</span>
           </h1>
           <p className="text-slate-400 text-sm sm:text-base max-w-3xl mx-auto leading-relaxed">
-            {isRtl
-              ? 'المنصة العالمية المستقلة للذكاء الاصطناعي العقدي والتدقيق التشريعي المحمي بالكامل تحت القوانين الأردنية والدولية.'
-              : 'The global sovereign AI Legal Intelligence platform providing autonomous contract generation and legislative risk auditing.'}
+            {l(
+              'المنصة العالمية المستقلة للذكاء الاصطناعي العقدي والتدقيق التشريعي المصممة للأنظمة العربية والدولية.',
+              'The global sovereign AI Legal Intelligence platform providing autonomous contract generation and legislative risk auditing.'
+            )}
           </p>
         </div>
 
@@ -59,15 +57,18 @@ export default function AboutUsPage() {
               </div>
               <div>
                 <h2 className="text-xl font-extrabold text-white">
-                  {isRtl ? 'المقر الرئيسي والعلامة التجارية المسجلة' : 'Global Headquarters & Registered Trademark'}
+                  {l('الكيان التقني والهندسة السحابية الدولية', 'Global Cloud Engineering & SaaS Architecture')}
                 </h2>
-                <span className="text-xs text-cyan-400 font-mono">
-                  {isRtl ? 'المملكة الأردنية الهاشمية — عمّان' : 'Amman, Hashemite Kingdom of Jordan'}
+                <span className="text-xs text-cyan-400 font-mono block">
+                  {l('منصة برمجيات قانونية سحابية مستقلة (Legal Tech SaaS)', 'Independent Cloud Legal Technology SaaS Platform')}
+                </span>
+                <span className="text-xs text-emerald-400 font-mono block mt-1">
+                  ● {l('منصة رقمية عالمية — تعمل عن بعد', 'Global Digital Platform — Operated remotely')}
                 </span>
               </div>
             </div>
-            <span className="px-4 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs font-bold font-mono">
-              ● FULLY REGISTERED & PROTECTED
+            <span className="px-4 py-1.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 text-xs font-bold font-mono">
+              ● SOVEREIGN AI LEGAL TECH SAAS
             </span>
           </div>
 
@@ -109,18 +110,18 @@ export default function AboutUsPage() {
                 {isRtl ? 'القيادة الاستراتيجية والعمادة الفنية' : 'Strategic Leadership & Advisory Board'}
               </h2>
               <p className="text-xs text-purple-400 font-mono font-bold">
-                {isRtl ? 'د. محمد مصطفى — مستشار استراتيجي وحاصل على دكتوراه في إدارة المخاطر' : 'Dr. Mohammad Mustafa — Strategic Advisor & PhD in Risk Management'}
+                {isRtl ? 'د. محمد مصطفى — المؤسس ورئيس مجلس الإدارة (دكتوراه في إدارة المخاطر)' : 'Dr. Mohammad Mustafa — Founder & Chairman (PhD in Risk Management)'}
               </p>
             </div>
           </div>
           <p className="text-xs text-slate-300 leading-relaxed">
             {isRtl
-              ? 'تخضع منصة JurisTech Solutions للإشراف الاستراتيجي والعمادة الفنية برئاسة د. محمد مصطفى، لضمان تطبيق أعلى معايير الحوكمة وإدارة المخاطر التشريعية والامتثال للمتطلبات الإقليمية والدولية.'
-              : 'JurisTech Solutions is strategically advised by Dr. Mohammad Mustafa (PhD in Risk Management), ensuring top-tier governance, statutory compliance, and enterprise risk mitigation.'}
+              ? 'تخضع منصة JurisTech Solutions للإشراف الاستراتيجي والعمادة الفنية برئاسة د. محمد مصطفى (المؤسس ورئيس مجلس الإدارة)، لضمان تطبيق أعلى معايير الحوكمة والتحليل التقني وإدارة المخاطر التشريعية كمنصة برمجيات قانونية (LegalTech SaaS).'
+              : 'JurisTech Solutions is strategically led by Dr. Mohammad Mustafa (Founder & Chairman, PhD in Risk Management), ensuring high standards of technical governance, automated risk analysis, and SaaS compliance.'}
           </p>
           <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 pt-1">
             <Mail className="w-4 h-4" />
-            <span>Drzyogo.ca@gmail.com</span>
+            <span>founder@juristech.solutions</span>
           </div>
         </div>
 
