@@ -177,9 +177,9 @@ class AIAnalyticsEngine {
       requestsByFeature: initialFeatureMap,
       requestsByTier: initialTierMap,
       requestsByJurisdiction: jurMap,
-      averageConfidence: confidenceCount > 0 ? Number((confidenceSum / confidenceCount).toFixed(2)) : 0.94,
+      averageConfidence: confidenceCount > 0 ? Number((confidenceSum / confidenceCount).toFixed(2)) : 0,
       humanReviewFlaggedCount: reviewCount,
-      averageLatencyMs: latencyCount > 0 ? Math.round(latencySum / latencyCount) : 380,
+      averageLatencyMs: latencyCount > 0 ? Math.round(latencySum / latencyCount) : 0,
       errorRate: Number((errorCount / total).toFixed(3)),
     };
   }

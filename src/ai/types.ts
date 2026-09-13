@@ -46,7 +46,7 @@ export interface LegalAdvisorResponse {
   recommendedActions: string[];
   sources: Citation[];
   confidenceScore: number;
-  confidenceCalculation?: 'heuristic';
+  confidenceCalculation?: 'heuristic' | 'evidence_based' | 'retrieval_evidence_score' | 'citation_relevance_average';
   sourceVerificationStatus: SourceVerificationStatus;
   groundingStatus?: GroundingStatus;
   hallucinationGuardTriggered: boolean;
@@ -139,7 +139,7 @@ export interface StructuredContractReport {
   jurisdictionSafetyStatus: 'RESOLVED' | 'JURISDICTION_REQUIRED';
   citations: Citation[];
   confidenceScore: number;
-  confidenceCalculation: 'heuristic';
+  confidenceCalculation: 'heuristic' | 'evidence_based' | 'retrieval_evidence_score' | 'citation_relevance_average';
   sourceVerificationStatus: SourceVerificationStatus;
   groundingStatus: GroundingStatus;
   lang: SupportedAILang;
@@ -220,7 +220,7 @@ export interface ComplianceAssessmentResult {
   recommendedActions: string[];
   verifiedSources: Citation[];
   confidenceScore: number;
-  confidenceCalculation: 'heuristic';
+  confidenceCalculation: 'heuristic' | 'evidence_based' | 'retrieval_evidence_score' | 'citation_relevance_average';
   sourceVerificationStatus: SourceVerificationStatus;
   groundingStatus: GroundingStatus;
   jurisdictionSafetyStatus: 'RESOLVED' | 'JURISDICTION_REQUIRED';
@@ -282,7 +282,7 @@ export interface StructuredDocumentAnalysis {
   jurisdiction: JurisdictionCode;
   citations: Citation[];
   confidenceScore: number;
-  confidenceCalculation: 'heuristic';
+  confidenceCalculation: 'heuristic' | 'evidence_based' | 'retrieval_evidence_score' | 'citation_relevance_average';
   sourceVerificationStatus: SourceVerificationStatus;
   lang: SupportedAILang;
   isRtl: boolean;
@@ -322,7 +322,7 @@ export interface EnterpriseExecutionResult {
   specialistResult: any;
   verifiedCitations: Citation[];
   confidenceScore: number;
-  confidenceCalculation: 'heuristic';
+  confidenceCalculation: 'heuristic' | 'evidence_based' | 'retrieval_evidence_score' | 'citation_relevance_average';
   sourceVerificationStatus: SourceVerificationStatus;
   requiresHumanReview: boolean;
   jurisdiction: JurisdictionCode;
@@ -357,7 +357,7 @@ export interface GeneratedLegalDocument {
   citations: Citation[];
   sourceVerificationStatus: SourceVerificationStatus;
   confidenceScore: number;
-  confidenceCalculation: 'heuristic';
+  confidenceCalculation: 'heuristic' | 'evidence_based' | 'retrieval_evidence_score' | 'citation_relevance_average';
   metadata: {
     generatedAt: string;
     language: SupportedAILang;

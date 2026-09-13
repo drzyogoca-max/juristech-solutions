@@ -94,10 +94,10 @@ export async function executeLegalQuery(
   const applicableStatutes = dedupedSources.map(s => s.statute);
 
   // 5. Calculate Confidence Score based on top retrieved sources
-  let confidenceScore = 0.65;
+  let confidenceScore = 0;
   if (dedupedSources.length > 0) {
     const topScore = dedupedSources[0].finalScore;
-    confidenceScore = Math.min(0.98, Math.max(0.70, topScore));
+    confidenceScore = Math.max(0, Math.min(1, topScore));
   }
 
   // 6. Synthesize Structured Response Sections

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * src/ai/agents/legalResearchAgent.ts
  * ─────────────────────────────────────────────────────────────────────────────
  * JurisTech Solutions — Legal Research Agent (Facade Layer)
@@ -36,7 +36,7 @@ export interface LegalResearchResult {
   jurisdiction: JurisdictionCode;
   domain: LegalDomain;
   confidenceScore: number;
-  confidenceCalculation: 'heuristic';
+  confidenceCalculation: 'evidence_based';
   sourceVerificationStatus: SourceVerificationStatus;
   groundingStatus: GroundingStatus;
   jurisdictionSafetyStatus: 'RESOLVED' | 'JURISDICTION_REQUIRED';
@@ -71,7 +71,7 @@ export class LegalResearchAgent {
 
     // Hard jurisdiction firewall: never synthesize from a different jurisdiction.
     if (options.forceJurisdiction && detectedJur !== 'UNKNOWN' && detectedJur !== options.forceJurisdiction) {
-      return { statutes: [], citations: [], jurisdiction: options.forceJurisdiction, domain, confidenceScore: 0.2, confidenceCalculation: 'heuristic', sourceVerificationStatus: 'SOURCE_NOT_VERIFIED', groundingStatus: 'REQUIRES_VERIFICATION', jurisdictionSafetyStatus: 'JURISDICTION_REQUIRED', clarificationRequired: true, clarificationPrompt: isAr ? 'يوجد تعارض بين الاختصاص المحدد ونص الطلب. يرجى تأكيد الدولة أو الاختصاص القضائي قبل الصياغة.' : 'The selected jurisdiction conflicts with the jurisdiction stated in the request. Please confirm the governing jurisdiction before drafting.' };
+      return { statutes: [], citations: [], jurisdiction: options.forceJurisdiction, domain, confidenceScore: 0.2, confidenceCalculation: 'evidence_based', sourceVerificationStatus: 'SOURCE_NOT_VERIFIED', groundingStatus: 'REQUIRES_VERIFICATION', jurisdictionSafetyStatus: 'JURISDICTION_REQUIRED', clarificationRequired: true, clarificationPrompt: isAr ? 'يوجد تعارض بين الاختصاص المحدد ونص الطلب. يرجى تأكيد الدولة أو الاختصاص القضائي قبل الصياغة.' : 'The selected jurisdiction conflicts with the jurisdiction stated in the request. Please confirm the governing jurisdiction before drafting.' };
     }
     // 2. Jurisdiction Safety Check (Task 2-E)
     if (jurisdiction === 'UNKNOWN' && !query.toLowerCase().includes('international') && query.split(' ').length > 7) {
@@ -85,7 +85,7 @@ export class LegalResearchAgent {
         jurisdiction: 'UNKNOWN',
         domain,
         confidenceScore: 0.4,
-        confidenceCalculation: 'heuristic',
+        confidenceCalculation: 'evidence_based',
         sourceVerificationStatus: 'SOURCE_NOT_VERIFIED',
         groundingStatus: 'REQUIRES_VERIFICATION',
         jurisdictionSafetyStatus: 'JURISDICTION_REQUIRED',
@@ -120,14 +120,14 @@ export class LegalResearchAgent {
     if (citations.length === 0) {
       sourceVerificationStatus = 'SOURCE_NOT_VERIFIED';
       groundingStatus = 'UNGROUNDED';
-      confidenceScore = 0.35;
+      confidenceScore = 0;
     } else if (citations.length === 1 && citations[0].relevanceScore < 0.4) {
       sourceVerificationStatus = 'PARTIAL';
       groundingStatus = 'REQUIRES_VERIFICATION';
-      confidenceScore = 0.65;
+      confidenceScore = Math.max(0, Math.min(1, citations[0].relevanceScore));
     } else {
-      const topScore = ranked[0]?.finalScore || 0.85;
-      confidenceScore = Math.min(0.96, Math.max(0.70, topScore));
+      const topScore = ranked[0]?.finalScore ?? 0;
+      confidenceScore = Math.max(0, Math.min(1, topScore));
     }
 
     return {
@@ -136,7 +136,7 @@ export class LegalResearchAgent {
       jurisdiction,
       domain,
       confidenceScore,
-      confidenceCalculation: 'heuristic',
+      confidenceCalculation: 'evidence_based',
       sourceVerificationStatus,
       groundingStatus,
       jurisdictionSafetyStatus: 'RESOLVED',

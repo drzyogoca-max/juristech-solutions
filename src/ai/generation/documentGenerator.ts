@@ -130,9 +130,9 @@ export class DocumentGenerator {
         content,
         sections: poaSections,
         placeholders, citations, sourceVerificationStatus,
-        confidenceScore: citations.length ? 0.85 : 0.35,
-        confidenceCalculation: 'heuristic',
-        metadata: { generatedAt: nowIso, language: lang, jurisdiction, documentType: templateType, sourceVerificationStatus, confidence: citations.length ? 0.85 : 0.35, requiresHumanReview: true, version: '1.1-poa-library' },
+        confidenceScore: citations.length ? Math.max(0, Math.min(1, citations.reduce((sum, c) => sum + c.relevanceScore, 0) / citations.length)) : 0,
+        confidenceCalculation: 'citation_relevance_average',
+        metadata: { generatedAt: nowIso, language: lang, jurisdiction, documentType: templateType, sourceVerificationStatus, confidence: citations.length ? Math.max(0, Math.min(1, citations.reduce((sum, c) => sum + c.relevanceScore, 0) / citations.length)) : 0, requiresHumanReview: true, version: '1.1-poa-library' },
         lang, isRtl
       };
     }
@@ -170,15 +170,15 @@ export class DocumentGenerator {
       placeholders,
       citations,
       sourceVerificationStatus,
-      confidenceScore: sourceVerificationStatus === 'VERIFIED' ? 0.94 : 0.65,
-      confidenceCalculation: 'heuristic',
+      confidenceScore: citations.length ? Math.max(0, Math.min(1, citations.reduce((sum, c) => sum + c.relevanceScore, 0) / citations.length)) : 0,
+      confidenceCalculation: 'citation_relevance_average',
       metadata: {
         generatedAt: nowIso,
         language: lang,
         jurisdiction,
         documentType: templateType,
         sourceVerificationStatus,
-        confidence: sourceVerificationStatus === 'VERIFIED' ? 0.94 : 0.65,
+        confidence: citations.length ? Math.max(0, Math.min(1, citations.reduce((sum, c) => sum + c.relevanceScore, 0) / citations.length)) : 0,
         requiresHumanReview: true, // Safety rule: always true
         version: '1.0-draft',
       },
@@ -392,7 +392,7 @@ export class DocumentGenerator {
       citations: [],
       sourceVerificationStatus: 'INSUFFICIENT',
       confidenceScore: 0.0,
-      confidenceCalculation: 'heuristic',
+      confidenceCalculation: 'citation_relevance_average',
       metadata: {
         generatedAt: new Date().toISOString(),
         language: lang,
