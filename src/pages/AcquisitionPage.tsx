@@ -89,7 +89,7 @@ export default function AcquisitionPage() {
       // Simulate/call RAG compiler for premium Term Sheet
       const content = `================================================================================
                     JURISTECH SOLUTIONS — M&A ACQUISITION TERM SHEET
-                      [CRYPTOGRAPHICALLY SEALED — SHA-256 VERIFIED]
+                      [DRAFT — HUMAN REVIEW REQUIRED]
 ================================================================================
 DATE: ${new Date().toLocaleDateString()}
 GOVERNING JURISDICTION: ${formData.jurisdiction.toUpperCase()} (${formData.governingLaw})
@@ -116,9 +116,9 @@ GOVERNING JURISDICTION: ${formData.jurisdiction.toUpperCase()} (${formData.gover
 - Acquirer Representative Signature: ______________________
 - Target Representative Signature: ______________________
 
-[OFFICIAL DIGITAL CERTIFICATE OF AUTHENTICITY]
-SHA-256: ${Math.random().toString(36).substring(2, 10).toUpperCase()}${Date.now().toString(16).toUpperCase()}
-Securely logged into the JurisTech Sovereign M&A Registry.
+[DRAFT VERIFICATION NOTE — NOT A CERTIFICATE]
+Document reference: ${Date.now().toString(36).toUpperCase()}
+Draft generated locally; no external registry or certification is asserted.
 ================================================================================`;
 
       setGeneratedSheet(content);
