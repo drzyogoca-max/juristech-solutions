@@ -159,15 +159,16 @@ export default function Navbar() {
         dir={isRtl ? 'rtl' : 'ltr'}
         className={`sticky top-0 z-40 transition-all duration-300 ${
           scrolled
-            ? 'bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/80 shadow-lg shadow-slate-950/50'
-            : 'bg-slate-900/98 backdrop-blur-md border-b border-slate-200 dark:border-slate-800'
+            ? 'bg-[#0a0b14]/95 backdrop-blur-2xl border-b border-brand-500/20 shadow-nav'
+            : 'bg-[#0a0b14]/90 backdrop-blur-xl border-b border-white/5'
         }`}
+        style={scrolled ? { boxShadow: '0 4px 30px -4px rgba(0,0,0,0.6), 0 1px 0 rgba(99,102,241,0.15)' } : {}}
       >
         <div className="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between gap-3 h-14">
 
           {/* ── Brand ─────────────────────────────────────────────────────── */}
           <Link to="/dashboard" className="flex items-center gap-2.5 group shrink-0" aria-label="JurisTech Solutions Home">
-            <div className="p-1 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-indigo-500/10 border border-cyan-500/30 text-cyan-400 group-hover:scale-105 transition-transform shadow-lg shadow-cyan-500/10">
+            <div className="p-1 rounded-2xl bg-gradient-to-br from-brand-500/25 to-cyan-500/15 border border-brand-500/35 text-brand-400 group-hover:scale-105 transition-transform shadow-brand-sm">
               <img src="/logo.webp" alt="JurisTech Solutions Logo" width={32} height={32} loading="eager" decoding="async" fetchPriority="high" className="w-8 h-8 rounded-xl object-cover" />
 
 

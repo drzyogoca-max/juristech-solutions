@@ -290,11 +290,11 @@ function MainAppContent() {
       <div
         dir={isRtl ? 'rtl' : 'ltr'}
         lang={lang}
-        className="min-h-screen bg-slate-950 text-white font-sans selection:bg-cyan-500 selection:text-slate-950 flex flex-col justify-between w-full max-w-full overflow-x-hidden transition-all"
+        className="min-h-screen bg-[#0a0b14] text-white font-sans selection:bg-brand-500 selection:text-white flex flex-col justify-between w-full max-w-full overflow-x-hidden transition-all"
+        style={{ backgroundImage: 'radial-gradient(ellipse at 15% 10%, rgba(99,102,241,0.10) 0%, transparent 45%), radial-gradient(ellipse at 85% 80%, rgba(6,182,212,0.07) 0%, transparent 45%)' }}
       >
         <div className="w-full max-w-full overflow-x-hidden">
           <Navbar />
-
 
         <main className="flex-1 min-h-[calc(100vh-80px)] w-full flex flex-col">
           <Suspense fallback={<RouteFallback />}>
