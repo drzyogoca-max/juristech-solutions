@@ -282,7 +282,8 @@ function MainAppContent() {
           <Suspense fallback={<RouteFallback />}>
             <Routes>
               {/* Common Single-Source-of-Truth Route Definitions */}
-              {[ '', '/:locale' ].map((prefix) => (
+              {/* Use explicit locale codes to prevent invalid segments from matching */}
+              {[ '', '/:locale(en|ar|fr|es|de|tr|zh)' ].map((prefix) => (
                 <Fragment key={prefix || 'root'}>
                   <Route path={`${prefix}/`} element={<Navigate to={`${prefix ? prefix + '/dashboard' : '/dashboard'}`} replace />} />
                   <Route path={`${prefix}/dashboard`} element={<Dashboard />} />

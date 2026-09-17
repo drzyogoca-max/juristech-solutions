@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" class="dark">
+<html lang="en" dir="ltr" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
@@ -45,12 +45,23 @@
       (function() {
         try {
           var validLangs = ['ar', 'en', 'fr', 'es', 'de', 'tr', 'zh'];
-          var stored = localStorage.getItem('i18nextLng') || localStorage.getItem('app_locale');
-          var lang = 'ar';
+          // Check all storage keys in priority order
+          var stored = localStorage.getItem('juristech.locale')
+            || localStorage.getItem('i18nextLng')
+            || localStorage.getItem('locale')
+            || localStorage.getItem('app_locale');
+          var lang = null;
           if (stored) {
             var s = stored.toLowerCase().slice(0, 2);
             if (validLangs.indexOf(s) !== -1) lang = s;
           }
+          // For first-time visitors: detect from browser language
+          if (!lang) {
+            var browserLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase().slice(0, 2);
+            if (validLangs.indexOf(browserLang) !== -1) lang = browserLang;
+          }
+          // Final fallback: English
+          if (!lang) lang = 'en';
           document.documentElement.lang = lang;
           document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
         } catch(e) {}
@@ -60,9 +71,9 @@
 
 
 
-    <!-- Preconnect & Asynchronous Non-Blocking Fonts for Low FCP & Zero CLS -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Asynchronous Non-Blocking Fonts for Low FCP & Zero CLS -->
+    <!-- Note: preconnects are declared above in the DNS pre-fetching section -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'" />
     <noscript>
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" />

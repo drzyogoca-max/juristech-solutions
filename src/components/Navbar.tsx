@@ -69,7 +69,7 @@ const TOP_NAV = [
 ];
 
 export default function Navbar() {
-  const { l, isRtl, gt, t, i18n } = usePlatformLocale();
+  const { l, l7, isRtl, gt, t, i18n } = usePlatformLocale();
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { isAdmin, user, signOut } = useAuth();
@@ -167,14 +167,24 @@ export default function Navbar() {
             <div className="hidden sm:block">
               <div className="flex items-center gap-1.5">
                 <span className="text-base font-black text-slate-900 dark:text-white group-hover:text-cyan-400 transition-colors tracking-tight leading-none block">
-                  JurisTech Solutions {isRtl ? <span className="text-cyan-400">| حلول جوريس تك</span> : <span className="text-cyan-400">| Sovereign Legal AI</span>}
+                  JurisTech Solutions <span className="text-cyan-400">
+                    {l7('| حلول جوريس تك', '| Sovereign Legal AI', '| IA Juridique Souveraine', '| IA Legal Soberana', '| Souveräne Rechts-KI', '| Egemen Hukuk AI', '| 主权法律AI')}
+                  </span>
                 </span>
                 <span className="text-[9px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-1.5 py-0.5 rounded-md">
-                  {l('المنصة الموحدة', 'Unified Platform')}
+                  {l7('المنصة الموحدة', 'Unified Platform', 'Plateforme Unifiée', 'Plataforma Unificada', 'Einheitliche Plattform', 'Birleşik Platform', '统一平台')}
                 </span>
               </div>
               <span className="text-[9px] font-sans text-slate-500 dark:text-slate-400 block font-bold tracking-wider uppercase mt-0.5">
-                {l('المنظومة القانونية والذكاء الاصطناعي الشامل', 'Sovereign Legal Intelligence & Contract OS')}
+                {l7(
+                  'المنظومة القانونية والذكاء الاصطناعي الشامل',
+                  'Sovereign Legal Intelligence & Contract OS',
+                  'Intelligence Juridique Souveraine & Contrats OS',
+                  'Inteligencia Legal Soberana & Contratos OS',
+                  'Souveräne Rechtsintelligenz & Vertrags-OS',
+                  'Egemen Hukuki Zeka & Sözleşme OS',
+                  '主权法律智能与合同操作系统'
+                )}
               </span>
             </div>
           </Link>

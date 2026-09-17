@@ -11,7 +11,7 @@ import { useAuth } from '../lib/authContext';
 import { usePlatformLocale } from '../lib/universalTranslator';
 
 export default function MobileBottomNav() {
-  const { l, isRtl } = usePlatformLocale();
+  const { l, t, isRtl } = usePlatformLocale();
   const location = useLocation();
   const { isAdmin, user, signOut } = useAuth();
 
@@ -22,20 +22,20 @@ export default function MobileBottomNav() {
   const currentPath = location.pathname;
 
   const PRIMARY_NAV = [
-    { to: '/dashboard', icon: Home, labelAr: 'الرئيسية', labelEn: 'Home' },
-    { to: '/chat', icon: MessageSquare, labelAr: 'المستشار', labelEn: 'Advisor' },
-    { to: '/contracts', icon: FileText, labelAr: 'العقود AI', labelEn: 'Contracts' },
-    { to: '/risk', icon: AlertTriangle, labelAr: 'المخاطر', labelEn: 'Risk' },
+    { to: '/dashboard', icon: Home, labelAr: 'الرئيسية', labelEn: 'Home', i18nKey: 'Nav.dashboard' },
+    { to: '/chat', icon: MessageSquare, labelAr: 'المستشار', labelEn: 'Advisor', i18nKey: 'Nav.chat' },
+    { to: '/contracts', icon: FileText, labelAr: 'العقود AI', labelEn: 'Contracts', i18nKey: 'Nav.contracts' },
+    { to: '/risk', icon: AlertTriangle, labelAr: 'المخاطر', labelEn: 'Risk', i18nKey: 'Nav.risk' },
   ];
 
   const SECONDARY_SERVICES = [
-    { to: '/vault', icon: Lock, labelAr: 'الخزنة المشفرة (E2EE)', labelEn: 'Encrypted Vault (E2EE)', badge: 'E2EE' },
-    { to: '/payment', icon: CreditCard, labelAr: 'الأسعار والاشتراكات', labelEn: 'Pricing & Plans' },
-    { to: '/video-hub', icon: Video, labelAr: 'مركز الفيديو والإعلانات', labelEn: 'Video Ad Studio', badge: '90s' },
-    { to: '/enterprise-audit', icon: Building2, labelAr: 'التدقيق المؤسسي', labelEn: 'Enterprise Audit' },
-    { to: '/legal-compliance', icon: Scale, labelAr: 'الامتثال القانوني الدولي', labelEn: 'Global Compliance' },
-    { to: '/reports', icon: BarChart3, labelAr: 'التقارير الجنائية الذكية', labelEn: 'Forensic Reports' },
-    { to: '/support', icon: HelpCircle, labelAr: 'المساعدة والدعم المباشر', labelEn: 'Direct Support' },
+    { to: '/vault', icon: Lock, labelAr: 'الخزنة المشفرة (E2EE)', labelEn: 'Encrypted Vault (E2EE)', i18nKey: 'Nav.vault', badge: 'E2EE' },
+    { to: '/payment', icon: CreditCard, labelAr: 'الأسعار والاشتراكات', labelEn: 'Pricing & Plans', i18nKey: 'Nav.payment' },
+    { to: '/video-hub', icon: Video, labelAr: 'مركز الفيديو والإعلانات', labelEn: 'Video Ad Studio', i18nKey: 'Nav.videoHub', badge: '90s' },
+    { to: '/enterprise-audit', icon: Building2, labelAr: 'التدقيق المؤسسي', labelEn: 'Enterprise Audit', i18nKey: 'Nav.enterpriseAudit' },
+    { to: '/legal-compliance', icon: Scale, labelAr: 'الامتثال القانوني الدولي', labelEn: 'Global Compliance', i18nKey: 'Nav.legalCompliance' },
+    { to: '/reports', icon: BarChart3, labelAr: 'التقارير الجنائية الذكية', labelEn: 'Forensic Reports', i18nKey: 'Nav.reports' },
+    { to: '/support', icon: HelpCircle, labelAr: 'المساعدة والدعم المباشر', labelEn: 'Direct Support', i18nKey: 'Nav.support' },
   ];
 
   return (
@@ -67,7 +67,7 @@ export default function MobileBottomNav() {
                   <Icon className="w-5 h-5" />
                 </div>
                 <span className="text-[10px] mt-0.5 tracking-tight font-medium">
-                  {l(item.labelAr, item.labelEn)}
+                  {item.i18nKey ? (t(item.i18nKey, item.labelEn) || l(item.labelAr, item.labelEn)) : l(item.labelAr, item.labelEn)}
                 </span>
               </Link>
             );
