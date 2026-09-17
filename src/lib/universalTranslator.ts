@@ -1771,7 +1771,38 @@ export function loc(arText: string, enText: string, lang?: string): string {
     }
   }
 
-  // 5. Return English fallback if no direct translation exists (never empty)
+  // 6. Scan i18next resource bundles for matching translation by English value
+  try {
+    if (allI18nResources && allI18nResources[targetLang]) {
+      const langBundle = allI18nResources[targetLang];
+      const searchValue = (enText || '').trim();
+      if (searchValue) {
+        for (const ns of Object.keys(langBundle)) {
+          const nsBundle = (langBundle as any)[ns];
+          if (nsBundle && typeof nsBundle === 'object') {
+            // Find a key in the AR bundle whose EN counterpart matches enText
+            const arBundle = allI18nResources.ar?.[ns as keyof typeof allI18nResources.ar];
+            const enBundle = allI18nResources.en?.[ns as keyof typeof allI18nResources.en];
+            if (enBundle && typeof enBundle === 'object') {
+              for (const key of Object.keys(enBundle)) {
+                const enVal = (enBundle as any)[key];
+                if (typeof enVal === 'string' && enVal.trim().toLowerCase() === searchValue.toLowerCase()) {
+                  const targetVal = (nsBundle as any)[key];
+                  if (typeof targetVal === 'string' && targetVal) {
+                    return targetVal;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  } catch {
+    // Silently ignore scan errors
+  }
+
+  // 7. Return English fallback if no direct translation exists (never empty)
   return enText || arText || '';
 }
 
@@ -1832,8 +1863,45 @@ export function usePlatformLocale() {
   const isRtl = localeCtx ? localeCtx.isRtl : currentLang === 'ar';
   const gt = GLOBAL_TRANSLATIONS[currentLang] || GLOBAL_TRANSLATIONS.en;
 
+  /**
+   * l() — Bilingual shorthand that now supports ALL 7 languages.
+   * For Arabic: returns arText directly.
+   * For English: returns enText directly.
+   * For fr/es/de/tr/zh: looks up via loc() DICTIONARY + REVERSE_GLOBAL_MAP.
+   * Falls back to enText if no translation found.
+   */
   const l = (arText: string, enText: string): string => {
-    return loc(arText, enText, currentLang);
+    if (currentLang === 'ar') return arText || enText || '';
+    if (currentLang === 'en') return enText || arText || '';
+    // For other languages, try loc() which uses DICTIONARY + REVERSE_GLOBAL_MAP
+    const resolved = loc(arText, enText, currentLang);
+    // If loc() returned English (fallback), return it; it means no translation exists yet
+    return resolved;
+  };
+
+  /**
+   * l7() — Full 7-language variant. Use when you want to supply all language strings directly.
+   * Falls back to enText if the specific language string is not provided.
+   */
+  const l7 = (
+    arText: string,
+    enText: string,
+    frText?: string,
+    esText?: string,
+    deText?: string,
+    trText?: string,
+    zhText?: string
+  ): string => {
+    switch (currentLang) {
+      case 'ar': return arText || enText || '';
+      case 'en': return enText || arText || '';
+      case 'fr': return frText || enText || '';
+      case 'es': return esText || enText || '';
+      case 'de': return deText || enText || '';
+      case 'tr': return trText || enText || '';
+      case 'zh': return zhText || enText || '';
+      default:   return enText || arText || '';
+    }
   };
 
   const lArray = (arArr: string[], enArr: string[]): string[] => {
@@ -1870,6 +1938,7 @@ export function usePlatformLocale() {
     isRtl,
     gt,
     l,
+    l7,
     lArray,
     formatNum,
     formatCurr,
