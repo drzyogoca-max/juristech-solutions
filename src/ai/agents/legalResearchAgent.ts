@@ -65,8 +65,8 @@ export class LegalResearchAgent {
     const isAr = lang === 'ar';
 
     // 1. Jurisdiction & Domain Resolution
-    const detectedJur = detectJurisdictionFromQuery(query);
-    const jurisdiction = options.forceJurisdiction || detectedJur;
+    const detectedJur: JurisdictionCode = detectJurisdictionFromQuery(query) as JurisdictionCode;
+    const jurisdiction: JurisdictionCode = options.forceJurisdiction || detectedJur;
     const domain = options.forceDomain || detectLegalDomain(query);
 
     // Hard jurisdiction firewall: never synthesize from a different jurisdiction.
