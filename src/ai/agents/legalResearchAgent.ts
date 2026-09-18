@@ -97,13 +97,13 @@ export class LegalResearchAgent {
     // 3. Contextual Search over existing Knowledge Base
     const searchResults = semanticSearch(query, {
       lang,
-      jurisdiction: jurisdiction !== 'UNKNOWN' ? jurisdiction : undefined,
+      jurisdiction,
       domain: domain !== 'general' ? domain : undefined,
       topK: options.topK || 5,
     });
 
     // 4. Source Ranking & Deduplication (Task 2-C)
-    const ranked = deduplicateSources(rankSources(searchResults, jurisdiction, domain)).filter(result => jurisdiction === 'UNKNOWN' || result.statute.jurisdictionCode === jurisdiction);
+    const ranked = deduplicateSources(rankSources(searchResults, jurisdiction, domain)).filter(result => result.statute.jurisdictionCode === jurisdiction);
 
     // 5. Citation Generation (Task 2-D)
     const citations = buildCitations(ranked);
