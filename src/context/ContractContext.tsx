@@ -55,35 +55,18 @@ const ContractContext = createContext<ContractContextType | undefined>(undefined
 const LOCAL_STORAGE_KEY = 'juristech_global_contract_state';
 
 export function ContractProvider({ children }: { children: ReactNode }) {
-  const [contractState, setContractState] = useState<ContractState>(() => {
-    try {
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem(LOCAL_STORAGE_KEY);
-        const saved = sessionStorage.getItem(LOCAL_STORAGE_KEY);
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          if (parsed.extractedText) {
-            parsed.extractedText = sanitizeText(parsed.extractedText);
-          }
-          return parsed;
-        }
-      }
-    } catch (e) {
-      console.warn('Failed to load contract state from session:', e);
-    }
-    return DEFAULT_STATE;
-  });
+  // Legal documents are request-scoped and are never restored from prior browser tasks.
+  // Keep active document state in React so unrelated historical contracts cannot reappear.
+  const [contractState, setContractState] = useState<ContractState>(DEFAULT_STATE);
 
-  // Sync to sessionStorage (session-scoped, non-leaking)
   useEffect(() => {
     try {
       if (typeof window !== 'undefined') {
-        sessionStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(contractState));
+        sessionStorage.removeItem(LOCAL_STORAGE_KEY);
+        localStorage.removeItem(LOCAL_STORAGE_KEY);
       }
-    } catch (e) {
-      console.warn('Failed to persist contract state to session:', e);
-    }
-  }, [contractState]);
+    } catch {}
+  }, []);
 
   const setContractData = ({
     fileName,

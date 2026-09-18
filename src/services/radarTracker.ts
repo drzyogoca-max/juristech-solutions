@@ -30,12 +30,8 @@ export async function trackVisitorRadar(body: { path: string; dwellTimeSeconds?:
 
     console.log('[RADAR ACTIVE ENGINE] Real-time Visitor Captured:', JSON.stringify(analyticsData));
 
-    try {
-      await supabase.from('chat_messages').insert({
-        content: `[RADAR] Visitor captured from ${analyticsData.country} on path ${analyticsData.path}`,
-        role: 'system',
-      });
-    } catch (dbErr) {}
+    // Visitor telemetry is handled by the dedicated visitor/radar pipeline.
+    // Never write public visitor events into chat_messages (protected application data).
 
     return {
       success: true,

@@ -31,7 +31,7 @@ export async function POST(req) {
     const authHeader = req.headers.get('Authorization') || req.headers.get('authorization') || '';
     const adminToken = req.headers.get('x-admin-token') || '';
 
-    const OFFICIAL_ADMIN_EMAILS = ['drzyogo.ca@gmail.com', 'juristech.solutions@outlook.com', 'admin@juristech.solutions'];
+    const OFFICIAL_ADMIN_EMAILS = ['founder@juristech.solutions', 'founder@juristech.solutions', 'admin@juristech.solutions'];
     let isAuthorized = false;
 
     const serverSecret = process.env.ADMIN_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -82,9 +82,9 @@ export async function POST(req) {
           body: JSON.stringify({
             from: `JurisTech Solutions <${EMAIL_FROM}>`,
             to: [companyEmail],
-            reply_to: 'juristech.solutions@outlook.com',
+            reply_to: 'founder@juristech.solutions',
             subject: `CONFIDENTIAL: Institutional AI Legal Infrastructure & Contract Risk Proposal for ${companyName || 'Enterprise Client'} | JurisTech Solutions`,
-            text: `${proposalText}\n\n---\nSincerely,\nDr. Mohammad Mustafa\nChief Executive & Chief Financial Officer (CEO / CFO)\nJurisTech Solutions | Sovereign AI Legal & Risk Infrastructure\nExecutive Email: drzyogo.ca@gmail.com | juristech.solutions@outlook.com\nOfficial Portal: https://www.juristech.solutions`,
+            text: `${proposalText}\n\n---\nSincerely,\nDr. Mohammad Mustafa\nChief Executive & Chief Financial Officer (CEO / CFO)\nJurisTech Solutions | Sovereign AI Legal & Risk Infrastructure\nExecutive Email: founder@juristech.solutions | founder@juristech.solutions\nOfficial Portal: https://www.juristech.solutions`,
           }),
         });
 
@@ -101,9 +101,9 @@ export async function POST(req) {
             body: JSON.stringify({
               from: 'JurisTech Solutions <onboarding@resend.dev>',
               to: [companyEmail],
-              reply_to: 'juristech.solutions@outlook.com',
+              reply_to: 'founder@juristech.solutions',
               subject: `CONFIDENTIAL: Institutional AI Legal Infrastructure & Contract Risk Proposal for ${companyName || 'Enterprise Client'} | JurisTech Solutions`,
-              text: `${proposalText}\n\n---\nSincerely,\nDr. Mohammad Mustafa\nChief Executive & Chief Financial Officer (CEO / CFO)\nJurisTech Solutions | Sovereign AI Legal & Risk Infrastructure\nExecutive Email: drzyogo.ca@gmail.com | juristech.solutions@outlook.com\nOfficial Portal: https://www.juristech.solutions`,
+              text: `${proposalText}\n\n---\nSincerely,\nDr. Mohammad Mustafa\nChief Executive & Chief Financial Officer (CEO / CFO)\nJurisTech Solutions | Sovereign AI Legal & Risk Infrastructure\nExecutive Email: founder@juristech.solutions | founder@juristech.solutions\nOfficial Portal: https://www.juristech.solutions`,
             }),
           });
           resendData = await resendRes.json().catch(() => ({}));

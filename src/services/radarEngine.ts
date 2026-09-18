@@ -63,8 +63,8 @@ export function isAdminOrDeveloperSession(lead: Partial<LiveRadarVisitor>): bool
 
   // Exclude Admin Emails
   if (
-    email.includes('drzyogo.ca@gmail.com') ||
-    email.includes('juristech.solutions@outlook.com') ||
+    email.includes('founder@juristech.solutions') ||
+    email.includes('founder@juristech.solutions') ||
     email.includes('admin') ||
     email.includes('pc2')
   ) {

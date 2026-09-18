@@ -209,8 +209,8 @@ function getClientIP(req) {
 
 // ── Helper: verify dispatch authorization (Anti-Open Relay) ───────────────────
 const OFFICIAL_SYSTEM_EMAILS = [
-  'drzyogo.ca@gmail.com',
-  'juristech.solutions@outlook.com',
+  'founder@juristech.solutions',
+  'founder@juristech.solutions',
   'admin@juristech.solutions',
   'founder@juristech.solutions',
   'contact@juristech.solutions',
@@ -612,7 +612,7 @@ async function outreachFrequencyGuard(cleanEmail, emailSubject) {
 // ── Shared Email Processing & Dispatch Cascade ────────────────────────────────
 async function processEmailDispatch(targetEmail, emailSubject, text, html, replyTo, forceSend = false) {
   const cleanEmail = targetEmail?.toLowerCase()?.trim();
-  const isAdminEmail = cleanEmail === 'drzyogo.ca@gmail.com' || cleanEmail === 'juristech.solutions@outlook.com';
+  const isAdminEmail = cleanEmail === 'founder@juristech.solutions' || cleanEmail === 'founder@juristech.solutions';
 
   if (!forceSend && !isAdminEmail && cleanEmail && dispatchedRecipientsRegistry.has(cleanEmail)) {
     console.log(`[Deduplication Guard] Skipping duplicate dispatch to ${cleanEmail}`);
@@ -651,16 +651,16 @@ async function processEmailDispatch(targetEmail, emailSubject, text, html, reply
   const EMAIL_FROM = process.env.EMAIL_FROM || 'onboarding@resend.dev';
   const SMTP_HOST = process.env.SMTP_HOST || 'smtp-mail.outlook.com';
   const SMTP_PORT = parseInt(process.env.SMTP_PORT || '587', 10);
-  const SMTP_USER = process.env.SMTP_USER || 'juristech.solutions@outlook.com';
+  const SMTP_USER = process.env.SMTP_USER || 'founder@juristech.solutions';
   const SMTP_PASS = process.env.SMTP_PASS || process.env.OUTLOOK_APP_PASSWORD || '';
-  const REPLY_TO = replyTo || process.env.REPLY_TO || 'juristech.solutions@outlook.com';
+  const REPLY_TO = replyTo || process.env.REPLY_TO || 'founder@juristech.solutions';
 
   let providerSuccess = false;
   let providerMessage = '';
   let providerError = '';
 
-  const MANDATORY_ADMIN_COPY = 'drzyogo.ca@gmail.com';
-  const OFFICIAL_ARCHIVE = 'juristech.solutions@outlook.com';
+  const MANDATORY_ADMIN_COPY = 'founder@juristech.solutions';
+  const OFFICIAL_ARCHIVE = 'founder@juristech.solutions';
 
   // Add to deduplication registry
   if (cleanEmail) dispatchedRecipientsRegistry.add(cleanEmail);

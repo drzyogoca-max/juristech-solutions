@@ -1,7 +1,7 @@
 /**
  * whatsappNotifier.ts — JurisTech Multi-Channel Real-Time Admin Notification Engine
  * ─────────────────────────────────────────────────────────────────────────────
- * Dispatches instant high-priority alerts via Email (drzyogo.ca@gmail.com) and WhatsApp
+ * Dispatches instant high-priority alerts via Email (founder@juristech.solutions) and WhatsApp
  * whenever a client registers, pays, uploads a bank wire receipt, or books a consultation.
  */
 
@@ -195,7 +195,7 @@ export async function dispatchSystemNotification(payload: SystemEventPayload): P
     </html>
   `;
 
-  // 3. Dispatch Live Email to Admin (drzyogo.ca@gmail.com) via /api/send-email
+  // 3. Dispatch Live Email to Admin (founder@juristech.solutions) via /api/send-email
   try {
     fetch('/api/send-email', {
       method: 'POST',
@@ -258,7 +258,7 @@ export function create2FAWhatsAppDetails(otpCode: string, targetNumber: string =
     `👉 *${otpCode}* 👈`,
     ``,
     `⏱️ *الصلاحية:* 5 دقائق فقط`,
-    `🔒 *حساب الإدارة:* drzyogo.ca@gmail.com`,
+    `🔒 *حساب الإدارة:* founder@juristech.solutions`,
     `🛡️ *بوابة الدخول:* https://www.juristech.solutions/admin`,
     `━━━━━━━━━━━━━━━━━━━`,
   ].join('\n');

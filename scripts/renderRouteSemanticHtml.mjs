@@ -51,7 +51,7 @@ export function getSemanticHtmlForRoute(routePath) {
         </div>
         <div class="bg-slate-950 border border-sky-600/40 p-4 rounded-2xl shadow">
           <strong class="text-sky-400 block mb-1">📧 البريد الرسمي للإدارة:</strong>
-          <a href="mailto:Drzyogo.ca@gmail.com" class="text-slate-100 font-bold no-underline font-mono select-all">Drzyogo.ca@gmail.com</a>
+          <a href="mailto:founder@juristech.solutions" class="text-slate-100 font-bold no-underline font-mono select-all">founder@juristech.solutions</a>
           <span class="block text-xs text-slate-400 mt-1">إرسال العقود والاتفاقيات الرسمية</span>
         </div>
         <div class="bg-slate-950 border border-purple-600/40 p-4 rounded-2xl shadow">
@@ -76,14 +76,17 @@ export function getSemanticHtmlForRoute(routePath) {
           <span class="px-3 py-1 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 text-xs font-bold font-mono">AD / SPONSORSHIP</span>
           <span class="text-xs text-slate-300 font-bold">مساحة مخصصة لرعاية الشركات والشركاء الإعلاميين والإعلانات المؤسسية مستقبلاً</span>
         </div>
-        <a href="mailto:juristech.solutions@outlook.com?subject=Advertising%20%26%20Sponsorship%20Inquiry" class="text-xs text-cyan-400 hover:text-cyan-300 font-bold no-underline">
+        <a href="mailto:founder@juristech.solutions?subject=Advertising%20%26%20Sponsorship%20Inquiry" class="text-xs text-cyan-400 hover:text-cyan-300 font-bold no-underline">
           حجز مساحة إعلانية ↗
         </a>
       </div>
     </section>
   `;
 
-  const commonFooter = `
+  // The interactive React Footer is the single customer-facing footer. Do not SSR a second footer,
+  // otherwise the prerendered semantic shell can survive outside #root and duplicate the live footer.
+  const commonFooter = '';
+  /*
     <footer class="bg-slate-950 border-t border-slate-800 p-8 text-slate-400 font-sans text-xs" dir="rtl">
       <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         <div>
@@ -131,6 +134,7 @@ export function getSemanticHtmlForRoute(routePath) {
       </div>
     </footer>
   `;
+  */
 
   if (routePath === '/privacy') {
     return `
@@ -143,7 +147,7 @@ export function getSemanticHtmlForRoute(routePath) {
             <h1 class="text-3xl sm:text-5xl font-black text-slate-100 leading-tight mt-3 mb-2">
               سياسة الخصوصية وحماية البيانات الشخصية | JurisTech Privacy Policy
             </h1>
-            <p class="text-xs text-slate-400 font-mono">تاريخ التحديث الأخير: 25 أغسطس 2026 | الإصدار المعتمد 4.2.0 | مسؤول حماية البيانات: juristech.solutions@outlook.com</p>
+            <p class="text-xs text-slate-400 font-mono">تاريخ التحديث الأخير: 25 أغسطس 2026 | الإصدار المعتمد 4.2.0 | مسؤول حماية البيانات: founder@juristech.solutions</p>
           </header>
 
           <div class="prose prose-invert max-w-none text-slate-300 leading-relaxed space-y-6 text-sm">
@@ -174,7 +178,7 @@ export function getSemanticHtmlForRoute(routePath) {
 
             <section class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-3">
               <h2 class="text-xl font-bold text-sky-400 m-0">5. حقوق المستخدم والتحكم في البيانات (User Rights & Data Control)</h2>
-              <p>يحق لك في أي وقت: (1) طلب نسخة كاملة من بياناتك المخزنة، (2) طلب تصحيح أو تعديل أي بيانات غير دقيقة، (3) طلب حذف حسابك وكافة مستنداتك بشكل دائم من السيرفرات (Right to be Forgotten)، (4) تقديم اعتراض لمسؤول حماية البيانات عبر البريد الرسمى <code>juristech.solutions@outlook.com</code>.</p>
+              <p>يحق لك في أي وقت: (1) طلب نسخة كاملة من بياناتك المخزنة، (2) طلب تصحيح أو تعديل أي بيانات غير دقيقة، (3) طلب حذف حسابك وكافة مستنداتك بشكل دائم من السيرفرات (Right to be Forgotten)، (4) تقديم اعتراض لمسؤول حماية البيانات عبر البريد الرسمى <code>founder@juristech.solutions</code>.</p>
             </section>
           </div>
         </article>
@@ -194,7 +198,7 @@ export function getSemanticHtmlForRoute(routePath) {
             <h1 class="text-3xl sm:text-5xl font-black text-slate-100 leading-tight mt-3 mb-2">
               شروط وأحكام الخدمة واتفاقية الاستخدام | JurisTech Terms of Service
             </h1>
-            <p class="text-xs text-slate-400 font-mono">تاريخ التحديث: 25 أغسطس 2026 | ملزمة قانونياً لكافة مستخدمي المنصة | الاستشارات: juristech.solutions@outlook.com</p>
+            <p class="text-xs text-slate-400 font-mono">تاريخ التحديث: 25 أغسطس 2026 | ملزمة قانونياً لكافة مستخدمي المنصة | الاستشارات: founder@juristech.solutions</p>
           </header>
 
           <div class="prose prose-invert max-w-none text-slate-300 leading-relaxed space-y-6 text-sm">
@@ -585,7 +589,7 @@ export function getSemanticHtmlForRoute(routePath) {
             إدارة قناة يوتيوب الرسمية والنشر اليومي الالي | JurisTech YouTube Studio
           </h1>
           <p class="text-base text-slate-300 leading-relaxed mb-6">
-            استوديو الإدارة البرمجية لقناة يوتيوب الرسمية للمنصة المرتبطة بـ juristech.solutions@outlook.com بإشراف المستشار د. محمد مصطفى. توليد ونشر فيديوهات قانونية يومية صباحاً (09:00 AM) ومساءً (06:00 PM).
+            استوديو الإدارة البرمجية لقناة يوتيوب الرسمية للمنصة المرتبطة بـ founder@juristech.solutions بإشراف المستشار د. محمد مصطفى. توليد ونشر فيديوهات قانونية يومية صباحاً (09:00 AM) ومساءً (06:00 PM).
           </p>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
             <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl">

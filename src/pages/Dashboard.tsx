@@ -8,16 +8,13 @@ import {
 import { supabase } from '../lib/supabaseClient';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAdaptiveUI } from '../hooks/useAdaptiveUI';
-import { callAI } from '../lib/api';
 import { useContract } from '../context/ContractContext';
 import ContractAnalysisSkeleton from '../components/ContractAnalysisSkeleton';
 import HeartbeatBackground from '../components/HeartbeatBackground';
 import SEO from '../components/SEO';
 import { useAuth } from '../lib/authContext';
 import { getVisitorAnalyticsSummary } from '../lib/visitorTracker';
-import { crmService } from '../services/crmService';
 import { getReviewQueueItems } from '../lib/reviewQueueService';
-import { getActiveGlobalTranslations } from '../lib/globalTranslations';
 import { usePlatformLocale } from '../lib/universalTranslator';
 
 import WorkflowDashboard from '../components/WorkflowDashboard';
@@ -81,7 +78,7 @@ let dashboardMetricsCache: {
 export default function Dashboard() {
   const { l, isRtl, gt, t, i18n, formatNum, formatCurr } = usePlatformLocale();
   const navigate = useNavigate();
-  const { isAdmin } = useAuth();
+  const { isAdmin, isAuthenticated, loading: authLoading } = useAuth();
   const { jurisdiction, adaptiveConfig } = useAdaptiveUI();
   const { contractState, clearContractData, setContractData, updateAuditResults } = useContract();
 
@@ -115,9 +112,19 @@ export default function Dashboard() {
   const [showDeferredWidgets, setShowDeferredWidgets] = useState(false);
 
   useEffect(() => {
+    if (authLoading) return;
     let liveTickTimer: ReturnType<typeof setInterval> | null = null;
 
     async function loadDashboardData() {
+      // Guests must not probe protected tenant tables during initial dashboard load.
+      if (!isAuthenticated && !isAdmin) {
+        const visitorSummary = getVisitorAnalyticsSummary();
+        setStats(prev => ({ ...prev, totalVisits: visitorSummary.totalPageViewsCount || prev.totalVisits }));
+        setActivities([]);
+        setLoadingMetrics(false);
+        return;
+      }
+
       if (dashboardMetricsCache && Date.now() - dashboardMetricsCache.timestamp < 30000) {
         setStats(dashboardMetricsCache.stats);
         setActivities(dashboardMetricsCache.activities);
@@ -144,6 +151,7 @@ export default function Dashboard() {
           .eq('status', 'مكتمل');
 
         const visitorSummary = getVisitorAnalyticsSummary();
+        const { crmService } = await import('../services/crmService');
         const crmLeads = crmService.getLeads();
         const archivedLeads = crmService.getArchivedLeads();
         const reviewQueue = getReviewQueueItems();
@@ -225,9 +233,11 @@ export default function Dashboard() {
       setShowDeferredWidgets(true);
       loadDashboardData();
       // Live Telemetry Tick  starts after data load, pauses on hidden tab
-      liveTickTimer = setInterval(() => {
+      if (!isAuthenticated && !isAdmin) return;
+      liveTickTimer = setInterval(async () => {
         if (typeof document !== 'undefined' && document.hidden) return;
         const summary = getVisitorAnalyticsSummary();
+        const { crmService } = await import('../services/crmService');
         const leadsCount = crmService.getLeads().length + crmService.getArchivedLeads().length;
         setStats(prev => ({
           ...prev,
@@ -252,7 +262,7 @@ export default function Dashboard() {
       }
       if (liveTickTimer !== null) clearInterval(liveTickTimer);
     };
-  }, [isRtl]);
+  }, [isRtl, isAuthenticated, isAdmin, authLoading]);
 
   async function executeInlineAudit(textToAudit: string, sourceFileName?: string) {
     if (!textToAudit.trim()) {
@@ -274,6 +284,7 @@ export default function Dashboard() {
     const prompt = `Deeply audit this legal contract for risk vectors (Financial, Operational, IP, Regulatory) ${regionPromptMap[selectedRegion]}.\nReturn ONLY a JSON object with keys: riskScore (0-100), overallAssessmentAr, overallAssessmentEn, items (array of objects with clause, severity ['Critical'|'High'|'Medium'|'Low'], vector ['Financial'|'Operational'|'IP'|'Regulatory'], explanationAr, explanationEn, suggestedRedlineAr, suggestedRedlineEn).\n\nContract Content:\n${textToAudit}`;
 
     try {
+      const { callAI } = await import('../lib/api');
       const raw = await callAI(prompt);
       let parsed: QuickAuditResult;
       try {

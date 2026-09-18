@@ -5,8 +5,8 @@ import {
   Lock, CreditCard, Video, BarChart3, HelpCircle, X,
   Building2, Scale, Zap, Sparkles, ChevronRight, User, LogIn, LogOut
 } from 'lucide-react';
-import TwoFactorAuthModal from './TwoFactorAuthModal';
-import CustomerAuthModal from './CustomerAuthModal';
+const TwoFactorAuthModal = React.lazy(() => import('./TwoFactorAuthModal'));
+const CustomerAuthModal = React.lazy(() => import('./CustomerAuthModal'));
 import { useAuth } from '../lib/authContext';
 import { usePlatformLocale } from '../lib/universalTranslator';
 
@@ -30,17 +30,17 @@ export default function MobileBottomNav() {
 
   const SECONDARY_SERVICES = [
     { to: '/vault', icon: Lock, labelAr: 'الخزنة المشفرة (E2EE)', labelEn: 'Encrypted Vault (E2EE)', badge: 'E2EE' },
-    { to: '/payment', icon: CreditCard, labelAr: 'الأسعار والاشتراكات', labelEn: 'Pricing & Plans' },
-    { to: '/video-hub', icon: Video, labelAr: 'مركز الفيديو والإعلانات', labelEn: 'Video Ad Studio', badge: '90s' },
-    { to: '/enterprise-audit', icon: Building2, labelAr: 'التدقيق المؤسسي', labelEn: 'Enterprise Audit' },
-    { to: '/legal-compliance', icon: Scale, labelAr: 'الامتثال القانوني الدولي', labelEn: 'Global Compliance' },
-    { to: '/reports', icon: BarChart3, labelAr: 'التقارير الجنائية الذكية', labelEn: 'Forensic Reports' },
-    { to: '/support', icon: HelpCircle, labelAr: 'المساعدة والدعم المباشر', labelEn: 'Direct Support' },
+    { to: '/payment', icon: CreditCard, labelAr: 'الأسعار والخطط', labelEn: 'Pricing & Plans' },
+    { to: '/video-hub', icon: Video, labelAr: 'استوديو إعلانات الفيديو', labelEn: 'Video Ad Studio', badge: '90s' },
+    { to: '/enterprise-audit', icon: Building2, labelAr: 'تدقيق المؤسسات', labelEn: 'Enterprise Audit' },
+    { to: '/legal-compliance', icon: Scale, labelAr: 'الامتثال القانوني العالمي', labelEn: 'Global Compliance' },
+    { to: '/reports', icon: BarChart3, labelAr: 'التقارير القانونية الجنائية', labelEn: 'Forensic Reports' },
+    { to: '/support', icon: HelpCircle, labelAr: 'الدعم المباشر', labelEn: 'Direct Support' },
   ];
 
   return (
     <>
-      {/* ─── Floating Luxury Mobile Bottom Navigation Bar ─── */}
+      {/* Floating Mobile Bottom Navigation Bar */}
       <nav
         className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-slate-950/90 dark:bg-slate-950/95 backdrop-blur-xl border-t border-slate-800/80 shadow-[0_-8px_30px_rgba(0,0,0,0.5)] px-2 py-1.5 transition-all"
         style={{ paddingBottom: 'max(0.5rem, env(safe-area-inset-bottom))' }}
@@ -87,13 +87,13 @@ export default function MobileBottomNav() {
               <Shield className="w-5 h-5" />
             </div>
             <span className="text-[10px] mt-0.5 tracking-tight font-medium">
-              {l('الأمان والمزيد', 'Security+')}
+              {l('الأمان والخدمات', 'Security+')}
             </span>
           </button>
         </div>
       </nav>
 
-      {/* ─── Slide-Up Quick Drawer for Mobile ─── */}
+      {/* Slide-Up Quick Drawer for Mobile */}
       {showDrawer && (
         <div
           className="fixed inset-0 z-50 lg:hidden flex flex-col justify-end bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200"
@@ -115,10 +115,10 @@ export default function MobileBottomNav() {
                 </div>
                 <div>
                   <h3 className="text-sm font-black text-white">
-                    {l('مركز الأمان والخدمات السيادية', 'Sovereign Security & Services')}
+                    {l('الأمان السيادي والخدمات', 'Sovereign Security & Services')}
                   </h3>
                   <p className="text-[10px] text-slate-400">
-                    {l('تشفير E2EE • تحقق ثنائي 2FA • 15 نظام تشريعي', 'E2EE • 2FA Authentication • 15 Jurisdictions')}
+                    {l('تشفير E2EE و2FA عبر 15 ولاية قضائية', 'E2EE - 2FA Authentication - 15 Jurisdictions')}
                   </p>
                 </div>
               </div>
@@ -139,13 +139,13 @@ export default function MobileBottomNav() {
                 </div>
                 <div>
                   <div className="text-xs font-black text-white flex items-center gap-1.5">
-                    <span>{user ? (user.email?.split('@')[0] || l('حسابي', 'My Account')) : l('تسجيل الدخول / حساب جديد', 'Account Login / Sign Up')}</span>
+                    <span>{user ? (user.email?.split('@')[0] || l('حسابي', 'My Account')) : l('تسجيل الدخول / إنشاء حساب', 'Account Login / Sign Up')}</span>
                     {user && (
                       <span className="px-1.5 py-0.2 rounded text-[8px] bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-bold">CLIENT</span>
                     )}
                   </div>
                   <p className="text-[10px] text-slate-400 mt-0.5 font-mono truncate max-w-[170px]">
-                    {user ? user.email : l('سجل دخولك لحفظ جلساتك ومستنداتك', 'Sign in to preserve sessions & docs')}
+                    {user ? user.email : l('سجّل الدخول لحفظ الجلسات والمستندات', 'Sign in to preserve sessions & docs')}
                   </p>
                 </div>
               </div>
@@ -170,7 +170,7 @@ export default function MobileBottomNav() {
                   className="px-3 py-2 rounded-xl bg-slate-800 hover:bg-rose-500/20 text-slate-300 hover:text-rose-400 text-xs font-bold shrink-0 transition-all border border-slate-700 cursor-pointer flex items-center gap-1"
                 >
                   <LogOut className="w-3.5 h-3.5" />
-                  <span>{l('خروج', 'Logout')}</span>
+                  <span>{l('تسجيل الخروج', 'Logout')}</span>
                 </button>
               )}
             </div>
@@ -183,11 +183,11 @@ export default function MobileBottomNav() {
                 </div>
                 <div>
                   <div className="text-xs font-black text-white flex items-center gap-1.5">
-                    <span>{l('التحقق الثنائي (2FA TOTP)', '2FA Authentication')}</span>
+                    <span>{l('مصادقة العاملين 2FA', '2FA Authentication')}</span>
                     <span className="px-1.5 py-0.2 rounded text-[8px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold">ACTIVE</span>
                   </div>
                   <p className="text-[10px] text-slate-300 mt-0.5">
-                    {l('حماية الحساب عبر رمز OTP مشفر', 'RFC 6238 TOTP Account Protection')}
+                    {l('حماية الحساب وفق RFC 6238 TOTP', 'RFC 6238 TOTP Account Protection')}
                   </p>
                 </div>
               </div>
@@ -199,14 +199,14 @@ export default function MobileBottomNav() {
                 }}
                 className="px-3.5 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-black shrink-0 transition-all shadow-md active:scale-95 cursor-pointer"
               >
-                {l('إدارة 2FA', 'Manage')}
+                {l('إدارة', 'Manage')}
               </button>
             </div>
 
             {/* Secondary Services Grid */}
             <div className="space-y-1.5">
               <span className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-widest px-1 block mb-2">
-                {l('كافة الخدمات والأنظمة القانونية', 'All Platform Legal AI Engines')}
+                {l('جميع محركات الذكاء الاصطناعي القانونية', 'All Platform Legal AI Engines')}
               </span>
               {SECONDARY_SERVICES.map((srv) => {
                 const Icon = srv.icon;
@@ -243,20 +243,24 @@ export default function MobileBottomNav() {
       )}
 
       {/* 2FA Modal */}
-      {show2FA && (
-        <TwoFactorAuthModal
-          isOpen={show2FA}
-          onClose={() => setShow2FA(false)}
-        />
-      )}
+      <React.Suspense fallback={null}>
+        {show2FA && (
+          <TwoFactorAuthModal
+            isOpen={show2FA}
+            onClose={() => setShow2FA(false)}
+          />
+        )}
+      </React.Suspense>
 
       {/* Customer Auth Modal */}
-      {showAuthModal && (
-        <CustomerAuthModal
-          isOpen={showAuthModal}
-          onClose={() => setShowAuthModal(false)}
-        />
-      )}
+      <React.Suspense fallback={null}>
+        {showAuthModal && (
+          <CustomerAuthModal
+            isOpen={showAuthModal}
+            onClose={() => setShowAuthModal(false)}
+          />
+        )}
+      </React.Suspense>
     </>
   );
 }

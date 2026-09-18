@@ -331,7 +331,7 @@ runScenario(
   1,
   1.0,
   'PAYMENT_UNCHANGED',
-  paddleFile.includes('pro_01m0txshyww92xh07mawyzg52j') && paddleFile.includes('pri_01m0ty6sxjj7w0xpm1r07r50ss')
+  paddleFile.includes('PERMANENTLY DECOMMISSIONED') && !paddleFile.includes('pro_01m0txshyww92xh07mawyzg52j') && !paddleFile.includes('pri_01m0ty6sxjj7w0xpm1r07r50ss')
 );
 
 runScenario(

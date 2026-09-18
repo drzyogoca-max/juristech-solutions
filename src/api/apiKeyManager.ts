@@ -55,9 +55,9 @@ class ApiKeyManager {
   }
 
   private seedDefaultKeys(): void {
-    // Seed initial test key for demo organization
-    const demoKeyRaw = 'jt_test_altamimi_demo_key_998877665544332211';
-    const hash = this.computeSha256(demoKeyRaw);
+    // Seed initial test record using its precomputed standard SHA-256 digest.
+    // No raw demo key is retained in the manager source or state.
+    const hash = '45add6c29d09b9a15cf9122189945a802cdd37d9181f5593d3affc4a48454ea0';
     const record: StoredApiKeyRecord = {
       id: 'key_demo_01',
       organizationId: 'org_enterprise_demo_01',
@@ -77,18 +77,20 @@ class ApiKeyManager {
   /**
    * Create a new API Key for an organization
    */
-  public createApiKey(params: {
+  public async createApiKey(params: {
     organizationId: string;
     name: string;
     environment: ApiKeyEnvironment;
     scopes: ApiKeyScope[];
     rateLimitPerMinute?: number;
-  }): ApiKeyCreationResult {
+  }): Promise<ApiKeyCreationResult> {
     const envPrefix = params.environment === 'live' ? 'jt_live_' : 'jt_test_';
-    const entropy = Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2);
+    const entropyBytes = new Uint8Array(32);
+    crypto.getRandomValues(entropyBytes);
+    const entropy = Array.from(entropyBytes, b => b.toString(16).padStart(2, '0')).join('');
     const rawKey = `${envPrefix}${entropy}`;
-    const keyHash = this.computeSha256(rawKey);
-    const id = `key_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+    const keyHash = await this.computeSha256(rawKey);
+    const id = `key_${Date.now()}_${entropy.substring(0, 8)}`;
 
     const record: StoredApiKeyRecord = {
       id,
@@ -114,16 +116,16 @@ class ApiKeyManager {
   /**
    * Verify an incoming raw API key against stored SHA-256 hashes
    */
-  public verifyApiKey(rawKey: string): {
+  public async verifyApiKey(rawKey: string): Promise<{
     isValid: boolean;
     record?: StoredApiKeyRecord;
     reason?: string;
-  } {
+  }> {
     if (!rawKey || (!rawKey.startsWith('jt_live_') && !rawKey.startsWith('jt_test_'))) {
       return { isValid: false, reason: 'Invalid API key format. Must start with jt_live_ or jt_test_.' };
     }
 
-    const keyHash = this.computeSha256(rawKey);
+    const keyHash = await this.computeSha256(rawKey);
     const record = this.keys.get(keyHash);
 
     if (!record) {
@@ -173,14 +175,10 @@ class ApiKeyManager {
     return Array.from(this.keys.values()).filter(k => k.organizationId === organizationId);
   }
 
-  public computeSha256(str: string): string {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-      const char = str.charCodeAt(i);
-      hash = (hash << 5) - hash + char;
-      hash |= 0;
-    }
-    return Math.abs(hash).toString(16).padStart(64, '0');
+  public async computeSha256(str: string): Promise<string> {
+    const data = new TextEncoder().encode(str);
+    const digest = await crypto.subtle.digest('SHA-256', data);
+    return Array.from(new Uint8Array(digest), b => b.toString(16).padStart(2, '0')).join('');
   }
 
   public clear(): void {

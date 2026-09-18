@@ -152,13 +152,25 @@ export const SaaSProvider: React.FC<{ children: React.ReactNode }> = ({ children
       let loadedOrgs: TenantOrganization[] = [];
       let loadedWorkspaces: SaaSWorkspace[] = [];
 
+      // Visitors do not need tenant discovery. Avoid protected Supabase probes on the public dashboard.
+      if (!user && !isAdmin) {
+        setOrganizations([]);
+        setWorkspaces([]);
+        setMemberships([]);
+        setCurrentRole('Viewer');
+        setLoading(false);
+        return;
+      }
+
       // 1. Try to read from Supabase if active
       let dbSucceeded = false;
       try {
-        const { data: dbOrgs, error: orgError } = await supabase
+        const orgQuery = supabase
           .from('organizations')
-          .select('*')
-          .limit(20);
+          .select('*');
+        const { data: dbOrgs, error: orgError } = isAdmin
+          ? await orgQuery.limit(20)
+          : await orgQuery.eq('owner_user_id', currentUserId).limit(20);
 
         if (!orgError && dbOrgs && dbOrgs.length > 0) {
           loadedOrgs = dbOrgs.map((o: any) => ({
@@ -175,9 +187,10 @@ export const SaaSProvider: React.FC<{ children: React.ReactNode }> = ({ children
             updatedAt: o.updated_at,
           }));
 
-          const { data: dbWs } = await supabase.from('workspaces').select('*').limit(50);
+          const visibleOrgIds = new Set((dbOrgs || []).map((o: any) => o.id));
+          const { data: dbWs } = await supabase.from('workspaces').select('*').limit(100);
           if (dbWs) {
-            loadedWorkspaces = dbWs.map((w: any) => ({
+            loadedWorkspaces = dbWs.filter((w: any) => visibleOrgIds.has(w.organization_id)).map((w: any) => ({
               id: w.id,
               organizationId: w.organization_id,
               name: w.name,
@@ -243,11 +256,15 @@ export const SaaSProvider: React.FC<{ children: React.ReactNode }> = ({ children
           localStorage.setItem(ACTIVE_ORG_STORAGE_KEY, targetOrg.id);
         } catch {}
 
-        // Determine user's role in targetOrg
-        if (targetOrg.ownerUserId === currentUserId || isAdmin) {
+        // Determine user's role in targetOrg.
+        // Platform admins are Owners only in the platform-admin context;
+        // ordinary users must not be promoted implicitly to Legal/Owner.
+        if (isAdmin) {
+          setCurrentRole('Owner');
+        } else if (targetOrg.ownerUserId === currentUserId) {
           setCurrentRole('Owner');
         } else {
-          setCurrentRole('Legal');
+          setCurrentRole('Viewer');
         }
 
         // Determine initial active workspace
@@ -286,6 +303,12 @@ export const SaaSProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return false;
       }
 
+      const switchUserId = user?.id || (isAdmin ? 'usr_admin_platform' : 'usr_visitor_guest');
+      if (!isAdmin && targetOrg.ownerUserId !== switchUserId) {
+        console.error('Security barrier: User is not authorized for this organization.');
+        return false;
+      }
+
       // Purge query cache to ensure zero cross-tenant data leakage
       invalidateCache();
 
@@ -306,12 +329,12 @@ export const SaaSProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setActiveWsId(null);
       }
 
-      // Re-evaluate role for switched organization
+      // Re-evaluate role for switched organization without implicit privilege.
       const currentUserId = user?.id || (isAdmin ? 'usr_admin_platform' : 'usr_visitor_guest');
-      if (targetOrg.ownerUserId === currentUserId || isAdmin) {
+      if (isAdmin || targetOrg.ownerUserId === currentUserId) {
         setCurrentRole('Owner');
       } else {
-        setCurrentRole('Legal');
+        setCurrentRole('Viewer');
       }
 
       return true;

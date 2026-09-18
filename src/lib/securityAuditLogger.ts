@@ -9,7 +9,7 @@
 
 import { sendEmailNotification } from './emailNotifier';
 
-const SECURITY_ALERT_EMAIL = import.meta.env.VITE_SECURITY_ALERT_EMAIL || 'juristech.solutions@outlook.com';
+const SECURITY_ALERT_EMAIL = import.meta.env.VITE_SECURITY_ALERT_EMAIL || 'founder@juristech.solutions';
 
 export interface SecurityAuditEvent {
   id: string;

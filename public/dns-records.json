@@ -11,7 +11,7 @@
     "dmarc": {
       "type": "TXT",
       "name": "_dmarc",
-      "value": "v=DMARC1; p=quarantine; sp=quarantine; pct=100; rua=mailto:dmarc-reports@juristech.solutions,mailto:Drzyogo.ca@gmail.com; ruf=mailto:dmarc-forensic@juristech.solutions; adkim=r; aspf=r;",
+      "value": "v=DMARC1; p=quarantine; sp=quarantine; pct=100; rua=mailto:dmarc-reports@juristech.solutions,mailto:founder@juristech.solutions; ruf=mailto:dmarc-forensic@juristech.solutions; adkim=r; aspf=r;",
       "purpose": "Instructs receiving mail servers to quarantine unauthenticated emails claiming to originate from @juristech.solutions.",
       "status": "configured"
     },

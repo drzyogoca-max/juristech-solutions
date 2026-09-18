@@ -337,7 +337,11 @@ export function remediateAllEightAlertsOneByOne(): LegalAlert[] {
 
 /** Load alerts from Supabase and merge with localStorage */
 export async function syncAlertsFromSupabase(): Promise<LegalAlert[]> {
+  // Anonymous/public sessions use the local alert store. Protected Supabase sync is reserved for authenticated users.
   try {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return getStoredAlerts();
+
     const { data } = await supabase
       .from('legal_alerts')
       .select('*')

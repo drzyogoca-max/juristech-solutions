@@ -53,7 +53,7 @@ export class TwoFactorAuthService {
     return codes;
   }
 
-  public static getOtpAuthUrl(secret: string, accountName: string = 'drzyogo.ca@gmail.com'): string {
+  public static getOtpAuthUrl(secret: string, accountName: string = 'founder@juristech.solutions'): string {
     return `otpauth://totp/JurisTech%20Solutions:${encodeURIComponent(accountName)}?secret=${secret}&issuer=JurisTech%20Solutions&algorithm=SHA1&digits=6&period=30`;
   }
 

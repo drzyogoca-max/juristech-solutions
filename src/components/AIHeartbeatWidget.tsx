@@ -2,10 +2,12 @@
 import { useTranslation } from 'react-i18next';
 import { Activity, Shield, Cpu, Zap, Wifi } from 'lucide-react';
 import { supabase } from '../lib/supabaseClient';
+import { useAuth } from '../lib/authContext';
 
 export default function AIHeartbeatWidget() {
   const { i18n } = useTranslation();
   const isRtl = i18n.language === 'ar';
+  const { isAuthenticated, isAdmin, loading: authLoading } = useAuth();
   
   const [stats, setStats] = useState({
     activeSessions: 242,
@@ -19,6 +21,9 @@ export default function AIHeartbeatWidget() {
 
   // 1. Initial live backend database hydration
   useEffect(() => {
+    // Public visitors must not probe protected analytics tables or open realtime channels.
+    if (authLoading || (!isAuthenticated && !isAdmin)) return;
+
     async function syncRealBackendCounts() {
       try {
         const [

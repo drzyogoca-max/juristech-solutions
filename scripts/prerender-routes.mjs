@@ -110,7 +110,7 @@ const ROUTE_METADATA = {
     titleAr: 'إدارة قناة يوتيوب الرسمية والنشر اليومي | JurisTech YouTube Studio',
     titleEn: 'Official YouTube Channel Studio & 2x Daily Video Automation | JurisTech',
     descriptionAr: 'استوديو الإدارة التلقائية لقناة يوتيوب الرسمية لمنصة JurisTech Solutions — توليد ونشر فيديوهات قانونية يومية صباحاً ومساءً 100% بالذكاء الاصطناعي.',
-    descriptionEn: 'Official YouTube Channel Studio for juristech.solutions@outlook.com. Automated 2x daily morning & evening video publishing engine.',
+    descriptionEn: 'Official YouTube Channel Studio for founder@juristech.solutions. Automated 2x daily morning & evening video publishing engine.',
   },
   '/youtube': {
     titleAr: 'قناة يوتيوب الرسمية واستوديو الفيديوهات | JurisTech YouTube Channel',
@@ -273,7 +273,7 @@ function prerenderRoutes() {
           '@type': 'Person',
           'name': 'Dr. Mohammed Mostafa',
           'jobTitle': 'Chief Legal Architect & Senior Counsel',
-          'email': 'Drzyogo.ca@gmail.com',
+          'email': 'founder@juristech.solutions',
           'telephone': '+201126674337'
         },
         'sameAs': [
@@ -287,7 +287,7 @@ function prerenderRoutes() {
             '@type': 'ContactPoint',
             'telephone': '+201126674337',
             'contactType': 'customer support',
-            'email': 'Drzyogo.ca@gmail.com',
+            'email': 'founder@juristech.solutions',
             'availableLanguage': ['Arabic', 'English'],
             'areaServed': ['SA', 'AE', 'EG', 'QA', 'KW', 'BH', 'OM', 'JO', 'US', 'GB', 'EU']
           }
@@ -303,7 +303,7 @@ function prerenderRoutes() {
           'name': 'JurisTech Solutions'
         },
         'telephone': '+201126674337',
-        'email': 'Drzyogo.ca@gmail.com',
+        'email': 'founder@juristech.solutions',
         'sameAs': [
           'https://www.linkedin.com/in/juristech-solutions-14954b427/',
           'https://x.com/JurisTechAI'
@@ -318,7 +318,7 @@ function prerenderRoutes() {
         'image': `${BASE_URL}/og-image.jpg`,
         'priceRange': '$$$',
         'telephone': '+201126674337',
-        'email': 'Drzyogo.ca@gmail.com',
+        'email': 'founder@juristech.solutions',
         'address': {
           '@type': 'PostalAddress',
           'streetAddress': 'King Fahd Road, Al Olaya',
@@ -403,6 +403,45 @@ function prerenderRoutes() {
     fs.writeFileSync(targetFilePath, routeHtml, 'utf-8');
     console.log(`[Prerender SEO] Created pre-rendered HTML with full semantic content for ${routePath} -> ${targetFilePath}`);
   });
+
+  // Generate crawlable locale-prefixed static copies for the 7 supported UI languages.
+  // This prevents /:locale/... from falling through to the SPA root rewrite.
+  const LOCALE_OUTPUTS = [
+    { code: 'en', dir: 'ltr', titleKey: 'titleEn', descKey: 'descriptionEn' },
+    { code: 'ar', dir: 'rtl', titleKey: 'titleAr', descKey: 'descriptionAr' },
+    { code: 'fr', dir: 'ltr', titleKey: 'titleEn', descKey: 'descriptionEn' },
+    { code: 'de', dir: 'ltr', titleKey: 'titleEn', descKey: 'descriptionEn' },
+    { code: 'es', dir: 'ltr', titleKey: 'titleEn', descKey: 'descriptionEn' },
+    { code: 'zh', dir: 'ltr', titleKey: 'titleEn', descKey: 'descriptionEn' },
+    { code: 'tr', dir: 'ltr', titleKey: 'titleEn', descKey: 'descriptionEn' },
+  ];
+
+  PUBLIC_ROUTES.forEach((routePath) => {
+    const metadata = ROUTE_METADATA[routePath] || {};
+    const baseFile = routePath === '/'
+      ? path.join(DIST_DIR, 'index.html')
+      : path.join(DIST_DIR, routePath.replace(/^\//, ''), 'index.html');
+    if (!fs.existsSync(baseFile)) return;
+    const baseHtml = fs.readFileSync(baseFile, 'utf8');
+
+    LOCALE_OUTPUTS.forEach(({ code, dir, titleKey, descKey }) => {
+      const localeDir = path.join(DIST_DIR, code, routePath === '/' ? '' : routePath.replace(/^\//, ''));
+      fs.mkdirSync(localeDir, { recursive: true });
+      const title = metadata[titleKey] || metadata.titleEn || metadata.titleAr || 'JurisTech Solutions';
+      const desc = metadata[descKey] || metadata.descriptionEn || metadata.descriptionAr || '';
+      const canonical = BASE_URL + (routePath === '/' ? '/' + code : '/' + code + routePath);
+      let html = baseHtml;
+      html = html.replace(/<html\s+lang=["'][^"']*["']\s+dir=["'][^"']*["']/i, '<html lang="' + code + '" dir="' + dir + '"');
+      html = html.replace(/<title>[\s\S]*?<\/title>/i, '<title>' + title + '</title>');
+      html = html.replace(/<meta\s+name=["']description["'][^>]*>/i, '<meta name="description" content="' + desc.replaceAll('"', '&quot;') + '" />');
+      html = html.replace(/<link\s+rel=["']canonical["'][^>]*>/i, '<link rel="canonical" href="' + canonical + '" />');
+      html = html.replace(/<meta\s+property=["']og:url["'][^>]*>/i, '<meta property="og:url" content="' + canonical + '" />');
+      html = html.replace(/<meta\s+property=["']og:title["'][^>]*>/i, '<meta property="og:title" content="' + title.replaceAll('"', '&quot;') + '" />');
+      html = html.replace(/<meta\s+property=["']og:description["'][^>]*>/i, '<meta property="og:description" content="' + desc.replaceAll('"', '&quot;') + '" />');
+      fs.writeFileSync(path.join(localeDir, 'index.html'), html, 'utf8');
+    });
+  });
+  console.log('[Prerender SEO] Locale-prefixed static copies generated for 7 supported languages.');
 
   // Generate dedicated 404.html for Vercel / static server fallback
   try {

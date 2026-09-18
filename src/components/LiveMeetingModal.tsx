@@ -31,8 +31,6 @@ export default function LiveMeetingModal({ isOpen, onClose }: LiveMeetingModalPr
   const [aiMinutes, setAiMinutes] = useState<string>('');
   const [signed, setSigned] = useState(false);
 
-  if (!isOpen) return null;
-
   const meetingLink = platform === 'zoom' 
     ? 'https://zoom.us/j/9021887766?pwd=JurisTechSovereign2026'
     : 'https://teams.microsoft.com/l/meetup-join/19%3ajuristech_meeting%40thread.v2/0';
@@ -40,7 +38,7 @@ export default function LiveMeetingModal({ isOpen, onClose }: LiveMeetingModalPr
   async function handleGenerateAIMinutes() {
     setIsSummarizing(true);
     try {
-      const prompt = `أنت مساعد الذكاء الاصطناعي الخارق لإدارة الاجتماعات القانونية. قم بتوليد محضر اجتماع تفاوضي رسمي وشامل لموضوع: "${meetingTopic}".
+      const prompt = `أنت مساعد الذكاء الاصطناعي المتقدم لإدارة الاجتماعات القانونية. قم بتوليد محضر اجتماع تفاوضي رسمي وشامل لموضوع: "${meetingTopic}".
 تضمين:
 1. ملخص النقاش والتوافق بين الطرفين.
 2. النقاط القانونية والتزام المسؤولية المستخرجة.
@@ -51,7 +49,7 @@ export default function LiveMeetingModal({ isOpen, onClose }: LiveMeetingModalPr
       setAiMinutes(res);
     } catch (e) {
       setAiMinutes(isRtl 
-        ? 'تم استخراج محضر الاجتماع بنجاح: اتفقت الأطراف على الالتزام ببنود السرية والشراء والتعويض بالتضامن بختم SHA-256.'
+        ? 'تم استخراج محضر الاجتماع بنجاح: اتفقت الأطراف على بنود السرية والشراء والتعويض بالتضامن مع ختم SHA-256.'
         : 'Meeting minutes extracted successfully: Parties agreed to NDA and liability terms with SHA-256 seal.');
     } finally {
       setIsSummarizing(false);
@@ -66,6 +64,8 @@ export default function LiveMeetingModal({ isOpen, onClose }: LiveMeetingModalPr
     return () => window.removeEventListener('keydown', handleKey);
   }, [onClose]);
 
+
+  if (!isOpen) return null;
 
   return (
     <div
@@ -198,7 +198,7 @@ export default function LiveMeetingModal({ isOpen, onClose }: LiveMeetingModalPr
               className="py-3.5 px-5 rounded-2xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs flex items-center justify-center gap-2 shadow-lg transition-all"
             >
               {isSummarizing ? <Loader2 className="w-4 h-4 animate-spin text-slate-950" /> : <Sparkles className="w-4 h-4" />}
-              <span>{isRtl ? 'توليد محضر AI الخارق' : 'Generate AI Minutes'}</span>
+              <span>{isRtl ? 'توليد محضر AI المتقدم' : 'Generate AI Minutes'}</span>
             </button>
           </div>
         </div>

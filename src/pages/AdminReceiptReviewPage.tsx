@@ -104,10 +104,6 @@ export default function AdminReceiptReviewPage() {
   const isRtl = i18n.language === 'ar';
   const { isAdmin } = useAuth();
 
-  if (!isAdmin) {
-    return <Forbidden403Page />;
-  }
-
   const [queue, setQueue] = useState<EnhancedQueueItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [processingId, setProcessingId] = useState<string | null>(null);
@@ -398,6 +394,10 @@ export default function AdminReceiptReviewPage() {
     setPreviewItem(item);
     setZoomLevel(1);
     setRotation(0);
+  }
+
+  if (!isAdmin) {
+    return <Forbidden403Page />;
   }
 
   return (

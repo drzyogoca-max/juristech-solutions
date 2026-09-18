@@ -18,7 +18,7 @@ const WAF_BLOCKED_KEY = 'juristech_waf_blocked_session';
 const WAF_RATE_KEY = 'juristech_waf_rate_timestamps';
 
 // ⚠️ SECURITY: Admin email read from env — not hardcoded in source
-const ADMIN_ALERT_EMAIL = import.meta.env.VITE_SECURITY_ALERT_EMAIL || 'juristech.solutions@outlook.com';
+const ADMIN_ALERT_EMAIL = import.meta.env.VITE_SECURITY_ALERT_EMAIL || 'founder@juristech.solutions';
 
 const MAX_INPUT_LENGTH = 10_000;       // Payload flooding guard
 const RATE_LIMIT_MAX = 30;             // Max requests per window

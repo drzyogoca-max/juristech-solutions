@@ -33,7 +33,7 @@ const STORAGE_USERS_KEY = 'juristech_rbac_users_db_v1';
 const INITIAL_USERS: UserAccount[] = [
   {
     id: 'usr_super_admin_01',
-    email: 'drzyogo.ca@gmail.com',
+    email: 'founder@juristech.solutions',
     fullName: 'Dr. Mohammed Mostafa (CEO / CFO)',
     role: 'Super Admin',
     isActive: true,
@@ -44,7 +44,7 @@ const INITIAL_USERS: UserAccount[] = [
   },
   {
     id: 'usr_lawyer_02',
-    email: 'juristech.solutions@outlook.com',
+    email: 'founder@juristech.solutions',
     fullName: 'Chief Legal Officer & Advisor',
     role: 'Lawyer',
     isActive: true,

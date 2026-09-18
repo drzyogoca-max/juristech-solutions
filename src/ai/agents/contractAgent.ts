@@ -47,7 +47,7 @@ export class ContractAgent {
   ): Promise<StructuredContractReport> {
     const {
       documentTitle = 'Commercial Contract Agreement',
-      targetJurisdiction = 'Egypt / GCC / International',
+      targetJurisdiction = '',
       forceJurisdiction,
       lang = 'en',
       userTier = 'free',

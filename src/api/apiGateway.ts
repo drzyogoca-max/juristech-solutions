@@ -82,7 +82,7 @@ class ApiGateway {
     const requestId = `req_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
 
     // 1. Authenticate API Key
-    const authCheck = apiKeyManager.verifyApiKey(req.apiKey);
+    const authCheck = await apiKeyManager.verifyApiKey(req.apiKey);
     if (!authCheck.isValid || !authCheck.record) {
       return {
         success: false,
@@ -199,24 +199,24 @@ class ApiGateway {
       };
     }
 
-    // 7. Consume Quota & Audit Event
-    quotaManager.consumeQuota(orgId, quotaMetric, 1);
-    quotaManager.consumeQuota(orgId, 'monthlyRequests', 1);
-
+    // 7. Execution adapter gate: do not consume paid quota for an unimplemented execution path.
     await enterpriseAuditEngine.logEvent({
       organizationId: orgId,
       event: 'AI_REQUEST',
       actor: `api_key:${keyRecord.keyPrefix}`,
-      summary: `API Gateway routed call to ${req.endpoint} for jurisdiction ${req.payload.jurisdiction || 'SA'}`,
+      summary: `Gateway authorization passed but execution adapter is unavailable for ${req.endpoint}; no legal result was issued.`,
     });
 
-    // 8. Return Sanitized Successful API Response
-    const executionData = this.mockExecuteEndpoint(req.endpoint, req.payload);
-
+    // 8. Do not fabricate completion, grounding, or statutory anchors.
+    // The gateway is an authorization/governance layer; execution must be provided by a real endpoint adapter.
     return {
-      success: true,
-      statusCode: 200,
-      data: executionData,
+      success: false,
+      statusCode: 501,
+      error: {
+        code: 'EXECUTION_ADAPTER_NOT_CONFIGURED',
+        message: 'The authenticated request passed gateway checks, but no live execution adapter is configured for this endpoint.',
+      },
+      data: { status: 'NOT_IMPLEMENTED', jurisdiction: req.payload.jurisdiction || 'UNKNOWN' },
       meta: {
         requestId,
         organizationId: orgId,
@@ -262,17 +262,6 @@ class ApiGateway {
       case '/v1/documents/draft':
         return { requiredScope: 'document.generate', quotaMetric: 'documentsGenerated' };
     }
-  }
-
-  private mockExecuteEndpoint(endpoint: string, payload: ApiGatewayRequest['payload']): Record<string, unknown> {
-    return {
-      status: 'COMPLETED',
-      jurisdiction: payload.jurisdiction || 'SA',
-      grounded: true,
-      citationCount: 3,
-      statutoryAnchors: ['Saudi Civil Transactions Law (Royal Decree M/191)'],
-      timestamp: new Date().toISOString(),
-    };
   }
 
   public clear(): void {

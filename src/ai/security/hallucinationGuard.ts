@@ -65,12 +65,11 @@ export function verifyAIResponseGrounding(
     verdict = 'SOURCE_NOT_VERIFIED';
     passed = false;
     flags.push('No verified statutory citations were attached to this legal advice.');
-  } else if (flags.length > 0 || unverifiedClaims.length > 2) {
+  } else if (flags.length > 0 || unverifiedClaims.length > 0 || verifiedCount === 0) {
+    // Legal answers must fail closed: one unsupported statutory reference is enough
+    // to require verification rather than presenting a partially grounded answer.
     verdict = 'RESPONSE_REQUIRES_VERIFICATION';
     passed = false;
-  } else if (unverifiedClaims.length > 0) {
-    verdict = 'PARTIAL';
-    passed = true;
   }
 
   return {

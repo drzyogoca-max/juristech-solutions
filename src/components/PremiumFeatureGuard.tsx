@@ -1,14 +1,14 @@
 /**
  * src/components/PremiumFeatureGuard.tsx
- * ─────────────────────────────────────────────────────────────────────────────
- * JurisTech Solutions — SaaS Feature Gating Guard
+ * â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+ * JurisTech Solutions â€” SaaS Feature Gating Guard
  * Sprint 04B Phase 1: Frontend UX Gating
  *
  * Tier Hierarchy:
  *   Free Trial (0) < Startup (1) < SMEs (2) < Enterprise (3)
  *
  * Enforcement Source:
- *   Strictly useSubscription() & useAuth() — ZERO localStorage authority.
+ *   Strictly useSubscription() & useAuth() â€” ZERO localStorage authority.
  */
 
 import React, { useState } from 'react';
@@ -72,13 +72,13 @@ export default function PremiumFeatureGuard({
 
   return (
     <>
-      <div className="relative min-h-[460px] w-full rounded-3xl overflow-hidden border border-slate-800 bg-slate-950 p-6 sm:p-10 flex flex-col items-center justify-center text-center">
+      <div className="relative w-full rounded-[2rem] overflow-hidden border border-slate-700/80 bg-[#0b1020] p-5 sm:p-8 lg:p-10 flex flex-col items-center justify-center text-center shadow-[0_24px_80px_-32px_rgba(15,23,42,0.9)]">
         {/* Blurred background teaser */}
-        <div className="absolute inset-0 bg-gradient-to-b from-indigo-950/20 via-slate-950/80 to-slate-950 pointer-events-none z-0" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(56,189,248,0.10),transparent_48%),linear-gradient(180deg,#0f172a 0%,#0b1020 100%)] pointer-events-none z-0" />
 
-        <div className="relative z-10 max-w-lg mx-auto space-y-6">
-          <div className="inline-flex items-center justify-center p-4 rounded-3xl bg-amber-500/10 border border-amber-500/30 text-amber-400 shadow-xl shadow-amber-500/5">
-            <Crown className="w-10 h-10 animate-pulse" />
+        <div className="relative z-10 max-w-2xl mx-auto space-y-5">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-slate-900/90 border border-amber-400/30 text-amber-300 shadow-lg shadow-amber-500/10">
+            <ShieldCheck className="w-7 h-7" />
           </div>
 
           <div className="space-y-2">
@@ -87,14 +87,14 @@ export default function PremiumFeatureGuard({
               <span>{l(`ميزة حصرية لباقة (${requiredTier}) فأعلى`, `Exclusive Feature (${requiredTier}+)`)}</span>
             </div>
 
-            <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+            <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-tight">
               {l(featureNameAr, featureNameEn)}
             </h2>
 
             <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
               {!isAuthenticated
                 ? l(
-                    `هذه الميزة تتطلب تسجيل الدخول واشتراكاً نشطاً في باقة ${requiredTier} فأعلى. سجّل دخولك الآن للاستفادة الكاملة مع حماية وأمان مصرفي شامل.`,
+                    `هذه الميزة تتطلب تسجيل الدخول واشتراكًا نشطًا في باقة ${requiredTier} فأعلى. سجّل دخولك الآن للاستفادة الكاملة مع حماية وأمان مصرفي شامل.`,
                     `This capability requires signing in with an active ${requiredTier} plan or higher. Sign in or register now for instant access.`
                   )
                 : l(
@@ -105,14 +105,14 @@ export default function PremiumFeatureGuard({
           </div>
 
           {/* Feature bullets */}
-          <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 text-start space-y-2 text-xs text-slate-300">
+          <div className="grid gap-2.5 sm:grid-cols-3 p-4 sm:p-5 rounded-2xl bg-slate-900/70 border border-slate-700/80 text-start text-xs text-slate-300">
             {[
-              { ar: 'فحص وتدقيق تشريعي دقيق بأطر القوانين الموضوعية المعتمدة', en: 'Statutory cross-border audit under certified substantive legal codes' },
+              { ar: 'فحص وتدقيق تشريعي دقيق عبر الحدود وفق أطر القوانين الموضوعية المعتمدة', en: 'Statutory cross-border audit under certified substantive legal codes' },
               { ar: 'محاكاة النزاعات وتحديد مصائد المسؤولية المالية غير المحدودة', en: 'Dispute simulation & uncapped liability trap diagnostics' },
-              { ar: 'تصدير وثائق Word & PDF رسمية مع أختام مشفرة بـ SHA-256', en: 'Official Word & PDF document generation with SHA-256 digital seals' },
+              { ar: 'تصدير وثائق Word وPDF رسمية مع أختام مشفرة بـ SHA-256', en: 'Official Word & PDF document generation with SHA-256 digital seals' },
             ].map((item, i) => (
-              <div key={i} className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+              <div key={i} className="flex items-start gap-2.5 min-w-0">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                 <span>{l(item.ar, item.en)}</span>
               </div>
             ))}
@@ -148,7 +148,7 @@ export default function PremiumFeatureGuard({
             )}
           </div>
 
-          <div className="flex items-center justify-center gap-4 text-[11px] text-slate-500">
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[11px] text-slate-500">
             <span className="flex items-center gap-1">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
               <span>{l('تشفير بنكي TLS 1.3 وحماية كاملة', 'TLS 1.3 Bank-Grade Encryption')}</span>

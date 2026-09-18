@@ -83,7 +83,7 @@ export default function GlobalTrafficGrowthBanner() {
               <span className="text-[10px] text-slate-300">{isRtl ? 'عميل جديد اليوم' : 'New Clients Today'}</span>
             </div>
 
-            {/* QA & CRM Control Buttons — Restricted ONLY to Super Admin (drzyogo.ca@gmail.com) */}
+            {/* QA & CRM Control Buttons — Restricted ONLY to Super Admin (founder@juristech.solutions) */}
             {isOfficialAdmin && (
               <>
                 <button

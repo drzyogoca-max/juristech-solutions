@@ -22,7 +22,7 @@ export default function MasterAdminToolbar() {
     return null;
   }
 
-  const displayEmail = user?.email || (typeof window !== 'undefined' ? sessionStorage.getItem('juristech_admin_email') : null) || 'drzyogo.ca@gmail.com';
+  const displayEmail = user?.email || (typeof window !== 'undefined' ? sessionStorage.getItem('juristech_admin_email') : null) || 'founder@juristech.solutions';
 
   return (
     <>

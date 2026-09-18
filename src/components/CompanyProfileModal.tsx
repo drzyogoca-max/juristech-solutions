@@ -27,9 +27,6 @@ export default function CompanyProfileModal({ isOpen, onClose, onUpdate }: Props
     }
   }, [isOpen]);
 
-
-  if (!isOpen) return null;
-
   function handleLogoUpload(e: ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -136,6 +133,8 @@ export default function CompanyProfileModal({ isOpen, onClose, onUpdate }: Props
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
   }, [onClose]);
+
+  if (!isOpen) return null;
 
   return (
     <div

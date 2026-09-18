@@ -1,6 +1,6 @@
 # JurisTech Solutions Official Security Disclosure & Email Policy (RFC 9116)
-Contact: mailto:Drzyogo.ca@gmail.com
-Contact: mailto:juristech.solutions@outlook.com
+Contact: mailto:founder@juristech.solutions
+Contact: mailto:founder@juristech.solutions
 Contact: https://wa.me/201126674337
 Expires: 2027-12-31T23:59:59.000Z
 Encryption: https://www.juristech.solutions/vault
@@ -10,4 +10,4 @@ Policy: https://www.juristech.solutions/privacy
 
 # Email Authentication Mandate (Anti-Spoofing & SPF/DKIM/DMARC)
 # SPF Record: v=spf1 include:spf.protection.outlook.com include:_spf.google.com include:sendgrid.net include:resend.dev ~all
-# DMARC Policy: v=DMARC1; p=quarantine; sp=quarantine; pct=100; rua=mailto:dmarc-reports@juristech.solutions,mailto:Drzyogo.ca@gmail.com;
+# DMARC Policy: v=DMARC1; p=quarantine; sp=quarantine; pct=100; rua=mailto:dmarc-reports@juristech.solutions,mailto:founder@juristech.solutions;

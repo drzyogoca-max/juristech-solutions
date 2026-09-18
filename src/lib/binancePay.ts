@@ -20,7 +20,7 @@ export const BINANCE_PAY_CONFIG: BinancePayMerchantConfig = {
   apiEndpoint: 'https://bpay.binanceapi.com/binancepay/openapi/v2/order',
 };
 
-/** Static QR Code image path served from /public — User-444da (Drzyogo.ca@gmail.com) */
+/** Static QR Code image path served from /public — User-444da (founder@juristech.solutions) */
 export const BINANCE_PAY_STATIC_QR_PATH = '/binance-qr-user444da.webp';
 
 

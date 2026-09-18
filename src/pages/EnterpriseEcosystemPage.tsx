@@ -84,9 +84,9 @@ export default function EnterpriseEcosystemPage() {
   // Compliance Export State
   const [exportPackage, setExportPackage] = useState<ComplianceExportPackage | null>(null);
 
-  const handleCreateKey = () => {
+  const handleCreateKey = async () => {
     if (!newKeyName.trim()) return;
-    const result = apiKeyManager.createApiKey({
+    const result = await apiKeyManager.createApiKey({
       organizationId: selectedOrgId,
       name: newKeyName.trim(),
       environment: 'live',

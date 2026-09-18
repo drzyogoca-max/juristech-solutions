@@ -8,6 +8,7 @@
  */
 
 export const config = {
+  runtime: 'nodejs',
   matcher: ['/:path*'],
 };
 

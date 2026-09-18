@@ -26,7 +26,7 @@ export default function Footer() {
       dir={isRtl ? 'rtl' : 'ltr'}
       className="bg-slate-950 text-slate-300 border-t border-slate-800/80 pt-12 pb-32 lg:pb-12 px-4 sm:px-6 lg:px-8 mt-auto font-sans"
     >
-      <div className="max-w-7xl mx-auto space-y-8">
+      <div className="max-w-7xl mx-auto space-y-8 overflow-hidden">
         {/* 1. Brand & Value Proposition Row */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-slate-800/80 pb-8">
           <div className="flex items-center gap-3">
@@ -254,7 +254,7 @@ export default function Footer() {
               <span>Twitter</span>
             </a>
             <span className="text-emerald-400 font-bold ml-1">● {l('مشفر E2EE', 'E2EE Encrypted')}</span>
-            <span className="font-mono text-cyan-400 font-bold">v10.9.0</span>
+            <span className="font-mono text-teal-400 font-bold">JurisTech Platform</span>
           </div>
         </div>
       </div>

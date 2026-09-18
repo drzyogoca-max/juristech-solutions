@@ -21,6 +21,7 @@ import { classifyUserIntent } from '../services/aiIntentClassifier';
 import { supabase } from '../lib/supabaseClient';
 import VoiceInput from './VoiceInput';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../lib/authContext';
 import { searchRAGDatabase } from '../data/ragDatabase';
 import { trackChatInteraction } from '../lib/marketingTracker';
 import { smartContractDataLake } from '../services/smartContractDataLake';
@@ -53,6 +54,7 @@ export default function AIChatbotConcierge() {
   const platformLang = (i18n.language || 'ar') as SupportedLanguage;
   const isRtl = platformLang === 'ar';
   const navigate = useNavigate();
+  const { isAuthenticated, isAdmin } = useAuth();
 
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
@@ -214,15 +216,17 @@ export default function AIChatbotConcierge() {
     // ── Classify Intent & Log Lead to Supabase ─────────────────────────────
     try {
       const intentResult = classifyUserIntent(userText || currentAttachedText || '');
-      // Save lead to Supabase for daily audit & conversion tracking (fire-and-forget)
-      void (async () => {
-        try {
-          await supabase.from('chat_messages').insert({
-            content: `[CHATBOT_LEAD] Intent:${intentResult.intent} | Category:${intentResult.leadCategory} | Query: ${(userText || '').substring(0, 200)}`,
-            role: 'user',
-          });
-        } catch { /* silent fail — non-critical */ }
-      })();
+      // Persist chatbot audit only for authenticated users/admins.
+      if (isAuthenticated || isAdmin) {
+        void (async () => {
+          try {
+            await supabase.from('chat_messages').insert({
+              content: `CHATBOT_LEAD Intent:${intentResult.intent} | Category:${intentResult.leadCategory} | Query: ${(userText || '').substring(0, 200)}`,
+              role: 'user',
+            });
+          } catch { /* non-critical audit persistence */ }
+        })();
+      }
     } catch {}
 
     try {

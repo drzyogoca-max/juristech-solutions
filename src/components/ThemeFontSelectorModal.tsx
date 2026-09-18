@@ -41,8 +41,6 @@ export default function ThemeFontSelectorModal({ isOpen, onClose }: Props) {
     }
   }, [isOpen]);
 
-  if (!isOpen) return null;
-
   function updateConfig(newMode: ThemeMode, newBg: ThemeBackground, newFont: AppFont, newSize: FontSizeScale) {
     setMode(newMode);
     setActiveBg(newBg);
@@ -146,7 +144,7 @@ export default function ThemeFontSelectorModal({ isOpen, onClose }: Props) {
                 <Moon className="w-5 h-5 text-cyan-400" />
                 <div>
                   <span className="font-extrabold text-xs block">{isRtl ? 'الوضع المعتم (Dark Mode)' : 'Dark Mode'}</span>
-                  <span className="text-[10px] opacity-70 block">{isRtl ? 'مظهر سلايت ورؤية سيبرانية فخمة' : 'Cyber Slate & Obsidian'}</span>
+                  <span className="text-[10px] opacity-70 block">{isRtl ? 'مظهر Slate ورؤية سيبرانية فاخرة' : 'Cyber Slate & Obsidian'}</span>
                 </div>
               </div>
               {mode === 'dark' && <Check className="w-4 h-4 text-cyan-400" />}
@@ -239,7 +237,7 @@ export default function ThemeFontSelectorModal({ isOpen, onClose }: Props) {
         <div className="space-y-3 pt-2">
           <label className="text-xs font-extrabold text-slate-900 dark:text-slate-200 flex items-center gap-2">
             <Palette className="w-4 h-4 text-cyan-500" />
-            <span>{isRtl ? 'اختر النمط الملون للخلفية (UI Accent Theme):' : 'Select UI Accent Theme:'}</span>
+            <span>{isRtl ? 'اختر النمط اللوني للخلفية (UI Accent Theme):' : 'Select UI Accent Theme:'}</span>
           </label>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {(Object.keys(THEME_BACKGROUNDS) as ThemeBackground[])
@@ -247,7 +245,9 @@ export default function ThemeFontSelectorModal({ isOpen, onClose }: Props) {
               .map((bgKey) => {
                 const bg = THEME_BACKGROUNDS[bgKey];
                 const isSelected = activeBg === bgKey;
-                return (
+                if (!isOpen) return null;
+
+  return (
                   <button
                     key={bgKey}
                     onClick={() => handleSelectBg(bgKey)}

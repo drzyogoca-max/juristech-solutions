@@ -1,15 +1,15 @@
 import React, { useEffect, useState, lazy, Suspense, Fragment } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import VercelAnalyticsWrapper from './components/VercelAnalyticsWrapper';
-import SpeedInsightsWrapper from './components/VercelSpeedInsights';
+const VercelAnalyticsWrapper = lazy(() => import('./components/VercelAnalyticsWrapper'));
+const SpeedInsightsWrapper = lazy(() => import('./components/VercelSpeedInsights'));
 import Navbar from './components/Navbar';
 import StepWorkflowBanner from './components/StepWorkflowBanner';
 import LegalDisclaimerBanner from './components/LegalDisclaimerBanner';
 import ProtectedAdminRoute from './components/ProtectedAdminRoute';
 import ErrorBoundary from './components/ErrorBoundary';
 import Footer from './components/Footer';
-import MobileBottomNav from './components/MobileBottomNav';
+import MobileBottomNav from './components/MobileBottomNavClean';
 import { AuthProvider, useAuth } from './lib/authContext';
 import { SaaSProvider } from './context/SaaSContext';
 import { ContractProvider } from './context/ContractContext';
@@ -23,9 +23,11 @@ import { Loader2 } from 'lucide-react';
 import { usePlatformLocale } from './lib/universalTranslator';
 import { getLocaleFromUrl, setDocumentLanguage, persistLocalePreference, normalizeLanguageCode } from './i18n';
 import { FEATURE_FLAGS } from './config/featureFlags';
+import { initVersionManager } from './lib/versionManager';
 
 // ── Lazy Loaded Page Components for Minimal Initial Bundle Size & 95+ Performance ──
 const Dashboard = lazy(() => import('./pages/Dashboard'));
+const LandingPage = lazy(() => import('./pages/LandingPage'));
 const ChatPage = lazy(() => import('./pages/ChatPage'));
 const AIAdvisorPage = lazy(() => import('./pages/AIAdvisorPage'));
 const AdminAIAnalyticsPage = lazy(() => import('./pages/AdminAIAnalyticsPage'));
@@ -150,7 +152,9 @@ function MainAppContent() {
 
   // ── Defer Auxiliary Floating Widgets (Chatbot, Radar) for High Speed Insights ──
   useEffect(() => {
-    const timer = setTimeout(() => setShowAuxWidgets(true), 3000);
+    // Keep conversion/telemetry widgets out of the critical rendering window.
+    // They still mount immediately on genuine user interaction, or after a generous idle delay.
+    const timer = setTimeout(() => setShowAuxWidgets(true), 12000);
 
     const triggerMount = () => {
       setShowAuxWidgets(true);
@@ -181,7 +185,6 @@ function MainAppContent() {
     // These do not make external calls, do not run loops, and are safe in browser.
     const runCategoryA = async () => {
       try {
-        const { initVersionManager } = await import('./lib/versionManager');
         const { enforceArchiveModeGuard } = await import('./lib/archiveModeGuard');
         const { ProactiveAlertsEngine } = await import('./lib/proactiveAlertsEngine');
 
@@ -302,7 +305,7 @@ function MainAppContent() {
               {/* Common Single-Source-of-Truth Route Definitions */}
               {[ '', '/:locale' ].map((prefix) => (
                 <Fragment key={prefix || 'root'}>
-                  <Route path={`${prefix}/`} element={<Navigate to={`${prefix ? prefix + '/dashboard' : '/dashboard'}`} replace />} />
+                  <Route path={`${prefix}/`} element={<LandingPage />} />
                   <Route path={`${prefix}/dashboard`} element={<Dashboard />} />
                   <Route path={`${prefix}/ai-advisor`} element={<AIAdvisorPage />} />
                   <Route path={`${prefix}/chat`} element={<AIAdvisorPage />} />
@@ -724,12 +727,9 @@ function MainAppContent() {
           </Suspense>
         </main>
 
-          <Suspense fallback={null}>
-            <LeadCaptureModal />
-          </Suspense>
-
           {showAuxWidgets && (
             <Suspense fallback={null}>
+              <LeadCaptureModal />
               <VisitorRadar />
               <AIChatbotConcierge />
               <GdprPrivacyBanner />

@@ -15,7 +15,7 @@ const AUTHORIZED_PASSCODE_HASHES = [
   '8395562ef6c41b8a531b26fa05d0e2e5f3964ff00e57208d1f2e1dfc28258e72', // SHA-256 of 505275
 ];
 
-const TARGET_OFFICIAL_EMAIL = 'drzyogo.ca@gmail.com';
+const TARGET_OFFICIAL_EMAIL = 'founder@juristech.solutions';
 
 async function hashSHA256(text: string): Promise<string> {
   const encoder = new TextEncoder();

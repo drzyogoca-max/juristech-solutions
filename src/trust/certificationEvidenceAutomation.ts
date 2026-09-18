@@ -4,8 +4,9 @@
  * JurisTech Solutions — Certification Evidence Automation
  * Specification: Task 22.2
  *
- * Automates the compilation and cryptographic anchoring of compliance evidence
- * bundles for enterprise security questionnaires, RFPs, and external audit bodies.
+ * Automates the compilation of compliance evidence bundles for enterprise
+ * security questionnaires, RFPs, and external audit bodies. Cryptographic
+ * digests are not asserted until evidence is actually assembled and hashed.
  *
  * STRICT GOVERNANCE RULE:
  *  • Evidence Packaging -> Proof Generation -> Human / Auditor Review -> External Process
@@ -56,12 +57,12 @@ class CertificationEvidenceAutomation {
         bundleTitleAr: 'حزمة إثباتات وضوابط الآيزو 27001:2022 الملحق أ (93 ضابطاً)',
         standardType: 'ISO_27001_ANNEX_A',
         controlCount: 93,
-        cryptographicBundleHash: 'cert_bundle_sha512_iso93_99182736450192837465019283746501928374',
+        cryptographicBundleHash: 'NOT_COMPUTED_UNTIL_EVIDENCE_DIGESTED',
         readinessLevelPct: 0,
         compilationTimestamp: '2026-02-26T08:00:00.000Z',
         humanAuditorReviewRequired: true,
         externalAccreditationRequired: true,
-        nonRetentionCertified: true,
+        nonRetentionCertified: false,
       },
       {
         bundleId: 'eb_sdaia_ethics_matrix',
@@ -69,12 +70,12 @@ class CertificationEvidenceAutomation {
         bundleTitleAr: 'حزمة إثباتات المبادئ السبعة لأخلاقيات الذكاء الاصطناعي (سدايا)',
         standardType: 'SDAIA_AI_ETHICS_MATRIX',
         controlCount: 28,
-        cryptographicBundleHash: 'cert_bundle_sha512_sdaia28_102938475610293847561029384756102938',
+        cryptographicBundleHash: 'NOT_COMPUTED_UNTIL_EVIDENCE_DIGESTED',
         readinessLevelPct: 0,
         compilationTimestamp: '2026-02-26T08:00:00.000Z',
         humanAuditorReviewRequired: true,
         externalAccreditationRequired: true,
-        nonRetentionCertified: true,
+        nonRetentionCertified: false,
       },
       {
         bundleId: 'eb_soc2_trust_services',
@@ -82,12 +83,12 @@ class CertificationEvidenceAutomation {
         bundleTitleAr: 'حزمة إثباتات فئات خدمات الثقة الخمس لمعيار SOC 2 Type II',
         standardType: 'SOC2_TRUST_SERVICES_CRITERIA',
         controlCount: 45,
-        cryptographicBundleHash: 'cert_bundle_sha512_soc45_8819203e847192839918273645019283746501',
+        cryptographicBundleHash: 'NOT_COMPUTED_UNTIL_EVIDENCE_DIGESTED',
         readinessLevelPct: 0,
         compilationTimestamp: '2026-02-26T08:00:00.000Z',
         humanAuditorReviewRequired: true,
         externalAccreditationRequired: true,
-        nonRetentionCertified: true,
+        nonRetentionCertified: false,
       },
     ];
 
@@ -102,19 +103,19 @@ class CertificationEvidenceAutomation {
     standardType: CertificationStandardType;
     controlCount: number;
   }): AutomatedEvidenceBundle {
-    const bundleId = `bundle_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+    const bundleId = `bundle_${Date.now()}`;
     const bundle: AutomatedEvidenceBundle = {
       bundleId,
       bundleTitleEn: params.bundleTitleEn,
       bundleTitleAr: params.bundleTitleAr,
       standardType: params.standardType,
       controlCount: params.controlCount,
-      cryptographicBundleHash: `cert_bundle_sha512_${Date.now().toString(16)}${Math.random().toString(36).substring(2, 10)}`,
+      cryptographicBundleHash: 'NOT_COMPUTED_UNTIL_EVIDENCE_DIGESTED',
       readinessLevelPct: 0,
       compilationTimestamp: new Date().toISOString(),
       humanAuditorReviewRequired: true,
       externalAccreditationRequired: true,
-      nonRetentionCertified: true,
+      nonRetentionCertified: false,
     };
     this.bundles.set(bundleId, bundle);
     return bundle;

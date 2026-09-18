@@ -66,8 +66,8 @@ export const GLOBAL_LEGAL_KNOWLEDGE_BASE: LegalStatute[] = [
     contentEn: 'The court may, upon debtor request, adjust agreed damages to match actual proven direct loss. Any agreement to the contrary imposing disproportionate penalty is null and void.',
     relevanceKeywords: ['غرامة', 'تأخير', 'penalty', 'late fee', 'تعويض', '10%', 'unlimited', 'دون حد أقصى'],
     riskSeverityDefault: 'Critical',
-    precedentSummaryAr: 'المحاكم التجارية السعودية تقضي بإلغاء الغرامات التراكمية الفاحشة وتقليصها إلى سقف لا يتجاوز 5% - 10% من قيمة الالتزام المباشر.',
-    precedentSummaryEn: 'Saudi Commercial Courts strike down compounding penalty traps exceeding 5-10% of total direct obligation value.',
+    precedentSummaryAr: 'يجب التحقق من السوابق والأحكام ذات الصلة من مصدر رسمي قبل الاعتماد على هذا الملخص.',
+    precedentSummaryEn: 'Verify relevant judgments from an official source before relying on this summary.',
   },
 
   // 2. UAE & DIFC/ADGM
@@ -411,7 +411,7 @@ export function legalDraftingAgent(
  */
 export async function executeAgenticLegalRAG(
   clauseText: string,
-  targetJurisdictionCode: string = 'SA',
+  targetJurisdictionCode: string = 'UNKNOWN',
   isRtl: boolean = true
 ): Promise<AgenticRAGResponse> {
   // Step 1: Legal Research Agent Vector Retrieval
@@ -428,6 +428,6 @@ export async function executeAgenticLegalRAG(
     draftingAgentRedlineEn: drafting.redlineEn,
     legislativeVersion: '2026.Q3-15-JURISDICTIONS-GLOBAL-ACTIVE',
     timestamp: new Date().toISOString(),
-    confidenceScore: 99.2,
+    confidenceScore: statutes.length === 0 ? 0 : Math.min(1, statutes.length / 3),
   };
 }

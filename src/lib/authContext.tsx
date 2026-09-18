@@ -268,7 +268,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }
 
   async function verify2FATokenSession(token: string): Promise<boolean> {
-    const targetEmail = user?.email || sessionStorage.getItem('juristech_admin_email') || 'drzyogo.ca@gmail.com';
+    const targetEmail = user?.email || sessionStorage.getItem('juristech_admin_email') || 'founder@juristech.solutions';
     if (!isAuthorizedAdminEmail(targetEmail)) {
       return false;
     }

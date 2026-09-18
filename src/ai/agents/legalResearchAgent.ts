@@ -74,7 +74,7 @@ export class LegalResearchAgent {
       return { statutes: [], citations: [], jurisdiction: options.forceJurisdiction, domain, confidenceScore: 0.2, confidenceCalculation: 'evidence_based', sourceVerificationStatus: 'SOURCE_NOT_VERIFIED', groundingStatus: 'REQUIRES_VERIFICATION', jurisdictionSafetyStatus: 'JURISDICTION_REQUIRED', clarificationRequired: true, clarificationPrompt: isAr ? 'يوجد تعارض بين الاختصاص المحدد ونص الطلب. يرجى تأكيد الدولة أو الاختصاص القضائي قبل الصياغة.' : 'The selected jurisdiction conflicts with the jurisdiction stated in the request. Please confirm the governing jurisdiction before drafting.' };
     }
     // 2. Jurisdiction Safety Check (Task 2-E)
-    if (jurisdiction === 'UNKNOWN' && !query.toLowerCase().includes('international') && query.split(' ').length > 7) {
+    if (jurisdiction === 'UNKNOWN') {
       const prompt = isAr
         ? 'يرجى تحديد الدولة أو الولاية القضائية المعنية (مثل: السعودية، الإمارات، مصر، الأردن، بريطانيا، أمريكا) لضمان دقة الاستناد التشريعي.'
         : 'Please specify the governing country or legal jurisdiction (e.g., Saudi Arabia, UAE, Egypt, UK, US Delaware) to ensure accurate statutory grounding.';

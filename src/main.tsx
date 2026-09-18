@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import './i18n';
 import './index.css';
+import './styles/public-ux-overrides.css';
 import { initVersionManager, CURRENT_APP_VERSION } from './lib/versionManager';
 
 // Initialize version manager & cache purging for instant global updates

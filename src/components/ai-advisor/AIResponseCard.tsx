@@ -37,7 +37,7 @@ interface AIResponseCardProps {
 export const AIResponseCard: React.FC<AIResponseCardProps> = ({
   content,
   confidenceScore = 0.9,
-  sourceVerificationStatus = 'VERIFIED',
+  sourceVerificationStatus = 'SOURCE_NOT_VERIFIED',
   jurisdiction = 'UNKNOWN',
   citations = [],
   clarificationRequired = false,
@@ -78,7 +78,7 @@ export const AIResponseCard: React.FC<AIResponseCardProps> = ({
     },
   };
 
-  const statusBadge = verificationBadgeMap[sourceVerificationStatus] || verificationBadgeMap.VERIFIED;
+  const statusBadge = verificationBadgeMap[sourceVerificationStatus] || verificationBadgeMap.SOURCE_NOT_VERIFIED;
   const StatusIcon = statusBadge.icon;
 
   return (

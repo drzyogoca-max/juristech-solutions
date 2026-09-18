@@ -141,31 +141,16 @@ export class ContextualLexicalSearchProvider implements ISemanticSearchProvider 
       return { statute, relevanceScore, matchedKeywords: matched, matchType };
     });
 
-    let filtered = scored;
-    if (options.jurisdiction && options.jurisdiction !== 'UNKNOWN') {
-      const jf = scored.filter(r => r.statute.jurisdictionCode === options.jurisdiction);
-      if (jf.length > 0) filtered = jf;
-    }
+    // Jurisdiction isolation is mandatory: never fall back to another country's law.
+    // International sources are retrieved only when explicitly requested as INTL.
+    const filtered = options.jurisdiction && options.jurisdiction !== 'UNKNOWN'
+      ? scored.filter(r => r.statute.jurisdictionCode === options.jurisdiction)
+      : scored;
 
-    const results = filtered
+    return filtered
       .filter(r => r.relevanceScore >= minScore)
       .sort((a, b) => b.relevanceScore - a.relevanceScore)
       .slice(0, topK);
-
-    // If zero results but explicit jurisdiction was requested, provide jurisdiction's anchor statute
-    if (results.length === 0 && options.jurisdiction && options.jurisdiction !== 'UNKNOWN') {
-      const anchor = GLOBAL_LEGAL_KNOWLEDGE_BASE.find(s => s.jurisdictionCode === options.jurisdiction);
-      if (anchor) {
-        return [{
-          statute: anchor,
-          relevanceScore: 0.35,
-          matchedKeywords: ['jurisdiction_anchor'],
-          matchType: 'jurisdiction_anchor',
-        }];
-      }
-    }
-
-    return results;
   }
 }
 

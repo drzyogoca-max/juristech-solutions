@@ -74,7 +74,7 @@ export default function AcquisitionPage() {
     - Deal Value: $${formatNum(formData.dealValueUSD)} USD
     - Structure: ${formData.dealType.toUpperCase()}
     - Governing Law: ${formData.governingLaw}
-    - Escrow: ${formData.escrowRequired ? 'Required via JurisTech Smart Escrow' : 'Direct payment'}
+    - Escrow: ${formData.escrowRequired ? 'Requested — not activated' : 'Direct payment'}
     - Jurisdiction: ${formData.jurisdiction.toUpperCase()}
 
     Stipulate full compliance with:
@@ -102,7 +102,7 @@ GOVERNING JURISDICTION: ${formData.jurisdiction.toUpperCase()} (${formData.gover
 2. TRANSACTION STRUCTURE & VALUE (هيكل القيمة المالية والمعاملة)
 - Purchase Type: ${formData.dealType === 'share_purchase' ? 'Share Purchase Agreement (SPA)' : formData.dealType === 'asset_purchase' ? 'Asset Purchase Agreement (APA)' : 'Statutory Merger'}
 - Transaction Value (قيمة الصفقة): $${formatNum(formData.dealValueUSD)} USD
-- Smart Escrow Layer: ${formData.escrowRequired ? 'ACTIVE (مفعّل عبر حساب الضمان القانوني لـ JurisTech)' : 'DIRECT BANK WIRE'}
+- Smart Escrow Layer: ${formData.escrowRequired ? 'REQUESTED — NOT ACTIVATED' : 'DIRECT BANK WIRE'}
 
 3. CONDITIONS PRECEDENT & DUE DILIGENCE (شروط الفحص والتدقيق النافي للجهالة)
 - Standard 30-day Due Diligence window covering IP ownership, employee vesting, and tax liabilities.
@@ -159,11 +159,11 @@ Draft generated locally; no external registry or certification is asserted.
               {isRtl ? 'منصة هيكلة وتنفيذ صفقات الاستحواذ العالمية' : 'Global M&A & Corporate Acquisition Hub'}
             </h1>
             <p className="text-xs text-slate-400">
-              {isRtl ? 'متوافقة بالكامل مع أنظمة Delaware DGCL، قوانين الشركات في المملكة المتحدة ولوائح هيئة سوق المال في الخليج.' : 'Compliant with US Delaware DGCL, UK Companies Act, and GCC statutory Takeover codes.'}
+              {isRtl ? 'تستخدم أطرًا مرجعية لهذه الولايات القضائية؛ يلزم التحقق القانوني المحلي قبل الاعتماد أو التنفيذ.' : 'Uses jurisdiction-specific reference frameworks; local legal verification is required before reliance or execution.'}
             </p>
           </div>
           <span className="px-3.5 py-2 rounded-2xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 text-xs font-mono font-bold">
-            ● SEC & DFSA Regulated
+            ● Regulatory review required
           </span>
         </div>
 
@@ -324,7 +324,7 @@ Draft generated locally; no external registry or certification is asserted.
                 <div className="flex items-center justify-between p-4 rounded-2xl bg-slate-950 border border-slate-850">
                   <div>
                     <span className="font-bold text-xs text-white block">{isRtl ? 'تفعيل حساب الضمان لـ JurisTech' : 'Use JurisTech Escrow Account'}</span>
-                    <span className="text-[10px] text-slate-500 block">{isRtl ? 'تأمين تحويل المبالغ المالية فور إثبات شروط ما قبل الغلق.' : 'Secures funds until pre-closing Conditions Precedent are cleared.'}</span>
+                    <span className="text-[10px] text-slate-500 block">{isRtl ? 'خيار مقترح؛ يتطلب تفعيلًا وموافقةً منفصلين قبل أي تحويل أموال.' : 'Proposed option; separate activation and approval are required before any funds transfer.'}</span>
                   </div>
                   <input
                     type="checkbox"
@@ -346,20 +346,20 @@ Draft generated locally; no external registry or certification is asserted.
                   <span>{isRtl ? 'قائمة الفحص والتدقيق القانوني النافي للجهالة' : 'M&A Due Diligence Checklist'}</span>
                 </h3>
                 <p className="text-xs text-slate-400 mt-1">
-                  {isRtl ? 'تتحقق المنصة آلياً من المستندات ضد الأنظمة الدولية لضمان سلامة الملكية الفكرية وسندات التأسيس.' : 'Sovereign RAG scanning ensures compliance with intellectual property and tax liabilities.'}
+                  {isRtl ? 'هذه قائمة فحص إرشادية؛ لا تُعد البنود ناجحة إلا بعد تقديم الأدلة وإتمام المراجعة القانونية المختصة.' : 'This is a guidance checklist; items are not treated as passed until evidence is provided and qualified legal review is completed.'}
                 </p>
               </div>
 
               <div className="space-y-3 font-mono text-xs">
                 {[
-                  { labelAr: 'التحقق من خلو الشركة من الديون الضريبية والالتزامات غير المسجلة', labelEn: 'Verification of tax clearances & undisclosed liabilities', ok: true },
-                  { labelAr: 'سلامة ملكية الأصول الرقمية والملكية الفكرية والتنازلات البرمجية', labelEn: 'IP ownership covenants & developer assignments clean check', ok: true },
-                  { labelAr: 'مراجعة عقود الموظفين الرئيسيين وتفعيل قيود عدم المنافسة', labelEn: 'Key employee contracts & non-compete statutory covenants', ok: true },
-                  { labelAr: 'مطابقة لوائح مكافحة غسيل الأموال ومرجعية المستفيد الحقيقي (UBO)', labelEn: 'AML/KYC vetting & Ultimate Beneficial Owner registry matching', ok: true },
+                  { labelAr: 'التحقق من خلو الشركة من الديون الضريبية والالتزامات غير المسجلة', labelEn: 'Tax clearances & undisclosed liabilities — evidence required', ok: false },
+                  { labelAr: 'سلامة ملكية الأصول الرقمية والملكية الفكرية والتنازلات البرمجية', labelEn: 'IP ownership & developer assignments — evidence required', ok: false },
+                  { labelAr: 'مراجعة عقود الموظفين الرئيسيين وتفعيل قيود عدم المنافسة', labelEn: 'Key employee contracts & non-compete review — pending', ok: false },
+                  { labelAr: 'مطابقة لوائح مكافحة غسيل الأموال ومرجعية المستفيد الحقيقي (UBO)', labelEn: 'AML/KYC & UBO matching — pending verification', ok: false },
                 ].map((item, i) => (
                   <div key={i} className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-between">
                     <span className="text-slate-300 pr-4">{isRtl ? item.labelAr : item.labelEn}</span>
-                    <span className="px-2.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-bold">Passed</span>
+                    <span className="px-2.5 py-0.5 rounded bg-amber-500/10 text-amber-400 text-[10px] font-bold">Pending Evidence</span>
                   </div>
                 ))}
               </div>
@@ -371,7 +371,7 @@ Draft generated locally; no external registry or certification is asserted.
                   className="w-full flex items-center justify-center gap-2.5 py-4 rounded-2xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-base shadow-xl transition-all active:scale-98 disabled:opacity-50"
                 >
                   {submitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Zap className="w-5 h-5" />}
-                  <span>{isRtl ? 'إصدار ميثاق صفقة الاستحواذ الموثق (Term Sheet)' : 'Generate M&A Term Sheet'}</span>
+                  <span>{isRtl ? 'إنشاء مسودة ميثاق صفقة الاستحواذ (Term Sheet)' : 'Generate Draft M&A Term Sheet'}</span>
                 </button>
               </div>
             </div>
@@ -384,10 +384,10 @@ Draft generated locally; no external registry or certification is asserted.
                 <div>
                   <h3 className="text-lg font-bold text-white flex items-center gap-2">
                     <Award className="w-5 h-5 text-amber-400" />
-                    <span>{isRtl ? 'ميثاق الاستحواذ الموثق رقمياً (Term Sheet)' : 'Cryptographic M&A Term Sheet'}</span>
+                    <span>{isRtl ? 'مسودة ميثاق الاستحواذ (Term Sheet)' : 'Draft M&A Term Sheet'}</span>
                   </h3>
                   <p className="text-xs text-slate-400 mt-1">
-                    {isRtl ? 'هذا المستند مشفر برمجياً ومحمي ببصمة SHA-256 للمحافظة على سرية شروط المفاوضات.' : 'Cryptographically signed and archived within JurisTech sovereign ledger.'}
+                    {isRtl ? 'مسودة للمراجعة البشرية؛ لا يُدّعى وجود توقيع تشفيري أو اعتماد من سجل سيادي.' : 'Draft for human review; no cryptographic signing or sovereign-ledger certification is asserted.'}
                   </p>
                 </div>
                 <button

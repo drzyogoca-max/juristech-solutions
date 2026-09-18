@@ -8,7 +8,7 @@ const targetInstitutions = [
 
 async function launchCampaign() {
   console.log('🚀 [JurisTech CRM] Initiating B2B Marketing Campaign...');
-  console.log(`📧 Sender: juristech.solutions@outlook.com`);
+  console.log(`📧 Sender: founder@juristech.solutions`);
   console.log(`🎯 Targets: 50 Enterprise Leads (Tier 1 Law Firms & VCs)`);
   
   let successCount = 0;

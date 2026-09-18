@@ -19,8 +19,8 @@ const CORS_HEADERS = {
 };
 
 const OFFICIAL_ADMIN_EMAILS = [
-  'drzyogo.ca@gmail.com',
-  'juristech.solutions@outlook.com',
+  'founder@juristech.solutions',
+  'founder@juristech.solutions',
   'admin@juristech.solutions',
 ];
 
@@ -133,7 +133,7 @@ export async function POST(req) {
       id: `lead-staged-${Date.now()}`,
       leadCompanyId: leadCompanyId || `lead_${Date.now()}`,
       companyName: companyName || 'منشأة تجارية مستهدفة',
-      targetEmail: targetEmail || 'Drzyogo.ca@gmail.com',
+      targetEmail: targetEmail || 'founder@juristech.solutions',
       proposalContent: proposalContent || 'عرض الشراكة السيادية وإدارة المخاطر التعاقدية.',
       status: 'pending_admin_approval',
       createdAt: new Date().toISOString()

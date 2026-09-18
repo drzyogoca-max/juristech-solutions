@@ -29,7 +29,7 @@ export async function POST(req) {
     const authHeader = req.headers.get('Authorization') || req.headers.get('authorization') || '';
     const adminToken = req.headers.get('x-admin-token') || '';
 
-    const OFFICIAL_ADMIN_EMAILS = ['drzyogo.ca@gmail.com', 'juristech.solutions@outlook.com', 'admin@juristech.solutions'];
+    const OFFICIAL_ADMIN_EMAILS = ['founder@juristech.solutions', 'founder@juristech.solutions', 'admin@juristech.solutions'];
     let isAuthorized = false;
 
     const serverSecret = process.env.ADMIN_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '';

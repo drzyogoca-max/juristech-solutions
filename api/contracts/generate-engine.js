@@ -738,25 +738,25 @@ function getFallbackContractText(contractType, currency, arbitration, lang, jurP
 function getPaywallWarning(lang) {
   const warnings = {
     ar: "\n\n==================================================\n" +
-        "🔒 [تنبيه نظام الدفع]: لمعاينة واستكمال العقد كاملاً، يرجى التواصل عبر البريد الرسمي: juristech.solutions@outlook.com أو إتمام الاشتراك.\n" +
+        "🔒 [تنبيه نظام الدفع]: لمعاينة واستكمال العقد كاملاً، يرجى التواصل عبر البريد الرسمي: founder@juristech.solutions أو إتمام الاشتراك.\n" +
         "==================================================",
     en: "\n\n==================================================\n" +
-        "🔒 [PAYMENT GATEWAY LIMIT]: To view and retrieve the complete generated contract, please complete your subscription or email us at: juristech.solutions@outlook.com\n" +
+        "🔒 [PAYMENT GATEWAY LIMIT]: To view and retrieve the complete generated contract, please complete your subscription or email us at: founder@juristech.solutions\n" +
         "==================================================",
     fr: "\n\n==================================================\n" +
-        "🔒 [LIMITE DE PAIEMENT] : Pour voir et récupérer le contrat complet, veuillez finaliser votre abonnement ou nous contacter à : juristech.solutions@outlook.com\n" +
+        "🔒 [LIMITE DE PAIEMENT] : Pour voir et récupérer le contrat complet, veuillez finaliser votre abonnement ou nous contacter à : founder@juristech.solutions\n" +
         "==================================================",
     de: "\n\n==================================================\n" +
-        "🔒 [ZAHLUNGSLIMIT]: Um den vollständigen Vertrag anzuzeigen und herunterzuladen, schließen Sie bitte Ihr Abonnement ab oder kontaktieren Sie uns unter: juristech.solutions@outlook.com\n" +
+        "🔒 [ZAHLUNGSLIMIT]: Um den vollständigen Vertrag anzuzeigen und herunterzuladen, schließen Sie bitte Ihr Abonnement ab oder kontaktieren Sie uns unter: founder@juristech.solutions\n" +
         "==================================================",
     es: "\n\n==================================================\n" +
-        "🔒 [LÍMITE DE PAGO]: Para ver y descargar el contrato completo, complete su suscripción o escríbanos a: juristech.solutions@outlook.com\n" +
+        "🔒 [LÍMITE DE PAGO]: Para ver y descargar el contrato completo, complete su suscripción o escríbanos a: founder@juristech.solutions\n" +
         "==================================================",
     zh: "\n\n==================================================\n" +
-        "🔒【支付限制】：要查看并获取完整的合同内容，请完成您的订阅或联系我们的官方邮箱：juristech.solutions@outlook.com\n" +
+        "🔒【支付限制】：要查看并获取完整的合同内容，请完成您的订阅或联系我们的官方邮箱：founder@juristech.solutions\n" +
         "==================================================",
     tr: "\n\n==================================================\n" +
-        "🔒 [ÖDEME SINIRI]: Sözleşmenin tamamını görüntülemek ve indirmek için lütfen aboneliğinizi tamamlayın veya e-posta gönderin: juristech.solutions@outlook.com\n" +
+        "🔒 [ÖDEME SINIRI]: Sözleşmenin tamamını görüntülemek ve indirmek için lütfen aboneliğinizi tamamlayın veya e-posta gönderin: founder@juristech.solutions\n" +
         "=================================================="
   };
   return warnings[lang] || warnings.en;

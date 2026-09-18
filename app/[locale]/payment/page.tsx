@@ -33,7 +33,7 @@ export default function PaymentPage() {
           <h3 style={{ color: '#1e2329', marginBottom: '10px', fontSize: '18px', fontWeight: 'bold' }}>💳 الدفع الفوري عبر Binance Pay</h3>
           <p style={{ color: '#474d57', fontSize: '14px' }}>أتمم اشتراكك أو عقدك القانوني بسهولة وبدون أي رسوم إضافية عبر تحويل المبلغ إلى حسابنا الرسمي في بايننس:</p>
           <ul style={{ listStyle: 'none', padding: 0, margin: '15px 0' }}>
-            <li style={{ padding: '8px 0' }}><strong>حساب بايننس (Binance Email):</strong> <code style={{ background: '#eee', padding: '2px 6px', borderRadius: '4px', fontWeight: 'bold' }}>Drzyogo.ca@gmail.com</code></li>
+            <li style={{ padding: '8px 0' }}><strong>حساب بايننس (Binance Email):</strong> <code style={{ background: '#eee', padding: '2px 6px', borderRadius: '4px', fontWeight: 'bold' }}>founder@juristech.solutions</code></li>
           </ul>
           <span style={{ fontSize: '12px', color: '#848e9c', display: 'block' }}>* سيتم تفعيل اشتراكك تلقائياً وفوراً بمجرد تأكيد عملية التحويل.</span>
         </div>

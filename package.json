@@ -23,13 +23,14 @@
     "api:generate-docs": "node -e \"console.log('OpenAPI 3.0 Specification Documentation Generated successfully.')\"",
     "security:api-keys-gen": "echo Enterprise 256-bit API Key and Bearer Token Generator Ready.",
     "preview": "vite preview",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "security:truth-scan": "node scripts/security_truth_scan.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.110.7",
     "@types/nodemailer": "^8.0.1",
     "@vercel/analytics": "^2.0.1",
-    "@vercel/speed-insights": "^1.2.0",
+    "@vercel/speed-insights": "^2.0.0",
     "docx": "^9.7.1",
     "html2canvas": "^1.4.1",
     "i18next": "^23.11.5",
@@ -46,8 +47,12 @@
   "devDependencies": {
     "@types/react": "^18.2.64",
     "@types/react-dom": "^18.2.21",
+    "@typescript-eslint/eslint-plugin": "^8.70.0",
+    "@typescript-eslint/parser": "^8.70.0",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.18",
+    "eslint": "^10.10.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
     "postcss": "^8.4.35",
     "sharp": "^0.35.3",
     "svgo": "^4.0.2",

@@ -6,7 +6,7 @@
  *  1. Autonomous hourly execution (24/7 Cron Loops)
  *  2. Multi-Agent AI (SEO Specialist, Copywriter, Telemetry Analyst)
  *  3. Target High-Value Enterprise Markets (GCC, USA, Europe, India)
- *  4. Direct integration with official contact: Drzyogo.ca@gmail.com
+ *  4. Direct integration with official contact: founder@juristech.solutions
  *  5. 100% Real Operational Telemetry (Zero Mock Data)
  * ═══════════════════════════════════════════════════════════════════════════════
  */

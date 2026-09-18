@@ -18,10 +18,6 @@ export default function ReviewQueuePage() {
   const isRtl = i18n.language === 'ar';
   const { isAdmin } = useAuth();
 
-  if (!isAdmin) {
-    return <Forbidden403Page />;
-  }
-
   const [items, setItems] = useState<ReviewQueueItem[]>(() => getReviewQueueItems());
   const [activeFilter, setActiveFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('all');
   const [editingItem, setEditingItem] = useState<ReviewQueueItem | null>(null);
@@ -220,6 +216,10 @@ export default function ReviewQueuePage() {
     if (activeFilter === 'rejected') return i.status === 'rejected';
     return true;
   });
+
+  if (!isAdmin) {
+    return <Forbidden403Page />;
+  }
 
   return (
     <>

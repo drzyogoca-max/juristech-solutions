@@ -5,17 +5,21 @@ import { Sparkles, X, ArrowRight, MessageSquare } from 'lucide-react';
 import { recordPageView, getVisitorBehavior, generateSmartOutreach } from '../lib/visitorRadar';
 import { trackPageVisit, getSmartGreeting } from '../lib/aiPersonalization';
 import { useAuth } from '../lib/authContext';
+import { isAuthorizedAdminEmail } from '../lib/adminGuard';
 
 export default function VisitorRadar() {
   const { i18n } = useTranslation();
   const location = useLocation();
-  const { isAdmin } = useAuth();
+  const { isAdmin, loading: authLoading, user } = useAuth();
   const isRtl = i18n.language === 'ar';
 
   const [outreach, setOutreach] = useState<{ title: string; body: string; ctaText: string; ctaLink: string } | null>(null);
   const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
+    // Never run visitor acquisition/personalization workflows for platform admins.
+    if (authLoading || isAdmin || isAuthorizedAdminEmail(user?.email)) return;
+
     recordPageView(location.pathname);
     // AI Personalization Engine — tracks visit and updates persona profile
     trackPageVisit(location.pathname, i18n.language);
@@ -29,9 +33,11 @@ export default function VisitorRadar() {
     }, 4000);
 
     return () => clearTimeout(timer);
-  }, [location.pathname, isRtl, i18n.language]);
+  }, [location.pathname, isRtl, i18n.language, isAdmin, authLoading, user?.email]);
 
-  if (!isAdmin || !outreach || dismissed) return null;
+  // Platform owners/admins must never receive customer acquisition offers.
+  // Outreach is strictly for non-admin visitors/leads.
+  if (authLoading || isAdmin || isAuthorizedAdminEmail(user?.email) || !outreach || dismissed) return null;
 
   const isExternal = outreach.ctaLink.startsWith('http');
 

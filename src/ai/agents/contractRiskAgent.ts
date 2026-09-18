@@ -53,8 +53,8 @@ const MANDATORY_CLAUSE_PATTERNS: Array<{
     name: 'Limitation of Liability & Liquidated Damages',
     keywords: ['liability', 'damages', 'cap', 'penalty', 'liquidated', 'مسؤولية', 'شرط جزائي', 'تعويض', 'سقف'],
     mandatory: true,
-    redlineAr: 'لا يجوز أن يتجاوز مجموع التعويضات أو الشروط الجزائية القيمة الإجمالية الفعلية للعقد أو نسبة 10% من قيمة الالتزام المتأخر، استناداً لأحكام النظام المدني والتجاري.',
-    redlineEn: 'Total aggregate liability or liquidated damages shall in no event exceed the actual direct contract value or 10% of the delayed milestone, pursuant to statutory fairness principles.',
+    redlineAr: 'لا يُفترض وجود سقف موحد للتعويضات. تُحدد الصياغة المقترحة فقط بعد التحقق من القانون الحاكم ونوع العقد والضرر المتوقع.',
+    redlineEn: 'No universal liability or liquidated-damages cap should be assumed. The clause must be determined after verifying the governing law, contract type, and foreseeable loss.',
   },
   {
     name: 'Termination & Default Notice',
@@ -103,7 +103,7 @@ export function auditContractText(
     lang?: SupportedAILang;
   } = {}
 ): ContractAuditResult {
-  const { jurisdiction = 'SA', lang = 'ar' } = options;
+  const { jurisdiction = 'UNKNOWN', lang = 'ar' } = options;
   const isAr = lang === 'ar';
   const lowerText = contractText.toLowerCase();
 

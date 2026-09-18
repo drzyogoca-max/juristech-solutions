@@ -1,7 +1,7 @@
 /**
  * marketingTracker.ts
- * ─────────────────────────────────────────────────────────────────────────────
- * JurisTech Solutions — Global Marketing & B2B Conversion Tracking Engine
+ * â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+ * JurisTech Solutions â€” Global Marketing & B2B Conversion Tracking Engine
  * Domain: https://juristech.solutions
  *
  * Integrated Platforms:
@@ -54,7 +54,6 @@ export function initGlobalMarketingTrackers(): void {
 
     window.dataLayer = window.dataLayer || [];
     window.gtag = function () {
-      // eslint-disable-next-line prefer-rest-params
       window.dataLayer.push(arguments);
     };
     window.gtag('js', new Date());

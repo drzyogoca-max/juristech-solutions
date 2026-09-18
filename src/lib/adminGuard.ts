@@ -14,8 +14,8 @@ export interface AdminUserSession {
 
 export const OFFICIAL_ADMIN_EMAILS = [
   'founder@juristech.solutions',
-  'drzyogo.ca@gmail.com',
-  'juristech.solutions@outlook.com',
+  'founder@juristech.solutions',
+  'founder@juristech.solutions',
   'admin@juristech.solutions',
 ];
 
@@ -46,7 +46,7 @@ export function verifyAdminAccess(): boolean {
 }
 
 /** Grant session-scoped admin authentication (Valid for current browser tab session only) */
-export function grantAdminAuth(email: string = 'drzyogo.ca@gmail.com'): void {
+export function grantAdminAuth(email: string = 'founder@juristech.solutions'): void {
   const cleanEmail = email.trim().toLowerCase();
   if (!isAuthorizedAdminEmail(cleanEmail)) {
     console.error('Security Guard: Unauthorized attempt to grant admin auth to:', email);

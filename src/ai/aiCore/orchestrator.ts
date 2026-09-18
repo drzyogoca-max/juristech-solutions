@@ -138,9 +138,11 @@ Verified Statutes Available: ${citations.length}
 ${citations.map(c => `- ${c.formattedCitationEn}`).join('\n')}
 `;
 
+    // Request-scoped conversation only; never inherit unrelated browser/session history.
+    const scopedConversation = (request.conversationHistory || []).slice(-8);
     const rawReply = await callAIWithHistory(
       [
-        ...(request.conversationHistory || []),
+        ...scopedConversation,
         { role: 'user', content: cleanQuery },
       ],
       lang,

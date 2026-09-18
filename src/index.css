@@ -20,20 +20,21 @@ html {
 }
 
 :root {
-  --user-font-size: 14px;
+  --user-font-size: 16px;
 }
 
 @layer base {
   html {
-    font-size: var(--user-font-size, 14px);
+    font-size: var(--user-font-size, 16px);
     scroll-behavior: smooth;
     overflow-x: hidden;
   }
   body {
-    font-family: 'Cairo', 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: var(--user-font-size, 16px);
     font-display: swap;
-    font-size: inherit;
-    line-height: 1.6;
+    font-size: var(--user-font-size, 16px);
+    line-height: 1.55;
     text-rendering: optimizeLegibility;
     overflow-x: hidden;
     @apply bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-200;
@@ -49,6 +50,10 @@ html {
 }
 
 @layer components {
+  /* Legible UI baseline: avoid undersized text for core controls and metadata. */
+  .text-xs { font-size: 0.8125rem; line-height: 1.45; }
+  .text-\[10px\] { font-size: 0.75rem; line-height: 1.4; }
+  .text-\[11px\] { font-size: 0.8125rem; line-height: 1.45; }
   .btn-lawtech-primary {
     @apply bg-slate-900 hover:bg-slate-800 dark:bg-cyan-500 dark:hover:bg-cyan-400 text-white dark:text-slate-950 font-black px-5 py-3 rounded-2xl transition-all shadow-md active:scale-95 border border-slate-800 dark:border-cyan-400 flex items-center justify-center gap-2 min-h-[44px];
   }
@@ -226,3 +231,34 @@ html:not(.dark) textarea::placeholder {
   background-size: 200% 100%;
 }
 .card-shimmer:hover { animation: shimmer-sweep 1.5s ease-in-out infinite; }
+
+
+/* Global SaaS polish: typography, focus, motion, and consistent brand surfaces. */
+@layer base {
+  body { font-size: clamp(16px, 0.25vw + 15px, 18px); line-height: 1.6; }
+  button, input, select, textarea { font: inherit; }
+  ::selection { background: rgba(15,118,110,.18); color: #0b1f33; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Premium public CTA system: navy foundation, teal action, gold reserved for trust. */
+.public-page-shell .saas-primary {
+  background: var(--brand-navy, #0b1f33);
+  color: #fff;
+  border: 1px solid var(--brand-navy, #0b1f33);
+}
+.public-page-shell .saas-primary:hover { background: var(--brand-teal, #0f766e); border-color: var(--brand-teal, #0f766e); }
+.public-page-shell .saas-secondary {
+  background: #fff;
+  color: var(--brand-navy, #0b1f33);
+  border: 1px solid var(--brand-border, #d9e2ec);
+}
+.public-page-shell .saas-secondary:hover { border-color: var(--brand-teal, #0f766e); background: #f2fbfa; }
