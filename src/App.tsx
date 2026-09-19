@@ -127,8 +127,8 @@ function MainAppContent() {
   const location = useLocation();
   const { lang, isRtl, changeLocale } = usePlatformLocale();
 
-  // Auxiliary Widgets Mounted Only Upon User Interaction or Idle Timeout (Sub-500ms FCP/LCP Guarantee)
-  const [showAuxWidgets, setShowAuxWidgets] = useState(false);
+  // Mount auxiliary interactive widgets immediately so their windows are available on first render.
+  const [showAuxWidgets, setShowAuxWidgets] = useState(true);
 
   const [showLeadGate, setShowLeadGate] = useState(false);
 
