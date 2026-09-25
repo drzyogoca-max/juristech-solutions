@@ -33,10 +33,6 @@ export default defineConfig({
 
   build: {
     rollupOptions: {
-      treeshake: {
-        moduleSideEffects: false,
-        propertyReadSideEffects: false,
-      },
       output: {
         entryFileNames:   'assets/[name]-[hash].js',
         chunkFileNames:   'assets/[name]-[hash].js',

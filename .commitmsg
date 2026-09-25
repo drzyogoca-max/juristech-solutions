@@ -1,21 +1,6 @@
-feat: YouTube autonomous publishing + speed + SEO + routing hardening
+fix: add missing public-ux-overrides.css and remove unsafe rollup treeshake
 
-YOUTUBE AUTOMATION:
-- Complete api/youtube-upload.js: OAuth token refresh, metadata publish, channel stats
-- New api/cron/youtube-morning.js: Daily 09:00 UTC Short (60s, 9:16, AR+EN)
-- New api/cron/youtube-evening.js: Daily 18:00 UTC Full HD (270s, 16:9, C-Suite)
-- 15 AR + 15 EN topic rotations — 100% copyright-safe (AI avatars + ElevenLabs TTS)
-- vercel.json: Added youtube-morning (0 9 * * *) + youtube-evening (0 18 * * *) crons
-
-PERFORMANCE OPTIMIZATION:
-- vite.config.ts: nodemailer excluded from client bundle, treeshake improvements
-- vite.config.ts: Explicit chunks for recharts, framer-motion, react-hook-form, date-fns
-- src/index.css: GPU acceleration utilities, aspect-ratio helpers, content-visibility
-- public/manifest.json: orientation:any, prefer_related_applications:false, categories
-
-SEO & MOBILE FIXES:
-- index.html: dateModified updated 2026-08-21 -> 2026-09-26
-- index.html: og:image + twitter:image fixed to use real logo.png asset
-- index.html: Mobile web-app meta tags + preconnect hints added
-- index.html: dns-prefetch for supabase.co + preconnect api.openai.com
-- src/App.tsx: Fixed MobileBottomNav import and LandingPage alias (TypeScript 0 errors)
+- Created src/styles/public-ux-overrides.css to resolve Vite build error
+- Removed unsafe rollupOptions treeshake setting in vite.config.ts
+- Verified local build (npm run build) succeeds cleanly with 0 errors
+- Pre-rendered 33 semantic routes across 7 languages
