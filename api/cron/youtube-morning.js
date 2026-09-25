@@ -113,6 +113,35 @@ async function publishToYouTube(videoData, accessToken) {
   return { scheduled: true, metadata, message: 'Video metadata prepared for upload' };
 }
 
+async function getAccessToken() {
+  const directToken = process.env.YOUTUBE_ACCESS_TOKEN;
+  if (directToken) return directToken;
+
+  const clientId = process.env.YOUTUBE_CLIENT_ID;
+  const clientSecret = process.env.YOUTUBE_CLIENT_SECRET;
+  const refreshToken = process.env.YOUTUBE_REFRESH_TOKEN;
+
+  if (!clientId || !clientSecret || !refreshToken) return null;
+
+  try {
+    const res = await fetch('https://oauth2.googleapis.com/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        client_id: clientId,
+        client_secret: clientSecret,
+        refresh_token: refreshToken,
+        grant_type: 'refresh_token',
+      }),
+    });
+    const data = await res.json();
+    return data.access_token || null;
+  } catch (err) {
+    console.error('[YouTube Morning Cron] Token refresh failed:', err);
+    return null;
+  }
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Content-Type', 'application/json');
@@ -126,7 +155,7 @@ export default async function handler(req, res) {
   }
 
   const OPENAI_KEY = process.env.OPENAI_API_KEY || '';
-  const YT_ACCESS_TOKEN = process.env.YOUTUBE_ACCESS_TOKEN || '';
+  const YT_ACCESS_TOKEN = await getAccessToken();
 
   try {
     const today = new Date();
