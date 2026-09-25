@@ -1,84 +1,130 @@
-/* Global Design Tokens & High-Contrast Accessibility System (LawTech Professional System) */
+/* ══════════════════════════════════════════════════════════════════════════
+   JurisTech Solutions — Sovereign SaaS Design System v2.0
+   "Sovereign Deep" — Indigo × Cyan × Obsidian
+   ══════════════════════════════════════════════════════════════════════════ */
+
 :root {
-  /* Light Mode Default Color System (LawTech Professional Palette) */
-  --bg-main: #f8fafc;
-  --bg-surface: #ffffff;
+  /* ── Light Mode Surfaces ── */
+  --bg-main:             #f8fafc;
+  --bg-surface:          #ffffff;
   --bg-surface-elevated: #f1f5f9;
-  --border-color: #e2e8f0;
-  --border-color-focus: #0f172a;
+  --bg-overlay:          rgba(248,250,252,0.95);
 
-  /* LawTech Brand Accents (Deep Navy Blue & Muted Gold) */
-  --color-primary: #0f766e;
-  --color-primary-hover: #115e59;
-  --color-navy: #0b1f33;
-  --color-accent-gold: #a87516;
-  --color-accent-gold-hover: #a16207;
-  --color-success: #10b981;
-  --color-danger: #ef4444;
-  --color-warning: #f59e0b;
+  /* ── Light Mode Borders ── */
+  --border-color:        #e2e8f0;
+  --border-color-focus:  #D4AF37;
+  --border-color-brand:  rgba(212,175,55,0.30);
 
-  /* High-Contrast Typography Colors for Light Mode */
-  --text-primary: #0f172a;
-  --text-secondary: #334155;
-  --text-muted: #64748b;
-  --text-inverse: #ffffff;
+  /* ── Light Mode Brand Colors ── */
+  --color-primary:       #D4AF37;
+  --color-primary-hover: #F5C842;
+  --color-primary-light: #fefce8;
+  --color-accent:        #10B981;
+  --color-accent-hover:  #34D399;
 
-  /* Typography Scales */
-  --font-family-arabic: 'Cairo', system-ui, -apple-system, sans-serif;
-  --font-family-english: 'Inter', 'Outfit', system-ui, sans-serif;
-  --font-family-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  /* ── Semantic Colors ── */
+  --color-success:       #10b981;
+  --color-danger:        #ef4444;
+  --color-warning:       #f59e0b;
+  --color-gold:          #d97706;
+  --color-gold-hover:    #f59e0b;
 
-  /* Radii & Shadows */
-  --radius-sm: 0.5rem;
-  --radius-md: 0.75rem;
-  --radius-lg: 1rem;
-  --radius-xl: 1.5rem;
-  --shadow-lawtech: 0 4px 20px -2px rgba(15, 23, 42, 0.06);
-  --shadow-glass: 0 8px 32px 0 rgba(15, 23, 42, 0.08);
+  /* ── Light Mode Typography ── */
+  --text-primary:        #0f172a;
+  --text-secondary:      #334155;
+  --text-muted:          #64748b;
+  --text-inverse:        #ffffff;
+  --text-brand:          #b8962e;
+
+  /* ── Fonts ── */
+  --font-family-arabic:  'Cairo', system-ui, -apple-system, sans-serif;
+  --font-family-english: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-family-mono:    'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+
+  /* ── Radii ── */
+  --radius-sm:  0.5rem;
+  --radius-md:  0.75rem;
+  --radius-lg:  1rem;
+  --radius-xl:  1.5rem;
+  --radius-2xl: 2rem;
+
+  /* ── Light Mode Shadows ── */
+  --shadow-sm:     0 1px 3px 0 rgba(0,0,0,0.08);
+  --shadow-md:     0 4px 16px -2px rgba(0,0,0,0.10);
+  --shadow-lg:     0 10px 30px -5px rgba(0,0,0,0.12);
+  --shadow-brand:  0 8px 24px -4px rgba(212,175,55,0.25);
+  --shadow-glass:  0 8px 32px 0 rgba(0,0,0,0.08);
 }
 
-/* Dark Mode Overrides - Ultra-Luxury Enterprise Obsidian Slate */
+/* ══════════════════════════════════════════════════════════════════════════
+   DARK MODE — "Sovereign Obsidian Deep"
+   ══════════════════════════════════════════════════════════════════════════ */
 .dark {
-  --bg-main: #060913;
-  --bg-surface: #0A1022;
-  --bg-surface-elevated: #0E172E;
-  --border-color: rgba(56, 189, 248, 0.15);
-  --border-color-focus: #38bdf8;
+  /* ── Dark Surfaces ── */
+  --bg-main:             #020B1A;
+  --bg-surface:          #0D1F3C;
+  --bg-surface-elevated: #142847;
+  --bg-overlay:          rgba(10,11,20,0.92);
 
-  --color-primary: #2dd4bf;
-  --color-primary-hover: #14b8a6;
-  --color-navy: #0B132B;
-  --color-accent-gold: #d4a94f;
-  --color-accent-gold-hover: #e5c46b;
-  --color-success: #10b981;
-  --color-danger: #ef4444;
-  --color-warning: #f59e0b;
+  /* ── Dark Borders ── */
+  --border-color:        rgba(55,65,81,0.8);
+  --border-color-focus:  #D4AF37;
+  --border-color-brand:  rgba(212,175,55,0.22);
 
-  --text-primary: #f8fafc;
-  --text-secondary: #cbd5e1;
-  --text-muted: #94a3b8;
-  --text-inverse: #060913;
-  --shadow-lawtech: 0 10px 30px -5px rgba(0, 0, 0, 0.7);
-  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
+  /* ── Dark Brand Colors ── */
+  --color-primary:       #D4AF37;
+  --color-primary-hover: #F5C842;
+  --color-primary-light: rgba(212,175,55,0.12);
+  --color-accent:        #10B981;
+  --color-accent-hover:  #34D399;
+
+  /* ── Semantic (same as light) ── */
+  --color-success:       #10b981;
+  --color-danger:        #ef4444;
+  --color-warning:       #f59e0b;
+  --color-gold:          #f59e0b;
+  --color-gold-hover:    #fbbf24;
+
+  /* ── Dark Typography ── */
+  --text-primary:        #f8fafc;
+  --text-secondary:      #cbd5e1;
+  --text-muted:          #94a3b8;
+  --text-inverse:        #0a0b14;
+  --text-brand:          #D4AF37;
+
+  /* ── Dark Shadows ── */
+  --shadow-sm:     0 1px 4px 0 rgba(0,0,0,0.40);
+  --shadow-md:     0 4px 20px -2px rgba(0,0,0,0.55);
+  --shadow-lg:     0 12px 40px -6px rgba(0,0,0,0.70);
+  --shadow-brand:  0 8px 30px -4px rgba(212,175,55,0.35);
+  --shadow-glass:  0 8px 32px 0 rgba(0,0,0,0.50), inset 0 1px 0 rgba(255,255,255,0.05);
 }
 
-/* Default Root Application Styling */
+/* ══════════════════════════════════════════════════════════════════════════
+   BASE STYLES
+   ══════════════════════════════════════════════════════════════════════════ */
 body {
   background-color: var(--bg-main);
   color: var(--text-primary);
   font-family: var(--font-family-arabic);
 }
 
-/* High Contrast & WCAG 2.1 AA Focus Rings */
+[dir="rtl"] {
+  text-align: right;
+  font-family: var(--font-family-arabic);
+}
+
+[dir="ltr"] {
+  text-align: left;
+  font-family: var(--font-family-english);
+}
+
 :focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
+  border-radius: 4px;
 }
 
-/* Direction Support */
-[dir="rtl"] { font-family: var(--font-family-arabic); }
-[dir="ltr"] { font-family: var(--font-family-english); }
-/* Accessible Touch Targets (Minimum 44x44px for WCAG 2.1 AA) */
 button, a, input, select, textarea {
   min-height: 44px;
 }
@@ -88,87 +134,125 @@ button:active, a:active {
   transition: transform 0.1s ease;
 }
 
-/* Ultra-Luxury Card & Glassmorphism Utility Classes */
-.card-lawtech-lux {
-  background: var(--bg-surface);
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
+/* ══════════════════════════════════════════════════════════════════════════
+   COMPONENT UTILITIES
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Glassmorphism Panels */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-lawtech);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  color: var(--text-primary);
+  box-shadow: var(--shadow-glass);
+}
+
+.dark .glass-panel {
+  background: rgba(17, 24, 39, 0.85);
+  border: 1px solid var(--border-color-brand);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-glass);
+}
+
+.glass-luxury {
+  background: rgba(10, 11, 20, 0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(99, 102, 241, 0.20);
+  color: #f8fafc;
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+/* Card System */
+.card-lawtech-lux {
+  background: linear-gradient(135deg, rgba(17, 24, 39, 0.90) 0%, rgba(26, 32, 53, 0.95) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(99, 102, 241, 0.16);
+  box-shadow: 0 12px 36px 0 rgba(2, 6, 23, 0.6);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .card-lawtech-lux:hover {
-  border-color: color-mix(in srgb, var(--color-primary) 55%, var(--border-color));
-  box-shadow: var(--shadow-glass);
+  border-color: rgba(99, 102, 241, 0.40);
+  box-shadow: 0 16px 48px 0 rgba(99, 102, 241, 0.20);
   transform: translateY(-2px);
 }
 
-.glow-cyan-subtle {
-  box-shadow: 0 0 25px -5px rgba(56, 189, 248, 0.25);
+/* Glow Utilities */
+.glow-brand      { box-shadow: 0 0 25px -5px rgba(99, 102, 241, 0.30); }
+.glow-brand-lg   { box-shadow: 0 0 50px -8px rgba(99, 102, 241, 0.45); }
+.glow-cyan       { box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.30); }
+.glow-cyan-subtle { box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.20); }
+.glow-amber-subtle { box-shadow: 0 0 25px -5px rgba(245, 158, 11, 0.25); }
+.glow-emerald    { box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.25); }
+.glow-emerald-subtle { box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.20); }
+
+/* Gradient Text */
+.gradient-text-brand {
+  background: linear-gradient(135deg, #D4AF37 0%, #10B981 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.glow-amber-subtle {
-  box-shadow: 0 0 25px -5px rgba(245, 158, 11, 0.25);
+.gradient-text-gold {
+  background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.glow-emerald-subtle {
-  box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.25);
+/* Animated Shimmer */
+.card-shimmer {
+  background: linear-gradient(90deg, transparent 0%, rgba(99,102,241,0.08) 50%, transparent 100%);
+  background-size: 200% 100%;
+}
+.card-shimmer:hover { animation: shimmer-sweep 2s ease-in-out infinite; }
+
+@keyframes shimmer-sweep {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
 }
 
-/* Print Stylesheet for Official PDF/Word Exports */
+/* Legacy animations preserved */
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  14%       { transform: scale(1.08); opacity: 1; }
+  28%       { transform: scale(1); opacity: 0.85; }
+  42%       { transform: scale(1.05); opacity: 1; }
+}
+@keyframes breathe {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.03); }
+}
+@keyframes ecg-draw {
+  0%   { stroke-dashoffset: 600; }
+  100% { stroke-dashoffset: 0; }
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(99,102,241,0); }
+  50%       { box-shadow: 0 0 20px 4px rgba(99,102,241,0.15); }
+}
+@keyframes float-particle {
+  0%, 100% { transform: translateY(0) translateX(0);     opacity: 0.3; }
+  33%       { transform: translateY(-20px) translateX(10px); opacity: 0.8; }
+  66%       { transform: translateY(10px) translateX(-15px); opacity: 0.5; }
+}
+
+.animate-heartbeat   { animation: heartbeat 1.5s ease-in-out infinite; }
+.animate-breathe     { animation: breathe 4s ease-in-out infinite; }
+.animate-pulse-glow  { animation: pulse-glow 2s ease-in-out infinite; }
+.animate-ecg         { animation: ecg-draw 2s ease-out forwards; }
+
+/* Print */
 @media print {
   body {
     background-color: #ffffff !important;
     color: #000000 !important;
   }
-
   nav, footer, .no-print {
     display: none !important;
   }
 }
-
-
-/* JurisTech Global SaaS Design System — restrained legal-tech palette */
-:root {
-  --brand-navy: #0b1f33;
-  --brand-navy-strong: #071522;
-  --brand-teal: #0f766e;
-  --brand-teal-bright: #14b8a6;
-  --brand-gold: #b8892d;
-  --brand-gold-soft: #d4a94f;
-  --brand-canvas: #f7f9fc;
-  --brand-border: #d9e2ec;
-  --brand-focus: #0f766e;
-}
-
-/* Consistent public-facing canvas and readable legal typography. */
-.public-page-shell {
-  background: var(--brand-canvas);
-  color: #0b1f33;
-  letter-spacing: -0.005em;
-}
-.public-page-shell h1,
-.public-page-shell h2,
-.public-page-shell h3 {
-  color: var(--brand-navy);
-  text-wrap: balance;
-}
-.public-page-shell p { max-width: 75ch; }
-
-.dark .public-page-shell {
-  background: #071522;
-  color: #e8eef5;
-}
-.dark .public-page-shell h1,
-.dark .public-page-shell h2,
-.dark .public-page-shell h3 { color: #f7fafc; }
-
-/* Avoid decorative effects becoming the visual hierarchy. */
-.brand-surface {
-  background: var(--bg-surface);
-  border: 1px solid var(--brand-border);
-  box-shadow: var(--shadow-lawtech);
-}
-.brand-accent { color: var(--brand-teal); }
-.brand-accent-gold { color: var(--brand-gold); }

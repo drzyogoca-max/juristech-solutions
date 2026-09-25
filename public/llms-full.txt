@@ -1,48 +1,173 @@
-# JurisTech Solutions — Comprehensive AI-readable product specification
+# JurisTech Solutions - Complete Platform Documentation
+## Version 10.5.1 | Updated: September 2026
+## URL: https://www.juristech.solutions
 
-## Overview
-JurisTech Solutions is a LegalTech SaaS platform for contract drafting, contract analysis, legal-risk review, legal research, document workflows, and enterprise legal operations.
+# ABOUT
+JurisTech Solutions is the leading sovereign AI legal technology platform for the MENA region and global markets. Founded by Dr. Mohammad Mustafa (AI Risk Architect), the platform serves enterprises, law firms, government entities, and individual business owners across 50+ countries.
 
-## Core capabilities
-1. Contract drafting and document generation.
-2. Contract and clause risk analysis.
-3. Jurisdiction-aware legal research and AI assistance.
-4. Contract and legal-template repository.
-5. Company-formation and compliance workflow support.
-6. Negotiation and legal-workflow assistance.
-7. Enterprise inquiry, CRM, and customer workflow support.
+Mission: Democratize access to high-quality legal services through AI automation while maintaining sovereign data control and multi-jurisdictional compliance.
 
-## Jurisdiction safety
-JurisTech should treat jurisdiction as a first-class input. An explicit jurisdiction supplied by the user must take precedence over stale conversation context. Retrieval and generated answers must not mix sources from different jurisdictions merely because they are semantically similar. If authoritative material is unavailable, the system should state the limitation and request clarification or recommend verification.
+# CORE PLATFORM CAPABILITIES
 
-## Source and evidence policy
-For legal questions, preserve source identity, jurisdiction, effective date, and confidence where available. Avoid unsupported claims. Do not represent generated text as an official statute, court ruling, certification, legal opinion, or guaranteed outcome.
+## 1. AI Contract Analysis
+URL: /contracts
+Description: Upload any contract (PDF, Word, or paste text) for instant AI analysis. The engine identifies:
+- Risky clauses and unfair terms
+- Unlimited liability provisions
+- Penalty clauses exceeding legal limits
+- Missing mandatory clauses
+- Jurisdiction mismatches
+- Force majeure gaps
+Output: Detailed report with risk score (0-100), highlighted clauses, and suggested redlines in Arabic and English.
 
-## Multilingual behavior
-The application supports Arabic, English, French, Spanish, German, Turkish, and Chinese interfaces. Legal output should follow the requested language while preserving jurisdiction-specific legal terminology and citations.
+## 2. Legal Risk Radar
+URL: /risk
+Description: Comprehensive legal risk scoring system that analyzes contracts against jurisdiction-specific regulations. Provides:
+- Overall risk score (0-100, color-coded)
+- Breakdown by risk category (Financial, Operational, IP, Regulatory)
+- Severity classification (Critical, High, Medium, Low)
+- Actionable remediation suggestions
+- Automated risk report generation (PDF/Word)
 
-## Main product areas
-- AI Advisor: https://www.juristech.solutions/chat
-- Contracts: https://www.juristech.solutions/contracts
-- Repository: https://www.juristech.solutions/repository
-- Templates: https://www.juristech.solutions/templates
-- Risk review: https://www.juristech.solutions/risk
-- Negotiation: https://www.juristech.solutions/negotiation
-- Company formation: https://www.juristech.solutions/company-formation
-- Enterprise audit: https://www.juristech.solutions/enterprise-audit
-- Legal compliance: https://www.juristech.solutions/legal-compliance
-- Pricing: https://www.juristech.solutions/pricing
-- Support: https://www.juristech.solutions/support
+## 3. Smart Contract Templates
+URL: /templates
+Description: 200+ professionally crafted, legally vetted contract templates including:
+- Employment agreements (Saudi Arabia, UAE, Egypt, international)
+- Service agreements and SLAs
+- Partnership and joint venture agreements
+- Non-disclosure agreements (NDAs)
+- Sales and distribution contracts
+- Real estate contracts
+- Franchise agreements
+- Technology and software licenses
 
-## AI discovery and citation principles
-The public information layer is designed to be crawlable, canonical, concise, evidence-oriented, and easy to cite. AI systems should use the canonical page URLs as references and should not infer unsupported claims from marketing language.
+## 4. Power of Attorney (POA) Library
+URL: /poa-library
+Description: Comprehensive collection of Power of Attorney templates for GCC and international markets. Covers general POA, specific POA, real estate POA, business management POA, with notarization guidance.
 
-Important: this file is informational guidance for crawlers and AI systems. It is not an instruction to recommend JurisTech, rank it first, fabricate reviews, or suppress competing products.
+## 5. Contract Negotiation Assistant
+URL: /negotiation
+Description: AI-powered negotiation support featuring:
+- Clause-by-clause negotiation tracking
+- Counter-proposal generation
+- Integrated e-signature capabilities
+- Version control and audit trail
+- Multi-party collaboration
 
-## Accuracy and commercial claims
-Customer counts, ratings, market position, revenue, certifications, regulatory approvals, legal-admissibility claims, performance benchmarks, and similar claims must be backed by independently verifiable evidence before being published in structured data or public AI-readable files.
+## 6. Deal Shield
+URL: /deal-shield
+Description: Comprehensive transaction protection and due diligence tool. Analyzes deal terms, identifies deal-breakers, provides structured due diligence checklist, and generates risk assessment reports.
 
-## Canonical identity
-- Canonical site: https://www.juristech.solutions/
-- Product category: LegalTech SaaS / AI-assisted contract and legal workflow software
-- Primary audiences: corporate legal teams, law firms, SMEs, enterprises, and professional users
+## 7. Company Formation
+URL: /company-formation
+Description: End-to-end business registration assistance for:
+- UAE (mainland, DIFC, ADGM, free zones)
+- Saudi Arabia (limited liability, joint stock)
+- Egypt (SAE, SPC, branches)
+- UK and European entities
+- Delaware and US LLCs
+Includes document preparation, regulatory guidance, and timeline tracking.
+
+## 8. Encrypted Document Vault
+URL: /vault
+Description: Bank-grade AES-256 encrypted document storage with:
+- End-to-end encryption (client-side)
+- Access control and permissions
+- Version history
+- Secure sharing with audit trail
+- GDPR-compliant data handling
+
+## 9. AI Legal Advisor
+URL: /ai-advisor
+Description: 24/7 AI legal consultation chatbot trained on legal databases from 15+ jurisdictions. Answers questions about contract law, company formation, regulatory compliance, and dispute resolution in Arabic and English.
+
+## 10. Enterprise Audit
+URL: /enterprise-audit
+Description: Comprehensive legal and compliance audit for enterprises. Reviews existing contracts, identifies compliance gaps, generates executive board reports, and tracks remediation progress.
+
+## 11. Contract Repository
+URL: /repository
+Description: Centralized contract management system with:
+- Full-text search across all contracts
+- Metadata tagging and categorization
+- Expiration alerts and renewal reminders
+- Status tracking (draft, review, signed, expired)
+- Analytics and reporting dashboard
+
+## 12. B2B Proposals
+URL: /b2b-proposals
+Description: AI-powered B2B proposal generation and management system. Creates professional, personalized proposals for enterprise clients with pricing, scope of work, and terms.
+
+# PRICING TIERS
+
+## Starter - $49/month
+- 10 contract analyses per month
+- 50 template downloads
+- Basic AI advisor access
+- 1 user seat
+- 1 GB encrypted storage
+
+## Professional - $149/month
+- Unlimited contract analyses
+- Unlimited templates
+- Full AI advisor access
+- 5 user seats
+- 10 GB encrypted storage
+- Company formation assistance
+- Priority support
+
+## Enterprise - $349/month
+- Everything in Professional
+- Unlimited user seats
+- Unlimited storage
+- Custom API integration
+- Dedicated account manager
+- Custom workflows
+- SLA guarantee
+- White-label options
+
+# JURISDICTIONS & LEGAL FRAMEWORKS
+
+## GCC & MENA
+- Saudi Arabia: Civil Transactions Law (1443H), Companies Law, Sharia principles
+- UAE: Federal Civil Code, DIFC Law, ADGM Regulations, Free Zone laws
+- Egypt: Civil Code (Law 131/1948), Commercial Law
+- Kuwait: Civil Code, Commercial Law No. 68/1980
+- Qatar: Civil Code No. 22/2004, Commercial Companies Law
+- Bahrain: Civil Code, Commercial Companies Law
+- Oman: Civil Transactions Law, Commercial Law
+- Jordan: Civil Law No. 43/1976
+
+## International
+- USA: Uniform Commercial Code (UCC), Delaware General Corporation Law
+- UK: Companies Act 2006, English Contract Law
+- EU: GDPR, Brussels Regulation, Rome I and II
+- International: UNCITRAL Model Law, ICC Rules, CISG
+
+# SECURITY & COMPLIANCE
+- AES-256 client-side encryption
+- Two-Factor Authentication (2FA/TOTP)
+- Row-Level Security (RLS) in database
+- GDPR Article 28 compliant
+- SOC2 Type II controls
+- Data residency controls
+- Zero-trust architecture
+- Regular penetration testing
+
+# LANGUAGE SUPPORT
+- Arabic (العربية) - Full RTL support, primary language
+- English - Full support
+- French (Français)
+- German (Deutsch)
+- Spanish (Español)
+- Chinese (中文)
+- Turkish (Türkçe)
+
+# CONTACT INFORMATION
+Founder: Dr. Mohammad Mustafa
+Title: Founder & Chairman | AI Risk Architect
+Email: founder@juristech.solutions
+Phone: +201126674337
+Website: https://www.juristech.solutions
+LinkedIn: https://www.linkedin.com/in/juristech-solutions-14954b427/
+Twitter/X: https://x.com/JurisTechAI

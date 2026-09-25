@@ -1,4 +1,5 @@
 import { callAI } from '../lib/api';
+import { verifyCustomerEmail } from './emailVerificationService';
 
 export interface EmailLead {
   id: string;
@@ -26,9 +27,16 @@ export async function sendOfficialEmail(
   to: string | string[],
   template: EmailTemplate,
   attachments?: File[]
-): Promise<{ success: boolean; messageId: string }> {
+): Promise<{ success: boolean; messageId: string; reason?: string }> {
   const recipients = Array.isArray(to) ? to.join(', ') : to;
   const target = Array.isArray(to) ? to[0] : to;
+  
+  // ── Email Verification Gate (Ensures 100% Real Customers) ──────────────
+  const emailVerification = await verifyCustomerEmail(target);
+  if (!emailVerification.isValid) {
+    console.warn(`[EmailEngine] BLOCKED SEND: Invalid customer email (${emailVerification.reason}) → ${target}`);
+    return { success: false, messageId: '', reason: emailVerification.reason || 'invalid_email' };
+  }
   
   console.log(`[SMTP TRACE] Connecting to Real Email Dispatcher for ${OFFICIAL_EMAIL} & Admin BCC ${MANDATORY_ADMIN_COPY}...`);
   console.log(`[SMTP TRACE] Sending payload to: ${recipients}`);

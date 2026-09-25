@@ -6,11 +6,13 @@
     <!-- Global CDN Acceleration & DNS Pre-fetching -->
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
     <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
 
     <meta name="google-site-verification" content="Csa-WN6QHwEIlH3lycEdcdsy5CznqwYzyJOq-PbjIpg" />
-    <title>AI Contract Analysis &amp; Risk Audit | JurisTech Solutions</title>
+    <title>منصة تحليل العقود بالذكاء الاصطناعي | JurisTech Solutions</title>
     <link rel="canonical" href="https://www.juristech.solutions/" id="canonical-url" />
 
     <!-- 👑 Sovereign Official Favicon & App Icons -->
@@ -19,18 +21,62 @@
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#020617" />
-    <meta name="msapplication-TileColor" content="#020617" />
+    <meta name="theme-color" content="#020B1A" />
+    <meta name="msapplication-TileColor" content="#020B1A" />
 
 
 
 
-    <!-- Preconnect & Asynchronous Non-Blocking Fonts for Low FCP & Zero CLS -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;600;700&display=swap" media="print" onload="this.media='all'" />
+    <!-- 0ms Immediate Canonical Domain Redirection Guard (Legal Solution / Apex -> www.juristech.solutions) -->
+    <script>
+      (function() {
+        try {
+          var h = window.location.hostname.toLowerCase();
+          if (h && (h.indexOf('legalshield') !== -1 || h.indexOf('legalsolution') !== -1 || h === 'juristech.solutions')) {
+            var target = 'https://www.juristech.solutions' + window.location.pathname + window.location.search + window.location.hash;
+            window.location.replace(target);
+          }
+        } catch(e) {}
+      })();
+    </script>
+
+    <!-- 0ms Zero-Latency Locale & Direction Synchronizer (7 Supported Languages: ar, en, fr, es, de, tr, zh) -->
+    <script>
+      (function() {
+        try {
+          var validLangs = ['ar', 'en', 'fr', 'es', 'de', 'tr', 'zh'];
+          // Check all storage keys in priority order
+          var stored = localStorage.getItem('juristech.locale')
+            || localStorage.getItem('i18nextLng')
+            || localStorage.getItem('locale')
+            || localStorage.getItem('app_locale');
+          var lang = null;
+          if (stored) {
+            var s = stored.toLowerCase().slice(0, 2);
+            if (validLangs.indexOf(s) !== -1) lang = s;
+          }
+          // For first-time visitors: detect from browser language
+          if (!lang) {
+            var browserLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase().slice(0, 2);
+            if (validLangs.indexOf(browserLang) !== -1) lang = browserLang;
+          }
+          // Final fallback: English
+          if (!lang) lang = 'en';
+          document.documentElement.lang = lang;
+          document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+        } catch(e) {}
+      })();
+    </script>
+
+
+
+
+
+    <!-- Asynchronous Non-Blocking Fonts for Low FCP & Zero CLS -->
+    <!-- Note: preconnects are declared above in the DNS pre-fetching section -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'" />
     <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;600;700&display=swap" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" />
     </noscript>
 
     <!-- Critical CSS for Layout Containment & Instant FCP/CLS Stability -->
@@ -39,51 +85,98 @@
         margin: 0;
         padding: 0;
         min-height: 100vh;
-        background-color: #020617;
+        background-color: #020B1A;
         color: #f8fafc;
-        font-family: 'Cairo', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
         text-rendering: optimizeLegibility;
         -webkit-font-smoothing: antialiased;
-        overflow-x: hidden;
       }
-      html[dir="rtl"] body { font-family: "Cairo", "Segoe UI", Tahoma, sans-serif; }
       #root {
         min-height: 100vh;
         display: flex;
         flex-direction: column;
-        contain: paint;
       }
       img {
         content-visibility: auto;
       }
     </style>
 
-    <!-- Fast Inline Bootstrap Guard (Domain Redirect + Geofencing + Dark Theme) -->
+    <!-- Asynchronously Deferred Third-Party Pixels (Never Blocks Main Thread / INP) -->
     <script>
-      try {
-        var h = window.location.hostname.toLowerCase();
-        if (h && (h.indexOf('legalshield') !== -1 || h.indexOf('legalsolution') !== -1 || h === 'juristech.solutions')) {
-          window.location.replace('https://www.juristech.solutions' + window.location.pathname + window.location.search + window.location.hash);
-        }
-        var tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || '').toLowerCase();
-        var langs = (navigator.languages || [navigator.language || '']).join(',').toLowerCase();
-        if (tz.indexOf('tripoli') !== -1 || tz.indexOf('libya') !== -1 || langs.indexOf('-ly') !== -1 || window.location.search.indexOf('geo=LY') !== -1 || sessionStorage.getItem('juristech_geo_blocked') === 'LY') {
-          sessionStorage.setItem('juristech_geo_blocked', 'LY');
-          if (window.location.pathname !== '/blocked') window.location.replace('/blocked');
-        }
-        var th = localStorage.getItem('theme');
-        if (th === 'dark' || (!th && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-          document.documentElement.classList.add('dark');
-        } else if (th === 'light') {
-          document.documentElement.classList.remove('dark');
-        }
-      } catch (e) {}
+      function initTrackingPixels() {
+        if (window._trackingInitialized) return;
+        window._trackingInitialized = true;
+
+        // Deferred GA4
+        var gtm = document.createElement('script');
+        gtm.src = 'https://www.googletagmanager.com/gtag/js?id=G-311560459';
+        gtm.async = true;
+        document.head.appendChild(gtm);
+
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-311560459', { send_page_view: true });
+
+        // Deferred Meta Pixel
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '109283746598273');
+        fbq('track', 'PageView');
+
+        // Deferred LinkedIn Insight
+        _linkedin_partner_id = "7896543";
+        window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
+        window._linkedin_data_partner_ids.push(_linkedin_partner_id);
+        var li = document.createElement('script');
+        li.type = 'text/javascript';
+        li.async = true;
+        li.src = 'https://snap.licdn.com/li.lms-analytics/insight.min.js';
+        document.head.appendChild(li);
+      }
+
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(function() {
+          setTimeout(initTrackingPixels, 3000);
+        }, { timeout: 5000 });
+      } else {
+        window.addEventListener('load', function() {
+          setTimeout(initTrackingPixels, 3000);
+        });
+      }
+      ['scroll', 'touchstart', 'click'].forEach(function(ev) {
+        window.addEventListener(ev, initTrackingPixels, { once: true, passive: true });
+      });
+    </script>
+
+
+    <!-- Geofencing Script -->
+    <script>
+      (function() {
+        try {
+          var tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || '').toLowerCase();
+          var isBlocked = (tz.indexOf('tripoli') !== -1 || tz.indexOf('libya') !== -1) ||
+                          window.location.search.indexOf('geo=LY') !== -1 ||
+                          sessionStorage.getItem('juristech_geo_blocked') === 'LY';
+          if (isBlocked) {
+            sessionStorage.setItem('juristech_geo_blocked', 'LY');
+            if (window.location.pathname !== '/blocked') {
+              window.location.replace('/blocked');
+            }
+          }
+        } catch (e) {}
+      })();
     </script>
     
     <!-- Meta Descriptions & High-Volume B2B Problem SEO -->
-    <meta name="description" content="JurisTech Solutions provides AI-assisted contract analysis, legal risk review, document generation, and multilingual legal workflow tools for businesses and legal teams." />
-    <meta name="keywords" content="AI contract analysis, legal risk analysis, contract generator, power of attorney, legal technology, contract review, legal AI, multilingual legal platform" />
-    <meta name="author" content="JurisTech Solutions" />
+    <meta name="description" content="منصة JurisTech لتحليل العقود بالذكاء الاصطناعي وكشف الثغرات والبنود التعسفية وإدارة المخاطر القانونية للشركات وصياغة الاتفاقيات وتحليلات فورية." />
+    <meta name="keywords" content="تحليل المخاطر القانونية للشركات, منصة تحليل العقود بالذكاء الاصطناعي, كشف الثغرات في العقود, تدقيق العقود التجارية, صياغة العقود بالذكاء الاصطناعي, فحص بنود المسؤولية, إدارة المخاطر العقدية, تأسيس الشركات, AI Contract Analysis, Corporate Legal Risk Audit, Legal Tech" />
+    <meta name="author" content="JurisTech Solutions Sovereign Tech" />
 
     
     <!-- Search Engine Directives -->
@@ -122,14 +215,70 @@
     <link rel="alternate" hreflang="hi-IN" href="https://www.juristech.solutions/" />
     <link rel="alternate" hreflang="x-default" href="https://www.juristech.solutions/" />
 
+    <!-- Theme Initialization Script -->
+    <script>
+      (function() {
+        try {
+          var localTheme = localStorage.getItem('theme');
+          var sysTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (localTheme === 'dark' || (!localTheme && sysTheme)) {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
 
+    <!-- 0ms Immediate Locale & Direction Synchronizer (Prevents FOUC & Direction Jump) -->
+    <script>
+      (function() {
+        try {
+          var stored = localStorage.getItem('juristech.locale') || localStorage.getItem('locale');
+          var path = (window.location.pathname || '').toLowerCase();
+          var match = path.match(/^\/(en|ar|fr|es|de|tr|zh)(\/|$)/);
+          var lang = match ? match[1] : (stored || 'en');
+          var isRtl = lang === 'ar';
+          document.documentElement.lang = lang;
+          document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+          if (document.body) {
+            document.body.lang = lang;
+            document.body.dir = isRtl ? 'rtl' : 'ltr';
+          }
+        } catch(e) {}
+      })();
+    </script>
+
+    <!-- Dynamic Canonical URL Synchronizer (Guarantees Exactly ONE Canonical Tag in DOM) -->
+    <script>
+      (function() {
+        try {
+          var targetDomain = 'https://www.juristech.solutions';
+          var cleanPath = window.location.pathname.replace(/\/$/, '') || '/';
+          var fullCanonical = targetDomain + cleanPath;
+          var canonicals = document.querySelectorAll("link[rel='canonical']");
+          if (canonicals.length > 0) {
+            canonicals[0].setAttribute('href', fullCanonical);
+            for (var i = 1; i < canonicals.length; i++) {
+              canonicals[i].remove();
+            }
+          } else {
+            var link = document.createElement('link');
+            link.rel = 'canonical';
+            link.id = 'canonical-url';
+            link.href = fullCanonical;
+            document.head.appendChild(link);
+          }
+        } catch (e) {}
+      })();
+    </script>
 
     <!-- Open Graph & Twitter Cards -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.juristech.solutions/" />
-    <meta property="og:title" content="JurisTech Solutions | AI Contract Analysis & Legal Risk Intelligence" />
-    <meta property="og:description" content="AI-assisted contract review, legal risk analysis, document generation, and multilingual legal workflows for businesses and legal teams." />
-    <meta property="og:site_name" content="JurisTech Solutions" />
+    <meta property="og:title" content="JurisTech Solutions | الذكاء الاصطناعي لصياغة العقود وتأسيس الشركات والخدمات القانونية" />
+    <meta property="og:description" content="منصة تقنية مستقلة لصياغة العقود وتأسيس الشركات وتدقيق المخاطر التشريعية في دول الخليج ومصر وأوروبا وآسيا." />
+    <meta property="og:site_name" content="JurisTech Solutions Sovereign AI Legal Entity" />
     <meta property="og:image" content="https://www.juristech.solutions/og-image.jpg" />
 
     <meta name="twitter:card" content="summary_large_image" />
@@ -162,8 +311,8 @@
         "image": "https://www.juristech.solutions/og-image.jpg",
         "founder": {
           "@type": "Person",
-          "name": "Dr. Mohammed Mostafa",
-          "jobTitle": "Chief Legal Architect & Senior Counsel",
+          "name": "Dr. Mohammad Mustafa",
+          "jobTitle": "Founder & Chairman | AI Risk Architect",
           "email": "founder@juristech.solutions",
           "telephone": "+201126674337"
         },
@@ -187,8 +336,8 @@
       {
         "@context": "https://schema.org",
         "@type": "Person",
-        "name": "د. محمد مصطفى | Dr. Mohammed Mostafa",
-        "jobTitle": "Senior Legal Counsel & Chief AI Architect",
+        "name": "د. محمد مصطفى | Dr. Mohammad Mustafa",
+        "jobTitle": "Founder & Chairman | AI Risk Architect",
         "worksFor": {
           "@type": "Organization",
           "name": "JurisTech Solutions"
@@ -202,27 +351,28 @@
       },
       {
         "@context": "https://schema.org",
-        "@type": "LegalService",
-        "name": "JurisTech Solutions - Sovereign AI Legal Tech",
+        "@type": "SoftwareApplication",
+        "name": "JurisTech Solutions",
+        "alternateName": "JurisTech Sovereign AI LegalTech SaaS",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "All modern web browsers (Chrome, Safari, Edge, Firefox)",
         "url": "https://www.juristech.solutions",
-        "logo": "https://www.juristech.solutions/favicon.ico",
+        "logo": "https://www.juristech.solutions/logo.png",
         "image": "https://www.juristech.solutions/og-image.jpg",
-        "priceRange": "$$$",
-        "telephone": "+201126674337",
-        "email": "founder@juristech.solutions",
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": 24.7136,
-          "longitude": 46.6753
+        "description": "Independent cross-border Legal Tech SaaS platform providing AI contract analysis, certified smart drafting, risk scoring radar, and enterprise compliance workflows.",
+        "offers": {
+          "@type": "AggregateOffer",
+          "priceCurrency": "USD",
+          "lowPrice": "49.00",
+          "highPrice": "349.00",
+          "offerCount": "3"
         },
-        "openingHoursSpecification": {
-          "@type": "OpeningHoursSpecification",
-          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-          "opens": "00:00",
-          "closes": "23:59"
+        "provider": {
+          "@type": "Organization",
+          "name": "JurisTech Solutions",
+          "url": "https://www.juristech.solutions"
         },
-        "areaServed": ["SA", "AE", "EG", "QA", "KW", "JO", "BH", "OM", "IQ", "DE", "FR", "ES", "GB", "CN", "IN", "ZA"],
-        "serviceType": "صياغة العقود بالذكاء الاصطناعي, تأسيس الشركات والامتثال التشريعي, فحص وتدقيق مخاطر العقود, المستشار القانوني الذكي الفوري"
+        "softwareRequirements": "Modern web browser with JavaScript enabled"
       },
       {
         "@context": "https://schema.org",
@@ -256,8 +406,30 @@
       }
     ]
     </script>
+
+    <!-- AI Search Engine Optimization — Services ItemList Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "JurisTech Solutions — AI Legal Services",
+      "description": "Comprehensive AI-powered legal services for enterprises and individuals across 50+ countries",
+      "url": "https://www.juristech.solutions",
+      "numberOfItems": 8,
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "AI Contract Analysis", "url": "https://www.juristech.solutions/contracts", "description": "Upload any contract for instant AI analysis, risk detection, and suggested redlines"},
+        {"@type": "ListItem", "position": 2, "name": "Legal Risk Scoring", "url": "https://www.juristech.solutions/risk", "description": "Comprehensive legal risk audit with 0-100 risk score and breakdown by category"},
+        {"@type": "ListItem", "position": 3, "name": "Company Formation", "url": "https://www.juristech.solutions/company-formation", "description": "End-to-end business registration in UAE, Saudi Arabia, Egypt, UK, and international"},
+        {"@type": "ListItem", "position": 4, "name": "Contract Templates", "url": "https://www.juristech.solutions/templates", "description": "200+ pre-built legally compliant contract templates for 15+ jurisdictions"},
+        {"@type": "ListItem", "position": 5, "name": "Deal Shield", "url": "https://www.juristech.solutions/deal-shield", "description": "Transaction protection and comprehensive due diligence tools"},
+        {"@type": "ListItem", "position": 6, "name": "Encrypted Vault", "url": "https://www.juristech.solutions/vault", "description": "AES-256 bank-grade encrypted document storage and management"},
+        {"@type": "ListItem", "position": 7, "name": "AI Legal Advisor", "url": "https://www.juristech.solutions/ai-advisor", "description": "24/7 AI-powered legal consultation and contract advice chatbot"},
+        {"@type": "ListItem", "position": 8, "name": "Contract Negotiation", "url": "https://www.juristech.solutions/negotiation", "description": "AI-assisted contract negotiation with integrated e-signature support"}
+      ]
+    }
+    </script>
   </head>
-  <body class="bg-slate-950 text-slate-100 min-h-screen font-sans antialiased selection:bg-cyan-500 selection:text-slate-950">
+  <body class="bg-[#020B1A] text-slate-100 min-h-screen font-sans antialiased selection:bg-yellow-500 selection:text-slate-950">
     <noscript>
       <div class="p-8 bg-slate-950 text-slate-100 font-sans text-right" dir="rtl">
         <div class="text-2xl text-cyan-400 font-bold mb-4">JurisTech Solutions | المنصة العالمية المستقلة للذكاء الاصطناعي العقدي والخدمات القانونية</div>
@@ -266,53 +438,34 @@
         </p>
       </div>
     </noscript>
-    <div id="root"></div>
+    <div id="root">
+      <div style="min-height: 100vh; background-color: #020B1A; display: flex; align-items: center; justify-content: center; color: #D4AF37; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+        <div style="text-align: center; padding: 20px;">
+          <div style="width: 48px; height: 48px; border: 3px solid rgba(212,175,55,0.2); border-top-color: #D4AF37; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px auto;"></div>
+          <div style="font-size: 16px; font-weight: 800; letter-spacing: 0.5px; color: #f8fafc;">JurisTech Solutions ⚖️</div>
+          <div style="font-size: 12px; color: #64748b; margin-top: 6px;">Sovereign AI Legal & Risk Infrastructure</div>
+        </div>
+      </div>
+    </div>
+    <style>
+      @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
     <script type="module" src="/src/main.tsx"></script>
     
-    <!-- Deferred Third-Party Pixels & Service Worker (Idle Loading) -->
+    <!-- PWA Service Worker Registration -->
     <script>
-      function initTrackingPixels() {
-        if (window._trackingInitialized) return;
-        window._trackingInitialized = true;
-        try {
-          var gtm = document.createElement('script');
-          gtm.src = 'https://www.googletagmanager.com/gtag/js?id=G-311560459';
-          gtm.async = true;
-          document.head.appendChild(gtm);
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-311560459', { send_page_view: true });
-
-          !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
-          fbq('init', '109283746598273');
-          fbq('track', 'PageView');
-
-          _linkedin_partner_id = "7896543";
-          window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
-          window._linkedin_data_partner_ids.push(_linkedin_partner_id);
-          var li = document.createElement('script');
-          li.type = 'text/javascript';
-          li.async = true;
-          li.src = 'https://snap.licdn.com/li.lms-analytics/insight.min.js';
-          document.head.appendChild(li);
-        } catch (e) {}
-      }
-
-      if ('requestIdleCallback' in window) {
-        window.requestIdleCallback(function() { setTimeout(initTrackingPixels, 30000); }, { timeout: 35000 });
-      } else {
-        window.addEventListener('load', function() { setTimeout(initTrackingPixels, 30000); });
-      }
-      ['scroll', 'touchstart', 'click'].forEach(function(ev) {
-        window.addEventListener(ev, initTrackingPixels, { once: true, passive: true });
-      });
-
-      if ('serviceWorker' in navigator) {
+      (function () {
+        if (!('serviceWorker' in navigator)) return;
         window.addEventListener('load', function () {
-          navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' }).catch(function(){});
+          navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' })
+            .then(function (registration) {
+              console.log('[JurisTech PWA] SW registered. Scope:', registration.scope);
+            })
+            .catch(function (err) {
+              console.warn('[JurisTech PWA] SW registration failed:', err);
+            });
         });
-      }
+      })();
     </script>
   </body>
 </html>

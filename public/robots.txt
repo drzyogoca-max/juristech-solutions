@@ -5,50 +5,83 @@ Disallow: /api/
 Disallow: /checkout
 Disallow: /blocked
 
-# OpenAI search discovery
+# ── OpenAI / ChatGPT ──────────────────────────────────────────────────────────
 User-agent: OAI-SearchBot
 Allow: /
 
 User-agent: ChatGPT-User
 Allow: /
 
-# Other AI and search crawlers
 User-agent: GPTBot
 Allow: /
-User-agent: Google-Extended
-Allow: /
+
+# ── Anthropic / Claude ───────────────────────────────────────────────────────
 User-agent: ClaudeBot
 Allow: /
+
 User-agent: Claude-Web
 Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# ── Google / Gemini ───────────────────────────────────────────────────────────
+User-agent: Googlebot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Gemini-Bot
+Allow: /
+
+# ── Microsoft / Copilot ───────────────────────────────────────────────────────
+User-agent: Bingbot
+Allow: /
+
+User-agent: CopilotBot
+Allow: /
+
+# ── Perplexity ────────────────────────────────────────────────────────────────
 User-agent: PerplexityBot
 Allow: /
+
+# ── DeepSeek ─────────────────────────────────────────────────────────────────
 User-agent: DeepSeekBot
 Allow: /
+
 User-agent: DeepSeek-User
 Allow: /
+
+User-agent: DeepSeek
+Allow: /
+
+# ── Other AI Crawlers ─────────────────────────────────────────────────────────
 User-agent: cohere-ai
 Allow: /
+
 User-agent: CCBot
 Allow: /
+
 User-agent: Bytespider
 Allow: /
+
 User-agent: Amazonbot
 Allow: /
+
 User-agent: Meta-ExternalAgent
 Allow: /
 
-# Search engines
-User-agent: Googlebot
-Allow: /
-User-agent: Bingbot
-Allow: /
+# ── Traditional Search Engines ────────────────────────────────────────────────
 User-agent: Applebot
 Allow: /
+
 User-agent: DuckDuckBot
 Allow: /
+
 User-agent: YandexBot
 Allow: /
+
 User-agent: Baiduspider
 Allow: /
 
