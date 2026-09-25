@@ -9,7 +9,7 @@ import LegalDisclaimerBanner from './components/LegalDisclaimerBanner';
 import ProtectedAdminRoute from './components/ProtectedAdminRoute';
 import ErrorBoundary from './components/ErrorBoundary';
 import Footer from './components/Footer';
-import MobileBottomNav from './components/MobileBottomNavClean';
+import MobileBottomNav from './components/MobileBottomNav';
 import { AuthProvider, useAuth } from './lib/authContext';
 import { SaaSProvider } from './context/SaaSContext';
 import { ContractProvider } from './context/ContractContext';
@@ -27,7 +27,7 @@ import { initVersionManager } from './lib/versionManager';
 
 // ── Lazy Loaded Page Components for Minimal Initial Bundle Size & 95+ Performance ──
 const Dashboard = lazy(() => import('./pages/Dashboard'));
-const LandingPage = lazy(() => import('./pages/LandingPage'));
+const LandingPage = Dashboard;
 const ChatPage = lazy(() => import('./pages/ChatPage'));
 const AIAdvisorPage = lazy(() => import('./pages/AIAdvisorPage'));
 const AdminAIAnalyticsPage = lazy(() => import('./pages/AdminAIAnalyticsPage'));

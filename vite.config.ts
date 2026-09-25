@@ -33,6 +33,10 @@ export default defineConfig({
 
   build: {
     rollupOptions: {
+      treeshake: {
+        moduleSideEffects: false,
+        propertyReadSideEffects: false,
+      },
       output: {
         entryFileNames:   'assets/[name]-[hash].js',
         chunkFileNames:   'assets/[name]-[hash].js',
@@ -62,8 +66,19 @@ export default defineConfig({
             if (id.includes('nodemailer')) {
               return 'vendor-mail';
             }
-            if (id.includes('recharts') ||
-                id.includes('d3')) {
+            if (id.includes('recharts')) {
+              return 'charts';
+            }
+            if (id.includes('framer-motion')) {
+              return 'animations';
+            }
+            if (id.includes('react-hook-form') || id.includes('@hookform/resolvers')) {
+              return 'forms';
+            }
+            if (id.includes('date-fns')) {
+              return 'utils';
+            }
+            if (id.includes('d3')) {
               return 'vendor-charts';
             }
             if (id.includes('dompurify') ||
@@ -137,5 +152,6 @@ export default defineConfig({
   // ── Optimise deps pre-bundling
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom', 'i18next', 'react-i18next', 'lucide-react'],
+    exclude: ['nodemailer', 'nodemailer-smtp-transport'],
   },
 });

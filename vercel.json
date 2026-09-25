@@ -218,6 +218,14 @@
     {
       "path": "/api/cron/spider-linkedin",
       "schedule": "0 14 * * *"
+    },
+    {
+      "path": "/api/cron/youtube-morning",
+      "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/cron/youtube-evening",
+      "schedule": "0 18 * * *"
     }
   ]
 }

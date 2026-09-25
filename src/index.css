@@ -262,3 +262,36 @@ html:not(.dark) textarea::placeholder {
   border: 1px solid var(--brand-border, #d9e2ec);
 }
 .public-page-shell .saas-secondary:hover { border-color: var(--brand-teal, #0f766e); background: #f2fbfa; }
+
+/* ── Performance Optimization Utilities ──────────────────────────────────────── */
+.gpu-accelerated {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.animate-safe {
+  will-change: opacity, transform;
+}
+
+/* Optimize scrolling performance */
+.scroll-container {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+}
+
+/* Optimize image loading */
+img {
+  content-visibility: auto;
+}
+
+/* Reduce layout shifts */
+.aspect-video { aspect-ratio: 16 / 9; }
+.aspect-square { aspect-ratio: 1 / 1; }
+.aspect-short  { aspect-ratio: 9 / 16; }
+
+/* Font display swap for performance */
+@font-face {
+  font-display: swap;
+}
