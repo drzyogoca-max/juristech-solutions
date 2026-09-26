@@ -9,6 +9,11 @@
 
 export const config = { runtime: 'nodejs' };
 
+const HEYGEN_API_KEY = process.env.HEYGEN_API_KEY || '';
+const SUPABASE_URL   = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const SUPABASE_KEY   = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+const WEBHOOK_URL    = 'https://www.juristech.solutions/api/heygen-webhook';
+
 const TOPICS_AR = [
   'كيف تحلل عقدك التجاري في 60 ثانية بالذكاء الاصطناعي',
   '5 بنود تعاقدية خطيرة يجب أن تعرفها قبل التوقيع',
@@ -142,6 +147,45 @@ async function getAccessToken() {
   }
 }
 
+async function submitToHeyGen(script, language, format, apiKey) {
+  if (!apiKey) return null;
+  const dimension = format === 'short' ? { width: 720, height: 1280 } : { width: 1920, height: 1080 };
+  const voiceId = language === 'ar' ? '1bd001e7e50f421d891986aad5158bc8' : '2d5b0e6cf36f460aa7fc47e3eee4ba54';
+  const payload = {
+    video_inputs: [{
+      character: { type: 'avatar', avatar_id: 'Wayne_20240711', avatar_style: 'normal' },
+      voice: { type: 'text', input_text: script.substring(0, 1500), voice_id: voiceId, speed: language === 'ar' ? 0.95 : 1.0 },
+      background: { type: 'color', value: '#020B1A' },
+    }],
+    dimension,
+    test: false,
+    caption: true,
+    callback_url: WEBHOOK_URL,
+  };
+  const res = await fetch('https://api.heygen.com/v2/video/generate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-Api-Key': apiKey },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json();
+  if (!res.ok || data.error) throw new Error(`HeyGen error: ${JSON.stringify(data.error || data)}`);
+  return data.data?.video_id || data.video_id;
+}
+
+async function saveToQueue(item) {
+  if (!SUPABASE_URL || !SUPABASE_KEY) return null;
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/youtube_queue`, {
+    method: 'POST',
+    headers: {
+      'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`,
+      'Content-Type': 'application/json', 'Prefer': 'return=representation',
+    },
+    body: JSON.stringify(item),
+  });
+  const rows = await res.json();
+  return Array.isArray(rows) ? rows[0] : rows;
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Content-Type', 'application/json');
@@ -186,31 +230,47 @@ export default async function handler(req, res) {
       };
     }
 
-    let publishResult = null;
-    if (YT_ACCESS_TOKEN) {
-      publishResult = await publishToYouTube(script, YT_ACCESS_TOKEN);
+    // ── Submit to HeyGen for real AI video generation ──────────────────
+    let heygenVideoId = null;
+    let heygenStatus = 'not_configured';
+    if (HEYGEN_API_KEY && script) {
+      try {
+        const scriptText = script.scriptAr || script.scriptEn || topicAr;
+        heygenVideoId = await submitToHeyGen(scriptText, 'ar', 'short', HEYGEN_API_KEY);
+        heygenStatus = 'generating';
+        console.log(`[YouTube Morning] HeyGen video queued: ${heygenVideoId}`);
+      } catch (heyErr) {
+        console.error('[YouTube Morning] HeyGen error:', heyErr.message);
+        heygenStatus = 'heygen_error';
+      }
     }
 
-    const result = {
-      success: true,
-      slot: 'MORNING',
-      scheduledDate: today.toISOString().split('T')[0],
-      publishTime: '09:00 UTC',
-      format: 'YouTube Shorts 9:16',
-      durationSeconds: 60,
-      topicAr,
-      topicEn,
-      titleAr: script.titleAr,
-      titleEn: script.titleEn,
-      scriptGenerated: Boolean(script),
-      youtubePublished: Boolean(publishResult),
-      publishResult,
-      avatarType: 'AI-Generated (HeyGen/D-ID) — Copyright Safe',
-      voiceType: 'ElevenLabs TTS — Arabic + English',
-      musicType: 'YouTube Audio Library — Royalty Free',
-    };
+    // ── Save to Supabase queue ─────────────────────────────────────────
+    const queueItem = await saveToQueue({
+      slot: 'MORNING', scheduled_for: today.toISOString(),
+      status: heygenVideoId ? 'generating' : 'pending',
+      heygen_video_id: heygenVideoId,
+      title_ar: script?.titleAr || topicAr, title_en: script?.titleEn || topicEn,
+      description_ar: script?.descriptionAr || '', description_en: script?.descriptionEn || '',
+      tags: JSON.stringify(script?.tags || []),
+      topic_ar: topicAr, topic_en: topicEn,
+      format: 'YouTube Shorts 9:16', duration_seconds: 60,
+    });
 
-    console.log('[YouTube Morning Cron] Completed:', result);
+    const result = {
+      success: true, slot: 'MORNING',
+      scheduledDate: today.toISOString().split('T')[0], publishTime: '09:00 UTC',
+      format: 'YouTube Shorts 9:16', durationSeconds: 60,
+      topicAr, topicEn, titleAr: script?.titleAr, titleEn: script?.titleEn,
+      scriptGenerated: Boolean(script),
+      heygenVideoId, heygenStatus, queueItemId: queueItem?.id,
+      webhookUrl: WEBHOOK_URL,
+      avatarType: 'AI-Generated Avatar (Wayne_20240711) — Copyright Safe',
+      message: heygenVideoId
+        ? 'Video generation started — will auto-upload to YouTube when ready'
+        : 'Script generated. Add HEYGEN_API_KEY to Vercel to enable video.',
+    };
+    console.log('[YouTube Morning Cron] Completed:', JSON.stringify(result));
     return res.status(200).json(result);
   } catch (err) {
     console.error('[YouTube Morning Cron] Error:', err);
