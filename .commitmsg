@@ -1,6 +1,1 @@
-fix: add missing public-ux-overrides.css and remove unsafe rollup treeshake
-
-- Created src/styles/public-ux-overrides.css to resolve Vite build error
-- Removed unsafe rollupOptions treeshake setting in vite.config.ts
-- Verified local build (npm run build) succeeds cleanly with 0 errors
-- Pre-rendered 33 semantic routes across 7 languages
+chore: activate YouTube OAuth credentials on Vercel production

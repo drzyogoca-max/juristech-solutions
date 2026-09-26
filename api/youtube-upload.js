@@ -35,8 +35,6 @@ const REDIRECT_URI         = 'https://www.juristech.solutions/youtube-studio';
 const YOUTUBE_SCOPES = [
   'https://www.googleapis.com/auth/youtube.upload',
   'https://www.googleapis.com/auth/youtube.readonly',
-  'https://www.googleapis.com/auth/youtube.force-ssl',
-  'https://www.googleapis.com/auth/userinfo.email',
 ].join(' ');
 
 /** Refresh the OAuth access token using the stored refresh token */
