@@ -22,14 +22,17 @@ async function getYouTubeAccessToken() {
   return data.access_token;
 }
 
-async function getQueueItem(heygenVideoId) {
+async function getQueueItem(videoId) {
   const url = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  const res = await fetch(`${url}/rest/v1/youtube_queue?heygen_video_id=eq.${heygenVideoId}&select=*`, {
-    headers: { 'apikey': key, 'Authorization': `Bearer ${key}` }
-  });
-  const data = await res.json();
-  return data && data.length > 0 ? data[0] : null;
+  if (!url || !key) return null;
+  // Try heygen_video_id first, then try matching render_id stored there
+  const res = await fetch(
+    `${url}/rest/v1/youtube_queue?heygen_video_id=eq.${videoId}&select=*&limit=1`,
+    { headers: { 'apikey': key, 'Authorization': `Bearer ${key}` } }
+  );
+  const rows = await res.json();
+  return Array.isArray(rows) && rows.length > 0 ? rows[0] : null;
 }
 
 async function updateQueueItem(id, updates) {
@@ -89,12 +92,55 @@ export default async function handler(req, res) {
   try {
     const body = req.body;
     const eventType = body.event_type || body.eventType;
-    if (eventType !== 'video.completed' && eventType !== 'completed') {
+    if (eventType !== 'video.completed' && eventType !== 'completed' && body.status !== 'done') {
       return res.status(200).json({ status: 'ignored', reason: 'Not a completed event' });
     }
 
     const videoId = body.data?.video_id || body.video_id;
     const videoUrl = body.data?.video_url || body.video_url;
+
+    // Shotstack sends different payload format
+    const shotstackId  = body.id || '';
+    const shotstackUrl = body.url || '';
+    const shotstackStatus = body.status || '';
+
+    // Handle Shotstack completion
+    if (shotstackId && shotstackUrl && shotstackStatus === 'done') {
+      console.log(`[Webhook] Shotstack video ready: ${shotstackId}`);
+      // Use render_id as the lookup key in youtube_queue
+      const queueItem = await getQueueItem(shotstackId);
+      if (queueItem) {
+        await updateQueueItem(queueItem.id, { status: 'uploading', video_url: shotstackUrl });
+        const accessToken = await getYouTubeAccessToken();
+        const isShort = queueItem.slot === 'MORNING';
+        const title = queueItem.title_en || queueItem.title_ar || 'JurisTech Solutions';
+        const description = [
+          queueItem.description_en || '',
+          queueItem.description_ar || '',
+          '#LegalTech #AIContracts #JurisTech #عقود #ذكاء_اصطناعي',
+          isShort ? '#Shorts' : '',
+          'https://www.juristech.solutions | founder@juristech.solutions',
+        ].filter(Boolean).join('\n');
+        const tags = ['JurisTech', 'Legal Tech', 'AI', 'Contracts', 'Arabic', ...(isShort ? ['Shorts'] : [])].slice(0, 30);
+        const videoBuffer = await downloadVideo(shotstackUrl);
+        const metadata = {
+          snippet: {
+            title: title,
+            description: description,
+            tags: tags,
+            categoryId: '27',
+            defaultLanguage: 'ar'
+          },
+          status: {
+            privacyStatus: 'public',
+            madeForKids: false
+          }
+        };
+        const ytResult = await uploadToYouTube(accessToken, videoBuffer, metadata);
+        await updateQueueItem(queueItem.id, { status: 'published', youtube_video_id: ytResult.videoId, video_url: ytResult.url, published_at: new Date().toISOString() });
+        return res.status(200).json({ success: true, source: 'shotstack', youtube_video_id: ytResult.videoId, youtube_url: ytResult.url });
+      }
+    }
 
     if (!videoId || !videoUrl) {
       return res.status(400).json({ error: 'Missing video_id or video_url' });

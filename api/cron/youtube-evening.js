@@ -147,6 +147,43 @@ async function submitToHeyGen(script, language, format, apiKey) {
   return data.data?.video_id || data.video_id;
 }
 
+async function submitToShotstack(script, titleAr, titleEn, descriptionAr, descriptionEn, isShort, apiKey) {
+  if (!apiKey) return null;
+  const width = isShort ? 720 : 1920;
+  const height = isShort ? 1280 : 1080;
+  const duration = isShort ? 60 : 270;
+
+  const clips = [
+    // Dark navy background
+    { asset: { type: 'html', html: `<div style="width:${width}px;height:${height}px;background:#020B1A"></div>`, width, height }, start: 0, length: duration, position: 'center' },
+    // Gold header bar
+    { asset: { type: 'html', html: `<div style="width:${width}px;height:180px;background:linear-gradient(135deg,#D4AF37,#b8962e);display:flex;align-items:center;justify-content:center;font-family:Arial;font-size:48px;font-weight:900;color:#020B1A">JurisTech Solutions</div>`, width, height: 180 }, start: 0, length: duration, position: 'top' },
+    // Arabic title
+    { asset: { type: 'html', html: `<div style="width:${width}px;padding:40px;font-family:Arial;font-size:${isShort?44:60}px;font-weight:700;color:#D4AF37;text-align:right;direction:rtl;line-height:1.5">${titleAr}</div>`, width, height: 300 }, start: 5, length: 20, position: 'center', transition: { in: 'fade', out: 'fade' } },
+    // English title
+    { asset: { type: 'html', html: `<div style="width:${width}px;padding:40px;font-family:Arial;font-size:${isShort?38:52}px;font-weight:700;color:#10B981;text-align:center;line-height:1.5">${titleEn}</div>`, width, height: 280 }, start: 25, length: 20, position: 'center', transition: { in: 'fade', out: 'fade' } },
+    // Key message
+    { asset: { type: 'html', html: `<div style="width:${width}px;padding:40px;font-family:Arial;font-size:${isShort?32:44}px;color:#ffffff;text-align:center;line-height:1.6">${(descriptionEn||'').substring(0, 200)}</div>`, width, height: 400 }, start: 45, length: isShort?5:180, position: 'center', transition: { in: 'fade', out: 'fade' } },
+    // CTA
+    { asset: { type: 'html', html: `<div style="width:${width}px;padding:40px;text-align:center;font-family:Arial"><div style="font-size:${isShort?40:54}px;color:#D4AF37;font-weight:900">juristech.solutions</div><div style="font-size:${isShort?26:36}px;color:#10B981;margin-top:16px">founder@juristech.solutions</div><div style="font-size:${isShort?22:30}px;color:#aaa;margin-top:12px">+201126674337</div></div>`, width, height: 300 }, start: duration - 12, length: 12, position: 'center', transition: { in: 'fade' } },
+  ];
+
+  const payload = {
+    timeline: { tracks: [{ clips }] },
+    output: { format: 'mp4', resolution: isShort ? 'mobile' : 'hd', aspectRatio: isShort ? '9:16' : '16:9', fps: 30, quality: 'high' },
+    callback: 'https://www.juristech.solutions/api/heygen-webhook',
+  };
+
+  const res = await fetch('https://api.shotstack.io/edit/v1/render', {
+    method: 'POST',
+    headers: { 'x-api-key': apiKey, 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(`Shotstack error: ${JSON.stringify(data)}`);
+  return data.response?.id;
+}
+
 async function saveToQueue(item) {
   if (!SUPABASE_URL || !SUPABASE_KEY) return null;
   const res = await fetch(`${SUPABASE_URL}/rest/v1/youtube_queue`, {
@@ -205,26 +242,35 @@ export default async function handler(req, res) {
       };
     }
 
-    // ── Submit to HeyGen for real AI video generation ──────────────────
-    let heygenVideoId = null;
-    let heygenStatus = 'not_configured';
+    const SHOTSTACK_KEY = process.env.SHOTSTACK_API_KEY || '';
+    let videoRenderId = null;
+    let videoStatus = 'not_configured';
+    let videoService = 'none';
+
+    // Try HeyGen first
     if (HEYGEN_API_KEY && script) {
       try {
         const scriptText = script.scriptBilingual || topic;
-        heygenVideoId = await submitToHeyGen(scriptText, 'en', 'landscape', HEYGEN_API_KEY);
-        heygenStatus = 'generating';
-        console.log(`[YouTube Evening] HeyGen video queued: ${heygenVideoId}`);
-      } catch (heyErr) {
-        console.error('[YouTube Evening] HeyGen error:', heyErr.message);
-        heygenStatus = 'heygen_error';
-      }
+        videoRenderId = await submitToHeyGen(scriptText, 'en', 'landscape', HEYGEN_API_KEY);
+        videoStatus = 'generating'; videoService = 'heygen';
+      } catch (e) { console.error('[Evening] HeyGen error:', e.message); }
     }
 
-    // ── Save to Supabase queue ─────────────────────────────────────────
+    // Fallback: try Shotstack (free tier)
+    if (!videoRenderId && SHOTSTACK_KEY && script) {
+      try {
+        videoRenderId = await submitToShotstack(
+          script.scriptBilingual || script.scriptAr || script.scriptEn, script.titleAr || topic, script.titleEn || topic,
+          script.descriptionAr, script.descriptionEn, false, SHOTSTACK_KEY
+        );
+        videoStatus = 'rendering'; videoService = 'shotstack';
+      } catch (e) { console.error('[Evening] Shotstack error:', e.message); }
+    }
+
     const queueItem = await saveToQueue({
       slot: 'EVENING', scheduled_for: today.toISOString(),
-      status: heygenVideoId ? 'generating' : 'pending',
-      heygen_video_id: heygenVideoId,
+      status: videoRenderId ? (videoService === 'heygen' ? 'generating' : 'rendering') : 'pending',
+      heygen_video_id: videoRenderId,
       title_ar: script?.titleAr || topic, title_en: script?.titleEn || topic,
       description_ar: script?.descriptionAr || '', description_en: script?.descriptionEn || '',
       tags: JSON.stringify(script?.tags || []),
@@ -238,12 +284,11 @@ export default async function handler(req, res) {
       format: 'landscape', durationSeconds: 270,
       topic, titleAr: script?.titleAr, titleEn: script?.titleEn,
       scriptGenerated: Boolean(script),
-      heygenVideoId, heygenStatus, queueItemId: queueItem?.id,
-      webhookUrl: WEBHOOK_URL,
-      avatarType: 'AI-Generated Avatar (Wayne_20240711) — Copyright Safe',
-      message: heygenVideoId
-        ? 'Video generation started — will auto-upload to YouTube when ready'
-        : 'Script generated. Add HEYGEN_API_KEY to Vercel to enable video.',
+      videoRenderId, videoStatus, videoService,
+      queueItemId: queueItem?.id,
+      message: videoRenderId
+        ? `Video rendering via ${videoService} started. Will auto-upload to YouTube when ready.`
+        : 'Script generated. Add SHOTSTACK_API_KEY to Vercel to enable free video generation (50 free/month).',
     };
     console.log('[YouTube Evening Cron] Completed:', JSON.stringify(result));
     return res.status(200).json(result);
