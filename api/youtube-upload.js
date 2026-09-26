@@ -27,7 +27,7 @@ const CORS_HEADERS = {
   'Content-Type': 'application/json',
 };
 
-const GOOGLE_CLIENT_ID     = process.env.YOUTUBE_CLIENT_ID     || '';
+const GOOGLE_CLIENT_ID     = process.env.YOUTUBE_CLIENT_ID     || '420720999238-8hcb6ng6802jukmi9088uu8k5950etn5.apps.googleusercontent.com';
 const GOOGLE_CLIENT_SECRET = process.env.YOUTUBE_CLIENT_SECRET || '';
 const YOUTUBE_REFRESH_TOKEN = process.env.YOUTUBE_REFRESH_TOKEN || '';
 const REDIRECT_URI         = 'https://www.juristech.solutions/youtube-studio';

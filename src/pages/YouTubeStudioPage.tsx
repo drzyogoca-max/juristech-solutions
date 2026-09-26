@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
   Video, Youtube, Play, Pause, CheckCircle2, RefreshCw, Calendar, Eye, Sparkles,
   Send, Lock, Globe, Clock, FileText, ArrowRight, Volume2, VolumeX, Download,
@@ -12,12 +13,42 @@ import { aiVoiceSynthesizer } from '../lib/aiVoiceSynthesizer';
 
 export const YouTubeStudioPage: React.FC = () => {
   const { l, isRtl, i18n } = usePlatformLocale();
+  const [searchParams] = useSearchParams();
+  const oauthCode = searchParams.get('code');
+  const [oauthExchanging, setOauthExchanging] = useState<boolean>(false);
+  const [oauthResult, setOauthResult] = useState<any>(null);
+
   const [stats, setStats] = useState<YouTubeChannelStats>(youtubeChannelEngine.getChannelStats());
   const [videos, setVideos] = useState<YouTubeVideoPost[]>(youtubeChannelEngine.getDailyVideos());
   const [selectedVideo, setSelectedVideo] = useState<YouTubeVideoPost | null>(videos[0] || null);
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<'SCHEDULE' | 'SCRIPT_TELEPROMPTER' | 'OAUTH_SETUP' | 'GROWTH_CONNECTIONS'>('SCHEDULE');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  // Auto-Exchange OAuth Code if redirected from Google
+  useEffect(() => {
+    if (oauthCode && !oauthResult && !oauthExchanging) {
+      setOauthExchanging(true);
+      setActiveTab('OAUTH_SETUP');
+      fetch('/api/youtube-upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'exchange_code', code: oauthCode })
+      })
+      .then((res) => res.json())
+      .then((data) => {
+        setOauthResult(data);
+        setOauthExchanging(false);
+        if (data.refreshToken) {
+          setToastMessage(isRtl ? '🎉 تم ربط قناة يوتيوب وتوليد رمز التفويض الدائم بنجاح!' : '🎉 YouTube channel authorized & Refresh Token generated!');
+        }
+      })
+      .catch((err) => {
+        setOauthExchanging(false);
+        console.error('OAuth exchange error:', err);
+      });
+    }
+  }, [oauthCode]);
 
   // Live Video Preview Player State
   const [playerMode, setPlayerMode] = useState<'YOUTUBE_EMBED' | 'AI_CANVAS'>('YOUTUBE_EMBED');
@@ -523,6 +554,30 @@ export const YouTubeStudioPage: React.FC = () => {
                 <span className="text-amber-400 font-bold">{stats.officialEmail}</span>
               </div>
             </div>
+
+            {oauthExchanging && (
+              <div className="bg-cyan-500/10 border border-cyan-500/30 p-4 rounded-xl text-center text-cyan-300 text-xs font-mono mb-4 animate-pulse">
+                ⏳ {l('جاري تبادل رمز التفويض مع جوجل وتوليد مفتاح Refresh Token...', 'Exchanging authorization code with Google and retrieving Refresh Token...')}
+              </div>
+            )}
+
+            {oauthResult && (
+              <div className={`p-4 rounded-xl border mb-4 text-xs font-mono ${oauthResult.refreshToken ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300' : 'bg-amber-500/10 border-amber-500/30 text-amber-300'}`}>
+                {oauthResult.refreshToken ? (
+                  <div className="space-y-2">
+                    <p className="font-bold text-sm text-emerald-400">✅ {l('تم استخراج رمز التفويض الدائم بنجاح!', 'Permanent Refresh Token Retrieved Successfully!')}</p>
+                    <p className="text-slate-300 text-xs">{l('أضف هذا الرمز في إعدادات Vercel كمتغير بيئة باسم YOUTUBE_REFRESH_TOKEN:', 'Add this key to Vercel Environment Variables as YOUTUBE_REFRESH_TOKEN:')}</p>
+                    <div className="bg-slate-950 p-2.5 rounded-lg border border-slate-800 break-all select-all font-mono text-[11px] text-amber-300">
+                      {oauthResult.refreshToken}
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    <p className="font-bold text-amber-400">⚠️ {oauthResult.error || oauthResult.NEXT_STEP || 'No refresh token returned. Revoke consent in Google Account and try again.'}</p>
+                  </div>
+                )}
+              </div>
+            )}
 
             <div className="space-y-4">
               <a
