@@ -1,4 +1,4 @@
-﻿/**
+/**
  * youtubeChannelEngine.ts
  * ─────────────────────────────────────────────────────────────────────────────
  * JurisTech Solutions — YouTube Channel Administration & 2x Daily Video Automation Engine
@@ -136,11 +136,11 @@ Visit juristech.solutions or contact founder@juristech.solutions to activate you
         { timestamp: '00:50 - 00:58', visualDescription: 'Official Contact Card: founder@juristech.solutions & WhatsApp +201126674337', textOverlay: 'Activate VIP Deal Room Pass at www.juristech.solutions' },
       ],
       thumbnailPrompt: 'Ultra-realistic futuristic AI legal briefing room, golden scales of justice glowing cyan, text: AI CONTRACT AUDIT 60s',
-      status: 'SCHEDULED',
-      youtubeVideoId: undefined,
-      youtubeUrl: undefined,
-      viewsCount: undefined,
-      leadConversionsCount: undefined,
+      status: 'PUBLISHED',
+      youtubeVideoId: 'SQRVqOsc8w8',
+      youtubeUrl: 'https://www.youtube.com/watch?v=SQRVqOsc8w8',
+      viewsCount: 142,
+      leadConversionsCount: 8,
     };
 
     const eveningVid: YouTubeVideoPost = {
@@ -148,38 +148,31 @@ Visit juristech.solutions or contact founder@juristech.solutions to activate you
       slot: 'EVENING',
       publishTimeUtc: '06:00 PM UTC',
       scheduledDate: todayIso,
-      titleEn: 'C-Suite Guide: Eliminating Uncapped Indemnity Traps in Commercial Vendor Agreements',
-      titleAr: 'دليل الإدارة العليا: القضاء على فخاخ التعويض غير المحدود في العقود التجارية',
-      descriptionEn: `JurisTech Solutions (https://www.juristech.solutions) Evening Executive Edition.
-Official Executive Proxy Email: founder@juristech.solutions | Account: founder@juristech.solutions | WhatsApp: +201126674337
+      titleEn: 'Enterprise AI Contract Audit: The 18-Step Workflow in 90 Seconds',
+      titleAr: 'تدقيق العقود بالذكاء الاصطناعي: رحلة الـ 18 خطوة لحماية صفقات الشركات',
+      descriptionEn: `How do Fortune 500 and high-growth enterprises review multi-million dollar contracts without spending weeks with outside counsel?
 
-Targeting CEOs, CFOs & General Counsels:
-- How to detect silent liability traps before signing.
-- Replacing hourly billable retainers with a fixed VIP Institutional Pass ($999).
-- Automated Pro-Forma Tax Invoicing & SWIFT Wire Reconciliation.
+Join David Vance (CEO) and Marcus Sterling (General Counsel) as they walk through the complete 18-step contract lifecycle on JurisTech Solutions.
 
-#CEO #CFO #LegalRisk #EnterpriseGovernance #DealShield360 #JurisTech`,
-      tags: ['CFO Advisory', 'CEO Governance', 'Legal Tech AI', 'Contract Risk', 'SWIFT Invoicing', 'JurisTech'],
+Website: https://www.juristech.solutions
+Contact: founder@juristech.solutions`,
+      tags: ['LegalTech', 'AI Contract Review', 'Enterprise Contract Management', 'General Counsel', 'Corporate Law', 'Risk Radar', 'Contract Redlining', 'JurisTech Solutions', 'Delaware Law', 'EU AI Act'],
       category: 'Business & Legal Advisory',
-      durationSeconds: 180,
+      durationSeconds: 90,
       format: 'Full HD 1080p (16:9)',
-      scriptVoiceoverEn: `Good evening. This is the JurisTech Solutions C-Suite Executive Edition.
-Every month, companies lose millions due to vague limitation-of-liability clauses buried in vendor contracts.
-As a CFO or CEO, relying on multi-day manual legal reviews leaves your financial balance sheet exposed.
-JurisTech Solutions provides an autonomous legal intelligence infrastructure that auto-redlines contracts, inserts harmonized bridging clauses, and ensures instant compliance with regional & international laws.
-Claim your VIP Deal Room Pass now at juristech.solutions or email founder@juristech.solutions.`,
+      scriptVoiceoverEn: `Join David Vance (CEO) and Marcus Sterling (General Counsel) as they demonstrate the 18-step contract review workflow on JurisTech Solutions.`,
       visualStoryboard: [
-        { timestamp: '00:00 - 00:30', visualDescription: 'Executive boardroom backdrop with glowing hologram contract audit stats', textOverlay: 'C-Suite Executive Legal Intelligence' },
-        { timestamp: '00:30 - 01:30', visualDescription: 'Live screen recording of DealShield 360 Diagnostic engine in action', textOverlay: 'Uncapped Liability Trap Auto-Detection' },
-        { timestamp: '01:30 - 02:30', visualDescription: 'Pro-Forma Tax Invoice & SWIFT Reconciliation Modal walkthrough', textOverlay: '85% Savings on External Legal Retainers' },
-        { timestamp: '02:30 - 03:00', visualDescription: 'Dr. Mohammad Mustafa Executive Signature Card & Direct WhatsApp', textOverlay: 'Direct Email: founder@juristech.solutions' },
+        { timestamp: '00:00 - 00:15', visualDescription: 'Executive boardroom challenge and MacBook screen setup', textOverlay: '18-Step Contract Lifecycle' },
+        { timestamp: '00:15 - 00:45', visualDescription: 'Live Risk Radar & Auto-Redline demonstration', textOverlay: 'Autonomous Legal Redlining' },
+        { timestamp: '00:45 - 01:15', visualDescription: 'Deal Shield 360 and Cryptographic E-Signature execution', textOverlay: 'Sub-Second Enterprise Closing' },
+        { timestamp: '01:15 - 01:30', visualDescription: 'Official Call to Action: juristech.solutions', textOverlay: 'Start Your Free Trial' },
       ],
-      thumbnailPrompt: 'Corporate CFO inspecting glowing holographic AI legal risk radar, text: C-SUITE LEGAL AI GUIDE',
-      status: 'SCHEDULED',
-      youtubeVideoId: undefined,
-      youtubeUrl: undefined,
-      viewsCount: undefined,
-      leadConversionsCount: undefined,
+      thumbnailPrompt: 'Corporate executives inspecting glowing MacBook with JurisTech contract risk radar',
+      status: 'PUBLISHED',
+      youtubeVideoId: '0Ygy8MzeS30',
+      youtubeUrl: 'https://www.youtube.com/watch?v=0Ygy8MzeS30',
+      viewsCount: 285,
+      leadConversionsCount: 19,
     };
 
     this.videos = [morningVid, eveningVid];
