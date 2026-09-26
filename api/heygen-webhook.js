@@ -113,7 +113,8 @@ export default async function handler(req, res) {
         await updateQueueItem(queueItem.id, { status: 'uploading', video_url: shotstackUrl });
         const accessToken = await getYouTubeAccessToken();
         const isShort = queueItem.slot === 'MORNING';
-        const title = queueItem.title_en || queueItem.title_ar || 'JurisTech Solutions';
+        const rawTitle = queueItem.title_en || queueItem.title_ar || 'JurisTech Solutions';
+        const title = rawTitle.length > 95 ? rawTitle.substring(0, 92) + '...' : rawTitle;
         const description = [
           queueItem.description_en || '',
           queueItem.description_ar || '',
@@ -129,7 +130,7 @@ export default async function handler(req, res) {
             description: description,
             tags: tags,
             categoryId: '27',
-            defaultLanguage: 'ar'
+            defaultLanguage: queueItem.slot === 'MORNING' ? 'ar' : 'en'
           },
           status: {
             privacyStatus: 'public',
@@ -166,9 +167,12 @@ export default async function handler(req, res) {
     const descEn = queueItem.description_en || '';
     const description = `${descEn}\n\n${descAr}\n\nContact: founder@juristech.solutions | +201126674337\n\n#JurisTech #LegalTech #AI`;
 
+    const rawTitle = queueItem.title_ar || queueItem.title_en || 'JurisTech AI Video';
+    const title = rawTitle.length > 95 ? rawTitle.substring(0, 92) + '...' : rawTitle;
+
     const metadata = {
       snippet: {
-        title: queueItem.title_ar || queueItem.title_en || 'JurisTech AI Video',
+        title: title,
         description: description,
         tags: tags,
         categoryId: '27',
