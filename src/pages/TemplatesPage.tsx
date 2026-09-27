@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useDeferredValue } from 'react';
 import { Link } from 'react-router-dom';
 import {
   FileText, Search, Sparkles, Download, Eye, CheckCircle2,
@@ -21,12 +21,15 @@ export default function TemplatesPage() {
   const [previewTemplate, setPreviewTemplate] = useState<MegaContractTemplate | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
-  // Filter templates
+  // Concurrent React 18 deferred search value to prevent UI blocking
+  const deferredSearchQuery = useDeferredValue(searchQuery);
+
+  // Filter templates with deferred search
   const filteredTemplates = useMemo(() => {
+    const query = deferredSearchQuery.toLowerCase().trim();
     return MEGA_CONTRACT_TEMPLATES.filter((tpl) => {
       const matchesCat =
         selectedCategory === 'all' || tpl.categoryKey === selectedCategory;
-      const query = searchQuery.toLowerCase().trim();
       const matchesSearch =
         !query ||
         tpl.titleAr.toLowerCase().includes(query) ||
@@ -36,7 +39,7 @@ export default function TemplatesPage() {
         tpl.tags.some((tag) => tag.toLowerCase().includes(query));
       return matchesCat && matchesSearch;
     });
-  }, [selectedCategory, searchQuery]);
+  }, [selectedCategory, deferredSearchQuery]);
 
   const handleCopyText = (tpl: MegaContractTemplate) => {
     const text = isRtl ? tpl.templateAr : tpl.templateEn;

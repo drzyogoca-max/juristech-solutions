@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo, useRef, useDeferredValue } from 'react';
 import {
   FileText, Download, Loader2, Globe, Sparkles, MessageSquare, ShieldCheck,
   Building2, Users, Briefcase, Code2, DollarSign, Lock, AlertTriangle, ChevronRight, CheckCircle2, Send,
@@ -438,10 +438,11 @@ Language: ${i18n.language === 'ar' ? 'Arabic (العربية الفصحى الق
     });
   }
 
-  // Filtered Vault Templates
+  // Filtered Vault Templates with Concurrent React 18 Deferred Value for 0ms Input Lag
+  const deferredVaultSearchQuery = useDeferredValue(vaultSearchQuery);
   const filteredVaultTemplates = useMemo(() => {
-    return searchMegaRepository(vaultSearchQuery, isRtl ? 'ar' : 'en', vaultCategoryFilter, 12);
-  }, [vaultSearchQuery, vaultCategoryFilter, isRtl]);
+    return searchMegaRepository(deferredVaultSearchQuery, isRtl ? 'ar' : 'en', vaultCategoryFilter, 12);
+  }, [deferredVaultSearchQuery, vaultCategoryFilter, isRtl]);
 
   const featuredContractsList = useMemo(() => {
     return getFeaturedContracts(6);

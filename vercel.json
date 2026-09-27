@@ -198,6 +198,50 @@
   ],
   "rewrites": [
     {
+      "source": "/api/leads/:action*",
+      "destination": "/api/leads?action=:action*"
+    },
+    {
+      "source": "/api/partnerships/:action*",
+      "destination": "/api/leads?action=:action*"
+    },
+    {
+      "source": "/api/contracts/:action*",
+      "destination": "/api/contracts?action=:action*"
+    },
+    {
+      "source": "/api/cron/:task*",
+      "destination": "/api/cron?task=:task*"
+    },
+    {
+      "source": "/api/youtube-upload",
+      "destination": "/api/video?action=youtube-upload"
+    },
+    {
+      "source": "/api/heygen-webhook",
+      "destination": "/api/video?action=heygen-webhook"
+    },
+    {
+      "source": "/api/heygen-generate",
+      "destination": "/api/video?action=heygen-generate"
+    },
+    {
+      "source": "/api/video-generate",
+      "destination": "/api/video?action=video-generate"
+    },
+    {
+      "source": "/api/send",
+      "destination": "/api/send-email"
+    },
+    {
+      "source": "/api/webhooks/:provider*",
+      "destination": "/api/webhooks?provider=:provider*"
+    },
+    {
+      "source": "/api/erp/:action*",
+      "destination": "/api/webhooks?provider=erp"
+    },
+    {
       "source": "/api/(.*)",
       "destination": "/api/$1"
     },
@@ -208,23 +252,11 @@
   ],
   "crons": [
     {
-      "path": "/api/cron/autonomous-outreach",
-      "schedule": "0 8 * * *"
-    },
-    {
-      "path": "/api/cron/daily-audit",
-      "schedule": "0 0 * * *"
-    },
-    {
-      "path": "/api/cron/spider-linkedin",
-      "schedule": "0 14 * * *"
-    },
-    {
-      "path": "/api/cron/youtube-morning",
+      "path": "/api/cron?task=youtube-morning",
       "schedule": "0 12 * * *"
     },
     {
-      "path": "/api/cron/youtube-evening",
+      "path": "/api/cron?task=youtube-evening",
       "schedule": "0 3 * * *"
     }
   ]
