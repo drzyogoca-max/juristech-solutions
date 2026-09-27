@@ -65,7 +65,7 @@ setInterval(() => {
 // ── Layer 2: Supabase Daily Quota Guard ──────────────────────────────────────
 // Uses the existing Supabase instance — no new dependencies.
 // Tracks total emails dispatched today across all Vercel instances.
-const DAILY_EMAIL_LIMIT = 25; // matches CRM daily dispatch limit
+const DAILY_EMAIL_LIMIT = 50; // allows 20 daily autonomous outreach + transactional emails
 
 // In-memory quota cache — avoids Supabase round-trip on every request.
 // TTL: 30 seconds. Worst case: 30s window where count may be slightly stale,
@@ -221,6 +221,7 @@ const ALLOWED_TRANSACTIONAL_TYPES = [
   'RECEIPT_NOTIFICATION',
   'LEAD_INQUIRY',
   'AUTHENTICATION_OTP',
+  'PARTNERSHIP_PROPOSAL',
 ];
 
 async function checkEmailAuthorization(req, targetEmail, body = {}) {
@@ -610,7 +611,7 @@ async function outreachFrequencyGuard(cleanEmail, emailSubject) {
 }
 
 // ── Shared Email Processing & Dispatch Cascade ────────────────────────────────
-async function processEmailDispatch(targetEmail, emailSubject, text, html, replyTo, forceSend = false) {
+export async function processEmailDispatch(targetEmail, emailSubject, text, html, replyTo, forceSend = false) {
   const cleanEmail = targetEmail?.toLowerCase()?.trim();
   const isAdminEmail = cleanEmail === 'founder@juristech.solutions' || cleanEmail === 'founder@juristech.solutions';
 
