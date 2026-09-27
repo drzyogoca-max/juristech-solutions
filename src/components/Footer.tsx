@@ -11,6 +11,7 @@ import {
   Building2,
   ShieldCheck,
   Lock,
+  Youtube,
 } from 'lucide-react';
 import { usePlatformLocale } from '../lib/universalTranslator';
 import LanguageSwitcher from './LanguageSwitcher';
@@ -53,6 +54,24 @@ export default function Footer() {
               <Mail className="w-3.5 h-3.5 text-cyan-400" />
               <span>founder@juristech.solutions</span>
             </a>
+            <a
+              href="https://wa.me/201126674337"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="WhatsApp Executive Direct"
+              className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-slate-900 text-emerald-300 border border-slate-700/80 hover:border-emerald-500/50 transition-colors font-mono"
+            >
+              <Smartphone className="w-3.5 h-3.5 text-emerald-400" />
+              <span>{l('واتساب: +201126674337', 'WhatsApp: +201126674337')}</span>
+            </a>
+            <Link
+              to="/youtube-studio"
+              aria-label="JurisTech Official YouTube Channel"
+              className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-slate-900 text-red-300 border border-slate-700/80 hover:border-red-500/50 transition-colors"
+            >
+              <Youtube className="w-3.5 h-3.5 text-red-500" />
+              <span>{l('قناة يوتيوب الرسمية', 'Official YouTube Channel')}</span>
+            </Link>
             <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5" />
               {l('مطابق لـ 15+ نظام قضائي', '15+ Sovereign Frameworks')}
@@ -252,6 +271,24 @@ export default function Footer() {
             >
               <span className="text-white font-black text-sm">𝕏</span>
               <span>Twitter</span>
+            </a>
+            <Link
+              to="/youtube-studio"
+              aria-label="YouTube Studio"
+              className="text-slate-400 hover:text-red-400 transition-colors font-bold text-xs flex items-center gap-1.5"
+            >
+              <Youtube className="w-4 h-4 text-red-500" />
+              <span>YouTube</span>
+            </Link>
+            <a
+              href="https://wa.me/201126674337"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Direct WhatsApp"
+              className="text-slate-400 hover:text-emerald-400 transition-colors font-bold text-xs flex items-center gap-1.5"
+            >
+              <Smartphone className="w-4 h-4 text-emerald-400" />
+              <span>WhatsApp</span>
             </a>
             <span className="text-emerald-400 font-bold ml-1">● {l('مشفر E2EE', 'E2EE Encrypted')}</span>
             <span className="font-mono text-teal-400 font-bold">JurisTech Platform</span>

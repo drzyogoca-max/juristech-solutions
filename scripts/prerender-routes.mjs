@@ -399,10 +399,12 @@ function prerenderRoutes() {
 
     // 5. Inject Rich Semantic HTML inside <div id="root"></div> for 100% LLM Readability & 0% Rendering Delta
     const semanticContent = getSemanticHtmlForRoute(routePath);
-    if (routeHtml.includes('<div id="root"></div>')) {
+    if (routeHtml.includes('<!-- ROOT_CONTAINER_START -->')) {
+      routeHtml = routeHtml.replace(/<!-- ROOT_CONTAINER_START -->[\s\S]*?<!-- ROOT_CONTAINER_END -->/i, `<div id="root">${semanticContent}</div>`);
+    } else if (routeHtml.includes('<div id="root"></div>')) {
       routeHtml = routeHtml.replace('<div id="root"></div>', `<div id="root">${semanticContent}</div>`);
     } else {
-      routeHtml = routeHtml.replace(/<div id="root">[\s\S]*?<\/div>/i, `<div id="root">${semanticContent}</div>`);
+      routeHtml = routeHtml.replace(/<div id="root">[\s\S]*?<\/div>\s*(?=<style>)/i, `<div id="root">${semanticContent}</div>\n    `);
     }
 
     const targetFilePath = path.join(routeDir, 'index.html');
@@ -454,10 +456,12 @@ function prerenderRoutes() {
     let notFoundHtml = baseHtml;
     const notFoundSemantic = getSemanticHtmlForRoute('/404');
     notFoundHtml = notFoundHtml.replace(/<title>[\s\S]*?<\/title>/i, '<title>404: الصفحة غير موجودة | JurisTech Solutions</title>');
-    if (notFoundHtml.includes('<div id="root"></div>')) {
+    if (notFoundHtml.includes('<!-- ROOT_CONTAINER_START -->')) {
+      notFoundHtml = notFoundHtml.replace(/<!-- ROOT_CONTAINER_START -->[\s\S]*?<!-- ROOT_CONTAINER_END -->/i, `<div id="root">${notFoundSemantic}</div>`);
+    } else if (notFoundHtml.includes('<div id="root"></div>')) {
       notFoundHtml = notFoundHtml.replace('<div id="root"></div>', `<div id="root">${notFoundSemantic}</div>`);
     } else {
-      notFoundHtml = notFoundHtml.replace(/<div id="root">[\s\S]*?<\/div>/i, `<div id="root">${notFoundSemantic}</div>`);
+      notFoundHtml = notFoundHtml.replace(/<div id="root">[\s\S]*?<\/div>\s*(?=<style>)/i, `<div id="root">${notFoundSemantic}</div>\n    `);
     }
     fs.writeFileSync(path.join(DIST_DIR, '404.html'), notFoundHtml, 'utf-8');
     console.log('[Prerender SEO] Dedicated 404.html generated successfully.');

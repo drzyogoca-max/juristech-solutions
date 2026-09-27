@@ -101,10 +101,11 @@ export default function ExecutiveCommandBar({ onOpenSecurity }: ExecutiveCommand
             <button
               onClick={onOpenSecurity}
               aria-label={l('أمان التشفير 2FA', '2FA Security')}
-              className="p-2.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-emerald-400 border border-slate-800 transition-all cursor-pointer"
+              className="px-3.5 py-2.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-emerald-400 border border-slate-800 transition-all cursor-pointer flex items-center gap-1.5 text-xs font-bold"
               title={l('إدارة الأمان والمصادقة الثنائية', '2FA Security Settings')}
             >
-              <Key className="w-4 h-4" />
+              <Key className="w-4 h-4 text-emerald-400 shrink-0" />
+              <span className="truncate">{l('أمان 2FA', '2FA Security')}</span>
             </button>
           )}
         </div>
