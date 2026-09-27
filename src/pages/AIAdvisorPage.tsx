@@ -46,6 +46,7 @@ import { AccessUpgradeModal } from '../components/ai-advisor/AccessUpgradeModal'
 // AI Intelligence Subsystem Core & Agents
 import { aiOrchestrator } from '../ai/aiCore/orchestrator';
 import { contextManager } from '../ai/aiCore/contextManager';
+import { clearHistory } from '../ai/memory/conversationMemory';
 import { LegalResearchAgent } from '../ai/agents/legalResearchAgent';
 import { detectJurisdictionFromQuery } from '../ai/retrieval/semanticSearch';
 import { ContractAgent } from '../ai/agents/contractAgent';
@@ -180,10 +181,26 @@ export default function AIAdvisorPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
 
+  const [wipeNotification, setWipeNotification] = useState<string | null>(null);
+
   const handleClearSession = useCallback(() => {
     contextManager.clear();
+    clearHistory();
+    try {
+      if (typeof sessionStorage !== 'undefined') {
+        sessionStorage.removeItem('juristech_ai_session_ctx');
+        sessionStorage.removeItem('juristech_ai_conversation');
+      }
+    } catch {}
     setMessages([]);
-  }, []);
+    setInputQuery('');
+    setWipeNotification(
+      isAr
+        ? 'تم مسح سجل المحادثة وتصفير السياق التشغيلي والملفات بالكامل (100% خصوصية وأمان سيادي).'
+        : 'Chat session, history archive, and operational context completely wiped (100% Sovereign Privacy).'
+    );
+    setTimeout(() => setWipeNotification(null), 4500);
+  }, [isAr]);
 
   const handleUpgradeClick = useCallback((feature = 'Advanced Legal Intelligence', minTier: UserTier = 'startup') => {
     setUpgradeFeature(feature);
@@ -498,22 +515,32 @@ export default function AIAdvisorPage() {
                 lang={lang as SupportedAILang}
               />
 
-              {messages.length > 0 && (
-                <button
-                  onClick={handleClearSession}
-                  className="p-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-rose-400 border border-slate-800 transition-all cursor-pointer text-xs flex items-center gap-1.5"
-                  title={isAr ? 'بدء محادثة جديدة' : 'New Session'}
-                >
-                  <Trash2 className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">{isAr ? 'جلسة جديدة' : 'New'}</span>
-                </button>
-              )}
+              <button
+                onClick={handleClearSession}
+                className="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-rose-950/40 text-slate-400 hover:text-rose-400 border border-slate-800 hover:border-rose-500/40 transition-all cursor-pointer text-xs flex items-center gap-1.5 shadow-sm"
+                title={isAr ? 'مسح المحادثة وحذف الملفات وتصفير الذاكرة' : 'Clear Chat & Erase Uploaded Files'}
+              >
+                <Trash2 className="w-3.5 h-3.5 text-rose-400" />
+                <span>{isAr ? 'مسح المحادثة وحذف الملفات' : 'Clear Chat & Files'}</span>
+              </button>
             </div>
           </div>
         </div>
 
         {/* Main Conversation & Workspace Container */}
         <main className="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 flex flex-col justify-between space-y-6">
+          {wipeNotification && (
+            <div className="w-full p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-bold flex items-center justify-between animate-in fade-in slide-in-from-top-2 duration-300">
+              <div className="flex items-center gap-2">
+                <Shield className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>{wipeNotification}</span>
+              </div>
+              <button onClick={() => setWipeNotification(null)} className="text-emerald-400 hover:text-white p-1">
+                ✕
+              </button>
+            </div>
+          )}
+
           {messages.length === 0 ? (
             /* Empty State Hero */
             <div className="my-auto py-12 text-center space-y-6">

@@ -1,9 +1,10 @@
 /**
  * Vercel Serverless Cron — /api/cron/youtube-evening
  * JurisTech Solutions | Autonomous Enterprise Video Publisher (Full HD 1080p)
- * Schedule: 0 18 * * * (18:00 UTC Daily)
+ * Schedule: 0 3 * * * (11:00 PM US Eastern / 03:00 UTC Next Day)
  * 
  * Engine: Realistic MacBook Screen Simulation + 18-Step Platform Workflow Map
+ * Focus: Core Enterprise Services (Risk Radar, Auto-Redlining, Smart Templates, Vault)
  * Dialogue: Two Corporate Executives (CEO & General Counsel)
  * Alternating Schedule:
  *   - Odd Days: Arabic Gulf Edition (Saudi Arabia & UAE focus: سلطان الهاشمي وفيصل المنصور)
@@ -118,7 +119,7 @@ async function buildEnglishEdition(elevenKey) {
   const VOICE_COUNSEL = 'pqHfZKP75CvOlQylNhV4'; // Marcus Sterling
 
   const [p1, p2, p3, p4, p5, p6] = await Promise.all([
-    genElevenVoice(VOICE_CEO, "Marcus, our expansion across Europe and the US depends on this multi-million dollar agreement. Traditional legal review will take two weeks. Can we audit all 18 checkpoints today?", elevenKey),
+    genElevenVoice(VOICE_CEO, "Marcus, our enterprise partnership expansion depends on this Master Services Agreement. Outside legal review will take two weeks. Can we audit all 18 checkpoints today?", elevenKey),
     genElevenVoice(VOICE_COUNSEL, "We can do it right now, David. Look at the screen. Steps 1 to 4: Ingestion, OCR parsing, and selecting Delaware, UK, and European jurisdictions.", elevenKey),
     genElevenVoice(VOICE_CEO, "Incredible! Steps 5 to 8: The Risk Radar scored an 88 hazard, catching an uncapped indemnity trap and an unfair termination clause in seconds!", elevenKey),
     genElevenVoice(VOICE_COUNSEL, "Now, Steps 9 through 13: With one click, AI Auto-Redline replaces toxic terms with market-tested clauses, cross-referenced with 200 vetted enterprise templates.", elevenKey),
@@ -149,11 +150,11 @@ async function buildEnglishEdition(elevenKey) {
       </div>
       ${macbook('WORKFLOW AUDIT: 18 CHECKPOINTS', `
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:30px">
-          <div><div style="font-family:Arial;font-size:20px;color:#10B981;font-weight:700">ENTERPRISE EXPANSION AGREEMENT</div><div style="font-family:Arial Black;font-size:42px;color:#ffffff">Cross-Border Master Service Agreement · $2.5M Deal</div></div>
+          <div><div style="font-family:Arial;font-size:20px;color:#10B981;font-weight:700">ENTERPRISE EXPANSION AGREEMENT</div><div style="font-family:Arial Black;font-size:42px;color:#ffffff">Cross-Border Master Service Agreement · Full Legal Audit</div></div>
           <div style="background:#142847;border:1px solid #ef4444;border-radius:12px;padding:16px 28px;text-align:right"><div style="font-family:Arial;font-size:16px;color:#ef4444;font-weight:700">TRADITIONAL REVIEW</div><div style="font-family:Arial Black;font-size:26px;color:#ffffff">14 Business Days</div></div>
         </div>
         <div style="display:grid;grid-template-columns:repeat(6, 1fr);gap:16px">
-          ${['1. Ingestion', '2. OCR Scan', '3. Jurisdiction', '4. Context Map', '5. Risk Radar', '6. Liability Caps', '7. Penalties', '8. Conflict Check', '9. Auto-Redline', '10. Safe Clauses', '11. Negotiation', '12. 200+ Templates', '13. POA Drafting', '14. Deal Shield', '15. E-Signature', '16. Formation', '17. AES-256 Vault', '18. AI Advisor'].map((s, idx) => `<div style="background:#0D1F3C;border:1px solid rgba(212,175,55,${idx<4?0.8:0.25});border-radius:10px;padding:16px 12px;text-align:center"><div style="font-family:Arial;font-size:14px;color:${idx<4?'#10B981':'#64748b'}">Step ${idx+1}</div><div style="font-family:Arial;font-size:16px;font-weight:700;color:#ffffff;margin-top:4px">${s.split('. ')[1]}</div></div>`).join('')}
+          ${['1. Ingestion', '2. OCR Scan', '3. Jurisdiction', '4. Context Map', '5. Risk Radar', '6. Liability Caps', '7. Penalties', '8. Conflict Check', '9. Auto-Redline', '10. Safe Clauses', '11. Negotiation', '12. 200+ Templates', '13. POA Drafting', '14. Deal Shield', '15. E-Signature', '16. Structuring', '17. AES-256 Vault', '18. AI Advisor'].map((s, idx) => `<div style="background:#0D1F3C;border:1px solid rgba(212,175,55,${idx<4?0.8:0.25});border-radius:10px;padding:16px 12px;text-align:center"><div style="font-family:Arial;font-size:14px;color:${idx<4?'#10B981':'#64748b'}">Step ${idx+1}</div><div style="font-family:Arial;font-size:16px;font-weight:700;color:#ffffff;margin-top:4px">${s.split('. ')[1]}</div></div>`).join('')}
         </div>
       `)}
       <div style="width:100%;height:8px;background:linear-gradient(90deg,#10B981,#D4AF37);position:absolute;bottom:0;left:0"></div>
@@ -236,7 +237,7 @@ async function buildArabicEdition(elevenKey) {
   const VOICE_COUNSEL = 'pqHfZKP75CvOlQylNhV4'; // Faisal (Legal Counsel)
 
   const [p1, p2, p3, p4, p5, p6] = await Promise.all([
-    genElevenVoice(VOICE_CEO, "يا فيصل، أمامنا عقد شراكة وتوريد بـ 10 ملايين ريال بين الرياض ودبي، ومطلوب التوقيع اليوم! هل ننتظر أسبوعين للمراجعة التقليدية ونخسر الصفقة؟", elevenKey),
+    genElevenVoice(VOICE_CEO, "يا فيصل، أمامنا عقد شراكة وتوريد لتوسيع أعمال الشركة بين الرياض ودبي، ومطلوب التوقيع اليوم! هل ننتظر أسبوعين للمراجعة التقليدية ونؤخر المشروع؟", elevenKey),
     genElevenVoice(VOICE_COUNSEL, "لا توقع يا سلطان قبل الفحص الآلي! افتح الشاشة الآن على منصة JurisTech. الخطوات من 1 إلى 4: رفع العقد وتحديد نظام المعاملات المدنية السعودي وقوانين مركز دبي المالي.", elevenKey),
     genElevenVoice(VOICE_CEO, "مذهل! انظر إلى رادار المخاطر في الخطوات 5 إلى 8: مؤشر الخطر 88%! اكتشف بند مسؤولية غير محدودة وشرطاً جزائياً تعسفياً في ثوانٍ معدودة!", elevenKey),
     genElevenVoice(VOICE_COUNSEL, "الآن الخطوات من 9 إلى 13: بنقرة واحدة، ميزة Auto-Redline شطبت البنود المجحفة ووضعت صياغة نظامية آمنة مستندة إلى أكثر من 200 نموذج معتمد.", elevenKey),
@@ -267,11 +268,11 @@ async function buildArabicEdition(elevenKey) {
       </div>
       ${arabicMacbook('تدقيق خريطة الـ 18 خطوة القانونية', `
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px">
-          <div><div style="font-family:Arial;font-size:20px;color:#10B981;font-weight:700">عقد توريد وتشغيل تجاري مشترك</div><div style="font-family:Arial Black,Arial;font-size:38px;color:#ffffff">صفقة استثمارية بقيمة 10,000,000 ريال (الرياض - دبي)</div></div>
+          <div><div style="font-family:Arial;font-size:20px;color:#10B981;font-weight:700">عقد توريد وتشغيل تجاري مشترك</div><div style="font-family:Arial Black,Arial;font-size:38px;color:#ffffff">عقد توريد وتشغيل تجاري مشترك · فحص الشراكة المؤسسية</div></div>
           <div style="background:#142847;border:1px solid #ef4444;border-radius:12px;padding:16px 28px;text-align:center"><div style="font-family:Arial;font-size:16px;color:#ef4444;font-weight:700">المراجعة القانونية التقليدية</div><div style="font-family:Arial Black,Arial;font-size:24px;color:#ffffff">14 يوماً عمل (مخاطرة بضياع الصفقة)</div></div>
         </div>
         <div style="display:grid;grid-template-columns:repeat(6, 1fr);gap:14px">
-          ${['1. رفع العقد', '2. المسح الضوئي', '3. الأنظمة الحاكمة', '4. خريطة السياق', '5. رادار المخاطر', '6. سقف المسؤولية', '7. الشرط الجزائي', '8. تنازع القوانين', '9. التعديل الذكي', '10. الصياغة الآمنة', '11. التفاوض', '12. 200+ نموذج', '13. صياغة الوكالات', '14. درع الصفقات', '15. التوقيع الرقمي', '16. تأسيس الشركات', '17. الخزينة المشفرة', '18. المستشار الذكي'].map((s, idx) => `<div style="background:#0D1F3C;border:1px solid rgba(212,175,55,${idx<4?0.8:0.25});border-radius:10px;padding:14px 10px;text-align:center"><div style="font-family:Arial;font-size:14px;color:${idx<4?'#10B981':'#64748b'}">محطة ${idx+1}</div><div style="font-family:Arial;font-size:16px;font-weight:700;color:#ffffff;margin-top:4px">${s.split('. ')[1]}</div></div>`).join('')}
+          ${['1. رفع العقد', '2. المسح الضوئي', '3. الأنظمة الحاكمة', '4. خريطة السياق', '5. رادار المخاطر', '6. سقف المسؤولية', '7. الشرط الجزائي', '8. تنازع القوانين', '9. التعديل الذكي', '10. الصياغة الآمنة', '11. التفاوض', '12. 200+ نموذج', '13. صياغة الوكالات', '14. درع الصفقات', '15. التوقيع الرقمي', '16. هيكلة الشركات', '17. الخزينة المشفرة', '18. المستشار الذكي'].map((s, idx) => `<div style="background:#0D1F3C;border:1px solid rgba(212,175,55,${idx<4?0.8:0.25});border-radius:10px;padding:14px 10px;text-align:center"><div style="font-family:Arial;font-size:14px;color:${idx<4?'#10B981':'#64748b'}">محطة ${idx+1}</div><div style="font-family:Arial;font-size:16px;font-weight:700;color:#ffffff;margin-top:4px">${s.split('. ')[1]}</div></div>`).join('')}
         </div>
       `)}
       <div style="width:100%;height:8px;background:linear-gradient(90deg,#10B981,#D4AF37);position:absolute;bottom:0;left:0"></div>

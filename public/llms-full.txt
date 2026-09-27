@@ -58,15 +58,14 @@ Description: AI-powered negotiation support featuring:
 URL: /deal-shield
 Description: Comprehensive transaction protection and due diligence tool. Analyzes deal terms, identifies deal-breakers, provides structured due diligence checklist, and generates risk assessment reports.
 
-## 7. Company Formation
-URL: /company-formation
-Description: End-to-end business registration assistance for:
-- UAE (mainland, DIFC, ADGM, free zones)
-- Saudi Arabia (limited liability, joint stock)
-- Egypt (SAE, SPC, branches)
-- UK and European entities
-- Delaware and US LLCs
-Includes document preparation, regulatory guidance, and timeline tracking.
+## 7. Corporate Structuring & Articles of Association AI
+URL: /corporate-structuring (Alias: /company-formation)
+Description: AI-driven corporate structuring, constitutional drafting, and governance compliance:
+- Articles of Association (عقد التأسيس) drafting for KSA, UAE, Egypt, UK, and US Delaware entities
+- Corporate bylaws and shareholder agreements aligned with modern companies laws
+- Distribution of administrative and financial signing mandates
+- Statutory compliance review before notary/registry execution
+*Disclaimer: JurisTech Solutions is a sovereign legal AI software platform. It does NOT physically register entities, act as a government registrar, or issue trade licenses.*
 
 ## 8. Encrypted Document Vault
 URL: /vault
@@ -79,7 +78,7 @@ Description: Bank-grade AES-256 encrypted document storage with:
 
 ## 9. AI Legal Advisor
 URL: /ai-advisor
-Description: 24/7 AI legal consultation chatbot trained on legal databases from 15+ jurisdictions. Answers questions about contract law, company formation, regulatory compliance, and dispute resolution in Arabic and English.
+Description: 24/7 AI legal consultation chatbot trained on legal databases from 15+ jurisdictions. Answers questions about contract law, corporate legal structuring, regulatory compliance, and dispute resolution in Arabic and English.
 
 ## 10. Enterprise Audit
 URL: /enterprise-audit

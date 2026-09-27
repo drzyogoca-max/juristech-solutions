@@ -1,13 +1,14 @@
 /**
  * Vercel Serverless Cron — /api/cron/youtube-morning
  * JurisTech Solutions | Autonomous Morning YouTube Short Publisher
- * Schedule: 0 9 * * * (09:00 UTC Daily)
+ * Schedule: 0 12 * * * (08:00 AM US Eastern / 12:00 UTC Daily)
  * Format: YouTube Shorts (9:16 Mobile HD) | Duration: 45-55 seconds
  * 
  * Engine: High-Impact Contract Dilemma (Two-Character Dialogue)
+ * Focus: Platform Core Services (Risk Radar, Auto-Redlining, Smart Templates, Vault)
  * Alternating Schedule:
- *   - Odd Days: Arabic Gulf Short (ثغرة العقود الكارثية في السعودية والإمارات)
- *   - Even Days: English Global Short (The $500k Contract Trap: How AI Saves The Deal)
+ *   - Odd Days: Arabic Gulf Short (رادار المخاطر التعاقدية ونظام المعاملات المدنية)
+ *   - Even Days: English Global Short (AI Contract Risk Radar & Enterprise Redlining)
  */
 
 export const config = { runtime: 'nodejs', maxDuration: 300 };
@@ -110,10 +111,10 @@ async function buildEnglishShorts(elevenKey) {
   const VOICE_ADVISOR = 'pqHfZKP75CvOlQylNhV4';
 
   const [p1, p2, p3, p4] = await Promise.all([
-    genElevenVoice(VOICE_FOUNDER, "I have a half-million dollar contract on my desk, and the client needs it signed today! What do I do?", elevenKey),
+    genElevenVoice(VOICE_FOUNDER, "Our vendor contract has an uncapped consequential damages clause, and the client wants it signed today! What do we do?", elevenKey),
     genElevenVoice(VOICE_ADVISOR, "Don't sign blind! Upload the PDF right now to JurisTech Solutions. Risk Radar flags uncapped liability in seconds.", elevenKey),
-    genElevenVoice(VOICE_FOUNDER, "One click on Auto-Redline replaced the toxic clause with standard protection. Ready for e-signature in under 60 seconds!", elevenKey),
-    genElevenVoice(VOICE_ADVISOR, "Protect your enterprise deal today. Visit juristech.solutions and start free.", elevenKey)
+    genElevenVoice(VOICE_FOUNDER, "One click on Auto-Redline capped our liability to 12 months fees and aligned governing law with Delaware standards. Ready for signature!", elevenKey),
+    genElevenVoice(VOICE_ADVISOR, "Protect your enterprise contracts before you sign. Visit juristech.solutions and start free.", elevenKey)
   ]);
 
   const audioBuf = Buffer.concat([p1, p2, p3, p4]);
@@ -123,10 +124,10 @@ async function buildEnglishShorts(elevenKey) {
       <div style="width:100%;height:6px;background:linear-gradient(90deg,#D4AF37,#10B981);position:absolute;top:0;left:0"></div>
       <div style="background:#0D1F3C;border:2px solid #D4AF37;border-radius:20px;padding:36px;text-align:center;margin-bottom:30px">
         <div style="font-size:52px;margin-bottom:12px">⚠️</div>
-        <div style="font-family:Arial Black;font-size:32px;color:#ef4444">THE $500k CONTRACT TRAP</div>
-        <div style="font-family:Arial;font-size:24px;color:#cbd5e1;margin-top:16px;line-height:1.4">"Client demands signature TODAY on a 45-page agreement. Outside legal needs 2 weeks!"</div>
+        <div style="font-family:Arial Black;font-size:30px;color:#ef4444">THE VENDOR LIABILITY TRAP</div>
+        <div style="font-family:Arial;font-size:22px;color:#cbd5e1;margin-top:16px;line-height:1.4">"Uncapped consequential indemnity hidden in Section 14. Outside legal review takes two weeks!"</div>
       </div>
-      <div style="background:#142847;border-radius:14px;padding:20px;text-align:center;font-family:Arial;font-size:20px;color:#f59e0b">⏳ 4 Hours Left on Offer</div>
+      <div style="background:#142847;border-radius:14px;padding:20px;text-align:center;font-family:Arial;font-size:20px;color:#f59e0b">⏳ Urgent Signature Requested</div>
       <div style="width:100%;height:6px;background:linear-gradient(90deg,#10B981,#D4AF37);position:absolute;bottom:0;left:0"></div>
     </div>`, 0, 8),
 
@@ -154,7 +155,7 @@ async function buildEnglishShorts(elevenKey) {
 
     shortClip(`<div style="width:${W}px;height:${H}px;background:#020B1A;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;position:relative;text-align:center">
       <div style="width:100%;height:6px;background:linear-gradient(90deg,#D4AF37,#10B981);position:absolute;top:0;left:0"></div>
-      <div style="font-family:Arial Black;font-size:42px;color:#D4AF37;line-height:1.2">Protect Your Deals Before You Sign</div>
+      <div style="font-family:Arial Black;font-size:40px;color:#D4AF37;line-height:1.2">Protect Your Deals Before You Sign</div>
       <div style="font-family:Arial Black;font-size:32px;color:#10B981;margin-top:20px">juristech.solutions</div>
       <div style="background:#0D1F3C;border:2px solid #D4AF37;border-radius:30px;padding:14px 30px;font-family:Arial;font-size:20px;color:#ffffff;font-weight:700;margin-top:30px">🚀 Start Free Trial Now</div>
       <div style="font-family:Arial;font-size:18px;color:#94a3b8;margin-top:24px">founder@juristech.solutions</div>
@@ -165,9 +166,9 @@ async function buildEnglishShorts(elevenKey) {
   return {
     audioBuf,
     slides,
-    title: 'The $500k Contract Trap: How AI Saves The Deal #Shorts',
-    desc: 'Never sign a contract blind. Watch how JurisTech AI catches unlimited liability traps and generates compliant redlines in seconds.\n\nWebsite: https://www.juristech.solutions\n#Shorts #LegalTech #Contracts #BusinessLaw',
-    tags: ['Shorts', 'Contract Review', 'LegalTech', 'AI Contracts', 'Business Law', 'JurisTech'],
+    title: 'AI Contract Risk Radar: How Executives Audit Vendor Clauses in 60s #Shorts',
+    desc: 'Never sign a commercial agreement blind. Watch how JurisTech AI catches unlimited liability traps and generates institutional redlines in seconds.\n\nWebsite: https://www.juristech.solutions\n#Shorts #LegalTech #Contracts #BusinessLaw #RiskRadar',
+    tags: ['Shorts', 'Contract Review', 'LegalTech', 'AI Contracts', 'Business Law', 'JurisTech', 'Risk Radar'],
     lang: 'en'
   };
 }
@@ -178,10 +179,10 @@ async function buildArabicShorts(elevenKey) {
   const VOICE_COUNSEL = 'pqHfZKP75CvOlQylNhV4';
 
   const [p1, p2, p3, p4] = await Promise.all([
-    genElevenVoice(VOICE_CEO, "عقد توريد وشراكة بـ 10 ملايين ريال، ومطلوب التوقيع فوراً! هل نوقع أم ننتظر المراجعة التقليدية؟", elevenKey),
-    genElevenVoice(VOICE_COUNSEL, "إياك أن توقع قبل الفحص الآلي! رادار المخاطر في JurisTech يكشف المسؤولية غير المحدودة والشروط الجزائية في ثوانٍ.", elevenKey),
-    genElevenVoice(VOICE_COUNSEL, "وبنقرة واحدة، ميزة Auto-Redline تعيد صياغة البنود وفق نظام المعاملات المدنية السعودي لتأمين الصفقة.", elevenKey),
-    genElevenVoice(VOICE_CEO, "احمِ استثماراتك قبل التوقيع. تفضل بزيارة juristech.solutions وابدأ مجاناً اليوم.", elevenKey)
+    genElevenVoice(VOICE_CEO, "أمامنا عقد خدمات وتوريد تجاري، والطرف الثاني يطلب التوقيع فوراً! كيف نفحص بنود المسؤولية والشرط الجزائي قبل التورط؟", elevenKey),
+    genElevenVoice(VOICE_COUNSEL, "لا توقع أبداً قبل التدقيق الآلي! ارفع العقد إلى رادار المخاطر في JurisTech ليكشف بنود المسؤولية غير المحدودة وشروط التعويض في ثوانٍ.", elevenKey),
+    genElevenVoice(VOICE_COUNSEL, "وبنقرة واحدة، ميزة Auto-Redline تعيد صياغة البنود وفق نظام المعاملات المدنية السعودي لتأمين التوازن التعاقدي.", elevenKey),
+    genElevenVoice(VOICE_CEO, "احمِ شركتك وأعمالك قبل التوقيع. تفضل بزيارة juristech.solutions وابدأ تجربتك مجاناً اليوم.", elevenKey)
   ]);
 
   const audioBuf = Buffer.concat([p1, p2, p3, p4]);
@@ -191,8 +192,8 @@ async function buildArabicShorts(elevenKey) {
       <div style="width:100%;height:6px;background:linear-gradient(90deg,#D4AF37,#10B981);position:absolute;top:0;left:0"></div>
       <div style="background:#0D1F3C;border:2px solid #D4AF37;border-radius:20px;padding:36px;text-align:center;margin-bottom:30px">
         <div style="font-size:52px;margin-bottom:12px">⚠️</div>
-        <div style="font-family:Arial Black,Arial;font-size:32px;color:#ef4444">فخ عقود الصفقات المليونية</div>
-        <div style="font-family:Arial;font-size:24px;color:#cbd5e1;margin-top:16px;line-height:1.4">"عقد شراكة بـ 10 ملايين ريال في الرياض ودبي، ومطلوب التوقيع اليوم قبل ضياع الصفقة!"</div>
+        <div style="font-family:Arial Black,Arial;font-size:30px;color:#ef4444">فخ عقود التوريد والخدمات</div>
+        <div style="font-family:Arial;font-size:22px;color:#cbd5e1;margin-top:16px;line-height:1.4">"بنود مسؤولية تعسفية وشرط جزائي غير عادل، والطرف الآخر يطلب التوقيع فوراً!"</div>
       </div>
       <div style="background:#142847;border-radius:14px;padding:20px;text-align:center;font-family:Arial;font-size:20px;color:#f59e0b">⏳ التوقيع مطلوب خلال ساعات</div>
       <div style="width:100%;height:6px;background:linear-gradient(90deg,#10B981,#D4AF37);position:absolute;bottom:0;left:0"></div>
@@ -222,7 +223,7 @@ async function buildArabicShorts(elevenKey) {
 
     shortClip(`<div style="width:${W}px;height:${H}px;background:#020B1A;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;position:relative;direction:rtl;text-align:center">
       <div style="width:100%;height:6px;background:linear-gradient(90deg,#D4AF37,#10B981);position:absolute;top:0;left:0"></div>
-      <div style="font-family:Arial Black,Arial;font-size:38px;color:#D4AF37;line-height:1.3">احمِ استثماراتك في الخليج قبل التوقيع</div>
+      <div style="font-family:Arial Black,Arial;font-size:36px;color:#D4AF37;line-height:1.3">احمِ أعمالك وعقودك التجارية قبل التوقيع</div>
       <div style="font-family:Arial Black,Arial;font-size:32px;color:#10B981;margin-top:20px">juristech.solutions</div>
       <div style="background:#0D1F3C;border:2px solid #D4AF37;border-radius:30px;padding:14px 30px;font-family:Arial;font-size:20px;color:#ffffff;font-weight:700;margin-top:30px">🚀 ابدأ التجربة المجانية الآن</div>
       <div style="font-family:Arial;font-size:18px;color:#94a3b8;margin-top:24px">founder@juristech.solutions</div>
@@ -233,9 +234,9 @@ async function buildArabicShorts(elevenKey) {
   return {
     audioBuf,
     slides,
-    title: 'فخ عقود الصفقات المليونية: كيف يحميك الذكاء الاصطناعي #Shorts',
-    desc: 'لا توقع أي عقد تجاري قبل الفحص الآلي. اكتشف كيف تحلل منصة JurisTech ثغرات العقود ونظام المعاملات المدنية في ثوانٍ.\n\nالموقع: https://www.juristech.solutions\n#عقود #ذكاء_اصطناعي #Shorts #السعودية #الإمارات',
-    tags: ['Shorts', 'عقود', 'تحليل العقود', 'ذكاء اصطناعي', 'نظام المعاملات المدنية', 'JurisTech'],
+    title: 'رادار فحص العقود التجارية: كيف تكتشف البنود الخطرة في دقيقة؟ #Shorts',
+    desc: 'لا توقع أي عقد تجاري قبل الفحص الآلي. اكتشف كيف يحلل رادار JurisTech ثغرات المسؤولية والشرط الجزائي ونظام المعاملات المدنية في ثوانٍ.\n\nالموقع: https://www.juristech.solutions\n#عقود #ذكاء_اصطناعي #Shorts #السعودية #الإمارات #قانون_الأعمال',
+    tags: ['Shorts', 'عقود', 'تحليل العقود', 'ذكاء اصطناعي', 'نظام المعاملات المدنية', 'رادار المخاطر', 'JurisTech'],
     lang: 'ar'
   };
 }

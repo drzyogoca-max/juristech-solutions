@@ -218,17 +218,17 @@ export default function CompanyFormationPage() {
           </p>
         </div>
 
-        {/* ── Disclaimer Banner: Scope Notice ────────────────────────── */}
-        <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-4 flex items-start gap-3 text-start">
-          <AlertCircle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
-          <div className="space-y-1 text-xs leading-relaxed">
-            <p className="font-bold text-amber-300">
-              {isRtl ? 'تنويه هام بشأن نطاق خدمات المنصة الذكية:' : 'Important Notice Regarding Platform Scope:'}
+        {/* ── Sovereign Legal Disclaimer Banner ────────────────────────── */}
+        <div className="bg-amber-500/10 border-2 border-amber-500/40 rounded-2xl p-4 sm:p-5 flex items-start gap-3.5 text-start shadow-lg shadow-amber-500/5">
+          <Shield className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+          <div className="space-y-1 text-xs sm:text-[13px] leading-relaxed">
+            <p className="font-extrabold text-amber-300 flex items-center gap-1.5">
+              <span>{isRtl ? 'تنويه نظامي سيادي — نطاق عمل المنصة:' : 'Sovereign Legal Disclaimer — Platform Scope:'}</span>
             </p>
-            <p className="text-slate-300">
+            <p className="text-slate-300 dark:text-slate-300">
               {isRtl
-                ? 'تقتصر خدمات منصة JurisTech Solutions حصرياً على الحلول الذكية، وصياغة وتدقيق العقود التأسيسية والأنظمة الأساسية بالذكاء الاصطناعي، والمطابقة مع الأنظمة واللوائح. المنصة لا تقدم خدمات مراجعة الوزارات أو الهيئات الحكومية الرسمية، ولا تتولى استخراج أو إصدار التراخيص الرسمية.'
-                : 'JurisTech Solutions services are strictly restricted to AI legal intelligence, Articles of Association drafting, Bylaws audit, and statutory compliance. The platform does NOT perform government ministry filings or license issuance services.'}
+                ? 'منصة JurisTech Solutions هي منصة تكنولوجيا وذكاء اصطناعي قانوني متخصصة في الهندسة القانونية للشركات وصياغة وتدقيق عقود التأسيس واللوائح والأنظمة الأساسية وحوكمة الشركاء. المنصة ليست وكيلاً للتسجيل الحكومي أو مراجعاً ميدانياً ولا تُصدر تراخيص تجارية أو تمثل الشركات لدى الدوائر الحكومية. جميع الوثائق التأسيسية الصادرة هي مسودات قانونية ذكية مهيأة للاعتماد وتوقيع الشركاء لدى كتاب العدل والجهات الحكومية المختصة.'
+                : 'JurisTech Solutions is an advanced sovereign legal technology and AI intelligence platform providing corporate legal structuring, Articles of Association drafting, and shareholder governance compliance. JurisTech does NOT act as a physical company registration agent, government registrar, or issue trade licenses. All outputs are institutional AI legal drafts subject to formal execution by the partners before authorized public notaries and official commercial registries.'}
             </p>
           </div>
         </div>

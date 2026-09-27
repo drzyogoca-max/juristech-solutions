@@ -354,6 +354,7 @@ function MainAppContent() {
                   />
                   <Route path={`${prefix}/youtube`} element={<Navigate to={`${prefix}/youtube-studio`} replace />} />
                   <Route path={`${prefix}/youtube-channel`} element={<Navigate to={`${prefix}/youtube-studio`} replace />} />
+                  <Route path={`${prefix}/corporate-structuring`} element={<CompanyFormationPage />} />
                   <Route path={`${prefix}/company-formation`} element={<CompanyFormationPage />} />
                   <Route path={`${prefix}/acquisition`} element={<AcquisitionPage />} />
                   <Route path={`${prefix}/corporate-takeover`} element={<Navigate to={`${prefix}/acquisition`} replace />} />

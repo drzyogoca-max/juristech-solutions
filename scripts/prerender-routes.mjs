@@ -47,10 +47,16 @@ const ROUTE_METADATA = {
     descriptionEn: 'Instant AI contract risk scoring: detect indemnification traps, uncapped liabilities, penalty clauses, and statutory compliance gaps.',
   },
   '/company-formation': {
-    titleAr: 'تأسيس الشركات وحوكمة الشركاء | JurisTech Solutions',
-    titleEn: 'Corporate Formation & Statutory Governance | JurisTech',
-    descriptionAr: 'تأسيس الشركات وصياغة عقود التأسيس والأنظمة الأساسية وحوكمة الشركاء بالذكاء الاصطناعي في السعودية والإمارات ومصر والأردن ودول الخليج وفق أحدث أنظمة الشركات.',
-    descriptionEn: 'AI-powered corporate formation, Articles of Association drafting, partner governance mandates, and statutory compliance across Saudi Arabia & UAE.',
+    titleAr: 'الهندسة القانونية وصياغة عقود التأسيس للشركات | JurisTech Solutions',
+    titleEn: 'Corporate Structuring & Articles of Association AI | JurisTech',
+    descriptionAr: 'صياغة عقود التأسيس والأنظمة الأساسية واتفاقيات الشركاء بالذكاء الاصطناعي وفق أحدث أنظمة الشركات وحوكمة الكيانات في السعودية والإمارات والخليج وأمريكا.',
+    descriptionEn: 'AI-powered corporate structuring, Articles of Association drafting, and statutory compliance across GCC & US.',
+  },
+  '/corporate-structuring': {
+    titleAr: 'الهندسة القانونية وصياغة عقود التأسيس للشركات | JurisTech Solutions',
+    titleEn: 'Corporate Structuring & Articles of Association AI | JurisTech',
+    descriptionAr: 'صياغة عقود التأسيس والأنظمة الأساسية واتفاقيات الشركاء بالذكاء الاصطناعي وفق أحدث أنظمة الشركات وحوكمة الكيانات في السعودية والإمارات والخليج وأمريكا.',
+    descriptionEn: 'AI-powered corporate structuring, Articles of Association drafting, and shareholder governance mandates for enterprise entities across GCC and US.',
   },
   '/vault': {
     titleAr: 'خزينة المستندات المشفّرة والوثائق | JurisTech',

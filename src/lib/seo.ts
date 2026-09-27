@@ -75,15 +75,26 @@ export const PAGE_SEO: Record<string, PageSEO> = {
     keywords: 'contract vulnerability audit, indemnification trap scanner, AI contract risk',
     schemaType: 'SoftwareApplication',
   },
-  '/company-formation': {
-    path: '/company-formation',
-    titleEn: 'Corporate Formation & Statutory Governance | JurisTech',
-    titleAr: 'تأسيس الشركات وحوكمة الشركاء | JurisTech Solutions',
+  '/corporate-structuring': {
+    path: '/corporate-structuring',
+    titleEn: 'Corporate Structuring & Articles of Association AI | JurisTech Solutions',
+    titleAr: 'الهندسة القانونية وصياغة عقود تأسيس الشركات بالذكاء الاصطناعي | JurisTech',
     descriptionEn:
-      'AI-powered corporate formation, Articles of Association drafting, partner governance mandates, and statutory compliance across Saudi Arabia & UAE.',
+      'Enterprise AI platform for drafting Articles of Association, corporate bylaws, shareholder governance mandates, and statutory compliance across US & GCC.',
     descriptionAr:
-      'تأسيس الشركات وصياغة عقود التأسيس والأنظمة الأساسية وحوكمة الشركاء بالذكاء الاصطناعي في السعودية والإمارات ومصر والأردن ودول الخليج وفق أحدث أنظمة الشركات.',
-    keywords: 'تأسيس الشركات, حوكمة الشركات, عقد تأسيس شركة ذات مسؤولية محدودة',
+      'صياغة وتدقيق عقود التأسيس واللوائح والأنظمة الأساسية وحوكمة الشركاء بالذكاء الاصطناعي في السعودية والإمارات ومصر وأمريكا ديلاوير مع التحقق النظامي الفوري.',
+    keywords: 'صياغة عقد التأسيس, النظام الأساسي للشركات, حوكمة الشركات بالذكاء الاصطناعي, Articles of Association AI, corporate bylaws drafting, Delaware legal structuring',
+    schemaType: 'SoftwareApplication',
+  },
+  '/company-formation': {
+    path: '/corporate-structuring',
+    titleEn: 'Corporate Structuring & Articles of Association AI | JurisTech Solutions',
+    titleAr: 'الهندسة القانونية وصياغة عقود تأسيس الشركات بالذكاء الاصطناعي | JurisTech',
+    descriptionEn:
+      'Enterprise AI platform for drafting Articles of Association, corporate bylaws, shareholder governance mandates, and statutory compliance across US & GCC.',
+    descriptionAr:
+      'صياغة وتدقيق عقود التأسيس واللوائح والأنظمة الأساسية وحوكمة الشركاء بالذكاء الاصطناعي في السعودية والإمارات ومصر وأمريكا ديلاوير مع التحقق النظامي الفوري.',
+    keywords: 'صياغة عقد التأسيس, النظام الأساسي للشركات, حوكمة الشركات بالذكاء الاصطناعي, Articles of Association AI, corporate bylaws drafting, Delaware legal structuring',
     schemaType: 'SoftwareApplication',
   },
   '/vault': {

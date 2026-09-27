@@ -114,8 +114,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/company-formation" className="hover:text-emerald-300 transition-colors block py-0.5">
-                  {l('تأسيس الشركات (MISA / DIFC)', 'Company Formation')}
+                <Link to="/corporate-structuring" className="hover:text-emerald-300 transition-colors block py-0.5">
+                  {l('الهندسة القانونية وعقود الشركات', 'Corporate Structuring & AoA')}
                 </Link>
               </li>
               <li>

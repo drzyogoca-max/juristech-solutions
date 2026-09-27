@@ -52,7 +52,7 @@ const SUBSCRIBER_LINKS = [
   { to: '/enterprise-audit', icon: Building2, key: 'enterpriseAudit' },
   { to: '/investigate', icon: Search, key: 'investigate' },
   { to: '/video-hub', icon: Video, key: 'videoHub' },
-  { to: '/company-formation', icon: Building2, key: 'companyFormation' },
+  { to: '/corporate-structuring', icon: Building2, key: 'companyFormation' },
   { to: '/acquisition', icon: Briefcase, key: 'acquisition' },
   { to: '/b2b-proposals', icon: Briefcase, key: 'b2bProposals' },
   { to: '/reports', icon: BarChart3, key: 'reports' },
@@ -116,6 +116,7 @@ export default function Navbar() {
   function navText(key: string) {
     if (key === 'dealShield') return isRtl ? 'رادار الصفقات (DealShield)' : 'DealShield 360™';
     if (key === 'youtubeStudio') return isRtl ? 'إدارة استوديو يوتيوب 📺' : 'YouTube Studio 📺';
+    if (key === 'companyFormation') return isRtl ? 'الهندسة القانونية للشركات' : 'Corporate Structuring AI';
     return (gt.nav as Record<string, string>)[key] || t(`Nav.${key}`) || key;
   }
 

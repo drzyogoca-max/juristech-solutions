@@ -24,7 +24,7 @@ export function getSemanticHtmlForRoute(routePath) {
           <a href="/contracts" class="text-slate-200 hover:text-white no-underline font-bold">صياغة العقود</a>
           <a href="/risk" class="text-slate-200 hover:text-white no-underline font-bold">فحص المخاطر</a>
           <a href="/repository" class="text-slate-200 hover:text-white no-underline font-bold">مستودع العقود</a>
-          <a href="/company-formation" class="text-slate-200 hover:text-white no-underline font-bold">تأسيس الشركات</a>
+          <a href="/corporate-structuring" class="text-slate-200 hover:text-white no-underline font-bold">الهندسة القانونية للشركات</a>
           <a href="/vault" class="text-slate-200 hover:text-white no-underline font-bold">الخزنة المشفرة</a>
           <a href="/payment" class="text-slate-200 hover:text-white no-underline font-bold">باقات الاشتراك</a>
           <a href="/support" class="text-slate-200 hover:text-white no-underline font-bold">الدعم الفني</a>
@@ -444,7 +444,7 @@ export function getSemanticHtmlForRoute(routePath) {
                 <li><a href="/negotiation" class="text-blue-400 no-underline">محاكي التفاوض القانوني</a></li>
                 <li><a href="/vault" class="text-indigo-400 no-underline">الخزنة المشفرة AES-256</a></li>
                 <li><a href="/sovereign-ai-hub" class="text-sky-400 no-underline">مركز JurisTech AI السيادي</a></li>
-                <li><a href="/company-formation" class="text-emerald-400 no-underline">تأسيس المنشآت والشركات</a></li>
+                <li><a href="/corporate-structuring" class="text-emerald-400 no-underline">الهندسة القانونية وعقود الشركات</a></li>
                 <li><a href="/b2b-proposals" class="text-amber-400 no-underline">العروض المؤسسية B2B</a></li>
                 <li><a href="/lead-radar" class="text-purple-400 no-underline">مرصد رادار العملاء</a></li>
                 <li><a href="/deal-shield" class="text-cyan-400 no-underline">رادار الصفقات DealShield</a></li>
@@ -579,6 +579,41 @@ export function getSemanticHtmlForRoute(routePath) {
     `;
   }
 
+  if (routePath === '/corporate-structuring' || routePath === '/company-formation') {
+    return `
+      ${commonHeader}
+      <main class="max-w-7xl mx-auto p-6 font-sans text-slate-100" dir="rtl">
+        ${commonAdSponsorSlot}
+        <section class="my-8">
+          <div class="bg-amber-950/40 border border-amber-500/40 rounded-2xl p-4 mb-6 text-xs text-amber-200">
+            <strong>إشعار قانوني سيادي:</strong> منصة JurisTech Solutions هي برمجية ذكاء اصطناعي سيادية لإعداد وتدقيق وثائق وعقود التأسيس والأنظمة الأساسية واتفاقيات الشركاء، وليست وكيلاً لتسجيل الشركات أو جهة إصدار رخص حكومية.
+          </div>
+          <h1 class="text-3xl sm:text-4xl font-black text-slate-100 leading-tight mb-4">
+            الهندسة القانونية وصياغة عقود تأسيس الشركات والأنظمة الأساسية (AoA)
+          </h1>
+          <p class="text-base text-slate-300 leading-relaxed mb-6">
+            صياغة الأنظمة الأساسية (Articles of Association)، اتفاقيات المساهمين والشركاء، قرارات الشركاء، وحوكمة الكيانات القانونية بالذكاء الاصطناعي وفق الأنظمة المعتمدة في السعودية (نظام الشركات م/132) والإمارات (قانون الشركات الاتحادية وDIFC) والولايات المتحدة (ديلاوير DGCL).
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
+            <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl">
+              <h3 class="text-emerald-400 mt-0">صياغة عقود التأسيس والأنظمة الأساسية</h3>
+              <p class="text-xs text-slate-400 leading-relaxed">توليد وصياغة عقود تأسيس الشركات ذات المسؤولية المحدودة والمساهمة المبسطة والشركات القابضة.</p>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl">
+              <h3 class="text-sky-400 mt-0">اتفاقيات الشركاء وحوكمة المساهمين</h3>
+              <p class="text-xs text-slate-400 leading-relaxed">صياغة بنود التخارج Drag-Along و Tag-Along، قيود نقل الحصص، وتعيين المدراء ومجالس الإدارة.</p>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl">
+              <h3 class="text-amber-400 mt-0">مطابقة الأنظمة وقفل الاختصاص</h3>
+              <p class="text-xs text-slate-400 leading-relaxed">فحص توافق البنود مع الأنظمة السيادية في 15+ ولاية قضائية لتجنب بطلان القرارات أو النزاعات القضائية.</p>
+            </div>
+          </div>
+        </section>
+      </main>
+      ${commonFooter}
+    `;
+  }
+
   if (routePath === '/youtube-studio' || routePath === '/youtube' || routePath === '/youtube-channel') {
     return `
       ${commonHeader}
@@ -589,16 +624,16 @@ export function getSemanticHtmlForRoute(routePath) {
             إدارة قناة يوتيوب الرسمية والنشر اليومي الالي | JurisTech YouTube Studio
           </h1>
           <p class="text-base text-slate-300 leading-relaxed mb-6">
-            استوديو الإدارة البرمجية لقناة يوتيوب الرسمية للمنصة المرتبطة بـ founder@juristech.solutions بإشراف المستشار د. محمد مصطفى. توليد ونشر فيديوهات قانونية يومية صباحاً (09:00 AM) ومساءً (06:00 PM).
+            استوديو الإدارة البرمجية لقناة يوتيوب الرسمية للمنصة المرتبطة بـ founder@juristech.solutions بإشراف المستشار د. محمد مصطفى. توليد ونشر فيديوهات قانونية يومية صباحاً (08:00 AM بتوقيت شرق أمريكا / 12:00 UTC) ومساءً (11:00 PM بتوقيت شرق أمريكا / 03:00 UTC).
           </p>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
             <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl">
-              <h2 class="text-lg font-bold text-red-500 mt-0">1. فيديو الصباح (Morning Briefing Slot - 9:00 AM UTC)</h2>
-              <p class="text-xs text-slate-400 leading-relaxed">تحليل صفقات الاندماج والاستحواذ، مطابقة الأنظمة الدولية (ديلاوير، المعاملات المدنية م/191، دبي DIFC)، وفحوصات الشروط الفورية.</p>
+              <h2 class="text-lg font-bold text-red-500 mt-0">1. فيديو الصباح (Morning Slot - 8:00 AM US EDT / 12:00 UTC)</h2>
+              <p class="text-xs text-slate-400 leading-relaxed">تحليل مخاطر العقود وبنود المسؤولية غير المحدودة بالذكاء الاصطناعي، ومطابقة الأنظمة الدولية (ديلاوير، المعاملات المدنية م/138، دبي DIFC).</p>
             </div>
             <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl">
-              <h2 class="text-lg font-bold text-cyan-400 mt-0">2. فيديو المساء (Evening Executive Briefing - 6:00 PM UTC)</h2>
-              <p class="text-xs text-slate-400 leading-relaxed">إيجاز الإدارة العليا للرؤساء التنفيذيين والمدراء الماليين: الوقاية من فخاخ التعويض، خفض أتعاب المحاماة بنسبة 85%، والفواتير الأولية.</p>
+              <h2 class="text-lg font-bold text-cyan-400 mt-0">2. فيديو المساء (Evening Slot - 11:00 PM US EDT / 03:00 UTC)</h2>
+              <p class="text-xs text-slate-400 leading-relaxed">إيجاز الإدارة العليا والمسؤولين التنفيذيين: حماية الصفقات عبر Deal Shield، ونماذج العقود الذكية والخزنة المشفرة AES-256.</p>
             </div>
           </div>
         </section>

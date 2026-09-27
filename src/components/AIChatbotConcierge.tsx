@@ -13,7 +13,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { MessageSquare, X, Send, Sparkles, Bot, User, Lock, Upload, Loader2, Globe, Paperclip, FileText, File, ArrowUpRight, Mail } from 'lucide-react';
+import { MessageSquare, X, Send, Sparkles, Bot, User, Lock, Upload, Loader2, Globe, Paperclip, FileText, File, ArrowUpRight, Mail, Trash2 } from 'lucide-react';
 import { callAI, callAIWithHistory, AIMessagePayload } from '../lib/api';
 import { detectPromptLanguage, SupportedLanguage } from '../services/engine-ai/languageDetector';
 import { extractPDFTextMultiStage } from '../lib/pdfExtractor';
@@ -104,6 +104,27 @@ export default function AIChatbotConcierge() {
       setMessages([{ id: 'init_msg', sender: 'bot', text: newGreeting, timestamp: messages[0].timestamp }]);
     }
   }, [activeLangCode]);
+
+  const handleClearAll = () => {
+    setMessages([
+      {
+        id: `init_${Date.now()}`,
+        sender: 'bot',
+        text: initialGreeting[activeLangCode] || initialGreeting.en,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      },
+    ]);
+    setAttachedFile(null);
+    setAttachedText('');
+    setInput('');
+    try {
+      if (fileInputRef.current) fileInputRef.current.value = '';
+      if (typeof sessionStorage !== 'undefined') {
+        sessionStorage.removeItem('juristech_ai_conversation');
+        sessionStorage.removeItem('juristech_ai_session_ctx');
+      }
+    } catch {}
+  };
 
   useEffect(() => {
     if (chatMessagesRef.current) {
@@ -302,7 +323,7 @@ You are conducting a Magic Circle / Senior Counsel Grade Forensic Contract Audit
 - Provide exact wording replacements for the riskiest clauses to immediately shift leverage back to the client.
 
 ### 5. 🛡️ JurisTech Enterprise Protection Pathway (خطة الحماية المؤسسية)
-- Explain clearly how subscribing to JurisTech Solutions ($5,000 - $25,000 ARR) provides 24/7 autonomous monitoring, access to our 1,000,000+ template data lake, and prevents multimillion-dollar contractual liabilities.
+- Explain clearly how subscribing to JurisTech Solutions provides 24/7 autonomous monitoring, access to verified contract templates, and mitigates legal and contractual liabilities.
 
 Contract Document Text:
 ${currentAttachedText.slice(0, 4500)}
@@ -311,13 +332,14 @@ ${currentAttachedText.slice(0, 4500)}
 
       const systemPromptCombined = `${systemContext}${fileContextPrompt}${ragDirective}`;
 
-      // ── MULTI-TURN CONVERSATIONAL INTELLIGENCE ──────────────────────────
-      const recentChatHistory = messages.slice(-6);
+      // ── MULTI-TURN CONVERSATIONAL INTELLIGENCE & CONTEXT ISOLATION ──────
+      const recentChatHistory = messages.slice(-4);
 
       const multiTurnDirective = `\n\n[MULTI-TURN CONVERSATIONAL INTELLIGENCE]:
-1. NEW CONTRACT / TOPIC SWITCH: If the user asks for a new or different contract (e.g. Car Sale -> NDA -> Lease -> Employment), immediately acknowledge and draft the NEW contract fully with all formal clauses, without confusing it with previous terms.
-2. CONTRACT AMENDMENT & REVISION: If the user requests modifications, clause additions (penalty clause, installment schedule, arbitration), or custom edits, formulate the revised clause or amended agreement cleanly.
-3. PROCEDURAL & STATUTORY GUIDANCE: If the user asks procedural or follow-up legal questions (notarization, land registry, traffic department, taxes, litigation), provide a step-by-step statutory execution roadmap.`;
+1. CONTEXT ISOLATION & NO LEAKAGE: Treat each inquiry on its own statutory merits. Do not import details, prices, or parties from previous questions unless the user explicitly asks to continue the prior matter.
+2. NEW CONTRACT / TOPIC SWITCH: If the user asks for a new or different contract (e.g. Car Sale -> NDA -> Lease -> Employment), immediately acknowledge and draft the NEW contract fully with all formal clauses, without confusing it with previous terms.
+3. CONTRACT AMENDMENT & REVISION: If the user requests modifications, clause additions (penalty clause, installment schedule, arbitration), or custom edits, formulate the revised clause or amended agreement cleanly.
+4. PROCEDURAL & STATUTORY GUIDANCE: If the user asks procedural or follow-up legal questions (notarization, land registry, traffic department, taxes, litigation), provide a step-by-step statutory execution roadmap.`;
 
       const finalSystemPrompt = systemPromptCombined + multiTurnDirective;
 
@@ -452,12 +474,23 @@ ${currentAttachedText.slice(0, 4500)}
               </div>
             </div>
 
-            <button
-              onClick={() => setIsOpen(false)}
-              className="p-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white"
-            >
-              <X className="w-4 h-4" />
-            </button>
+            <div className="flex items-center gap-1.5">
+              <button
+                onClick={handleClearAll}
+                className="px-2 py-1 rounded-xl bg-slate-800 hover:bg-rose-950/60 text-slate-400 hover:text-rose-400 border border-slate-700/60 hover:border-rose-500/40 transition-all text-xs flex items-center gap-1 cursor-pointer"
+                title={isRtl ? 'مسح المحادثة وحذف الملفات المرفوعة وتصفير الذاكرة' : 'Clear Chat & Erase Uploaded Files'}
+              >
+                <Trash2 className="w-3.5 h-3.5 text-rose-400" />
+                <span className="text-[10px] font-bold">{isRtl ? 'مسح وحذف' : 'Clear'}</span>
+              </button>
+
+              <button
+                onClick={() => setIsOpen(false)}
+                className="p-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
           </div>
 
           {/* Language Selector Bar */}
