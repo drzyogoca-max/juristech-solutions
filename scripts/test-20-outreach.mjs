@@ -55,6 +55,7 @@ async function testOutreach() {
   await handler(req, res);
   console.log('─────────────────────────────────────────────────────────────────────────────');
   console.log('✅ 20-Email Outreach Cycle Verification Complete');
+  process.exit(0);
 }
 
 testOutreach();

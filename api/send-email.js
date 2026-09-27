@@ -55,12 +55,15 @@ function checkBurstLimit(ip) {
 }
 
 // Cleanup stale entries every 5 minutes to prevent memory leak
-setInterval(() => {
+const burstCleanupTimer = setInterval(() => {
   const now = Date.now();
   for (const [ip, rec] of burstMap.entries()) {
     if (now > rec.resetAt) burstMap.delete(ip);
   }
 }, 300_000);
+if (burstCleanupTimer && typeof burstCleanupTimer.unref === 'function') {
+  burstCleanupTimer.unref();
+}
 
 // ── Layer 2: Supabase Daily Quota Guard ──────────────────────────────────────
 // Uses the existing Supabase instance — no new dependencies.
