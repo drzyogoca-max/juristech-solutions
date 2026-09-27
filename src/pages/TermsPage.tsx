@@ -311,20 +311,20 @@ export default function TermsPage() {
   ];
 
   return (
-    <div className={`min-h-screen bg-slate-950 text-slate-100 py-12 px-4 sm:px-6 lg:px-8 ${ar ? 'rtl' : 'ltr'}`}>
+    <div className={`min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 py-12 px-4 sm:px-6 lg:px-8 ${ar ? 'rtl' : 'ltr'}`}>
       <SEO
         title={`${ar ? 'شروط الخدمة' : 'Terms of Service'} | JURISTECH`}
         description={ar ? 'الشروط والأحكام الرسمية لمنصة JURISTECH — آخر تحديث: أغسطس 2026' : 'Official Terms of Service for JURISTECH — Last Updated: August 25, 2026'}
       />
       <div className="max-w-4xl mx-auto space-y-10">
         <div className="text-center space-y-5">
-          <div className="inline-flex items-center justify-center p-4 bg-blue-500/10 rounded-3xl border border-blue-500/20 text-blue-400">
+          <div className="inline-flex items-center justify-center p-4 bg-blue-500/10 rounded-3xl border border-blue-500/20 text-blue-600 dark:text-blue-400">
             <Scale className="w-12 h-12" />
           </div>
-          <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
+          <h1 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
             {ar ? 'شروط الخدمة' : 'Terms of Service'}
           </h1>
-          <p className="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+          <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
             {ar ? 'بوصولك إلى جوريستك أو استخدامها، فإنك توافق على الالتزام بهذه الشروط.' : 'By accessing or using JURISTECH, you agree to be bound by these Terms.'}
           </p>
           <p className="text-xs text-slate-500 font-mono">{ar ? 'آخر تحديث:' : 'Last Updated:'} {LAST_UPDATED}</p>
@@ -339,7 +339,7 @@ export default function TermsPage() {
                 key={to}
                 to={to}
                 className={`px-4 py-1.5 rounded-full text-xs font-bold border transition-colors ${
-                  active ? 'bg-blue-500/20 border-blue-500/40 text-blue-300' : 'bg-slate-800/60 border-slate-700 text-slate-400 hover:text-slate-200'
+                  active ? 'bg-blue-500/20 border-blue-500/40 text-blue-600 dark:text-blue-300' : 'bg-white dark:bg-slate-800/60 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 shadow-sm'
                 }`}
               >
                 {label}
@@ -350,14 +350,14 @@ export default function TermsPage() {
 
         <div className="space-y-4">
           {sections.map((s) => (
-            <div key={s.num} className={`rounded-2xl border p-6 sm:p-8 space-y-4 ${ACCENT_BORDER[s.accent] ?? 'border-slate-800 bg-slate-900/40'}`}>
-              <h2 className="text-lg sm:text-xl font-black text-white flex items-center gap-3">
-                <span className={`flex items-center justify-center w-8 h-8 rounded-xl bg-slate-800/80 border border-slate-700 shrink-0 ${ACCENT_TEXT[s.accent] ?? 'text-slate-400'}`}>
+            <div key={s.num} className={`rounded-2xl border p-6 sm:p-8 space-y-4 bg-white dark:bg-slate-900/40 shadow-sm ${ACCENT_BORDER[s.accent] ?? 'border-slate-200 dark:border-slate-800'}`}>
+              <h2 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white flex items-center gap-3">
+                <span className={`flex items-center justify-center w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 shrink-0 ${ACCENT_TEXT[s.accent] ?? 'text-slate-400'}`}>
                   {s.icon}
                 </span>
                 <span>{s.num}. {ar ? s.arTitle : s.enTitle}</span>
               </h2>
-              <div className="text-sm leading-relaxed text-slate-300">
+              <div className="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
                 {ar ? s.arBody : s.enBody}
               </div>
             </div>

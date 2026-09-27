@@ -235,7 +235,7 @@ export default function AdminDashboardPage() {
         }}
       />
 
-      <main className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-950 text-slate-100 font-sans" dir={isRtl ? 'rtl' : 'ltr'}>
+      <main className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans" dir={isRtl ? 'rtl' : 'ltr'}>
         <div className="max-w-7xl mx-auto space-y-8">
           
           {/* Executive Header Banner */}

@@ -293,8 +293,8 @@ function MainAppContent() {
       <div
         dir={isRtl ? 'rtl' : 'ltr'}
         lang={lang}
-        className="min-h-screen bg-[#020B1A] text-white font-sans selection:bg-brand-500 selection:text-white flex flex-col justify-between w-full max-w-full overflow-x-hidden transition-all"
-        style={{ backgroundImage: 'radial-gradient(ellipse at 15% 10%, rgba(212,175,55,0.08) 0%, transparent 45%), radial-gradient(ellipse at 85% 80%, rgba(16,185,129,0.06) 0%, transparent 45%)' }}
+        className="min-h-screen bg-slate-50 text-slate-900 dark:bg-[#020B1A] dark:text-white font-sans selection:bg-brand-500 selection:text-white flex flex-col justify-between w-full max-w-full overflow-x-hidden transition-all"
+        style={{ backgroundImage: 'radial-gradient(ellipse at 15% 10%, rgba(212,175,55,0.05) 0%, transparent 45%), radial-gradient(ellipse at 85% 80%, rgba(16,185,129,0.04) 0%, transparent 45%)' }}
       >
         <div className="w-full max-w-full overflow-x-hidden">
           <Navbar />
@@ -303,10 +303,17 @@ function MainAppContent() {
           <Suspense fallback={<RouteFallback />}>
             <Routes>
               {/* Common Single-Source-of-Truth Route Definitions */}
-              {/* Use explicit locale codes to prevent invalid segments from matching */}
-              {[ '', '/:locale(en|ar|fr|es|de|tr|zh)' ].map((prefix) => (
+              {/* Explicit locale codes prevent 404s from unsupported router regex matching */}
+              {['', '/ar', '/en', '/fr', '/de', '/es', '/tr', '/zh'].map((prefix) => (
                 <Fragment key={prefix || 'root'}>
-                  <Route path={`${prefix}/`} element={<LandingPage />} />
+                  {prefix ? (
+                    <>
+                      <Route path={prefix} element={<LandingPage />} />
+                      <Route path={`${prefix}/`} element={<LandingPage />} />
+                    </>
+                  ) : (
+                    <Route path="/" element={<LandingPage />} />
+                  )}
                   <Route path={`${prefix}/dashboard`} element={<Dashboard />} />
                   <Route path={`${prefix}/ai-advisor`} element={<AIAdvisorPage />} />
                   <Route path={`${prefix}/chat`} element={<AIAdvisorPage />} />

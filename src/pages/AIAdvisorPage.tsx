@@ -481,7 +481,7 @@ export default function AIAdvisorPage() {
         noIndex={true}
       />
 
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans">
         {/* Header */}
         <AIAdvisorHeader
           lang={lang as SupportedAILang}
@@ -492,7 +492,7 @@ export default function AIAdvisorPage() {
         />
 
         {/* Task & Jurisdiction Controls Bar */}
-        <div className="w-full bg-slate-900/40 border-b border-slate-800 px-4 sm:px-6 py-3">
+        <div className="w-full bg-white dark:bg-slate-900/40 border-b border-slate-200 dark:border-slate-800 px-4 sm:px-6 py-3">
           <div className="max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
             <AITaskSelector
               selectedMode={taskMode}
@@ -549,10 +549,10 @@ export default function AIAdvisorPage() {
               </div>
 
               <div className="space-y-2 max-w-xl mx-auto">
-                <h2 className="text-2xl font-bold text-white tracking-tight">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
                   {isAr ? 'كيف يمكن لـ Juris مساعدتك اليوم؟' : 'How can Juris assist your legal matter today?'}
                 </h2>
-                <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
                   {isAr
                     ? 'اختر وضع المعالجة أو اكتب استفسارك مباشرة لتفعيل التوجيه الذكي عبر نصوص الأنظمة واللوائح الموثقة في 15 دولة.'
                     : 'Select a task mode or type your inquiry directly. The AI will route to specialist agents grounded in statutory codes across 15 jurisdictions.'}
@@ -567,7 +567,7 @@ export default function AIAdvisorPage() {
                     setJurisdiction('SA');
                     handleSendMessage('ما هي ضوابط الشرط الجزائي والتعويض الاتفاقي في نظام المعاملات المدنية السعودي؟');
                   }}
-                  className="bg-slate-900/80 hover:bg-slate-800/80 border border-slate-800 hover:border-cyan-500/40 p-3.5 rounded-2xl transition-all space-y-1 cursor-pointer"
+                  className="bg-white dark:bg-slate-900/80 hover:bg-slate-50 dark:hover:bg-slate-800/80 border border-slate-200 dark:border-slate-800 hover:border-cyan-500/40 p-3.5 rounded-2xl transition-all space-y-1 cursor-pointer shadow-sm"
                 >
                   <span className="font-bold text-cyan-300 block">🇸🇦 {isAr ? 'بحث نظامي سعودي' : 'Saudi Civil Law'}</span>
                   <span className="text-slate-400 text-[11px] line-clamp-2">

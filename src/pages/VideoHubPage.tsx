@@ -615,21 +615,21 @@ export default function VideoHubPage() {
   const StageIcon = currentStage.icon;
 
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-100 font-sans pb-16 selection:bg-cyan-500 selection:text-slate-950" dir={isRtl ? 'rtl' : 'ltr'}>
+    <main className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans pb-16 selection:bg-cyan-500 selection:text-slate-950" dir={isRtl ? 'rtl' : 'ltr'}>
       <SEO />
 
       {/* ─── HEADER BANNER ─── */}
-      <section className="relative pt-10 pb-6 px-4 sm:px-6 lg:px-8 border-b border-slate-800/80 bg-gradient-to-b from-slate-900/60 to-slate-950">
+      <section className="relative pt-10 pb-6 px-4 sm:px-6 lg:px-8 border-b border-slate-200 dark:border-slate-800/80 bg-white dark:bg-gradient-to-b dark:from-slate-900/60 dark:to-slate-950 shadow-sm">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 text-xs font-black uppercase tracking-wider">
-              <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-spin" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 text-xs font-black uppercase tracking-wider">
+              <Sparkles className="w-3.5 h-3.5 text-cyan-500 dark:text-cyan-400 animate-spin" />
               <span>{isRtl ? 'المنظومة التعليمية المرئية الفائقة • الجيل الجديد' : 'Smart Educational Audiovisual Platform • Next-Gen'}</span>
             </div>
-            <h1 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
+            <h1 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
               {isRtl ? 'الدليل الاسترشادي وخطة العمل الشاملة للعملاء' : 'Interactive Customer Roadmap & Complete Action Plan'}
             </h1>
-            <p className="text-xs sm:text-sm text-slate-400 max-w-3xl leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-3xl leading-relaxed">
               {isRtl
                 ? 'شرح تفصيلي متكامل ومزامن للصوت والنص والصورة لجميع مراحل وخدمات المنصة من لحظة الدخول حتى إتمام آخر إجراء قانوني.'
                 : 'A fully synchronized audiovisual presentation explaining the end-to-end client journey across all sovereign AI legal engines.'}
@@ -637,7 +637,7 @@ export default function VideoHubPage() {
           </div>
 
           {/* 7-Language Audio Selector Ribbon */}
-          <div className="flex items-center gap-1.5 flex-wrap bg-slate-900/90 p-2 rounded-2xl border border-slate-800 shadow-xl">
+          <div className="flex items-center gap-1.5 flex-wrap bg-slate-100 dark:bg-slate-900/90 p-2 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
             <div className="flex items-center gap-1.5 px-2 text-xs font-bold text-slate-400">
               <Mic className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
               <span>{isRtl ? 'لغة الشرح الناطق:' : 'Voice Narration:'}</span>

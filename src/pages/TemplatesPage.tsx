@@ -56,7 +56,7 @@ export default function TemplatesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 py-12 px-4 sm:px-6 lg:px-8">
       <SEO
         title={l(
           'استوديو النماذج القانونية الذكية | JurisTech Solutions',
@@ -71,14 +71,14 @@ export default function TemplatesPage() {
       <div className="max-w-7xl mx-auto space-y-10">
         {/* Header */}
         <div className="text-center space-y-4 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-semibold">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-600 dark:text-cyan-400 text-xs font-semibold">
             <Sparkles className="w-3.5 h-3.5 animate-pulse" />
             <span>{l('مكتبة النماذج المعتمدة 2026', 'Verified Template Studio 2026')}</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
             {l('استوديو النماذج والعقود القانونية', 'Interactive Legal Templates Studio')}
           </h1>
-          <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
+          <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed">
             {l(
               'مكتبة متكاملة من النماذج الاحترافية المصاغة بأعلى المعايير القضائية، جاهزة للاستخدام الفوري، التدقيق، والتعديل بالذكاء الاصطناعي.',
               'A curated library of professional, statutory contract templates engineered for international and regional jurisdictions, ready for AI drafting.'
@@ -100,7 +100,7 @@ export default function TemplatesPage() {
               )}
               className={`w-full ${
                 isRtl ? 'pr-12 pl-4' : 'pl-12 pr-4'
-              } py-3 bg-slate-900/90 border border-slate-700/80 rounded-2xl text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 shadow-xl`}
+              } py-3 bg-white dark:bg-slate-900/90 border border-slate-300 dark:border-slate-700/80 rounded-2xl text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 shadow-md`}
             />
           </div>
 
@@ -145,28 +145,28 @@ export default function TemplatesPage() {
           {filteredTemplates.map((tpl) => (
             <div
               key={tpl.id}
-              className="bg-slate-900/90 border border-slate-800/80 hover:border-cyan-500/40 rounded-2xl p-6 flex flex-col justify-between transition-all duration-200 hover:shadow-2xl hover:shadow-cyan-500/5 group"
+              className="bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800/80 hover:border-cyan-500/40 rounded-2xl p-6 flex flex-col justify-between transition-all duration-200 shadow-sm hover:shadow-xl group"
             >
               <div className="space-y-4">
                 <div className="flex items-start justify-between gap-3">
-                  <div className="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 shrink-0 group-hover:scale-105 transition-transform">
+                  <div className="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-600 dark:text-cyan-400 shrink-0 group-hover:scale-105 transition-transform">
                     <FileText className="w-5 h-5" />
                   </div>
                   <div className="flex flex-wrap gap-1.5 justify-end">
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-800 border border-slate-700 text-slate-300">
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300">
                       {tpl.pagesCount} {l('صفحات', 'Pages')}
                     </span>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-800 border border-slate-700 text-slate-300">
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300">
                       {tpl.clausesCount} {l('بنود', 'Clauses')}
                     </span>
                   </div>
                 </div>
 
                 <div>
-                  <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors line-clamp-1">
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors line-clamp-1">
                     {isRtl ? tpl.titleAr : tpl.titleEn}
                   </h3>
-                  <p className="text-xs text-slate-400 mt-2 line-clamp-2 leading-relaxed">
+                  <p className="text-xs text-slate-600 dark:text-slate-400 mt-2 line-clamp-2 leading-relaxed">
                     {isRtl ? tpl.descriptionAr : tpl.descriptionEn}
                   </p>
                 </div>
@@ -175,7 +175,7 @@ export default function TemplatesPage() {
                   {tpl.tags.slice(0, 3).map((tag, idx) => (
                     <span
                       key={idx}
-                      className="text-[10px] px-2 py-0.5 rounded-md bg-slate-800/60 text-slate-400 border border-slate-700/50"
+                      className="text-[10px] px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800/60 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700/50"
                     >
                       #{tag}
                     </span>
@@ -184,22 +184,22 @@ export default function TemplatesPage() {
               </div>
 
               {/* Action Buttons */}
-              <div className="pt-6 border-t border-slate-800/60 flex items-center justify-between gap-2 mt-4">
+              <div className="pt-6 border-t border-slate-200 dark:border-slate-800/60 flex items-center justify-between gap-2 mt-4">
                 <div className="flex items-center gap-1.5">
                   <button
                     onClick={() => setPreviewTemplate(tpl)}
                     title={l('معاينة النموذج', 'Preview Template')}
-                    className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer"
+                    className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white transition-colors cursor-pointer border border-slate-200 dark:border-transparent"
                   >
                     <Eye className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => handleCopyText(tpl)}
                     title={l('نسخ نص العقد', 'Copy Template Text')}
-                    className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer"
+                    className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white transition-colors cursor-pointer border border-slate-200 dark:border-transparent"
                   >
                     {copiedId === tpl.id ? (
-                      <Check className="w-4 h-4 text-emerald-400" />
+                      <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                     ) : (
                       <Copy className="w-4 h-4" />
                     )}
@@ -207,7 +207,7 @@ export default function TemplatesPage() {
                   <button
                     onClick={() => handleDownloadWord(tpl)}
                     title={l('تحميل كملف Word', 'Download Word')}
-                    className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer"
+                    className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white transition-colors cursor-pointer border border-slate-200 dark:border-transparent"
                   >
                     <Download className="w-4 h-4" />
                   </button>

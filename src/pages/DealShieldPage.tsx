@@ -186,27 +186,27 @@ Official Contact: founder@juristech.solutions | +201126674337
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans pb-24" dir={isRtl ? 'rtl' : 'ltr'}>
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans pb-24" dir={isRtl ? 'rtl' : 'ltr'}>
       <SEO />
 
       {/* Hero Header */}
-      <section className="relative pt-12 pb-16 px-4 sm:px-6 lg:px-8 border-b border-slate-800/80 bg-gradient-to-b from-slate-900/60 via-slate-950 to-slate-950 overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(6,182,212,0.15),rgba(255,255,255,0))] pointer-events-none" />
+      <section className="relative pt-12 pb-16 px-4 sm:px-6 lg:px-8 border-b border-slate-200 dark:border-slate-800/80 bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-slate-900/60 dark:via-slate-950 dark:to-slate-950 overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(6,182,212,0.10),rgba(255,255,255,0))] pointer-events-none" />
 
         <div className="max-w-6xl mx-auto relative z-10 space-y-6 text-center">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 text-xs font-black uppercase tracking-wider">
-            <Sparkles className="w-4 h-4 text-cyan-400 animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 text-xs font-black uppercase tracking-wider">
+            <Sparkles className="w-4 h-4 text-cyan-500 dark:text-cyan-400 animate-pulse" />
             <span>{l('جديد 2026: رادار الصفقات ومستكشف الاحتياجات السيادي', 'NEW 2026: DealShield 360 & Client Need Radar')}</span>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight max-w-4xl mx-auto">
+          <h1 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-tight max-w-4xl mx-auto">
             {l(
               'استكشاف الاحتياجات القانونية ومحاكاة الصفقات العابرة للحدود بالذكاء الاصطناعي',
               'Sovereign AI Client Need Discovery & Cross-Border Deal Simulator'
             )}
           </h1>
 
-          <p className="text-sm sm:text-base text-slate-400 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed">
             {l(
               'أداة سيادية متطورة تستكشف بدقة احتياجات شركتك الماسة، وتكشف الثغرات والاتفاقيات الإلزامية الناقصة، مع محاكاة فورية للتعارض التشريعي بين الأنظمة الدولية (الخليج، أمريكا، بريطانيا، وأوروبا) وصياغة البنود التوافقية الموحدة.',
               'Advanced sovereign engine that diagnoses your urgent enterprise vulnerabilities, identifies missing mandatory contracts, and simulates cross-border statutory clashes across GCC, US Delaware, UK, and EU codes with instant harmonized bridging clauses.'
@@ -214,7 +214,7 @@ Official Contact: founder@juristech.solutions | +201126674337
           </p>
 
           {/* Mode Switcher Tabs */}
-          <div className="inline-flex p-1.5 rounded-2xl bg-slate-900 border border-slate-800 shadow-2xl mt-4">
+          <div className="inline-flex p-1.5 rounded-2xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm mt-4">
             <button
               onClick={() => setActiveMode('diagnostic')}
               className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-black flex items-center gap-2 transition-all cursor-pointer ${

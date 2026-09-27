@@ -451,13 +451,13 @@ Language: ${i18n.language === 'ar' ? 'Arabic (العربية الفصحى الق
   const activeJurisdictionPill = GLOBAL_JURISDICTION_PILLS.find(p => p.code === selectedJurisdictionCode) || GLOBAL_JURISDICTION_PILLS[0];
 
   return (
-    <main className="min-h-screen bg-slate-950 text-white selection:bg-cyan-500 selection:text-slate-950 font-sans pb-24" dir={isRtl ? 'rtl' : 'ltr'}>
+    <main className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white selection:bg-brand-500 selection:text-white font-sans pb-24" dir={isRtl ? 'rtl' : 'ltr'}>
       <SEO />
 
       {/* ══════════════════════════════════════════════════════════════════════ */}
       {/* 👑 HERO SECTION: LUXURY LAWTECH COMMAND HEADER                        */}
       {/* ══════════════════════════════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden pt-10 pb-12 border-b border-slate-800/80 bg-gradient-to-b from-slate-950 via-[#070d1e] to-slate-950">
+      <section className="relative overflow-hidden pt-10 pb-12 border-b border-slate-200 dark:border-slate-800/80 bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-slate-950 dark:via-[#070d1e] dark:to-slate-950">
         <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#06b6d4_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none" />
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -466,20 +466,20 @@ Language: ${i18n.language === 'ar' ? 'Arabic (العربية الفصحى الق
           
           {/* Top Badges & Telemetry */}
           <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-gradient-to-r from-cyan-500/20 via-indigo-500/20 to-emerald-500/20 border border-cyan-500/40 text-cyan-300 text-xs font-black uppercase tracking-wider shadow-lg shadow-cyan-500/10">
-              <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-gradient-to-r from-cyan-500/20 via-indigo-500/20 to-emerald-500/20 border border-cyan-500/40 text-cyan-700 dark:text-cyan-300 text-xs font-black uppercase tracking-wider shadow-sm">
+              <Sparkles className="w-3.5 h-3.5 text-cyan-500 dark:text-cyan-400 animate-pulse" />
               <span>{l('المنظومة الموحدة لصياغة وخزينة العقود الذكية (Google AI Pro 1M+ Context Engine)', 'Sovereign AI Smart Contracts Studio & 1M+ Vault (Google AI Pro)')}</span>
             </div>
 
-            <div className="flex items-center gap-3 text-xs font-mono text-slate-400">
-              <span className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-slate-900 border border-slate-800">
-                <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                <span className="text-emerald-400 font-bold">{formatNum(1000014)}+</span>
+            <div className="flex items-center gap-3 text-xs font-mono text-slate-600 dark:text-slate-400">
+              <span className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+                <ShieldCheck className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
+                <span className="text-emerald-600 dark:text-emerald-400 font-bold">{formatNum(1000014)}+</span>
                 <span>{l('عقد ونموذج معتمد', 'Certified Templates')}</span>
               </span>
-              <span className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-xl bg-slate-900 border border-slate-800">
-                <Globe className="w-4 h-4 text-cyan-400" />
-                <span className="text-cyan-300 font-bold">{formatNum(15)}+</span>
+              <span className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+                <Globe className="w-4 h-4 text-cyan-500 dark:text-cyan-400" />
+                <span className="text-cyan-600 dark:text-cyan-300 font-bold">{formatNum(15)}+</span>
                 <span>{l('دولة ونظام قضائي', 'Jurisdictions')}</span>
               </span>
             </div>
@@ -487,24 +487,24 @@ Language: ${i18n.language === 'ar' ? 'Arabic (العربية الفصحى الق
 
           {/* Main Title */}
           <div className="max-w-4xl space-y-3">
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black leading-tight tracking-tight">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black leading-tight tracking-tight text-slate-900 dark:text-white">
               {isRtl ? (
                 <>
                   صياغة العقود الذكية بالذكاء الاصطناعي السيادي{' '}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 via-amber-500 to-emerald-600 dark:from-cyan-400 dark:via-teal-300 dark:to-emerald-400">
                     والخزينة القانونية المليونية
                   </span>
                 </>
               ) : (
                 <>
                   Sovereign AI Smart Contract Drafting &{' '}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 via-amber-500 to-emerald-600 dark:from-cyan-400 dark:via-teal-300 dark:to-emerald-400">
                     1M+ Global Templates Vault
                   </span>
                 </>
               )}
             </h1>
-            <p className="text-slate-300 text-sm sm:text-base leading-relaxed max-w-3xl">
+            <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed max-w-3xl">
               {isRtl
                 ? 'المحرك التشريعي الأكثر تقدماً لصياغة وتدقيق العقود والاتفاقيات التجارية طبقاً للأنظمة السعودية والخليجية والأردنية والمصرية والأمريكية والبريطانية والصينية والأمم المتحدة (UNCITRAL / CISG 1980) مع تشفير AES-256 وأختام SHA-256 الرقمية.'
                 : 'Enterprise-grade multi-jurisdictional AI contract compiler harmonized across GCC, Jordan, Egypt, US (Delaware), UK, EU, China & UNCITRAL international trade frameworks with bank-grade encryption.'}
@@ -513,13 +513,13 @@ Language: ${i18n.language === 'ar' ? 'Arabic (العربية الفصحى الق
 
           {/* View Switcher: AI Studio vs 1M+ Vault */}
           <div className="pt-2 flex flex-wrap items-center gap-3">
-            <div className="p-1.5 rounded-2xl bg-slate-900/90 border border-slate-800 flex items-center gap-2 shadow-2xl backdrop-blur-xl">
+            <div className="p-1.5 rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 flex items-center gap-2 shadow-lg backdrop-blur-xl">
               <button
                 onClick={() => { setActiveTab('studio'); setSearchParams({ tab: 'studio' }); }}
                 className={`flex items-center gap-2.5 px-5 py-2.5 rounded-xl font-black text-xs sm:text-sm transition-all cursor-pointer ${
                   activeTab === 'studio'
-                    ? 'bg-gradient-to-r from-cyan-500 to-teal-500 text-slate-950 shadow-lg shadow-cyan-500/25 scale-[1.02]'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+                    ? 'bg-gradient-to-r from-brand-500 to-amber-500 text-slate-950 shadow-md shadow-brand-500/25 scale-[1.02]'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60'
                 }`}
               >
                 <Wand2 className="w-4 h-4" />
@@ -531,12 +531,12 @@ Language: ${i18n.language === 'ar' ? 'Arabic (العربية الفصحى الق
                 className={`flex items-center gap-2.5 px-5 py-2.5 rounded-xl font-black text-xs sm:text-sm transition-all cursor-pointer ${
                   activeTab === 'vault'
                     ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 shadow-lg shadow-emerald-500/25 scale-[1.02]'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60'
                 }`}
               >
                 <Layers className="w-4 h-4" />
                 <span>{l('📚 مستودع وخزينة العقود المليونية (1M+ Vault)', '📚 1M+ Curated Templates Vault')}</span>
-                <span className="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-mono border border-emerald-500/30">
+                <span className="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 text-[10px] font-mono border border-emerald-500/30">
                   {formatNum(1000014)}
                 </span>
               </button>
@@ -553,17 +553,17 @@ Language: ${i18n.language === 'ar' ? 'Arabic (العربية الفصحى الق
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-8">
 
           {/* ── 4-STEP INTERACTIVE USER ROADMAP ── */}
-          <div className="p-4 sm:p-5 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-2xl backdrop-blur-xl">
-            <div className="flex items-center justify-between flex-wrap gap-3 pb-4 border-b border-slate-800/80">
+          <div className="p-4 sm:p-5 rounded-3xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-2xl backdrop-blur-xl">
+            <div className="flex items-center justify-between flex-wrap gap-3 pb-4 border-b border-slate-200 dark:border-slate-800/80">
               <div className="flex items-center gap-2">
-                <Compass className="w-5 h-5 text-cyan-400" />
-                <h2 className="text-sm sm:text-base font-black text-white">
+                <Compass className="w-5 h-5 text-brand-600 dark:text-cyan-400" />
+                <h2 className="text-sm sm:text-base font-black text-slate-900 dark:text-white">
                   {l('خريطة صياغة العقد الذكي التفاعلية (4-Step Guided Roadmap)', 'Smart Contract AI Drafting Guided Roadmap')}
                 </h2>
               </div>
-              <div className="text-xs text-slate-400 font-mono">
+              <div className="text-xs text-slate-600 dark:text-slate-400 font-mono">
                 {l('الخطوة الحالية:', 'Active Stage:')}{' '}
-                <span className="text-cyan-400 font-bold">{studioStep} / 4</span>
+                <span className="text-brand-600 dark:text-cyan-400 font-bold">{studioStep} / 4</span>
               </div>
             </div>
 

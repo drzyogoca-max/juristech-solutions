@@ -268,7 +268,7 @@ export default function PaymentPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans pb-16 selection:bg-cyan-500 selection:text-slate-950" dir={isRtl ? 'rtl' : 'ltr'}>
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans pb-16 selection:bg-cyan-500 selection:text-slate-950" dir={isRtl ? 'rtl' : 'ltr'}>
       <SEO />
 
       {/* Payment Modals */}
@@ -331,23 +331,23 @@ export default function PaymentPage() {
       />
 
       {/* Hero Header */}
-      <div className="relative py-14 border-b border-slate-800/80 overflow-hidden bg-gradient-to-b from-slate-900 via-slate-950 to-slate-950">
+      <div className="relative py-14 border-b border-slate-200 dark:border-slate-800/80 overflow-hidden bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-slate-900 dark:via-slate-950 dark:to-slate-950">
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none" />
         <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-[120px] pointer-events-none" />
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900 border border-amber-500/30 shadow-lg">
-            <Crown className="w-4 h-4 text-amber-400" />
-            <span className="text-xs font-black uppercase tracking-widest text-amber-300">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white dark:bg-slate-900 border border-amber-500/40 shadow-sm">
+            <Crown className="w-4 h-4 text-amber-500" />
+            <span className="text-xs font-black uppercase tracking-widest text-amber-600 dark:text-amber-300">
               {l('باقات الاشتراكات والخدمات السيادية لعام 2026', 'Sovereign Retainer Tiers 2026')}
             </span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
-            {l('باقات الاشتراك وتفعيل ', 'Sovereign Retainer Plans & ')}<span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-400">{l('الخدمات الذكية السيادية', 'Enterprise Intelligence')}</span>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
+            {l('باقات الاشتراك وتفعيل ', 'Sovereign Retainer Plans & ')}<span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 via-sky-500 to-indigo-600 dark:from-cyan-400 dark:via-sky-300 dark:to-indigo-400">{l('الخدمات الذكية السيادية', 'Enterprise Intelligence')}</span>
           </h1>
 
-          <p className="text-slate-300 max-w-3xl mx-auto text-xs sm:text-sm leading-relaxed font-medium">
+          <p className="text-slate-600 dark:text-slate-300 max-w-3xl mx-auto text-xs sm:text-sm leading-relaxed font-medium">
             {l(
               'اختر الباقة المناسبة لمؤسستك واستفد من محرك Google AI Pro السيادي، الاستحواذ التنبؤي M&A، التفاوض الآلي، والمحاكاة القضائية مع تسوية معتمدة عبر Binance Pay، التحويلات البنكية SWIFT، أو إنستا باي.',
               'Empower your enterprise with Google AI Pro Sovereign Core, predictive M&A valuations, autonomous negotiation, and virtual dispute simulation with verified institutional settlement.'

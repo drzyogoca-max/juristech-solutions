@@ -31,7 +31,7 @@ export default function TrustPortalPage() {
   const report = useMemo(() => enterpriseTrustCenter.getTrustPostureReport(), []);
 
   return (
-    <div className={`min-h-screen bg-slate-950 text-slate-100 p-4 sm:p-6 lg:p-12 space-y-12 font-sans ${isRtl ? 'rtl' : 'ltr'}`}>
+    <div className={`min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 p-4 sm:p-6 lg:p-12 space-y-12 font-sans ${isRtl ? 'rtl' : 'ltr'}`}>
       <SEO
         title={isAr ? 'مركز الثقة والأمان المؤسسي | JurisTech Solutions' : 'Enterprise Trust & Security Portal | JurisTech Solutions'}
         description={

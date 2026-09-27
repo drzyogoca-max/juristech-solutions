@@ -288,7 +288,7 @@ export default function VaultPage() {
   };
 
   return (
-    <main className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-950 text-slate-100 font-sans" dir={isRtl ? 'rtl' : 'ltr'}>
+    <main className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans" dir={isRtl ? 'rtl' : 'ltr'}>
       <SEO />
       <PremiumFeatureGuard
         requiredTier="Enterprise"
@@ -298,22 +298,22 @@ export default function VaultPage() {
         <div className="max-w-6xl mx-auto space-y-8">
 
         {/* ── Header ─────────────────────────────────────────────────── */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 p-6 rounded-3xl bg-gradient-to-r from-slate-900 via-slate-900 to-indigo-950/40 border border-slate-800 shadow-2xl">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl">
           <div>
             <div className="flex items-center gap-3">
-              <div className="p-3 rounded-2xl bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">
+              <div className="p-3 rounded-2xl bg-indigo-500/10 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20 dark:border-indigo-500/30">
                 <Lock className="w-8 h-8" />
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h1 className="text-2xl sm:text-3xl font-black text-white">
+                  <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
                     {l('الخزنة المشفرة والأمن السيادي', 'Sovereign Encrypted Vault & Cryptography Hub')}
                   </h1>
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
                     AES-GCM-256 Live
                   </span>
                 </div>
-                <p className="text-xs sm:text-sm text-slate-400 mt-1">
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1">
                   {l(
                     'تشفير سيادي كامل من جانب العميل مع توليد بصمات SHA-256 وشهادات سلامة رقمية غير قابلة للتلاعب.',
                     'Zero-knowledge client-side encryption with verifiable SHA-256 tamper-proof certificates.'

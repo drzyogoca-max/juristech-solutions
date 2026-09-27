@@ -156,28 +156,46 @@ button:active, a:active {
 }
 
 .glass-luxury {
-  background: rgba(10, 11, 20, 0.88);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(99, 102, 241, 0.20);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08);
+}
+
+.dark .glass-luxury {
+  background: rgba(10, 11, 20, 0.88);
+  border: 1px solid rgba(212, 175, 55, 0.20);
   color: #f8fafc;
   box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255,255,255,0.06);
 }
 
 /* Card System */
 .card-lawtech-lux {
-  background: linear-gradient(135deg, rgba(17, 24, 39, 0.90) 0%, rgba(26, 32, 53, 0.95) 100%);
+  background: #ffffff;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(99, 102, 241, 0.16);
-  box-shadow: 0 12px 36px 0 rgba(2, 6, 23, 0.6);
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .card-lawtech-lux:hover {
-  border-color: rgba(99, 102, 241, 0.40);
-  box-shadow: 0 16px 48px 0 rgba(99, 102, 241, 0.20);
+  border-color: rgba(212, 175, 55, 0.40);
+  box-shadow: 0 10px 30px -4px rgba(212, 175, 55, 0.15);
   transform: translateY(-2px);
+}
+
+.dark .card-lawtech-lux {
+  background: linear-gradient(135deg, rgba(13, 31, 60, 0.90) 0%, rgba(20, 40, 71, 0.95) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.18);
+  box-shadow: 0 12px 36px 0 rgba(2, 11, 26, 0.6);
+}
+
+.dark .card-lawtech-lux:hover {
+  border-color: rgba(212, 175, 55, 0.40);
+  box-shadow: 0 16px 48px 0 rgba(212, 175, 55, 0.20);
 }
 
 /* Glow Utilities */

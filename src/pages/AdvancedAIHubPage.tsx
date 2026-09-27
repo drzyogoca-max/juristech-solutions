@@ -377,7 +377,7 @@ export default function AdvancedAIHubPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-cyan-500 selection:text-slate-950 pb-16" dir={isRtl ? 'rtl' : 'ltr'}>
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans selection:bg-cyan-500 selection:text-slate-950 pb-16" dir={isRtl ? 'rtl' : 'ltr'}>
       <SEO />
 
       {/* 🌟 1. HERO & ENGINE TELEMETRY HEADER */}

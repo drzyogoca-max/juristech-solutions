@@ -162,8 +162,8 @@ export default function Navbar() {
         dir={isRtl ? 'rtl' : 'ltr'}
         className={`sticky top-0 z-40 transition-all duration-300 ${
           scrolled
-            ? 'bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/80 shadow-lg shadow-slate-950/50'
-            : 'bg-slate-900/98 backdrop-blur-md border-b border-slate-200 dark:border-slate-800'
+            ? 'bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/80 shadow-md shadow-slate-200/50 dark:shadow-slate-950/50'
+            : 'bg-white/90 dark:bg-slate-900/98 backdrop-blur-md border-b border-slate-200 dark:border-slate-800'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between gap-3 h-14">
@@ -178,7 +178,7 @@ export default function Navbar() {
             </div>
             <div className="hidden sm:block">
               <div className="flex items-center gap-1.5">
-                <span className="text-base font-black text-white group-hover:text-teal-300 transition-colors tracking-tight leading-none block">
+                <span className="text-base font-black text-slate-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-teal-300 transition-colors tracking-tight leading-none block">
                   JurisTech Solutions
                 </span>
                 <span className="text-[9px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-1.5 py-0.5 rounded-md">

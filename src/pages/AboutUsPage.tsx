@@ -24,7 +24,7 @@ export default function AboutUsPage() {
   const { l, isRtl } = usePlatformLocale();
 
   return (
-    <main dir={isRtl ? 'rtl' : 'ltr'} className="min-h-screen bg-slate-950 text-white selection:bg-cyan-500 selection:text-slate-950 py-12 px-4 sm:px-6 lg:px-8">
+    <main dir={isRtl ? 'rtl' : 'ltr'} className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white selection:bg-cyan-500 selection:text-slate-950 py-12 px-4 sm:px-6 lg:px-8">
       <SEO
         title={l('من نحن | JurisTech Solutions — الكيان التقني المستقل', 'About Us | JurisTech Solutions — Independent AI Tech Entity')}
         description={l('تعرف على الكيان التقني المستقل JurisTech Solutions، هندسة الذكاء الاصطناعي القانوني، ونظام حوكمة العقود.', 'Learn about JurisTech Solutions, the sovereign independent AI Legal SaaS engineering platform.')}
@@ -33,14 +33,14 @@ export default function AboutUsPage() {
       <div className="max-w-6xl mx-auto space-y-12">
         {/* Header Badge & Title */}
         <div className="text-center space-y-4">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-mono font-bold tracking-wider uppercase">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-600 dark:text-cyan-400 text-xs font-mono font-bold tracking-wider uppercase">
             <Building2 className="w-4 h-4" />
             <span>{l('الكيان التقني المستقل للمنظومة', 'Sovereign Technical Entity')}</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-white">
-            {l('عن المنصة:', 'About')} <span className="text-cyan-400">JurisTech Solutions</span>
+          <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-slate-900 dark:text-white">
+            {l('عن المنصة:', 'About')} <span className="text-cyan-600 dark:text-cyan-400">JurisTech Solutions</span>
           </h1>
-          <p className="text-slate-400 text-sm sm:text-base max-w-3xl mx-auto leading-relaxed">
+          <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base max-w-3xl mx-auto leading-relaxed">
             {l(
               'المنصة العالمية المستقلة للذكاء الاصطناعي العقدي والتدقيق التشريعي المصممة للأنظمة العربية والدولية.',
               'The global sovereign AI Legal Intelligence platform providing autonomous contract generation and legislative risk auditing.'
@@ -49,7 +49,7 @@ export default function AboutUsPage() {
         </div>
 
         {/* Global HQ & Legal Status Banner */}
-        <div className="p-8 rounded-3xl bg-gradient-to-r from-slate-900 via-cyan-950/40 to-slate-900 border border-cyan-500/30 shadow-2xl space-y-6">
+        <div className="p-8 rounded-3xl bg-white dark:bg-gradient-to-r dark:from-slate-900 dark:via-cyan-950/40 dark:to-slate-900 border border-slate-200 dark:border-cyan-500/30 shadow-xl space-y-6">
           <div className="flex items-center justify-between flex-wrap gap-4 border-b border-cyan-500/20 pb-4">
             <div className="flex items-center gap-3">
               <div className="p-3 rounded-2xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/40">

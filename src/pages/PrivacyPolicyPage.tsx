@@ -217,7 +217,7 @@ export default function PrivacyPolicyPage() {
   ];
 
   return (
-    <div className={`min-h-screen bg-slate-950 text-slate-100 py-12 px-4 sm:px-6 lg:px-8 ${isRtl ? 'rtl' : 'ltr'}`}>
+    <div className={`min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 py-12 px-4 sm:px-6 lg:px-8 ${isRtl ? 'rtl' : 'ltr'}`}>
       <SEO
         title={`${isRtl ? 'سياسة الخصوصية' : 'Privacy Policy'} | Juristech.solutions`}
         description={isRtl
@@ -229,20 +229,20 @@ export default function PrivacyPolicyPage() {
 
         {/* ── Hero ──────────────────────────────────────────────── */}
         <div className="text-center space-y-5">
-          <div className="inline-flex items-center justify-center p-4 bg-emerald-500/10 rounded-3xl border border-emerald-500/20 text-emerald-400">
+          <div className="inline-flex items-center justify-center p-4 bg-emerald-500/10 rounded-3xl border border-emerald-500/20 text-emerald-600 dark:text-emerald-400">
             <ShieldCheck className="w-12 h-12" />
           </div>
-          <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
+          <h1 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
             {isRtl ? 'سياسة الخصوصية الشاملة' : 'Comprehensive Privacy Policy'}
           </h1>
-          <p className="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+          <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
             {isRtl
               ? 'خصوصية مستنداتك القانونية وأمان بياناتك هي أعلى أولوياتنا. امتثال كامل مع GDPR وeIDAS وISO/IEC 27001.'
               : 'Your legal document privacy and data security are our highest priorities. Full compliance with GDPR, eIDAS & ISO/IEC 27001.'}
           </p>
           <div className="flex flex-wrap items-center justify-center gap-2">
             {['GDPR Art.13/14', 'eIDAS EU 910/2014', 'ISO/IEC 27001', 'AES-256 E2EE', 'SHA-256 Audit'].map((b) => (
-              <span key={b} className="px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-300 text-xs font-mono font-bold">{b}</span>
+              <span key={b} className="px-3 py-1 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-xs font-mono font-bold shadow-sm">{b}</span>
             ))}
           </div>
           <p className="text-xs text-slate-500 font-mono">

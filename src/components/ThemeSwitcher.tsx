@@ -6,18 +6,12 @@ export default function ThemeSwitcher() {
   const { i18n } = useTranslation();
   const isRtl = i18n.language === 'ar';
   
-  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
   useEffect(() => {
-    // Check initial state
+    // Default to clean executive Light theme for high-readability legal work
     const currentTheme = localStorage.getItem('theme');
-    if (currentTheme === 'light') {
-      setTheme('light');
-      document.documentElement.classList.remove('dark');
-    } else if (currentTheme === 'dark') {
-      setTheme('dark');
-      document.documentElement.classList.add('dark');
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    if (currentTheme === 'dark') {
       setTheme('dark');
       document.documentElement.classList.add('dark');
     } else {

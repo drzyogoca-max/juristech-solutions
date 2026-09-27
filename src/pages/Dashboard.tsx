@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useRef, lazy, Suspense } from 'react';
+import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   FileText, AlertTriangle, Zap, ArrowRight, Globe, Users, Shield, ShieldCheck,
@@ -339,7 +339,7 @@ export default function Dashboard() {
   };
 
   return (
-    <main className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-950 text-slate-100 font-sans w-full max-w-full overflow-x-hidden" dir={isRtl ? 'rtl' : 'ltr'}>
+    <main className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans w-full max-w-full overflow-x-hidden transition-colors" dir={isRtl ? 'rtl' : 'ltr'}>
       <SEO />
       <HeartbeatBackground />
       
@@ -350,10 +350,10 @@ export default function Dashboard() {
           {statItems.map((item, idx) => {
             const Icon = item.icon;
             return (
-              <div key={idx} className={`p-3.5 rounded-2xl backdrop-blur-xl border ${item.bg} shadow-lg space-y-1.5 transition-all hover:scale-[1.02]`}>
+              <div key={idx} className={`p-3.5 rounded-2xl backdrop-blur-xl border ${item.bg} bg-white/90 dark:bg-slate-900/60 shadow-md space-y-1.5 transition-all hover:scale-[1.02]`}>
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold text-slate-400 block truncate">{item.label}</span>
-                  <div className={`p-1.5 rounded-lg bg-slate-900/60 ${item.color}`}>
+                  <span className="text-[10px] font-bold text-slate-600 dark:text-slate-400 block truncate">{item.label}</span>
+                  <div className={`p-1.5 rounded-lg bg-slate-100 dark:bg-slate-900/60 ${item.color}`}>
                     <Icon className="w-3.5 h-3.5" />
                   </div>
                 </div>
@@ -372,7 +372,7 @@ export default function Dashboard() {
         </div>
 
         {/* 🎛️ 3. INSTANT SECTION NAVIGATOR (SMOOTH SCROLL TO ALL 5 CORE SECTIONS) */}
-        <div className="bg-slate-900/90 backdrop-blur-xl rounded-2xl p-2 border border-slate-800 flex items-center gap-2 overflow-x-auto no-scrollbar shadow-xl sticky top-4 z-40">
+        <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-2xl p-2 border border-slate-200 dark:border-slate-800 flex items-center gap-2 overflow-x-auto no-scrollbar shadow-xl sticky top-4 z-40">
           {[
             { targetId: 'sec-map', labelAr: '🗺️ الخريطة التفاعلية والأنظمة', labelEn: '🗺️ Global SaaS Map' },
             { targetId: 'sec-studio', labelAr: '⚡ استوديو العقود والتدقيق', labelEn: '⚡ Contract Studio' },
@@ -383,7 +383,7 @@ export default function Dashboard() {
             <button
               key={idx}
               onClick={() => scrollToSection(nav.targetId)}
-              className="flex-1 min-w-[170px] sm:min-w-[190px] py-2.5 px-3.5 rounded-xl text-xs font-bold transition-all text-slate-300 hover:text-white hover:bg-slate-800 bg-slate-950/60 border border-slate-800/80 cursor-pointer shadow-sm active:scale-95"
+              className="flex-1 min-w-[170px] sm:min-w-[190px] py-2.5 px-3.5 rounded-xl text-xs font-bold transition-all text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800 bg-slate-100 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800/80 cursor-pointer shadow-sm active:scale-95"
             >
               <span>{l(nav.labelAr, nav.labelEn)}</span>
             </button>
@@ -423,17 +423,17 @@ export default function Dashboard() {
           )}
 
           {/* Session Workspace & Recent Audits Card */}
-          <div className="card-lawtech-lux rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-2xl space-y-4 font-sans">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+          <div className="card-lawtech-lux rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-2xl space-y-4 font-sans">
+            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
               <div className="flex items-center gap-2.5">
-                <div className="p-2.5 rounded-2xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                <div className="p-2.5 rounded-2xl bg-cyan-500/10 text-cyan-500 dark:text-cyan-400 border border-cyan-500/20">
                   <FileText className="w-5 h-5" />
                 </div>
                 <div>
-                  <h2 className="text-base sm:text-lg font-bold text-white">
+                  <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
                     {l('مستنداتي وعمليات التدقيق في هذه الجلسة', 'My Session Documents & Recent Audits')}
                   </h2>
-                  <p className="text-xs text-slate-400">
+                  <p className="text-xs text-slate-600 dark:text-slate-400">
                     {l('إدارة المستندات المفحوصة مؤخراً ومتابعة تقارير المخاطر', 'Manage analyzed contracts and active risk reports')}
                   </p>
                 </div>
@@ -442,7 +442,7 @@ export default function Dashboard() {
                 <button
                   onClick={() => clearContractData()}
                   aria-label={l('تفريغ الجلسة الحالية', 'Clear current session')}
-                  className="text-xs font-bold text-slate-400 hover:text-red-400 transition-colors px-3 py-1.5 rounded-xl bg-slate-800/80 border border-slate-700 cursor-pointer"
+                  className="text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-red-500 transition-colors px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 cursor-pointer"
                 >
                   {l('تفريغ الجلسة', 'Clear Session')}
                 </button>
@@ -450,7 +450,7 @@ export default function Dashboard() {
             </div>
 
             {contractState?.fileName ? (
-              <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="p-4 rounded-2xl bg-slate-100/80 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
                   <div className="p-3 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
                     <FileText className="w-6 h-6" />
@@ -491,16 +491,16 @@ export default function Dashboard() {
           </div>
 
           {/* Instant Contract Upload & Risk Analysis Workspace */}
-          <div className="card-lawtech-lux rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-2xl space-y-6">
+          <div className="card-lawtech-lux rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-2xl space-y-6">
             
             {/* Target Jurisdiction Selector */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-5">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-5">
               <div>
-                <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                  <Globe className="w-5 h-5 text-cyan-400" />
+                <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                  <Globe className="w-5 h-5 text-cyan-500 dark:text-cyan-400" />
                   <span>{l('مسار رفع العقود والتحليل القانوني الفوري', 'Contract Upload & Instant Legal Risk Analysis')}</span>
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
                   {l('حدد النظام التشريعي المستهدف لإجراء الفحص وصياغة البنود فورياً:', 'Select governing jurisdiction for localized legal auditing:')}
                 </p>
               </div>
@@ -519,8 +519,8 @@ export default function Dashboard() {
                     aria-label={l(reg.nameAr, reg.nameEn)}
                     className={`px-3 py-2 rounded-xl text-xs font-bold transition-all text-center border cursor-pointer ${
                       selectedRegion === reg.id
-                        ? 'bg-cyan-500 text-slate-950 border-cyan-400 shadow-md font-bold scale-105'
-                        : 'bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700'
+                        ? 'bg-brand-500 text-slate-950 border-brand-400 shadow-md font-bold scale-105'
+                        : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700'
                     }`}
                   >
                     {l(reg.nameAr, reg.nameEn)}
@@ -685,30 +685,30 @@ export default function Dashboard() {
                 <Crown className="w-4 h-4 text-amber-400" />
                 <span>{l('حزم الاشتراكات المخصومة بنسبة 30%', '30% Discounted Subscription Packages')}</span>
               </span>
-              <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
                 {l('اختر الباقة المناسبة لمؤسستك وابدأ الاستشارة الفورية', 'Select Your Tier & Unlock Institutional Intelligence')}
               </h2>
-              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
                 {l('جميع الباقات مصممة لتوفير أقصى قدر من الكفاءة مع فتح آلي آمن عبر بوابة Binance Pay أو الحوالات المعتمدة أو إنستا باي.', 'All tiers feature zero-touch automated Binance Pay deployment, SWIFT & InstaPay processing.')}
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Startup Tier ($49) */}
-              <div className="bg-slate-900/90 p-6 rounded-3xl border border-sky-500/30 flex flex-col justify-between space-y-6 relative hover:border-sky-400 transition-all">
+              <div className="bg-white dark:bg-slate-900/90 p-6 rounded-3xl border border-sky-500/30 flex flex-col justify-between space-y-6 relative hover:border-sky-400 transition-all shadow-md dark:shadow-none">
                 <div className="space-y-4">
-                  <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase bg-sky-500/10 text-sky-400 border border-sky-500/30 inline-block">
+                  <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/30 inline-block">
                     {l('باقة الشركات الصغرى', 'Startup Tier')}
                   </span>
                   <div>
-                    <h3 className="text-xl font-bold text-white">{l('حزمة الشركات الناشئة', 'Micro / Startup')}</h3>
+                    <h3 className="text-xl font-bold text-slate-900 dark:text-white">{l('حزمة الشركات الناشئة', 'Micro / Startup')}</h3>
                     <div className="mt-2 flex items-baseline gap-1">
-                      <span className="text-3xl font-black text-sky-400">$49</span>
-                      <span className="text-xs text-slate-400">{l('/ شهرياً', '/ month')}</span>
-                      <span className="text-xs text-slate-500 line-through mr-2">$70</span>
+                      <span className="text-3xl font-black text-sky-600 dark:text-sky-400">$49</span>
+                      <span className="text-xs text-slate-500 dark:text-slate-400">{l('/ شهرياً', '/ month')}</span>
+                      <span className="text-xs text-slate-400 dark:text-slate-500 line-through mr-2">$70</span>
                     </div>
                   </div>
-                  <ul className="space-y-2 text-xs text-slate-300">
+                  <ul className="space-y-2 text-xs text-slate-700 dark:text-slate-300">
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-sky-400 shrink-0" />
                       <span>{l('مستشار Google Gemini Pro السيادي (7 لغات)', 'Google Gemini Pro Sovereign Advisor')}</span>
@@ -838,20 +838,20 @@ export default function Dashboard() {
         <section id="sec-security" className="space-y-6 pt-2">
           <div className="card-lawtech-lux rounded-3xl p-6 sm:p-8 border border-emerald-500/20 shadow-2xl space-y-6">
             
-            <div className="flex items-center justify-between border-b border-slate-800 pb-5 flex-wrap gap-4">
+            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-5 flex-wrap gap-4">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <span className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  <span className="p-2 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
                     <ShieldCheck className="w-5 h-5" />
                   </span>
-                  <span className="text-xs font-black uppercase tracking-widest text-emerald-400">
+                  <span className="text-xs font-black uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
                     {l('حوكمة الأمان والتشفير البنكي', 'Bank-Grade E2EE & Statutory Governance')}
                   </span>
                 </div>
-                <h2 className="text-xl sm:text-2xl font-black text-white">
+                <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
                   {l('بروتوكولات حماية بيانات العقود والامتثال العالمي', 'End-to-End Encryption & Privacy Protocol')}
                 </h2>
-                <p className="text-xs text-slate-300">
+                <p className="text-xs text-slate-600 dark:text-slate-300">
                   {l('تشفير كامل على جانب العميل يضمن عدم وصول أي طرف ثالث إلى نصوص ومستندات أعمالك.', 'Zero-knowledge client-side encryption ensuring total privacy and statutory confidentiality.')}
                 </p>
               </div>

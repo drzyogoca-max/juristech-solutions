@@ -268,7 +268,7 @@ export default function BillingPage() {
   // ── 1. Loading State ──
   if (authLoading) {
     return (
-      <div className={`min-h-screen bg-slate-950 text-slate-100 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center ${isRtl ? 'rtl' : 'ltr'}`}>
+      <div className={`min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center ${isRtl ? 'rtl' : 'ltr'}`}>
         <div className="flex flex-col items-center gap-4 text-cyan-400">
           <Loader2 className="w-8 h-8 animate-spin" />
           <p className="text-xs text-slate-400">{l('جاري التحقق من جلسة الحساب...', 'Verifying account session...')}</p>
@@ -280,7 +280,7 @@ export default function BillingPage() {
   // ── 2. Strict Auth Gate for Unauthenticated Visitors ──
   if (!user) {
     return (
-      <div className={`min-h-screen bg-slate-950 text-slate-100 py-12 px-4 sm:px-6 lg:px-8 ${isRtl ? 'rtl' : 'ltr'}`}>
+      <div className={`min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 py-12 px-4 sm:px-6 lg:px-8 ${isRtl ? 'rtl' : 'ltr'}`}>
         <SEO
           title={`${isRtl ? 'تسجيل الدخول إلى بوابة الفوترة' : 'Customer Portal Login'} | JURISTECH`}
           description="Sign in to access your JURISTECH customer billing portal, subscription details, and verified receipts."
@@ -342,7 +342,7 @@ export default function BillingPage() {
   // ── 3. Authenticated Customer Self-Service Portal ──
 
   return (
-    <div className={`min-h-screen bg-slate-950 text-slate-100 py-12 px-4 sm:px-6 lg:px-8 ${isRtl ? 'rtl' : 'ltr'}`}>
+    <div className={`min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 py-12 px-4 sm:px-6 lg:px-8 ${isRtl ? 'rtl' : 'ltr'}`}>
       <SEO
         title={`${isRtl ? 'إدارة الاشتراك والفوترة' : 'Billing & Subscription'} | JURISTECH`}
         description="Manage your JURISTECH sovereign AI subscription, billing details, and invoices."

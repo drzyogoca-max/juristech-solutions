@@ -144,31 +144,31 @@ Draft generated locally; no external registry or certification is asserted.
   }
 
   return (
-    <main className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-950 text-slate-100 font-sans" dir={isRtl ? 'rtl' : 'ltr'}>
+    <main className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans" dir={isRtl ? 'rtl' : 'ltr'}>
       <SEO />
       <div className="max-w-4xl mx-auto space-y-8">
         
         {/* Top Header */}
-        <div className="bg-slate-900/90 p-6 rounded-3xl border border-slate-800 shadow-2xl backdrop-blur-xl flex items-center justify-between flex-wrap gap-4">
+        <div className="bg-white dark:bg-slate-900/90 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl backdrop-blur-xl flex items-center justify-between flex-wrap gap-4">
           <div className="space-y-1">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-xs font-bold uppercase">
-              <Briefcase className="w-4 h-4 text-cyan-400" />
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20 text-xs font-bold uppercase">
+              <Briefcase className="w-4 h-4 text-cyan-500 dark:text-cyan-400" />
               <span>{isRtl ? 'منصة الاستحواذ والاندماج الدولية M&A' : 'International M&A Takeover & Acquisition'}</span>
             </div>
-            <h1 className="text-3xl font-black text-white">
+            <h1 className="text-3xl font-black text-slate-900 dark:text-white">
               {isRtl ? 'منصة هيكلة وتنفيذ صفقات الاستحواذ العالمية' : 'Global M&A & Corporate Acquisition Hub'}
             </h1>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-600 dark:text-slate-400">
               {isRtl ? 'تستخدم أطرًا مرجعية لهذه الولايات القضائية؛ يلزم التحقق القانوني المحلي قبل الاعتماد أو التنفيذ.' : 'Uses jurisdiction-specific reference frameworks; local legal verification is required before reliance or execution.'}
             </p>
           </div>
-          <span className="px-3.5 py-2 rounded-2xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 text-xs font-mono font-bold">
+          <span className="px-3.5 py-2 rounded-2xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 text-xs font-mono font-bold">
             ● Regulatory review required
           </span>
         </div>
 
         {/* Steps Ribbon */}
-        <div className="flex justify-between items-center bg-slate-900 p-4 rounded-3xl border border-slate-800 overflow-x-auto gap-4">
+        <div className="flex justify-between items-center bg-white dark:bg-slate-900 p-4 rounded-3xl border border-slate-200 dark:border-slate-800 overflow-x-auto gap-4 shadow-sm">
           {steps.map((label, index) => (
             <div key={index} className="flex items-center gap-2 shrink-0">
               <div className={`w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs ${

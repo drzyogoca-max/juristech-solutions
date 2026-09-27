@@ -50,22 +50,22 @@ const POALibraryPage: React.FC = () => {
 
   return (
     <div
-      className="min-h-screen bg-slate-950 text-slate-100"
+      className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100"
       dir={isRTL ? 'rtl' : 'ltr'}
     >
       {/* ── HEADER ────────────────────────────────────────────────────────────── */}
-      <div className="bg-gradient-to-b from-slate-900 to-slate-950 border-b border-slate-800 px-6 py-8">
+      <div className="bg-white dark:bg-gradient-to-b dark:from-slate-900 dark:to-slate-950 border-b border-slate-200 dark:border-slate-800 px-6 py-8 shadow-sm">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center border border-amber-500/20">
-                <FileText className="w-5 h-5 text-amber-400" />
+                <FileText className="w-5 h-5 text-amber-500" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-white">
+                <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
                   {isRTL ? 'مكتبة التوكيلات الرسمية' : 'Power of Attorney Library'}
                 </h1>
-                <p className="text-sm text-slate-400 mt-0.5">
+                <p className="text-sm text-slate-600 dark:text-slate-400 mt-0.5">
                   {isRTL
                     ? `${POA_LIBRARY.length} نماذج استرشادية للتوكيلات الرسمية — مسودات صياغة ثنائية اللغة`
                     : `${POA_LIBRARY.length} advisory POA drafting templates — bilingual AR/EN drafts`}
@@ -76,9 +76,9 @@ const POALibraryPage: React.FC = () => {
             {/* Lang toggle */}
             <button
               onClick={() => setLang(l => l === 'ar' ? 'en' : 'ar')}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-sm font-medium transition-colors"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-sm font-medium text-slate-700 dark:text-slate-200 transition-colors"
             >
-              <Globe className="w-4 h-4 text-sky-400" />
+              <Globe className="w-4 h-4 text-sky-500" />
               {lang === 'ar' ? 'English' : 'العربية'}
             </button>
           </div>
@@ -293,13 +293,13 @@ const POACard: React.FC<POACardProps> = ({ poa, lang, isExpanded, onToggleExpand
   const isRTL = lang === 'ar';
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden hover:border-amber-500/30 transition-all duration-200 flex flex-col">
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden hover:border-amber-500/40 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col">
       {/* Card header */}
       <div className="p-5">
         <div className="flex items-start justify-between gap-2 mb-3">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center flex-shrink-0">
-              <FileText className="w-4 h-4 text-amber-400" />
+              <FileText className="w-4 h-4 text-amber-500" />
             </div>
             <span className="text-xs text-slate-500 font-mono">{poa.id}</span>
           </div>
@@ -309,10 +309,10 @@ const POACard: React.FC<POACardProps> = ({ poa, lang, isExpanded, onToggleExpand
           </div>
         </div>
 
-        <h3 className="font-semibold text-white text-sm leading-snug mb-1">
+        <h3 className="font-semibold text-slate-900 dark:text-white text-sm leading-snug mb-1">
           {isRTL ? poa.titleAr : poa.titleEn}
         </h3>
-        <p className="text-xs text-slate-400 leading-relaxed">
+        <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
           {isRTL ? poa.descriptionAr : poa.descriptionEn}
         </p>
       </div>

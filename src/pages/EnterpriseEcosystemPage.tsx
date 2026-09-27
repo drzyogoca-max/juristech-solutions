@@ -127,7 +127,7 @@ export default function EnterpriseEcosystemPage() {
 
   if (!access.allowed) {
     return (
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center p-6">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex items-center justify-center p-6">
         <SEO title={isAr ? 'وصول مقيد | منظومة المطورين والشركاء' : 'Access Restricted | Ecosystem'} noIndex={true} />
         <div className="max-w-md w-full bg-slate-900 border border-slate-800 rounded-2xl p-8 text-center space-y-4 shadow-2xl">
           <div className="w-16 h-16 rounded-full bg-rose-500/10 border border-rose-500/30 flex items-center justify-center mx-auto text-rose-400">
@@ -147,7 +147,7 @@ export default function EnterpriseEcosystemPage() {
   }
 
   return (
-    <div className={`min-h-screen bg-slate-950 text-slate-100 p-4 sm:p-6 lg:p-8 space-y-8 font-sans ${isRtl ? 'rtl' : 'ltr'}`}>
+    <div className={`min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 p-4 sm:p-6 lg:p-8 space-y-8 font-sans ${isRtl ? 'rtl' : 'ltr'}`}>
       <SEO
         title={isAr ? 'منظومة المطورين وسوق الوكلاء الذكي | JurisTech' : 'Enterprise Ecosystem & AI Marketplace | JurisTech'}
         noIndex={true}

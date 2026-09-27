@@ -196,25 +196,25 @@ Authorized by JurisTech Supreme Legal Architecture Engine.
   };
 
   return (
-    <main className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-950 text-slate-100 font-sans" dir={isRtl ? 'rtl' : 'ltr'}>
+    <main className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans" dir={isRtl ? 'rtl' : 'ltr'}>
       <SEO />
       <div className="max-w-6xl mx-auto space-y-8">
         
         {/* Header Title */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 rounded-3xl bg-slate-900/80 border border-slate-800 shadow-xl">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 rounded-3xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-xl">
           <div>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30 text-xs font-bold uppercase tracking-wider mb-2">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30 text-xs font-bold uppercase tracking-wider mb-2">
               <ShieldAlert className="w-4 h-4" />
               <span>{l('محرك الفحص التشريعي المعمق عبر المحاور الـ 8', 'Sovereign 8-Axis Statutory Contract Audit Engine')}</span>
             </div>
-            <h1 className="text-2xl sm:text-4xl font-black text-white">
+            <h1 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white">
               {l('رادار المخاطر والتحصين العقدي المؤسسي', 'Contract Risk Radar & Statutory Fortification Suite')}
             </h1>
           </div>
 
           {jurisdiction && (
-            <div className="inline-flex items-center gap-2 text-xs font-bold px-4 py-2.5 rounded-2xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/30">
-              <Globe className="w-4 h-4 text-cyan-400" />
+            <div className="inline-flex items-center gap-2 text-xs font-bold px-4 py-2.5 rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/30">
+              <Globe className="w-4 h-4 text-cyan-500 dark:text-cyan-400" />
               <span>{isRtl ? `النظام النافذ: ${jurisdiction.countryNameAr}` : `Active Framework: ${jurisdiction.countryName}`}</span>
             </div>
           )}
@@ -229,9 +229,9 @@ Authorized by JurisTech Supreme Legal Architecture Engine.
           <AutonomousRiskPanel />
 
           {/* 30+ Country Jurisdiction Selector */}
-          <div className="bg-slate-900/90 p-5 rounded-3xl border border-slate-800 space-y-3 shadow-xl">
-          <label className="text-xs font-extrabold text-slate-300 flex items-center gap-2">
-            <Globe className="w-4 h-4 text-amber-400" />
+          <div className="bg-white dark:bg-slate-900/90 p-5 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-3 shadow-sm dark:shadow-xl">
+          <label className="text-xs font-extrabold text-slate-700 dark:text-slate-300 flex items-center gap-2">
+            <Globe className="w-4 h-4 text-amber-500 dark:text-amber-400" />
             <span>{l('اختر الدولة والنظام التشريعي النافذ لإجراء فحص المخاطر طبقاً للوائحها:', 'Select Governing Jurisdiction for Risk Audit:')}</span>
           </label>
           
@@ -245,7 +245,7 @@ Authorized by JurisTech Supreme Legal Architecture Engine.
                   className={`p-2 rounded-xl text-xs font-bold text-center transition-all border truncate flex items-center justify-center gap-1.5 cursor-pointer ${
                     jurisdiction?.countryCode === j.countryCode
                       ? 'bg-amber-500 text-slate-950 border-amber-400 font-black shadow-md scale-105'
-                      : 'bg-slate-950 text-slate-300 border-slate-800 hover:bg-slate-800'
+                      : 'bg-slate-100 dark:bg-slate-950 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:bg-slate-200 dark:hover:bg-slate-800'
                   }`}
                   title={isRtl ? j.countryNameAr : j.countryName}
                 >
@@ -257,7 +257,7 @@ Authorized by JurisTech Supreme Legal Architecture Engine.
         </div>
 
         {/* Input & Upload Staging Box */}
-        <div className="bg-slate-900/90 rounded-3xl p-6 border border-slate-800 space-y-5 shadow-2xl">
+        <div className="bg-white dark:bg-slate-900/90 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 space-y-5 shadow-sm dark:shadow-2xl">
           <div>
             <input
               ref={fileInputRef}

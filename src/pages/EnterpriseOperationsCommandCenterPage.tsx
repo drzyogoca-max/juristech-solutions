@@ -36,7 +36,7 @@ const EnterpriseOperationsCommandCenterPage: React.FC = () => {
   const valueOverview = businessValueQuantifier.getValueOverview();
 
   return (
-    <div className={`min-h-screen bg-slate-950 text-slate-100 p-6 md:p-10 ${isAr ? 'rtl' : 'ltr'}`}>
+    <div className={`min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 p-6 md:p-10 ${isAr ? 'rtl' : 'ltr'}`}>
       {/* Header */}
       <div className="max-w-7xl mx-auto mb-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-800">

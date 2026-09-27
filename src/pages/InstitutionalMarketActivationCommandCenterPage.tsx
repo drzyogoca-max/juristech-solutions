@@ -21,7 +21,7 @@ export default function InstitutionalMarketActivationCommandCenterPage() {
   const economicsAudit = enterpriseEconomicsTelemetryLayer.verifyEconomicsIntegrity();
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 p-6">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 p-6">
       <header className="mb-8 border-b border-slate-800 pb-6 flex flex-wrap items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-3">

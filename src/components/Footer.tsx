@@ -25,18 +25,18 @@ export default function Footer() {
   return (
     <footer
       dir={isRtl ? 'rtl' : 'ltr'}
-      className="bg-slate-950 text-slate-300 border-t border-slate-800/80 pt-12 pb-32 lg:pb-12 px-4 sm:px-6 lg:px-8 mt-auto font-sans"
+      className="bg-slate-50 dark:bg-slate-950 text-slate-700 dark:text-slate-300 border-t border-slate-200 dark:border-slate-800/80 pt-12 pb-32 lg:pb-12 px-4 sm:px-6 lg:px-8 mt-auto font-sans"
     >
       <div className="max-w-7xl mx-auto space-y-8 overflow-hidden">
         {/* 1. Brand & Value Proposition Row */}
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-slate-800/80 pb-8">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800/80 pb-8">
           <div className="flex items-center gap-3">
             <div className="p-3 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-blue-600/20 text-cyan-400 border border-cyan-500/30 shadow-lg shadow-cyan-500/10">
               <Scale className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="text-lg font-black text-white tracking-tight">JurisTech Solutions</h3>
-              <p className="text-xs text-slate-400">
+              <h3 className="text-lg font-black text-slate-900 dark:text-white tracking-tight">JurisTech Solutions</h3>
+              <p className="text-xs text-slate-600 dark:text-slate-400">
                 {l(
                   'منظومة الذكاء الاصطناعي القانونية السيادية للمؤسسات والشركات',
                   'Sovereign AI Legal Intelligence & Enterprise Automation'
@@ -49,9 +49,9 @@ export default function Footer() {
             <a
               href="mailto:founder@juristech.solutions"
               aria-label="Email JurisTech Official Support"
-              className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-slate-900 text-cyan-300 border border-slate-700/80 hover:border-cyan-500/50 transition-colors font-mono"
+              className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-white dark:bg-slate-900 text-slate-800 dark:text-cyan-300 border border-slate-200 dark:border-slate-700/80 hover:border-cyan-500/50 transition-colors font-mono shadow-sm"
             >
-              <Mail className="w-3.5 h-3.5 text-cyan-400" />
+              <Mail className="w-3.5 h-3.5 text-cyan-500 dark:text-cyan-400" />
               <span>founder@juristech.solutions</span>
             </a>
             <a
@@ -59,15 +59,15 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="WhatsApp Executive Direct"
-              className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-slate-900 text-emerald-300 border border-slate-700/80 hover:border-emerald-500/50 transition-colors font-mono"
+              className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-white dark:bg-slate-900 text-slate-800 dark:text-emerald-300 border border-slate-200 dark:border-slate-700/80 hover:border-emerald-500/50 transition-colors font-mono shadow-sm"
             >
-              <Smartphone className="w-3.5 h-3.5 text-emerald-400" />
+              <Smartphone className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400" />
               <span>{l('واتساب: +201126674337', 'WhatsApp: +201126674337')}</span>
             </a>
             <Link
               to="/youtube-studio"
               aria-label="JurisTech Official YouTube Channel"
-              className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-slate-900 text-red-300 border border-slate-700/80 hover:border-red-500/50 transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-white dark:bg-slate-900 text-slate-800 dark:text-red-300 border border-slate-200 dark:border-slate-700/80 hover:border-red-500/50 transition-colors shadow-sm"
             >
               <Youtube className="w-3.5 h-3.5 text-red-500" />
               <span>{l('قناة يوتيوب الرسمية', 'Official YouTube Channel')}</span>
