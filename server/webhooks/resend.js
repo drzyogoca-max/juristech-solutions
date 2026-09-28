@@ -23,6 +23,36 @@ export async function OPTIONS() {
   return new Response(null, { status: 200, headers: CORS_HEADERS });
 }
 
+export default async function handler(req, res) {
+  if (req.method === 'OPTIONS') {
+    if (res && res.status) return res.status(200).end();
+    return new Response(null, { status: 200, headers: CORS_HEADERS });
+  }
+  if (req.method === 'GET') {
+    const info = {
+      service: 'JurisTech Resend Webhook Engagement Engine v1.0',
+      status: 'ACTIVE_LISTENING',
+      supportedEvents: ['email.sent', 'email.delivered', 'email.opened', 'email.clicked', 'email.bounced'],
+      scoringRules: {
+        'email.opened': '+10 Lead Score -> Status: ENGAGED',
+        'email.clicked': '+20 Lead Score -> Status: ENGAGED',
+        'threshold_hot': 'Score >= 80 -> Sales Priority Notification',
+      },
+      timestamp: new Date().toISOString(),
+    };
+    if (res && res.status) return res.status(200).json(info);
+    return Response.json(info, { status: 200, headers: CORS_HEADERS });
+  }
+  if (res && res.status) {
+    return res.status(200).json({
+      received: true,
+      service: 'JurisTech Resend Webhook Gateway',
+      timestamp: new Date().toISOString(),
+    });
+  }
+  return POST(req);
+}
+
 export async function GET() {
   return Response.json(
     {
