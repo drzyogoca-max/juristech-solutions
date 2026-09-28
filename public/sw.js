@@ -13,7 +13,7 @@
  *   • Stale-while-revalidate for static chunks
  */
 
-const APP_VERSION = '2026.09.27-LIVE-1790544222934';
+const APP_VERSION = '2026.09.28-LIVE-1790604297835';
 const STATIC_CACHE     = `ls-static-v${APP_VERSION}`;
 const RUNTIME_CACHE    = `ls-runtime-v${APP_VERSION}`;
 const FONT_CACHE       = `ls-fonts-v${APP_VERSION}`;
