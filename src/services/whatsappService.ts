@@ -12,7 +12,7 @@ export interface WhatsAppMessagePayload {
 }
 
 class WhatsAppService {
-  private apiGatewayUrl = import.meta.env.VITE_WHATSAPP_GATEWAY_URL || 'https://api.juristech.solutions/v1/whatsapp/send';
+  private apiGatewayUrl = (typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_WHATSAPP_GATEWAY_URL : '') || 'https://api.juristech.solutions/v1/whatsapp/send';
 
   /**
    * Masks a public phone number to ensure privacy and security.

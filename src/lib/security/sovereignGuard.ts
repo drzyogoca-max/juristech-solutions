@@ -29,7 +29,7 @@ export function verifyAdminOrEnforcePaywall(userSession?: UserSessionPayload | s
     };
   }
 
-  const SUPREME_ADMIN_EMAIL = import.meta.env.VITE_SUPREME_ADMIN_EMAIL || '';
+  const SUPREME_ADMIN_EMAIL = (typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_SUPREME_ADMIN_EMAIL : '') || '';
   let isSupremeAdmin = false;
 
   if (typeof userSession === 'string') {

@@ -748,8 +748,10 @@ function MainAppContent() {
 
           <MobileBottomNav />
           <Footer />
-          <VercelAnalyticsWrapper />
-          <SpeedInsightsWrapper />
+          <Suspense fallback={null}>
+            <VercelAnalyticsWrapper />
+            <SpeedInsightsWrapper />
+          </Suspense>
         </div>
       </div>
     </ErrorBoundary>

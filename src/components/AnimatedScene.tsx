@@ -9,7 +9,8 @@
  *   • RTL/LTR support & responsive typography
  */
 import React, { useEffect, useRef } from 'react';
-import { LucideIcon, CheckCircle2, Shield, Lock, FileText, Brain, Search, Users, Globe, BarChart3, Rocket, RefreshCw, Sparkles, Award, Zap, Key, ShieldCheck } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
+import { CheckCircle2, Shield, Lock, FileText, Brain, Search, Users, Globe, BarChart3, Rocket, RefreshCw, Sparkles, Award, Zap, Key, ShieldCheck } from 'lucide-react';
 
 export interface VideoScene {
   id: number;

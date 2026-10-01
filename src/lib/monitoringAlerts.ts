@@ -14,8 +14,8 @@ export interface AlertWebhookConfig {
 
 class MonitoringAlertsEngine {
   private config: AlertWebhookConfig = {
-    slackWebhookUrl: import.meta.env.VITE_SLACK_WEBHOOK_URL || '',
-    emailSmtpEndpoint: import.meta.env.VITE_EMAIL_ALERT_ENDPOINT || '',
+    slackWebhookUrl: (typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_SLACK_WEBHOOK_URL : '') || '',
+    emailSmtpEndpoint: (typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_EMAIL_ALERT_ENDPOINT : '') || '',
     enableAutoRestart: true,
   };
 
