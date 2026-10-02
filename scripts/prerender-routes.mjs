@@ -317,35 +317,24 @@ function prerenderRoutes() {
       },
       {
         '@context': 'https://schema.org',
-        '@type': 'LegalService',
+        '@type': 'SoftwareApplication',
         'name': 'JurisTech Solutions - Sovereign AI Legal Tech',
+        'operatingSystem': 'Web, Cloud, Windows, macOS, iOS, Android',
+        'applicationCategory': 'BusinessApplication, LegalSoftware',
         'url': BASE_URL,
         'logo': `${BASE_URL}/favicon.ico`,
         'image': `${BASE_URL}/og-image.jpg`,
-        'priceRange': '$$$',
-        'telephone': '+201126674337',
-        'email': 'founder@juristech.solutions',
-        'address': {
-          '@type': 'PostalAddress',
-          'streetAddress': 'King Fahd Road, Al Olaya',
-          'addressLocality': 'Riyadh',
-          'addressRegion': 'Riyadh Region',
-          'postalCode': '12211',
-          'addressCountry': 'SA'
+        'offers': {
+          '@type': 'Offer',
+          'price': '49.00',
+          'priceCurrency': 'USD'
         },
-        'geo': {
-          '@type': 'GeoCoordinates',
-          'latitude': 24.7136,
-          'longitude': 46.6753
+        'creator': {
+          '@type': 'Organization',
+          'name': 'JurisTech Solutions',
+          'url': BASE_URL
         },
-        'openingHoursSpecification': {
-          '@type': 'OpeningHoursSpecification',
-          'dayOfWeek': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-          'opens': '00:00',
-          'closes': '23:59'
-        },
-        'areaServed': ['SA', 'AE', 'EG', 'QA', 'KW', 'JO', 'BH', 'OM', 'IQ', 'DE', 'FR', 'ES', 'GB', 'CN', 'IN', 'ZA'],
-        'serviceType': 'صياغة العقود بالذكاء الاصطناعي, تأسيس الشركات والامتثال التشريعي, فحص وتدقيق مخاطر العقود, المستشار القانوني الذكي الفوري'
+        'description': 'Sovereign AI contract analysis, smart legal document generation, and cross-border regulatory compliance.'
       },
       {
         '@context': 'https://schema.org',

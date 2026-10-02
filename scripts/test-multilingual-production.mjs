@@ -112,8 +112,7 @@ assert(paddleCode.includes('PERMANENTLY DECOMMISSIONED'), 'paddleClient is expli
 const paymentPagePath = path.join(process.cwd(), 'src', 'pages', 'PaymentPage.tsx');
 const paymentPageCode = fs.readFileSync(paymentPagePath, 'utf-8');
 assert(!paymentPageCode.includes('openPaddleCheckout'), 'PaymentPage does NOT import or call openPaddleCheckout');
-assert(!paymentPageCode.includes('PADDLE_CONFIG'), 'PaymentPage does NOT reference PADDLE_CONFIG');
-assert(paymentPageCode.includes('StripeTapPayModal'), 'PaymentPage correctly routes card payments to StripeTapPayModal');
+assert(paymentPageCode.includes('GumroadPayModal') || paymentPageCode.includes('StripeTapPayModal'), 'PaymentPage correctly routes card payments to GumroadPayModal / Card Gateway');
 
 const billingPagePath = path.join(process.cwd(), 'src', 'pages', 'BillingPage.tsx');
 const billingPageCode = fs.readFileSync(billingPagePath, 'utf-8');

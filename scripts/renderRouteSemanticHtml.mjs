@@ -413,16 +413,16 @@ export function getSemanticHtmlForRoute(routePath) {
         <!-- Platform Live Metrics -->
         <section class="grid grid-cols-2 sm:grid-cols-4 gap-4 my-8">
           <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl text-center shadow">
-            <span class="text-2xl sm:text-3xl font-black text-sky-400 block">1,000,000+</span>
-            <span class="text-xs text-slate-400">عقد معتمد بالنظام</span>
+            <span class="text-2xl sm:text-3xl font-black text-sky-400 block">100%</span>
+            <span class="text-xs text-slate-400">فحص وتدقيق سيادي ذكي</span>
           </div>
           <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl text-center shadow">
-            <span class="text-2xl sm:text-3xl font-black text-emerald-400 block">84,200+</span>
-            <span class="text-xs text-slate-400">تقرير مخاطر تم إنجازه</span>
+            <span class="text-2xl sm:text-3xl font-black text-emerald-400 block">24/7</span>
+            <span class="text-xs text-slate-400">استشارات فورية مؤتمتة</span>
           </div>
           <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl text-center shadow">
-            <span class="text-2xl sm:text-3xl font-black text-purple-400 block">450,000+</span>
-            <span class="text-xs text-slate-400">استشارة ذكاء اصطناعي</span>
+            <span class="text-2xl sm:text-3xl font-black text-purple-400 block">256-Bit</span>
+            <span class="text-xs text-slate-400">تشفير سيادي عسكري للبيانات</span>
           </div>
           <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl text-center shadow">
             <span class="text-2xl sm:text-3xl font-black text-amber-400 block">35+ دولة</span>

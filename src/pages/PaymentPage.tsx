@@ -20,7 +20,7 @@ import BinancePayModal from '../components/BinancePayModal';
 import InstaPayModal from '../components/InstaPayModal';
 import ProformaInvoiceModal from '../components/ProformaInvoiceModal';
 import DigitalInvoiceModal from '../components/DigitalInvoiceModal';
-import StripeTapPayModal from '../components/StripeTapPayModal';
+import GumroadPayModal from '../components/GumroadPayModal';
 import { activateUserSubscription, BillingTransaction } from '../lib/financialGateway';
 import { usePlatformLocale } from '../lib/universalTranslator';
 import SEO from '../components/SEO';
@@ -328,12 +328,15 @@ export default function PaymentPage() {
         />
       )}
 
-      {/* Direct Card Checkout Modal */}
+      {/* Direct Card & Apple Pay Checkout Modal (Gumroad MoR Gateway) */}
       {cardModalOpen && selectedCardPlan && (
-        <StripeTapPayModal
+        <GumroadPayModal
+          isOpen={cardModalOpen}
           plan={{
             id: selectedCardPlan.id,
             name: isRtl ? selectedCardPlan.nameAr : selectedCardPlan.nameEn,
+            nameAr: selectedCardPlan.nameAr,
+            nameEn: selectedCardPlan.nameEn,
             price: selectedCardPlan.price,
             description: isRtl ? selectedCardPlan.descAr : selectedCardPlan.descEn
           }}
@@ -341,9 +344,14 @@ export default function PaymentPage() {
             setCardModalOpen(false);
             setSelectedCardPlan(null);
           }}
-          onSuccess={() => {
+          onSelectAlternative={(method) => {
+            const plan = selectedCardPlan;
             setCardModalOpen(false);
             setSelectedCardPlan(null);
+            if (method === 'wire') setSelectedWirePlan(plan);
+            else if (method === 'binance') setSelectedBinancePlan(plan);
+            else if (method === 'instapay') setSelectedInstaPayPlan(plan);
+            else if (method === 'proforma') setSelectedProformaPlan(plan);
           }}
         />
       )}
@@ -443,7 +451,7 @@ export default function PaymentPage() {
                     <Lock className="w-3 h-3 text-cyan-400 inline-block mr-1.5" />
                     <span>{l('طرق دفع إلكترونية آمنة ومعتمدة متاحة عند إتمام الطلب.', 'Secure payment methods available at checkout.')}</span>
                   </div>
-                  {/* Direct Credit Card Option */}
+                  {/* Direct Credit Card & Apple Pay Option via Gumroad */}
                   <button
                     onClick={() => {
                       setSelectedCardPlan(plan);
@@ -452,7 +460,7 @@ export default function PaymentPage() {
                     className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-cyan-500 via-sky-400 to-indigo-500 hover:from-cyan-400 hover:to-indigo-400 text-slate-950 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 active:scale-95 transition-all cursor-pointer"
                   >
                     <CreditCard className="w-4 h-4 text-slate-950" />
-                    <span>{l('الدفع المباشر بالبطاقة الائتمانية', 'Direct Card Checkout')}</span>
+                    <span>{l('الدفع المباشر بالبطاقة الائتمانية و Apple Pay', 'Direct Card & Apple Pay Checkout')}</span>
                     <ShieldCheck className="w-3.5 h-3.5 text-slate-950" />
                   </button>
 
