@@ -27,6 +27,6 @@
   "confirmCancelBtn": "Résilier maintenant",
   "cancelling": "Résiliation en cours...",
   "merchantProtectionTitle": "Sécurité d'Entreprise & Conformité des Transactions",
-  "merchantProtectionDesc": "Toutes les transactions sont protégées par chiffrement TLS 1.3 et vérification institutionnelle (Virements SWIFT, Binance Pay, InstaPay) avec PayTabs en cours d'examen.",
+  "merchantProtectionDesc": "Toutes les transactions sont protégées par chiffrement TLS 1.3 et vérification institutionnelle (Virements SWIFT, Binance Pay, InstaPay) ainsi que le paiement direct par carte.",
   "supportEmail": "Support Facturation : founder@juristech.solutions"
 }

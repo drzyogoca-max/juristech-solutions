@@ -113,7 +113,7 @@ const paymentPagePath = path.join(process.cwd(), 'src', 'pages', 'PaymentPage.ts
 const paymentPageCode = fs.readFileSync(paymentPagePath, 'utf-8');
 assert(!paymentPageCode.includes('openPaddleCheckout'), 'PaymentPage does NOT import or call openPaddleCheckout');
 assert(!paymentPageCode.includes('PADDLE_CONFIG'), 'PaymentPage does NOT reference PADDLE_CONFIG');
-assert(paymentPageCode.includes('PayTabsReviewModal'), 'PaymentPage correctly routes card payments to PayTabsReviewModal');
+assert(paymentPageCode.includes('StripeTapPayModal'), 'PaymentPage correctly routes card payments to StripeTapPayModal');
 
 const billingPagePath = path.join(process.cwd(), 'src', 'pages', 'BillingPage.tsx');
 const billingPageCode = fs.readFileSync(billingPagePath, 'utf-8');

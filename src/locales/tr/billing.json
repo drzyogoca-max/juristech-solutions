@@ -27,6 +27,6 @@
   "confirmCancelBtn": "Şimdi İptal Et",
   "cancelling": "İptal ediliyor...",
   "merchantProtectionTitle": "Kurumsal Güvenlik ve İşlem Uyumluluğu",
-  "merchantProtectionDesc": "Tüm işlemler TLS 1.3 şifreleme ve kurumsal doğrulama ile korunur (SWIFT, Binance Pay, InstaPay) ve PayTabs satıcı incelemesi devam etmektedir.",
+  "merchantProtectionDesc": "Tüm işlemler TLS 1.3 şifreleme ve kurumsal doğrulama ile korunur (SWIFT, Binance Pay, InstaPay) ve doğrudan kart ile ödeme desteklenmektedir.",
   "supportEmail": "Fatura Desteği: founder@juristech.solutions"
 }

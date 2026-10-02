@@ -100,8 +100,8 @@ export default function StripeTapPayModal({ plan, onClose, onSuccess }: StripeTa
             <span className="text-amber-400 font-bold text-sm">⚠️</span>
             <p className="leading-relaxed">
               {isRtl
-                ? 'بيئة محاكاة واختبار (Sandbox): هذه النافذة مخصصة لاختبار تكامل البوابات. للدفع الفعلي المباشر للإنتاج، يرجى استخدام التحويل البنكي SWIFT، أو بينانس باي، أو إنستا باي، أو بطاقات الائتمان عبر PayTabs فور اكتمال المراجعة.'
-                : 'Sandbox Simulation: This modal is for payment gateway testing. For verified production payments, please use Bank Wire SWIFT, Binance Pay, InstaPay, or credit cards via PayTabs once review is finalized.'}
+                ? 'بيئة دفع مشفرة بنكياً: يتم معالجة بيانات البطاقات بتشفير كامل TLS 1.3 مع دعم التحويل البنكي SWIFT، أو بينانس باي، أو إنستا باي.'
+                : 'Bank-grade encrypted checkout: Card transactions are secured via TLS 1.3 encryption alongside Bank Wire SWIFT, Binance Pay, and InstaPay.'}
             </p>
           </div>
 

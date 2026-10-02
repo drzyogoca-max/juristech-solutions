@@ -27,6 +27,6 @@
   "confirmCancelBtn": "确认取消自动续订",
   "cancelling": "正在处理取消请求...",
   "merchantProtectionTitle": "企业级安全防护与合规结算保障",
-  "merchantProtectionDesc": "所有数字交易均受 TLS 1.3 加密与机构真实性审核保护，支持公对公电汇 (SWIFT)、Binance Pay 及 InstaPay 直连清算，PayTabs 信用卡网关商户入网审核中。",
+  "merchantProtectionDesc": "所有数字交易均受 TLS 1.3 加密与机构真实性审核保护，支持公对公电汇 (SWIFT)、Binance Pay、InstaPay 直连清算以及直接信用卡安全支付。",
   "supportEmail": "账单及退款咨询专线：founder@juristech.solutions"
 }

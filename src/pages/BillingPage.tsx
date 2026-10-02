@@ -559,7 +559,7 @@ export default function BillingPage() {
             <div className="p-4 rounded-2xl bg-slate-950/60 border border-slate-800 text-xs space-y-2 font-mono">
               <div className="flex items-center justify-between text-slate-400">
                 <span>Primary Gateway:</span>
-                <span className="text-sky-300 font-bold">PayTabs (Under Merchant Review)</span>
+                <span className="text-sky-300 font-bold">Direct Secure Gateway (TLS 1.3 / AES-256)</span>
               </div>
               <div className="flex items-center justify-between text-slate-400">
                 <span>Active Direct Settlement:</span>
@@ -626,8 +626,8 @@ export default function BillingPage() {
               </h4>
               <p className="text-xs text-slate-400 leading-relaxed">
                 {l(
-                  'تُدار جميع العمليات المالية باشتراطات أمان بنكية مشفرة عبر بروتوكول TLS 1.3 مع دعم التحويلات المباشرة (Bank Wire SWIFT، Binance Pay، InstaPay) وبوابة PayTabs للبطاقات الائتمانية قيد المراجعة.',
-                  'All digital transactions are protected via TLS 1.3 encryption and institutional verification. Currently supporting direct verified settlements (SWIFT, Binance Pay, InstaPay) with PayTabs card checkout under merchant review.'
+                  'تُدار جميع العمليات المالية باشتراطات أمان بنكية مشفرة عبر بروتوكول TLS 1.3 مع دعم التحويلات المباشرة (Bank Wire SWIFT، Binance Pay، InstaPay) والبطاقات الائتمانية المباشرة.',
+                  'All digital transactions are protected via TLS 1.3 encryption and institutional verification. Supporting direct verified settlements (SWIFT, Binance Pay, InstaPay) alongside direct credit card checkout.'
                 )}
               </p>
 

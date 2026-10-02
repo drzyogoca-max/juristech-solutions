@@ -110,7 +110,9 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   try {
-    const action = req.query?.action || (typeof req.body === 'object' ? req.body?.action : null) || 'status';
+    const rawBody = typeof req.body === 'string' ? (() => { try { return JSON.parse(req.body); } catch { return {}; } })() : (req.body || {});
+    const queryAction = req.query?.subaction || req.query?.op || (req.query?.action !== 'youtube-upload' ? req.query?.action : null);
+    const action = queryAction || rawBody?.action || 'status';
 
     // ── 1. OAuth Consent URL ───────────────────────────────────────────────────
     if (action === 'get_auth_url' || (req.method === 'GET' && action === 'status')) {

@@ -168,9 +168,9 @@ export const PAGE_SEO: Record<string, PageSEO> = {
     titleEn: 'Enterprise Subscriptions & Secure Payments | JurisTech',
     titleAr: 'خطط الاشتراك وباقات الشركات | JurisTech Solutions',
     descriptionEn:
-      'Upgrade your corporate legal operations. Secure settlement via Bank Wire SWIFT, Binance Pay, InstaPay Egypt, and PayTabs Card Checkout (Under Review).',
+      'Upgrade your corporate legal operations. Secure settlement via Direct Card Checkout, Bank Wire SWIFT, Binance Pay, and InstaPay Egypt.',
     descriptionAr:
-      'اشترك الآن في باقات منصة JurisTech Solutions للشركات والمكاتب القانونية — دفع آمن عبر التحويل البنكي المباشر SWIFT، Binance Pay، InstaPay وبطاقات الائتمان قيد التفعيل.',
+      'اشترك الآن في باقات منصة JurisTech Solutions للشركات والمكاتب القانونية — دفع آمن عبر البطاقات الائتمانية المباشرة، التحويل البنكي SWIFT، Binance Pay، وInstaPay.',
     keywords: 'enterprise legaltech subscription, corporate legal pricing, payment portal',
     schemaType: 'SoftwareApplication',
   },

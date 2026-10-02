@@ -20,10 +20,22 @@ import BinancePayModal from '../components/BinancePayModal';
 import InstaPayModal from '../components/InstaPayModal';
 import ProformaInvoiceModal from '../components/ProformaInvoiceModal';
 import DigitalInvoiceModal from '../components/DigitalInvoiceModal';
-import PayTabsReviewModal, { buildWhatsAppConciergeUrl } from '../components/PayTabsReviewModal';
+import StripeTapPayModal from '../components/StripeTapPayModal';
 import { activateUserSubscription, BillingTransaction } from '../lib/financialGateway';
 import { usePlatformLocale } from '../lib/universalTranslator';
 import SEO from '../components/SEO';
+
+export function buildWhatsAppConciergeUrl(
+  plan?: { nameAr?: string; nameEn?: string; price?: number } | null,
+  isAr: boolean = false
+): string {
+  const planName = plan ? (isAr ? (plan.nameAr || 'باقة الاشتراك') : (plan.nameEn || 'Subscription Plan')) : (isAr ? 'باقة الاشتراك' : 'Subscription Plan');
+  const priceSuffix = plan?.price ? ` ($${plan.price}${isAr ? '/شهرياً' : '/month'})` : '';
+  const message = isAr
+    ? `مرحباً د. محمد مصطفى، أرغب في المساعدة في إتمام الدفع وتفعيل الاشتراك للباقة: ${planName}${priceSuffix}. يرجى تزويدي بإجراءات السداد والتفعيل.`
+    : `Hello Dr. Mohammad Mustafa, I would like assisted checkout & payment assistance to activate the ${planName}${priceSuffix}. Please provide payment and activation steps.`;
+  return `https://wa.me/201126674337?text=${encodeURIComponent(message)}`;
+}
 
 interface Plan {
   id: 'startup' | 'sme' | 'enterprise' | 'dealroom';
@@ -66,8 +78,8 @@ export default function PaymentPage() {
   const [selectedBinancePlan, setSelectedBinancePlan] = useState<Plan | null>(null);
   const [selectedInstaPayPlan, setSelectedInstaPayPlan] = useState<Plan | null>(null);
   const [selectedProformaPlan, setSelectedProformaPlan] = useState<Plan | null>(null);
-  const [payTabsModalOpen, setPayTabsModalOpen] = useState(false);
-  const [selectedPayTabsPlan, setSelectedPayTabsPlan] = useState<Plan | null>(null);
+  const [cardModalOpen, setCardModalOpen] = useState(false);
+  const [selectedCardPlan, setSelectedCardPlan] = useState<Plan | null>(null);
   const [showProformaModal, setShowProformaModal] = useState(false);
   const [activeInvoice, setActiveInvoice] = useState<BillingTransaction | null>(null);
 
@@ -316,19 +328,25 @@ export default function PaymentPage() {
         />
       )}
 
-      {/* PayTabs Under Review Notice Modal */}
-      <PayTabsReviewModal
-        isOpen={payTabsModalOpen}
-        onClose={() => setPayTabsModalOpen(false)}
-        selectedPlan={selectedPayTabsPlan}
-        onSelectMethod={(method, plan) => {
-          setPayTabsModalOpen(false);
-          if (method === 'wire') setSelectedWirePlan(plan);
-          if (method === 'binance') setSelectedBinancePlan(plan);
-          if (method === 'instapay') setSelectedInstaPayPlan(plan);
-          if (method === 'proforma') setSelectedProformaPlan(plan);
-        }}
-      />
+      {/* Direct Card Checkout Modal */}
+      {cardModalOpen && selectedCardPlan && (
+        <StripeTapPayModal
+          plan={{
+            id: selectedCardPlan.id,
+            name: isRtl ? selectedCardPlan.nameAr : selectedCardPlan.nameEn,
+            price: selectedCardPlan.price,
+            description: isRtl ? selectedCardPlan.descAr : selectedCardPlan.descEn
+          }}
+          onClose={() => {
+            setCardModalOpen(false);
+            setSelectedCardPlan(null);
+          }}
+          onSuccess={() => {
+            setCardModalOpen(false);
+            setSelectedCardPlan(null);
+          }}
+        />
+      )}
 
       {/* Hero Header */}
       <div className="relative py-14 border-b border-slate-200 dark:border-slate-800/80 overflow-hidden bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-slate-900 dark:via-slate-950 dark:to-slate-950">
@@ -425,17 +443,17 @@ export default function PaymentPage() {
                     <Lock className="w-3 h-3 text-cyan-400 inline-block mr-1.5" />
                     <span>{l('طرق دفع إلكترونية آمنة ومعتمدة متاحة عند إتمام الطلب.', 'Secure payment methods available at checkout.')}</span>
                   </div>
-                  {/* Primary Card Option: PayTabs (Under Merchant Review) */}
+                  {/* Direct Credit Card Option */}
                   <button
                     onClick={() => {
-                      setSelectedPayTabsPlan(plan);
-                      setPayTabsModalOpen(true);
+                      setSelectedCardPlan(plan);
+                      setCardModalOpen(true);
                     }}
                     className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-cyan-500 via-sky-400 to-indigo-500 hover:from-cyan-400 hover:to-indigo-400 text-slate-950 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 active:scale-95 transition-all cursor-pointer"
                   >
                     <CreditCard className="w-4 h-4 text-slate-950" />
-                    <span>{l('الدفع بالبطاقة الائتمانية (PayTabs — قيد المراجعة)', 'Card Checkout (PayTabs — Under Review)')}</span>
-                    <Clock className="w-3.5 h-3.5 text-slate-950" />
+                    <span>{l('الدفع المباشر بالبطاقة الائتمانية', 'Direct Card Checkout')}</span>
+                    <ShieldCheck className="w-3.5 h-3.5 text-slate-950" />
                   </button>
 
                   {/* High-Touch Assisted Checkout: WhatsApp Executive Concierge */}
