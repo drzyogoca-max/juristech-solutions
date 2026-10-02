@@ -30,7 +30,7 @@ export const GUMROAD_PLANS: Record<string, GumroadPlanConfig> = {
     nameEn: 'Micro / Startup Tier',
     nameAr: 'حزمة الشركات الصغرى والناشئة',
     priceUSD: 49,
-    defaultPermalink: 'https://drzyo.gumroad.com/l/nydsh',
+    defaultPermalink: 'https://juristechsolutions.gumroad.com/l/nydsh',
     envKey: 'VITE_GUMROAD_STARTUP_URL',
   },
   sme: {
@@ -38,7 +38,7 @@ export const GUMROAD_PLANS: Record<string, GumroadPlanConfig> = {
     nameEn: 'SMEs & Growth Package',
     nameAr: 'حزمة الشركات المتوسطة والنمو المتسارع',
     priceUSD: 139,
-    defaultPermalink: 'https://drzyo.gumroad.com/l/ekrrs',
+    defaultPermalink: 'https://juristechsolutions.gumroad.com/l/ekrrs',
     envKey: 'VITE_GUMROAD_SME_URL',
   },
   enterprise: {
@@ -46,7 +46,7 @@ export const GUMROAD_PLANS: Record<string, GumroadPlanConfig> = {
     nameEn: 'Enterprise Sovereign Tier',
     nameAr: 'حزمة المؤسسات السيادية والشركات الكبرى',
     priceUSD: 349,
-    defaultPermalink: 'https://drzyo.gumroad.com/l/sqzed',
+    defaultPermalink: 'https://juristechsolutions.gumroad.com/l/sqzed',
     envKey: 'VITE_GUMROAD_ENTERPRISE_URL',
   },
   dealroom: {
@@ -54,7 +54,7 @@ export const GUMROAD_PLANS: Record<string, GumroadPlanConfig> = {
     nameEn: 'Dedicated Deal Room Retainer',
     nameAr: 'غرفة الصفقات والاستحواذ المخصصة M&A',
     priceUSD: 990,
-    defaultPermalink: 'https://drzyo.gumroad.com/l/sqzed',
+    defaultPermalink: 'https://juristechsolutions.gumroad.com/l/sqzed',
     envKey: 'VITE_GUMROAD_DEALROOM_URL',
   },
 };

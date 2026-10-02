@@ -5,7 +5,7 @@
  * Renders official tax invoice with SHA-256 verification seal and PDF export.
  */
 
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   ShieldCheck, X, Download, Printer, CheckCircle2, Lock, FileText, Globe, ExternalLink, QrCode
@@ -23,6 +23,15 @@ export default function DigitalInvoiceModal({ isOpen, onClose, transaction }: Di
   const { i18n } = useTranslation();
   const isRtl = i18n.language === 'ar';
   const printRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
 
   if (!isOpen || !transaction) return null;
 
@@ -78,7 +87,12 @@ Status: OFFICIAL E-PAID & ACTIVE`.trim();
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
       <div
         className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]"
         dir={isRtl ? 'rtl' : 'ltr'}
@@ -100,10 +114,13 @@ Status: OFFICIAL E-PAID & ACTIVE`.trim();
           </div>
 
           <button
+            type="button"
             onClick={onClose}
-            className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-slate-800 hover:bg-red-500/20 text-slate-300 hover:text-red-400 font-bold text-xs flex items-center gap-1.5 border border-slate-700 transition-all cursor-pointer shadow-sm active:scale-95"
+            aria-label={isRtl ? 'إغلاق' : 'Close'}
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4 text-red-400" />
+            <span className="hidden sm:inline font-bold">{isRtl ? 'إغلاق' : 'Close'}</span>
           </button>
         </div>
 

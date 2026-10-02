@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Zap, CheckCircle, FileText, Lock, ShieldCheck, CheckCircle2, AlertTriangle, ArrowRight, X, Sparkles, Building2 } from 'lucide-react';
 import { supabase } from '../lib/supabaseClient';
@@ -34,6 +34,15 @@ export default function InstaPayModal({
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -94,7 +103,13 @@ export default function InstaPayModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200" dir={isRtl ? 'rtl' : 'ltr'}>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200"
+      dir={isRtl ? 'rtl' : 'ltr'}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
       <div className="bg-slate-900 border border-emerald-500/30 rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl space-y-6 relative text-slate-100 font-sans max-h-[90vh] overflow-y-auto">
         
         {/* Header */}
@@ -118,10 +133,13 @@ export default function InstaPayModal({
             </div>
           </div>
           <button
+            type="button"
             onClick={onClose}
-            className="p-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors"
+            className="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-slate-800 hover:bg-red-500/20 text-slate-300 hover:text-red-400 font-bold text-xs flex items-center gap-1.5 border border-slate-700 transition-all cursor-pointer shadow-sm active:scale-95"
+            aria-label={isRtl ? 'إغلاق' : 'Close'}
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4 text-red-400" />
+            <span className="hidden sm:inline font-bold">{isRtl ? 'إغلاق' : 'Close'}</span>
           </button>
         </div>
 
@@ -245,14 +263,23 @@ export default function InstaPayModal({
                 />
               </div>
 
-              <button
-                type="submit"
-                disabled={submitting}
-                className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-emerald-400 to-teal-500 hover:from-emerald-300 hover:to-teal-400 text-slate-950 font-black text-xs flex items-center justify-center gap-2 transition-all shadow-lg shadow-emerald-500/20 cursor-pointer active:scale-95 disabled:opacity-50"
-              >
-                <Lock className="w-4 h-4" />
-                <span>{submitting ? (isRtl ? 'جاري تأكيد المعاملة وتفعيل الاشتراك...' : 'Confirming Transfer...') : (isRtl ? 'تأكيد التحويل وتفعيل الاشتراك فوراً' : 'Confirm Transfer & Activate Plan')}</span>
-              </button>
+              <div className="flex items-center gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="w-1/3 py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition-colors border border-slate-700 cursor-pointer text-center"
+                >
+                  {isRtl ? 'إلغاء وإغلاق' : 'Cancel & Close'}
+                </button>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="w-2/3 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-400 to-teal-500 hover:from-emerald-300 hover:to-teal-400 text-slate-950 font-black text-xs flex items-center justify-center gap-2 transition-all shadow-lg shadow-emerald-500/20 cursor-pointer active:scale-95 disabled:opacity-50"
+                >
+                  <Lock className="w-4 h-4" />
+                  <span>{submitting ? (isRtl ? 'جاري تأكيد المعاملة وتفعيل الاشتراك...' : 'Confirming Transfer...') : (isRtl ? 'تأكيد التحويل وتفعيل الاشتراك فوراً' : 'Confirm Transfer & Activate Plan')}</span>
+                </button>
+              </div>
             </form>
 
             <p className="text-[10px] text-center text-slate-500">

@@ -7,7 +7,7 @@
  * 3-Tier Pricing: Startup $49 / SMEs $139 / Enterprise $349/mo (30% Discounted).
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   DollarSign, Shield, Zap, Lock, Building2, CheckCircle2, CreditCard,
@@ -344,14 +344,15 @@ export default function PaymentPage() {
             setCardModalOpen(false);
             setSelectedCardPlan(null);
           }}
-          onSelectAlternative={(method) => {
-            const plan = selectedCardPlan;
+          onSelectAlternative={(method, passedPlan) => {
+            const planId = passedPlan?.id || selectedCardPlan?.id;
+            const fullPlan = plans.find(p => p.id === planId) || selectedCardPlan || plans[0];
             setCardModalOpen(false);
             setSelectedCardPlan(null);
-            if (method === 'wire') setSelectedWirePlan(plan);
-            else if (method === 'binance') setSelectedBinancePlan(plan);
-            else if (method === 'instapay') setSelectedInstaPayPlan(plan);
-            else if (method === 'proforma') setSelectedProformaPlan(plan);
+            if (method === 'wire') setSelectedWirePlan(fullPlan);
+            else if (method === 'binance') setSelectedBinancePlan(fullPlan);
+            else if (method === 'instapay') setSelectedInstaPayPlan(fullPlan);
+            else if (method === 'proforma') setSelectedProformaPlan(fullPlan);
           }}
         />
       )}

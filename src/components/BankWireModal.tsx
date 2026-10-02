@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Building2, Upload, FileText, CheckCircle2, X, Loader2, Download, Lock, Copy, Check, ShieldAlert, AlertTriangle, Clock
@@ -62,6 +62,15 @@ export default function BankWireModal({
   const [scanningStatus, setScanningStatus] = useState<string | null>(null);
 
   const receiptInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -307,7 +316,12 @@ Status: ORDER RESERVED & PENDING BANK VERIFICATION
   }
 
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div
+      className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
       <div
         className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden relative animate-in fade-in zoom-in duration-200"
         dir={isRtl ? 'rtl' : 'ltr'}
@@ -329,11 +343,13 @@ Status: ORDER RESERVED & PENDING BANK VERIFICATION
           </div>
 
           <button
+            type="button"
             onClick={onClose}
-            className="p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:text-white hover:bg-slate-100 dark:bg-slate-800 transition-colors border border-slate-200 dark:border-slate-800"
-            aria-label="Close modal"
+            className="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-slate-800 hover:bg-red-500/20 text-slate-300 hover:text-red-400 font-bold text-xs flex items-center gap-1.5 border border-slate-700 transition-all cursor-pointer shadow-sm active:scale-95"
+            aria-label={isRtl ? 'إغلاق' : 'Close'}
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4 text-red-400" />
+            <span className="hidden sm:inline font-bold">{isRtl ? 'إغلاق' : 'Close'}</span>
           </button>
         </div>
 
@@ -575,10 +591,11 @@ Status: ORDER RESERVED & PENDING BANK VERIFICATION
         {!submittedStatus && (
           <div className="p-4 sm:p-6 border-t border-slate-200 dark:border-slate-800 bg-slate-900/95 sticky bottom-0 z-10 flex items-center gap-3">
             <button
+              type="button"
               onClick={onClose}
-              className="w-1/3 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold text-xs transition-colors"
+              className="w-1/3 py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition-colors border border-slate-700 cursor-pointer"
             >
-              {isRtl ? 'إلغاء' : 'Cancel'}
+              {isRtl ? 'إلغاء وإغلاق' : 'Cancel & Close'}
             </button>
 
             <button

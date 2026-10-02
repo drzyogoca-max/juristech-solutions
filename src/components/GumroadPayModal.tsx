@@ -6,7 +6,7 @@
  * company registration, powered by Gumroad as Merchant of Record (MoR).
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   X, CreditCard, ShieldCheck, Lock, ExternalLink, Sparkles, CheckCircle2,
   Building2, Smartphone, Zap, MessageSquare, ArrowRight, Settings2
@@ -33,7 +33,7 @@ interface GumroadPayModalProps {
   isOpen: boolean;
   plan: PlanProps;
   onClose: () => void;
-  onSelectAlternative?: (method: 'wire' | 'binance' | 'instapay' | 'proforma') => void;
+  onSelectAlternative?: (method: 'wire' | 'binance' | 'instapay' | 'proforma', plan?: PlanProps) => void;
 }
 
 export default function GumroadPayModal({
@@ -47,6 +47,17 @@ export default function GumroadPayModal({
   const [showConfig, setShowConfig] = useState(false);
   const [customUrl, setCustomUrl] = useState('');
   const [savedSuccess, setSavedSuccess] = useState(false);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -69,7 +80,14 @@ export default function GumroadPayModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md overflow-y-auto">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md overflow-y-auto"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
+    >
       <div
         className="relative w-full max-w-lg bg-slate-900 border border-slate-700/80 rounded-3xl shadow-2xl overflow-hidden my-8"
         dir={isRtl ? 'rtl' : 'ltr'}
@@ -98,10 +116,13 @@ export default function GumroadPayModal({
             </div>
           </div>
           <button
+            type="button"
             onClick={onClose}
-            className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
+            className="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-slate-800/80 hover:bg-red-500/20 text-slate-300 hover:text-red-400 font-bold text-xs flex items-center gap-1.5 border border-slate-700/60 transition-all cursor-pointer active:scale-95 shadow-sm"
+            aria-label={l('إغلاق النافذة', 'Close window')}
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4 text-red-400" />
+            <span className="hidden sm:inline font-bold">{l('إغلاق', 'Close')}</span>
           </button>
         </div>
 
@@ -201,8 +222,8 @@ export default function GumroadPayModal({
               <button
                 type="button"
                 onClick={() => {
+                  if (onSelectAlternative) onSelectAlternative('binance', plan);
                   onClose();
-                  if (onSelectAlternative) onSelectAlternative('binance');
                 }}
                 className="py-2 px-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-bold flex flex-col items-center gap-1 transition-all cursor-pointer"
               >
@@ -213,8 +234,8 @@ export default function GumroadPayModal({
               <button
                 type="button"
                 onClick={() => {
+                  if (onSelectAlternative) onSelectAlternative('wire', plan);
                   onClose();
-                  if (onSelectAlternative) onSelectAlternative('wire');
                 }}
                 className="py-2 px-2 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30 text-[10px] font-bold flex flex-col items-center gap-1 transition-all cursor-pointer"
               >
@@ -225,8 +246,8 @@ export default function GumroadPayModal({
               <button
                 type="button"
                 onClick={() => {
+                  if (onSelectAlternative) onSelectAlternative('instapay', plan);
                   onClose();
-                  if (onSelectAlternative) onSelectAlternative('instapay');
                 }}
                 className="py-2 px-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold flex flex-col items-center gap-1 transition-all cursor-pointer"
               >
@@ -269,6 +290,18 @@ export default function GumroadPayModal({
               </div>
             </form>
           )}
+
+          {/* Prominent Bottom Close Button */}
+          <div className="pt-2 border-t border-slate-800">
+            <button
+              type="button"
+              onClick={onClose}
+              className="w-full py-3.5 px-4 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-md active:scale-95"
+            >
+              <X className="w-4 h-4 text-slate-400" />
+              <span>{l('إغلاق هذه النافذة والعودة إلى باقات الاشتراك', 'Close Window & Return to Subscription Plans')}</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
