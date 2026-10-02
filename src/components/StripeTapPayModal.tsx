@@ -204,7 +204,7 @@ export default function StripeTapPayModal({ plan, onClose, onSuccess }: StripeTa
                   required
                   value={cardName}
                   onChange={(e) => setCardName(e.target.value)}
-                  placeholder="e.g. MHAMMAD AL HWARAT"
+                  placeholder={isRtl ? 'الاسم كما هو مدون على البطاقة (مثال: JOHN SMITH)' : 'Name on card (e.g. JOHN SMITH)'}
                   className="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 text-sm font-medium"
                 />
               </div>
