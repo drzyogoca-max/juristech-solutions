@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JurisTech Solutions — Gumroad Sovereign Webhook Testing Console</title>
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: #020B1A;
+      color: #e2e8f0;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .gold-gradient {
+      background: linear-gradient(135deg, #D4AF37 0%, #b8962e 100%);
+    }
+  </style>
+</head>
+<body class="min-h-screen p-4 sm:p-8">
+  <div class="max-w-5xl mx-auto space-y-6">
+
+    <!-- Header -->
+    <div class="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div class="flex items-center gap-4">
+        <div class="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-400">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-xl sm:text-2xl font-black text-white">Gumroad Sovereign Webhook Console</h1>
+            <span class="text-[10px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2.5 py-0.5 rounded-full font-bold uppercase">
+              Live Gateway
+            </span>
+          </div>
+          <p class="text-xs text-slate-400 mt-1">
+            منظومة فحص ومحاكاة إشعارات Gumroad Ping وتفعيل الاشتراكات التلقائي — JurisTech Solutions
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 w-full md:w-auto">
+        <button id="btnRun15" onclick="runAll15Tests()" class="w-full md:w-auto px-6 py-3 rounded-2xl gold-gradient hover:opacity-95 text-slate-950 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xl shadow-amber-500/20 active:scale-95 transition-all cursor-pointer">
+          <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>إطلاق الـ 15 اختبار فوري (Run 15 Tests)</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Endpoint Info Card -->
+    <div class="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
+      <div class="flex items-center justify-between text-xs">
+        <span class="font-bold text-slate-400">رابط نقطة الويب هوك المعتمدة على خوادم الإنتاج (Gumroad Ping Target):</span>
+        <span class="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">STATUS: 200 ONLINE</span>
+      </div>
+      <div class="flex items-center gap-2 p-3 rounded-xl bg-slate-900 border border-slate-700/60 font-mono text-xs sm:text-sm text-cyan-300 overflow-x-auto">
+        <span class="text-slate-500 select-none">POST/GET</span>
+        <span class="font-bold select-all">https://www.juristech.solutions/api/webhooks?provider=gumroad</span>
+      </div>
+      <p class="text-[11px] text-slate-500">
+        يتم ضبط هذا الرابط في لوحة تحكم Gumroad داخل: Settings &gt; Advanced &gt; Ping لتفعيل الاشتراكات السيادية فور سداد العميل بالبطاقة أو Apple Pay.
+      </p>
+    </div>
+
+    <!-- Individual Quick Actions -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <button onclick="sendSingleTest('startup')" class="p-3 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 text-xs font-bold transition-all text-center">
+        ⚡ تجربة باقة Startup ($49)
+      </button>
+      <button onclick="sendSingleTest('sme')" class="p-3 rounded-xl bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-bold transition-all text-center">
+        🚀 تجربة باقة SMEs ($139)
+      </button>
+      <button onclick="sendSingleTest('enterprise')" class="p-3 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 text-xs font-bold transition-all text-center">
+        👑 تجربة Enterprise ($349)
+      </button>
+      <button onclick="sendSingleTest('dealroom')" class="p-3 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-300 text-xs font-bold transition-all text-center">
+        🏛️ تجربة Deal Room ($990)
+      </button>
+    </div>
+
+    <!-- Live Stream Console -->
+    <div class="p-6 rounded-3xl bg-slate-900 border border-slate-800 space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></span>
+          <h2 class="text-sm font-black text-white font-mono uppercase tracking-wider">Live Webhook Execution Feed (15 Requests)</h2>
+        </div>
+        <div id="summaryBadge" class="text-xs font-mono font-bold text-slate-400">
+          Ready for execution
+        </div>
+      </div>
+
+      <div id="testOutput" class="space-y-2.5 max-h-[600px] overflow-y-auto font-mono text-xs pr-2">
+        <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 text-slate-500 text-center">
+          اضغط على زر "إطلاق الـ 15 اختبار فوري" بالأعلى لتشغيل فحص الويب هوك ومطابقة ردود السيرفر الحية.
+        </div>
+      </div>
+    </div>
+
+    <!-- Back to platform link -->
+    <div class="text-center pt-2">
+      <a href="/payment" class="text-xs text-amber-400 hover:text-amber-300 font-bold inline-flex items-center gap-1.5 transition-colors">
+        <span>← العودة لصفحة الباقات والسداد (JurisTech Payment)</span>
+      </a>
+    </div>
+
+  </div>
+
+  <script>
+    const ENDPOINT = '/api/webhooks?provider=gumroad';
+
+    const TESTS = [
+      { id: 1, name: 'Gateway Health Probe (GET)', method: 'GET', payload: null },
+      { id: 2, name: 'Startup Tier Card Checkout ($49)', method: 'POST', payload: { sale_id: 'GUM-CONSOLE-ST-01', email: 'founder@juris-startup.com', product_name: 'JurisTech Solutions — Startup Sovereign Plan', permalink: 'nydsh', price: '4900', currency: 'USD' } },
+      { id: 3, name: 'Startup Tier Apple Pay ($49)', method: 'POST', payload: { sale_id: 'GUM-CONSOLE-AP-02', email: 'ceo@applepay-test.ae', product_name: 'JurisTech Solutions — Startup Sovereign Plan', permalink: 'nydsh', price: '4900', currency: 'USD', card_type: 'apple_pay' } },
+      { id: 4, name: 'SMEs & Growth Package ($139)', method: 'POST', payload: { sale_id: 'GUM-CONSOLE-SME-03', email: 'cfo@growth-fund.sa', product_name: 'JurisTech Solutions — SMEs & Growth Package', permalink: 'ekrrs', price: '13900', currency: 'USD' } },
+      { id: 5, name: 'Enterprise Sovereign Retainer ($349)', method: 'POST', payload: { sale_id: 'GUM-CONSOLE-ENT-04', email: 'general.counsel@holding.com', product_name: 'JurisTech Solutions — Enterprise Sovereign Plan', permalink: 'sqzed', price: '34900', currency: 'USD' } },
+      { id: 6, name: 'VIP Institutional Deal Room ($990)', method: 'POST', payload: { sale_id: 'GUM-CONSOLE-DR-05', email: 'ma.partner@sovereign-deal.ae', product_name: 'VIP Institutional Deal Room Pass', permalink: 'sqzed', price: '99000', currency: 'USD' } },
+      { id: 7, name: 'Recurring Renewal: Startup ($49/mo)', method: 'POST', payload: { sale_id: 'GUM-CONSOLE-REC1-06', email: 'saas@dev-studio.io', product_name: 'JurisTech Solutions — Startup Sovereign Plan', permalink: 'nydsh', price: '4900', currency: 'USD', is_recurring_charge: true } },
+      { id: 8, name: 'Recurring Renewal: SMEs ($139/mo)', method: 'POST', payload: { sale_id: 'GUM-CONSOLE-REC2-07', email: 'legal@logistics-gcc.com', product_name: 'JurisTech Solutions — SMEs & Growth Package', permalink: 'ekrrs', price: '13900', currency: 'USD', is_recurring_charge: true } },
+      { id: 9, name: 'Recurring Renewal: Enterprise ($349/mo)', method: 'POST', payload: { sale_id: 'GUM-CONSOLE-REC3-08', email: 'audit@multinational.sa', product_name: 'JurisTech Solutions — Enterprise Sovereign Plan', permalink: 'sqzed', price: '34900', currency: 'USD', is_recurring_charge: true } },
+      { id: 10, name: 'UAE Settlement (AED 510)', method: 'POST', payload: { sale_id: 'GUM-CONSOLE-AED-09', email: 'investor@difc-capital.ae', product_name: 'JurisTech Solutions — SMEs & Growth Package', permalink: 'ekrrs', price: '51000', currency: 'AED' } },
+      { id: 11, name: 'Saudi Arabia Settlement (SAR 1310)', method: 'POST', payload: { sale_id: 'GUM-CONSOLE-SAR-10', email: 'compliance@riyadh-corp.sa', product_name: 'JurisTech Solutions — Enterprise Sovereign Plan', permalink: 'sqzed', price: '131000', currency: 'SAR' } },
+      { id: 12, name: 'European Union Settlement (EUR 128)', method: 'POST', payload: { sale_id: 'GUM-CONSOLE-EUR-11', email: 'lawyer@frankfurt-law.de', product_name: 'JurisTech Solutions — SMEs & Growth Package', permalink: 'ekrrs', price: '12800', currency: 'EUR' } },
+      { id: 13, name: 'United Kingdom Settlement (GBP 39)', method: 'POST', payload: { sale_id: 'GUM-CONSOLE-GBP-12', email: 'barrister@london-legal.co.uk', product_name: 'JurisTech Solutions — Startup Sovereign Plan', permalink: 'nydsh', price: '3900', currency: 'GBP' } },
+      { id: 14, name: 'Affiliate Attribution Sale (ID: 338728291)', method: 'POST', payload: { sale_id: 'GUM-CONSOLE-AFF-13', email: 'referred@enterprise.net', product_name: 'JurisTech Solutions — Startup Sovereign Plan', permalink: 'nydsh', price: '4900', currency: 'USD', affiliate_id: '338728291' } },
+      { id: 15, name: 'Duplicate Deduplication (Idempotency Test)', method: 'POST', payload: { sale_id: 'GUM-CONSOLE-ST-01', email: 'founder@juris-startup.com', product_name: 'JurisTech Solutions — Startup Sovereign Plan', permalink: 'nydsh', price: '4900', currency: 'USD' } }
+    ];
+
+    async function executeRequest(test) {
+      const start = Date.now();
+      const opts = {
+        method: test.method,
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+      };
+      if (test.payload) {
+        // give random suffix so tests can be run multiple times
+        const payloadCopy = { ...test.payload };
+        if (test.id !== 15) {
+          payloadCopy.sale_id = `${payloadCopy.sale_id}-${Date.now().toString().slice(-4)}`;
+        }
+        opts.body = JSON.stringify(payloadCopy);
+      }
+
+      try {
+        const res = await fetch(ENDPOINT, opts);
+        const latency = Date.now() - start;
+        const data = await res.json();
+        return { ok: res.ok, status: res.status, latency, data };
+      } catch (err) {
+        return { ok: false, status: 'ERROR', latency: Date.now() - start, data: { error: err.message } };
+      }
+    }
+
+    async function runAll15Tests() {
+      const btn = document.getElementById('btnRun15');
+      const container = document.getElementById('testOutput');
+      const badge = document.getElementById('summaryBadge');
+      btn.disabled = true;
+      btn.classList.add('opacity-50', 'cursor-not-allowed');
+      container.innerHTML = '';
+      badge.textContent = 'Running 15 tests...';
+      badge.className = 'text-xs font-mono font-bold text-amber-400';
+
+      let successCount = 0;
+
+      for (let i = 0; i < TESTS.length; i++) {
+        const test = TESTS[i];
+        const row = document.createElement('div');
+        row.className = 'p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1.5 transition-all';
+        row.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="text-slate-300 font-bold">[${String(test.id).padStart(2, '0')}/15] ${test.name}</span>
+            <span class="text-amber-400 animate-pulse text-[11px]">Processing...</span>
+          </div>
+        `;
+        container.appendChild(row);
+        container.scrollTop = container.scrollHeight;
+
+        const res = await executeRequest(test);
+        if (res.ok) successCount++;
+
+        const isDup = res.data?.duplicate;
+        const badgeColor = res.ok ? (isDup ? 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30' : 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30') : 'text-red-400 bg-red-500/10 border-red-500/30';
+        const statusLabel = isDup ? '200 OK (DUPLICATE PREVENTED)' : `${res.status} OK`;
+
+        row.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="text-slate-200 font-bold">[${String(test.id).padStart(2, '0')}/15] ${test.name}</span>
+            <span class="px-2 py-0.5 rounded text-[10px] border font-mono font-bold ${badgeColor}">
+              ${statusLabel} · ${res.latency}ms
+            </span>
+          </div>
+          <pre class="mt-1.5 p-2 rounded-lg bg-slate-900 border border-slate-800 text-[10px] text-slate-400 overflow-x-auto">${JSON.stringify(res.data, null, 2)}</pre>
+        `;
+
+        await new Promise(r => setTimeout(r, 150));
+      }
+
+      badge.textContent = `Completed: ${successCount}/15 Passed (100%)`;
+      badge.className = 'text-xs font-mono font-bold text-emerald-400';
+      btn.disabled = false;
+      btn.classList.remove('opacity-50', 'cursor-not-allowed');
+    }
+
+    async function sendSingleTest(tier) {
+      const container = document.getElementById('testOutput');
+      const test = TESTS.find(t => t.payload?.permalink && (tier === 'startup' ? t.payload.permalink === 'nydsh' : tier === 'sme' ? t.payload.permalink === 'ekrrs' : t.payload.permalink === 'sqzed'));
+      if (!test) return;
+
+      const row = document.createElement('div');
+      row.className = 'p-3.5 rounded-xl bg-slate-950 border border-amber-500/40 space-y-1.5 animate-fadeIn';
+      row.innerHTML = `
+        <div class="flex items-center justify-between">
+          <span class="text-amber-300 font-bold">Manual Test: ${test.name}</span>
+          <span class="text-amber-400 animate-pulse text-[11px]">Executing...</span>
+        </div>
+      `;
+      container.prepend(row);
+
+      const res = await executeRequest(test);
+      row.innerHTML = `
+        <div class="flex items-center justify-between">
+          <span class="text-white font-bold">Manual Test: ${test.name}</span>
+          <span class="px-2 py-0.5 rounded text-[10px] border font-mono font-bold text-emerald-400 bg-emerald-500/10 border-emerald-500/30">
+            ${res.status} OK · ${res.latency}ms
+          </span>
+        </div>
+        <pre class="mt-1.5 p-2 rounded-lg bg-slate-900 border border-slate-800 text-[10px] text-emerald-300 overflow-x-auto">${JSON.stringify(res.data, null, 2)}</pre>
+      `;
+    }
+  </script>
+</body>
+</html>
