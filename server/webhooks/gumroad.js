@@ -29,14 +29,14 @@ function resolvePlanTier(productName = '', permalink = '', priceInCents = 4900) 
   const combined = `${productName} ${permalink}`.toLowerCase();
   const priceUSD = priceInCents / 100;
 
-  if (combined.includes('dealroom') || combined.includes('deal room') || priceUSD >= 500) {
-    return 'dealroom';
-  }
-  if (combined.includes('enterprise') || priceUSD >= 250) {
+  if (combined.includes('sqzed') || combined.includes('dealroom') || combined.includes('enterprise') || priceUSD >= 250) {
     return 'enterprise';
   }
-  if (combined.includes('sme') || combined.includes('growth') || priceUSD >= 100) {
+  if (combined.includes('ekrrs') || combined.includes('sme') || combined.includes('growth') || priceUSD >= 100) {
     return 'sme';
+  }
+  if (combined.includes('nydsh') || combined.includes('startup') || priceUSD <= 70) {
+    return 'startup';
   }
   return 'startup';
 }
