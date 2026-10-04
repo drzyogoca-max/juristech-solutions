@@ -18,6 +18,9 @@
  *   GET  ?action=channel_stats               — Fetches live channel statistics
  */
 
+import youtubeMorningHandler from '../cron/youtube-morning.js';
+import youtubeEveningHandler from '../cron/youtube-evening.js';
+
 export const config = { runtime: 'nodejs' };
 
 const CORS_HEADERS = {
@@ -103,6 +106,31 @@ async function getChannelStats(accessToken) {
     }
   );
   return res.json();
+}
+
+/** Get recent videos from the channel */
+async function getRecentVideos(accessToken) {
+  const chRes = await fetch(
+    'https://www.googleapis.com/youtube/v3/channels?part=contentDetails&mine=true',
+    { headers: { 'Authorization': `Bearer ${accessToken}` } }
+  );
+  const chData = await chRes.json();
+  const uploadsId = chData.items?.[0]?.contentDetails?.relatedPlaylists?.uploads;
+  if (!uploadsId) return [];
+  const plRes = await fetch(
+    `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,status&maxResults=10&playlistId=${uploadsId}`,
+    { headers: { 'Authorization': `Bearer ${accessToken}` } }
+  );
+  const plData = await plRes.json();
+  return (plData.items || []).map(item => ({
+    id: item.snippet?.resourceId?.videoId,
+    title: item.snippet?.title,
+    description: item.snippet?.description,
+    publishedAt: item.snippet?.publishedAt,
+    url: `https://youtu.be/${item.snippet?.resourceId?.videoId}`,
+    privacyStatus: item.status?.privacyStatus,
+    thumbnail: item.snippet?.thumbnails?.high?.url || item.snippet?.thumbnails?.default?.url,
+  }));
 }
 
 export default async function handler(req, res) {
@@ -230,11 +258,34 @@ export default async function handler(req, res) {
       });
     }
 
+    // ── 5. List Recent Channel Videos ─────────────────────────────────────────
+    if (action === 'list_videos' || action === 'recent_videos') {
+      const accessToken = await getAccessToken();
+      if (!accessToken) {
+        return res.status(503).json({ success: false, error: 'YouTube not authorized' });
+      }
+      const videos = await getRecentVideos(accessToken);
+      return res.status(200).json({
+        success:   true,
+        channelId: 'UC6gOnr7IeX5XRbpi3Oy-KvQ',
+        count:     videos.length,
+        videos,
+      });
+    }
+
+    // ── 6. On-Demand Enterprise Workflow Publishing ────────────────────────────
+    if (action === 'publish_workflow_now' || action === 'publish_evening') {
+      return youtubeEveningHandler(req, res);
+    }
+    if (action === 'publish_morning') {
+      return youtubeMorningHandler(req, res);
+    }
+
     return res.status(200).json({
       success:   true,
       status:    'YOUTUBE_SERVICE_READY',
       projectId: 'gen-lang-client-0627816917',
-      actions:   ['get_auth_url', 'exchange_code', 'publish_video', 'channel_stats'],
+      actions:   ['get_auth_url', 'exchange_code', 'publish_video', 'channel_stats', 'list_videos', 'publish_workflow_now', 'publish_morning', 'publish_evening'],
     });
 
   } catch (err) {

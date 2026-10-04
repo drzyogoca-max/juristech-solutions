@@ -26,42 +26,46 @@ async function fetchJSON(url, opts = {}) {
 
 // ── Ingest Audio into Shotstack ───────────────────────────────────────────────
 async function ingestAudioToShotstack(audioBuf, apiKey) {
-  // 1. Get signed upload URL
-  const upRes = await fetchJSON('https://api.shotstack.io/ingest/v1/upload', {
-    method: 'POST',
-    headers: { 'x-api-key': apiKey, 'Accept': 'application/json' }
-  });
-  if (!upRes.ok || !upRes.data?.data?.attributes?.url) {
-    throw new Error('Shotstack ingest upload URL failed: ' + upRes.text);
-  }
-
-  const signedUrl = upRes.data.data.attributes.url;
-  const sourceId  = upRes.data.data.id;
-
-  // 2. PUT audio buffer to S3
-  const putRes = await fetch(signedUrl, {
-    method: 'PUT',
-    headers: {
-      'x-amz-acl': 'public-read',
-      'Content-Type': 'audio/mpeg',
-      'Content-Length': audioBuf.length.toString()
-    },
-    body: audioBuf
-  });
-
-  if (!putRes.ok) throw new Error('S3 PUT failed: ' + putRes.status);
-
-  // 3. Poll for source ready
-  for (let i = 0; i < 15; i++) {
-    await new Promise(r => setTimeout(r, 2000));
-    const sRes = await fetchJSON(`https://api.shotstack.io/ingest/v1/sources/${sourceId}`, {
-      headers: { 'x-api-key': apiKey }
+  if (!audioBuf || audioBuf.length === 0) return null;
+  try {
+    const upRes = await fetchJSON('https://api.shotstack.io/ingest/v1/upload', {
+      method: 'POST',
+      headers: { 'x-api-key': apiKey, 'Accept': 'application/json' }
     });
-    if (sRes.data?.data?.attributes?.status === 'ready') {
-      return sRes.data.data.attributes.source;
+    if (!upRes.ok || !upRes.data?.data?.attributes?.url) {
+      console.warn('Shotstack ingest upload URL failed, using ambient music');
+      return null;
     }
+
+    const signedUrl = upRes.data.data.attributes.url;
+    const sourceId  = upRes.data.data.id;
+
+    const putRes = await fetch(signedUrl, {
+      method: 'PUT',
+      headers: {
+        'x-amz-acl': 'public-read',
+        'Content-Type': 'audio/mpeg',
+        'Content-Length': audioBuf.length.toString()
+      },
+      body: audioBuf
+    });
+
+    if (!putRes.ok) return null;
+
+    for (let i = 0; i < 15; i++) {
+      await new Promise(r => setTimeout(r, 2000));
+      const sRes = await fetchJSON(`https://api.shotstack.io/ingest/v1/sources/${sourceId}`, {
+        headers: { 'x-api-key': apiKey }
+      });
+      if (sRes.data?.data?.attributes?.status === 'ready') {
+        return sRes.data.data.attributes.source;
+      }
+    }
+    return null;
+  } catch (err) {
+    console.warn('[Shotstack Evening Ingest] Error:', err.message);
+    return null;
   }
-  throw new Error('Timed out waiting for Shotstack audio ingest');
 }
 
 // ── Save to Supabase youtube_queue ───────────────────────────────────────────
@@ -86,22 +90,31 @@ async function saveToQueue(item) {
 
 // ── ElevenLabs Voice Generator ────────────────────────────────────────────────
 async function genElevenVoice(voiceId, text, apiKey) {
-  const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
-    method: 'POST',
-    headers: {
-      'xi-api-key': apiKey,
-      'Content-Type': 'application/json',
-      'Accept': 'audio/mpeg'
-    },
-    body: JSON.stringify({
-      text,
-      model_id: 'eleven_multilingual_v2',
-      voice_settings: { stability: 0.55, similarity_boost: 0.85 }
-    })
-  });
-  if (!res.ok) throw new Error('ElevenLabs failed: ' + await res.text());
-  const arrayBuffer = await res.arrayBuffer();
-  return Buffer.from(arrayBuffer);
+  try {
+    if (!apiKey) return null;
+    const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+      method: 'POST',
+      headers: {
+        'xi-api-key': apiKey,
+        'Content-Type': 'application/json',
+        'Accept': 'audio/mpeg'
+      },
+      body: JSON.stringify({
+        text,
+        model_id: 'eleven_multilingual_v2',
+        voice_settings: { stability: 0.55, similarity_boost: 0.85 }
+      })
+    });
+    if (!res.ok) {
+      console.warn('[ElevenLabs Evening] TTS quota/status:', res.status);
+      return null;
+    }
+    const arrayBuffer = await res.arrayBuffer();
+    return Buffer.from(arrayBuffer);
+  } catch (err) {
+    console.warn('[ElevenLabs Evening] TTS error:', err.message);
+    return null;
+  }
 }
 
 // ── HTML Clip Helper ──────────────────────────────────────────────────────────
@@ -367,19 +380,27 @@ export default async function handler(req, res) {
 
   try {
     const today = new Date();
-    const isOddDay = today.getDate() % 2 === 1;
+    const langParam = req.query?.lang || '';
+    const isArabic = langParam === 'ar';
 
-    console.log(`[YouTube Evening Cron] Executing at ${today.toISOString()} — Edition: ${isOddDay ? 'Arabic Gulf' : 'English Global'}`);
+    console.log(`[YouTube Evening Cron] Executing at ${today.toISOString()} — Edition: ${isArabic ? 'Arabic Gulf' : 'English Global (US/EU Focus)'}`);
 
-    if (SHOTSTACK_KEY && ELEVEN_KEY) {
-      const edition = isOddDay ? await buildArabicEdition(ELEVEN_KEY) : await buildEnglishEdition(ELEVEN_KEY);
-      const audioUrl = await ingestAudioToShotstack(edition.audioBuf, SHOTSTACK_KEY);
+    if (SHOTSTACK_KEY) {
+      const edition = isArabic ? await buildArabicEdition(ELEVEN_KEY) : await buildEnglishEdition(ELEVEN_KEY);
+      let audioUrl = null;
+      if (edition.audioBuf && edition.audioBuf.length > 0) {
+        audioUrl = await ingestAudioToShotstack(edition.audioBuf, SHOTSTACK_KEY);
+      }
+
+      const soundtrack = audioUrl
+        ? { src: audioUrl, effect: 'fadeInFadeOut', volume: 1.0 }
+        : { src: 'https://shotstack-assets.s3-ap-southeast-2.amazonaws.com/music/freepd/corporate.mp3', effect: 'fadeInFadeOut', volume: 0.8 };
 
       const renderPayload = {
         timeline: {
           background: '#020B1A',
           tracks: [{ clips: edition.slides }],
-          soundtrack: { src: audioUrl, effect: 'fadeInFadeOut', volume: 1.0 }
+          soundtrack
         },
         output: {
           format: 'mp4',
@@ -405,12 +426,12 @@ export default async function handler(req, res) {
         status: 'published',
         heygen_video_id: renderId,
         title_ar: edition.lang === 'ar' ? edition.title : '',
-        title_en: edition.lang === 'en' ? edition.title : '',
+        title_en: edition.lang === 'en' ? edition.title : edition.title,
         description_ar: edition.lang === 'ar' ? edition.desc : '',
-        description_en: edition.lang === 'en' ? edition.desc : '',
+        description_en: edition.lang === 'en' ? edition.desc : edition.desc,
         tags: JSON.stringify(edition.tags),
-        topic_ar: isOddDay ? 'تدقيق العقود بالذكاء الاصطناعي 18 خطوة' : 'Enterprise AI Contract Audit',
-        topic_en: isOddDay ? 'Arabic Gulf 18-Step Audit' : 'Enterprise 18-Step Audit',
+        topic_ar: 'تدقيق العقود بالذكاء الاصطناعي 18 خطوة',
+        topic_en: 'Enterprise AI Contract Audit: The 18-Step Workflow',
         format: 'Full HD 1080p (16:9)',
         duration_seconds: 65
       });
@@ -418,9 +439,11 @@ export default async function handler(req, res) {
       return res.status(200).json({
         success: true,
         slot: 'EVENING',
-        edition: isOddDay ? 'Arabic Gulf' : 'English Global',
+        edition: isArabic ? 'Arabic Gulf' : 'English Global (US/EU Focus)',
+        format: 'Full HD 1080p (16:9)',
         renderId,
-        message: 'Enterprise 18-step video rendering started and published.'
+        soundtrack: audioUrl ? 'ElevenLabs Voiceover' : 'Royalty-Free Corporate Score',
+        message: 'Enterprise 18-step video rendering started and scheduled for YouTube release.'
       });
     }
 

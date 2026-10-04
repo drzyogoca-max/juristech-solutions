@@ -108,39 +108,59 @@ export default async function handler(req, res) {
     if (shotstackId && shotstackUrl && shotstackStatus === 'done') {
       console.log(`[Webhook] Shotstack video ready: ${shotstackId}`);
       // Use render_id as the lookup key in youtube_queue
-      const queueItem = await getQueueItem(shotstackId);
+      let queueItem = null;
+      try { queueItem = await getQueueItem(shotstackId); } catch (e) {}
       if (queueItem) {
-        await updateQueueItem(queueItem.id, { status: 'uploading', video_url: shotstackUrl });
-        const accessToken = await getYouTubeAccessToken();
-        const isShort = queueItem.slot === 'MORNING';
-        const rawTitle = queueItem.title_en || queueItem.title_ar || 'JurisTech Solutions';
-        const title = rawTitle.length > 95 ? rawTitle.substring(0, 92) + '...' : rawTitle;
-        const description = [
-          queueItem.description_en || '',
-          queueItem.description_ar || '',
-          '#LegalTech #AIContracts #JurisTech #عقود #ذكاء_اصطناعي',
-          isShort ? '#Shorts' : '',
-          'https://www.juristech.solutions | founder@juristech.solutions',
-        ].filter(Boolean).join('\n');
-        const tags = ['JurisTech', 'Legal Tech', 'AI', 'Contracts', 'Arabic', ...(isShort ? ['Shorts'] : [])].slice(0, 30);
-        const videoBuffer = await downloadVideo(shotstackUrl);
-        const metadata = {
-          snippet: {
-            title: title,
-            description: description,
-            tags: tags,
-            categoryId: '27',
-            defaultLanguage: queueItem.slot === 'MORNING' ? 'ar' : 'en'
-          },
-          status: {
-            privacyStatus: 'public',
-            madeForKids: false
-          }
-        };
-        const ytResult = await uploadToYouTube(accessToken, videoBuffer, metadata);
-        await updateQueueItem(queueItem.id, { status: 'published', youtube_video_id: ytResult.videoId, video_url: ytResult.url, published_at: new Date().toISOString() });
-        return res.status(200).json({ success: true, source: 'shotstack', youtube_video_id: ytResult.videoId, youtube_url: ytResult.url });
+        try { await updateQueueItem(queueItem.id, { status: 'uploading', video_url: shotstackUrl }); } catch (e) {}
       }
+
+      const accessToken = await getYouTubeAccessToken();
+      const isShort = queueItem ? (queueItem.slot === 'MORNING') : false;
+      const rawTitle = queueItem?.title_en || queueItem?.title_ar || 'Sovereign AI Contract Analysis & Risk Audit Workflow — JurisTech Solutions';
+      const title = rawTitle.length > 95 ? rawTitle.substring(0, 92) + '...' : rawTitle;
+      const description = [
+        queueItem?.description_en || 'Enterprise contract review reimagined. Watch how JurisTech Solutions audits complex commercial agreements in under 60 seconds with institutional multi-jurisdiction intelligence (Delaware UCC, English Law, EU GDPR).\n\n1. Instant Ingestion & OCR\n2. 8-Axis Statutory Risk Radar\n3. Autonomous AI Redlining & Clause Replacement\n4. DealShield 360 & Virtual Courtroom Simulation\n5. Certified SHA-256 Tamper-Evident Audit Report\n\nPlatform: https://www.juristech.solutions\nEnterprise Inquiries: founder@juristech.solutions | WhatsApp: +201126674337',
+        queueItem?.description_ar || '',
+        '#LegalTech #AIContracts #CorporateLaw #GeneralCounsel #ContractReview #JurisTech #RiskRadar',
+        isShort ? '#Shorts' : '',
+        'https://www.juristech.solutions | founder@juristech.solutions',
+      ].filter(Boolean).join('\n\n');
+
+      const tags = ['JurisTech', 'LegalTech', 'AI Contract Review', 'Corporate Law', 'General Counsel', 'Enterprise Contracts', 'Contract Automation', ...(isShort ? ['Shorts'] : [])].slice(0, 30);
+      const videoBuffer = await downloadVideo(shotstackUrl);
+      const metadata = {
+        snippet: {
+          title: title,
+          description: description,
+          tags: tags,
+          categoryId: '27',
+          defaultLanguage: 'en',
+          defaultAudioLanguage: 'en',
+        },
+        status: {
+          privacyStatus: 'public',
+          madeForKids: false,
+        }
+      };
+
+      const ytResult = await uploadToYouTube(accessToken, videoBuffer, metadata);
+      if (queueItem) {
+        try {
+          await updateQueueItem(queueItem.id, {
+            status: 'published',
+            youtube_video_id: ytResult.videoId,
+            video_url: ytResult.url,
+            published_at: new Date().toISOString()
+          });
+        } catch (e) {}
+      }
+      return res.status(200).json({
+        success: true,
+        source: 'shotstack',
+        youtube_video_id: ytResult.videoId,
+        youtube_url: ytResult.url,
+        shortsUrl: ytResult.shortsUrl
+      });
     }
 
     if (!videoId || !videoUrl) {

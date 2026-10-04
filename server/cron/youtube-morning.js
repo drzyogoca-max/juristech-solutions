@@ -24,39 +24,46 @@ async function fetchJSON(url, opts = {}) {
 }
 
 async function ingestAudioToShotstack(audioBuf, apiKey) {
-  const upRes = await fetchJSON('https://api.shotstack.io/ingest/v1/upload', {
-    method: 'POST',
-    headers: { 'x-api-key': apiKey, 'Accept': 'application/json' }
-  });
-  if (!upRes.ok || !upRes.data?.data?.attributes?.url) {
-    throw new Error('Shotstack ingest upload URL failed: ' + upRes.text);
-  }
-
-  const signedUrl = upRes.data.data.attributes.url;
-  const sourceId  = upRes.data.data.id;
-
-  const putRes = await fetch(signedUrl, {
-    method: 'PUT',
-    headers: {
-      'x-amz-acl': 'public-read',
-      'Content-Type': 'audio/mpeg',
-      'Content-Length': audioBuf.length.toString()
-    },
-    body: audioBuf
-  });
-
-  if (!putRes.ok) throw new Error('S3 PUT failed: ' + putRes.status);
-
-  for (let i = 0; i < 15; i++) {
-    await new Promise(r => setTimeout(r, 2000));
-    const sRes = await fetchJSON(`https://api.shotstack.io/ingest/v1/sources/${sourceId}`, {
-      headers: { 'x-api-key': apiKey }
+  if (!audioBuf || audioBuf.length === 0) return null;
+  try {
+    const upRes = await fetchJSON('https://api.shotstack.io/ingest/v1/upload', {
+      method: 'POST',
+      headers: { 'x-api-key': apiKey, 'Accept': 'application/json' }
     });
-    if (sRes.data?.data?.attributes?.status === 'ready') {
-      return sRes.data.data.attributes.source;
+    if (!upRes.ok || !upRes.data?.data?.attributes?.url) {
+      console.warn('Shotstack ingest upload URL failed, falling back to ambient track');
+      return null;
     }
+
+    const signedUrl = upRes.data.data.attributes.url;
+    const sourceId  = upRes.data.data.id;
+
+    const putRes = await fetch(signedUrl, {
+      method: 'PUT',
+      headers: {
+        'x-amz-acl': 'public-read',
+        'Content-Type': 'audio/mpeg',
+        'Content-Length': audioBuf.length.toString()
+      },
+      body: audioBuf
+    });
+
+    if (!putRes.ok) return null;
+
+    for (let i = 0; i < 15; i++) {
+      await new Promise(r => setTimeout(r, 2000));
+      const sRes = await fetchJSON(`https://api.shotstack.io/ingest/v1/sources/${sourceId}`, {
+        headers: { 'x-api-key': apiKey }
+      });
+      if (sRes.data?.data?.attributes?.status === 'ready') {
+        return sRes.data.data.attributes.source;
+      }
+    }
+    return null;
+  } catch (err) {
+    console.warn('[Shotstack Audio Ingest] Error:', err.message);
+    return null;
   }
-  throw new Error('Timed out waiting for audio ingest');
 }
 
 async function saveToQueue(item) {
@@ -79,22 +86,31 @@ async function saveToQueue(item) {
 }
 
 async function genElevenVoice(voiceId, text, apiKey) {
-  const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
-    method: 'POST',
-    headers: {
-      'xi-api-key': apiKey,
-      'Content-Type': 'application/json',
-      'Accept': 'audio/mpeg'
-    },
-    body: JSON.stringify({
-      text,
-      model_id: 'eleven_multilingual_v2',
-      voice_settings: { stability: 0.55, similarity_boost: 0.85 }
-    })
-  });
-  if (!res.ok) throw new Error('ElevenLabs failed: ' + await res.text());
-  const arrayBuffer = await res.arrayBuffer();
-  return Buffer.from(arrayBuffer);
+  try {
+    if (!apiKey) return null;
+    const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+      method: 'POST',
+      headers: {
+        'xi-api-key': apiKey,
+        'Content-Type': 'application/json',
+        'Accept': 'audio/mpeg'
+      },
+      body: JSON.stringify({
+        text,
+        model_id: 'eleven_multilingual_v2',
+        voice_settings: { stability: 0.55, similarity_boost: 0.85 }
+      })
+    });
+    if (!res.ok) {
+      console.warn('[ElevenLabs] TTS quota/status:', res.status);
+      return null;
+    }
+    const arrayBuffer = await res.arrayBuffer();
+    return Buffer.from(arrayBuffer);
+  } catch (err) {
+    console.warn('[ElevenLabs] TTS error:', err.message);
+    return null;
+  }
 }
 
 function shortClip(content, s, len, trans = { in: 'fade', out: 'fade' }) {
@@ -259,19 +275,27 @@ export default async function handler(req, res) {
 
   try {
     const today = new Date();
-    const isOddDay = today.getDate() % 2 === 1;
+    const langParam = req.query?.lang || '';
+    const isArabic = langParam === 'ar';
 
-    console.log(`[YouTube Morning Cron] Executing at ${today.toISOString()} — Shorts Edition: ${isOddDay ? 'Arabic Gulf' : 'English Global'}`);
+    console.log(`[YouTube Morning Cron] Executing at ${today.toISOString()} — Shorts Edition: ${isArabic ? 'Arabic Gulf' : 'English Global (US/EU Focus)'}`);
 
-    if (SHOTSTACK_KEY && ELEVEN_KEY) {
-      const edition = isOddDay ? await buildArabicShorts(ELEVEN_KEY) : await buildEnglishShorts(ELEVEN_KEY);
-      const audioUrl = await ingestAudioToShotstack(edition.audioBuf, SHOTSTACK_KEY);
+    if (SHOTSTACK_KEY) {
+      const edition = isArabic ? await buildArabicShorts(ELEVEN_KEY) : await buildEnglishShorts(ELEVEN_KEY);
+      let audioUrl = null;
+      if (edition.audioBuf && edition.audioBuf.length > 0) {
+        audioUrl = await ingestAudioToShotstack(edition.audioBuf, SHOTSTACK_KEY);
+      }
+
+      const soundtrack = audioUrl
+        ? { src: audioUrl, effect: 'fadeInFadeOut', volume: 1.0 }
+        : { src: 'https://shotstack-assets.s3-ap-southeast-2.amazonaws.com/music/freepd/corporate.mp3', effect: 'fadeInFadeOut', volume: 0.8 };
 
       const renderPayload = {
         timeline: {
           background: '#020B1A',
           tracks: [{ clips: edition.slides }],
-          soundtrack: { src: audioUrl, effect: 'fadeInFadeOut', volume: 1.0 }
+          soundtrack
         },
         output: {
           format: 'mp4',
@@ -296,12 +320,12 @@ export default async function handler(req, res) {
         status: 'published',
         heygen_video_id: renderId,
         title_ar: edition.lang === 'ar' ? edition.title : '',
-        title_en: edition.lang === 'en' ? edition.title : '',
+        title_en: edition.lang === 'en' ? edition.title : edition.title,
         description_ar: edition.lang === 'ar' ? edition.desc : '',
-        description_en: edition.lang === 'en' ? edition.desc : '',
+        description_en: edition.lang === 'en' ? edition.desc : edition.desc,
         tags: JSON.stringify(edition.tags),
-        topic_ar: isOddDay ? 'فخ عقود الصفقات والمسؤولية غير المحدودة' : 'The Contract Liability Trap',
-        topic_en: isOddDay ? 'Arabic Gulf Contract Trap' : 'The Contract Liability Trap',
+        topic_ar: 'فخ عقود الصفقات والمسؤولية غير المحدودة',
+        topic_en: 'Enterprise AI Contract Audit in 60s',
         format: 'YouTube Shorts 9:16',
         duration_seconds: 45
       });
@@ -311,7 +335,11 @@ export default async function handler(req, res) {
         slot: 'MORNING',
         format: 'YouTube Shorts (9:16)',
         renderId,
-        edition: isOddDay ? 'Arabic Gulf Shorts' : 'English Global Shorts',
+        edition: isArabic ? 'Arabic Gulf Shorts' : 'English Global Shorts (US/EU Focus)',
+        soundtrack: audioUrl ? 'ElevenLabs Voiceover' : 'Royalty-Free Corporate Score',
+        message: 'Shotstack rendering initiated & scheduled for YouTube release.'
+      });
+    }
         message: 'Shotstack rendering initiated & scheduled for YouTube release.'
       });
     }
