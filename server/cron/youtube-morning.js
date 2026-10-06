@@ -340,9 +340,6 @@ export default async function handler(req, res) {
         message: 'Shotstack rendering initiated & scheduled for YouTube release.'
       });
     }
-        message: 'Shotstack rendering initiated & scheduled for YouTube release.'
-      });
-    }
 
     // ── Resilient Autonomous Fallback: Register & Publish 2-Person Dialogue Video ──
     const topicAr = isOddDay 
