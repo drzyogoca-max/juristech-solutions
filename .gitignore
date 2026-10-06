@@ -1,15 +1,17 @@
-dist 
-node_modules 
+dist
+node_modules
 .env
 .env.*
-.next 
-.env.*
-.next 
+.env*
+*.secrets*
+*.audit*
+.env.live.secrets.json
+*.log
+*.csv
+.next
 .DS_Store
 *.code-workspace
-
 .vercel
-.env*
 
 # Scratch/test scripts (may contain secrets)
 scrtach_*.cjs

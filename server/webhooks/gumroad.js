@@ -57,8 +57,8 @@ async function recordGumroadSale({
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!supabaseUrl || !serviceKey) {
-    console.log(`[Gumroad Standby] Sale ${saleId} processed for ${customerEmail} (Tier: ${planTier})`);
-    return { success: true, isDatabaseBacked: false, status: 'STANDBY_RECORDED' };
+    console.error(`[Gumroad Database Not Configured] Sale ${saleId} NOT recorded. Failing closed so Gumroad retries.`);
+    return { success: false, isDatabaseBacked: false, error: 'DATABASE_NOT_CONFIGURED' };
   }
 
   try {
@@ -113,7 +113,7 @@ async function recordGumroadSale({
     return { success: insertRes.ok, isDatabaseBacked: true };
   } catch (err) {
     console.error('[Gumroad Database Error]:', err.message);
-    return { success: true, isDatabaseBacked: false, error: err.message };
+    return { success: false, isDatabaseBacked: false, error: 'DATABASE_CONNECTION_ERROR' };
   }
 }
 
@@ -154,8 +154,16 @@ export default async function gumroadWebhookHandler(req, res) {
       }
     }
 
-    const saleId = body.sale_id || body.order_number || body.id || `GUM-${Date.now()}`;
-    const customerEmail = (body.email || body.purchaser_email || 'client@juristech.solutions').toLowerCase().trim();
+    const saleId = body.sale_id || body.order_number || body.id;
+    if (!saleId) {
+      return res.status(400).json({ error: 'Missing Gumroad sale_id or order_number' });
+    }
+
+    const customerEmail = (body.email || body.purchaser_email)?.toLowerCase().trim();
+    if (!customerEmail) {
+      return res.status(400).json({ error: 'Missing customer email' });
+    }
+
     const productName = body.product_name || '';
     const permalink = body.permalink || '';
     const priceInCents = parseInt(body.price || '4900', 10);
@@ -183,6 +191,16 @@ export default async function gumroadWebhookHandler(req, res) {
       isRecurring,
       payload: body,
     });
+
+    if (!result.success) {
+      console.error(`[Gumroad Webhook Failed] Sale ${saleId} failed to record: ${result.error}. Responding with 500 for retry.`);
+      return res.status(500).json({
+        success: false,
+        provider: 'gumroad',
+        saleId,
+        error: result.error || 'Failed to record transaction',
+      });
+    }
 
     processedGumroadSales.add(saleId);
     if (processedGumroadSales.size > 2000) {

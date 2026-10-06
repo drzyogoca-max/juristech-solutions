@@ -77,7 +77,7 @@ let _quotaCache = null; // { allowed, sent, remaining, cachedAt, day }
 
 async function checkDailyQuota() {
   const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
-  const SUPABASE_KEY = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+  const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
 
   if (!SUPABASE_URL || !SUPABASE_KEY) {
     console.warn('[RateLimit] Supabase not configured, skipping daily quota check.');
@@ -143,7 +143,7 @@ function invalidateQuotaCache() {
 
 async function recordEmailDispatch(targetEmail, subject, provider) {
   const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
-  const SUPABASE_KEY = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+  const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
 
   if (!SUPABASE_URL || !SUPABASE_KEY) return;
 
@@ -213,18 +213,9 @@ function getClientIP(req) {
 // ── Helper: verify dispatch authorization (Anti-Open Relay) ───────────────────
 const OFFICIAL_SYSTEM_EMAILS = [
   'founder@juristech.solutions',
-  'founder@juristech.solutions',
   'admin@juristech.solutions',
-  'founder@juristech.solutions',
   'contact@juristech.solutions',
-];
-
-const ALLOWED_TRANSACTIONAL_TYPES = [
-  'CONSULTATION_BOOKING',
-  'RECEIPT_NOTIFICATION',
-  'LEAD_INQUIRY',
-  'AUTHENTICATION_OTP',
-  'PARTNERSHIP_PROPOSAL',
+  'support@juristech.solutions',
 ];
 
 async function checkEmailAuthorization(req, targetEmail, body = {}) {
@@ -252,7 +243,7 @@ async function checkEmailAuthorization(req, targetEmail, body = {}) {
     }
   }
 
-  // 3. User JWT Authorization via Supabase
+  // 3. User JWT Authorization via Supabase (Only confirmed official admin accounts can dispatch external emails)
   if (authHeader.startsWith('Bearer ')) {
     const jwt = authHeader.replace('Bearer ', '').trim();
     const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
@@ -268,8 +259,9 @@ async function checkEmailAuthorization(req, targetEmail, body = {}) {
         });
         if (userRes.ok) {
           const userData = await userRes.json();
-          if (userData && userData.id) {
-            return { authorized: true, reason: 'AUTHENTICATED_USER_SESSION', user: userData };
+          const sessionEmail = String(userData?.email || '').toLowerCase().trim();
+          if (userData && userData.id && userData.email_confirmed_at && OFFICIAL_SYSTEM_EMAILS.includes(sessionEmail)) {
+            return { authorized: true, reason: 'AUTHENTICATED_ADMIN_SESSION', user: userData };
           }
         }
       } catch (err) {
@@ -278,18 +270,7 @@ async function checkEmailAuthorization(req, targetEmail, body = {}) {
     }
   }
 
-  // 4. Legitimate Inbound/Transactional Event Guard
-  // Permits customer-facing transactional templates (Receipt, Consultation, Lead Inquiry)
-  // while preventing open-relay spam: subject must contain [JurisTech Solutions], and rate-limits apply.
-  const transactionalType = body?.transactionalType || body?.payload?.transactionalType;
-  if (transactionalType && ALLOWED_TRANSACTIONAL_TYPES.includes(transactionalType)) {
-    const subj = body?.subject || '';
-    if (subj.includes('JurisTech Solutions') || subj.includes('LegalShield')) {
-      return { authorized: true, reason: `VALIDATED_TRANSACTIONAL_${transactionalType}` };
-    }
-  }
-
-  // Otherwise: Reject arbitrary external outbound dispatch
+  // Reject arbitrary unauthenticated external outbound dispatch (open relay blocked)
   return { authorized: false, reason: 'UNAUTHENTICATED_EXTERNAL_DISPATCH_BLOCKED' };
 }
 
@@ -405,10 +386,10 @@ async function handleNodeRequest(req, res) {
     });
   } catch (err) {
     console.error('[/api/send-email] Node Critical Error:', err);
-    return res.status(200).json({
-      success: true,
-      status: 'QUEUED_SAFELY',
-      message: 'Email dispatched and archived in Sovereign Queue',
+    return res.status(500).json({
+      success: false,
+      status: 'INTERNAL_ERROR',
+      message: 'Email dispatch failed due to an internal error. No email was sent.',
       error: err?.message,
     });
   }
@@ -501,12 +482,12 @@ async function handleEdgeRequest(req) {
     console.error('[/api/send-email] Edge Critical Error:', err);
     return new Response(
       JSON.stringify({
-        success: true,
-        status: 'QUEUED_SAFELY',
-        message: 'Email dispatched and archived in Sovereign Queue',
+        success: false,
+        status: 'INTERNAL_ERROR',
+        message: 'Email dispatch failed due to an internal error. No email was sent.',
         error: err?.message,
       }),
-      { status: 200, headers: CORS_HEADERS }
+      { status: 500, headers: CORS_HEADERS }
     );
   }
 }
@@ -616,7 +597,7 @@ async function outreachFrequencyGuard(cleanEmail, emailSubject) {
 // ── Shared Email Processing & Dispatch Cascade ────────────────────────────────
 export async function processEmailDispatch(targetEmail, emailSubject, text, html, replyTo, forceSend = false) {
   const cleanEmail = targetEmail?.toLowerCase()?.trim();
-  const isAdminEmail = cleanEmail === 'founder@juristech.solutions' || cleanEmail === 'founder@juristech.solutions';
+  const isAdminEmail = OFFICIAL_SYSTEM_EMAILS.includes(cleanEmail);
 
   if (!forceSend && !isAdminEmail && cleanEmail && dispatchedRecipientsRegistry.has(cleanEmail)) {
     console.log(`[Deduplication Guard] Skipping duplicate dispatch to ${cleanEmail}`);
@@ -666,8 +647,7 @@ export async function processEmailDispatch(targetEmail, emailSubject, text, html
   const MANDATORY_ADMIN_COPY = 'founder@juristech.solutions';
   const OFFICIAL_ARCHIVE = 'founder@juristech.solutions';
 
-  // Add to deduplication registry
-  if (cleanEmail) dispatchedRecipientsRegistry.add(cleanEmail);
+  // (Recipient is added to the deduplication registry only AFTER a confirmed successful send — see below.)
 
   // 1. Outlook Direct SMTP (Primary Executive Channel for Dr. Mohammad Mustafa)
   if (SMTP_USER && SMTP_PASS) {
@@ -677,7 +657,7 @@ export async function processEmailDispatch(targetEmail, emailSubject, text, html
         port: SMTP_PORT,
         secure: false, // 587 uses STARTTLS
         auth: { user: SMTP_USER, pass: SMTP_PASS },
-        tls: { rejectUnauthorized: false },
+        requireTLS: true,
         connectionTimeout: 15000,
         greetingTimeout: 15000,
         socketTimeout: 15000,
@@ -771,17 +751,20 @@ export async function processEmailDispatch(targetEmail, emailSubject, text, html
   }
 
 
+  if (providerSuccess && cleanEmail) dispatchedRecipientsRegistry.add(cleanEmail);
+
   if (!providerSuccess) {
-    providerMessage = `⚠️ Queued in Sovereign Outbox Dispatcher (SSOT Recorded) — Provider status: ${providerError || 'RESEND_API_KEY or SMTP credentials not configured in environment variables'}`;
+    providerMessage = `⚠️ NOT delivered — no mail provider succeeded. Provider status: ${providerError || 'RESEND_API_KEY or SMTP credentials not configured in environment variables'}`;
   }
 
   return {
     success: providerSuccess,
     delivered: providerSuccess,
-    status: providerSuccess ? 'DELIVERED' : 'QUEUED_SAFELY',
+    status: providerSuccess ? 'DELIVERED' : 'NOT_DELIVERED',
     recipient: targetEmail,
     subject: emailSubject,
     provider: providerMessage,
+    error: providerSuccess ? undefined : (providerError || 'All dispatch providers failed'),
     diagnostic: providerError || (providerSuccess ? 'Dispatched successfully' : 'Missing RESEND_API_KEY or SMTP credentials in Vercel environment variables'),
     timestamp: new Date().toISOString(),
   };

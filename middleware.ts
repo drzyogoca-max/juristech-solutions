@@ -4,7 +4,7 @@
  * 1. Automatic 301 Permanent Canonical Domain Redirection:
  *    All traffic from Legal Solution / legalshieldsolution.online / legalsolution
  *    is immediately and permanently routed to https://www.juristech.solutions
- * 2. RBAC Route Guard: protects /admin/* from unauthorized access.
+ * 2. RBAC Route Guard: protects /api/admin/* and administrative endpoints from unauthorized access.
  */
 
 export const config = {
@@ -29,20 +29,32 @@ export default function middleware(request: Request): Response | undefined {
     return Response.redirect(targetUrl, 301);
   }
 
-  // 2. Protect API backend endpoints strictly
-  if (pathname.startsWith('/api/admin')) {
-    const cookie = request.headers.get('cookie') || '';
+  // 2. Protect administrative API backend endpoints strictly
+  if (pathname.startsWith('/api/admin') || pathname.startsWith('/api/leads/dispatch-real-prospects')) {
     const authHeader = request.headers.get('authorization') || '';
+    const adminKeyHeader = request.headers.get('x-admin-key') || request.headers.get('x-admin-token') || '';
+    const cronSecretHeader = request.headers.get('x-cron-secret') || '';
 
-    const hasAdminToken =
-      cookie.includes('juristech_admin_token=true') ||
-      authHeader.startsWith('Bearer ');
+    const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : '';
 
-    if (!hasAdminToken) {
+    const validAdminSecrets = [
+      process.env.ADMIN_SECRET_KEY,
+      process.env.CRON_SECRET,
+      process.env.SUPABASE_SERVICE_ROLE_KEY,
+    ].filter(Boolean) as string[];
+
+    const isAuthorized = validAdminSecrets.length > 0 && validAdminSecrets.some(
+      (secret) => secret === token || secret === adminKeyHeader || secret === cronSecretHeader
+    );
+
+    if (!isAuthorized) {
       return new Response(
-        JSON.stringify({ error: 'Forbidden: Sovereign Admin Authentication Required' }),
+        JSON.stringify({
+          error: 'Unauthorized: Valid Sovereign Admin Authentication Key Required',
+          status: 401,
+        }),
         {
-          status: 403,
+          status: 401,
           headers: { 'Content-Type': 'application/json' },
         }
       );

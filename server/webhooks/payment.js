@@ -40,11 +40,13 @@ async function executeAtomicWebhookTransaction(params) {
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!supabaseUrl || !serviceKey) {
-    // Database connection in standby mode -> return simulated atomic success in memory
+    // FAIL CLOSED: never report success when nothing was persisted, otherwise the gateway stops retrying
+    // and a paid subscription is silently never activated.
+    console.error('[Atomic Webhook] Database not configured — event NOT processed (gateway will retry).');
     return {
-      success: true,
+      success: false,
       isDatabaseBacked: false,
-      status: 'PROCESSED_SUCCESS_STANDBY',
+      error: 'DATABASE_NOT_CONFIGURED',
     };
   }
 
@@ -81,7 +83,8 @@ async function executeAtomicWebhookTransaction(params) {
     return { success: false, isDatabaseBacked: true, error: errText };
   } catch (err) {
     console.error('[Atomic RPC Connection Error]:', err.message);
-    return { success: true, isDatabaseBacked: false, status: 'PROCESSED_SUCCESS_STANDBY' };
+    // FAIL CLOSED: a connection error means the event was NOT recorded; let the gateway retry.
+    return { success: false, isDatabaseBacked: false, error: 'DATABASE_CONNECTION_ERROR' };
   }
 }
 
@@ -107,7 +110,8 @@ function verifyWebhookSignature(provider, body, signature, secret) {
         return acc;
       }, {});
 
-      if (parts.t && parts.v1) {
+      // Replay protection: reject Stripe-style signatures whose timestamp is older/newer than 5 minutes.
+      if (parts.t && parts.v1 && Math.abs(Date.now() / 1000 - Number(parts.t)) <= 300) {
         const payloadToSign = `${parts.t}.${rawBody}`;
         const computedV1 = crypto.createHmac('sha256', secret).update(payloadToSign).digest('hex');
         if (parts.v1.length === computedV1.length && crypto.timingSafeEqual(Buffer.from(parts.v1), Buffer.from(computedV1))) {
@@ -144,12 +148,19 @@ export default async function handler(req, res) {
 
   try {
     const provider = (req.query?.provider || 'paytabs').toLowerCase();
+    if (!['paytabs', 'paymob', 'stripe', 'gumroad'].includes(provider)) {
+      return res.status(400).json({ error: 'Unsupported payment provider' });
+    }
     const body = req.body || {};
     const signature = req.headers['x-paytabs-signature'] || req.headers['stripe-signature'] || req.headers['signature'] || '';
 
     // 1. Extract Event Identity & Payload Data
     const eventData = body.data || {};
-    const eventId = body.event_id || body.id || eventData.id || body.tran_ref || `EVT-${Date.now()}`;
+    const eventId = body.event_id || body.id || eventData.id || body.tran_ref;
+    if (!eventId) {
+      // A random/time-based fallback id would defeat idempotency (every retry would look like a new event).
+      return res.status(400).json({ error: 'Missing event identifier' });
+    }
     const eventType = body.event_type || body.type || 'transaction.completed';
 
     // 2. Layer 1 Idempotency Check (Fast Process-Local Memory)
@@ -184,9 +195,12 @@ export default async function handler(req, res) {
       customData.userEmail ||
       eventData.customer?.email ||
       body.customer_email ||
-      body.email ||
-      'customer@juristech.solutions'
-    ).toLowerCase().trim();
+      body.email
+    )?.toLowerCase().trim();
+
+    if (!customerEmail) {
+      return res.status(400).json({ error: 'Missing customer email' });
+    }
 
     const planTier = (customData.planTier || body.plan_tier || body.plan_id || 'startup').toLowerCase();
 
@@ -204,6 +218,13 @@ export default async function handler(req, res) {
     // 5. Server-Side Price & Currency Validation (Anti-Tampering)
     const expectedPrice = PLAN_PRICES[planTier] || 49.00;
     const isAmountValid = amountReceived === 0 || Math.abs(amountReceived - expectedPrice) < 0.01;
+
+    // ENFORCE the amount (it was computed but never used, so any signed event activated the plan at full price).
+    const amountProvided = Boolean(eventData.details?.totals?.total || body.amount);
+    if (amountProvided && currency === 'USD' && !isAmountValid) {
+      console.error(`[Webhook Security] Amount mismatch for plan "${planTier}": received ${amountReceived} ${currency}, expected ${expectedPrice} USD. Event ${compositeEventKey} rejected.`);
+      return res.status(422).json({ error: 'Payment amount does not match the plan price', eventId, provider });
+    }
 
     // 6. Execute 100% Atomic PostgreSQL Transaction via Stored Procedure RPC
     const atomicResult = await executeAtomicWebhookTransaction({

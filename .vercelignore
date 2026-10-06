@@ -5,5 +5,10 @@ dist
 tests/
 supabase/.temp/
 *.log
+*.csv
+.env*
+*.secrets*
+*.audit*
 *.mjs.bak
 *.ts.bak
+artifacts/
