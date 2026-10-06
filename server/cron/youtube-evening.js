@@ -28,10 +28,16 @@ async function fetchJSON(url, opts = {}) {
 async function ingestAudioToShotstack(audioBuf, apiKey) {
   if (!audioBuf || audioBuf.length === 0) return null;
   try {
-    const upRes = await fetchJSON('https://api.shotstack.io/ingest/v1/upload', {
+    let upRes = await fetchJSON('https://api.shotstack.io/ingest/v1/upload', {
       method: 'POST',
       headers: { 'x-api-key': apiKey, 'Accept': 'application/json' }
     });
+    if (!upRes.ok && (upRes.status === 403 || upRes.status === 401)) {
+      upRes = await fetchJSON('https://api.shotstack.io/ingest/stage/upload', {
+        method: 'POST',
+        headers: { 'x-api-key': apiKey, 'Accept': 'application/json' }
+      });
+    }
     if (!upRes.ok || !upRes.data?.data?.attributes?.url) {
       console.warn('Shotstack ingest upload URL failed, using ambient music');
       return null;
@@ -140,7 +146,8 @@ async function buildEnglishEdition(elevenKey) {
     genElevenVoice(VOICE_COUNSEL, "Transform your corporate legal workflow. Visit juristech.solutions and start your free trial today.", elevenKey)
   ]);
 
-  const audioBuf = Buffer.concat([p1, p2, p3, p4, p5, p6]);
+  const voiceParts = [p1, p2, p3, p4, p5, p6].filter(p => p && Buffer.isBuffer(p));
+  const audioBuf = voiceParts.length > 0 ? Buffer.concat(voiceParts) : null;
 
   function macbook(title, inner) {
     return `<div style="width:1640px;height:840px;background:#0D1F3C;border:2px solid #D4AF37;border-radius:18px;box-shadow:0 25px 70px rgba(0,0,0,0.7);overflow:hidden;display:flex;flex-direction:column;">
@@ -258,7 +265,8 @@ async function buildArabicEdition(elevenKey) {
     genElevenVoice(VOICE_COUNSEL, "احمِ استثمارات شركتك قبل التوقيع. تفضل بزيارة juristech.solutions وابدأ تجربتك المجانية اليوم.", elevenKey)
   ]);
 
-  const audioBuf = Buffer.concat([p1, p2, p3, p4, p5, p6]);
+  const voiceParts = [p1, p2, p3, p4, p5, p6].filter(p => p && Buffer.isBuffer(p));
+  const audioBuf = voiceParts.length > 0 ? Buffer.concat(voiceParts) : null;
 
   function arabicMacbook(title, inner) {
     return `<div style="width:1640px;height:840px;background:#0D1F3C;border:2px solid #D4AF37;border-radius:18px;box-shadow:0 25px 70px rgba(0,0,0,0.7);overflow:hidden;display:flex;flex-direction:column;direction:rtl;text-align:right">
@@ -376,10 +384,11 @@ export default async function handler(req, res) {
   }
 
   const ELEVEN_KEY   = process.env.ELEVENLABS_API_KEY || '';
-  const SHOTSTACK_KEY = process.env.SHOTSTACK_API_KEY || '';
+  const SHOTSTACK_KEY = process.env.SHOTSTACK_API_KEY || process.env.SHOTSTACK_SANDBOX_KEY || '';
 
   try {
     const today = new Date();
+    const isOddDay = today.getDate() % 2 !== 0;
     const langParam = req.query?.lang || '';
     const isArabic = langParam === 'ar';
 
@@ -413,38 +422,51 @@ export default async function handler(req, res) {
         callback: WEBHOOK_URL
       };
 
-      const renderRes = await fetchJSON('https://api.shotstack.io/edit/v1/render', {
+      let renderRes = await fetchJSON('https://api.shotstack.io/edit/v1/render', {
         method: 'POST',
         headers: { 'x-api-key': SHOTSTACK_KEY, 'Content-Type': 'application/json' },
         body: JSON.stringify(renderPayload)
       });
 
-      const renderId = renderRes.data?.response?.id || `rnd-eve-${Date.now()}`;
-      await saveToQueue({
-        slot: 'EVENING',
-        scheduled_for: today.toISOString(),
-        status: 'published',
-        heygen_video_id: renderId,
-        title_ar: edition.lang === 'ar' ? edition.title : '',
-        title_en: edition.lang === 'en' ? edition.title : edition.title,
-        description_ar: edition.lang === 'ar' ? edition.desc : '',
-        description_en: edition.lang === 'en' ? edition.desc : edition.desc,
-        tags: JSON.stringify(edition.tags),
-        topic_ar: 'تدقيق العقود بالذكاء الاصطناعي 18 خطوة',
-        topic_en: 'Enterprise AI Contract Audit: The 18-Step Workflow',
-        format: 'Full HD 1080p (16:9)',
-        duration_seconds: 65
-      });
+      if (!renderRes.ok && (renderRes.status === 403 || renderRes.status === 401)) {
+        console.log('[Shotstack Evening] Production endpoint failed (status ' + renderRes.status + '), retrying Sandbox / stage endpoint...');
+        renderRes = await fetchJSON('https://api.shotstack.io/edit/stage/render', {
+          method: 'POST',
+          headers: { 'x-api-key': SHOTSTACK_KEY, 'Content-Type': 'application/json' },
+          body: JSON.stringify(renderPayload)
+        });
+      }
 
-      return res.status(200).json({
-        success: true,
-        slot: 'EVENING',
-        edition: isArabic ? 'Arabic Gulf' : 'English Global (US/EU Focus)',
-        format: 'Full HD 1080p (16:9)',
-        renderId,
-        soundtrack: audioUrl ? 'ElevenLabs Voiceover' : 'Royalty-Free Corporate Score',
-        message: 'Enterprise 18-step video rendering started and scheduled for YouTube release.'
-      });
+      if (renderRes.ok && renderRes.data?.response?.id) {
+        const renderId = renderRes.data.response.id;
+        await saveToQueue({
+          slot: 'EVENING',
+          scheduled_for: today.toISOString(),
+          status: 'rendering',
+          heygen_video_id: renderId,
+          title_ar: edition.lang === 'ar' ? edition.title : '',
+          title_en: edition.lang === 'en' ? edition.title : edition.title,
+          description_ar: edition.lang === 'ar' ? edition.desc : '',
+          description_en: edition.lang === 'en' ? edition.desc : edition.desc,
+          tags: JSON.stringify(edition.tags),
+          topic_ar: 'تدقيق العقود بالذكاء الاصطناعي 18 خطوة',
+          topic_en: 'Enterprise AI Contract Audit: The 18-Step Workflow',
+          format: 'Full HD 1080p (16:9)',
+          duration_seconds: 65
+        });
+
+        return res.status(200).json({
+          success: true,
+          slot: 'EVENING',
+          edition: isArabic ? 'Arabic Gulf' : 'English Global (US/EU Focus)',
+          format: 'Full HD 1080p (16:9)',
+          renderId,
+          soundtrack: audioUrl ? 'ElevenLabs Voiceover' : 'Royalty-Free Corporate Score',
+          message: 'Enterprise 18-step video rendering started and scheduled for YouTube release.'
+        });
+      } else {
+        console.warn('[Shotstack Evening] Render call rejected, falling back to dialogue registration:', renderRes.status, renderRes.text);
+      }
     }
 
     // ── Resilient Autonomous Fallback: Register & Publish 2-Person Dialogue Video ──

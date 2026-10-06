@@ -26,10 +26,16 @@ async function fetchJSON(url, opts = {}) {
 async function ingestAudioToShotstack(audioBuf, apiKey) {
   if (!audioBuf || audioBuf.length === 0) return null;
   try {
-    const upRes = await fetchJSON('https://api.shotstack.io/ingest/v1/upload', {
+    let upRes = await fetchJSON('https://api.shotstack.io/ingest/v1/upload', {
       method: 'POST',
       headers: { 'x-api-key': apiKey, 'Accept': 'application/json' }
     });
+    if (!upRes.ok && (upRes.status === 403 || upRes.status === 401)) {
+      upRes = await fetchJSON('https://api.shotstack.io/ingest/stage/upload', {
+        method: 'POST',
+        headers: { 'x-api-key': apiKey, 'Accept': 'application/json' }
+      });
+    }
     if (!upRes.ok || !upRes.data?.data?.attributes?.url) {
       console.warn('Shotstack ingest upload URL failed, falling back to ambient track');
       return null;
@@ -133,7 +139,8 @@ async function buildEnglishShorts(elevenKey) {
     genElevenVoice(VOICE_ADVISOR, "Protect your enterprise contracts before you sign. Visit juristech.solutions and start free.", elevenKey)
   ]);
 
-  const audioBuf = Buffer.concat([p1, p2, p3, p4]);
+  const voiceParts = [p1, p2, p3, p4].filter(p => p && Buffer.isBuffer(p));
+  const audioBuf = voiceParts.length > 0 ? Buffer.concat(voiceParts) : null;
 
   const slides = [
     shortClip(`<div style="width:${W}px;height:${H}px;background:#020B1A;display:flex;flex-direction:column;justify-content:center;padding:40px;position:relative">
@@ -201,7 +208,8 @@ async function buildArabicShorts(elevenKey) {
     genElevenVoice(VOICE_CEO, "احمِ شركتك وأعمالك قبل التوقيع. تفضل بزيارة juristech.solutions وابدأ تجربتك مجاناً اليوم.", elevenKey)
   ]);
 
-  const audioBuf = Buffer.concat([p1, p2, p3, p4]);
+  const voiceParts = [p1, p2, p3, p4].filter(p => p && Buffer.isBuffer(p));
+  const audioBuf = voiceParts.length > 0 ? Buffer.concat(voiceParts) : null;
 
   const slides = [
     shortClip(`<div style="width:${W}px;height:${H}px;background:#020B1A;display:flex;flex-direction:column;justify-content:center;padding:40px;position:relative;direction:rtl;text-align:right">
@@ -271,10 +279,11 @@ export default async function handler(req, res) {
   }
 
   const ELEVEN_KEY   = process.env.ELEVENLABS_API_KEY || '';
-  const SHOTSTACK_KEY = process.env.SHOTSTACK_API_KEY || '';
+  const SHOTSTACK_KEY = process.env.SHOTSTACK_API_KEY || process.env.SHOTSTACK_SANDBOX_KEY || '';
 
   try {
     const today = new Date();
+    const isOddDay = today.getDate() % 2 !== 0;
     const langParam = req.query?.lang || '';
     const isArabic = langParam === 'ar';
 
@@ -307,38 +316,51 @@ export default async function handler(req, res) {
         callback: WEBHOOK_URL
       };
 
-      const renderRes = await fetchJSON('https://api.shotstack.io/edit/v1/render', {
+      let renderRes = await fetchJSON('https://api.shotstack.io/edit/v1/render', {
         method: 'POST',
         headers: { 'x-api-key': SHOTSTACK_KEY, 'Content-Type': 'application/json' },
         body: JSON.stringify(renderPayload)
       });
 
-      const renderId = renderRes.data?.response?.id || `rnd-sim-${Date.now()}`;
-      await saveToQueue({
-        slot: 'MORNING',
-        scheduled_for: today.toISOString(),
-        status: 'published',
-        heygen_video_id: renderId,
-        title_ar: edition.lang === 'ar' ? edition.title : '',
-        title_en: edition.lang === 'en' ? edition.title : edition.title,
-        description_ar: edition.lang === 'ar' ? edition.desc : '',
-        description_en: edition.lang === 'en' ? edition.desc : edition.desc,
-        tags: JSON.stringify(edition.tags),
-        topic_ar: 'فخ عقود الصفقات والمسؤولية غير المحدودة',
-        topic_en: 'Enterprise AI Contract Audit in 60s',
-        format: 'YouTube Shorts 9:16',
-        duration_seconds: 45
-      });
+      if (!renderRes.ok && (renderRes.status === 403 || renderRes.status === 401)) {
+        console.log('[Shotstack Morning] Production endpoint failed (status ' + renderRes.status + '), retrying Sandbox / stage endpoint...');
+        renderRes = await fetchJSON('https://api.shotstack.io/edit/stage/render', {
+          method: 'POST',
+          headers: { 'x-api-key': SHOTSTACK_KEY, 'Content-Type': 'application/json' },
+          body: JSON.stringify(renderPayload)
+        });
+      }
 
-      return res.status(200).json({
-        success: true,
-        slot: 'MORNING',
-        format: 'YouTube Shorts (9:16)',
-        renderId,
-        edition: isArabic ? 'Arabic Gulf Shorts' : 'English Global Shorts (US/EU Focus)',
-        soundtrack: audioUrl ? 'ElevenLabs Voiceover' : 'Royalty-Free Corporate Score',
-        message: 'Shotstack rendering initiated & scheduled for YouTube release.'
-      });
+      if (renderRes.ok && renderRes.data?.response?.id) {
+        const renderId = renderRes.data.response.id;
+        await saveToQueue({
+          slot: 'MORNING',
+          scheduled_for: today.toISOString(),
+          status: 'rendering',
+          heygen_video_id: renderId,
+          title_ar: edition.lang === 'ar' ? edition.title : '',
+          title_en: edition.lang === 'en' ? edition.title : edition.title,
+          description_ar: edition.lang === 'ar' ? edition.desc : '',
+          description_en: edition.lang === 'en' ? edition.desc : edition.desc,
+          tags: JSON.stringify(edition.tags),
+          topic_ar: 'فخ عقود الصفقات والمسؤولية غير المحدودة',
+          topic_en: 'Enterprise AI Contract Audit in 60s',
+          format: 'YouTube Shorts 9:16',
+          duration_seconds: 45
+        });
+
+        return res.status(200).json({
+          success: true,
+          slot: 'MORNING',
+          format: 'YouTube Shorts (9:16)',
+          renderId,
+          edition: isArabic ? 'Arabic Gulf Shorts' : 'English Global Shorts (US/EU Focus)',
+          soundtrack: audioUrl ? 'ElevenLabs Voiceover' : 'Royalty-Free Corporate Score',
+          message: 'Shotstack rendering initiated & scheduled for YouTube release.'
+        });
+      } else {
+        console.warn('[Shotstack Morning] Render call rejected, falling back to dialogue registration:', renderRes.status, renderRes.text);
+      }
     }
 
     // ── Resilient Autonomous Fallback: Register & Publish 2-Person Dialogue Video ──

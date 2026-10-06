@@ -40,27 +40,42 @@ const YOUTUBE_SCOPES = [
   'https://www.googleapis.com/auth/youtube.readonly',
 ].join(' ');
 
-/** Refresh the OAuth access token using the stored refresh token */
+/** Refresh the OAuth access token using the stored refresh token with full telemetry */
+async function getAccessTokenDetails() {
+  const missing = {
+    clientId: !GOOGLE_CLIENT_ID,
+    clientSecret: !GOOGLE_CLIENT_SECRET,
+    refreshToken: !YOUTUBE_REFRESH_TOKEN,
+  };
+  if (missing.clientId || missing.clientSecret || missing.refreshToken) {
+    return { token: null, error: 'MISSING_ENV_VARS', details: missing };
+  }
+  try {
+    const res = await fetch('https://oauth2.googleapis.com/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        client_id:     GOOGLE_CLIENT_ID,
+        client_secret: GOOGLE_CLIENT_SECRET,
+        refresh_token: YOUTUBE_REFRESH_TOKEN,
+        grant_type:    'refresh_token',
+      }),
+    });
+    const data = await res.json();
+    if (data.error) {
+      console.error('[YouTube API] Token refresh failed:', data.error_description || data.error);
+      return { token: null, error: data.error, errorDescription: data.error_description || data.error, status: res.status };
+    }
+    return { token: data.access_token || null, error: null };
+  } catch (err) {
+    console.error('[YouTube API] Token refresh network error:', err.message);
+    return { token: null, error: 'NETWORK_ERROR', errorDescription: err.message };
+  }
+}
+
 async function getAccessToken() {
-  if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET || !YOUTUBE_REFRESH_TOKEN) {
-    return null;
-  }
-  const res = await fetch('https://oauth2.googleapis.com/token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({
-      client_id:     GOOGLE_CLIENT_ID,
-      client_secret: GOOGLE_CLIENT_SECRET,
-      refresh_token: YOUTUBE_REFRESH_TOKEN,
-      grant_type:    'refresh_token',
-    }),
-  });
-  const data = await res.json();
-  if (data.error) {
-    console.error('[YouTube API] Token refresh failed:', data.error_description || data.error);
-    return null;
-  }
-  return data.access_token || null;
+  const res = await getAccessTokenDetails();
+  return res.token;
 }
 
 /** Insert video metadata into YouTube (without actual video file upload) */
@@ -242,11 +257,22 @@ export default async function handler(req, res) {
 
     // ── 4. Live Channel Stats ─────────────────────────────────────────────────
     if (action === 'channel_stats' && req.method === 'GET') {
-      const accessToken = await getAccessToken();
-      if (!accessToken) {
-        return res.status(503).json({ success: false, error: 'YouTube not authorized' });
+      const details = await getAccessTokenDetails();
+      if (!details.token) {
+        return res.status(503).json({
+          success: false,
+          error: 'YouTube not authorized',
+          authDiagnostics: {
+            oauthError: details.error,
+            oauthDescription: details.errorDescription,
+            status: details.status,
+            clientIdConfigured: Boolean(GOOGLE_CLIENT_ID),
+            clientSecretConfigured: Boolean(GOOGLE_CLIENT_SECRET),
+            refreshTokenConfigured: Boolean(YOUTUBE_REFRESH_TOKEN),
+          }
+        });
       }
-      const stats = await getChannelStats(accessToken);
+      const stats = await getChannelStats(details.token);
       const channel = stats.items?.[0];
       return res.status(200).json({
         success:       true,

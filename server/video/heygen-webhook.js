@@ -1,7 +1,7 @@
 export const config = { runtime: 'nodejs', maxDuration: 300 };
 
 async function getYouTubeAccessToken() {
-  const clientId = process.env.YOUTUBE_CLIENT_ID;
+  const clientId = process.env.YOUTUBE_CLIENT_ID || '420720999238-8hcb6ng6802jukmi9088uu8k5950etn5.apps.googleusercontent.com';
   const clientSecret = process.env.YOUTUBE_CLIENT_SECRET;
   const refreshToken = process.env.YOUTUBE_REFRESH_TOKEN;
 
