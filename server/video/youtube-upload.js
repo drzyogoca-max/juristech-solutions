@@ -112,6 +112,48 @@ async function insertVideoMetadata(accessToken, videoData) {
   return res.json();
 }
 
+/** Upload actual binary MP4 video to YouTube via Google Resumable Upload */
+async function uploadToYouTubeBinary(accessToken, videoBuffer, metadata) {
+  const initRes = await fetch('https://www.googleapis.com/upload/youtube/v3/videos?uploadType=resumable&part=snippet,status', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+      'X-Upload-Content-Type': 'video/mp4',
+      'X-Upload-Content-Length': videoBuffer.length.toString(),
+    },
+    body: JSON.stringify(metadata),
+  });
+
+  if (!initRes.ok) {
+    const errText = await initRes.text();
+    throw new Error(`YouTube resumable init failed (${initRes.status}): ${errText}`);
+  }
+  const uploadUrl = initRes.headers.get('location');
+  if (!uploadUrl) throw new Error('YouTube did not return upload location URL');
+
+  const uploadRes = await fetch(uploadUrl, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'video/mp4',
+      'Content-Length': videoBuffer.length.toString(),
+    },
+    body: videoBuffer,
+  });
+
+  const uploadData = await uploadRes.json();
+  if (!uploadRes.ok) {
+    throw new Error(`YouTube binary upload failed (${uploadRes.status}): ${JSON.stringify(uploadData)}`);
+  }
+
+  const videoId = uploadData.id;
+  return {
+    videoId,
+    url: `https://www.youtube.com/watch?v=${videoId}`,
+    shortsUrl: `https://www.youtube.com/shorts/${videoId}`,
+  };
+}
+
 /** Get live YouTube channel statistics */
 async function getChannelStats(accessToken) {
   const res = await fetch(
@@ -252,6 +294,63 @@ export default async function handler(req, res) {
         title,
         slot,
         note:          'Metadata published. For full video upload, use resumable upload endpoint with video file.',
+      });
+    }
+
+    // ── 3b. Direct Binary Video Upload (Resumable MP4 Upload) ────────────────
+    if ((action === 'upload_binary' || action === 'upload_short' || action === 'upload_from_url') && req.method === 'POST') {
+      const authSecret = req.headers['x-cron-secret'] || req.query?.secret;
+      const expectedSecrets = [process.env.CRON_SECRET, process.env.ADMIN_SECRET_KEY].filter(Boolean);
+      if (expectedSecrets.length > 0 && !expectedSecrets.includes(authSecret)) {
+        return res.status(401).json({ success: false, error: 'Unauthorized' });
+      }
+
+      const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+      const { title, description, tags, isShort = true, videoUrl, videoBase64 } = body || {};
+
+      let videoBuffer = null;
+      if (videoBase64) {
+        videoBuffer = Buffer.from(videoBase64, 'base64');
+      } else if (videoUrl) {
+        const fetchRes = await fetch(videoUrl);
+        if (!fetchRes.ok) return res.status(400).json({ success: false, error: `Failed to fetch video from ${videoUrl}: ${fetchRes.statusText}` });
+        const arr = await fetchRes.arrayBuffer();
+        videoBuffer = Buffer.from(arr);
+      } else {
+        return res.status(400).json({ success: false, error: 'Missing videoBase64 or videoUrl' });
+      }
+
+      const accessToken = await getAccessToken();
+      if (!accessToken) {
+        return res.status(503).json({ success: false, error: 'YouTube token unavailable. Channel not authorized.' });
+      }
+
+      const finalTitle = (title || 'AI Contract Risk Radar: Audit Commercial Deals in 60s #Shorts').substring(0, 95);
+      const finalDesc = (description || 'Never sign a commercial agreement blind. Watch how JurisTech AI catches unlimited liability traps and generates institutional redlines in seconds.\n\nWebsite: https://www.juristech.solutions\n#Shorts #LegalTech #Contracts #BusinessLaw #RiskRadar #JurisTech');
+      const finalTags = (tags || ['Shorts', 'LegalTech', 'Contract Law', 'AI', 'JurisTech', 'Business Law', 'Risk Radar']).slice(0, 30);
+
+      const metadata = {
+        snippet: {
+          title: finalTitle,
+          description: finalDesc,
+          tags: finalTags,
+          categoryId: '27',
+          defaultLanguage: 'en',
+          defaultAudioLanguage: 'en',
+        },
+        status: {
+          privacyStatus: 'public',
+          selfDeclaredMadeForKids: false,
+          madeForKids: false,
+        }
+      };
+
+      const result = await uploadToYouTubeBinary(accessToken, videoBuffer, metadata);
+      console.log(`[YouTube Direct Upload] Published: ${result.videoId} | ${finalTitle}`);
+      return res.status(200).json({
+        success: true,
+        status: 'VIDEO_PUBLISHED_TO_YOUTUBE',
+        ...result
       });
     }
 

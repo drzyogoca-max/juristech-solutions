@@ -470,6 +470,54 @@ export const VERIFIED_REAL_EXECUTIVE_POOL = [
     customPitchEn: 'Oman Sultani Decree commercial compliance benchmarks and sub-15-minute cross-border contract risk auditing.',
   },
   {
+    id: 'gcc-exec-13',
+    companyName: 'Sharq Law Firm',
+    contactEmail: 'info@sharqlawfirm.com',
+    recipientName: 'Rashid Al Saad',
+    recipientTitle: 'Senior Partner',
+    jurisdiction: 'Qatar',
+    country: 'Qatar',
+    market: 'GCC',
+    industry: 'Qatari Commercial Construction & Corporate Governance',
+    customPitchEn: 'Qatari Civil Code Law No. 22/2004 compliance auditing, EPC procurement liability caps, and zero-data-retention security protocols.',
+  },
+  {
+    id: 'gcc-exec-14',
+    companyName: 'Curtis, Mallet-Prevost, Colt & Mosle LLP Oman',
+    contactEmail: 'muscat@curtis.com',
+    recipientName: 'Bruce Palmer',
+    recipientTitle: 'Managing Partner Oman',
+    jurisdiction: 'Oman',
+    country: 'Oman',
+    market: 'GCC',
+    industry: 'Omani Energy, Corporate M&A & Cross-Border Projects',
+    customPitchEn: 'Oman Foreign Capital Investment Law (RD 50/2019) compliance, commercial arbitration risk mitigation, and bilingual contract redlining.',
+  },
+  {
+    id: 'gcc-exec-15',
+    companyName: 'ASAR - Al Ruwayeh & Partners',
+    contactEmail: 'asar@asarlegal.com',
+    recipientName: 'Sam Habbab',
+    recipientTitle: 'Senior Partner',
+    jurisdiction: 'Kuwait',
+    country: 'Kuwait',
+    market: 'GCC',
+    industry: 'Kuwait Corporate Finance, M&A & Capital Markets',
+    customPitchEn: 'Kuwait Commercial Companies Law No. 1/2016 and Capital Markets Authority compliance auditing with instantaneous liability cap verification.',
+  },
+  {
+    id: 'gcc-exec-16',
+    companyName: 'Al Oula Law Firm (Adel Abdulhadi & Partners)',
+    contactEmail: 'info@aloulalaw.com',
+    recipientName: 'Adel Abdulhadi',
+    recipientTitle: 'Managing Partner',
+    jurisdiction: 'Kuwait',
+    country: 'Kuwait',
+    market: 'GCC',
+    industry: 'Kuwaiti Commercial Dispute Resolution & Corporate Governance',
+    customPitchEn: 'Kuwait Civil Code No. 67/1980 & Commercial Code No. 68/1980 penalty clause verification and cross-border commercial contract shielding.',
+  },
+  {
     id: 'mena-exec-01',
     companyName: 'Iraq Law Alliance',
     contactEmail: 'baghdad@iraqlawalliance.com',
@@ -587,49 +635,83 @@ export default async function handler(req, res) {
       }
     }
 
-    // 3. Assemble Daily 20 Candidates: 7 US + 7 Europe + 6 Gulf
+    // 3. Assemble Daily 20 Candidates
     const selectedCandidates = [];
-
-    // Filter US leads
-    const availableUS = VERIFIED_REAL_EXECUTIVE_POOL.filter(
-      (l) => l.market === 'US' &&
-             !suppressionSet.has(l.contactEmail.toLowerCase().trim()) &&
-             !contactedSet.has(l.contactEmail.toLowerCase().trim()) &&
-             !contactedNamesSet.has(l.recipientName.toLowerCase().trim())
+    const isTargetSevenCountries = Boolean(
+      req.query?.targetCountries ||
+      body.targetCountries ||
+      req.query?.countries ||
+      body.countries ||
+      req.query?.targetBatch === 'SEVEN_COUNTRIES' ||
+      body.targetBatch === 'SEVEN_COUNTRIES'
     );
-    for (const lead of availableUS.slice(0, TARGET_US_COUNT)) {
-      selectedCandidates.push(lead);
-      contactedNamesSet.add(lead.recipientName.toLowerCase().trim());
-      contactedSet.add(lead.contactEmail.toLowerCase().trim());
-    }
 
-    // Filter EU leads
-    const availableEU = VERIFIED_REAL_EXECUTIVE_POOL.filter(
-      (l) => l.market === 'EU' &&
-             !suppressionSet.has(l.contactEmail.toLowerCase().trim()) &&
-             !contactedSet.has(l.contactEmail.toLowerCase().trim()) &&
-             !contactedNamesSet.has(l.recipientName.toLowerCase().trim())
-    );
-    for (const lead of availableEU.slice(0, TARGET_EU_COUNT)) {
-      selectedCandidates.push(lead);
-      contactedNamesSet.add(lead.recipientName.toLowerCase().trim());
-      contactedSet.add(lead.contactEmail.toLowerCase().trim());
-    }
+    if (isTargetSevenCountries) {
+      console.log('[Acquisition Engine Cron] Assembling customized 20-email batch for 7 requested countries: Qatar, Oman, Kuwait, KSA, USA, UK, Germany');
+      const countryQuotas = [
+        { name: 'Qatar', count: 3, matcher: (l) => l.jurisdiction?.includes('Qatar') || l.country === 'Qatar' },
+        { name: 'Oman', count: 3, matcher: (l) => l.jurisdiction?.includes('Oman') || l.country === 'Oman' },
+        { name: 'Kuwait', count: 3, matcher: (l) => l.jurisdiction?.includes('Kuwait') || l.country === 'Kuwait' },
+        { name: 'KSA', count: 3, matcher: (l) => (l.jurisdiction?.includes('Saudi') || l.country === 'KSA' || l.country === 'Saudi Arabia') && !l.companyName.includes('Tamimi') },
+        { name: 'USA', count: 3, matcher: (l) => l.jurisdiction?.includes('USA') || l.market === 'US' },
+        { name: 'UK', count: 3, matcher: (l) => l.jurisdiction?.includes('United Kingdom') || l.jurisdiction?.includes('UK') },
+        { name: 'Germany', count: 2, matcher: (l) => l.jurisdiction?.includes('Germany') || l.country === 'Germany' },
+      ];
 
-    // Filter GCC leads
-    const availableGCC = VERIFIED_REAL_EXECUTIVE_POOL.filter(
-      (l) => l.market === 'GCC' &&
-             !suppressionSet.has(l.contactEmail.toLowerCase().trim()) &&
-             !contactedSet.has(l.contactEmail.toLowerCase().trim()) &&
-             !contactedNamesSet.has(l.recipientName.toLowerCase().trim())
-    );
-    for (const lead of availableGCC.slice(0, TARGET_GCC_COUNT)) {
-      selectedCandidates.push(lead);
-      contactedNamesSet.add(lead.recipientName.toLowerCase().trim());
-      contactedSet.add(lead.contactEmail.toLowerCase().trim());
-    }
+      for (const cq of countryQuotas) {
+        const available = VERIFIED_REAL_EXECUTIVE_POOL.filter(
+          (l) => cq.matcher(l) &&
+                 !suppressionSet.has(l.contactEmail.toLowerCase().trim()) &&
+                 !contactedSet.has(l.contactEmail.toLowerCase().trim()) &&
+                 !contactedNamesSet.has(l.recipientName.toLowerCase().trim())
+        );
+        for (const lead of available.slice(0, cq.count)) {
+          selectedCandidates.push({ ...lead, targetCountry: cq.name });
+          contactedNamesSet.add(lead.recipientName.toLowerCase().trim());
+          contactedSet.add(lead.contactEmail.toLowerCase().trim());
+        }
+      }
+      console.log(`[Acquisition Engine Cron] Seven-Country Pool: ${selectedCandidates.length}/20 selected`);
+    } else {
+      // Default: 7 US + 7 Europe + 6 Gulf
+      const availableUS = VERIFIED_REAL_EXECUTIVE_POOL.filter(
+        (l) => l.market === 'US' &&
+               !suppressionSet.has(l.contactEmail.toLowerCase().trim()) &&
+               !contactedSet.has(l.contactEmail.toLowerCase().trim()) &&
+               !contactedNamesSet.has(l.recipientName.toLowerCase().trim())
+      );
+      for (const lead of availableUS.slice(0, TARGET_US_COUNT)) {
+        selectedCandidates.push(lead);
+        contactedNamesSet.add(lead.recipientName.toLowerCase().trim());
+        contactedSet.add(lead.contactEmail.toLowerCase().trim());
+      }
 
-    console.log(`[Acquisition Engine Cron] Candidate Pool: ${selectedCandidates.length}/20 selected (US: ${availableUS.slice(0, TARGET_US_COUNT).length}, EU: ${availableEU.slice(0, TARGET_EU_COUNT).length}, GCC: ${availableGCC.slice(0, TARGET_GCC_COUNT).length})`);
+      const availableEU = VERIFIED_REAL_EXECUTIVE_POOL.filter(
+        (l) => l.market === 'EU' &&
+               !suppressionSet.has(l.contactEmail.toLowerCase().trim()) &&
+               !contactedSet.has(l.contactEmail.toLowerCase().trim()) &&
+               !contactedNamesSet.has(l.recipientName.toLowerCase().trim())
+      );
+      for (const lead of availableEU.slice(0, TARGET_EU_COUNT)) {
+        selectedCandidates.push(lead);
+        contactedNamesSet.add(lead.recipientName.toLowerCase().trim());
+        contactedSet.add(lead.contactEmail.toLowerCase().trim());
+      }
+
+      const availableGCC = VERIFIED_REAL_EXECUTIVE_POOL.filter(
+        (l) => l.market === 'GCC' &&
+               !suppressionSet.has(l.contactEmail.toLowerCase().trim()) &&
+               !contactedSet.has(l.contactEmail.toLowerCase().trim()) &&
+               !contactedNamesSet.has(l.recipientName.toLowerCase().trim())
+      );
+      for (const lead of availableGCC.slice(0, TARGET_GCC_COUNT)) {
+        selectedCandidates.push(lead);
+        contactedNamesSet.add(lead.recipientName.toLowerCase().trim());
+        contactedSet.add(lead.contactEmail.toLowerCase().trim());
+      }
+
+      console.log(`[Acquisition Engine Cron] Candidate Pool: ${selectedCandidates.length}/20 selected (US: ${availableUS.slice(0, TARGET_US_COUNT).length}, EU: ${availableEU.slice(0, TARGET_EU_COUNT).length}, GCC: ${availableGCC.slice(0, TARGET_GCC_COUNT).length})`);
+    }
 
     // 4. Execute Dispatches (Real Sending via processEmailDispatch)
     const executionResults = [];
