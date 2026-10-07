@@ -1,7 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import sharp from 'sharp';
-import { spawn } from 'child_process';
+import { spawn, execSync } from 'child_process';
+import { MsEdgeTTS, OUTPUT_FORMAT } from 'msedge-tts';
 
 const W = 720;
 const H = 1280;
@@ -169,8 +170,10 @@ const slide4Svg = `
 </svg>`;
 
 async function buildVideo() {
-  console.log('[VideoGen] Step 1: Converting SVG slides to high-res PNG...');
-  
+  const isArabic = process.argv.includes('--ar') || process.argv.includes('--lang=ar');
+  const voiceName = isArabic ? 'ar-SA-HamedNeural' : 'en-US-ChristopherNeural';
+
+  console.log(`[VideoGen] Step 1: Converting SVG slides to high-res PNG (Format: 720x1280)...`);
   const tmpDir = path.resolve('public', 'videos', 'tmp');
   if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir, { recursive: true });
 
@@ -180,65 +183,97 @@ async function buildVideo() {
   await sharp(Buffer.from(slide4Svg)).png().toFile(path.join(tmpDir, 'slide4.png'));
   console.log('[VideoGen] Slides generated successfully.');
 
-  console.log('[VideoGen] Step 2: Generating harmonic ambient soundtrack...');
-  const audioPath = path.join(tmpDir, 'soundtrack.mp3');
-  
-  // 32 seconds of rich harmonic corporate audio
+  console.log(`[VideoGen] Step 2: Generating studio neural voiceover via ${voiceName}...`);
+  const tts = new MsEdgeTTS();
+  await tts.setMetadata(voiceName, OUTPUT_FORMAT.AUDIO_24KHZ_48KBITRATE_MONO_MP3);
+
+  const scriptsEn = [
+    'Before you sign that high-stakes commercial deal, watch out. Hidden in Section 14 is uncapped consequential liability. Can AI audit it before you sign? In under sixty seconds.',
+    'JurisTech Statutory Risk Radar detects a critical 88 out of 100 risk score. Benchmarked against Delaware, UK, and Saudi laws, it flags dangerous uncapped indemnities instantly.',
+    'With one click, AI executes the redline. It strikes the uncapped penalty and injects an institutional liability cap. Encrypted, sovereign, and ready to sign in sixty seconds.',
+    'Protect your enterprise before you sign. Visit juristech.solutions to start your free sovereign legal audit today.'
+  ];
+
+  const scriptsAr = [
+    'قبل أن توقّع أي عقد تجاري عالي القيمة، احذر! في البند الرابع عشر، قد تختبئ مخاطر مسؤولية غير محدودة. هل يستطيع الذكاء الاصطناعي فحصها في ثوانٍ؟',
+    'نظام رادار المخاطر من جوريستك سوليوشنز يكشف درجة خطورة تصل إلى ثمانية وثمانين في المائة، متوافقاً مع الأنظمة السعودية وقوانين مركز دبي المالي.',
+    'بنقرة واحدة، يُنفّذ الذكاء الاصطناعي الصياغة البديلة، فيلغي البند الخطير ويضع سقفاً آمناً للمسؤولية بنسبة مائة بالمائة.',
+    'احمِ شركتك قبل أن توقّع. تفضل بزيارة موقعنا juristech.solutions وابدأ الفحص الذكي مجاناً.'
+  ];
+
+  const scripts = isArabic ? scriptsAr : scriptsEn;
+  const segments = [];
+
+  for (let i = 0; i < scripts.length; i++) {
+    const clipDir = path.join(tmpDir, `clip_${i}`);
+    if (!fs.existsSync(clipDir)) fs.mkdirSync(clipDir, { recursive: true });
+    
+    await tts.toFile(clipDir, scripts[i]);
+    const audioPath = path.join(clipDir, 'audio.mp3');
+
+    // Get exact audio duration
+    const durStr = execSync(`ffprobe -i "${audioPath}" -show_entries format=duration -v quiet -of csv=p=0`).toString().trim();
+    const audioDur = parseFloat(durStr) || 8.0;
+    const segDur = audioDur + 0.6; // 0.6s natural pause
+    console.log(`[VideoGen] Segment ${i + 1}: voice duration = ${audioDur.toFixed(2)}s, segment duration = ${segDur.toFixed(2)}s`);
+
+    const slideImg = path.join(tmpDir, `slide${i + 1}.png`);
+    const segMp4 = path.join(tmpDir, `seg_${i}.mp4`);
+
+    // Render segment video with padded audio
+    await new Promise((resolve, reject) => {
+      const p = spawn('ffmpeg', [
+        '-loop', '1', '-t', segDur.toString(), '-i', slideImg,
+        '-i', audioPath,
+        '-filter_complex', `[1:a]apad=pad_dur=0.6[a]`,
+        '-map', '0:v',
+        '-map', '[a]',
+        '-c:v', 'libx264',
+        '-pix_fmt', 'yuv420p',
+        '-r', '30',
+        '-crf', '20',
+        '-preset', 'fast',
+        '-c:a', 'aac',
+        '-b:a', '192k',
+        '-t', segDur.toString(),
+        '-y', segMp4
+      ]);
+      p.on('close', (code) => code === 0 ? resolve() : reject(new Error(`Segment ${i} ffmpeg failed with code ${code}`)));
+    });
+
+    segments.push(segMp4);
+  }
+
+  console.log('[VideoGen] Step 3: Concatenating video segments into broadcast MP4...');
+  const concatList = path.join(tmpDir, 'concat.txt');
+  const listContent = segments.map(s => `file '${s.replace(/\\/g, '/')}'`).join('\n');
+  fs.writeFileSync(concatList, listContent);
+
+  const outputMp4 = path.resolve('public', 'videos', isArabic ? 'contract-risk-radar-short-ar.mp4' : 'contract-risk-radar-short.mp4');
+
   await new Promise((resolve, reject) => {
     const p = spawn('ffmpeg', [
-      '-f', 'lavfi',
-      '-i', 'aevalsrc=sin(220*2*PI*t)*0.1+sin(330*2*PI*t)*0.08+sin(440*2*PI*t)*0.06+sin(550*2*PI*t)*0.04:s=44100:d=32',
-      '-y', audioPath
-    ]);
-    p.on('close', (code) => code === 0 ? resolve() : reject(new Error(`FFmpeg audio failed: ${code}`)));
-  });
-  console.log('[VideoGen] Audio generated successfully.');
-
-  console.log('[VideoGen] Step 3: Stitching slides and audio into 9:16 Short MP4...');
-  const outputMp4 = path.resolve('public', 'videos', 'contract-risk-radar-short.mp4');
-
-  // Slide durations: 8s + 8s + 8s + 8s = 32s
-  // Using ffmpeg concat with crossfade filter
-  const filterComplex = [
-    '[0:v]loop=loop=240:size=1:start=0,setpts=PTS-STARTPTS[v0];',
-    '[1:v]loop=loop=240:size=1:start=0,setpts=PTS-STARTPTS[v1];',
-    '[2:v]loop=loop=240:size=1:start=0,setpts=PTS-STARTPTS[v2];',
-    '[3:v]loop=loop=240:size=1:start=0,setpts=PTS-STARTPTS[v3];',
-    '[v0][v1]xfade=transition=fade:duration=0.5:offset=7.5[x0];',
-    '[x0][v2]xfade=transition=fade:duration=0.5:offset=15.0[x1];',
-    '[x1][v3]xfade=transition=fade:duration=0.5:offset=22.5[v]'
-  ].join('');
-
-  await new Promise((resolve, reject) => {
-    const p = spawn('ffmpeg', [
-      '-loop', '1', '-t', '8', '-i', path.join(tmpDir, 'slide1.png'),
-      '-loop', '1', '-t', '8', '-i', path.join(tmpDir, 'slide2.png'),
-      '-loop', '1', '-t', '8', '-i', path.join(tmpDir, 'slide3.png'),
-      '-loop', '1', '-t', '8', '-i', path.join(tmpDir, 'slide4.png'),
-      '-i', audioPath,
-      '-filter_complex', filterComplex,
-      '-map', '[v]',
-      '-map', '4:a',
-      '-c:v', 'libx264',
-      '-pix_fmt', 'yuv420p',
-      '-r', '30',
-      '-crf', '24',
-      '-preset', 'fast',
-      '-c:a', 'aac',
-      '-b:a', '128k',
-      '-t', '30.5',
+      '-f', 'concat',
+      '-safe', '0',
+      '-i', concatList,
+      '-c', 'copy',
       '-y', outputMp4
     ]);
-    p.stderr.on('data', (d) => process.stdout.write(d.toString()));
-    p.on('close', (code) => code === 0 ? resolve() : reject(new Error(`FFmpeg video encode failed: ${code}`)));
+    p.on('close', (code) => code === 0 ? resolve() : reject(new Error(`Concat ffmpeg failed with code ${code}`)));
   });
 
   const stat = fs.statSync(outputMp4);
-  console.log(`\n[VideoGen] SUCCESS! Output video created: ${outputMp4}`);
+  const totalDurStr = execSync(`ffprobe -i "${outputMp4}" -show_entries format=duration -v quiet -of csv=p=0`).toString().trim();
+  console.log(`\n[VideoGen] ========================================================`);
+  console.log(`[VideoGen] SUCCESS! BROADCAST SHORT CREATED: ${outputMp4}`);
+  console.log(`[VideoGen] Duration: ${parseFloat(totalDurStr).toFixed(2)} seconds`);
   console.log(`[VideoGen] Size: ${(stat.size / 1024 / 1024).toFixed(2)} MB`);
+  console.log(`[VideoGen] Voice: ${voiceName} (Studio Quality, 0% Sine Beeps)`);
+  console.log(`[VideoGen] ========================================================\n`);
 }
 
 buildVideo().catch(err => {
   console.error('[VideoGen] Error:', err);
   process.exit(1);
 });
+

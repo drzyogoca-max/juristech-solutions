@@ -27,11 +27,31 @@ export default async function handler(req) {
     });
   }
 
+  const authHeader = req.headers.get('authorization') || '';
+  const erpSecret = req.headers.get('x-erp-signature') || req.headers.get('x-webhook-secret') || '';
+  const expectedSecret = process.env.ERP_WEBHOOK_SECRET || process.env.ADMIN_SECRET_KEY || '';
+
+  if (expectedSecret) {
+    const bearer = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : authHeader;
+    const isValid = bearer === expectedSecret || erpSecret === expectedSecret;
+    if (!isValid) {
+      return new Response(JSON.stringify({ error: 'Unauthorized: invalid or missing ERP webhook credentials' }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+      });
+    }
+  }
+
   try {
     const body = await req.json();
     const erpSystem = req.headers.get('x-erp-system') || 'GENERIC_ERP';
 
-    console.log(`[Edge ERP Webhook] Received webhook payload from ${erpSystem}:`, body);
+    const sanitized = { ...body };
+    ['password', 'secret', 'token', 'apiKey', 'creditCard', 'ssn'].forEach((k) => {
+      if (sanitized[k]) sanitized[k] = '[REDACTED]';
+    });
+
+    console.log(`[Edge ERP Webhook] Received webhook payload from ${erpSystem}:`, JSON.stringify(sanitized));
 
     return new Response(
       JSON.stringify({

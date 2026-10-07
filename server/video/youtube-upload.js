@@ -406,11 +406,29 @@ export default async function handler(req, res) {
       return youtubeMorningHandler(req, res);
     }
 
+    // ── 7. Delete Video by ID ────────────────────────────────────────────────
+    if ((action === 'delete_video' || req.query?.action === 'delete_video') && (req.method === 'POST' || req.method === 'DELETE')) {
+      const authSecret = req.headers['x-cron-secret'] || req.query?.secret;
+      const expectedSecrets = [process.env.CRON_SECRET, process.env.ADMIN_SECRET_KEY].filter(Boolean);
+      if (expectedSecrets.length > 0 && !expectedSecrets.includes(authSecret)) {
+        return res.status(401).json({ success: false, error: 'Unauthorized' });
+      }
+      const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+      const videoId = body?.videoId || req.query?.videoId;
+      if (!videoId) return res.status(400).json({ success: false, error: 'Missing videoId' });
+      const accessToken = await getAccessToken();
+      const delRes = await fetch(`https://www.googleapis.com/youtube/v3/videos?id=${videoId}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      return res.status(delRes.status === 204 ? 200 : delRes.status).json({ success: delRes.status === 204, status: delRes.status });
+    }
+
     return res.status(200).json({
       success:   true,
       status:    'YOUTUBE_SERVICE_READY',
       projectId: 'gen-lang-client-0627816917',
-      actions:   ['get_auth_url', 'exchange_code', 'publish_video', 'channel_stats', 'list_videos', 'publish_workflow_now', 'publish_morning', 'publish_evening'],
+      actions:   ['get_auth_url', 'exchange_code', 'publish_video', 'channel_stats', 'list_videos', 'publish_workflow_now', 'publish_morning', 'publish_evening', 'delete_video'],
     });
 
   } catch (err) {
