@@ -18,7 +18,14 @@ export default async function handler(req, res) {
   const searchParams = new URL(url, 'http://localhost').searchParams;
   const action = searchParams.get('action') || '';
 
-  if (action === 'youtube-upload' || url.includes('youtube-upload')) {
+  if (
+    action === 'youtube-upload' ||
+    action === 'upload_short' ||
+    action === 'upload_binary' ||
+    action === 'upload_from_url' ||
+    url.includes('youtube-upload') ||
+    url.includes('upload_short')
+  ) {
     return youtubeUploadHandler(req, res);
   }
 
