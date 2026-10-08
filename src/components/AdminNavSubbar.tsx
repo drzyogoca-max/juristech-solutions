@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import {
-  ShieldCheck, DollarSign, BarChart3, ShieldAlert, Edit3, FileText, Lock, Sparkles
+  ShieldCheck, DollarSign, BarChart3, ShieldAlert, Edit3, FileText, Lock, Sparkles, Users
 } from 'lucide-react';
 
 import { useAuth } from '../lib/authContext';
@@ -66,6 +66,13 @@ export default function AdminNavSubbar() {
       labelEn: 'Review Queue & Automation',
       icon: Edit3,
       color: 'text-indigo-400',
+    },
+    {
+      to: '/admin/marketing-crm',
+      labelAr: 'إدارة العملاء والتسويق (CRM)',
+      labelEn: 'Marketing & CRM Pipeline',
+      icon: Users,
+      color: 'text-sky-400',
     },
     {
       to: '/admin/checklist',

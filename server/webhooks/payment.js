@@ -28,8 +28,13 @@ export const ALLOWED_STATE_TRANSITIONS = {
 
 export const PLAN_PRICES = {
   startup: 49.00,
+  starter: 49.00,
+  micro: 49.00,
   sme: 139.00,
+  pro: 139.00,
+  growth: 139.00,
   enterprise: 349.00,
+  dealroom: 990.00,
 };
 
 /**
@@ -101,20 +106,24 @@ function verifyWebhookSignature(provider, body, signature, secret) {
     }
   } catch (e) {}
 
-  // 2. Stripe Signature Format: t=123456789,v1=hexhash
-  if (signature.includes('t=') && signature.includes('v1=')) {
+  // 2. Stripe Signature Format: t=123456789,v1=hexhash OR Paddle: ts=123456789;h1=hexhash
+  if ((signature.includes('t=') && signature.includes('v1=')) || (signature.includes('ts=') && signature.includes('h1='))) {
     try {
-      const parts = signature.split(',').reduce((acc, part) => {
+      const separator = signature.includes(';') ? ';' : ',';
+      const parts = signature.split(separator).reduce((acc, part) => {
         const [k, v] = part.trim().split('=');
         if (k && v) acc[k] = v;
         return acc;
       }, {});
 
-      // Replay protection: reject Stripe-style signatures whose timestamp is older/newer than 5 minutes.
-      if (parts.t && parts.v1 && Math.abs(Date.now() / 1000 - Number(parts.t)) <= 300) {
-        const payloadToSign = `${parts.t}.${rawBody}`;
-        const computedV1 = crypto.createHmac('sha256', secret).update(payloadToSign).digest('hex');
-        if (parts.v1.length === computedV1.length && crypto.timingSafeEqual(Buffer.from(parts.v1), Buffer.from(computedV1))) {
+      const ts = parts.ts || parts.t;
+      const hash = parts.h1 || parts.v1;
+
+      // Replay protection: reject signatures older/newer than 5 minutes
+      if (ts && hash && Math.abs(Date.now() / 1000 - Number(ts)) <= 300) {
+        const payloadToSign = `${ts}.${rawBody}`;
+        const computed = crypto.createHmac('sha256', secret).update(payloadToSign).digest('hex');
+        if (hash.length === computed.length && crypto.timingSafeEqual(Buffer.from(hash), Buffer.from(computed))) {
           return true;
         }
       }
@@ -135,7 +144,7 @@ export default async function handler(req, res) {
     return res.status(200).json({
       service: 'JurisTech Multi-Gateway Webhook Ingestion Service v3.0 (Atomic RPC)',
       status: 'ONLINE_STANDBY',
-      supportedProviders: ['paytabs', 'paymob', 'stripe'],
+      supportedProviders: ['paytabs', 'paymob', 'stripe', 'paddle', 'tap', 'gumroad'],
       idempotencyArchitecture: 'ATOMIC_POSTGRESQL_TRANSACTION (Dual-Layer Cache + Database RPC)',
       cachedEventsCount: processedEventsCache.size,
       timestamp,
@@ -148,11 +157,15 @@ export default async function handler(req, res) {
 
   try {
     const provider = (req.query?.provider || 'paytabs').toLowerCase();
-    if (!['paytabs', 'paymob', 'stripe', 'gumroad'].includes(provider)) {
+    if (!['paytabs', 'paymob', 'stripe', 'gumroad', 'paddle', 'tap'].includes(provider)) {
       return res.status(400).json({ error: 'Unsupported payment provider' });
     }
     const body = req.body || {};
-    const signature = req.headers['x-paytabs-signature'] || req.headers['stripe-signature'] || req.headers['signature'] || '';
+    const signature = req.headers['x-paytabs-signature'] ||
+                      req.headers['stripe-signature'] ||
+                      req.headers['paddle-signature'] ||
+                      req.headers['x-tap-signature'] ||
+                      req.headers['signature'] || '';
 
     // 1. Extract Event Identity & Payload Data
     const eventData = body.data || {};
