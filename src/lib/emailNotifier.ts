@@ -34,7 +34,7 @@ export async function dispatchReceiptEmail(payload: ReceiptNotificationPayload):
       body: JSON.stringify({
         transactionalType: 'RECEIPT_NOTIFICATION',
         to: payload.clientEmail,
-        bcc: [MANDATORY_ADMIN_COPY, OFFICIAL_ADMIN_EMAIL],
+        bcc: [OFFICIAL_ADMIN_EMAIL],
         adminCopy: MANDATORY_ADMIN_COPY,
         officialAdminCopy: OFFICIAL_ADMIN_EMAIL,
         subject: `[JurisTech Solutions] ${payload.planName} — إشعار رسمي (${payload.transactionId})`,
@@ -115,7 +115,7 @@ export async function dispatchConsultationBooking(payload: ConsultationBookingPa
       body: JSON.stringify({
         transactionalType: 'CONSULTATION_BOOKING',
         to: OFFICIAL_ADMIN_EMAIL,
-        bcc: [MANDATORY_ADMIN_COPY, OFFICIAL_ADMIN_EMAIL],
+        bcc: [OFFICIAL_ADMIN_EMAIL],
         adminCopy: MANDATORY_ADMIN_COPY,
         replyTo: payload.clientEmail,
         subject: `⚖️ [JurisTech Solutions] [Legal Consultation Booking] ${payload.advisorName} — ${payload.clientName} (${payload.companyName || 'Individual'})`,

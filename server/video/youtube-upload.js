@@ -267,6 +267,12 @@ export default async function handler(req, res) {
 
     // ── 3. Publish Video Metadata to YouTube ──────────────────────────────────
     if (action === 'publish_video' && req.method === 'POST') {
+      const authSecret = req.headers['x-cron-secret'] || req.query?.secret || req.headers['authorization']?.replace(/^Bearer\s+/i, '');
+      const expectedSecrets = [process.env.CRON_SECRET, process.env.ADMIN_SECRET_KEY].filter(Boolean);
+      if (expectedSecrets.length > 0 && !expectedSecrets.includes(authSecret)) {
+        return res.status(401).json({ success: false, error: 'Unauthorized: CRON_SECRET or ADMIN_SECRET_KEY required.' });
+      }
+
       const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
       const { title, description, tags, categoryId, slot } = body || {};
 

@@ -10,6 +10,7 @@
  *   - 6 Gulf Market (Saudi Arabia & UAE General Counsels & Managing Partners)
  */
 
+import crypto from 'crypto';
 import { processEmailDispatch } from '../send-email.js';
 
 export const config = {
@@ -24,68 +25,58 @@ const CORS_HEADERS = {
   'Content-Type': 'application/json',
 };
 
-// Permanent Historical Dispatched Contacts (Never re-contacted)
-const HISTORICAL_CONTACTS = new Set([
-  // Global First 5 (CAMP-FIRST5-MTUQ4RJQ)
-  'info@tamimi.com',
-  'partnerships@deel.com',
-  'enterprise@stripe.com',
-  'commercial@dpworld.com',
-  'contact@freshfields.com',
-  // Canada First 5 (CAMP-CANADA5-MTUQH5AV)
-  'pfeldberg@fasken.com',
-  'dleonard@mccarthy.ca',
-  'dbryce@osler.com',
-  'mcockburn@torys.com',
-  'bryson.stokes@blakes.com',
-  // UK First 5 (CAMP-UK5-MTVDV7S2)
-  'adrian.cartwright@cliffordchance.com',
-  'aedamar.comiskey@linklaters.com',
-  'herve.ekue@aoshearman.com',
-  'roland.turnill@slaughterandmay.com',
-  'jeremy.walden@hsfkramer.com',
-  // Shadow Day 1 — SHADOW-BATCH-DAY01-20260910
-  'jon.ballis@kirkland.com',
-  'abdulaziz.albosaily@clydeco.com',
-  'waiking.ng@wongpartnership.com',
-  'renae.lattey@mallesons.com',
-  'thomas.meurer@hengeler.com',
-  // Shadow Day 2 — SHADOW-BATCH-DAY02-20260910
-  'richard.trobman@lw.com',
-  'bahmed@afridi-angell.com',
-  'jerry.koh@agasia.law',
-  'marc.kemp@allens.com.au',
-  'michaela.ulrici@nautadutilh.com',
-  // Shadow Day 3 — SHADOW-BATCH-DAY03-20260910
-  'bbecker@gibsondunn.com',
-  'mohammad.alrasheed@bakermckenzie.com',
-  'kim.beng.ng@rajahtann.com',
-  'kristin.stammer@hsfkramer.com',
-  'levraud@gide.com',
-  // Shadow Day 4 — SHADOW-BATCH-DAY04-20260910
-  'giuffrar@sullcrom.com',
-  'r.nakayama@nishimura.com',
-  'ralf.morshaeuser@gleisslutz.com',
-  'henrik.dock@msa.se',
-  'jonathan.green@maples.com',
-  // Shadow Day 5 — SHADOW-BATCH-DAY05-20260910
-  'sbarshay@paulweiss.com',
-  'takashi.akahane_grp@amt-law.com',
-  'kfullenweider@velaw.com',
-  'javier.fontcuberta@cuatrecasas.com',
-  'dennis.horeman@debrauw.com',
-  // Shadow Day 6 — SHADOW-BATCH-DAY06-20260910
-  'jeremy.london@skadden.com',
-  'susanne.schreiber@baerkarrer.ch',
-  'gaku.ishiwata@morihamada.com',
-  'eliana.catalano@belex.com',
-  'ecovacevich@claytonutz.com',
-  // Shadow Day 7 — SHADOW-BATCH-DAY07-20260910
-  'neil.barr@davispolk.com',
-  'thierry.calame@lenzstaehelin.com',
-  'didiermartin@bredinprat.com',
-  'salvador.sanchez-teran@uria.com',
-  'soichiro_fujiwara@nagashima.com',
+// Permanent Historical Dispatched Contacts Hashed (GDPR/PECR Compliant — Zero Plaintext PII in Repository)
+const HISTORICAL_SUPPRESSION_HASHES = new Set([
+  '2fcd9191ff707834c517532ad95243800f52281ed1cac1f2e665ab52600f9ad9',
+  '57a64c4124f604f65a0167f67e2e5b82d94df2f61c25456f6b3aed71d47df99e',
+  '541e3b81abb36e00b49d3ea1a72bbf1269e8fbf7607902f375d6736354dad654',
+  '383e029001f06484a5e9387fdb9a9b79af7ed1e8dc16cf85b9fbb27f1f76ad3b',
+  'b22b4ec27ff58d5eb5acabf989baa8fc8fb437798fbd42843265c52be8389b02',
+  '103475fedf1ec461fe1b68bbcc4901d56e1b001dda705afb142ac30c84d0965e',
+  '9483790aa5d145124d08d51825fc20b3c6900b582860189bcd6c451b892dabe2',
+  'bef0ce61e43fcb6103f7a4b7d742679daf9972cb89e63bd7c063880b8d10d9c6',
+  'd2a22e3036d198507fe56f07c1958bec205dd0006fb6aaf093f294c657f7982b',
+  '9708305ca0e32911c626fe6df9319366b8c7af35a914eee30cc0af870fbb035e',
+  '76912cf03ad997500a19245523da47935360b2afbe2dc4bcb9fb641823bcb5e9',
+  'b7f0d7aefc170c1915a2a9b1265baeab94ea58fc795ec3c0b2249da7a67ce8f4',
+  '7d6f80f32d4a49d1f834ae36f5ace2761f81153dd09d693df9ded9d27a85324d',
+  '0f578a6d5fc76bdeb4b764f82ec26082240a7f55c68a448b26e7a9bfade0c959',
+  'e58638ea145b8e4b5547db3dfbdefd78799f597f93baa5aac9989087bf546e78',
+  '66425683e4af6b7c5f8596ed8c550620c8a1b3b86505504ad938694d2a9930b2',
+  'c97164c33c9519721a841f7f140ee8cf81569771d38ab244a6a1ec43a22ebc90',
+  '1e445346e8962c539eb9ef5dab48b91338a1030aa35a6eee213cbd64228097ab',
+  '22ae76c759871392ab09b16527052d1df97d1606fa9b40cfddbffa75e1b4687e',
+  '9f846ff975502c2cd0c1846e346340fcaee72c7224284ee4de49dc572796f798',
+  'be3d88c7d6a8494aa404afb500df36abd4af637f9c20eb1a8d767932706af6f5',
+  'be42890d2ae9536d254909c984f1029369958b52c3ad98c08523eda3cd8484a9',
+  'bd3091104547474da4e9c073e31fa8f937e0eb6c13ae164f7e922b9e692b3295',
+  '9d5631f23028f8a0a5e35825be6d635229c14a3c570c99c1c08149593d39c992',
+  '4b764077f9bf76c31534111f77eac8e153ffa465f4c20f894a71ebf7a1422e58',
+  '03da2ebb92308ef05211395f66886074460575a170d581b437713216e98a72a0',
+  'cc9081abdb4f1673c10bb9eab90edfc695a68dd0c4085dbb0d611c4c4518fe25',
+  '8cbbd43491277789e6d9e02221d214654677e29d59fdf6562049f8e7fe963a6f',
+  '7c1c5d36b5b3e8a4be9fc8dd4be52e5aa42f76e9a13b8fc038a42a81da53a906',
+  'e2a4313573443c48da454746180e900805342abfeb04a2eb4df371f72a87605f',
+  'a2412a690ca925a930ae283d9209b6b1cafacdd751c815caa075ca62d5472d33',
+  'ead155a0cc7933cd2a46c14392eb4d5e216c8da5fe2e4bab916e413dfc4013c6',
+  '260d3e42ad1d4f74d0ac9c858bbdfc80e9ee50a4489c5c2e6a0d0b31a843092b',
+  '5602743c20257d5683b1b8d694efebe591e0e6c235f4e6706df775392d919d9f',
+  '36cce2840e31f31defe8fd82d51ed0c2b20754bc82cb6775cb8c627b9e1a192c',
+  'c99e0bf15ddaa3746e0b4d3b705224727d4d0dedd56f1947faf27c385aa74a64',
+  '5041b8443e2f04f3c29050037b61030bc9aa8229239a355890ed443c863c6608',
+  'd2ece50f01aef4e74a8b400971d4c1fad0b7c27eaf305b443bfc0ae8ca409471',
+  'a5c5ed831a43b83462c6cc8a6c8579a38fd19aeb66358543698a498034db9fca',
+  '5bf6469085054d1f758231425f13e24a8b5b480b2371455d60f70895d949828d',
+  '8db1cf4a674f0cf0972feaf6337aef283897a83f16d0b3116c96f8a7d02d2b58',
+  'd9377e0eaab9d267e00370dd7aec922efadce24399d1fd544aa1a3e0b742306f',
+  '86b53b2a20dc7928810eff1a409d5516e5d90a0d2a289054217ea9ac31f4ec26',
+  'c91e0c698fccede4e104e856bd8fa70fca4e192110e7b43a995aa2eae8441c1e',
+  'a5c3b10c0c790e41c90a4aad71b02b0516a9c071f6526f3681743b0723097923',
+  '849548bb55986b07bf621a586d6358818502f0143e53f76cb0938f43e190e552',
+  '5b4b8de2270cbf8f292063d79b032dcda174a44861883656f62ee3257417a822',
+  '8632c90baf5c2d7fd85b29bc16676358bde0f9415a3c30d56a0bab6a7b65cfc0',
+  'd91c4d4667e745d3fa773c12799144819af57fbf4792d71752ffc32b3a0b1bdc',
+  '5ad101ab13217f34718620191a660e8d5a9a7ece7b5b96645c855efa3f6e743d',
 ]);
 
 const FABRICATED_DOMAINS = new Set([
@@ -582,10 +573,13 @@ export default async function handler(req, res) {
     const contactedSet = new Set();
     const contactedNamesSet = new Set();
 
-    for (const h of HISTORICAL_CONTACTS) {
-      suppressionSet.add(h.toLowerCase().trim());
-      contactedSet.add(h.toLowerCase().trim());
-    }
+    // Check suppression against DB sets and hashed historical suppression list
+    const isSuppressed = (email) => {
+      if (!email) return true;
+      const clean = email.toLowerCase().trim();
+      const hash = crypto.createHash('sha256').update(clean).digest('hex');
+      return suppressionSet.has(clean) || contactedSet.has(clean) || HISTORICAL_SUPPRESSION_HASHES.has(hash);
+    };
 
     // Load from Supabase suppression list if connected
     if (supabaseUrl && supabaseKey) {
@@ -661,8 +655,7 @@ export default async function handler(req, res) {
       for (const cq of countryQuotas) {
         const available = VERIFIED_REAL_EXECUTIVE_POOL.filter(
           (l) => cq.matcher(l) &&
-                 !suppressionSet.has(l.contactEmail.toLowerCase().trim()) &&
-                 !contactedSet.has(l.contactEmail.toLowerCase().trim()) &&
+                 !isSuppressed(l.contactEmail) &&
                  !contactedNamesSet.has(l.recipientName.toLowerCase().trim())
         );
         for (const lead of available.slice(0, cq.count)) {
@@ -676,8 +669,7 @@ export default async function handler(req, res) {
       // Default: 7 US + 7 Europe + 6 Gulf
       const availableUS = VERIFIED_REAL_EXECUTIVE_POOL.filter(
         (l) => l.market === 'US' &&
-               !suppressionSet.has(l.contactEmail.toLowerCase().trim()) &&
-               !contactedSet.has(l.contactEmail.toLowerCase().trim()) &&
+               !isSuppressed(l.contactEmail) &&
                !contactedNamesSet.has(l.recipientName.toLowerCase().trim())
       );
       for (const lead of availableUS.slice(0, TARGET_US_COUNT)) {
@@ -688,8 +680,7 @@ export default async function handler(req, res) {
 
       const availableEU = VERIFIED_REAL_EXECUTIVE_POOL.filter(
         (l) => l.market === 'EU' &&
-               !suppressionSet.has(l.contactEmail.toLowerCase().trim()) &&
-               !contactedSet.has(l.contactEmail.toLowerCase().trim()) &&
+               !isSuppressed(l.contactEmail) &&
                !contactedNamesSet.has(l.recipientName.toLowerCase().trim())
       );
       for (const lead of availableEU.slice(0, TARGET_EU_COUNT)) {
@@ -700,8 +691,7 @@ export default async function handler(req, res) {
 
       const availableGCC = VERIFIED_REAL_EXECUTIVE_POOL.filter(
         (l) => l.market === 'GCC' &&
-               !suppressionSet.has(l.contactEmail.toLowerCase().trim()) &&
-               !contactedSet.has(l.contactEmail.toLowerCase().trim()) &&
+               !isSuppressed(l.contactEmail) &&
                !contactedNamesSet.has(l.recipientName.toLowerCase().trim())
       );
       for (const lead of availableGCC.slice(0, TARGET_GCC_COUNT)) {

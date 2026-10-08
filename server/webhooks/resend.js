@@ -27,7 +27,7 @@ function constantTimeEqual(a, b) {
 
 async function verifySvixSignature(headers, rawBody) {
   const secret = process.env.RESEND_WEBHOOK_SECRET;
-  if (!secret) return true; // If secret not yet configured, allow traffic to avoid dropping logs
+  if (!secret) return false; // Fail closed: reject unauthenticated webhook calls if secret not configured
 
   const id = headers['svix-id'] || headers.get?.('svix-id');
   const ts = headers['svix-timestamp'] || headers.get?.('svix-timestamp');

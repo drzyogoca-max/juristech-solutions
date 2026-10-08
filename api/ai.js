@@ -88,7 +88,7 @@ async function handleEdgeRequest(req) {
         result: result,
         response: result,
         intent: 'legal_inquiry',
-        source: 'Google Gemini AI',
+        source: result ? 'Google Gemini AI' : 'JurisTech Statutory Fallback Engine',
         timestamp: new Date().toISOString(),
       }),
       { status: 200, headers: CORS_HEADERS }
@@ -102,6 +102,8 @@ async function handleEdgeRequest(req) {
         result: fallbackResult,
         response: fallbackResult,
         intent: 'legal_inquiry',
+        source: 'JurisTech Statutory Fallback Engine',
+        disclaimer: 'AI model service temporarily unavailable; using verified statutory legal templates.',
       }),
       { status: 200, headers: CORS_HEADERS }
     );
@@ -148,7 +150,7 @@ async function handleNodeRequest(req, res) {
       result: result,
       response: result,
       intent: 'legal_inquiry',
-      source: 'Google Gemini AI',
+      source: result ? 'Google Gemini AI' : 'JurisTech Statutory Fallback Engine',
       timestamp: new Date().toISOString(),
     });
   } catch (err) {
@@ -159,22 +161,26 @@ async function handleNodeRequest(req, res) {
       result: fallbackResult,
       response: fallbackResult,
       intent: 'legal_inquiry',
+      source: 'JurisTech Statutory Fallback Engine',
+      disclaimer: 'AI model service temporarily unavailable; using verified statutory legal templates.',
     });
   }
 }
 
 // ── Shared Gemini AI Engine ───────────────────────────────────────────────────
 async function executeGeminiAI(userText, messages, activeLang, isAr, systemPrompt) {
-  const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
+  const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
   let result = '';
 
   if (GEMINI_API_KEY) {
     let chatMessages = [];
-    const sysInstruction = systemPrompt || `أنت "جوريس" — المستشار القانوني التنفيذي الذكي لمنصة JurisTech Solutions.
+    const baseInstruction = `أنت "جوريس" — المستشار القانوني التنفيذي الذكي لمنصة JurisTech Solutions.
 توجيهات صارمة:
 1. يمنع الجمل الإنشائية والقوالب العامة نهائياً.
 2. استدعِ المواد والأنظمة الرسمية المرعية والجهات الرقابية للدولة المطلوبة بالدقة المتناهية.
 3. قدم حلولاً عملية وخطوات تنفيذية استشارية ترتقي لمستوى صناع القرار والمدراء باللغة (${activeLang}).`;
+
+    const sysInstruction = systemPrompt ? `${baseInstruction}\n\n[سياق استشاري خاص]: ${systemPrompt.slice(0, 1000)}` : baseInstruction;
 
     chatMessages.push({ role: 'system', content: sysInstruction });
 

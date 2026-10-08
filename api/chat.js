@@ -375,11 +375,12 @@ Doğrudan sorunuza istinaden: **"${userMessage}"**, doğrudan yasal analiz aşa�
 }
 
 async function executeGeminiOrSynthesis(userMessage, messages, history, activeLang, isAr, customSystemPrompt) {
-  const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
+  const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
   let replyText = '';
 
   if (GEMINI_API_KEY) {
-    const systemInstruction = customSystemPrompt || SYSTEM_INSTRUCTIONS[activeLang] || SYSTEM_INSTRUCTIONS.en;
+    const baseInstruction = SYSTEM_INSTRUCTIONS[activeLang] || SYSTEM_INSTRUCTIONS.en;
+    const systemInstruction = customSystemPrompt ? `${baseInstruction}\n\n[سياق استشاري خاص]: ${customSystemPrompt.slice(0, 1000)}` : baseInstruction;
     const modelConfirm = MODEL_CONFIRMATIONS[activeLang] || MODEL_CONFIRMATIONS.en;
 
     let contents = [];

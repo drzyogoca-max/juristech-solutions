@@ -1,5 +1,5 @@
-const BASE_URL = 'https://www.juristech.solutions';
-const CRON_SECRET = 'jt_live_cron_9f8e7d6c5b4a3210fe_2026';
+const BASE_URL = process.env.BASE_URL || 'https://www.juristech.solutions';
+const CRON_SECRET = process.env.CRON_SECRET || '';
 
 async function run() {
   console.log('========================================================================');

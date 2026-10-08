@@ -306,7 +306,7 @@ ${contextSnippet}
 5. **Optimized Counter-Clause**: صياغة بند بديل محصن قانونياً، عادل، ومحمي للشركات (B2B Bulletproof Clause).`;
 
   // ── 7. Gemini Execution with Strict Fail-Closed Guarantee ───────────────────
-  const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
+  const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
   if (!GEMINI_API_KEY) {
     console.error('[Forensic Inspector Engine] Fail-closed: missing GEMINI_API_KEY');
     return {

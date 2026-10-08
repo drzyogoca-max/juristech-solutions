@@ -77,10 +77,10 @@ let _quotaCache = null; // { allowed, sent, remaining, cachedAt, day }
 
 async function checkDailyQuota() {
   const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
-  const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+  const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!SUPABASE_URL || !SUPABASE_KEY) {
-    console.warn('[RateLimit] Supabase not configured, skipping daily quota check.');
+    console.warn('[RateLimit] Supabase service role key not configured, skipping daily quota check.');
     return { allowed: true, sent: 0, remaining: DAILY_EMAIL_LIMIT };
   }
 
@@ -143,7 +143,7 @@ function invalidateQuotaCache() {
 
 async function recordEmailDispatch(targetEmail, subject, provider) {
   const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
-  const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+  const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!SUPABASE_URL || !SUPABASE_KEY) return;
 

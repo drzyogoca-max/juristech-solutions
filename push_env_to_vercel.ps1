@@ -1,7 +1,12 @@
-param()
+param(
+  [string]$SUPABASE_URL = $env:SUPABASE_URL,
+  [string]$SUPABASE_ANON_KEY = $env:SUPABASE_ANON_KEY
+)
 
-$SUPABASE_URL = "https://wavqqcbssukoxzkegozv.supabase.co"
-$SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndhdnFxY2Jzc3Vrb3h6a2Vnb3p2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMyMTk5NDksImV4cCI6MjA5ODc5NTk0OX0.ZE5U7El3wSIYb8E34Xpc-V6tV3QewBaQ_MnP4PyRgoY"
+if (-not $SUPABASE_URL -or -not $SUPABASE_ANON_KEY) {
+  Write-Error "SUPABASE_URL and SUPABASE_ANON_KEY environment variables or parameters are required."
+  exit 1
+}
 
 Write-Host "Adding VITE_SUPABASE_URL to production..." -ForegroundColor Cyan
 echo $SUPABASE_URL | npx vercel env add VITE_SUPABASE_URL production 2>&1

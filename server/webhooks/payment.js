@@ -7,6 +7,7 @@
  */
 
 import crypto from 'crypto';
+import { processEmailDispatch } from '../send-email.js';
 
 export const config = {
   runtime: 'nodejs',
@@ -14,6 +15,18 @@ export const config = {
 
 // Layer 1: In-Memory Fast De-duplication Cache (Process-Local Optimization)
 const processedEventsCache = new Set();
+
+// Approximate conversion rates to USD for multi-currency validation
+const FX_RATES_TO_USD = {
+  USD: 1.0,
+  EUR: 1.08,
+  GBP: 1.30,
+  AED: 0.272,
+  SAR: 0.267,
+  QAR: 0.275,
+  KWD: 3.26,
+  OMR: 2.60,
+};
 
 // Allowed strict payment state machine transitions (Prevents out-of-order state regression)
 export const ALLOWED_STATE_TRANSITIONS = {
@@ -93,10 +106,10 @@ async function executeAtomicWebhookTransaction(params) {
   }
 }
 
-function verifyWebhookSignature(provider, body, signature, secret) {
+function verifyWebhookSignature(provider, body, signature, secret, rawBodyString) {
   if (!secret || !signature) return false;
 
-  const rawBody = typeof body === 'string' ? body : JSON.stringify(body);
+  const rawBody = rawBodyString || (typeof body === 'string' ? body : JSON.stringify(body));
 
   // 1. Direct hex HMAC-SHA256 (PayTabs & Standard Gateways)
   try {
@@ -196,7 +209,8 @@ export default async function handler(req, res) {
       return res.status(401).json({ error: 'Unauthorized: Missing webhook signature header' });
     }
 
-    const isSignatureValid = verifyWebhookSignature(provider, body, signature, webhookSecret);
+    const rawBodyString = req.rawBody || (typeof req.body === 'string' ? req.body : null);
+    const isSignatureValid = verifyWebhookSignature(provider, body, signature, webhookSecret, rawBodyString);
     if (!isSignatureValid) {
       console.error(`[Webhook Security] Invalid signature rejected for provider: ${provider}`);
       return res.status(401).json({ error: 'Unauthorized: Invalid webhook signature' });
@@ -215,7 +229,9 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Missing customer email' });
     }
 
-    const planTier = (customData.planTier || body.plan_tier || body.plan_id || 'startup').toLowerCase();
+    // Strictly validate plan tier without arbitrary unverified defaults
+    const candidateTier = (customData.planTier || body.plan_tier || body.plan_id || eventData.plan_tier || 'startup').toLowerCase().trim();
+    const planTier = candidateTier in PLAN_PRICES ? candidateTier : 'startup';
 
     let amountReceived = 49.00;
     if (eventData.details?.totals?.total) {
@@ -228,14 +244,15 @@ export default async function handler(req, res) {
     const subscriptionId = eventData.subscription_id || (eventType.startsWith('subscription') ? eventData.id : null) || body.subscription_id || null;
     const paymentId = eventData.id || body.payment_id || body.tran_ref || eventId;
 
-    // 5. Server-Side Price & Currency Validation (Anti-Tampering)
-    const expectedPrice = PLAN_PRICES[planTier] || 49.00;
-    const isAmountValid = amountReceived === 0 || Math.abs(amountReceived - expectedPrice) < 0.01;
+    // 5. Server-Side Price & Currency Validation (Anti-Tampering with multi-currency FX conversion)
+    const expectedPriceUSD = PLAN_PRICES[planTier] || 49.00;
+    const fxRate = FX_RATES_TO_USD[currency] || 1.0;
+    const normalizedAmountUSD = amountReceived * fxRate;
+    const isAmountValid = amountReceived === 0 || Math.abs(normalizedAmountUSD - expectedPriceUSD) <= (expectedPriceUSD * 0.08 + 0.5);
 
-    // ENFORCE the amount (it was computed but never used, so any signed event activated the plan at full price).
     const amountProvided = Boolean(eventData.details?.totals?.total || body.amount);
-    if (amountProvided && currency === 'USD' && !isAmountValid) {
-      console.error(`[Webhook Security] Amount mismatch for plan "${planTier}": received ${amountReceived} ${currency}, expected ${expectedPrice} USD. Event ${compositeEventKey} rejected.`);
+    if (amountProvided && !isAmountValid) {
+      console.error(`[Webhook Security] Amount mismatch for plan "${planTier}": received ${amountReceived} ${currency} (~$${normalizedAmountUSD.toFixed(2)} USD), expected ~$${expectedPriceUSD} USD. Event ${compositeEventKey} rejected.`);
       return res.status(422).json({ error: 'Payment amount does not match the plan price', eventId, provider });
     }
 
@@ -246,7 +263,7 @@ export default async function handler(req, res) {
       eventType,
       customerEmail,
       planTier,
-      amount: expectedPrice,
+      amount: expectedPriceUSD,
       currency,
       subscriptionId,
       paymentId,
@@ -263,6 +280,34 @@ export default async function handler(req, res) {
     }
 
     console.log(`[Webhook Atomic Success] Provider: ${provider} | Event: ${eventType} | Plan: ${planTier} | DB-Backed: ${atomicResult.isDatabaseBacked}`);
+
+    // 7. Dispatch Official Activation & Receipt Email from Server Backend
+    try {
+      const emailSubject = `[JurisTech Solutions] Official Receipt & License Activation (${planTier.toUpperCase()})`;
+      const emailText = `Your payment of ${amountReceived} ${currency} for the ${planTier.toUpperCase()} Plan has been verified and your subscription is active. Transaction ID: ${eventId}.`;
+      const emailHtml = `
+        <div style="font-family: Arial, sans-serif; padding: 25px; background: #0f172a; color: #f8fafc; border-radius: 12px; border: 1px solid #D4AF37;">
+          <h2 style="color: #D4AF37; margin-top: 0;">JurisTech Solutions ⚖️</h2>
+          <h3 style="color: #10B981;">Official Payment Receipt & Subscription Activation</h3>
+          <p>Thank you for subscribing to <strong>JurisTech Solutions</strong>.</p>
+          <hr style="border: 0; border-top: 1px solid #334155; margin: 15px 0;" />
+          <p><strong>Plan:</strong> ${planTier.toUpperCase()}</p>
+          <p><strong>Amount:</strong> ${amountReceived} ${currency}</p>
+          <p><strong>Transaction ID:</strong> ${eventId}</p>
+          <p><strong>Provider:</strong> ${provider.toUpperCase()}</p>
+          <p><strong>Account:</strong> ${customerEmail}</p>
+          <hr style="border: 0; border-top: 1px solid #334155; margin: 15px 0;" />
+          <p style="font-size: 13px; color: #94a3b8;">
+            Access your sovereign legal tools: <a href="https://www.juristech.solutions/dashboard" style="color: #D4AF37;">Dashboard</a><br/>
+            For inquiries, contact support@juristech.solutions or founder@juristech.solutions.
+          </p>
+        </div>
+      `;
+      await processEmailDispatch(customerEmail, emailSubject, emailText, emailHtml, 'founder@juristech.solutions', true);
+      console.log(`[Webhook Receipt Sent] Dispatched official confirmation to ${customerEmail}`);
+    } catch (emailErr) {
+      console.warn('[Webhook Receipt Warning] Could not dispatch confirmation email:', emailErr.message);
+    }
 
     // Mark event as processed in local memory cache
     processedEventsCache.add(compositeEventKey);

@@ -31,15 +31,20 @@ export default async function handler(req) {
   const erpSecret = req.headers.get('x-erp-signature') || req.headers.get('x-webhook-secret') || '';
   const expectedSecret = process.env.ERP_WEBHOOK_SECRET || process.env.ADMIN_SECRET_KEY || '';
 
-  if (expectedSecret) {
-    const bearer = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : authHeader;
-    const isValid = bearer === expectedSecret || erpSecret === expectedSecret;
-    if (!isValid) {
-      return new Response(JSON.stringify({ error: 'Unauthorized: invalid or missing ERP webhook credentials' }), {
-        status: 401,
-        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
-      });
-    }
+  if (!expectedSecret) {
+    return new Response(JSON.stringify({ error: 'Service Unavailable: ERP webhook secret not configured' }), {
+      status: 503,
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+    });
+  }
+
+  const bearer = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : authHeader;
+  const isValid = bearer === expectedSecret || erpSecret === expectedSecret;
+  if (!isValid) {
+    return new Response(JSON.stringify({ error: 'Unauthorized: invalid or missing ERP webhook credentials' }), {
+      status: 401,
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+    });
   }
 
   try {

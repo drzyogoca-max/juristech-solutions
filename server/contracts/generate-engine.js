@@ -298,7 +298,7 @@ async function executeContractGeneration({
   const effectiveArbitration = requestedArbitration || jurProfile.arbitrationCenterAr;
   const niche = matchNicheTopic(contractType + ' ' + partiesData);
 
-  const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
+  const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
   let fullContractText = '';
 
   const systemInstructions = {

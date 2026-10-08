@@ -1,10 +1,13 @@
-name: LegalShield Quality Assurance & Security Pipeline
+name: JurisTech Solutions Quality Assurance & Security Pipeline
 
 on:
   push:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+
+permissions:
+  contents: read
 
 jobs:
   quality-audit:
@@ -24,7 +27,10 @@ jobs:
       - name: Install Project Dependencies
         run: npm ci
 
-      - name: Run TypeScript & Production Build Checks
+      - name: Run TypeScript Type Check
+        run: npm run typecheck
+
+      - name: Run Production Build
         run: npm run build
 
       - name: Security & Dependency Audit

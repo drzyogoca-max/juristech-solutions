@@ -7,6 +7,7 @@
  */
 
 import crypto from 'crypto';
+import { processEmailDispatch } from '../send-email.js';
 
 export const config = {
   runtime: 'nodejs',
@@ -206,6 +207,33 @@ export default async function gumroadWebhookHandler(req, res) {
     if (processedGumroadSales.size > 2000) {
       const first = processedGumroadSales.values().next().value;
       processedGumroadSales.delete(first);
+    }
+
+    // Dispatch Official Confirmation & Receipt to Customer
+    try {
+      const emailSubject = `[JurisTech Solutions] Official Receipt & License Activation (${planTier.toUpperCase()})`;
+      const emailText = `Your Gumroad payment of $${amountUSD} USD for the ${planTier.toUpperCase()} Plan has been verified and your subscription is active. Sale ID: ${saleId}.`;
+      const emailHtml = `
+        <div style="font-family: Arial, sans-serif; padding: 25px; background: #0f172a; color: #f8fafc; border-radius: 12px; border: 1px solid #D4AF37;">
+          <h2 style="color: #D4AF37; margin-top: 0;">JurisTech Solutions ⚖️</h2>
+          <h3 style="color: #10B981;">Official Payment Receipt & Subscription Activation</h3>
+          <p>Thank you for subscribing to <strong>JurisTech Solutions</strong> via Gumroad.</p>
+          <hr style="border: 0; border-top: 1px solid #334155; margin: 15px 0;" />
+          <p><strong>Plan:</strong> ${planTier.toUpperCase()}</p>
+          <p><strong>Amount:</strong> $${amountUSD} USD</p>
+          <p><strong>Sale Reference ID:</strong> ${saleId}</p>
+          <p><strong>Account:</strong> ${customerEmail}</p>
+          <hr style="border: 0; border-top: 1px solid #334155; margin: 15px 0;" />
+          <p style="font-size: 13px; color: #94a3b8;">
+            Access your sovereign legal tools: <a href="https://www.juristech.solutions/dashboard" style="color: #D4AF37;">Dashboard</a><br/>
+            Contact: founder@juristech.solutions
+          </p>
+        </div>
+      `;
+      await processEmailDispatch(customerEmail, emailSubject, emailText, emailHtml, 'founder@juristech.solutions', true);
+      console.log(`[Gumroad Receipt Sent] Dispatched official confirmation to ${customerEmail}`);
+    } catch (emailErr) {
+      console.warn('[Gumroad Receipt Warning] Could not dispatch confirmation email:', emailErr.message);
     }
 
     return res.status(200).json({
