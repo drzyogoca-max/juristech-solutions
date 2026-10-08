@@ -519,6 +519,96 @@ export const VERIFIED_REAL_EXECUTIVE_POOL = [
     industry: 'Commercial Energy & Corporate Governance in Iraq',
     customPitchEn: 'Commercial procurement risk mitigation, cross-border corporate compliance, and bilingual contract architecture.',
   },
+
+  // ── Canada (Canadian Corporate Leaders & Premier Law Firms) ──
+  {
+    id: 'ca-exec-01',
+    companyName: 'Stikeman Elliott LLP',
+    contactEmail: 'jsinger@stikeman.com',
+    recipientName: 'Jeffrey Singer',
+    recipientTitle: 'Chair of the Firm',
+    jurisdiction: 'Canada',
+    country: 'Canada',
+    market: 'CA',
+    industry: 'Canadian Corporate M&A & Cross-Border Transactions',
+    customPitchEn: 'Canadian Business Corporations Act (CBCA) & cross-border US-Canada deal risk auditing with instantaneous liability cap verification and zero-data-retention security protocols.',
+  },
+  {
+    id: 'ca-exec-02',
+    companyName: 'Bennett Jones LLP',
+    contactEmail: 'husseyd@bennettjones.com',
+    recipientName: 'Dominique Hussey',
+    recipientTitle: 'Vice Chair & Managing Partner',
+    jurisdiction: 'Canada',
+    country: 'Canada',
+    market: 'CA',
+    industry: 'Energy, Infrastructure & Cross-Border Corporate Law',
+    customPitchEn: 'Multi-jurisdictional Canadian provincial commercial agreement risk scoring and automated indemnification cap verification in sub-15-minute cycles.',
+  },
+  {
+    id: 'ca-exec-03',
+    companyName: 'Goodmans LLP',
+    contactEmail: 'dlastman@goodmans.ca',
+    recipientName: 'Dale Lastman',
+    recipientTitle: 'Chair of the Firm',
+    jurisdiction: 'Canada',
+    country: 'Canada',
+    market: 'CA',
+    industry: 'Canadian Capital Markets & Corporate Governance',
+    customPitchEn: 'Technology licensing indemnification shields, SaaS SLA risk analysis, and corporate governance compliance auditing.',
+  },
+
+  // ── Bahrain (Bahrain Commercial Leaders & Premier Law Firms) ──
+  {
+    id: 'bh-exec-01',
+    companyName: "Zu'bi & Partners Attorneys & Legal Consultants",
+    contactEmail: 'qzubilaw@zubilaw.com',
+    recipientName: "Qays H. Zu'bi",
+    recipientTitle: 'Senior Partner',
+    jurisdiction: 'Bahrain',
+    country: 'Bahrain',
+    market: 'GCC',
+    industry: 'Bahrain Commercial Banking & Corporate Transactions',
+    customPitchEn: 'Bahrain Commercial Companies Law (Decree 21/2001) & Central Bank of Bahrain (CBB) regulatory compliance auditing with instantaneous liability cap verification and zero-data-retention security.',
+  },
+  {
+    id: 'bh-exec-02',
+    companyName: 'Hassan Radhi & Associates',
+    contactEmail: 'info@hassanradhi.com',
+    recipientName: 'Hassan Ali Radhi',
+    recipientTitle: 'Senior Partner',
+    jurisdiction: 'Bahrain',
+    country: 'Bahrain',
+    market: 'GCC',
+    industry: 'Bahrain Dispute Resolution & Cross-Border GCC Commercial Law',
+    customPitchEn: 'Bahrain Civil Code & Commercial Law risk detection, cross-border GCC enforcement, and bilingual Arabic-English contract architecture.',
+  },
+  {
+    id: 'bh-exec-03',
+    companyName: 'Newton Legal Group',
+    contactEmail: 'info@newtonlegalgroup.com',
+    recipientName: 'Aamal Al Abbasi',
+    recipientTitle: 'Managing Partner',
+    jurisdiction: 'Bahrain',
+    country: 'Bahrain',
+    market: 'GCC',
+    industry: 'Bahrain Government Advisory & Commercial Energy',
+    customPitchEn: 'Cross-border GCC corporate finance, procurement contract risk shields, and statutory compliance benchmarking.',
+  },
+
+  // ── Enterprise Collaboration & B2B Partner: Wing Assistant ──
+  {
+    id: 'wing-exec-01',
+    companyName: 'Wing Assistant',
+    contactEmail: 'enterprise@wingassistant.com',
+    recipientName: 'Roland Polzin',
+    recipientTitle: 'Co-Founder & CMO',
+    jurisdiction: 'USA & Global',
+    country: 'USA',
+    market: 'US',
+    industry: 'Dedicated Legal & Executive Assistant Enterprise Services',
+    customPitchEn: 'Empowering Wing Assistant legal teams with JurisTech Sovereign AI Contract Risk Auditing, sub-15-minute multi-jurisdictional redlines, and automated indemnification checks under zero-data-retention security protocols.',
+  },
 ];
 
 export default async function handler(req, res) {
@@ -631,7 +721,20 @@ export default async function handler(req, res) {
 
     // 3. Assemble Daily 20 Candidates
     const selectedCandidates = [];
-    const isTargetSevenCountries = Boolean(
+    const isGlobalExpansionBatch = Boolean(
+      req.query?.targetBatch === 'GLOBAL_20' ||
+      body.targetBatch === 'GLOBAL_20' ||
+      req.query?.targetBatch === 'CANADA_USA_UK_KSA_KUWAIT_OMAN_BAHRAIN_WING' ||
+      body.targetBatch === 'CANADA_USA_UK_KSA_KUWAIT_OMAN_BAHRAIN_WING' ||
+      (req.query?.countries && /canda|canada|bahrain|wing/i.test(req.query.countries)) ||
+      (body.countries && /canda|canada|bahrain|wing/i.test(body.countries)) ||
+      (req.query?.targetCountries && /canda|canada|bahrain|wing/i.test(req.query.targetCountries)) ||
+      (body.targetCountries && /canda|canada|bahrain|wing/i.test(body.targetCountries)) ||
+      (req.query?.targetBatch && /canada|bahrain|wing/i.test(req.query.targetBatch)) ||
+      (body.targetBatch && /canada|bahrain|wing/i.test(body.targetBatch))
+    );
+
+    const isTargetSevenCountries = !isGlobalExpansionBatch && Boolean(
       req.query?.targetCountries ||
       body.targetCountries ||
       req.query?.countries ||
@@ -640,7 +743,33 @@ export default async function handler(req, res) {
       body.targetBatch === 'SEVEN_COUNTRIES'
     );
 
-    if (isTargetSevenCountries) {
+    if (isGlobalExpansionBatch) {
+      console.log('[Acquisition Engine Cron] Assembling customized 20-email batch for: Canada, USA, UK, KSA, Kuwait, Oman, Bahrain, and Wing Assistant');
+      const countryQuotas = [
+        { name: 'Canada', count: 3, matcher: (l) => l.country === 'Canada' || l.jurisdiction?.includes('Canada') || l.id?.startsWith('ca-') },
+        { name: 'USA', count: 3, matcher: (l) => (l.jurisdiction?.includes('USA') || l.market === 'US') && !l.companyName?.includes('Wing') && l.id?.startsWith('us-') },
+        { name: 'UK', count: 3, matcher: (l) => (l.jurisdiction?.includes('United Kingdom') || l.jurisdiction?.includes('UK')) && l.id?.startsWith('eu-') },
+        { name: 'KSA', count: 3, matcher: (l) => (l.jurisdiction?.includes('Saudi') || l.country === 'KSA' || l.country === 'Saudi Arabia') && !l.jurisdiction?.includes('Kuwait') && !l.companyName?.includes('Tamimi') },
+        { name: 'Kuwait', count: 3, matcher: (l) => l.jurisdiction?.includes('Kuwait') || l.country === 'Kuwait' },
+        { name: 'Oman', count: 2, matcher: (l) => l.jurisdiction?.includes('Oman') || l.country === 'Oman' },
+        { name: 'Bahrain', count: 2, matcher: (l) => l.country === 'Bahrain' || l.jurisdiction?.includes('Bahrain') || l.id?.startsWith('bh-') },
+        { name: 'Wing Assistant', count: 1, matcher: (l) => l.companyName?.includes('Wing') || l.contactEmail?.includes('wingassistant') },
+      ];
+
+      for (const cq of countryQuotas) {
+        const available = VERIFIED_REAL_EXECUTIVE_POOL.filter(
+          (l) => cq.matcher(l) &&
+                 !isSuppressed(l.contactEmail) &&
+                 !contactedNamesSet.has(l.recipientName.toLowerCase().trim())
+        );
+        for (const lead of available.slice(0, cq.count)) {
+          selectedCandidates.push({ ...lead, targetCountry: cq.name });
+          contactedNamesSet.add(lead.recipientName.toLowerCase().trim());
+          contactedSet.add(lead.contactEmail.toLowerCase().trim());
+        }
+      }
+      console.log(`[Acquisition Engine Cron] Global 20 Expansion Pool: ${selectedCandidates.length}/20 selected`);
+    } else if (isTargetSevenCountries) {
       console.log('[Acquisition Engine Cron] Assembling customized 20-email batch for 7 requested countries: Qatar, Oman, Kuwait, KSA, USA, UK, Germany');
       const countryQuotas = [
         { name: 'Qatar', count: 3, matcher: (l) => l.jurisdiction?.includes('Qatar') || l.country === 'Qatar' },

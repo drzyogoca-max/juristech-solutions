@@ -3,11 +3,11 @@ const CRON_SECRET = process.env.CRON_SECRET || '';
 
 async function run() {
   console.log('========================================================================');
-  console.log('  ORDER 1: EXECUTING 20 B2B OUTREACH EMAILS ACROSS 7 TARGET COUNTRIES  ');
-  console.log('  QATAR • OMAN • KUWAIT • KSA • USA • UK • GERMANY                     ');
+  console.log('  EXECUTING 20 B2B OUTREACH EMAILS ACROSS TARGET JURISDICTIONS          ');
+  console.log('  CANADA • USA • UK • KSA • KUWAIT • OMAN • BAHRAIN • WING ASSISTANT    ');
   console.log('========================================================================\n');
 
-  const url = `${BASE_URL}/api/cron?task=autonomous-outreach&targetBatch=SEVEN_COUNTRIES&secret=${CRON_SECRET}`;
+  const url = `${BASE_URL}/api/cron?task=autonomous-outreach&targetBatch=CANADA_USA_UK_KSA_KUWAIT_OMAN_BAHRAIN_WING&secret=${CRON_SECRET}`;
   console.log(`[Outreach] Triggering live acquisition dispatch: ${url}\n`);
 
   const res = await fetch(url);
