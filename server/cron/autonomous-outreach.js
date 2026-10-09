@@ -719,9 +719,13 @@ export default async function handler(req, res) {
       }
     }
 
-    // 3. Assemble Daily 20 Candidates
+    // 3. Assemble Daily 20 Candidates (Supported slots: MORNING = 10, EVENING = 10, or FULL = 20)
     const selectedCandidates = [];
-    const isGlobalExpansionBatch = Boolean(
+    const slot = (req.query?.slot || body.slot || '').toLowerCase();
+    const isMorningSlot = slot === 'morning';
+    const isEveningSlot = slot === 'evening';
+
+    const isGlobalExpansionBatch = !isMorningSlot && !isEveningSlot && Boolean(
       req.query?.targetBatch === 'GLOBAL_20' ||
       body.targetBatch === 'GLOBAL_20' ||
       req.query?.targetBatch === 'CANADA_USA_UK_KSA_KUWAIT_OMAN_BAHRAIN_WING' ||
@@ -734,7 +738,7 @@ export default async function handler(req, res) {
       (body.targetBatch && /canada|bahrain|wing/i.test(body.targetBatch))
     );
 
-    const isTargetSevenCountries = !isGlobalExpansionBatch && Boolean(
+    const isTargetSevenCountries = !isMorningSlot && !isEveningSlot && !isGlobalExpansionBatch && Boolean(
       req.query?.targetCountries ||
       body.targetCountries ||
       req.query?.countries ||
@@ -743,7 +747,51 @@ export default async function handler(req, res) {
       body.targetBatch === 'SEVEN_COUNTRIES'
     );
 
-    if (isGlobalExpansionBatch) {
+    if (isMorningSlot) {
+      console.log('[Acquisition Engine Cron] Assembling Morning Slot (10 emails: Canada, USA, UK)');
+      const countryQuotas = [
+        { name: 'Canada', count: 3, matcher: (l) => l.country === 'Canada' || l.jurisdiction?.includes('Canada') || l.id?.startsWith('ca-') },
+        { name: 'USA', count: 4, matcher: (l) => (l.jurisdiction?.includes('USA') || l.market === 'US') && !l.companyName?.includes('Wing') && l.id?.startsWith('us-') },
+        { name: 'UK', count: 3, matcher: (l) => (l.jurisdiction?.includes('United Kingdom') || l.jurisdiction?.includes('UK')) && l.id?.startsWith('eu-') },
+      ];
+
+      for (const cq of countryQuotas) {
+        const available = VERIFIED_REAL_EXECUTIVE_POOL.filter(
+          (l) => cq.matcher(l) &&
+                 !isSuppressed(l.contactEmail) &&
+                 !contactedNamesSet.has(l.recipientName.toLowerCase().trim())
+        );
+        for (const lead of available.slice(0, cq.count)) {
+          selectedCandidates.push({ ...lead, targetCountry: cq.name, slot: 'MORNING' });
+          contactedNamesSet.add(lead.recipientName.toLowerCase().trim());
+          contactedSet.add(lead.contactEmail.toLowerCase().trim());
+        }
+      }
+      console.log(`[Acquisition Engine Cron] Morning Batch Pool: ${selectedCandidates.length}/10 selected`);
+    } else if (isEveningSlot) {
+      console.log('[Acquisition Engine Cron] Assembling Evening Slot (10 emails: KSA, Kuwait, Oman, Bahrain, Wing Assistant)');
+      const countryQuotas = [
+        { name: 'KSA', count: 3, matcher: (l) => (l.jurisdiction?.includes('Saudi') || l.country === 'KSA' || l.country === 'Saudi Arabia') && !l.jurisdiction?.includes('Kuwait') && !l.companyName?.includes('Tamimi') },
+        { name: 'Kuwait', count: 3, matcher: (l) => l.jurisdiction?.includes('Kuwait') || l.country === 'Kuwait' },
+        { name: 'Oman', count: 2, matcher: (l) => l.jurisdiction?.includes('Oman') || l.country === 'Oman' },
+        { name: 'Bahrain', count: 1, matcher: (l) => l.country === 'Bahrain' || l.jurisdiction?.includes('Bahrain') || l.id?.startsWith('bh-') },
+        { name: 'Wing Assistant', count: 1, matcher: (l) => l.companyName?.includes('Wing') || l.contactEmail?.includes('wingassistant') },
+      ];
+
+      for (const cq of countryQuotas) {
+        const available = VERIFIED_REAL_EXECUTIVE_POOL.filter(
+          (l) => cq.matcher(l) &&
+                 !isSuppressed(l.contactEmail) &&
+                 !contactedNamesSet.has(l.recipientName.toLowerCase().trim())
+        );
+        for (const lead of available.slice(0, cq.count)) {
+          selectedCandidates.push({ ...lead, targetCountry: cq.name, slot: 'EVENING' });
+          contactedNamesSet.add(lead.recipientName.toLowerCase().trim());
+          contactedSet.add(lead.contactEmail.toLowerCase().trim());
+        }
+      }
+      console.log(`[Acquisition Engine Cron] Evening Batch Pool: ${selectedCandidates.length}/10 selected`);
+    } else if (isGlobalExpansionBatch) {
       console.log('[Acquisition Engine Cron] Assembling customized 20-email batch for: Canada, USA, UK, KSA, Kuwait, Oman, Bahrain, and Wing Assistant');
       const countryQuotas = [
         { name: 'Canada', count: 3, matcher: (l) => l.country === 'Canada' || l.jurisdiction?.includes('Canada') || l.id?.startsWith('ca-') },
@@ -1000,7 +1048,8 @@ If you do not wish to receive executive briefings, please reply with "UNSUBSCRIB
       campaignId,
       executionDate: todayStr,
       mode: ENGINE_MODE,
-      targetQuota: MAX_NEW_ACCOUNTS_PER_DAY,
+      slot: slot ? slot.toUpperCase() : 'FULL_BATCH',
+      targetQuota: selectedCandidates.length || (isMorningSlot || isEveningSlot ? 10 : MAX_NEW_ACCOUNTS_PER_DAY),
       totalEvaluated: selectedCandidates.length,
       totalDispatched: dispatchedCount,
       totalFailed: failedCount,

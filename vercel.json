@@ -260,12 +260,12 @@
   ],
   "crons": [
     {
-      "path": "/api/cron?task=youtube-morning",
-      "schedule": "0 12 * * *"
+      "path": "/api/cron?task=morning-broadcast",
+      "schedule": "0 9 * * *"
     },
     {
-      "path": "/api/cron?task=youtube-evening",
-      "schedule": "0 3 * * *"
+      "path": "/api/cron?task=evening-broadcast",
+      "schedule": "0 18 * * *"
     }
   ]
 }

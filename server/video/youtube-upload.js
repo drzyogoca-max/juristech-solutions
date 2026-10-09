@@ -73,13 +73,20 @@ async function getAccessTokenDetails() {
   }
 }
 
-async function getAccessToken() {
+export async function downloadVideo(url) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Failed to download video from ${url}: ${res.statusText}`);
+  const arrayBuffer = await res.arrayBuffer();
+  return Buffer.from(arrayBuffer);
+}
+
+export async function getAccessToken() {
   const res = await getAccessTokenDetails();
   return res.token;
 }
 
 /** Insert video metadata into YouTube (without actual video file upload) */
-async function insertVideoMetadata(accessToken, videoData) {
+export async function insertVideoMetadata(accessToken, videoData) {
   const { title, description, tags, categoryId = '27' } = videoData;
   const res = await fetch(
     'https://www.googleapis.com/youtube/v3/videos?part=snippet,status',
@@ -113,7 +120,7 @@ async function insertVideoMetadata(accessToken, videoData) {
 }
 
 /** Upload actual binary MP4 video to YouTube via Google Resumable Upload */
-async function uploadToYouTubeBinary(accessToken, videoBuffer, metadata) {
+export async function uploadToYouTubeBinary(accessToken, videoBuffer, metadata) {
   const initRes = await fetch('https://www.googleapis.com/upload/youtube/v3/videos?uploadType=resumable&part=snippet,status', {
     method: 'POST',
     headers: {

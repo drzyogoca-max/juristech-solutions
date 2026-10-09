@@ -67,26 +67,30 @@ export default async function handler(req, res) {
 
       // 1. Audit Subscriptions
       try {
-        const subRes = await fetch(`${SUPABASE_URL}/rest/v1/subscriptions?select=*&order=created_at.desc&limit=50`, { headers });
+        let subRes = await fetch(`${SUPABASE_URL}/rest/v1/subscriptions?select=*&order=created_at.desc&limit=50`, { headers });
+        if (!subRes.ok) {
+          subRes = await fetch(`${SUPABASE_URL}/rest/v1/subscriptions?select=*&limit=50`, { headers });
+        }
         if (subRes.ok) {
           const subs = await subRes.json();
-          auditData.sales.totalActiveSubscriptions = subs.filter(s => s.status === 'active' || s.status === 'trialing').length;
+          auditData.sales.totalActiveSubscriptions = (subs || []).filter(s => s.status === 'active' || s.status === 'trialing' || s.status === 'paid').length;
+          auditData.sales.allSubscriptions = (subs || []).slice(0, 20);
 
-          subs.forEach((sub) => {
-            const created = sub.created_at || '';
-            const amount = parseFloat(sub.amount || sub.price || 0) || 0;
+          (subs || []).forEach((sub) => {
+            const created = sub.created_at || sub.current_period_start || '';
+            const amount = parseFloat(sub.amount || sub.price || sub.price_usd || 0) || 0;
             const currency = sub.currency || 'USD';
 
             if (created >= todayStart) {
               auditData.sales.today.count += 1;
               auditData.sales.today.revenueUSD += amount;
               auditData.sales.today.currencyBreakdown[currency] = (auditData.sales.today.currencyBreakdown[currency] || 0) + amount;
-              auditData.sales.today.records.push({ id: sub.id, plan: sub.plan_id || sub.price_id, amount, currency, created_at: created });
+              auditData.sales.today.records.push({ id: sub.id, plan: sub.plan_tier || sub.plan_id || sub.price_id, amount, currency, created_at: created });
             } else if (created >= yesterdayStart && created < yesterdayEnd) {
               auditData.sales.yesterday.count += 1;
               auditData.sales.yesterday.revenueUSD += amount;
               auditData.sales.yesterday.currencyBreakdown[currency] = (auditData.sales.yesterday.currencyBreakdown[currency] || 0) + amount;
-              auditData.sales.yesterday.records.push({ id: sub.id, plan: sub.plan_id || sub.price_id, amount, currency, created_at: created });
+              auditData.sales.yesterday.records.push({ id: sub.id, plan: sub.plan_tier || sub.plan_id || sub.price_id, amount, currency, created_at: created });
             }
           });
         }
@@ -94,28 +98,71 @@ export default async function handler(req, res) {
         console.warn('[Audit Subscriptions Error]:', err.message);
       }
 
+      // 1b. Audit Payments
+      try {
+        let paymRes = await fetch(`${SUPABASE_URL}/rest/v1/payments?select=*&order=created_at.desc&limit=50`, { headers });
+        if (!paymRes.ok) paymRes = await fetch(`${SUPABASE_URL}/rest/v1/payments?select=*&limit=50`, { headers });
+        if (paymRes.ok) {
+          const payments = await paymRes.json();
+          auditData.sales.allPayments = (payments || []).slice(0, 20);
+        }
+      } catch (err) {
+        console.warn('[Audit Payments Error]:', err.message);
+      }
+
+      // 1c. Audit Billing Transactions
+      try {
+        let bTxRes = await fetch(`${SUPABASE_URL}/rest/v1/billing_transactions?select=*&limit=50`, { headers });
+        if (bTxRes.ok) {
+          const bTx = await bTxRes.json();
+          auditData.sales.allBillingTransactions = (bTx || []).slice(0, 20);
+        }
+      } catch (err) {
+        console.warn('[Audit Billing Transactions Error]:', err.message);
+      }
+
+      // 1d. Audit Customers
+      try {
+        let custRes = await fetch(`${SUPABASE_URL}/rest/v1/customers?select=*&limit=50`, { headers });
+        if (custRes.ok) {
+          const custs = await custRes.json();
+          auditData.sales.allCustomers = (custs || []).slice(0, 20);
+        }
+      } catch (err) {
+        console.warn('[Audit Customers Error]:', err.message);
+      }
+
       // 2. Audit Processed Webhook Payment Events
       try {
-        const payRes = await fetch(`${SUPABASE_URL}/rest/v1/processed_webhook_events?select=*&order=processed_at.desc&limit=50`, { headers });
+        let payRes = await fetch(`${SUPABASE_URL}/rest/v1/processed_webhook_events?select=*&order=processed_at.desc&limit=50`, { headers });
+        if (!payRes.ok) payRes = await fetch(`${SUPABASE_URL}/rest/v1/processed_webhook_events?select=*&limit=50`, { headers });
         if (payRes.ok) {
           const events = await payRes.json();
-          auditData.sales.recentTransactions = events.slice(0, 10).map(e => ({
-            event_id: e.event_id,
-            provider: e.provider,
-            processed_at: e.processed_at,
-          }));
+          auditData.sales.recentTransactions = (events || []).slice(0, 20);
         }
       } catch (err) {
         console.warn('[Audit Payment Webhooks Error]:', err.message);
       }
 
+      // 2b. Audit YouTube Queue
+      try {
+        let ytRes = await fetch(`${SUPABASE_URL}/rest/v1/youtube_queue?select=*&order=created_at.desc&limit=10`, { headers });
+        if (!ytRes.ok) ytRes = await fetch(`${SUPABASE_URL}/rest/v1/youtube_queue?select=*&limit=10`, { headers });
+        if (ytRes.ok) {
+          auditData.youtubeQueue = await ytRes.json();
+        }
+      } catch (err) {
+        console.warn('[Audit YouTube Queue Error]:', err.message);
+      }
+
       // 3. Audit Email Dispatches (Today & Yesterday)
       try {
-        const emailRes = await fetch(`${SUPABASE_URL}/rest/v1/email_dispatch_log?select=id,dispatched_at&dispatched_at=gte.${yesterdayStart}&order=dispatched_at.desc`, { headers });
+        const emailRes = await fetch(`${SUPABASE_URL}/rest/v1/email_dispatch_log?select=id,recipient,subject,dispatched_at&dispatched_at=gte.${yesterdayStart}&order=dispatched_at.desc`, { headers });
         if (emailRes.ok) {
           const emails = await emailRes.json();
           auditData.emails.dispatchedToday = emails.filter(e => e.dispatched_at >= todayStart).length;
           auditData.emails.dispatchedYesterday = emails.filter(e => e.dispatched_at >= yesterdayStart && e.dispatched_at < yesterdayEnd).length;
+          auditData.emails.recentLogs = emails.slice(0, 10);
         }
       } catch (err) {
         console.warn('[Audit Email Dispatch Error]:', err.message);

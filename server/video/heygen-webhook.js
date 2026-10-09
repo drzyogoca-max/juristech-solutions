@@ -90,7 +90,8 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).send('Method Not Allowed');
 
   try {
-    const body = req.body;
+    const rawBody = typeof req.body === 'string' ? (() => { try { return JSON.parse(req.body); } catch (e) { return {}; } })() : (req.body || {});
+    const body = rawBody;
     const eventType = body.event_type || body.eventType;
     if (eventType !== 'video.completed' && eventType !== 'completed' && body.status !== 'done') {
       return res.status(200).json({ status: 'ignored', reason: 'Not a completed event' });
@@ -139,6 +140,7 @@ export default async function handler(req, res) {
         },
         status: {
           privacyStatus: 'public',
+          selfDeclaredMadeForKids: false,
           madeForKids: false,
         }
       };
@@ -200,6 +202,7 @@ export default async function handler(req, res) {
       },
       status: {
         privacyStatus: 'public',
+        selfDeclaredMadeForKids: false,
         madeForKids: false
       }
     };

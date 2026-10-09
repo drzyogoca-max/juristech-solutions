@@ -13,6 +13,8 @@
 
 export const config = { runtime: 'nodejs', maxDuration: 300 };
 
+import { getAccessToken, uploadToYouTubeBinary, downloadVideo } from '../video/youtube-upload.js';
+
 const W = 1920, H = 1080;
 const WEBHOOK_URL = 'https://www.juristech.solutions/api/heygen-webhook';
 
@@ -455,6 +457,89 @@ export default async function handler(req, res) {
           duration_seconds: 65
         });
 
+        // ── Autonomous Direct Publishing: Poll Shotstack and Upload Directly to YouTube ──
+        console.log(`[YouTube Evening Cron] Polling Shotstack render status for ID: ${renderId}...`);
+        let videoMp4Url = null;
+        for (let attempt = 0; attempt < 25; attempt++) {
+          await new Promise(r => setTimeout(r, 3000));
+          let statusRes = await fetchJSON(`https://api.shotstack.io/edit/v1/render/${renderId}`, {
+            headers: { 'x-api-key': SHOTSTACK_KEY }
+          });
+          if (!statusRes.ok) {
+            statusRes = await fetchJSON(`https://api.shotstack.io/edit/stage/render/${renderId}`, {
+              headers: { 'x-api-key': SHOTSTACK_KEY }
+            });
+          }
+          const renderStatus = statusRes.data?.response?.status;
+          if (renderStatus === 'done' && statusRes.data?.response?.url) {
+            videoMp4Url = statusRes.data.response.url;
+            console.log(`[YouTube Evening Cron] Shotstack render complete: ${videoMp4Url}`);
+            break;
+          } else if (renderStatus === 'failed') {
+            console.error(`[YouTube Evening Cron] Shotstack render failed:`, statusRes.data?.response?.error);
+            break;
+          }
+        }
+
+        if (videoMp4Url) {
+          try {
+            const accessToken = await getAccessToken();
+            if (accessToken) {
+              const videoBuffer = await downloadVideo(videoMp4Url);
+              const ytTitle = (edition.title || 'Enterprise AI Contract Audit 18-Step Workflow').substring(0, 95);
+              const ytDesc = [
+                edition.desc || '',
+                '#LegalTech #AIContracts #CorporateLaw #JurisTech #ContractManagement',
+                'https://www.juristech.solutions | founder@juristech.solutions'
+              ].join('\n\n');
+              const ytTags = (edition.tags || ['JurisTech', 'LegalTech', 'CorporateLaw', 'ContractManagement', 'AI']).slice(0, 30);
+
+              const metadata = {
+                snippet: {
+                  title: ytTitle,
+                  description: ytDesc,
+                  tags: ytTags,
+                  categoryId: '27',
+                  defaultLanguage: edition.lang || 'en',
+                  defaultAudioLanguage: edition.lang || 'en',
+                },
+                status: {
+                  privacyStatus: 'public',
+                  selfDeclaredMadeForKids: false,
+                  madeForKids: false,
+                }
+              };
+
+              const ytResult = await uploadToYouTubeBinary(accessToken, videoBuffer, metadata);
+              console.log(`[YouTube Evening Cron] Autonomously published to channel: ${ytResult.videoId} (${ytResult.url})`);
+
+              await saveToQueue({
+                slot: 'EVENING',
+                scheduled_for: today.toISOString(),
+                status: 'published',
+                heygen_video_id: renderId,
+                youtube_video_id: ytResult.videoId,
+                video_url: ytResult.url,
+                title_ar: edition.lang === 'ar' ? edition.title : '',
+                title_en: edition.lang === 'en' ? edition.title : edition.title,
+                published_at: new Date().toISOString()
+              });
+
+              return res.status(200).json({
+                success: true,
+                slot: 'EVENING',
+                status: 'PUBLISHED_DIRECT_TO_YOUTUBE_CHANNEL',
+                videoId: ytResult.videoId,
+                youtubeUrl: ytResult.url,
+                title: ytTitle,
+                channelId: 'UC6gOnr7IeX5XRbpi3Oy-KvQ'
+              });
+            }
+          } catch (uploadErr) {
+            console.error('[YouTube Evening Cron] Direct channel upload error:', uploadErr.message);
+          }
+        }
+
         return res.status(200).json({
           success: true,
           slot: 'EVENING',
@@ -462,7 +547,7 @@ export default async function handler(req, res) {
           format: 'Full HD 1080p (16:9)',
           renderId,
           soundtrack: audioUrl ? 'ElevenLabs Voiceover' : 'Royalty-Free Corporate Score',
-          message: 'Enterprise 18-step video rendering started and scheduled for YouTube release.'
+          message: 'Enterprise 18-step video rendering started and queued for direct channel publish.'
         });
       } else {
         console.warn('[Shotstack Evening] Render call rejected, falling back to dialogue registration:', renderRes.status, renderRes.text);
