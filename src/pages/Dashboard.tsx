@@ -345,14 +345,91 @@ export default function Dashboard() {
       
       <div className="max-w-7xl mx-auto space-y-8 relative z-10 w-full max-w-full overflow-x-hidden">
 
+        {/* 🌟 EXECUTIVE TIER-1 HERO SECTION */}
+        <div className="relative rounded-3xl p-6 sm:p-10 lg:p-12 overflow-hidden border border-white/10 dark:border-white/10 bg-gradient-to-b from-[#0D1F3C]/90 via-[#071629]/95 to-[#020B1A] shadow-2xl backdrop-blur-2xl">
+          {/* Subtle Ambient Glow Effects */}
+          <div className="absolute -top-24 -right-24 w-96 h-96 bg-gradient-to-br from-amber-500/15 via-yellow-500/5 to-transparent rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-gradient-to-tr from-emerald-500/15 via-teal-500/5 to-transparent rounded-full blur-3xl pointer-events-none" />
+          
+          <div className="relative z-10 max-w-4xl mx-auto text-center space-y-6">
+            {/* Top Sovereign Authority Pill */}
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-amber-400/30 backdrop-blur-xl shadow-lg">
+              <Crown className="w-4 h-4 text-amber-400 shrink-0" />
+              <span className="text-xs font-black uppercase tracking-wider text-amber-300">
+                {l('المنظومة السيادية الأولى للذكاء الاصطناعي القانوني وتدقيق العقود', 'Sovereign AI Legal Intelligence & Enterprise Contract OS')}
+              </span>
+              <span className="hidden sm:inline-block w-1 h-1 rounded-full bg-amber-400/60" />
+              <span className="hidden sm:inline-block text-[11px] font-bold text-slate-300">
+                {l('15 ولاية تشريعية (الخليج، مصر، بريطانيا، أمريكا)', '15 Jurisdictions (GCC, UK, US, EU)')}
+              </span>
+            </div>
+
+            {/* Hero Main Heading */}
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.15]">
+              {l('احمِ استثماراتك وعقودك بالذكاء الاصطناعي ', 'Sovereign Legal Intelligence for ')}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500">
+                {l('السيادي فائق الدقة', 'High-Stakes Contracts')}
+              </span>
+            </h1>
+
+            {/* Executive Subtitle */}
+            <p className="text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed font-normal">
+              {l(
+                'تدقيق فوري لبنود المسؤولية غير المحدودة، الشروط الجزائية، وملاءمة الاختصاص القضائي عبر 15 نظاماً تشريعياً بتشفير بنكي AES-256 وبدون تدريب نماذج عامة على بياناتك.',
+                'Sub-second audit of unlimited liability traps, penalty clauses, and statutory alignment across 15+ legal frameworks with bank-grade AES-256 encryption and zero public training.'
+              )}
+            </p>
+
+            {/* Dual CTAs */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+              <button
+                onClick={() => scrollToSection('sec-studio')}
+                className="w-full sm:w-auto px-7 py-4 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-slate-950 font-black text-sm flex items-center justify-center gap-2.5 shadow-xl shadow-amber-500/25 active:scale-95 transition-all cursor-pointer"
+              >
+                <Zap className="w-4 h-4 text-slate-950 fill-current" />
+                <span>{l('⚡ ابدأ تدقيق عقدك الآن مجاناً (10 ثوانٍ)', '⚡ Try Free Sample Contract Audit (10s)')}</span>
+                <ArrowRight className={`w-4 h-4 text-slate-950 ${isRtl ? 'rotate-180' : ''}`} />
+              </button>
+
+              <button
+                onClick={() => scrollToSection('sec-cases')}
+                className="w-full sm:w-auto px-6 py-4 rounded-2xl bg-slate-900/80 hover:bg-slate-800 text-white border border-white/15 hover:border-amber-400/40 font-bold text-sm flex items-center justify-center gap-2 backdrop-blur-xl shadow-lg active:scale-95 transition-all cursor-pointer"
+              >
+                <Crown className="w-4 h-4 text-amber-400" />
+                <span>{l('💎 باقات الاشتراكات والأسعار (خصم 30%)', '💎 Retainer Packages (30% Discount)')}</span>
+              </button>
+            </div>
+
+            {/* Trust Badges Row */}
+            <div className="pt-4 grid grid-cols-2 sm:grid-cols-4 gap-3 border-t border-white/10 text-[11px] text-slate-300">
+              <div className="flex items-center justify-center gap-1.5 py-1">
+                <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span className="font-semibold">{l('تشفير بنكي AES-256', 'AES-256 Bank-Grade E2EE')}</span>
+              </div>
+              <div className="flex items-center justify-center gap-1.5 py-1">
+                <Scale className="w-4 h-4 text-amber-400 shrink-0" />
+                <span className="font-semibold">{l('تغطية 15 ولاية قضائية', '15+ Sovereign Frameworks')}</span>
+              </div>
+              <div className="flex items-center justify-center gap-1.5 py-1">
+                <Lock className="w-4 h-4 text-cyan-400 shrink-0" />
+                <span className="font-semibold">{l('خصوصية مطلقة للبيانات', 'Zero AI Data Retention')}</span>
+              </div>
+              <div className="flex items-center justify-center gap-1.5 py-1">
+                <Sparkles className="w-4 h-4 text-purple-400 shrink-0" />
+                <span className="font-semibold">{l('محرك Google AI Pro الفائق', 'Google AI Pro Ultra Core')}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* 📊 1. TELEMETRY & LIVE PERFORMANCE METRICS STRIP */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 font-sans">
           {statItems.map((item, idx) => {
             const Icon = item.icon;
             return (
-              <div key={idx} className={`p-3.5 rounded-2xl backdrop-blur-xl border ${item.bg} bg-white/90 dark:bg-slate-900/60 shadow-md space-y-1.5 transition-all hover:scale-[1.02]`}>
+              <div key={idx} className={`p-3.5 rounded-2xl backdrop-blur-xl border border-slate-200 dark:border-white/10 bg-white/90 dark:bg-[#0D1F3C]/80 hover:border-amber-400/30 shadow-md space-y-1.5 transition-all hover:scale-[1.02]`}>
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold text-slate-600 dark:text-slate-400 block truncate">{item.label}</span>
+                  <span className="text-[10px] font-bold text-slate-600 dark:text-slate-300 block truncate">{item.label}</span>
                   <div className={`p-1.5 rounded-lg bg-slate-100 dark:bg-slate-900/60 ${item.color}`}>
                     <Icon className="w-3.5 h-3.5" />
                   </div>
@@ -372,7 +449,7 @@ export default function Dashboard() {
         </div>
 
         {/* 🎛️ 3. INSTANT SECTION NAVIGATOR (SMOOTH SCROLL TO ALL 5 CORE SECTIONS) */}
-        <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-2xl p-2 border border-slate-200 dark:border-slate-800 flex items-center gap-2 overflow-x-auto no-scrollbar shadow-xl sticky top-4 z-40">
+        <div className="bg-white/90 dark:bg-[#0D1F3C]/95 backdrop-blur-2xl rounded-2xl p-2 border border-slate-200 dark:border-white/10 flex items-center gap-2 overflow-x-auto no-scrollbar shadow-xl sticky top-4 z-40">
           {[
             { targetId: 'sec-map', labelAr: '🗺️ الخريطة التفاعلية والأنظمة', labelEn: '🗺️ Global SaaS Map' },
             { targetId: 'sec-studio', labelAr: '⚡ استوديو العقود والتدقيق', labelEn: '⚡ Contract Studio' },
@@ -383,7 +460,7 @@ export default function Dashboard() {
             <button
               key={idx}
               onClick={() => scrollToSection(nav.targetId)}
-              className="flex-1 min-w-[170px] sm:min-w-[190px] py-2.5 px-3.5 rounded-xl text-xs font-bold transition-all text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800 bg-slate-100 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800/80 cursor-pointer shadow-sm active:scale-95"
+              className="flex-1 min-w-[170px] sm:min-w-[190px] py-2.5 px-3.5 rounded-xl text-xs font-bold transition-all text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-amber-300 hover:bg-slate-200 dark:hover:bg-slate-800/90 bg-slate-100 dark:bg-slate-950/70 border border-slate-200 dark:border-white/10 hover:border-amber-400/40 cursor-pointer shadow-sm active:scale-95"
             >
               <span>{l(nav.labelAr, nav.labelEn)}</span>
             </button>
@@ -679,112 +756,112 @@ export default function Dashboard() {
           </Suspense>
 
           {/* Subscriptions & Pricing Packages Gateway */}
-          <div className="card-lawtech-lux p-6 sm:p-10 rounded-3xl border border-sky-500/30 shadow-2xl space-y-8">
+          <div className="p-6 sm:p-10 rounded-3xl border border-white/10 dark:border-white/10 bg-gradient-to-b from-[#0D1F3C]/90 via-[#071629]/95 to-[#020B1A] shadow-2xl space-y-8 backdrop-blur-2xl">
             <div className="text-center max-w-3xl mx-auto space-y-3">
-              <span className="px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest bg-amber-500/15 text-amber-300 border border-amber-500/30 inline-flex items-center gap-1.5">
+              <span className="px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest bg-amber-500/15 text-amber-300 border border-amber-500/30 inline-flex items-center gap-1.5 shadow-sm">
                 <Crown className="w-4 h-4 text-amber-400" />
                 <span>{l('حزم الاشتراكات المخصومة بنسبة 30%', '30% Discounted Subscription Packages')}</span>
               </span>
-              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+              <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
                 {l('اختر الباقة المناسبة لمؤسستك وابدأ الاستشارة الفورية', 'Select Your Tier & Unlock Institutional Intelligence')}
               </h2>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-                {l('جميع الباقات مصممة لتوفير أقصى قدر من الكفاءة مع فتح آلي آمن عبر بوابة Binance Pay أو الحوالات المعتمدة أو إنستا باي.', 'All tiers feature zero-touch automated Binance Pay deployment, SWIFT & InstaPay processing.')}
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
+                {l('جميع الباقات مصممة لتوفير أقصى قدر من الكفاءة مع فتح آلي آمن عبر البطاقات الائتمانية و Apple Pay، بوابة Binance Pay، الحوالات المعتمدة SWIFT أو إنستا باي.', 'All tiers feature direct card/Apple Pay checkout, automated Binance Pay, SWIFT & InstaPay settlement.')}
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
               {/* Startup Tier ($49) */}
-              <div className="bg-white dark:bg-slate-900/90 p-6 rounded-3xl border border-sky-500/30 flex flex-col justify-between space-y-6 relative hover:border-sky-400 transition-all shadow-md dark:shadow-none">
+              <div className="bg-slate-900/80 dark:bg-[#0B1528]/80 p-6 sm:p-7 rounded-3xl border border-white/10 dark:border-white/10 flex flex-col justify-between space-y-6 relative hover:border-cyan-400/40 transition-all shadow-xl backdrop-blur-xl">
                 <div className="space-y-4">
-                  <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/30 inline-block">
-                    {l('باقة الشركات الصغرى', 'Startup Tier')}
+                  <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 inline-block">
+                    {l('باقة الشركات الصغرى والناشئة', 'Startup Tier')}
                   </span>
                   <div>
-                    <h3 className="text-xl font-bold text-slate-900 dark:text-white">{l('حزمة الشركات الناشئة', 'Micro / Startup')}</h3>
+                    <h3 className="text-xl font-bold text-white">{l('حزمة الشركات الناشئة', 'Micro / Startup')}</h3>
                     <div className="mt-2 flex items-baseline gap-1">
-                      <span className="text-3xl font-black text-sky-600 dark:text-sky-400">$49</span>
-                      <span className="text-xs text-slate-500 dark:text-slate-400">{l('/ شهرياً', '/ month')}</span>
-                      <span className="text-xs text-slate-400 dark:text-slate-500 line-through mr-2">$70</span>
+                      <span className="text-3xl sm:text-4xl font-black text-cyan-400 font-mono">$49</span>
+                      <span className="text-xs text-slate-400">{l('/ شهرياً', '/ month')}</span>
+                      <span className="text-xs text-slate-500 line-through mr-2 font-mono">$70</span>
                     </div>
                   </div>
-                  <ul className="space-y-2 text-xs text-slate-700 dark:text-slate-300">
+                  <ul className="space-y-2.5 text-xs text-slate-300">
                     <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-sky-400 shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                       <span>{l('مستشار Google Gemini Pro السيادي (7 لغات)', 'Google Gemini Pro Sovereign Advisor')}</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-sky-400 shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                       <span>{l('رفع وتدقيق حتى 10 عقود شهرياً (PDF, Word)', 'Up to 10 contract checks (PDF, Word)')}</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-sky-400 shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                       <span>{l('تصدير وثائق معتمدة بصيغ Word (.docx) و PDF', 'Certified Word (.docx) & PDF Export')}</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-sky-400 shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                       <span>{l('تغطية تشريعية إقليمية (السعودية، الإمارات، مصر، الأردن)', 'Regional Coverage (KSA, UAE, EG, JO)')}</span>
                     </li>
                   </ul>
                 </div>
                 <Link
                   to="/payment"
-                  className="w-full py-3.5 rounded-2xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-xs text-center transition-all shadow-lg active:scale-95 cursor-pointer"
+                  className="w-full py-3.5 rounded-2xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs text-center transition-all shadow-lg shadow-cyan-500/20 active:scale-95 cursor-pointer block"
                 >
                   {l('اشتراك باقة الصغرى ($49)', 'Subscribe Startup ($49)')}
                 </Link>
               </div>
 
-              {/* SME Tier ($139) */}
-              <div className="bg-slate-900/90 p-6 rounded-3xl border border-indigo-500/50 flex flex-col justify-between space-y-6 relative hover:border-indigo-400 transition-all shadow-xl ring-2 ring-indigo-500/30">
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-indigo-500 text-white text-[10px] font-black uppercase px-3 py-0.5 rounded-full shadow">
-                  {l('الأكثر طلباً', 'Most Popular')}
+              {/* SME Tier ($139) - Featured / Most Popular */}
+              <div className="bg-[#0D1F3C]/95 p-6 sm:p-7 rounded-3xl border-2 border-amber-400/60 flex flex-col justify-between space-y-6 relative hover:border-amber-300 transition-all shadow-2xl shadow-amber-500/10 ring-2 ring-amber-500/20 md:-translate-y-2 backdrop-blur-xl">
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-slate-950 text-[10px] font-black uppercase px-4 py-1 rounded-full shadow-lg">
+                  {l('⭐ الأكثر طلباً للشركات', '⭐ Most Popular Choice')}
                 </div>
-                <div className="space-y-4">
-                  <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 inline-block">
+                <div className="space-y-4 pt-1">
+                  <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase bg-amber-500/15 text-amber-300 border border-amber-500/30 inline-block">
                     {l('باقة الشركات المتوسطة والنمو', 'SME & Growth Tier')}
                   </span>
                   <div>
                     <h3 className="text-xl font-bold text-white">{l('حزمة الشركات المتوسطة', 'SMEs Package')}</h3>
                     <div className="mt-2 flex items-baseline gap-1">
-                      <span className="text-3xl font-black text-indigo-400">$139</span>
-                      <span className="text-xs text-slate-400">{l('/ شهرياً', '/ month')}</span>
-                      <span className="text-xs text-slate-500 line-through mr-2">$200</span>
+                      <span className="text-3xl sm:text-4xl font-black text-amber-400 font-mono">$139</span>
+                      <span className="text-xs text-slate-300">{l('/ شهرياً', '/ month')}</span>
+                      <span className="text-xs text-slate-500 line-through mr-2 font-mono">$200</span>
                     </div>
                   </div>
-                  <ul className="space-y-2 text-xs text-slate-300">
+                  <ul className="space-y-2.5 text-xs text-slate-200">
                     <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-indigo-400 shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                       <span>{l('محرك Google AI Pro السيادي (Gemini Ultra)', 'Google AI Pro Sovereign Core (Gemini Ultra)')}</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-indigo-400 shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                       <span>{l('وكلاء التفاوض الآلي + المحاكاة القضائية للنزاعات', 'Autonomous AI Negotiation & Court Simulation')}</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-indigo-400 shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                       <span>{l('رفع وتدقيق حتى 50 عقداً شهرياً مع تصدير Word و PDF', 'Up to 50 contracts/month with Word/PDF export')}</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-indigo-400 shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                       <span>{l('تغطية تشريعية لـ 9 دول (الخليج، بريطانيا، أمريكا، والاتحاد الأوروبي)', 'Full 9-Jurisdiction Statutory Coverage (GCC, UK, US, EU)')}</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-indigo-400 shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                       <span>{l('تشفير متقدم AES-256 والمصادقة الثنائية 2FA TOTP', 'Advanced AES-256 + 2FA TOTP Security')}</span>
                     </li>
                   </ul>
                 </div>
                 <Link
                   to="/payment"
-                  className="w-full py-3.5 rounded-2xl bg-indigo-500 hover:bg-indigo-400 text-white font-black text-xs text-center transition-all shadow-lg active:scale-95 cursor-pointer"
+                  className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-slate-950 font-black text-xs text-center transition-all shadow-xl shadow-amber-500/25 active:scale-95 cursor-pointer block"
                 >
                   {l('اشتراك باقة المتوسطة ($139)', 'Subscribe SME ($139)')}
                 </Link>
               </div>
 
               {/* Enterprise Tier ($349) */}
-              <div className="bg-slate-900/90 p-6 rounded-3xl border border-amber-500/50 flex flex-col justify-between space-y-6 relative hover:border-amber-400 transition-all shadow-xl">
+              <div className="bg-slate-900/80 dark:bg-[#0B1528]/80 p-6 sm:p-7 rounded-3xl border border-white/10 dark:border-white/10 flex flex-col justify-between space-y-6 relative hover:border-amber-400/40 transition-all shadow-xl backdrop-blur-xl">
                 <div className="space-y-4">
                   <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase bg-amber-500/10 text-amber-400 border border-amber-500/30 inline-block">
                     {l('باقة الكبرى والمؤسسات السيادية', 'Enterprise Sovereign Tier')}
@@ -792,37 +869,37 @@ export default function Dashboard() {
                   <div>
                     <h3 className="text-xl font-bold text-white">{l('حزمة الشركات الكبرى والمؤسسات', 'Enterprise Package')}</h3>
                     <div className="mt-2 flex items-baseline gap-1">
-                      <span className="text-3xl font-black text-amber-400">$349</span>
+                      <span className="text-3xl sm:text-4xl font-black text-amber-300 font-mono">$349</span>
                       <span className="text-xs text-slate-400">{l('/ شهرياً', '/ month')}</span>
-                      <span className="text-xs text-slate-500 line-through mr-2">$500</span>
+                      <span className="text-xs text-slate-500 line-through mr-2 font-mono">$500</span>
                     </div>
                   </div>
-                  <ul className="space-y-2 text-xs text-slate-300">
+                  <ul className="space-y-2.5 text-xs text-slate-300">
                     <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                       <span>{l('الاستحواذ الذكي التنبؤي M&A وتقييم صفقات EBITDA', 'Predictive M&A Intelligence & EBITDA Valuations')}</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                       <span>{l('كشف التزوير والاحتيال بالقياس النصي الحيوي (Forensic Fraud)', 'Stylometric Fraud & Tampering Forensics')}</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                       <span>{l('الامتثال التشريعي العابر للحدود (GDPR, EU AI Act, PDPL)', 'Cross-Border Statutory Compliance & Sanctions')}</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                       <span>{l('عقود غير محدودة + خزنة E2EE مشفرة + تكامل كامل ERP', 'Unlimited contracts, E2EE Vault & Full ERP APIs')}</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                       <span>{l('دعم تنفيذي مباشر 24/7 مع المستشار القانوني د. محمد مصطفى', '24/7 Dedicated Senior Counsel Concierge (Dr. Mohammad Mustafa)')}</span>
                     </li>
                   </ul>
                 </div>
                 <Link
                   to="/payment"
-                  className="w-full py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs text-center transition-all shadow-lg active:scale-95 cursor-pointer"
+                  className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs text-center transition-all shadow-lg active:scale-95 cursor-pointer block"
                 >
                   {l('اشتراك باقة المؤسسات ($349)', 'Subscribe Enterprise ($349)')}
                 </Link>

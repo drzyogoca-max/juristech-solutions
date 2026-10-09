@@ -358,25 +358,28 @@ export default function PaymentPage() {
       )}
 
       {/* Hero Header */}
-      <div className="relative py-14 border-b border-slate-200 dark:border-slate-800/80 overflow-hidden bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-slate-900 dark:via-slate-950 dark:to-slate-950">
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="relative py-14 border-b border-white/10 overflow-hidden bg-gradient-to-b from-[#0D1F3C]/90 via-[#071629]/95 to-[#020B1A]">
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none" />
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white dark:bg-slate-900 border border-amber-500/40 shadow-sm">
-            <Crown className="w-4 h-4 text-amber-500" />
-            <span className="text-xs font-black uppercase tracking-widest text-amber-600 dark:text-amber-300">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-amber-400/40 shadow-sm backdrop-blur-xl">
+            <Crown className="w-4 h-4 text-amber-400" />
+            <span className="text-xs font-black uppercase tracking-widest text-amber-300">
               {l('باقات الاشتراكات والخدمات السيادية لعام 2026', 'Sovereign Retainer Tiers 2026')}
             </span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
-            {l('باقات الاشتراك وتفعيل ', 'Sovereign Retainer Plans & ')}<span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 via-sky-500 to-indigo-600 dark:from-cyan-400 dark:via-sky-300 dark:to-indigo-400">{l('الخدمات الذكية السيادية', 'Enterprise Intelligence')}</span>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
+            {l('باقات الاشتراك وتفعيل ', 'Sovereign Retainer Plans & ')}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500">
+              {l('الخدمات الذكية السيادية', 'Enterprise Intelligence')}
+            </span>
           </h1>
 
-          <p className="text-slate-600 dark:text-slate-300 max-w-3xl mx-auto text-xs sm:text-sm leading-relaxed font-medium">
+          <p className="text-slate-300 max-w-3xl mx-auto text-xs sm:text-sm leading-relaxed font-normal">
             {l(
-              'اختر الباقة المناسبة لمؤسستك واستفد من محرك Google AI Pro السيادي، الاستحواذ التنبؤي M&A، التفاوض الآلي، والمحاكاة القضائية مع تسوية معتمدة عبر Binance Pay، التحويلات البنكية SWIFT، أو إنستا باي.',
+              'اختر الباقة المناسبة لمؤسستك واستفد من محرك Google AI Pro السيادي، الاستحواذ التنبؤي M&A، التفاوض الآلي، والمحاكاة القضائية مع تسوية فورية عبر البطاقات الائتمانية و Apple Pay، بوابة Binance Pay، التحويلات البنكية SWIFT، أو إنستا باي.',
               'Empower your enterprise with Google AI Pro Sovereign Core, predictive M&A valuations, autonomous negotiation, and virtual dispute simulation with verified institutional settlement.'
             )}
           </p>
@@ -391,15 +394,15 @@ export default function PaymentPage() {
             return (
               <div
                 key={plan.id}
-                className={`rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6 border transition-all duration-300 relative ${
+                className={`rounded-3xl p-6 sm:p-7 flex flex-col justify-between space-y-6 border transition-all duration-300 relative backdrop-blur-xl ${
                   isHighlighted
-                    ? 'bg-slate-900/95 border-indigo-500/60 shadow-2xl shadow-indigo-500/10 ring-2 ring-indigo-500/30 lg:-translate-y-2'
-                    : 'bg-slate-900/80 border-slate-800 hover:border-slate-700 shadow-xl'
+                    ? 'bg-[#0D1F3C]/95 border-2 border-amber-400/60 shadow-2xl shadow-amber-500/15 ring-2 ring-amber-500/20 lg:-translate-y-2'
+                    : 'bg-slate-900/80 dark:bg-[#0B1528]/85 border-white/10 hover:border-amber-400/30 shadow-xl'
                 }`}
               >
                 {isHighlighted && (
-                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-[11px] font-black uppercase px-4 py-1 rounded-full shadow-lg">
-                    {l('⭐ الخيار الأكثر طلباً للشركات', '⭐ Most Popular Enterprise Choice')}
+                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-slate-950 text-[11px] font-black uppercase px-4 py-1 rounded-full shadow-lg">
+                    {l('⭐ الأكثر طلباً للشركات', '⭐ Most Popular Enterprise Choice')}
                   </div>
                 )}
 
@@ -458,7 +461,7 @@ export default function PaymentPage() {
                       setSelectedCardPlan(plan);
                       setCardModalOpen(true);
                     }}
-                    className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-cyan-500 via-sky-400 to-indigo-500 hover:from-cyan-400 hover:to-indigo-400 text-slate-950 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 active:scale-95 transition-all cursor-pointer"
+                    className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-slate-950 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xl shadow-amber-500/20 active:scale-95 transition-all cursor-pointer"
                   >
                     <CreditCard className="w-4 h-4 text-slate-950" />
                     <span>{l('الدفع المباشر بالبطاقة الائتمانية و Apple Pay', 'Direct Card & Apple Pay Checkout')}</span>
@@ -477,7 +480,7 @@ export default function PaymentPage() {
                     <span>{l('مساعدة فورية عبر واتساب الإدارة التنفيذية', 'WhatsApp Executive Concierge')}</span>
                   </a>
 
-                  <div className="flex items-center gap-2 text-[10px] text-slate-500 justify-center">
+                  <div className="flex items-center gap-2 text-[10px] text-slate-400 justify-center">
                     <span>{l('أو سدد عبر القنوات المباشرة المعتمدة:', 'Or pay via direct verified channels:')}</span>
                   </div>
 
@@ -523,20 +526,20 @@ export default function PaymentPage() {
 
       {/* Official Executive Direct Contact Strip */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
-        <div className="card-lawtech-lux rounded-3xl p-6 sm:p-8 border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="p-6 sm:p-8 rounded-3xl border border-white/10 bg-gradient-to-r from-[#0D1F3C]/90 via-[#071629]/95 to-[#020B1A] shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6 backdrop-blur-2xl">
           <div className="space-y-1 text-center md:text-start">
             <h3 className="text-base sm:text-lg font-black text-white flex items-center justify-center md:justify-start gap-2">
-              <ShieldCheck className="w-5 h-5 text-cyan-400" />
+              <ShieldCheck className="w-5 h-5 text-amber-400" />
               <span>{l('عقود الرعاية والاحتفاظ المؤسسي المخصص (Bespoke Retainers)', 'Bespoke Institutional Retainers & Custom SLAs')}</span>
             </h3>
-            <p className="text-xs text-slate-400 max-w-2xl leading-relaxed">
+            <p className="text-xs text-slate-300 max-w-2xl leading-relaxed">
               {l(
                 'للشركات الكبرى وصناديق الاستثمار التي تتطلب اتفاقيات مستوى خدمة مخصصة (Custom SLA) أو تكامل برمجي مخصص، يمكنك التنسيق المباشر مع الإدارة التنفيذية والتقنية برئاسة د. محمد مصطفى (المؤسس ورئيس مجلس الإدارة وخبير إدارة المخاطر).',
                 'For large enterprises, sovereign entities, and custom SLAs requiring dedicated software deployments, contact Executive Leadership headed by Dr. Mohammad Mustafa (Founder & Chairman, Risk Management Specialist).'
               )}
             </p>
-            <p className="text-[11px] text-cyan-400 font-mono pt-1">
-              {l('منصة رقمية عالمية — تعمل عن بعد', 'Global Digital Platform — Operated remotely')}
+            <p className="text-[11px] text-amber-400 font-mono pt-1">
+              {l('منصة رقمية عالمية — تعمل عن بعد وفق أعلى معايير الحوكمة', 'Global Digital Platform — Remotely operated with Tier-1 governance')}
             </p>
           </div>
 

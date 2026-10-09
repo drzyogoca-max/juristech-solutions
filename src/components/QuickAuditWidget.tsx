@@ -240,33 +240,80 @@ ${targetText}`;
           <button
             onClick={handleClear}
             aria-label={isRtl ? 'إزالة المستند' : 'Remove document'}
-            className="p-1 rounded-lg text-slate-600 dark:text-slate-400 hover:text-red-400 hover:bg-slate-100 dark:bg-slate-800 transition-colors"
+            className="p-1 rounded-lg text-slate-600 dark:text-slate-400 hover:text-red-400 hover:bg-slate-100 dark:bg-slate-800 transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
       ) : (
-        <button
-          type="button"
-          onClick={() => fileInputRef.current?.click()}
-          disabled={extracting}
-          aria-label={l('اضغط هنا لرفع عقد (PDF أو DOCX أو TXT) للفحص المباشر', 'Drop or upload contract file (PDF / DOCX / TXT)')}
-          className="w-full border-2 border-dashed border-slate-200 dark:border-slate-800 hover:border-cyan-500/60 rounded-2xl p-6 flex flex-col items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200 transition-all bg-slate-900/50 group cursor-pointer"
-        >
-          {extracting ? (
-            <Loader2 className="w-8 h-8 animate-spin text-cyan-400" />
-          ) : (
-            <Upload className="w-8 h-8 text-cyan-400 group-hover:scale-110 transition-transform" />
-          )}
-          <span className="text-xs font-bold text-center">
-            {extracting
-              ? extractionStatus || l('جاري قراءة واستخراج نصوص المستند بدقة...', 'Extracting document text...')
-              : l('اسحب وأفلت ملف العقد هنا (PDF / DOCX / TXT) أو اضغط للاختيار', 'Drop or upload contract file (PDF / DOCX / TXT)')}
-          </span>
-          <span className="text-[10px] text-slate-400 font-sans">
-            {l('معالجة واستخراج دقيق لنصوص المستندات الأصلية', 'Precision extraction of native document text')}
-          </span>
-        </button>
+        <div className="space-y-2.5">
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={extracting}
+            aria-label={l('اضغط هنا لرفع عقد (PDF أو DOCX أو TXT) للفحص المباشر', 'Drop or upload contract file (PDF / DOCX / TXT)')}
+            className="w-full border-2 border-dashed border-slate-300 dark:border-white/10 hover:border-amber-400/60 rounded-2xl p-6 flex flex-col items-center gap-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all bg-slate-50 dark:bg-slate-900/60 group cursor-pointer shadow-sm"
+          >
+            {extracting ? (
+              <Loader2 className="w-8 h-8 animate-spin text-amber-400" />
+            ) : (
+              <Upload className="w-8 h-8 text-amber-400 group-hover:scale-110 transition-transform" />
+            )}
+            <span className="text-xs font-bold text-center">
+              {extracting
+                ? extractionStatus || l('جاري قراءة واستخراج نصوص المستند بدقة...', 'Extracting document text...')
+                : l('اسحب وأفلت ملف العقد هنا (PDF / DOCX / TXT) أو اضغط للاختيار', 'Drop or upload contract file (PDF / DOCX / TXT)')}
+            </span>
+            <span className="text-[10px] text-slate-500 dark:text-slate-400 font-sans">
+              {l('معالجة واستخراج دقيق لنصوص المستندات الأصلية بتشفير محلي', 'Precision extraction of native document text with local encryption')}
+            </span>
+          </button>
+
+          {/* ⚡ 1-Click Sample Contract Demo Button */}
+          <div className="flex items-center justify-between gap-2 p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/25">
+            <span className="text-[11px] font-bold text-amber-300 truncate">
+              {l('💡 لا تملك عقداً جاهزاً الآن؟ جرب بنود نموذج تجريبي لكشف الثغرات:', '💡 No contract at hand? Try our sample trap detection clause:')}
+            </span>
+            <button
+              type="button"
+              onClick={() => {
+                const sampleAr = `عقد توريد خدمات برمجية وحلول سحابية ذكية
+الطرف الأول: شركة الحلول الرقمية ذ.م.م (المورد)
+الطرف الثاني: شركة آفاق للاستثمار والتطوير (العميل)
+
+البند الرابع (المسؤولية غير المحدودة والتعويضات):
+يتحمل الطرف الثاني منفرداً المسؤولية الكاملة وغير المشروطة عن أي خسائر مباشرة أو غير مباشرة أو تبعية أو فوات كسب دون أي حد أقصى للتعويض (No Liability Cap)، ويعوض الطرف الأول عنها فوراً دون حاجة إلى حكم قضائي.
+
+البند السابع (الإنهاء المفاجئ دون تعويض):
+يحق للطرف الأول إنهاء هذا العقد في أي وقت دون إشعار مسبق ودون إبداء الأسباب، وتستحق له كامل المستحقات المالية المتبقية عن كامل مدة العقد، دون أن يحق للطرف الثاني المطالبة بأي تعويض.
+
+البند العاشر (تسوية النزاعات والقانون الواجب التطبيق):
+في حال نشوء أي نزاع، تختص محاكم دولة أجنبية بالفصل فيه دون تحديد القانون الموضوعي الواجب التطبيق، ويتحمل الطرف الثاني وحده كافة المصاريف القضائية وأتعاب المحاماة.`;
+                const sampleEn = `MASTER CLOUD SERVICES & ENTERPRISE SOFTWARE AGREEMENT
+Party A: Digital Infrastructure Solutions LLC ("Vendor")
+Party B: Apex Global Ventures Inc. ("Customer")
+
+Section 4 (Unlimited Unilateral Indemnification & Liability):
+Customer shall unconditionally indemnify, defend and hold harmless Vendor against any and all claims, liabilities, punitive damages, and lost profits with zero limitation of liability cap.
+
+Section 7 (Immediate Termination for Convenience):
+Vendor reserves the unrestricted right to immediately terminate this Agreement at any time without prior written notice and without liability, while all remaining annual fees shall accelerate and become immediately due.
+
+Section 10 (Foreign Dispute Jurisdiction & Governing Law):
+Any dispute arising under this Agreement shall be submitted to the exclusive jurisdiction of courts located abroad without designation of substantive governing law, and Customer shall bear all legal costs.`;
+                const text = isRtl ? sampleAr : sampleEn;
+                const name = isRtl ? 'عقد_توريد_برمجيات_تجريبي.docx' : 'Sample_Enterprise_MSA.docx';
+                setContractText(text);
+                setFileName(name);
+                setContractData({ fileName: name, extractedText: text });
+                setAuditResult(null);
+              }}
+              className="px-3 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-[11px] shrink-0 transition-all shadow-sm active:scale-95 cursor-pointer"
+            >
+              {l('تحميل عقد عينة تجريبي', 'Load Sample')}
+            </button>
+          </div>
+        </div>
       )}
 
       {/* Textarea for typing/dictating */}
@@ -301,7 +348,7 @@ ${targetText}`;
           onClick={() => executeInlineAudit()}
           disabled={auditing || extracting || !contractText.trim()}
           aria-label={l('إجراء الفحص الفوري الآن', 'Execute Instant Audit')}
-          className="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 disabled:opacity-40 font-extrabold text-slate-950 transition-all flex items-center justify-center gap-2 text-xs sm:text-sm shadow-lg shadow-cyan-500/20 active:scale-98 cursor-pointer"
+          className="flex-1 py-3.5 px-4 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 disabled:opacity-40 font-black text-slate-950 transition-all flex items-center justify-center gap-2 text-xs sm:text-sm shadow-xl shadow-amber-500/20 active:scale-98 cursor-pointer"
         >
           {auditing ? <Loader2 className="w-4 h-4 animate-spin text-slate-950" /> : <Sparkles className="w-4 h-4 text-slate-950" />}
           <span>
