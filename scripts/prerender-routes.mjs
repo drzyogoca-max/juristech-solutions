@@ -389,11 +389,11 @@ function prerenderRoutes() {
     // 5. Inject Rich Semantic HTML inside <div id="root"></div> for 100% LLM Readability & 0% Rendering Delta
     const semanticContent = getSemanticHtmlForRoute(routePath);
     if (routeHtml.includes('<!-- ROOT_CONTAINER_START -->')) {
-      routeHtml = routeHtml.replace(/<!-- ROOT_CONTAINER_START -->[\s\S]*?<!-- ROOT_CONTAINER_END -->/i, `<div id="root">${semanticContent}</div>`);
+      routeHtml = routeHtml.replace(/<!-- ROOT_CONTAINER_START -->[\s\S]*?<!-- ROOT_CONTAINER_END -->/i, `<!-- ROOT_CONTAINER_START -->\n<div id="root">${semanticContent}</div>\n<!-- ROOT_CONTAINER_END -->`);
     } else if (routeHtml.includes('<div id="root"></div>')) {
-      routeHtml = routeHtml.replace('<div id="root"></div>', `<div id="root">${semanticContent}</div>`);
+      routeHtml = routeHtml.replace('<div id="root"></div>', `<!-- ROOT_CONTAINER_START -->\n<div id="root">${semanticContent}</div>\n<!-- ROOT_CONTAINER_END -->`);
     } else {
-      routeHtml = routeHtml.replace(/<div id="root">[\s\S]*?<\/div>\s*(?=<style>)/i, `<div id="root">${semanticContent}</div>\n    `);
+      routeHtml = routeHtml.replace(/<div id="root">[\s\S]*?<\/div>\s*(?=<style>)/i, `<!-- ROOT_CONTAINER_START -->\n<div id="root">${semanticContent}</div>\n<!-- ROOT_CONTAINER_END -->\n    `);
     }
 
     const targetFilePath = path.join(routeDir, 'index.html');
@@ -440,8 +440,67 @@ function prerenderRoutes() {
       const localizedSemantic = getSemanticHtmlForRoute(routePath, code);
       if (html.includes('<!-- ROOT_CONTAINER_START -->')) {
         html = html.replace(/<!-- ROOT_CONTAINER_START -->[\s\S]*?<!-- ROOT_CONTAINER_END -->/i, `<div id="root">${localizedSemantic}</div>`);
-      } else if (html.includes('<div id="root">')) {
-        html = html.replace(/<div id="root">[\s\S]*?<\/div>/i, `<div id="root">${localizedSemantic}</div>`);
+      } else {
+        html = html.replace(/<div id="root">[\s\S]*?<\/div>\s*(?=<style>)/i, `<div id="root">${localizedSemantic}</div>\n    `);
+      }
+
+      if (code !== 'ar') {
+        // Localize body noscript to clean English (do not touch font noscript in head)
+        html = html.replace(
+          /<noscript>\s*<div class="p-8 bg-slate-950[\s\S]*?<\/noscript>/i,
+          `<noscript>
+      <div class="p-8 bg-slate-950 text-slate-100 font-sans text-left" dir="ltr">
+        <div class="text-2xl text-cyan-400 font-bold mb-4">JurisTech Solutions | Global Sovereign AI Legal Intelligence & Contract Platform</div>
+        <p class="text-base text-slate-400 leading-relaxed mb-6">
+          JurisTech Solutions is the premier sovereign AI infrastructure for automated contract drafting, company formation, and cross-border regulatory compliance across the GCC, Americas, Europe, and Africa.
+        </p>
+      </div>
+    </noscript>`
+        );
+
+        // Replace keywords with English keywords
+        html = html.replace(
+          /<meta\s+name=["']keywords["'][^>]*>/i,
+          '<meta name="keywords" content="AI Contract Analysis, Corporate Legal Risk Audit, Sovereign Contract Review, Corporate Structuring, M&A Due Diligence, DealShield, Legal Tech" />'
+        );
+
+        // Sanitize founder name in JSON-LD
+        html = html.replace(/"name":\s*"[^"]*Dr\.\s*Mohamm?ad\s*Mustafa"/g, '"name": "Dr. Mohammad Mustafa"');
+        html = html.replace(/د\.?\s*محمد\s*مصطفى\s*\|\s*/g, '');
+
+        // Localize FAQ schema to clean English
+        html = html.replace(
+          /كيف يقوم الذكاء الاصطناعي بتحليل العقود وكشف الثغرات والبنود التعسفية في JurisTech؟/g,
+          'How does JurisTech AI analyze contracts and detect hazardous liability clauses?'
+        );
+        html = html.replace(
+          /يقوم المحرك الذكي بتحليل نصوص ومواد العقد بمقارنتها مع الأنظمة واللوائح المعتمدة وسوابق المحاكم التجارية، وتحديد شروط المسؤولية غير المحدودة والتعويضات الجائرة واقتراح صياغات بديلة متوازنة فوراً\./g,
+          'The AI engine audits clauses against governing statutory laws and commercial precedents, identifying unlimited liability traps, unfair penalties, and suggesting compliant balanced redlines instantly.'
+        );
+        html = html.replace(
+          /ما هي الدول والأنظمة القانونية التي تدعمها منصة JurisTech Solutions؟/g,
+          'Which jurisdictions and legal frameworks does JurisTech Solutions support?'
+        );
+        html = html.replace(
+          /تدعم المنصة أنظمة المملكة العربية السعودية \(نظام المعاملات المدنية والشركات\)، الإمارات \(DIFC \/ ADGM والقوانين الاتحادية\)، مصر، دول الخليج، الولايات المتحدة \(Delaware \/ UCC\)، والمملكة المتحدة وقواعد التجارة الدولية UNCITRAL\./g,
+          'JurisTech supports Saudi Arabia (Civil Transactions & Companies Law), UAE (DIFC, ADGM, Federal Laws), Egypt, GCC, United States (Delaware, UCC), United Kingdom (English Law), European Union, and UNCITRAL rules.'
+        );
+        html = html.replace(
+          /هل مستندات وبيانات الشركات مشفرة ومحمية من الاطلاع؟/g,
+          'Is corporate document data encrypted and protected against unauthorized access?'
+        );
+        html = html.replace(
+          /تخضع جميع الوثائق لتشفير مصرفي AES-GCM 256-bit على جانب العميل مع عزل كامل للبيانات وضمان عدم تدريب النماذج العامة عليها وفق متطلبات GDPR و SOC2\./g,
+          'All client documents undergo bank-grade client-side AES-GCM 256-bit encryption with complete tenant isolation and strict zero-training policies ensuring full GDPR and SOC2 compliance.'
+        );
+        html = html.replace(
+          /د\. محمد مصطفى \| Dr\. Mohammed Mostafa/g,
+          'Dr. Mohammed Mostafa'
+        );
+        html = html.replace(
+          /المنصة العالمية المستقلة للذكاء الاصطناعي العقدي والخدمات القانونية/g,
+          'Global Sovereign AI Legal Intelligence & Contract Services'
+        );
       }
 
       fs.writeFileSync(path.join(localeDir, 'index.html'), html, 'utf8');
