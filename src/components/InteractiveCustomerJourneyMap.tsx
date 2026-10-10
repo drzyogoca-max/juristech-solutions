@@ -232,21 +232,21 @@ export default function InteractiveCustomerJourneyMap() {
   const activeStep = steps[activeStepIndex];
 
   return (
-    <div className="relative w-full rounded-3xl bg-slate-900/90 border border-slate-800 p-6 sm:p-8 shadow-2xl overflow-hidden" dir={isRtl ? 'rtl' : 'ltr'}>
+    <div className="relative w-full rounded-3xl bg-gradient-to-b from-[#0D1F3C]/90 via-[#071629]/95 to-[#020B1A] border border-white/10 dark:border-white/10 p-6 sm:p-8 shadow-2xl overflow-hidden backdrop-blur-2xl" dir={isRtl ? 'rtl' : 'ltr'}>
       {/* Background Ambient Glow */}
-      <div className="absolute top-0 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-0 right-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
 
       {/* Header Title */}
       <div className="relative z-10 text-center max-w-3xl mx-auto space-y-3 mb-8">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-black uppercase tracking-wider">
-          <BrainCircuit className="w-4 h-4" />
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-black uppercase tracking-wider backdrop-blur-xl">
+          <BrainCircuit className="w-4 h-4 text-amber-400" />
           <span>{l('الخريطة التفاعلية السيادية لرحلة العميل 2026', 'Interactive Sovereign Customer Journey Map 2026')}</span>
         </div>
         <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
           {l('كيف تحول JurisTech أوراقك إلى حصن قانوني وتجاري متكامل؟', 'How JurisTech Transforms Your Contracts into Fortress-Grade Assets')}
         </h2>
-        <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+        <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
           {l(
             'مسار هندسي متسلسل وواضح من 6 مراحل يأخذ بيدك من لحظة إيداع وتشفير المستند حتى التدقيق، والتفاوض، والتوثيق والاعتماد المؤسسي.',
             'A seamless 6-stage interactive transformation pathway from cryptographic deposit to 8-axis risk audit, redlining, negotiation, and official execution.'

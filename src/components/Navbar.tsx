@@ -162,26 +162,23 @@ export default function Navbar() {
         dir={isRtl ? 'rtl' : 'ltr'}
         className={`sticky top-0 z-40 transition-all duration-300 ${
           scrolled
-            ? 'bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/80 shadow-md shadow-slate-200/50 dark:shadow-slate-950/50'
-            : 'bg-white/90 dark:bg-slate-900/98 backdrop-blur-md border-b border-slate-200 dark:border-slate-800'
+            ? 'bg-white/95 dark:bg-[#020B1A]/95 backdrop-blur-xl border-b border-slate-200 dark:border-white/10 shadow-md shadow-slate-200/50 dark:shadow-[#020B1A]/80'
+            : 'bg-white/90 dark:bg-[#0D1F3C]/95 backdrop-blur-md border-b border-slate-200 dark:border-white/10'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between gap-3 h-14">
 
           {/* ── Brand ─────────────────────────────────────────────────────── */}
           <Link to="/dashboard" className="flex items-center gap-2.5 group shrink-0" aria-label="JurisTech Solutions Home">
-            <div className="p-1 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-indigo-500/10 border border-cyan-500/30 text-cyan-400 group-hover:scale-105 transition-transform shadow-lg shadow-cyan-500/10">
+            <div className="p-1 rounded-2xl bg-gradient-to-br from-[#D4AF37]/20 to-[#10B981]/10 border border-[#D4AF37]/30 text-[#D4AF37] group-hover:scale-105 transition-transform shadow-lg shadow-[#D4AF37]/10">
               <img src="/logo.webp" alt="JurisTech Solutions Logo" width={32} height={32} loading="eager" decoding="async" fetchPriority="high" className="w-8 h-8 rounded-xl object-cover" />
-
-
-
             </div>
             <div className="hidden sm:block">
               <div className="flex items-center gap-1.5">
-                <span className="text-base font-black text-slate-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-teal-300 transition-colors tracking-tight leading-none block">
+                <span className="text-base font-black text-slate-900 dark:text-white group-hover:text-[#D4AF37] dark:group-hover:text-[#D4AF37] transition-colors tracking-tight leading-none block">
                   JurisTech Solutions
                 </span>
-                <span className="text-[9px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-1.5 py-0.5 rounded-md">
+                <span className="text-[9px] font-bold text-[#D4AF37] bg-[#D4AF37]/10 border border-[#D4AF37]/30 px-1.5 py-0.5 rounded-md">
                   {l('المنصة الموحدة', 'Unified Platform')}
                 </span>
               </div>
@@ -206,10 +203,10 @@ export default function Navbar() {
             <button
               onClick={() => setShowJurisdictionModal(true)}
               aria-label={t('Jurisdiction.title')}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/25 text-xs font-bold transition-all"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 text-[#D4AF37] border border-[#D4AF37]/25 text-xs font-bold transition-all"
               title={t('Jurisdiction.title')}
             >
-              <Scale className="w-3.5 h-3.5 text-amber-400" />
+              <Scale className="w-3.5 h-3.5 text-[#D4AF37]" />
               {activeJurisdiction?.flagEmoji ? `${activeJurisdiction.flagEmoji} ` : ''}
               {t('Nav.jurisdictionLaw')}
             </button>
@@ -218,10 +215,10 @@ export default function Navbar() {
             <button
               onClick={() => setShowConsultationModal(true)}
               aria-label={isRtl ? 'افحص عقدك الأول مجاناً خلال 15 دقيقة' : 'Audit your first contract free in 15 mins'}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-xs font-black transition-all shadow-sm cursor-pointer"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#10B981]/15 hover:bg-[#10B981]/25 text-[#10B981] border border-[#10B981]/35 text-xs font-black transition-all shadow-sm cursor-pointer"
               title={isRtl ? 'افحص عقدك الأول مجاناً خلال 15 دقيقة' : 'Audit your first contract free in 15 mins'}
             >
-              <Mail className="w-3.5 h-3.5 text-emerald-400" />
+              <Mail className="w-3.5 h-3.5 text-[#10B981]" />
               {isRtl ? 'افحص عقدك الأول مجاناً خلال 15 دقيقة' : 'Audit Contract Free (15 Mins)'}
             </button>
 
@@ -239,7 +236,7 @@ export default function Navbar() {
             {/* Quick Action: Official Subscribe Now */}
             <Link
               to="/pricing"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 text-xs font-black shadow-md shadow-amber-500/20 active:scale-95 transition-all cursor-pointer"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#F5C842] to-[#D4AF37] hover:brightness-110 text-slate-950 text-xs font-black shadow-md shadow-[#D4AF37]/25 active:scale-95 transition-all cursor-pointer"
             >
               <Crown className="w-3.5 h-3.5" />
               <span>{l('اشترك الآن', 'Subscribe Now')}</span>
@@ -248,10 +245,10 @@ export default function Navbar() {
             {/* Account Billing Link */}
             <Link
               to="/billing"
-              className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 text-xs font-bold transition-all"
+              className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-xs font-bold transition-all"
               title={l('إدارة الفوترة والاشتراك', 'Billing & Subscription')}
             >
-              <CreditCard className="w-3.5 h-3.5 text-cyan-400" />
+              <CreditCard className="w-3.5 h-3.5 text-[#D4AF37]" />
               <span>{l('الفوترة', 'Billing')}</span>
             </Link>
 
@@ -262,14 +259,14 @@ export default function Navbar() {
                   setAuthModalMode('login');
                   setShowAuthModal(true);
                 }}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-cyan-500/20 to-indigo-500/20 hover:from-cyan-500/30 hover:to-indigo-500/30 text-cyan-300 border border-cyan-500/40 text-xs font-bold transition-all shadow-sm cursor-pointer"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#D4AF37]/15 to-[#10B981]/15 hover:from-[#D4AF37]/25 hover:to-[#10B981]/25 text-[#D4AF37] border border-[#D4AF37]/35 text-xs font-bold transition-all shadow-sm cursor-pointer"
                 title={l('تسجيل الدخول أو إنشاء حساب جديد', 'Log In or Create Account')}
               >
-                <LogIn className="w-3.5 h-3.5 text-cyan-400" />
+                <LogIn className="w-3.5 h-3.5 text-[#D4AF37]" />
                 <span>{l('تسجيل الدخول', 'Log In')}</span>
               </button>
             ) : (
-              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-800/90 border border-cyan-500/30 text-xs text-white shadow-sm">
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-[#0D1F3C] border border-[#D4AF37]/30 text-xs text-white shadow-sm">
                 <Link
                   to="/billing"
                   className="flex items-center gap-1.5 hover:opacity-85 transition-opacity"
@@ -312,14 +309,14 @@ export default function Navbar() {
                 onClick={() => setShowMoreMenu(!showMoreMenu)}
                 aria-label={t('Nav.more')}
                 aria-expanded={showMoreMenu}
-                className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 text-xs font-bold transition-all shadow-md"
+                className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 text-xs font-bold transition-all shadow-md"
               >
                 {t('Nav.more')} ▾
               </button>
               {showMoreMenu && (
                 <>
                   <div className="fixed inset-0 z-40" onClick={() => setShowMoreMenu(false)} />
-                  <div className={`absolute top-full mt-2 z-50 w-[520px] max-w-[92vw] bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-3xl shadow-2xl shadow-slate-950/90 p-4 space-y-3 ${isRtl ? 'left-0' : 'right-0'}`}>
+                  <div className={`absolute top-full mt-2 z-50 w-[520px] max-w-[92vw] bg-white dark:bg-[#0D1F3C] border border-slate-300 dark:border-white/10 rounded-3xl shadow-2xl shadow-slate-950/90 p-4 space-y-3 ${isRtl ? 'left-0' : 'right-0'}`}>
                     
                     {/* Modal Controls Section */}
                     <div>

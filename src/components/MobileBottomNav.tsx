@@ -42,7 +42,7 @@ export default function MobileBottomNav() {
     <>
       {/* Floating Mobile Bottom Navigation Bar */}
       <nav
-        className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-slate-950/90 dark:bg-slate-950/95 backdrop-blur-xl border-t border-slate-800/80 shadow-[0_-8px_30px_rgba(0,0,0,0.5)] px-2 py-1.5 transition-all"
+        className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-[#020B1A]/95 backdrop-blur-xl border-t border-white/10 shadow-[0_-8px_30px_rgba(0,0,0,0.7)] px-2 py-1.5 transition-all"
         style={{ paddingBottom: 'max(0.5rem, env(safe-area-inset-bottom))' }}
         dir={isRtl ? 'rtl' : 'ltr'}
       >
@@ -56,14 +56,14 @@ export default function MobileBottomNav() {
                 to={item.to}
                 className={`relative flex flex-col items-center justify-center py-1.5 px-3 rounded-2xl transition-all ${
                   isActive
-                    ? 'text-cyan-400 font-bold scale-105'
+                    ? 'text-[#D4AF37] font-bold scale-105'
                     : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
                 {isActive && (
-                  <span className="absolute -top-1 w-6 h-1 rounded-full bg-gradient-to-r from-cyan-400 to-indigo-500 shadow-lg shadow-cyan-400/50" />
+                  <span className="absolute -top-1 w-6 h-1 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F5C842] shadow-lg shadow-[#D4AF37]/50" />
                 )}
-                <div className={`p-1 rounded-xl transition-all ${isActive ? 'bg-cyan-500/10' : ''}`}>
+                <div className={`p-1 rounded-xl transition-all ${isActive ? 'bg-[#D4AF37]/10' : ''}`}>
                   <Icon className="w-5 h-5" />
                 </div>
                 <span className="text-[10px] mt-0.5 tracking-tight font-medium">
@@ -79,11 +79,11 @@ export default function MobileBottomNav() {
             onClick={() => setShowDrawer(true)}
             className={`relative flex flex-col items-center justify-center py-1.5 px-3 rounded-2xl transition-all cursor-pointer ${
               showDrawer
-                ? 'text-pink-400 font-bold'
+                ? 'text-[#D4AF37] font-bold'
                 : 'text-slate-400 hover:text-slate-200'
             }`}
           >
-            <div className="p-1 rounded-xl bg-gradient-to-br from-indigo-500/20 to-pink-500/20 text-indigo-300 border border-indigo-500/30">
+            <div className="p-1 rounded-xl bg-gradient-to-br from-[#D4AF37]/20 to-[#10B981]/20 text-[#D4AF37] border border-[#D4AF37]/30">
               <Shield className="w-5 h-5" />
             </div>
             <span className="text-[10px] mt-0.5 tracking-tight font-medium">
@@ -101,16 +101,16 @@ export default function MobileBottomNav() {
           onClick={() => setShowDrawer(false)}
         >
           <div
-            className="bg-slate-900 border-t border-slate-800 rounded-t-3xl p-6 shadow-2xl max-h-[85vh] overflow-y-auto space-y-5 animate-in slide-in-from-bottom duration-300"
+            className="bg-[#0D1F3C] border-t border-white/10 rounded-t-3xl p-6 shadow-2xl max-h-[85vh] overflow-y-auto space-y-5 animate-in slide-in-from-bottom duration-300"
             onClick={(e) => e.stopPropagation()}
             style={{ paddingBottom: 'max(2rem, env(safe-area-inset-bottom))' }}
           >
             {/* Drawer Handle & Header */}
             <div className="w-12 h-1.5 bg-slate-700 rounded-full mx-auto mb-2" />
             
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+            <div className="flex items-center justify-between border-b border-white/10 pb-3">
               <div className="flex items-center gap-2.5">
-                <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                <div className="p-2 rounded-xl bg-[#D4AF37]/10 text-[#D4AF37] border border-[#D4AF37]/20">
                   <Shield className="w-5 h-5" />
                 </div>
                 <div>
@@ -125,23 +125,23 @@ export default function MobileBottomNav() {
               <button
                 type="button"
                 onClick={() => setShowDrawer(false)}
-                className="p-1.5 rounded-xl bg-slate-800 text-slate-400 hover:text-white cursor-pointer"
+                className="p-1.5 rounded-xl bg-white/5 text-slate-400 hover:text-white cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Customer Account / Login Banner */}
-            <div className="p-4 rounded-2xl bg-gradient-to-r from-slate-950 to-slate-900 border border-slate-800 flex items-center justify-between gap-3 shadow-lg">
+            <div className="p-4 rounded-2xl bg-gradient-to-r from-[#020B1A] to-[#071629] border border-white/10 flex items-center justify-between gap-3 shadow-lg">
               <div className="flex items-center gap-3">
-                <div className="p-2.5 rounded-xl bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">
+                <div className="p-2.5 rounded-xl bg-[#D4AF37]/10 text-[#D4AF37] border border-[#D4AF37]/20">
                   <User className="w-5 h-5" />
                 </div>
                 <div>
                   <div className="text-xs font-black text-white flex items-center gap-1.5">
                     <span>{user ? (user.email?.split('@')[0] || l('حسابي', 'My Account')) : l('تسجيل الدخول / إنشاء حساب', 'Account Login / Sign Up')}</span>
                     {user && (
-                      <span className="px-1.5 py-0.2 rounded text-[8px] bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-bold">CLIENT</span>
+                      <span className="px-1.5 py-0.2 rounded text-[8px] bg-[#D4AF37]/20 text-[#D4AF37] border border-[#D4AF37]/30 font-bold">CLIENT</span>
                     )}
                   </div>
                   <p className="text-[10px] text-slate-400 mt-0.5 font-mono truncate max-w-[170px]">
@@ -156,7 +156,7 @@ export default function MobileBottomNav() {
                     setShowDrawer(false);
                     setShowAuthModal(true);
                   }}
-                  className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 text-slate-950 text-xs font-black shrink-0 transition-all shadow-md active:scale-95 cursor-pointer flex items-center gap-1"
+                  className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#F5C842] to-[#D4AF37] text-slate-950 text-xs font-black shrink-0 transition-all shadow-md active:scale-95 cursor-pointer flex items-center gap-1"
                 >
                   <LogIn className="w-3.5 h-3.5" />
                   <span>{l('دخول', 'Login')}</span>
@@ -167,7 +167,7 @@ export default function MobileBottomNav() {
                   onClick={() => {
                     signOut();
                   }}
-                  className="px-3 py-2 rounded-xl bg-slate-800 hover:bg-rose-500/20 text-slate-300 hover:text-rose-400 text-xs font-bold shrink-0 transition-all border border-slate-700 cursor-pointer flex items-center gap-1"
+                  className="px-3 py-2 rounded-xl bg-white/5 hover:bg-rose-500/20 text-slate-300 hover:text-rose-400 text-xs font-bold shrink-0 transition-all border border-white/10 cursor-pointer flex items-center gap-1"
                 >
                   <LogOut className="w-3.5 h-3.5" />
                   <span>{l('تسجيل الخروج', 'Logout')}</span>
@@ -176,9 +176,9 @@ export default function MobileBottomNav() {
             </div>
 
             {/* 2FA Quick Action Banner */}
-            <div className="p-4 rounded-2xl bg-gradient-to-r from-cyan-950/60 to-indigo-950/60 border border-cyan-500/30 flex items-center justify-between gap-3 shadow-lg">
+            <div className="p-4 rounded-2xl bg-gradient-to-r from-[#071629] to-[#020B1A] border border-[#D4AF37]/30 flex items-center justify-between gap-3 shadow-lg">
               <div className="flex items-center gap-3">
-                <div className="p-2.5 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+                <div className="p-2.5 rounded-xl bg-[#D4AF37]/20 text-[#D4AF37] border border-[#D4AF37]/30">
                   <Lock className="w-5 h-5" />
                 </div>
                 <div>
@@ -197,7 +197,7 @@ export default function MobileBottomNav() {
                   setShowDrawer(false);
                   setShow2FA(true);
                 }}
-                className="px-3.5 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-black shrink-0 transition-all shadow-md active:scale-95 cursor-pointer"
+                className="px-3.5 py-2 rounded-xl bg-[#D4AF37] hover:bg-[#F5C842] text-slate-950 text-xs font-black shrink-0 transition-all shadow-md active:scale-95 cursor-pointer"
               >
                 {l('إدارة', 'Manage')}
               </button>
@@ -215,10 +215,10 @@ export default function MobileBottomNav() {
                     key={srv.to}
                     to={srv.to}
                     onClick={() => setShowDrawer(false)}
-                    className="flex items-center justify-between p-3 rounded-2xl bg-slate-950/60 hover:bg-slate-800/80 border border-slate-800/80 transition-all group"
+                    className="flex items-center justify-between p-3 rounded-2xl bg-[#020B1A]/80 hover:bg-[#142847] border border-white/5 transition-all group"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-xl bg-slate-900 text-slate-400 group-hover:text-cyan-400 transition-colors">
+                      <div className="p-2 rounded-xl bg-white/5 text-slate-400 group-hover:text-[#D4AF37] transition-colors">
                         <Icon className="w-4 h-4" />
                       </div>
                       <span className="text-xs font-bold text-slate-200 group-hover:text-white">
@@ -227,7 +227,7 @@ export default function MobileBottomNav() {
                     </div>
                     <div className="flex items-center gap-2">
                       {srv.badge && (
-                        <span className="px-2 py-0.5 rounded-full text-[9px] font-black bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                        <span className="px-2 py-0.5 rounded-full text-[9px] font-black bg-[#D4AF37]/10 text-[#D4AF37] border border-[#D4AF37]/20">
                           {srv.badge}
                         </span>
                       )}

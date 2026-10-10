@@ -15,8 +15,8 @@ export default function InstitutionalTrustBadgeBar() {
   const badges = [
     {
       icon: ShieldCheck,
-      iconColor: 'text-emerald-400',
-      bgBorder: 'bg-emerald-500/10 border-emerald-500/30 hover:border-emerald-400/60',
+      iconColor: 'text-[#10B981]',
+      bgBorder: 'bg-gradient-to-b from-[#0D1F3C]/90 via-[#071629]/95 to-[#020B1A] border border-[#10B981]/30 hover:border-[#10B981]/60 shadow-lg shadow-[#10B981]/5',
       titleAr: 'توقيع إلكتروني مشفر SHA-256',
       titleEn: 'SHA-256 Cryptographic E-Seal',
       tagAr: 'معتمد دولياً',
@@ -26,8 +26,8 @@ export default function InstitutionalTrustBadgeBar() {
     },
     {
       icon: Scale,
-      iconColor: 'text-cyan-400',
-      bgBorder: 'bg-cyan-500/10 border-cyan-500/30 hover:border-cyan-400/60',
+      iconColor: 'text-[#D4AF37]',
+      bgBorder: 'bg-gradient-to-b from-[#0D1F3C]/90 via-[#071629]/95 to-[#020B1A] border border-[#D4AF37]/30 hover:border-[#D4AF37]/60 shadow-lg shadow-[#D4AF37]/5',
       titleAr: 'معايير التحكيم الدولي ICC 2020',
       titleEn: 'ICC Paris 2020 Arbitration',
       tagAr: 'غرفة باريس وCRCICA',
@@ -37,8 +37,8 @@ export default function InstitutionalTrustBadgeBar() {
     },
     {
       icon: Lock,
-      iconColor: 'text-amber-400',
-      bgBorder: 'bg-amber-500/10 border-amber-500/30 hover:border-amber-400/60',
+      iconColor: 'text-[#D4AF37]',
+      bgBorder: 'bg-gradient-to-b from-[#0D1F3C]/90 via-[#071629]/95 to-[#020B1A] border border-[#D4AF37]/30 hover:border-[#D4AF37]/60 shadow-lg shadow-[#D4AF37]/5',
       titleAr: 'تشفير وحماية بنكية 256-bit SSL',
       titleEn: 'Bank-Grade 256-bit SSL',
       tagAr: 'حماية E2EE',
@@ -48,8 +48,8 @@ export default function InstitutionalTrustBadgeBar() {
     },
     {
       icon: Globe,
-      iconColor: 'text-purple-400',
-      bgBorder: 'bg-purple-500/10 border-purple-500/30 hover:border-purple-400/60',
+      iconColor: 'text-[#10B981]',
+      bgBorder: 'bg-gradient-to-b from-[#0D1F3C]/90 via-[#071629]/95 to-[#020B1A] border border-[#10B981]/30 hover:border-[#10B981]/60 shadow-lg shadow-[#10B981]/5',
       titleAr: 'مطابق لقوانين 15+ دولة وسيادة',
       titleEn: '15+ Sovereign Legal Frameworks',
       tagAr: 'الخليج ومصر والدولي',
@@ -67,18 +67,18 @@ export default function InstitutionalTrustBadgeBar() {
           return (
             <div
               key={idx}
-              className={`p-4 rounded-2xl border ${b.bgBorder} transition-all duration-200 shadow-lg flex items-start gap-3.5 bg-slate-900/80 backdrop-blur-md`}
+              className={`p-4 rounded-2xl ${b.bgBorder} transition-all duration-300 hover:-translate-y-1 backdrop-blur-md flex items-start gap-3.5`}
             >
-              <div className={`p-3 rounded-2xl bg-slate-950 border border-slate-800 ${b.iconColor} shrink-0 shadow-inner mt-0.5`}>
+              <div className={`p-3 rounded-2xl bg-[#020B1A]/80 border border-white/10 ${b.iconColor} shrink-0 shadow-inner mt-0.5`}>
                 <Icon className="w-6 h-6" />
               </div>
               <div className="space-y-1.5 min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
+                  <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-white/5 text-slate-300 border border-white/10">
                     {l(b.tagAr, b.tagEn)}
                   </span>
                 </div>
-                <h4 className="text-xs sm:text-sm font-bold text-white leading-tight">
+                <h4 className="text-xs sm:text-sm font-black text-white leading-tight">
                   {l(b.titleAr, b.titleEn)}
                 </h4>
                 <p className="text-[11px] text-slate-400 leading-relaxed font-sans">

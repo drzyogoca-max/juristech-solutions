@@ -25,13 +25,13 @@ export default function Footer() {
   return (
     <footer
       dir={isRtl ? 'rtl' : 'ltr'}
-      className="bg-slate-50 dark:bg-slate-950 text-slate-700 dark:text-slate-300 border-t border-slate-200 dark:border-slate-800/80 pt-12 pb-32 lg:pb-12 px-4 sm:px-6 lg:px-8 mt-auto font-sans"
+      className="bg-slate-50 dark:bg-[#020B1A] text-slate-700 dark:text-slate-300 border-t border-slate-200 dark:border-white/10 pt-12 pb-32 lg:pb-12 px-4 sm:px-6 lg:px-8 mt-auto font-sans"
     >
       <div className="max-w-7xl mx-auto space-y-8 overflow-hidden">
         {/* 1. Brand & Value Proposition Row */}
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800/80 pb-8">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-slate-200 dark:border-white/10 pb-8">
           <div className="flex items-center gap-3">
-            <div className="p-3 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-blue-600/20 text-cyan-400 border border-cyan-500/30 shadow-lg shadow-cyan-500/10">
+            <div className="p-3 rounded-2xl bg-gradient-to-br from-[#D4AF37]/20 to-[#10B981]/20 text-[#D4AF37] border border-[#D4AF37]/30 shadow-lg shadow-[#D4AF37]/10">
               <Scale className="w-6 h-6" />
             </div>
             <div>
@@ -49,9 +49,9 @@ export default function Footer() {
             <a
               href="mailto:founder@juristech.solutions"
               aria-label="Email JurisTech Official Support"
-              className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-white dark:bg-slate-900 text-slate-800 dark:text-cyan-300 border border-slate-200 dark:border-slate-700/80 hover:border-cyan-500/50 transition-colors font-mono shadow-sm"
+              className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-white dark:bg-[#0D1F3C] text-slate-800 dark:text-[#D4AF37] border border-slate-200 dark:border-white/10 hover:border-[#D4AF37]/50 transition-colors font-mono shadow-sm"
             >
-              <Mail className="w-3.5 h-3.5 text-cyan-500 dark:text-cyan-400" />
+              <Mail className="w-3.5 h-3.5 text-[#D4AF37]" />
               <span>founder@juristech.solutions</span>
             </a>
             <a
@@ -59,7 +59,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="WhatsApp Executive Direct"
-              className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-white dark:bg-slate-900 text-slate-800 dark:text-emerald-300 border border-slate-200 dark:border-slate-700/80 hover:border-emerald-500/50 transition-colors font-mono shadow-sm"
+              className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-white dark:bg-[#0D1F3C] text-slate-800 dark:text-emerald-300 border border-slate-200 dark:border-white/10 hover:border-emerald-500/50 transition-colors font-mono shadow-sm"
             >
               <Smartphone className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400" />
               <span>{l('واتساب: +201126674337', 'WhatsApp: +201126674337')}</span>
@@ -67,16 +67,16 @@ export default function Footer() {
             <Link
               to="/youtube-studio"
               aria-label="JurisTech Official YouTube Channel"
-              className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-white dark:bg-slate-900 text-slate-800 dark:text-red-300 border border-slate-200 dark:border-slate-700/80 hover:border-red-500/50 transition-colors shadow-sm"
+              className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-white dark:bg-[#0D1F3C] text-slate-800 dark:text-red-300 border border-slate-200 dark:border-white/10 hover:border-red-500/50 transition-colors shadow-sm"
             >
               <Youtube className="w-3.5 h-3.5 text-red-500" />
               <span>{l('قناة يوتيوب الرسمية', 'Official YouTube Channel')}</span>
             </Link>
-            <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5">
+            <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-[#10B981]/10 text-[#10B981] border border-[#10B981]/30 flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5" />
               {l('مطابق لـ 15+ نظام قضائي', '15+ Sovereign Frameworks')}
             </span>
-            <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 flex items-center gap-1.5">
+            <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-[#D4AF37]/10 text-[#D4AF37] border border-[#D4AF37]/30 flex items-center gap-1.5">
               <Lock className="w-3.5 h-3.5" />
               {l('تشفير بنكي E2EE 256-bit', 'Bank-Grade AES-256')}
             </span>
@@ -87,28 +87,28 @@ export default function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-2">
           {/* Column 1: Contracts Studio */}
           <div className="space-y-3">
-            <h4 className="text-xs font-black uppercase text-cyan-400 tracking-wider flex items-center gap-2">
-              <FileText className="w-4 h-4 text-cyan-400 shrink-0" />
+            <h4 className="text-xs font-black uppercase text-[#D4AF37] tracking-wider flex items-center gap-2">
+              <FileText className="w-4 h-4 text-[#D4AF37] shrink-0" />
               <span>{l('صياغة وتدقيق العقود', 'Contracts Studio')}</span>
             </h4>
             <ul className="space-y-2 text-xs text-slate-400">
               <li>
-                <Link to="/contracts" className="hover:text-cyan-300 transition-colors block py-0.5">
+                <Link to="/contracts" className="hover:text-[#F5C842] transition-colors block py-0.5">
                   {l('صانع ومولد العقود الذكية', 'AI Contract Generator')}
                 </Link>
               </li>
               <li>
-                <Link to="/repository" className="hover:text-cyan-300 transition-colors block py-0.5">
+                <Link to="/repository" className="hover:text-[#F5C842] transition-colors block py-0.5">
                   {l('مستودع العقود والبيانات القانونية', 'Contracts & Legal Data Lake')}
                 </Link>
               </li>
               <li>
-                <Link to="/templates" className="hover:text-cyan-300 transition-colors block py-0.5">
+                <Link to="/templates" className="hover:text-[#F5C842] transition-colors block py-0.5">
                   {l('مكتبة النماذج والاتفاقيات الجاهزة', 'Verified Templates Studio')}
                 </Link>
               </li>
               <li>
-                <Link to="/chat" className="hover:text-cyan-300 transition-colors block py-0.5">
+                <Link to="/chat" className="hover:text-[#F5C842] transition-colors block py-0.5">
                   {l('المستشار القانوني الذكي 24/7', '24/7 AI Legal Copilot')}
                 </Link>
               </li>
@@ -117,13 +117,13 @@ export default function Footer() {
 
           {/* Column 2: Risk & Corporate */}
           <div className="space-y-3">
-            <h4 className="text-xs font-black uppercase text-emerald-400 tracking-wider flex items-center gap-2">
-              <Building2 className="w-4 h-4 text-emerald-400 shrink-0" />
+            <h4 className="text-xs font-black uppercase text-[#10B981] tracking-wider flex items-center gap-2">
+              <Building2 className="w-4 h-4 text-[#10B981] shrink-0" />
               <span>{l('إدارة المخاطر والشركات', 'Risk & Corporate')}</span>
             </h4>
             <ul className="space-y-2 text-xs text-slate-400">
               <li>
-                <Link to="/deal-shield" className="hover:text-emerald-300 transition-colors block py-0.5 text-cyan-400 font-bold">
+                <Link to="/deal-shield" className="hover:text-emerald-300 transition-colors block py-0.5 text-[#D4AF37] font-bold">
                   {l('رادار الصفقات ومستكشف الاحتياجات (DealShield)', 'DealShield 360™ & Need Radar')}
                 </Link>
               </li>
@@ -152,33 +152,33 @@ export default function Footer() {
 
           {/* Column 3: Security & Arbitration */}
           <div className="space-y-3">
-            <h4 className="text-xs font-black uppercase text-purple-400 tracking-wider flex items-center gap-2">
-              <Scale className="w-4 h-4 text-purple-400 shrink-0" />
+            <h4 className="text-xs font-black uppercase text-[#D4AF37] tracking-wider flex items-center gap-2">
+              <Scale className="w-4 h-4 text-[#D4AF37] shrink-0" />
               <span>{l('الأمان والتحكيم', 'Security & Vault')}</span>
             </h4>
             <ul className="space-y-2 text-xs text-slate-400">
               <li>
-                <Link to="/vault" className="hover:text-purple-300 transition-colors block py-0.5">
+                <Link to="/vault" className="hover:text-[#F5C842] transition-colors block py-0.5">
                   {l('خزنة المستندات المشفرة E2EE', 'Zero-Knowledge Encrypted Vault')}
                 </Link>
               </li>
               <li>
-                <Link to="/negotiation" className="hover:text-purple-300 transition-colors block py-0.5">
+                <Link to="/negotiation" className="hover:text-[#F5C842] transition-colors block py-0.5">
                   {l('مفاوض الصفقات وفض النزاعات', 'AI Dispute Resolution')}
                 </Link>
               </li>
               <li>
-                <Link to="/reports" className="hover:text-purple-300 transition-colors block py-0.5">
+                <Link to="/reports" className="hover:text-[#F5C842] transition-colors block py-0.5">
                   {l('التقارير القانونية والتحليلات', 'Strategic Legal Reports')}
                 </Link>
               </li>
               <li>
-                <Link to="/video-hub" className="hover:text-purple-300 transition-colors block py-0.5">
+                <Link to="/video-hub" className="hover:text-[#F5C842] transition-colors block py-0.5">
                   {l('استوديو الوسائط والشرح المرئي', 'Media & Video Studio')}
                 </Link>
               </li>
               <li>
-                <Link to="/payment" className="hover:text-purple-300 transition-colors block py-0.5">
+                <Link to="/payment" className="hover:text-[#F5C842] transition-colors block py-0.5">
                   {l('باقات الأسعار والاشتراكات', 'Pricing & Plans')}
                 </Link>
               </li>
@@ -187,33 +187,33 @@ export default function Footer() {
 
           {/* Column 4: Legal & Policy */}
           <div className="space-y-3">
-            <h4 className="text-xs font-black uppercase text-amber-400 tracking-wider flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-amber-400 shrink-0" />
+            <h4 className="text-xs font-black uppercase text-[#10B981] tracking-wider flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-[#10B981] shrink-0" />
               <span>{l('الامتثال والسياسات', 'Governance & Legal')}</span>
             </h4>
             <ul className="space-y-2 text-xs text-slate-400">
               <li>
-                <Link to="/about" className="hover:text-amber-300 transition-colors block py-0.5">
+                <Link to="/about" className="hover:text-emerald-300 transition-colors block py-0.5">
                   {l('من نحن والاستقلالية القانونية', 'About Us & Independence')}
                 </Link>
               </li>
               <li>
-                <Link to="/terms" className="hover:text-amber-300 transition-colors block py-0.5">
+                <Link to="/terms" className="hover:text-emerald-300 transition-colors block py-0.5">
                   {l('الشروط والأحكام الرسمية', 'Terms of Service')}
                 </Link>
               </li>
               <li>
-                <Link to="/privacy" className="hover:text-amber-300 transition-colors block py-0.5">
+                <Link to="/privacy" className="hover:text-emerald-300 transition-colors block py-0.5">
                   {l('سياسة الخصوصية والأمان', 'Privacy Policy')}
                 </Link>
               </li>
               <li>
-                <Link to="/refund" className="hover:text-amber-300 transition-colors block py-0.5">
+                <Link to="/refund" className="hover:text-emerald-300 transition-colors block py-0.5">
                   {l('سياسة استرداد الأموال', 'Refund Policy')}
                 </Link>
               </li>
               <li>
-                <Link to="/legal-compliance" className="hover:text-amber-300 transition-colors block py-0.5">
+                <Link to="/legal-compliance" className="hover:text-emerald-300 transition-colors block py-0.5">
                   {l('الامتثال للائحة GDPR & PDPL', 'PDPL & GDPR Compliance')}
                 </Link>
               </li>
@@ -222,8 +222,8 @@ export default function Footer() {
         </div>
 
         {/* 3. Mandatory Legal Disclaimer & Sovereign Independence */}
-        <div className="p-4 rounded-2xl bg-slate-900/80 border border-amber-500/30 flex items-start gap-3 text-xs text-slate-300">
-          <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+        <div className="p-4 rounded-2xl bg-[#0D1F3C]/80 border border-[#D4AF37]/30 flex items-start gap-3 text-xs text-slate-300">
+          <AlertTriangle className="w-5 h-5 text-[#D4AF37] shrink-0 mt-0.5" />
           <p className="leading-relaxed m-0 font-medium">
             {l(
               'تنبيه نظامي: منصة JurisTech Solutions هي منصة برمجيات تقنية قانونية (Legal Tech SaaS) تقدم أدوات أتمتة العقود والمساعدة التشريعية، ولا تُعد مكتب محاماة ولا تقدم استشارات أو تمثيلاً قانونياً ينشئ علاقة بين محامٍ وموكل. يُرجى مراجعة محامٍ مرخص في دائرتك القضائية للمراجعة والتمثيل الرسمي.',

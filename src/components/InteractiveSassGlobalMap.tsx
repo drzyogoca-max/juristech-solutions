@@ -193,16 +193,16 @@ export default function InteractiveSassGlobalMap() {
     : JURISDICTION_NODES.filter(n => n.region === activeFilter);
 
   return (
-    <div className="card-lawtech-lux rounded-3xl p-6 sm:p-8 border border-sky-500/20 shadow-2xl relative overflow-hidden font-sans space-y-6">
+    <div className="rounded-3xl p-6 sm:p-8 border border-white/10 dark:border-white/10 bg-gradient-to-b from-[#0D1F3C]/90 via-[#071629]/95 to-[#020B1A] shadow-2xl relative overflow-hidden font-sans space-y-6 backdrop-blur-2xl">
       
       {/* Header Bar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-5">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-5">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <span className="p-2 rounded-xl bg-sky-500/10 text-sky-400 border border-sky-500/20">
+            <span className="p-2 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20">
               <Globe className="w-5 h-5 animate-spin-slow" />
             </span>
-            <span className="text-xs font-black uppercase tracking-widest text-sky-400">
+            <span className="text-xs font-black uppercase tracking-widest text-amber-400">
               {l('خريطة النفوذ والأنظمة القضائية السيادية', 'Global Sovereign Legal & Jurisdiction Matrix')}
             </span>
           </div>
@@ -232,8 +232,8 @@ export default function InteractiveSassGlobalMap() {
               onClick={() => setActiveFilter(f.id as any)}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer border ${
                 activeFilter === f.id
-                  ? 'bg-sky-500 text-slate-950 border-sky-400 shadow-md font-black scale-105'
-                  : 'bg-slate-900/80 text-slate-400 border-slate-800 hover:text-slate-200'
+                  ? 'bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-slate-950 border-amber-300 shadow-md font-black scale-105'
+                  : 'bg-slate-900/80 text-slate-300 border-white/10 hover:text-white hover:border-amber-400/30'
               }`}
             >
               {l(f.labelAr, f.labelEn)}
