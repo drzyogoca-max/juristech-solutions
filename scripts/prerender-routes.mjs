@@ -435,6 +435,15 @@ function prerenderRoutes() {
       html = html.replace(/<meta\s+property=["']og:url["'][^>]*>/i, '<meta property="og:url" content="' + canonical + '" />');
       html = html.replace(/<meta\s+property=["']og:title["'][^>]*>/i, '<meta property="og:title" content="' + title.replaceAll('"', '&quot;') + '" />');
       html = html.replace(/<meta\s+property=["']og:description["'][^>]*>/i, '<meta property="og:description" content="' + desc.replaceAll('"', '&quot;') + '" />');
+
+      // Inject language-appropriate semantic HTML for root to prevent Arabic bleeding into non-Arabic locales
+      const localizedSemantic = getSemanticHtmlForRoute(routePath, code);
+      if (html.includes('<!-- ROOT_CONTAINER_START -->')) {
+        html = html.replace(/<!-- ROOT_CONTAINER_START -->[\s\S]*?<!-- ROOT_CONTAINER_END -->/i, `<div id="root">${localizedSemantic}</div>`);
+      } else if (html.includes('<div id="root">')) {
+        html = html.replace(/<div id="root">[\s\S]*?<\/div>/i, `<div id="root">${localizedSemantic}</div>`);
+      }
+
       fs.writeFileSync(path.join(localeDir, 'index.html'), html, 'utf8');
     });
   });

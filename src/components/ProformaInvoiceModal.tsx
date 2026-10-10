@@ -147,13 +147,19 @@ export default function ProformaInvoiceModal({
                   onChange={(e) => {
                     const price = Number(e.target.value);
                     setSelectedPlanPrice(price);
-                    setSelectedPlanName(price === 349 ? 'حزمة الشركات الكبرى (Enterprise Plan)' : price === 139 ? 'حزمة الشركات المتوسطة (SMEs Plan)' : 'حزمة الشركات الصغرى (Startup Plan)');
+                    setSelectedPlanName(
+                      price === 349
+                        ? (isRtl ? 'حزمة الشركات الكبرى (Enterprise Plan)' : 'Enterprise Plan ($349/mo)')
+                        : price === 139
+                        ? (isRtl ? 'حزمة الشركات المتوسطة (SMEs Plan)' : 'SMEs Plan ($139/mo)')
+                        : (isRtl ? 'حزمة الشركات الصغرى (Startup Plan)' : 'Startup Plan ($49/mo)')
+                    );
                   }}
                   className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-amber-400"
                 >
-                  <option value={49}>حزمة الناشئة — $49 / شهر (2,450 EGP)</option>
-                  <option value={139}>حزمة المتوسطة — $139 / شهر (6,950 EGP)</option>
-                  <option value={349}>حزمة الكبرى — $349 / شهر (17,450 EGP)</option>
+                  <option value={49}>{isRtl ? 'حزمة الناشئة — $49 / شهر (2,450 EGP)' : 'Startup Plan — $49 / month'}</option>
+                  <option value={139}>{isRtl ? 'حزمة المتوسطة — $139 / شهر (6,950 EGP)' : 'SMEs Plan — $139 / month'}</option>
+                  <option value={349}>{isRtl ? 'حزمة الكبرى — $349 / شهر (17,450 EGP)' : 'Enterprise Plan — $349 / month'}</option>
                 </select>
               </div>
             </div>
@@ -243,7 +249,9 @@ export default function ProformaInvoiceModal({
                   <tr>
                     <td className="py-3 font-bold text-white print:text-black">
                       {selectedPlanName}
-                      <div className="text-[10px] text-slate-400 font-normal">تفعيل الوصول الكامل لصياغة وتدقيق العقود والـ AI Redlines</div>
+                      <div className="text-[10px] text-slate-400 font-normal">
+                        {isRtl ? 'تفعيل الوصول الكامل لصياغة وتدقيق العقود والـ AI Redlines' : 'Full access to AI contract drafting, risk audit & auto-redlining'}
+                      </div>
                     </td>
                     <td className="py-3 text-center text-slate-300 font-mono print:text-black">1 Month</td>
                     <td className="py-3 text-left font-black text-amber-300 font-mono text-sm print:text-black">${selectedPlanPrice} USD</td>

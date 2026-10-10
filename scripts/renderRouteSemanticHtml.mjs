@@ -10,7 +10,10 @@
  *  • 100% LLM Readability for non-JS crawlers & search engines
  */
 
-export function getSemanticHtmlForRoute(routePath) {
+export function getSemanticHtmlForRoute(routePath, lang = 'ar') {
+  if (lang && lang !== 'ar') {
+    return getEnglishSemanticHtmlForRoute(routePath);
+  }
   const commonHeader = `
     <header class="bg-slate-950 border-b border-slate-800 p-4 text-slate-100 font-sans" dir="rtl">
       <div class="max-w-7xl mx-auto flex items-center justify-between flex-wrap gap-4">
@@ -678,3 +681,576 @@ export function getSemanticHtmlForRoute(routePath) {
     ${commonFooter}
   `;
 }
+
+export function getEnglishSemanticHtmlForRoute(routePath) {
+  const commonHeader = `
+    <header class="bg-slate-950 border-b border-slate-800 p-4 text-slate-100 font-sans" dir="ltr">
+      <div class="max-w-7xl mx-auto flex items-center justify-between flex-wrap gap-4">
+        <div>
+          <a href="/en" class="text-xl font-black text-sky-400 hover:text-sky-300 no-underline">JurisTech Solutions</a>
+          <p class="text-xs text-slate-400 mt-1 mb-0">Global Sovereign Legal AI Platform &amp; Autonomous Contract Intelligence</p>
+        </div>
+        <nav class="flex gap-4 flex-wrap text-sm">
+          <a href="/dashboard" class="text-slate-200 hover:text-white no-underline font-bold">Dashboard</a>
+          <a href="/chat" class="text-slate-200 hover:text-white no-underline font-bold">AI Advisor</a>
+          <a href="/contracts" class="text-slate-200 hover:text-white no-underline font-bold">Draft Contracts</a>
+          <a href="/risk" class="text-slate-200 hover:text-white no-underline font-bold">Risk Audit</a>
+          <a href="/repository" class="text-slate-200 hover:text-white no-underline font-bold">Repository</a>
+          <a href="/corporate-structuring" class="text-slate-200 hover:text-white no-underline font-bold">Corporate Structuring</a>
+          <a href="/vault" class="text-slate-200 hover:text-white no-underline font-bold">Encrypted Vault</a>
+          <a href="/payment" class="text-slate-200 hover:text-white no-underline font-bold">Pricing Plans</a>
+          <a href="/support" class="text-slate-200 hover:text-white no-underline font-bold">Support</a>
+        </nav>
+      </div>
+    </header>
+  `;
+
+  // Sovereign Executive Command Hub (EXCLUSIVE to Dashboard & Homepage)
+  const commonContactHub = `
+    <section class="bg-slate-900 border-2 border-sky-600 rounded-3xl p-6 my-6 text-slate-100 shadow-2xl" dir="ltr">
+      <div class="flex items-center justify-between flex-wrap gap-4 border-b border-slate-800 pb-4 mb-4">
+        <div>
+          <h2 class="text-lg font-extrabold text-sky-400 m-0">Executive Direct Contact Hub &amp; Sovereign Advisory</h2>
+          <p class="text-xs text-slate-300 mt-1 mb-0">24/7 direct access to Founder Dr. Mohammad Mustafa &amp; senior enterprise legal counsel</p>
+        </div>
+        <span class="bg-emerald-950 text-emerald-400 border border-emerald-500/40 px-3 py-1 rounded-full text-xs font-bold">● Live Online 24/7</span>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+        <div class="bg-slate-950 border border-emerald-600/40 p-4 rounded-2xl shadow">
+          <strong class="text-emerald-400 block mb-1">💬 Direct WhatsApp Advisory:</strong>
+          <a href="https://wa.me/201126674337" class="text-slate-100 font-bold no-underline font-mono select-all">+201126674337</a>
+          <span class="block text-xs text-slate-400 mt-1">Instant Response &amp; Contract Analysis</span>
+        </div>
+        <div class="bg-slate-950 border border-sky-600/40 p-4 rounded-2xl shadow">
+          <strong class="text-sky-400 block mb-1">📧 Official Executive Inquiries:</strong>
+          <a href="mailto:founder@juristech.solutions" class="text-slate-100 font-bold no-underline font-mono select-all">founder@juristech.solutions</a>
+          <span class="block text-xs text-slate-400 mt-1">Institutional Agreements &amp; Partnerships</span>
+        </div>
+        <div class="bg-slate-950 border border-purple-600/40 p-4 rounded-2xl shadow">
+          <strong class="text-purple-400 block mb-1">⚡ Egypt Fast Pay (InstaPay):</strong>
+          <span class="text-slate-100 font-bold font-mono select-all">+201031222262</span>
+          <span class="block text-xs text-slate-400 mt-1">Instant Subscription Activation</span>
+        </div>
+        <div class="bg-slate-950 border border-amber-600/40 p-4 rounded-2xl shadow">
+          <strong class="text-amber-400 block mb-1">🏦 Bank Wire &amp; SWIFT Transfer:</strong>
+          <a href="/payment" class="text-slate-100 font-bold no-underline block">Payment Portals &amp; Invoices</a>
+          <span class="block text-xs text-slate-400 mt-1">Corporate Accounts &amp; Proforma Invoices</span>
+        </div>
+      </div>
+    </section>
+  `;
+
+  // Designated Advertising & Sponsorship Slot (For all secondary pages)
+  const commonAdSponsorSlot = `
+    <section class="bg-gradient-to-r from-slate-900 via-slate-950 to-slate-900 border border-cyan-500/20 rounded-3xl p-5 my-6 text-slate-100 shadow-xl" dir="ltr">
+      <div class="flex items-center justify-between flex-wrap gap-3">
+        <div class="flex items-center gap-3">
+          <span class="px-3 py-1 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 text-xs font-bold font-mono">AD / SPONSORSHIP</span>
+          <span class="text-xs text-slate-300 font-bold">Reserved corporate partner &amp; institutional sponsorship space</span>
+        </div>
+        <a href="mailto:founder@juristech.solutions?subject=Advertising%20%26%20Sponsorship%20Inquiry" class="text-xs text-cyan-400 hover:text-cyan-300 font-bold no-underline">
+          Book Sponsorship Slot ↗
+        </a>
+      </div>
+    </section>
+  `;
+
+  const commonFooter = '';
+
+  if (routePath === '/privacy') {
+    return `
+      ${commonHeader}
+      <main class="max-w-7xl mx-auto p-6 font-sans text-slate-100" dir="ltr">
+        ${commonAdSponsorSlot}
+        <article class="my-8 space-y-6">
+          <header class="border-b border-slate-800 pb-6">
+            <span class="text-xs font-mono text-cyan-400 bg-cyan-950/60 border border-cyan-500/30 px-3 py-1 rounded-full uppercase tracking-wider">Official Legal Statement — GDPR, SDPL &amp; CCPA Compliant</span>
+            <h1 class="text-3xl sm:text-5xl font-black text-slate-100 leading-tight mt-3 mb-2">
+              Privacy Policy &amp; Sovereign Data Protection | JurisTech Solutions
+            </h1>
+            <p class="text-xs text-slate-400 font-mono">Last Updated: September 2026 | Certified Version 4.2.0 | Data Protection Officer: founder@juristech.solutions</p>
+          </header>
+
+          <div class="prose prose-invert max-w-none text-slate-300 leading-relaxed space-y-6 text-sm">
+            <section class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-3">
+              <h2 class="text-xl font-bold text-cyan-400 m-0">1. Introduction &amp; Sovereign Data Pledge</h2>
+              <p>JurisTech Solutions is committed to the absolute privacy, confidentiality, and sovereign isolation of all uploaded commercial contracts, client information, and legal documentation. All data operations strictly adhere to Saudi Personal Data Protection Law (SDPL), UAE Federal Decree-Law on Data Protection, EU General Data Protection Regulation (GDPR), and US Privacy Laws (CCPA/CPRA).</p>
+            </section>
+
+            <section class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-3">
+              <h2 class="text-xl font-bold text-emerald-400 m-0">2. Information We Collect</h2>
+              <p>We only collect information strictly required to provide our sovereign AI legal and audit capabilities:</p>
+              <ul class="list-disc pl-6 space-y-1 text-slate-300">
+                <li><strong>Account Credentials:</strong> Full name, verified corporate email, stakeholder title, and enterprise entity name.</li>
+                <li><strong>Contract &amp; Document Data:</strong> Text of agreements uploaded strictly for automated parsing and audit without public retention.</li>
+                <li><strong>Session &amp; Security Telemetry:</strong> IP address, device headers, and cryptographic session tokens for fraud prevention.</li>
+              </ul>
+            </section>
+
+            <section class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-3">
+              <h2 class="text-xl font-bold text-purple-400 m-0">3. Bank-Grade Encryption &amp; Sovereign Isolation</h2>
+              <p>All data in transit is encrypted using <strong>TLS 1.3 256-bit HTTPS</strong>, and documents at rest are secured with <strong>AES-256 GCM</strong> military-grade encryption. We strictly guarantee that your contracts are never used to train shared public foundation models.</p>
+            </section>
+
+            <section class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-3">
+              <h2 class="text-xl font-bold text-amber-400 m-0">4. Zero-Data Selling Mandate</h2>
+              <p><strong>JurisTech Solutions never sells, rents, leases, or trades</strong> any user data or commercial contract contents to third parties, advertising networks, or data brokers under any circumstances.</p>
+            </section>
+
+            <section class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-3">
+              <h2 class="text-xl font-bold text-sky-400 m-0">5. User Rights &amp; Sovereign Control</h2>
+              <p>You maintain the right at any time to: (1) Export a complete record of your stored data, (2) Request data correction or rectification, (3) Request immediate permanent erasure (Right to be Forgotten), (4) Contact our Data Protection Officer at <code>founder@juristech.solutions</code>.</p>
+            </section>
+          </div>
+        </article>
+      </main>
+      ${commonFooter}
+    `;
+  }
+
+  if (routePath === '/terms') {
+    return `
+      ${commonHeader}
+      <main class="max-w-7xl mx-auto p-6 font-sans text-slate-100" dir="ltr">
+        ${commonAdSponsorSlot}
+        <article class="my-8 space-y-6">
+          <header class="border-b border-slate-800 pb-6">
+            <span class="text-xs font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-3 py-1 rounded-full uppercase tracking-wider">Official Terms of Service — UNCITRAL &amp; International Commercial Law Compliant</span>
+            <h1 class="text-3xl sm:text-5xl font-black text-slate-100 leading-tight mt-3 mb-2">
+              Terms of Service &amp; Master Subscription Agreement | JurisTech Solutions
+            </h1>
+            <p class="text-xs text-slate-400 font-mono">Effective: September 2026 | Legally Binding for Enterprise Clients | Inquiries: founder@juristech.solutions</p>
+          </header>
+
+          <div class="prose prose-invert max-w-none text-slate-300 leading-relaxed space-y-6 text-sm">
+            <section class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-3">
+              <h2 class="text-xl font-bold text-emerald-400 m-0">1. Acceptance of Terms &amp; Corporate Authority</h2>
+              <p>By accessing or utilizing <strong>JurisTech Solutions</strong>, you represent and warrant that you possess full corporate and legal authority to bind your organization to this Master Agreement and these binding Terms of Service.</p>
+            </section>
+
+            <section class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-3">
+              <h2 class="text-xl font-bold text-sky-400 m-0">2. Nature of Sovereign Legal AI Services</h2>
+              <p>JurisTech Solutions provides advanced AI-powered contract drafting, risk auditing, redlining, and regulatory analysis tools designed to augment corporate counsel, executives, and attorneys. AI outputs are decision-support instruments and do not replace mandatory legal verification by licensed legal professionals.</p>
+            </section>
+
+            <section class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-3">
+              <h2 class="text-xl font-bold text-amber-400 m-0">3. Intellectual Property Ownership</h2>
+              <p>All contracts, amendments, drafts, and redlines generated by the user remain the sole and exclusive property of the user. JurisTech retains all rights, title, and interest in and to the platform algorithms, user interfaces, and software infrastructure.</p>
+            </section>
+
+            <section class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-3">
+              <h2 class="text-xl font-bold text-purple-400 m-0">4. Billing, Subscriptions &amp; Refund Policy</h2>
+              <p>Subscriptions are billed monthly or annually according to the chosen tier ($49 Startup, $139 Growth, $349 Sovereign Enterprise). Users may cancel at any time. Refunds are governed by our standard 14-day policy for initial subscriptions subject to fair usage limits.</p>
+            </section>
+
+            <section class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-3">
+              <h2 class="text-xl font-bold text-cyan-400 m-0">5. Governing Law &amp; UNCITRAL Arbitration</h2>
+              <p>This Agreement is governed by international commercial standards, and any unresolved dispute shall be settled by commercial arbitration under the rules of the United Nations Commission on International Trade Law (UNCITRAL) or competent courts of registration.</p>
+            </section>
+          </div>
+        </article>
+      </main>
+      ${commonFooter}
+    `;
+  }
+
+  if (routePath === '/payment' || routePath === '/pricing' || routePath === '/billing') {
+    return `
+      ${commonHeader}
+      <main class="max-w-7xl mx-auto p-6 font-sans text-slate-100" dir="ltr">
+        ${commonAdSponsorSlot}
+        <section class="my-8 text-center">
+          <span class="bg-sky-500/10 text-sky-400 border border-sky-500/30 text-xs font-mono font-bold px-3 py-1 rounded-full uppercase tracking-wider">Enterprise Pricing &amp; Transparent Subscription Plans</span>
+          <h1 class="text-3xl sm:text-5xl font-black text-slate-100 leading-tight mt-3 mb-4">
+            Institutional Pricing &amp; Corporate Subscription Plans 2026
+          </h1>
+          <p class="text-base text-slate-300 max-w-3xl mx-auto leading-relaxed mb-8">
+            Select the optimal plan for your organization with transparent billing, instant activation, and total cost at just 5% of traditional advisory retainers.
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 my-10 text-left">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-8 flex flex-col justify-between shadow-2xl relative">
+              <div>
+                <span class="bg-slate-800 text-slate-300 text-xs font-bold px-3 py-1 rounded-full">Startup Plan</span>
+                <h3 class="text-2xl font-black text-sky-400 mt-4 mb-2">Startup Legal AI Plan</h3>
+                <p class="text-xs text-slate-400 leading-relaxed mb-6">Ideal for emerging startups, founders, and boutique consultants needing fundamental contract protection.</p>
+                <div class="my-4 border-y border-slate-800 py-4">
+                  <span class="text-4xl font-black text-white font-mono">$49</span>
+                  <span class="text-xs text-slate-400 font-mono"> / month</span>
+                </div>
+                <ul class="text-xs text-slate-300 space-y-3 my-6 list-none p-0">
+                  <li class="flex items-center gap-2">✓ 24/7 AI Legal Advisor (up to 100 sessions)</li>
+                  <li class="flex items-center gap-2">✓ Draft &amp; generate 10 contracts monthly</li>
+                  <li class="flex items-center gap-2">✓ Basic Risk Radar &amp; unfair term audit</li>
+                  <li class="flex items-center gap-2">✓ Instant export to Word (.docx) &amp; PDF</li>
+                  <li class="flex items-center gap-2">✓ Statutory coverage: GCC, US, UK, Egypt</li>
+                </ul>
+              </div>
+              <a href="/checkout?plan=startup" class="w-full py-4 rounded-2xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-center no-underline block shadow-lg transition-all text-sm">
+                Subscribe Now — Startup ($49/mo)
+              </a>
+            </div>
+
+            <div class="bg-slate-900 border-2 border-indigo-500 rounded-3xl p-8 flex flex-col justify-between shadow-2xl relative transform md:-translate-y-2">
+              <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-[11px] font-black px-4 py-1 rounded-full uppercase tracking-wider shadow">
+                ⭐ Most Popular for Growing Enterprises
+              </div>
+              <div>
+                <span class="bg-indigo-500/20 text-indigo-300 text-xs font-bold px-3 py-1 rounded-full border border-indigo-500/30">Growth &amp; Expansion</span>
+                <h3 class="text-2xl font-black text-indigo-400 mt-4 mb-2">Growth &amp; M&amp;A Plan</h3>
+                <p class="text-xs text-slate-400 leading-relaxed mb-6">Built for scale-ups, investment houses, and active legal departments with high transaction frequency.</p>
+                <div class="my-4 border-y border-slate-800 py-4">
+                  <span class="text-4xl font-black text-white font-mono">$139</span>
+                  <span class="text-xs text-slate-400 font-mono"> / month</span>
+                </div>
+                <ul class="text-xs text-slate-300 space-y-3 my-6 list-none p-0">
+                  <li class="flex items-center gap-2">✓ Unlimited AI Legal Advisor inquiries</li>
+                  <li class="flex items-center gap-2">✓ Draft &amp; generate 50 contracts monthly</li>
+                  <li class="flex items-center gap-2">✓ Full 8-Vector Legal Risk Radar audit</li>
+                  <li class="flex items-center gap-2">✓ 1-Click Auto-Redline &amp; negotiation suite</li>
+                  <li class="flex items-center gap-2">✓ Cross-border coverage: 15+ Jurisdictions (GCC, US, EU, UK)</li>
+                </ul>
+              </div>
+              <a href="/checkout?plan=growth" class="w-full py-4 rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 text-white font-black text-center no-underline block shadow-xl transition-all text-sm">
+                Subscribe Now — Growth ($139/mo)
+              </a>
+            </div>
+
+            <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-8 flex flex-col justify-between shadow-2xl relative">
+              <div>
+                <span class="bg-amber-500/20 text-amber-300 text-xs font-bold px-3 py-1 rounded-full border border-amber-500/30">Sovereign Enterprise</span>
+                <h3 class="text-2xl font-black text-amber-400 mt-4 mb-2">Sovereign Enterprise Plan</h3>
+                <p class="text-xs text-slate-400 leading-relaxed mb-6">For large corporations, financial institutions, and holding groups demanding custom sovereign environments.</p>
+                <div class="my-4 border-y border-slate-800 py-4">
+                  <span class="text-4xl font-black text-white font-mono">$349</span>
+                  <span class="text-xs text-slate-400 font-mono"> / month</span>
+                </div>
+                <ul class="text-xs text-slate-300 space-y-3 my-6 list-none p-0">
+                  <li class="flex items-center gap-2">✓ Unlimited contracts, audits &amp; statutory checks</li>
+                  <li class="flex items-center gap-2">✓ Fraud detection, litigation simulator &amp; Deal Shield</li>
+                  <li class="flex items-center gap-2">✓ Dedicated API endpoints &amp; sovereign vault</li>
+                  <li class="flex items-center gap-2">✓ Executive VIP support &amp; 24/7 WhatsApp hotline</li>
+                  <li class="flex items-center gap-2">✓ Global coverage: 35+ sovereign jurisdictions</li>
+                </ul>
+              </div>
+              <a href="/checkout?plan=enterprise" class="w-full py-4 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-center no-underline block shadow-lg transition-all text-sm">
+                Subscribe Now — Enterprise ($349/mo)
+              </a>
+            </div>
+          </div>
+
+          <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl text-left max-w-4xl mx-auto my-8 space-y-3">
+            <h3 class="text-lg font-bold text-sky-400 m-0">Supported Institutional Payment Methods:</h3>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              We support secure direct checkout with Visa, Mastercard, and Apple Pay via <strong>Stripe Live</strong>, instant regional processing via <strong>Tap Payments</strong>, corporate bank wire &amp; SWIFT transfers, and Egyptian InstaPay with verified Proforma Invoice issuance.
+            </p>
+          </div>
+        </section>
+      </main>
+      ${commonFooter}
+    `;
+  }
+
+  if (routePath === '/about') {
+    return `
+      ${commonHeader}
+      <main class="max-w-7xl mx-auto p-6 font-sans text-slate-100" dir="ltr">
+        ${commonAdSponsorSlot}
+        <section class="my-8">
+          <h1 class="text-3xl sm:text-5xl font-black text-slate-100 leading-tight mb-4">
+            About JurisTech Solutions &amp; Corporate Governance
+          </h1>
+          <p class="text-base text-slate-300 leading-relaxed mb-6">
+            <strong>JurisTech Solutions</strong> is the pioneering sovereign legal AI infrastructure dedicated to automated contract intelligence, risk audit, corporate structuring, and cross-border regulatory compliance, founded and directed by Dr. Mohammad Mustafa.
+          </p>
+        </section>
+      </main>
+      ${commonFooter}
+    `;
+  }
+
+  if (routePath === '/support') {
+    return `
+      ${commonHeader}
+      <main class="max-w-7xl mx-auto p-6 font-sans text-slate-100" dir="ltr">
+        ${commonAdSponsorSlot}
+        <section class="my-8">
+          <h1 class="text-3xl sm:text-5xl font-black text-slate-100 leading-tight mb-4">
+            24/7 Enterprise Legal AI Support Center | JurisTech Support
+          </h1>
+          <p class="text-base text-slate-300 leading-relaxed mb-6">
+            Our specialized legal technology advisory team is available 24/7 to assist enterprise clients with plan activation, sensitive contract audits, and cross-border regulatory inquiries.
+          </p>
+        </section>
+      </main>
+      ${commonFooter}
+    `;
+  }
+
+  if (routePath === '/trust') {
+    return `
+      ${commonHeader}
+      <main class="max-w-7xl mx-auto p-6 font-sans text-slate-100" dir="ltr">
+        ${commonAdSponsorSlot}
+        <section class="my-8">
+          <h1 class="text-3xl sm:text-5xl font-black text-slate-100 leading-tight mb-4">
+            Security &amp; Trust Center | JurisTech Solutions
+          </h1>
+          <p class="text-base text-slate-300 leading-relaxed mb-6">
+            Sovereign security environment engineered with military-grade AES-256 GCM encryption, TLS 1.3 in-transit protection, and absolute IP isolation ensuring client contracts never train public models.
+          </p>
+        </section>
+      </main>
+      ${commonFooter}
+    `;
+  }
+
+  if (routePath === '/' || routePath === '/dashboard') {
+    return `
+      ${commonHeader}
+      <main class="max-w-7xl mx-auto p-6 font-sans text-slate-100" dir="ltr">
+        ${commonContactHub}
+
+        <section class="my-8 text-center">
+          <h1 class="text-3xl sm:text-4xl font-black text-slate-100 leading-tight mb-4">
+            Autonomous Enterprise Legal AI &amp; Sovereign Contract Intelligence
+          </h1>
+          <p class="text-base sm:text-lg text-slate-300 max-w-4xl mx-auto mb-6 leading-relaxed">
+            The world's leading sovereign AI platform for detecting hidden liabilities, automated contract drafting, corporate structuring, and multi-jurisdiction compliance across GCC, Americas, Europe, Africa, and Middle East.
+          </p>
+          <div class="flex gap-4 justify-center flex-wrap">
+            <a href="/chat" class="bg-sky-600 hover:bg-sky-500 text-white px-6 py-3 rounded-2xl font-bold no-underline shadow">Start Instant AI Advisory 24/7</a>
+            <a href="/contracts" class="bg-slate-900 text-sky-400 border border-sky-600 px-6 py-3 rounded-2xl font-bold no-underline">Draft Commercial Contract</a>
+            <a href="/risk" class="bg-slate-900 text-amber-400 border border-amber-600 px-6 py-3 rounded-2xl font-bold no-underline">Run Risk Radar Audit</a>
+          </div>
+        </section>
+
+        <!-- Platform Live Metrics -->
+        <section class="grid grid-cols-2 sm:grid-cols-4 gap-4 my-8">
+          <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl text-center shadow">
+            <span class="text-2xl sm:text-3xl font-black text-sky-400 block">100%</span>
+            <span class="text-xs text-slate-400">Sovereign Audit Precision</span>
+          </div>
+          <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl text-center shadow">
+            <span class="text-2xl sm:text-3xl font-black text-emerald-400 block">24/7</span>
+            <span class="text-xs text-slate-400">Live AI Advisory</span>
+          </div>
+          <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl text-center shadow">
+            <span class="text-2xl sm:text-3xl font-black text-purple-400 block">256-Bit</span>
+            <span class="text-xs text-slate-400">Military-Grade AES Encryption</span>
+          </div>
+          <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl text-center shadow">
+            <span class="text-2xl sm:text-3xl font-black text-amber-400 block">35+ Countries</span>
+            <span class="text-xs text-slate-400">Statutory Legal Coverage</span>
+          </div>
+        </section>
+
+        <!-- SEO Service Directory -->
+        <section aria-label="Sovereign Legal AI Services">
+          <h2 class="text-xl font-black text-slate-100 mb-4">JurisTech Sovereign Services Directory (18 Solutions)</h2>
+          <nav aria-label="Service Directory">
+            <ul class="list-none p-0 m-0 space-y-1 text-sm">
+              <li><a href="/chat" class="text-sky-400 no-underline">Sovereign Legal AI Advisor 24/7</a></li>
+              <li><a href="/repository" class="text-emerald-400 no-underline">Institutional Contract Repository &amp; Precedents</a></li>
+              <li><a href="/templates" class="text-purple-400 no-underline">Smart Drafting Studio &amp; Interactive Templates</a></li>
+              <li><a href="/contracts" class="text-teal-400 no-underline">Autonomous Contract Drafting Engine</a></li>
+              <li><a href="/risk" class="text-amber-400 no-underline">Contract Risk Radar &amp; 8-Vector Audit</a></li>
+              <li><a href="/enterprise-audit" class="text-rose-400 no-underline">Enterprise Due Diligence &amp; M&amp;A Audit</a></li>
+              <li><a href="/negotiation" class="text-blue-400 no-underline">AI Negotiation Room &amp; 1-Click Redlining</a></li>
+              <li><a href="/vault" class="text-indigo-400 no-underline">AES-256 Encrypted Sovereign Vault</a></li>
+              <li><a href="/sovereign-ai-hub" class="text-sky-400 no-underline">JurisTech Sovereign AI Command Hub</a></li>
+              <li><a href="/corporate-structuring" class="text-emerald-400 no-underline">Corporate Structuring &amp; Articles of Association</a></li>
+              <li><a href="/b2b-proposals" class="text-amber-400 no-underline">Executive B2B Proposal Engine</a></li>
+              <li><a href="/lead-radar" class="text-purple-400 no-underline">Client Growth &amp; Opportunity Radar</a></li>
+              <li><a href="/deal-shield" class="text-cyan-400 no-underline">DealShield 360™ Transaction Due Diligence</a></li>
+              <li><a href="/legal-compliance" class="text-green-400 no-underline">Multi-Jurisdictional Regulatory Compliance</a></li>
+              <li><a href="/payment" class="text-yellow-400 no-underline">Subscription Plans &amp; Corporate Invoicing</a></li>
+              <li><a href="/trust" class="text-slate-300 no-underline">Security, Trust &amp; Cryptographic Standards</a></li>
+              <li><a href="/about" class="text-slate-300 no-underline">About JurisTech Solutions &amp; Leadership</a></li>
+              <li><a href="/support" class="text-slate-300 no-underline">24/7 Enterprise Client Support</a></li>
+            </ul>
+          </nav>
+        </section>
+      </main>
+      ${commonFooter}
+    `;
+  }
+
+  if (routePath === '/chat') {
+    return `
+      ${commonHeader}
+      <main class="max-w-7xl mx-auto p-6 font-sans text-slate-100" dir="ltr">
+        ${commonAdSponsorSlot}
+        <section class="my-8">
+          <h1 class="text-3xl sm:text-4xl font-black text-slate-100 leading-tight mb-4">
+            Sovereign Enterprise Legal AI Advisor | 24/7 Instant Legal Intelligence
+          </h1>
+          <p class="text-base text-slate-300 leading-relaxed mb-6">
+            Consult directly with your virtual legal risk architect powered by sovereign AI fine-tuned on commercial statutes, M&amp;A jurisprudence, shareholder agreements, and cross-border trade frameworks.
+          </p>
+          <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl my-6">
+            <h2 class="text-lg font-bold text-sky-400 mt-0">Specialized Statutory Coverage:</h2>
+            <ul class="text-slate-300 leading-loose text-sm">
+              <li><strong>United States &amp; Delaware DGCL:</strong> Delaware General Corporation Law, UCC Article 2, and corporate governance.</li>
+              <li><strong>UK Common Law &amp; Companies Act:</strong> Companies Act 2006, English contract principles, and LCIA arbitration.</li>
+              <li><strong>European Union &amp; GDPR:</strong> EU Digital Services Act, GDPR Article 28, and cross-border commercial compliance.</li>
+              <li><strong>GCC &amp; Middle East:</strong> Saudi Civil Transactions Law, UAE DIFC/ADGM statutes, and CRCICA Cairo arbitration.</li>
+            </ul>
+          </div>
+        </section>
+      </main>
+      ${commonFooter}
+    `;
+  }
+
+  if (routePath === '/contracts') {
+    return `
+      ${commonHeader}
+      <main class="max-w-7xl mx-auto p-6 font-sans text-slate-100" dir="ltr">
+        ${commonAdSponsorSlot}
+        <section class="my-8">
+          <h1 class="text-3xl sm:text-4xl font-black text-slate-100 leading-tight mb-4">
+            AI Smart Contract Drafting &amp; Precision Redlining Studio
+          </h1>
+          <p class="text-base text-slate-300 leading-relaxed mb-6">
+            Generate bulletproof commercial agreements tailored to your jurisdiction, complete with automated dispute venue locking and instantaneous dual-direction export in Word (.docx) and PDF formats.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 my-6">
+            <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl">
+              <h3 class="text-sky-400 mt-0">EPC &amp; Supply Agreements</h3>
+              <p class="text-slate-400 text-xs leading-relaxed">Milestone deliverables, balanced liquidated damages, and force majeure allocation.</p>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl">
+              <h3 class="text-emerald-400 mt-0">Shareholder &amp; JV Agreements</h3>
+              <p class="text-slate-400 text-xs leading-relaxed">Drag-Along &amp; Tag-Along covenants, transfer restrictions, and founder vesting protocols.</p>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl">
+              <h3 class="text-amber-400 mt-0">Enterprise SaaS &amp; IP Licenses</h3>
+              <p class="text-slate-400 text-xs leading-relaxed">SLA guarantees, IP indemnification, data residency, and aggregate liability caps.</p>
+            </div>
+          </div>
+        </section>
+      </main>
+      ${commonFooter}
+    `;
+  }
+
+  if (routePath === '/risk') {
+    return `
+      ${commonHeader}
+      <main class="max-w-7xl mx-auto p-6 font-sans text-slate-100" dir="ltr">
+        ${commonAdSponsorSlot}
+        <section class="my-8">
+          <h1 class="text-3xl sm:text-4xl font-black text-slate-100 leading-tight mb-4">
+            Contract Risk Radar &amp; 8-Vector Legal Threat Engine
+          </h1>
+          <p class="text-base text-slate-300 leading-relaxed mb-6">
+            Audit contracts against 8 legal vectors in seconds: detect unmitigated indemnity traps, excessive penalty clauses, asymmetric jurisdiction locks, and unilateral termination provisions before signing.
+          </p>
+          <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl my-6">
+            <h2 class="text-lg font-bold text-amber-400 mt-0">8-Vector Legal Audit Framework:</h2>
+            <ol class="text-slate-300 leading-loose text-sm pl-5">
+              <li><strong>Financial Exposure:</strong> Liability ceilings, payment default terms, and penalty limits.</li>
+              <li><strong>Indemnity &amp; Liability:</strong> Uncapped consequential damages and unilateral indemnity clauses.</li>
+              <li><strong>Intellectual Property:</strong> Trade secret protection, work-for-hire assignment, and IP licensing scope.</li>
+              <li><strong>Termination &amp; Exit:</strong> Immediate cause triggers, cure periods, and survival covenants.</li>
+              <li><strong>Governing Law &amp; Arbitration:</strong> Judicial forum alignment and dispute resolution neutrality.</li>
+            </ol>
+          </div>
+        </section>
+      </main>
+      ${commonFooter}
+    `;
+  }
+
+  if (routePath === '/deal-shield') {
+    return `
+      ${commonHeader}
+      <main class="max-w-7xl mx-auto p-6 font-sans text-slate-100" dir="ltr">
+        ${commonAdSponsorSlot}
+        <section class="my-8">
+          <h1 class="text-3xl sm:text-4xl font-black text-slate-100 leading-tight mb-4">
+            DealShield 360™ Transaction Radar &amp; Conflict Simulator
+          </h1>
+          <p class="text-base text-slate-300 leading-relaxed mb-6">
+            Autonomous AI engine to diagnose corporate deal vulnerabilities, detect missing statutory exhibits, simulate cross-border conflict between 15+ legal regimes, and generate harmonization covenants.
+          </p>
+        </section>
+      </main>
+      ${commonFooter}
+    `;
+  }
+
+  if (routePath === '/corporate-structuring' || routePath === '/company-formation') {
+    return `
+      ${commonHeader}
+      <main class="max-w-7xl mx-auto p-6 font-sans text-slate-100" dir="ltr">
+        ${commonAdSponsorSlot}
+        <section class="my-8">
+          <h1 class="text-3xl sm:text-4xl font-black text-slate-100 leading-tight mb-4">
+            Corporate Structuring &amp; Articles of Association (AoA) Studio
+          </h1>
+          <p class="text-base text-slate-300 leading-relaxed mb-6">
+            Automated drafting of Articles of Association, Shareholder Agreements, and Board Resolutions aligned with statutory company codes across Delaware, UK, Saudi Arabia, UAE, and Europe.
+          </p>
+        </section>
+      </main>
+      ${commonFooter}
+    `;
+  }
+
+  if (routePath === '/youtube-studio' || routePath === '/youtube' || routePath === '/youtube-channel') {
+    return `
+      ${commonHeader}
+      <main class="max-w-7xl mx-auto p-6 font-sans text-slate-100" dir="ltr">
+        ${commonAdSponsorSlot}
+        <section class="my-8">
+          <h1 class="text-3xl sm:text-4xl font-black text-slate-100 leading-tight mb-4">
+            JurisTech Official YouTube Studio &amp; Autonomous Daily Broadcasting
+          </h1>
+          <p class="text-base text-slate-300 leading-relaxed mb-6">
+            Autonomous studio managing daily executive legal intelligence broadcasts published to the official JurisTech YouTube channel, featuring photorealistic executive avatars and bilingual dialogue.
+          </p>
+        </section>
+      </main>
+      ${commonFooter}
+    `;
+  }
+
+  if (routePath === '/404') {
+    return `
+      ${commonHeader}
+      <main class="max-w-4xl mx-auto p-8 font-sans text-slate-100 text-center my-12" dir="ltr">
+        <h1 class="text-6xl sm:text-8xl font-black text-cyan-400 font-mono mb-4">404</h1>
+        <h2 class="text-2xl font-bold text-slate-100 mb-4">Page Not Found</h2>
+        <p class="text-slate-300 max-w-xl mx-auto mb-8 leading-relaxed">
+          The requested legal page or document could not be located. You can navigate back to the dashboard or consult the 24/7 AI Legal Advisor.
+        </p>
+        <div class="flex gap-4 justify-center flex-wrap">
+          <a href="/dashboard" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 px-6 py-3 rounded-2xl font-bold no-underline shadow">Back to Dashboard</a>
+          <a href="/chat" class="bg-slate-900 text-cyan-400 border border-cyan-500 px-6 py-3 rounded-2xl font-bold no-underline">AI Legal Advisor 24/7</a>
+          <a href="/contracts" class="bg-slate-900 text-slate-200 border border-slate-700 px-6 py-3 rounded-2xl font-bold no-underline">Draft Contracts</a>
+        </div>
+      </main>
+      ${commonFooter}
+    `;
+  }
+
+  // Generic clean fallback
+  return `
+    ${commonHeader}
+    <main class="max-w-7xl mx-auto p-6 font-sans text-slate-100" dir="ltr">
+      ${commonAdSponsorSlot}
+      <section class="my-8">
+        <h1 class="text-2xl sm:text-3xl font-black text-slate-100 leading-tight mb-4">
+          JurisTech Solutions | Sovereign Legal AI &amp; Regulatory Intelligence
+        </h1>
+        <p class="text-base text-slate-300 leading-relaxed mb-6">
+          Enterprise infrastructure for AI contract analysis, risk detection, corporate structuring, and international commercial law compliance.
+        </p>
+      </section>
+    </main>
+    ${commonFooter}
+  `;
+}
+

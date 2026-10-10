@@ -374,7 +374,7 @@ Any dispute arising under this Agreement shall be submitted to the exclusive jur
       {auditing && (
         <div className="p-4 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-center space-y-2 font-sans text-xs text-cyan-300">
           <Loader2 className="w-6 h-6 animate-spin text-cyan-400 mx-auto" />
-          <p className="font-bold">{isDocArabic ? 'جاري الفحص المتقدم بالذكاء الاصطناعي واستخراج البنود البديلة...' : 'Evaluating contract risk & extracting redlines...'}</p>
+          <p className="font-bold">{isRtl ? 'جاري الفحص المتقدم بالذكاء الاصطناعي واستخراج البنود البديلة...' : 'Evaluating contract risk & extracting redlines...'}</p>
         </div>
       )}
 
@@ -386,18 +386,18 @@ Any dispute arising under this Agreement shall be submitted to the exclusive jur
                 <ShieldAlert className="w-4 h-4" />
               </div>
               <span className="font-bold text-slate-900 dark:text-white text-sm">
-                {isDocArabic ? `مؤشر درجة مخاطر العقد: ${auditResult.riskScore}%` : `Contract Risk Score: ${auditResult.riskScore}%`}
+                {isRtl ? `مؤشر درجة مخاطر العقد: ${auditResult.riskScore}%` : `Contract Risk Score: ${auditResult.riskScore}%`}
               </span>
             </div>
             <span className="text-[10px] font-bold text-cyan-400 uppercase font-sans">
-              {isDocArabic ? 'فحص تشريعي معتمد' : `${auditResult.docLanguage.toUpperCase()} AUDIT`}
+              {isRtl ? 'فحص تشريعي معتمد' : `${auditResult.docLanguage.toUpperCase()} AUDIT`}
             </span>
           </div>
 
           {/* Vector Pre-Filter Buttons */}
           <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar">
             <span className="text-[10px] font-bold text-slate-600 dark:text-slate-400 shrink-0">
-              {isDocArabic ? 'المحاور:' : 'Vectors:'}
+              {isRtl ? 'المحاور:' : 'Vectors:'}
             </span>
             {['All', 'Financial', 'Operational', 'IP', 'Regulatory'].map((key) => (
               <button
@@ -410,7 +410,7 @@ Any dispute arising under this Agreement shall be submitted to the exclusive jur
                     : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
                 }`}
               >
-                {key === 'All' ? (isDocArabic ? 'الكل' : 'All') : key}
+                {key === 'All' ? (isRtl ? 'الكل' : 'All') : key}
               </button>
             ))}
           </div>
@@ -425,11 +425,11 @@ Any dispute arising under this Agreement shall be submitted to the exclusive jur
                   </span>
                 </div>
                 <p className="text-slate-700 dark:text-slate-300 text-[11px] leading-relaxed">
-                  {isDocArabic ? item.explanationAr : item.explanationEn}
+                  {isRtl ? (item.explanationAr || item.explanationEn) : (item.explanationEn || item.explanationAr)}
                 </p>
                 <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-300 text-[10px] font-sans">
-                  <strong>{isDocArabic ? 'البند البديل المقترح:' : 'Suggested Redline:'} </strong>
-                  {isDocArabic ? item.suggestedRedlineAr : item.suggestedRedlineEn}
+                  <strong>{isRtl ? 'البند البديل المقترح:' : 'Suggested Redline:'} </strong>
+                  {isRtl ? (item.suggestedRedlineAr || item.suggestedRedlineEn) : (item.suggestedRedlineEn || item.suggestedRedlineAr)}
                 </div>
               </div>
             ))}

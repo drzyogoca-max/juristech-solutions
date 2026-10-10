@@ -34,17 +34,27 @@ export default class ErrorBoundary extends Component<Props, State> {
 
   public render() {
     if (this.state.hasError) {
+      const isAr =
+        typeof document !== 'undefined'
+          ? (document.documentElement.lang || '').startsWith('ar') ||
+            (localStorage.getItem('juristech.locale') || '').startsWith('ar')
+          : false;
+
       return (
-        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-4 text-slate-800 dark:text-slate-100 font-sans" dir="rtl">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-4 text-slate-800 dark:text-slate-100 font-sans" dir={isAr ? 'rtl' : 'ltr'}>
           <div className="max-w-md w-full bg-white dark:bg-slate-900 border border-red-500/40 rounded-3xl p-8 space-y-6 shadow-2xl text-center">
             <div className="w-16 h-16 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-400 flex items-center justify-center mx-auto shadow-lg">
               <ShieldAlert className="w-8 h-8" />
             </div>
 
             <div className="space-y-2">
-              <h2 className="text-xl font-black text-slate-900 dark:text-white">حدث خطأ غير متوقع في الواجهة</h2>
+              <h2 className="text-xl font-black text-slate-900 dark:text-white">
+                {isAr ? 'حدث خطأ غير متوقع في الواجهة' : 'Unexpected Application Exception'}
+              </h2>
               <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
-                تم تسجيل الخطأ البرمجي تلقائياً بنظام المراقبة والتحقق من الاستقرار التشغيلي.
+                {isAr
+                  ? 'تم تسجيل الخطأ البرمجي تلقائياً بنظام المراقبة والتحقق من الاستقرار التشغيلي.'
+                  : 'The error has been logged automatically. Please refresh to restore system stability.'}
               </p>
             </div>
 
@@ -58,14 +68,14 @@ export default class ErrorBoundary extends Component<Props, State> {
                 className="flex-1 py-3.5 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 font-black text-slate-950 text-xs flex items-center justify-center gap-2 transition-all shadow-lg active:scale-98"
               >
                 <RefreshCw className="w-4 h-4 text-slate-950" />
-                <span>إعادة تحميل الصفحة</span>
+                <span>{isAr ? 'إعادة تحميل الصفحة' : 'Reload Page'}</span>
               </button>
               <a
-                href="/"
+                href={isAr ? '/' : '/en'}
                 className="px-4 py-3.5 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-700 font-bold text-slate-900 dark:text-white text-xs flex items-center justify-center gap-1.5 transition-colors"
               >
                 <Home className="w-4 h-4" />
-                <span>الرئيسية</span>
+                <span>{isAr ? 'الرئيسية' : 'Home'}</span>
               </a>
             </div>
           </div>

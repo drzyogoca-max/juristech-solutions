@@ -1217,6 +1217,23 @@ class CrmService {
       return false;
     }
 
+    const cleanEmail = lead.contactEmail.toLowerCase().trim();
+
+    // Strict Anti-Repetition Guarantee: NEVER repeat an email sent to this contact
+    const alreadyInArchive = this.archivedLeads.some(l => l.contactEmail.toLowerCase().trim() === cleanEmail);
+    if (alreadyInArchive) {
+      console.warn(`[CRM Anti-Repetition Guard] 🛑 Lead ${cleanEmail} already contacted previously. Permanent block.`);
+      return false;
+    }
+
+    try {
+      const sentReg = JSON.parse(localStorage.getItem('juristech_csuite_sent_registry_v1') || '[]');
+      if (Array.isArray(sentReg) && sentReg.includes(cleanEmail)) {
+        console.warn(`[CRM Anti-Repetition Guard] 🛑 Lead ${cleanEmail} exists in permanent sent registry. Permanent block.`);
+        return false;
+      }
+    } catch {}
+
     const b2bLead = {
       id: lead.id,
       companyName: lead.companyName || lead.clientName,
@@ -1233,6 +1250,14 @@ class CrmService {
 
     if (success) {
       this.incrementDailyQuota();
+
+      try {
+        const sentReg = JSON.parse(localStorage.getItem('juristech_csuite_sent_registry_v1') || '[]');
+        if (!sentReg.includes(cleanEmail)) {
+          sentReg.push(cleanEmail);
+          localStorage.setItem('juristech_csuite_sent_registry_v1', JSON.stringify(sentReg));
+        }
+      } catch {}
 
       const dispatchedLead: CrmClientLead = {
         ...lead,

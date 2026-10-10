@@ -575,16 +575,13 @@ async function outreachFrequencyGuard(cleanEmail, emailSubject) {
     // Filter to real sends only (exclude system tags)
     const realSends = records.filter(r => r.subject && !r.subject.startsWith('['));
 
-    // 4. 7-day Cooldown: any real send in last 7 days
-    const recentSend = realSends.find(r => new Date(r.dispatched_at).getTime() > cooldownCutoff);
-    if (recentSend) {
-      return { allowed: false, reason: 'COOLDOWN_ACTIVE_7D', detail: `Last send: ${recentSend.dispatched_at}` };
-    }
-
-    // 5. Active Sequence: any real send in last 14 days → block new sequence
-    const activeSend = realSends.find(r => new Date(r.dispatched_at).getTime() > sequenceCutoff);
-    if (activeSend) {
-      return { allowed: false, reason: 'ACTIVE_SEQUENCE_IN_PROGRESS', detail: `Active since: ${activeSend.dispatched_at}` };
+    // 4. Strict Mandate: Permanent single-contact rule (zero repeated emails)
+    if (realSends.length > 0) {
+      return {
+        allowed: false,
+        reason: 'RECIPIENT_ALREADY_CONTACTED_PERMANENT_NO_REPEAT',
+        detail: `Permanently blocked: previously contacted on ${realSends[0].dispatched_at}`
+      };
     }
 
     return { allowed: true, reason: 'ALL_CHECKS_PASSED' };

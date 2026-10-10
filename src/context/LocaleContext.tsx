@@ -32,16 +32,23 @@ export const LocaleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     const normalized = normalizeLanguageCode(targetLang);
     setCurrentLocale(normalized);
 
-    // 1. Sync i18n
-    if (i18n.language !== normalized) {
-      i18n.changeLanguage(normalized);
-    }
+    // 1. Unconditionally sync i18n to force event emission & subscriber rerender
+    i18n.changeLanguage(normalized);
 
     // 2. Persist to storage
     persistLocalePreference(normalized);
 
-    // 3. Update document direction & lang
+    // 3. Update document direction & lang immediately
     setDocumentLanguage(normalized);
+    if (typeof document !== 'undefined') {
+      const isTargetRtl = isRtlLanguage(normalized);
+      document.documentElement.lang = normalized;
+      document.documentElement.dir = isTargetRtl ? 'rtl' : 'ltr';
+      if (document.body) {
+        document.body.lang = normalized;
+        document.body.dir = isTargetRtl ? 'rtl' : 'ltr';
+      }
+    }
 
     // 4. Dispatch custom event
     if (typeof window !== 'undefined') {

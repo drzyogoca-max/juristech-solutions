@@ -492,6 +492,36 @@ export const JURISDICTIONS: Record<string, JurisdictionInfo> = {
     currencyNameAr: 'راند جنوب أفريقي',
     usdRate: 18.2,
   },
+  NG: {
+    countryCode: 'NG',
+    countryName: 'Nigeria',
+    countryNameAr: 'جمهورية نيجيريا الاتحادية',
+    legalFramework: 'Nigerian Companies and Allied Matters Act (CAMA 2020), Common Law of Contract, & NDPA 2023',
+    legalFrameworkAr: 'قانون الشركات والمسائل المرتبطة النيجيري (CAMA 2020)، القانون العام للعقود، وقانون حماية البيانات NDPA 2023',
+    governingLaws: ['Companies and Allied Matters Act (CAMA 2020)', 'Nigerian Common Law of Contract', 'Nigeria Data Protection Act (NDPA 2023)'],
+    arbitrationVenue: 'Lagos Court of Arbitration (LCA) / Regional Centre for International Commercial Arbitration Lagos (RCICAL)',
+    arbitrationVenueAr: 'محكمة لاغوس للتحكيم (LCA) أو المركز الإقليمي للتحكيم التجاري الدولي بلاغوس (RCICAL)',
+    flagEmoji: '🇳🇬',
+    currencyCode: 'NGN',
+    currencySymbol: '₦',
+    currencyNameAr: 'نايرا نيجيرية',
+    usdRate: 1650.0,
+  },
+  KE: {
+    countryCode: 'KE',
+    countryName: 'Kenya',
+    countryNameAr: 'جمهورية كينيا',
+    legalFramework: 'Kenyan Law of Contract Act (Cap. 23), Companies Act 2015, & NCIA Arbitration Rules',
+    legalFrameworkAr: 'قانون العقود الكيني (Cap. 23)، قانون الشركات لعام 2015، وقواعد مركز نيروبي للتحكيم الدولي NCIA',
+    governingLaws: ['Law of Contract Act (Cap. 23)', 'Companies Act No. 17 of 2015', 'Kenya Data Protection Act 2019'],
+    arbitrationVenue: 'Nairobi Centre for International Arbitration (NCIA) / High Court of Kenya (Commercial Division)',
+    arbitrationVenueAr: 'مركز نيروبي للتحكيم الدولي (NCIA) أو المحكمة التجارية العليا بنيروبي',
+    flagEmoji: '🇰🇪',
+    currencyCode: 'KES',
+    currencySymbol: 'KSh',
+    currencyNameAr: 'شلن كيني',
+    usdRate: 129.0,
+  },
   SE: {
     countryCode: 'SE',
     countryName: 'Sweden',
@@ -593,6 +623,7 @@ export function setSelectedJurisdiction(code: string): JurisdictionInfo {
   cachedJurisdiction = target;
   try {
     localStorage.setItem('juristech_jurisdiction', JSON.stringify(target));
+    localStorage.setItem('juristech_jurisdiction_manual', 'true');
   } catch (e) {
     console.warn('Failed to store jurisdiction selection:', e);
   }
@@ -602,19 +633,24 @@ export function setSelectedJurisdiction(code: string): JurisdictionInfo {
 export async function detectVisitorJurisdiction(): Promise<JurisdictionInfo> {
   if (cachedJurisdiction) return cachedJurisdiction;
 
+  // 1. Check if user explicitly selected a jurisdiction manually
   try {
-    const saved = localStorage.getItem('juristech_jurisdiction');
-    if (saved) {
-      cachedJurisdiction = JSON.parse(saved);
-      if (cachedJurisdiction && cachedJurisdiction.countryCode === 'LY') {
-        cachedJurisdiction.isBlocked = true;
+    const isManual = localStorage.getItem('juristech_jurisdiction_manual') === 'true';
+    if (isManual) {
+      const saved = localStorage.getItem('juristech_jurisdiction');
+      if (saved) {
+        cachedJurisdiction = JSON.parse(saved);
+        if (cachedJurisdiction && cachedJurisdiction.countryCode === 'LY') {
+          cachedJurisdiction.isBlocked = true;
+        }
+        return cachedJurisdiction!;
       }
-      return cachedJurisdiction!;
     }
   } catch {
     // Ignore storage read error
   }
 
+  // 2. Real-time IP Geo Alignment (GCC, Middle East, Africa, Americas, Europe, Asia)
   try {
     const data = await getUnifiedVisitorGeo();
     const code = (data.countryCode || '').toUpperCase() as string;
@@ -637,11 +673,19 @@ export async function detectVisitorJurisdiction(): Promise<JurisdictionInfo> {
       };
     }
   } catch (err) {
-    console.warn('GeoIP detection fallback to Jordan/Default:', err);
+    console.warn('GeoIP detection fallback to default:', err);
   }
 
   if (!cachedJurisdiction) {
-    cachedJurisdiction = DEFAULT_JURISDICTION; // Defaults to Jordan (JO)
+    try {
+      const saved = localStorage.getItem('juristech_jurisdiction');
+      if (saved) {
+        cachedJurisdiction = JSON.parse(saved);
+      }
+    } catch {}
+    if (!cachedJurisdiction) {
+      cachedJurisdiction = JURISDICTIONS.SA || DEFAULT_JURISDICTION;
+    }
   }
 
   try {

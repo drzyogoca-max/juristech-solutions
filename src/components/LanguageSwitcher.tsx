@@ -60,15 +60,10 @@ export default function LanguageSwitcher({ className = '', variant = 'navbar' }:
   }, []);
 
   const handleLanguageSwitch = (targetCode: SupportedLanguage) => {
-    if (targetCode === currentLang) {
-      setIsOpen(false);
-      return;
-    }
-
     // 1. Centralized LocaleContext update (handles i18n, storage, html lang & dir, event)
     changeLocale(targetCode);
 
-    // 2. Update URL route if using locale prefixes, preserving path & search params
+    // 2. Update URL route preserving path & search params
     const currentPath = location.pathname;
     const currentSearch = location.search;
     const currentHash = location.hash;
@@ -79,9 +74,15 @@ export default function LanguageSwitcher({ className = '', variant = 'navbar' }:
 
     if (localePrefixMatch) {
       const restOfPath = localePrefixMatch[2] || '';
-      newPath = `/${targetCode}${restOfPath}`;
+      // If switching to Arabic at root, allow clean '/' or '/ar'
+      if (restOfPath === '' || restOfPath === '/') {
+        newPath = targetCode === 'ar' ? '/' : `/${targetCode}`;
+      } else {
+        newPath = `/${targetCode}${restOfPath}`;
+      }
     } else if (currentPath === '/' || currentPath === '') {
-      newPath = `/${targetCode}/dashboard`;
+      // Stay on homepage in target language
+      newPath = targetCode === 'ar' ? '/' : `/${targetCode}`;
     } else {
       newPath = `/${targetCode}${currentPath}`;
     }
