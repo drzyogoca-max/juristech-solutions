@@ -162,8 +162,8 @@ ${e2eePassphrase || 'Default System Key'}
           </h2>
           <p className="text-xs text-slate-400">
             {isRtl
-              ? 'حماية الحساب والمستندات بخوارزميات التشفير العسكرية AES-GCM-256 وبروتوكول TOTP RFC 6238.'
-              : 'Military-grade AES-GCM-256 client-side zero-knowledge encryption and RFC 6238 TOTP.'}
+              ? 'حماية الحساب والمستندات بخوارزميات التشفير المعياري المتقدم AES-GCM-256 وبروتوكول المصادقة TOTP RFC 6238.'
+              : 'Standard AES-GCM-256 client-side encryption and RFC 6238 TOTP authentication.'}
           </p>
         </div>
 

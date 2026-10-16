@@ -23,9 +23,9 @@ export default function SovereignContactCenterCard() {
             )}
           </p>
         </div>
-        <span className="bg-emerald-950 text-emerald-400 border border-emerald-500/40 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          <span>{l('متصل الآن 24/7', 'Online 24/7')}</span>
+        <span className="bg-slate-900 text-emerald-400 border border-emerald-500/30 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5">
+          <span className="w-2 h-2 rounded-full bg-emerald-400" />
+          <span>{l('مكتب استقبال الاستفسارات والدعم', 'Support & Inquiries Desk')}</span>
         </span>
       </div>
 

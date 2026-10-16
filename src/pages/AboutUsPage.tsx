@@ -119,10 +119,93 @@ export default function AboutUsPage() {
               ? 'تخضع منصة JurisTech Solutions للإشراف الاستراتيجي والعمادة الفنية برئاسة د. محمد مصطفى (المؤسس ورئيس مجلس الإدارة)، لضمان تطبيق أعلى معايير الحوكمة والتحليل التقني وإدارة المخاطر التشريعية كمنصة برمجيات قانونية (LegalTech SaaS).'
               : 'JurisTech Solutions is strategically led by Dr. Mohammad Mustafa (Founder & Chairman, PhD in Risk Management), ensuring high standards of technical governance, automated risk analysis, and SaaS compliance.'}
           </p>
+          <div className="p-4 rounded-2xl bg-slate-950/60 border border-slate-800 text-xs space-y-1 font-mono">
+            <div className="text-slate-400 font-bold uppercase tracking-wider">{isRtl ? 'الاعتمادات والسير المهنية للفريق التنفيذي:' : 'Executive Credentials & Advisory Board:'}</div>
+            <div className="text-cyan-400">{'{{TODO_OWNER: executive team credentials}}'}</div>
+          </div>
           <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 pt-1">
             <Mail className="w-4 h-4" />
             <span>founder@juristech.solutions</span>
           </div>
+        </div>
+
+        {/* Legal Entity & Licensing Disclosures */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="p-3 rounded-2xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                <Building2 className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-white">
+                  {isRtl ? 'بيانات الكيان القانوني المشغّل' : 'Operating Legal Entity'}
+                </h3>
+                <span className="text-xs text-slate-400 font-mono">{isRtl ? 'التسجيل النظامي والمقر' : 'Registered Office & Status'}</span>
+              </div>
+            </div>
+            <div className="space-y-2 text-xs text-slate-300">
+              <div className="flex justify-between border-b border-slate-800 pb-1.5">
+                <span className="text-slate-400">{isRtl ? 'اسم الكيان القانوني:' : 'Legal Entity Name:'}</span>
+                <span className="font-mono text-cyan-400">{'{{TODO_OWNER: legal entity name}}'}</span>
+              </div>
+              <div className="flex justify-between border-b border-slate-800 pb-1.5">
+                <span className="text-slate-400">{isRtl ? 'رقم السجل التجاري / القيد:' : 'Registration Number:'}</span>
+                <span className="font-mono text-cyan-400">{'{{TODO_OWNER: registration number}}'}</span>
+              </div>
+              <div className="flex justify-between border-b border-slate-800 pb-1.5">
+                <span className="text-slate-400">{isRtl ? 'المقر النظامي المسجل:' : 'Registered Address:'}</span>
+                <span className="font-mono text-cyan-400">{'{{TODO_OWNER: registered business address}}'}</span>
+              </div>
+              <div className="flex justify-between pt-1">
+                <span className="text-slate-400">{isRtl ? 'طبيعة النشاط:' : 'Activity Type:'}</span>
+                <span className="text-slate-300">{isRtl ? 'برمجيات تقنية قانونية سحابية (SaaS)' : 'LegalTech Cloud SaaS'}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="p-3 rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                <ShieldCheck className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-white">
+                  {isRtl ? 'التراخيص والشهادات والامتثال' : 'Licensing & Certifications'}
+                </h3>
+                <span className="text-xs text-slate-400 font-mono">{isRtl ? 'ضوابط التحقق المؤسسي' : 'Verification Baseline'}</span>
+              </div>
+            </div>
+            <div className="space-y-2 text-xs text-slate-300">
+              <div className="flex justify-between border-b border-slate-800 pb-1.5">
+                <span className="text-slate-400">{isRtl ? 'التراخيص التجارية / التشغيلية:' : 'Trade Licenses / Permits:'}</span>
+                <span className="font-mono text-cyan-400">{'{{TODO_OWNER: trade licenses}}'}</span>
+              </div>
+              <div className="flex justify-between border-b border-slate-800 pb-1.5">
+                <span className="text-slate-400">{isRtl ? 'الشهادات المعتمدة:' : 'Accredited Certifications:'}</span>
+                <span className="font-mono text-cyan-400">{'{{TODO_OWNER: certifications}}'}</span>
+              </div>
+              <div className="flex justify-between border-b border-slate-800 pb-1.5">
+                <span className="text-slate-400">{isRtl ? 'مزود نماذج الذكاء الاصطناعي:' : 'AI Model Provider:'}</span>
+                <span className="text-slate-300">Google Cloud (Gemini 2.0 Flash)</span>
+              </div>
+              <div className="flex justify-between pt-1">
+                <span className="text-slate-400">{isRtl ? 'معالجة البيانات:' : 'Data Processing:'}</span>
+                <span className="text-emerald-400">{isRtl ? 'معالجة مؤقتة مشفرة بدون تدريب للنماذج' : 'Transient encrypted processing, zero retention for model training'}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Global Legal Disclaimer Callout */}
+        <div className="p-6 rounded-3xl bg-amber-500/10 border border-amber-500/30 text-xs sm:text-sm text-amber-200/90 leading-relaxed">
+          <p className="font-bold text-amber-300 mb-1">
+            {isRtl ? 'تنبيه قانوني هام للمستخدمين:' : 'Important Legal Notice to Users:'}
+          </p>
+          <p>
+            {isRtl
+              ? 'JurisTech أداة ذكاء اصطناعي مساعدة، ومخرجاتها ليست استشارة قانونية ولا تغني عن مراجعة محامٍ مرخّص في الدولة المعنية. جميع التحليلات والنماذج المنشأة هي لأغراض الفحص والمساعدة والتدقيق المكتبي الداخلي فقط.'
+              : 'JurisTech is an AI assistance tool; its outputs do not constitute legal advice and cannot substitute for consultation with a licensed attorney in the applicable jurisdiction. All analyses and templates are for informational risk audit and internal drafting assistance only.'}
+          </p>
         </div>
 
         {/* Core Architectural Pillars Grid */}
@@ -160,12 +243,12 @@ export default function AboutUsPage() {
               <Globe2 className="w-6 h-6" />
             </div>
             <h3 className="text-lg font-bold text-white">
-              {isRtl ? 'التوسع السحابي و Anycast CDN' : 'Sub-10ms Anycast Routing'}
+              {isRtl ? 'التوسع السحابي و Anycast CDN' : 'High Availability Cloud Routing'}
             </h3>
             <p className="text-xs text-slate-400 leading-relaxed">
               {isRtl
-                ? 'توزيع الأحمال عالمياً واستجابة سريعة للغاية أقل من 10 ملي ثانية لضمان عمل المنصة 24/7 بدون انقطاع.'
-                : 'Multi-region edge network providing sub-10ms response times and 100% high availability uptime.'}
+                ? 'توزيع الأحمال سحابياً عبر شبكات متعددة المناطق واستجابة سريعة لضمان استمرارية عمل المنصة.'
+                : 'Multi-region cloud edge network providing rapid response times and high availability infrastructure.'}
             </p>
           </div>
         </div>

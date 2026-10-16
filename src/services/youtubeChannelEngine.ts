@@ -100,7 +100,7 @@ export const MASTER_DIALOGUE_SERIES = [
       { speaker: 'خالد (مدير العمليات)', role: 'CEO' as const, avatar: '👔', textAr: 'ممتاز، وفّرنا وقتاً ونفقات استشارات كانت ستكلف آلاف الدولارات!', textEn: 'Brilliant, we saved thousands in external legal fees and closed the agreement today!', timing: '00:32 - 00:48' },
     ],
     dialogueEvening: [
-      { speaker: 'إبراهيم (الشريك الإداري)', role: 'CEO' as const, avatar: '🏛️', textAr: 'كيف تضمن الشركات في الخليج صياغة عقود تجارية خالية من الثغرات الباطلة شرعاً أو نظاماً؟', textEn: 'How can GCC businesses ensure commercial contracts contain zero void statutory provisions?', timing: '00:00 - 00:30' },
+      { speaker: 'إبراهيم (الشريك الإداري)', role: 'CEO' as const, avatar: '🏛️', textAr: 'كيف تضمن الشركات في الخليج صياغة عقود تجارية متوافقة مع الأطر النظامية والشرعية؟', textEn: 'How can GCC businesses ensure commercial contracts remain compliant with statutory and corporate frameworks?', timing: '00:00 - 00:30' },
       { speaker: 'منى (رئيسة الامتثال)', role: 'Counsel' as const, avatar: '⚖️', textAr: 'من خلال محرك JurisTech الذكي؛ يطبق التحليل النصي 8 محاور رقابية تمنع الغرر، وتحدد مواعيد التسليم، وتضمن حماية الملكية الفكرية وسرية المعلومات.', textEn: 'Through the JurisTech Intelligence Engine. It evaluates 8 forensic axes preventing ambiguous liabilities, securing IP ownership, and enforcing strict confidentiality.', timing: '00:30 - 01:10' },
       { speaker: 'إبراهيم (الشريك الإداري)', role: 'CEO' as const, avatar: '🏛️', textAr: 'وكل ذلك يتم بربط فوري مع النماذج الرسمية في الإمارات والسعودية وقطر؟', textEn: 'And all templates sync dynamically with statutory laws in UAE, Saudi Arabia, and Qatar?', timing: '01:10 - 01:45' },
     ]
@@ -298,7 +298,7 @@ Rachel: "Zero access. Every single document is encrypted client-side in the brow
 David: "And how does the digital execution suite handle multi-party cross-border signing?"
 Rachel: "Every signature generates an immutable cryptographic SHA-256 hash, certified with UTC timestamps and IP forensics. It complies with eIDAS, US ESIGN Act, and GCC Electronic Transactions Laws, giving us 100% court-admissible evidence."
 David: "Bank-grade privacy, absolute data sovereignty, and instant legal enforceability. That completely solves our corporate governance requirements."`,
-    scriptVoiceoverAr: 'حوار تقني قانوني حول التشفير العسكري E2EE والتوقيع الرقمي المقبول قضائياً.',
+    scriptVoiceoverAr: 'حوار تقني قانوني حول التشفير المعياري E2EE والتوقيع الرقمي المعتمد نظاماً.',
     dialogueLines: [
       { speaker: 'David (Chief Technology Officer)', role: 'CEO', avatar: '💻', textEn: "Rachel, our security auditors flagged that emailing sensitive contract PDFs creates massive breach exposure. What is our enterprise solution?", textAr: 'راشيل، مدققو الأمن السيبراني نبهونا إلى أن إرسال العقود الحساسة بالإيميل يمثل ثغرة تسريب خطيرة. ما هو حلنا المؤسسي؟', timing: '00:00 - 00:25' },
       { speaker: 'Rachel (Head of Compliance)', role: 'Counsel', avatar: '🛡️', textEn: "We migrated all corporate assets to JurisTech's Zero-Knowledge Encrypted Vault. Everything is protected with client-side AES-256-GCM encryption.", textAr: 'قمنا بنقل كافة الأصول إلى خزينة JurisTech المشفرة بتقنية المعرفة الصفرية وتشفير AES-256-GCM من طرف العميل.', timing: '00:25 - 00:55' },

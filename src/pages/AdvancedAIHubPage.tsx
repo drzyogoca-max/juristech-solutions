@@ -290,10 +290,10 @@ export default function AdvancedAIHubPage() {
         : activeModule.promptTemplateEn(textToProcess, selectedJurisdiction);
 
       const languageEnforcement = isRtl
-        ? `\n\nتوجيه لغوي وتشريعي إلزامي: أجب باللغة العربية الفصحى حصراً وبصياغة قانونية رفيعة المستوى متوافقة 100% مع تشريعات ${selectedJurisdiction.nameAr}. قسّم التقرير إلى عناوين واضحة وجداول ونقاط رقمية محددة.`
+        ? `\n\nتوجيه لغوي وتشريعي إلزامي: أجب باللغة العربية الفصحى حصراً وبصياغة قانونية رفيعة المستوى متوافقة مع تشريعات ${selectedJurisdiction.nameAr}. قسّم التقرير إلى عناوين واضحة وجداول ونقاط رقمية محددة.`
         : `\n\nCRITICAL MANDATE: Respond strictly in English using high-level institutional legal terminology adhering to ${selectedJurisdiction.nameEn} statutory law. Structure the output into clear markdown sections, metrics, and actionable recommendations.`;
 
-      const selfLearningContext = `\n\n[Sovereign AI Engine Core: Google Gemini 2.5 Pro Ultra — Continuous Self-Learning Pipeline Active with Human-in-the-Loop RLHF Validation].`;
+      const selfLearningContext = `\n\n[AI Legal Analysis Engine: Google Gemini 2.0 Flash REST Architecture with Local Statutory Rules Grounding].`;
 
       const finalPrompt = basePrompt + languageEnforcement + selfLearningContext;
       
@@ -388,23 +388,23 @@ export default function AdvancedAIHubPage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
           
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900 border border-cyan-500/30 shadow-lg">
-            <Cpu className="w-4 h-4 text-cyan-400 animate-pulse" />
+            <Cpu className="w-4 h-4 text-cyan-400" />
             <span className="text-xs font-black uppercase tracking-widest text-cyan-300">
-              {l('محرك Google Gemini Pro السيادي المتطور 2026', 'Google Gemini Pro Sovereign AI Core')}
+              {l('محرك Google Gemini 2.0 Flash والتحليل التشريعي', 'Google Gemini 2.0 Flash & Statutory Engine')}
             </span>
             <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-              ● Live RLHF Self-Learning Active
+              ● Statutory Grounding Active
             </span>
           </div>
 
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
-            {l('مركز حلول الذكاء الاصطناعي ', 'Sovereign Multi-Model ')}<span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-400">{l('السيادي التنبؤي والتحليلي', 'AI Predictive & Analytical Hub')}</span>
+            {l('مركز حلول الذكاء الاصطناعي ', 'Legal Intelligence ')}<span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-400">{l('التحليلي والتنبؤي', 'Predictive & Analytical Hub')}</span>
           </h1>
 
           <p className="text-slate-300 max-w-3xl mx-auto text-xs sm:text-sm leading-relaxed font-medium">
             {l(
-              '5 وحدات ذكاء اصطناعي سيادية فائقة القدرة تدعم رفع كافة أنواع الملفات (PDF, Word, TXT)، استخراج البنود، محاكاة النزاعات القضائية، وفحص صفقات الاستحواذ مع التوافق التشريعي الكامل لكافة دول المنصة والتعلم الذاتي المستمر.',
-              '5 enterprise-grade sovereign AI modules supporting multi-format uploads (PDF, DOCX, TXT), court dispute simulation, predictive M&A, cross-border compliance, and continuous self-learning.'
+              '5 وحدات متخصصة لتحليل العقود تدعم رفع كافة أنواع الملفات (PDF, Word, TXT)، استخراج البنود، محاكاة النزاعات القضائية، وفحص صفقات الاستحواذ بالاستناد إلى الأنظمة المعتمدة.',
+              '5 specialized contract analysis modules supporting multi-format uploads (PDF, DOCX, TXT), court dispute simulation, predictive M&A, cross-border compliance, and statutory alignment.'
             )}
           </p>
 
@@ -412,7 +412,7 @@ export default function AdvancedAIHubPage() {
           <div className="flex items-center justify-center gap-3 flex-wrap pt-2 text-xs font-mono">
             <span className="px-3 py-1 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-              <span>{l('دقة التنبؤ: 99.4%', 'Accuracy: 99.4%')}</span>
+              <span>{l('تحليل متعدد المحاور', 'Multi-Axis Forensic Analysis')}</span>
             </span>
             <span className="px-3 py-1 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 flex items-center gap-1.5">
               <Shield className="w-3.5 h-3.5 text-emerald-400" />

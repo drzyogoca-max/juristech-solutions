@@ -68,19 +68,19 @@ export default function InteractiveCustomerJourneyMap() {
       subtitleAr: 'تشفير AES-GCM-256 محلي مع توليد بصمة SHA-256 وشهادة عدم التلاعب',
       subtitleEn: 'Client-side AES-GCM-256 encryption with verifiable SHA-256 tamper-proof seals',
       descriptionAr: 'يتم تشفير أي مستند أو عقد يرفعه العميل محلياً في متصفحه قبل إرساله، مع استخراج بصمته الرقمية SHA-256 وإصدار شهادة سلامة مستندية معتمدة تثبت عدم تعرضه للتعديل.',
-      descriptionEn: 'Contracts are encrypted client-side via military-grade AES-GCM-256, generating a certified SHA-256 mathematical fingerprint and downloadable Certificate of Integrity.',
+      descriptionEn: 'Contracts are encrypted client-side via standard AES-GCM-256, generating a SHA-256 cryptographic digest and Certificate of Integrity.',
       featuresAr: [
-        'تشفير وفك تشفير محلي 100% بدون إمكانية وصول السيرفر لمفتاحك الخاص',
+        'تشفير وفك تشفير محلي في المتصفح مع حماية تامة للمفتاح الخاص',
         'توليد شهادات أمان وبصمات غير قابلة للتزوير مقبولة أمام المحاكم والتحكيم',
         'مختبر فحص جنائي فوري للتحقق من سلامة أي مستند بمجرد لصقه'
       ],
       featuresEn: [
-        '100% Client-side zero-knowledge encryption preventing server-side leakage',
+        'Client-side encryption safeguarding your private cryptographic keys',
         'Court-admissible SHA-256 certificates of integrity & non-tampering',
         'Instant forensic hash laboratory to verify document authenticity'
       ],
-      metricAr: 'أمان عسكري EAL6+ بمفاتيح PBKDF2',
-      metricEn: 'Military-Grade EAL6+ Security',
+      metricAr: 'أمان وتشفير قياسي بمفاتيح PBKDF2',
+      metricEn: 'Standard AES-256 / PBKDF2 Security',
       ctaTextAr: 'فتح الخزنة المشفرة',
       ctaTextEn: 'Open Encrypted Vault',
       targetRoute: '/vault',

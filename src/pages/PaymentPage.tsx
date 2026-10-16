@@ -254,8 +254,8 @@ export default function PaymentPage() {
       contractLimitAr: 'غرفة صفقات كاملة ومستقلة لكل أطراف الصفقة',
       apiAccess: 'Custom Enterprise Banking & SWIFT APIs',
       apiAccessAr: 'ربط مباشر مع البنوك وأنظمة الفواتير المعتمدة',
-      security: 'Military-Grade E2EE + Multi-Sign Escrow',
-      securityAr: 'تشفير عسكري + توقيع متعدد الأطراف مشفر',
+      security: 'Institutional-Grade AES-256 + Multi-Sign Escrow',
+      securityAr: 'تشفير قياسي متقدم AES-256 + توقيع متعدد الأطراف مشفر',
       support: 'Advanced Technical Risk Analysis & DealShield 360 Support',
       supportAr: 'إشراف تقني وتحليلي متقدم لمخاطر الصفقات عبر DealShield 360',
       featuresEn: [

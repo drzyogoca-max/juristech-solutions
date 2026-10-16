@@ -80,10 +80,10 @@ export default function NotFoundPage() {
     {
       to: '/repository',
       icon: Library,
-      titleAr: 'مستودع المليون عقد المؤسسي',
-      titleEn: '1M+ Contracts Repository',
-      descAr: 'أضخم مكتبة نماذج وعقود تجارية جاهزة للتعديل',
-      descEn: 'Massive library of verified corporate agreements',
+      titleAr: 'مستودع العقود والنماذج المؤسسية',
+      titleEn: 'Verified Contracts Repository',
+      descAr: 'مكتبة نماذج وعقود تجارية معتمدة جاهزة للتخصيص',
+      descEn: 'Comprehensive library of verified corporate agreements',
       color: 'text-indigo-400 bg-indigo-500/10 border-indigo-500/30'
     },
     {

@@ -55,12 +55,12 @@ export const PAGE_SEO: Record<string, PageSEO> = {
   },
   '/contracts': {
     path: '/contracts',
-    titleEn: 'AI Sovereign Smart Contracts Studio & Verified Templates Vault | JurisTech',
+    titleEn: 'AI Smart Contracts Studio & Verified Templates Vault | JurisTech',
     titleAr: 'محرك صياغة العقود الذكية بالذكاء الاصطناعي وخزينة النماذج المعتمدة | JurisTech',
     descriptionEn:
-      'Sovereign AI Contract Drafting Studio & Verified Legal Templates Vault. Compliant across GCC, Saudi M/191, Jordan, Egypt, US Delaware DGCL, UK & UNCITRAL.',
+      'AI Contract Drafting Studio & Verified Legal Templates Vault. Aligned with GCC, Saudi M/191, Jordan, Egypt, US Delaware DGCL, UK, and UNCITRAL model rules.',
     descriptionAr:
-      'المحرك الموحد لصياغة وتدقيق العقود الذكية بالذكاء الاصطناعي وخزينة العقود المعتمدة في السعودية والخليج والأردن ومصر وأمريكا وبريطانيا والتجارة الدولية UNCITRAL.',
+      'محرك صياغة وتدقيق العقود الذكية بالذكاء الاصطناعي ونماذج العقود المعتمدة بما يراعي أنظمة السعودية والخليج ومصر والأردن وبريطانيا وأمريكا وقواعد UNCITRAL النموذجية.',
     keywords: 'صياغة العقود بالذكاء الاصطناعي, نماذج عقود تجارية, نظام المعاملات المدنية السعودي, القانون المدني الأردني, Delaware smart contract drafting, UNCITRAL CISG contracts, AI legal generator',
     schemaType: 'SoftwareApplication',
   },

@@ -950,7 +950,7 @@ export default function Dashboard() {
                   <span>{l('تشفير AES-GCM 256-bit', 'AES-256 Bit Encryption')}</span>
                 </div>
                 <p className="text-xs text-slate-400 leading-relaxed">
-                  {l('تشفير فوري لكافة الملفات والعقود قبل رفعها للخوادم المشفرة.', 'Military-grade encryption applied to every document prior to secure transit.')}
+                  {l('تشفير معياري متقدم لكافة الملفات والعقود أثناء المعالجة والنقل الآمن.', 'Standard AES-256 encryption applied to every document prior to secure transit.')}
                 </p>
               </div>
 

@@ -96,14 +96,14 @@ export default function EnterpriseAdoptionCommandCenterPage() {
 
         <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 shadow-lg">
           <div className="flex items-center justify-between text-slate-400 text-sm">
-            <span>{isAr ? 'الشهادات الدولية المعتمدة' : 'Active Regulatory Passports'}</span>
+            <span>{isAr ? 'أطر ومعايير الامتثال المستهدفة' : 'Compliance Framework Standards'}</span>
             <Award className="w-4 h-4 text-emerald-400" />
           </div>
           <div className="text-3xl font-extrabold text-white mt-2">
             {passportOverview.totalActiveCertificates}
           </div>
           <div className="text-xs text-emerald-400 mt-1">
-            ISO 27001 • SOC 2 • ISO 42001 • SDAIA
+            GDPR • SOC 2 Controls • {'{{TODO_OWNER: certifications}}'}
           </div>
         </div>
 

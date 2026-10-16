@@ -36,8 +36,8 @@ export default function TrustPortalPage() {
         title={isAr ? 'مركز الثقة والأمان المؤسسي | JurisTech Solutions' : 'Enterprise Trust & Security Portal | JurisTech Solutions'}
         description={
           isAr
-            ? 'بوابة الثقة والامتثال المؤسسي لمنصة JurisTech. مواءمة معايير الآيزو 27001، سدايا، وضمان انعدام تخزين الوثائق بنسبة 100%.'
-            : 'JurisTech enterprise trust and compliance portal. Verified ISO 27001, SDAIA alignment, and 100% zero-retention guarantee.'
+            ? 'بوابة الثقة والامتثال المؤسسي لمنصة JurisTech. مواءمة معايير الأمان المتقدمة وضوابط الخصوصية المؤسسية والتشفير القياسي للمستندات.'
+            : 'JurisTech enterprise trust and compliance portal. Robust security standards, enterprise privacy controls, and encrypted document workflows.'
         }
       />
 
@@ -45,25 +45,25 @@ export default function TrustPortalPage() {
       <div className="max-w-5xl mx-auto text-center space-y-4">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold">
           <ShieldCheck className="w-4 h-4" />
-          <span>{isAr ? 'مركز الثقة والامتثال المعتمد 2026' : 'Enterprise Verified Trust & Security 2026'}</span>
+          <span>{isAr ? 'مركز الثقة والامتثال التقني' : 'Enterprise Trust & Security Architecture'}</span>
         </div>
 
         <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
           {isAr ? (
             <>
-              أمان وموثوقية تشفيرية <span className="text-emerald-400">بمعايير سيادية</span>
+              أمان وموثوقية تقنية <span className="text-emerald-400">بمعايير معتمدة</span>
             </>
           ) : (
             <>
-              Cryptographic Trust with <span className="text-emerald-400">Sovereign Integrity</span>
+              Cryptographic Trust with <span className="text-emerald-400">Verified Architecture</span>
             </>
           )}
         </h1>
 
         <p className="text-sm sm:text-base text-slate-400 max-w-3xl mx-auto leading-relaxed">
           {isAr
-            ? 'تلتزم JurisTech بأعلى معايير حماية البيانات والخصوصية الصفرية. نحن لا نقوم بتخزين وثائقك أو نصوص العقود السرية إطلاقاً.'
-            : 'JurisTech is built from the ground up for strict enterprise sovereignty. We operate on a verified Zero-Retention Guarantee—your raw documents are never stored.'}
+            ? 'تلتزم JurisTech بأعلى معايير حماية البيانات والخصوصية. تتم معالجة استشارات وتحليلات الذكاء الاصطناعي في جلسات مشفرة عابرة، ولا تُحفظ وثائقك في الخوادم إلا عند اختيارك صراحة حفظها في خزينتك المشفرة.'
+            : 'JurisTech operates with strict enterprise privacy and encryption standards. AI analysis queries are processed in transient encrypted sessions, and documents are only retained if you explicitly save them to your personal encrypted vault.'}
         </p>
 
         <div className="pt-4 flex flex-wrap items-center justify-center gap-4 text-xs font-mono">
