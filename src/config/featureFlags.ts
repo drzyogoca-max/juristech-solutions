@@ -18,4 +18,7 @@ export const FEATURE_FLAGS = {
 
   // Lazy Modal Mounting:
   ENABLE_LAZY_MODALS: true,
+
+  // Corporate Sponsor & Advertising Banners (Set to false by default per Master Plan):
+  SHOW_SPONSOR_BANNER: false,
 };

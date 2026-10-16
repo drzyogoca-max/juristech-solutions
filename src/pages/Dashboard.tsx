@@ -382,21 +382,21 @@ export default function Dashboard() {
 
             {/* Dual CTAs */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
-              <button
-                onClick={() => scrollToSection('sec-studio')}
-                className="w-full sm:w-auto px-7 py-4 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-slate-950 font-black text-sm flex items-center justify-center gap-2.5 shadow-xl shadow-amber-500/25 active:scale-95 transition-all cursor-pointer"
+              <Link
+                to="/risk"
+                className="w-full sm:w-auto px-7 py-4 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-slate-950 font-black text-sm flex items-center justify-center gap-2.5 shadow-xl shadow-amber-500/25 active:scale-95 transition-all cursor-pointer no-underline"
               >
                 <Zap className="w-4 h-4 text-slate-950 fill-current" />
-                <span>{l('⚡ ابدأ تدقيق عقدك الآن مجاناً (10 ثوانٍ)', '⚡ Try Free Sample Contract Audit (10s)')}</span>
+                <span>{l('⚡ افحص عقدك مجاناً بالذكاء الاصطناعي', '⚡ Audit Your Contract Free with AI')}</span>
                 <ArrowRight className={`w-4 h-4 text-slate-950 ${isRtl ? 'rotate-180' : ''}`} />
-              </button>
+              </Link>
 
               <button
-                onClick={() => scrollToSection('sec-cases')}
+                onClick={() => scrollToSection('services')}
                 className="w-full sm:w-auto px-6 py-4 rounded-2xl bg-slate-900/80 hover:bg-slate-800 text-white border border-white/15 hover:border-amber-400/40 font-bold text-sm flex items-center justify-center gap-2 backdrop-blur-xl shadow-lg active:scale-95 transition-all cursor-pointer"
               >
-                <Crown className="w-4 h-4 text-amber-400" />
-                <span>{l('💎 باقات الاشتراكات والأسعار (خصم 30%)', '💎 Retainer Packages (30% Discount)')}</span>
+                <Layers className="w-4 h-4 text-amber-400" />
+                <span>{l('استكشف الخدمات (6 فئات معتمدة)', 'Explore All Services (6 Categories)')}</span>
               </button>
             </div>
 
@@ -416,7 +416,7 @@ export default function Dashboard() {
               </div>
               <div className="flex items-center justify-center gap-1.5 py-1">
                 <Sparkles className="w-4 h-4 text-purple-400 shrink-0" />
-                <span className="font-semibold">{l('محرك Google AI Pro الفائق', 'Google AI Pro Ultra Core')}</span>
+                <span className="font-semibold">{l('محرك Google Gemini 2.0 Flash', 'Google Gemini 2.0 Flash Core')}</span>
               </div>
             </div>
           </div>
@@ -556,13 +556,139 @@ export default function Dashboard() {
                 </div>
               </div>
             ) : (
-              <div className="py-6 px-4 text-center space-y-2 rounded-2xl bg-slate-950/60 border border-dashed border-slate-800">
-                <p className="text-xs text-slate-400">
-                  {l(
-                    'لا توجد مستندات مفحوصة في الجلسة الحالية. ارفع عقدك عبر الأداة أدناه للبدء الفوري.',
-                    'No documents audited in current session yet. Upload contract below to get started.'
-                  )}
-                </p>
+              <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-slate-950 via-slate-900 to-amber-950/20 border border-amber-500/30 shadow-xl space-y-5">
+                {/* Header with pill and metadata */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-800/80">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2.5 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/30 shrink-0">
+                      <Scale className="w-5 h-5 text-amber-400" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 uppercase tracking-wider">
+                          {l('نموذج استرشادي توضيحي', 'Illustrative Sample Report')}
+                        </span>
+                        <span className="text-[11px] text-slate-400">
+                          {l('فحص ذكي متعدد المحاور التشريعية', 'Deep 8-Axis Statutory Audit')}
+                        </span>
+                      </div>
+                      <h3 className="text-sm sm:text-base font-bold text-white mt-1">
+                        {l(
+                          'اتفاقية خدمات سحابية ومشاريع مؤسسية (تقرير فحص استرشادي)',
+                          'Master Enterprise Cloud Agreement (Sample Audit Report)'
+                        )}
+                      </h3>
+                    </div>
+                  </div>
+
+                  {/* Score badge */}
+                  <div className="flex items-center gap-2 self-start sm:self-center shrink-0">
+                    <div className="px-3 py-1.5 rounded-xl bg-red-500/15 border border-red-500/30 text-right">
+                      <div className="text-[10px] text-red-300 font-medium">
+                        {l('مؤشر الأمان التعاقدي', 'Contractual Safety')}
+                      </div>
+                      <div className="text-sm font-black text-red-400 flex items-center gap-1.5">
+                        <AlertTriangle className="w-3.5 h-3.5" />
+                        <span>42 / 100</span>
+                        <span className="text-[10px] font-bold uppercase tracking-wider">
+                          {l('[مخاطر مرتفعة]', '[High Exposure]')}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 4 Sample Detected Traps Across Statutory Axes */}
+                <div>
+                  <div className="text-xs font-bold text-slate-300 mb-2.5 flex items-center gap-1.5">
+                    <ShieldAlert className="w-3.5 h-3.5 text-amber-400" />
+                    <span>{l('أبرز الثغرات المكتشفة في النموذج (4 محاور تشريعية):', 'Key Detected Traps in Sample (4 Statutory Axes):')}</span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <div className="p-3 rounded-xl bg-slate-900/90 border border-red-500/20 space-y-1">
+                      <div className="flex items-center justify-between text-[11px]">
+                        <span className="font-bold text-red-400">{l('المحور 2: سقف المسؤولية المالية', 'Axis 2: Liability Cap')}</span>
+                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-red-500/20 text-red-300 font-bold">{l('حرج', 'Critical')}</span>
+                      </div>
+                      <p className="text-xs text-slate-300 leading-relaxed">
+                        {l('غياب سقف أعلى للتعويضات المالية يضع الشركة تحت طائلة مطالبات غير محدودة (Uncapped Liability).', 'No aggregate monetary cap detected, exposing the company to uncapped damages.')}
+                      </p>
+                    </div>
+
+                    <div className="p-3 rounded-xl bg-slate-900/90 border border-amber-500/20 space-y-1">
+                      <div className="flex items-center justify-between text-[11px]">
+                        <span className="font-bold text-amber-400">{l('المحور 3: شروط الفسخ والإنهاء', 'Axis 3: Termination Rights')}</span>
+                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold">{l('مرتفع', 'High')}</span>
+                      </div>
+                      <p className="text-xs text-slate-300 leading-relaxed">
+                        {l('منح المورد حق الفسخ الفوري دون إشعار خطي مسبق أو مهلة 30 يوماً لتصحيح الإخلال.', 'Unilateral supplier termination without 30-day cure period or formal written notice.')}
+                      </p>
+                    </div>
+
+                    <div className="p-3 rounded-xl bg-slate-900/90 border border-amber-500/20 space-y-1">
+                      <div className="flex items-center justify-between text-[11px]">
+                        <span className="font-bold text-amber-400">{l('المحور 4: القانون والاختصاص', 'Axis 4: Governing Law')}</span>
+                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold">{l('مرتفع', 'High')}</span>
+                      </div>
+                      <p className="text-xs text-slate-300 leading-relaxed">
+                        {l('إحالة النزاعات لمحاكم ولاية أجنبية بعيدة دون آلية وساطة أو تحكيم محلي معتمد.', 'Foreign court jurisdiction without local arbitration or mediation escalation.')}
+                      </p>
+                    </div>
+
+                    <div className="p-3 rounded-xl bg-slate-900/90 border border-blue-500/20 space-y-1">
+                      <div className="flex items-center justify-between text-[11px]">
+                        <span className="font-bold text-blue-400">{l('المحور 5: الملكية الفكرية والبيانات', 'Axis 5: IP & Data Rights')}</span>
+                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 font-bold">{l('متوسط', 'Medium')}</span>
+                      </div>
+                      <p className="text-xs text-slate-300 leading-relaxed">
+                        {l('منح ترخيص مطلق لاستخدام وتدريب نماذج الذكاء الاصطناعي على بيانات العميل السرية.', 'Broad perpetual license granting vendor rights to train AI models on client confidential data.')}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Sample Protective Redline Clause */}
+                <div className="p-3.5 rounded-xl bg-emerald-950/30 border border-emerald-500/30 space-y-1.5">
+                  <div className="flex items-center gap-2 text-xs font-bold text-emerald-400">
+                    <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+                    <span>{l('صياغة الحماية المقترحة المعتمدة (Sample Redline):', 'Recommended Protective Redline Clause:')}</span>
+                  </div>
+                  <p className="text-xs text-slate-200 font-mono bg-slate-950/70 p-2.5 rounded-lg border border-emerald-500/20 leading-relaxed">
+                    {l(
+                      '«لا يجوز في أي حال من الأحوال أن تتجاوز المسؤولية الإجمالية التراكمية لأي من الطرفين عن كافة المطالبات إجمالي المبالغ المدفوعة بموجب هذا العقد خلال الاثني عشر شهراً السابقة للمطالبة.»',
+                      '"In no event shall either party\'s aggregate cumulative liability exceed the total fees actually paid under this Agreement during the twelve (12) months preceding the incident."'
+                    )}
+                  </p>
+                </div>
+
+                {/* Direct Action CTAs */}
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+                  <p className="text-[11px] text-slate-400 text-center sm:text-start">
+                    {l(
+                      'ابدأ فحص عقدك الخاص الآن عبر الذكاء الاصطناعي مع تقرير فوري بـ 8 محاور تشريعية.',
+                      'Audit your own contracts with AI now to receive an instant 8-axis statutory report.'
+                    )}
+                  </p>
+                  <div className="flex items-center gap-2 w-full sm:w-auto shrink-0">
+                    <button
+                      onClick={() => navigate('/risk')}
+                      aria-label={l('افحص عقدك على رادار المخاطر', 'Audit Your Contract on Risk Radar')}
+                      className="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-xs transition-all shadow-md cursor-pointer flex items-center justify-center gap-1.5"
+                    >
+                      <Zap className="w-3.5 h-3.5 text-slate-950" />
+                      <span>{l('افحص عقدك على رادار المخاطر (/risk)', 'Audit Contract on Risk Radar (/risk)')}</span>
+                    </button>
+                    <button
+                      onClick={() => navigate('/risk')}
+                      aria-label={l('استعراض التقرير الكامل', 'View Full Report')}
+                      className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs transition-all border border-slate-700 cursor-pointer flex items-center justify-center gap-1"
+                    >
+                      <span>{l('استعراض التقرير الكامل', 'View Full Report')}</span>
+                      <ArrowRight className="w-3.5 h-3.5 rtl:rotate-180" />
+                    </button>
+                  </div>
+                </div>
               </div>
             )}
           </div>

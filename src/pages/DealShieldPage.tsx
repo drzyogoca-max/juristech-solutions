@@ -28,6 +28,7 @@ import SEO from '../components/SEO';
 import { usePlatformLocale } from '../lib/universalTranslator';
 import { exportDocumentMultiFormat } from '../lib/documentExporter';
 import PremiumFeatureGuard from '../components/PremiumFeatureGuard';
+import GlobalLegalDisclaimer from '../components/GlobalLegalDisclaimer';
 import {
   runClientNeedDiagnostic,
   simulateCrossBorderDeal,
@@ -763,6 +764,11 @@ Official Contact: founder@juristech.solutions | +201126674337
           </div>
         )}
         </PremiumFeatureGuard>
+
+        {/* Global Legal Disclaimer Card */}
+        <div className="pt-6">
+          <GlobalLegalDisclaimer variant="card" />
+        </div>
       </main>
     </div>
   );

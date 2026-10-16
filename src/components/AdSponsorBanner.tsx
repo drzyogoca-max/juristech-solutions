@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ExternalLink, ShieldCheck, Building2 } from 'lucide-react';
 import { usePlatformLocale } from '../lib/universalTranslator';
+import { FEATURE_FLAGS } from '../config/featureFlags';
 
 export interface AdSponsorProps {
   slotType: 'top-banner' | 'in-feed' | 'sponsor-footer';
@@ -86,7 +87,7 @@ export default function AdSponsorBanner({
     }
   }
 
-  if (!hasVerifiedSponsor) {
+  if (!FEATURE_FLAGS.SHOW_SPONSOR_BANNER || !hasVerifiedSponsor) {
     return null;
   }
 
@@ -95,7 +96,7 @@ export default function AdSponsorBanner({
       <div className="w-full bg-slate-900/95 border-b border-amber-500/20 px-4 py-2 flex items-center justify-between gap-4 text-xs font-sans shadow-md" dir={isRtl ? 'rtl' : 'ltr'}>
         <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300 truncate">
           <span className="font-extrabold uppercase tracking-wider text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 shrink-0">
-            {sponsorData.isOfficialPaid ? l('راعي رسمي معتمد', 'Official Corporate Sponsor') : l('مساحة إعلانية', 'Ad Slot')}
+            {l('محتوى مُموَّل • راعي معتمد', 'Sponsored Content • Verified Sponsor')}
           </span>
           <span className="truncate font-bold text-slate-800 dark:text-slate-200">
             {l(sponsorData.headlineAr, sponsorData.headlineEn)}

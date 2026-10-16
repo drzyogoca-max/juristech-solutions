@@ -20,6 +20,8 @@ import { aiAnalytics } from '../analytics/aiAnalytics';
 import { usePlatformLocale } from '../lib/universalTranslator';
 import { useSaaS } from '../context/SaaSContext';
 import PremiumFeatureGuard from '../components/PremiumFeatureGuard';
+import GlobalLegalDisclaimer from '../components/GlobalLegalDisclaimer';
+import { SAMPLE_8_AXIS_REPORT } from '../data/sampleRiskReport';
 
 export default function RiskPage() {
   const { l, isRtl } = usePlatformLocale();
@@ -89,6 +91,12 @@ export default function RiskPage() {
     setContractText('');
     setAuditReport(null);
     clearContractData();
+  }
+
+  function loadSampleReport() {
+    setAuditReport(SAMPLE_8_AXIS_REPORT);
+    setFileName('Master_Cloud_Vendor_Agreement_Sample.docx');
+    setContractText('Master Enterprise Cloud & Services Agreement (Illustrative Sample with Uncapped Liability & Adhesion Clauses)');
   }
 
   async function executeDeepAudit(textToAnalyze: string, currentFileName?: string) {
@@ -219,6 +227,36 @@ Authorized by JurisTech Supreme Legal Architecture Engine.
             </div>
           )}
         </div>
+
+        {/* 8-Axis Statutory Framework & Sample Report Action Bar */}
+        <div className="p-6 rounded-3xl bg-gradient-to-r from-amber-500/10 via-slate-900 to-cyan-500/10 border border-amber-500/30 flex flex-col md:flex-row items-center justify-between gap-4 shadow-xl">
+          <div className="space-y-1 text-center md:text-start">
+            <div className="flex items-center justify-center md:justify-start gap-2 text-xs font-bold text-amber-400">
+              <Sparkles className="w-4 h-4" />
+              <span>{l('الإطار التشريعي للمحاور الثمانية (8 Statutory Axes Framework)', '8-Axis Statutory Legal Intelligence')}</span>
+            </div>
+            <h2 className="text-base sm:text-lg font-black text-white">
+              {l('استعرض نموذج تقرير الفحص المعمق والمحاور الثمانية مجاناً', 'Explore Illustrative 8-Axis Audit Report & Redlines')}
+            </h2>
+            <p className="text-xs text-slate-300 max-w-2xl">
+              {l(
+                'فحص فوري لبنود المسؤولية المالية، الشروط الجزائية، الأهلية، والتحكيم المؤسسي وفق معايير ICC وقوانين الخليج ومصر والدولية.',
+                'Instant inspection of aggregate liability caps, adhesion clauses, force majeure, and governing dispute resolution.'
+              )}
+            </p>
+          </div>
+
+          <button
+            onClick={loadSampleReport}
+            className="px-5 py-3 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-slate-950 font-black text-xs flex items-center gap-2 shadow-lg shadow-amber-500/25 active:scale-95 transition-all shrink-0 cursor-pointer"
+          >
+            <Eye className="w-4 h-4 text-slate-950" />
+            <span>{l('تحميل واستعراض التقرير الاسترشادي الجاهز (Sample Report)', 'Load Illustrative Sample Report')}</span>
+          </button>
+        </div>
+
+        {/* Global Legal Disclaimer Banner */}
+        <GlobalLegalDisclaimer variant="banner" />
 
         <PremiumFeatureGuard
           requiredTier="Startup"
@@ -484,6 +522,9 @@ Authorized by JurisTech Supreme Legal Architecture Engine.
           </div>
         )}
         </PremiumFeatureGuard>
+
+        {/* Global Legal Disclaimer Card */}
+        <GlobalLegalDisclaimer variant="card" />
       </div>
 
       {/* 🔍 Visual Redline Diff Modal */}

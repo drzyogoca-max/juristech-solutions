@@ -13,7 +13,8 @@ import {
   DollarSign, Shield, Zap, Lock, Building2, CheckCircle2, CreditCard,
   Globe, Mail, Sparkles, Star, ArrowRight, Users, TrendingUp, Cpu,
   ShieldCheck, BarChart3, FileText, Wifi, Crown, Building, Smartphone,
-  BrainCircuit, Scale, ShieldAlert, Award, MessageSquare, Clock, X
+  BrainCircuit, Scale, ShieldAlert, Award, MessageSquare, Clock, X,
+  HelpCircle, ChevronDown, ChevronUp
 } from 'lucide-react';
 import BankWireModal from '../components/BankWireModal';
 import BinancePayModal from '../components/BinancePayModal';
@@ -21,8 +22,10 @@ import InstaPayModal from '../components/InstaPayModal';
 import ProformaInvoiceModal from '../components/ProformaInvoiceModal';
 import DigitalInvoiceModal from '../components/DigitalInvoiceModal';
 import GumroadPayModal from '../components/GumroadPayModal';
+import GlobalLegalDisclaimer from '../components/GlobalLegalDisclaimer';
 import { activateUserSubscription, BillingTransaction } from '../lib/financialGateway';
 import { usePlatformLocale } from '../lib/universalTranslator';
+import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 
 export function buildWhatsAppConciergeUrl(
@@ -82,6 +85,34 @@ export default function PaymentPage() {
   const [selectedCardPlan, setSelectedCardPlan] = useState<Plan | null>(null);
   const [showProformaModal, setShowProformaModal] = useState(false);
   const [activeInvoice, setActiveInvoice] = useState<BillingTransaction | null>(null);
+  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+
+  const PAYMENT_FAQS = [
+    {
+      qAr: 'كيف يتم تفعيل الحساب والوصول للخدمات بعد السداد؟',
+      qEn: 'How is account access activated after payment?',
+      aAr: 'يتم تفعيل الحساب فورياً وبشكل تلقائي بمجرد نجاح العملية عبر البطاقة أو بوابات الدفع الإلكترونية. في حالة التحويل البنكي SWIFT، يتم الاعتماد والتفعيل فور مراجعة الإشعار البنكي.',
+      aEn: 'Access is activated instantly and automatically upon successful card/online transaction. For SWIFT bank wire, activation occurs immediately upon receipt verification.',
+    },
+    {
+      qAr: 'هل يمكنني إلغاء الاشتراك في أي وقت؟',
+      qEn: 'Can I cancel my subscription at any time?',
+      aAr: 'نعم، يمكنك إلغاء التجديد التلقائي في أي وقت من خلال لوحة إدارة الفوترة (/billing) بنقرة زر واحدة دون أي رسوم خفية أو شروط جزائية.',
+      aEn: 'Yes, you can cancel auto-renewal at any time from your Billing Portal (/billing) with one click and zero cancellation fees.',
+    },
+    {
+      qAr: 'ما هي سياسة الاسترداد والضمانات التجارية المعتمدة؟',
+      qEn: 'What is your refund policy and commercial guarantee?',
+      aAr: 'نحن نلتزم بالشفافية الكاملة وسياسة استرداد واضحة ومعلنة رسمياً عبر صفحة (/refund). يحق للمشترك طلب استرداد خلال 14 يوماً وفق شروط الاستخدام المحددة.',
+      aEn: 'We adhere to complete commercial transparency and a published Refund Policy (/refund), permitting refund requests within 14 days under defined service terms.',
+    },
+    {
+      qAr: 'هل تقدمون فواتير ضريبية رسمية للشركات والمؤسسات؟',
+      qEn: 'Do you issue corporate tax and pro-forma invoices?',
+      aAr: 'نعم، تصدر المنصة فواتير إلكترونية متوافقة مع المتطلبات المحاسبية، كما نوفر طلب فواتير شكلية (Proforma Invoice) مباشرة للمشتريات المؤسسية.',
+      aEn: 'Yes, our engine generates compliant digital tax receipts, and enterprise clients can request official Pro-Forma Invoices directly from this page.',
+    },
+  ];
 
   const plans: Plan[] = [
     {
@@ -522,6 +553,68 @@ export default function PaymentPage() {
             );
           })}
         </div>
+      </div>
+
+      {/* Transparent Refund Policy & Consumer Protection Notice */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+        <div className="p-6 rounded-3xl bg-slate-900/80 border border-slate-800 space-y-3">
+          <div className="flex items-center justify-between flex-wrap gap-3">
+            <div className="flex items-center gap-2.5">
+              <ShieldCheck className="w-5 h-5 text-emerald-400" />
+              <h3 className="text-sm sm:text-base font-bold text-white">
+                {l('سياسة الاسترداد والضمان التجاري', 'Refund Policy & Commercial Guarantee')}
+              </h3>
+            </div>
+            <Link
+              to="/refund"
+              className="text-xs font-bold text-cyan-400 hover:text-cyan-300 flex items-center gap-1 transition-colors"
+            >
+              <span>{l('قراءة السياسة الرسمية الكاملة للاسترداد', 'Read Official Refund Terms')}</span>
+              <ArrowRight className={`w-3.5 h-3.5 ${isRtl ? 'rotate-180' : ''}`} />
+            </Link>
+          </div>
+          <p className="text-xs text-slate-400 leading-relaxed">
+            {l(
+              'تلتزم JurisTech Solutions بأعلى معايير الشفافية والامتثال التجاري. نوفر ضمان استرداد وفق الحالات المنصوص عليها نظاماً خلال 14 يوماً من تاريخ التفعيل للخدمات الرقمية غير المستهلكة. لمزيد من التفاصيل، راجع شروط الخدمة وسياسة الاسترداد.',
+              'JurisTech Solutions complies with international consumer protection standards. Digital subscription services are eligible for refund review under defined conditions within 14 days of activation for unconsumed quota.'
+            )}
+          </p>
+        </div>
+      </div>
+
+      {/* Payment & Subscription FAQs */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+        <div className="bg-slate-900/80 rounded-3xl p-6 sm:p-8 border border-slate-800 space-y-4">
+          <h3 className="font-bold text-base sm:text-lg text-white flex items-center gap-2">
+            <HelpCircle className="w-5 h-5 text-amber-400" />
+            <span>{l('الأسئلة الشائعة حول الاشتراكات وطرق الدفع', 'Payment & Subscription FAQs')}</span>
+          </h3>
+
+          <div className="space-y-2.5">
+            {PAYMENT_FAQS.map((faq, i) => (
+              <div key={i} className="bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden">
+                <button
+                  onClick={() => setExpandedFaq(expandedFaq === i ? null : i)}
+                  className="w-full p-4 text-start flex items-center justify-between text-xs sm:text-sm font-bold text-slate-200 hover:text-amber-400 transition-colors"
+                >
+                  <span>{isRtl ? faq.qAr : faq.qEn}</span>
+                  {expandedFaq === i ? <ChevronUp className="w-4 h-4 text-amber-400" /> : <ChevronDown className="w-4 h-4 text-slate-500" />}
+                </button>
+
+                {expandedFaq === i && (
+                  <div className="px-4 pb-4 text-xs text-slate-400 leading-relaxed border-t border-slate-900 pt-3">
+                    {isRtl ? faq.aAr : faq.aEn}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Global Legal Disclaimer */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+        <GlobalLegalDisclaimer variant="card" />
       </div>
 
       {/* Official Executive Direct Contact Strip */}

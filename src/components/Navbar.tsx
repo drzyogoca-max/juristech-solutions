@@ -29,33 +29,14 @@ const TeamManagementModal = lazy(() => import('./team/TeamManagementModal'));
 const CustomerAuthModal = lazy(() => import('./CustomerAuthModal'));
 import OrganizationSwitcher from './tenancy/OrganizationSwitcher';
 import WorkspaceSwitcher from './tenancy/WorkspaceSwitcher';
+import { SERVICE_CATEGORIES, ALL_SERVICES_FLAT } from '../data/serviceTaxonomy';
 
-// ─── Nav link groups (Visitor & Subscriber separated) ────────────────────────
-const VISITOR_LINKS = [
-  { to: '/dashboard', icon: Home, key: 'dashboard' },
-  { to: '/deal-shield', icon: Sparkles, key: 'dealShield' },
-  { to: '/chat', icon: MessageSquare, key: 'chat' },
-  { to: '/repository', icon: Library, key: 'repository' },
-  { to: '/payment', icon: CreditCard, key: 'payment' },
-  { to: '/support', icon: Headphones, key: 'support' },
-  { to: '/about', icon: Building2, key: 'aboutUs' },
-  { to: '/legal-compliance', icon: Scale, key: 'legalCompliance' },
-];
-
-const SUBSCRIBER_LINKS = [
-  { to: '/deal-shield', icon: Sparkles, key: 'dealShield' },
-  { to: '/contracts', icon: FileText, key: 'contracts' },
-  { to: '/templates', icon: Layers, key: 'templates' },
-  { to: '/risk', icon: AlertTriangle, key: 'risk' },
-  { to: '/vault', icon: Lock, key: 'vault' },
-  { to: '/negotiation', icon: Handshake, key: 'negotiation' },
-  { to: '/enterprise-audit', icon: Building2, key: 'enterpriseAudit' },
-  { to: '/investigate', icon: Search, key: 'investigate' },
-  { to: '/video-hub', icon: Video, key: 'videoHub' },
-  { to: '/corporate-structuring', icon: Building2, key: 'companyFormation' },
-  { to: '/acquisition', icon: Briefcase, key: 'acquisition' },
-  { to: '/b2b-proposals', icon: Briefcase, key: 'b2bProposals' },
-  { to: '/reports', icon: BarChart3, key: 'reports' },
+// ─── Company & Institutional Links ──────────────────────────────────────────
+const COMPANY_LINKS = [
+  { to: '/about', icon: Building2, ar: 'عن المنصة', en: 'About Us' },
+  { to: '/support', icon: Headphones, ar: 'الدعم والمساعدة', en: 'Support & FAQ' },
+  { to: '/legal-compliance', icon: Scale, ar: 'الامتثال القانوني', en: 'Compliance' },
+  { to: '/payment', icon: CreditCard, ar: 'الباقات والاشتراكات', en: 'Pricing & Plans' },
 ];
 
 // Top 6 most important links for the visible navbar bar
@@ -119,8 +100,6 @@ export default function Navbar() {
     if (key === 'companyFormation') return isRtl ? 'الهندسة القانونية للشركات' : 'Corporate Structuring AI';
     return (gt.nav as Record<string, string>)[key] || t(`Nav.${key}`) || key;
   }
-
-  const allLinks = [...VISITOR_LINKS, ...SUBSCRIBER_LINKS.filter(l => !VISITOR_LINKS.some(v => v.to === l.to))];
 
 
   return (
@@ -380,44 +359,80 @@ export default function Navbar() {
                     </div>
 
 
-                    {/* Main Nav Links Section */}
-                    <div className="pt-2 border-t border-slate-200 dark:border-slate-800">
-                      <span className="text-[10px] font-black text-slate-600 dark:text-slate-400 uppercase tracking-wider block px-2 mb-1.5">
-                        {isRtl ? 'الخدمات الأساسية' : 'Core Services'}
-                      </span>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-1">
-                        {VISITOR_LINKS.map(({ to, icon: Icon, key }) => (
-                          <Link key={to} to={to} onClick={() => setShowMoreMenu(false)}
-                            className={`flex items-center gap-2 text-xs font-semibold px-3 py-2 rounded-xl transition-all ${
-                              pathname === to
-                                ? 'text-cyan-400 bg-slate-100 dark:bg-slate-800 border border-cyan-500/20 font-bold'
-                                : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/70'
-                            }`}>
-                            <Icon className="w-3.5 h-3.5 text-cyan-400/80 shrink-0" />
-                            <span className="leading-snug">{navText(key)}</span>
-                          </Link>
-                        ))}
+                    {/* 6 Category Master Services Catalog */}
+                    <div className="pt-2 border-t border-slate-200 dark:border-slate-800 space-y-3 max-h-[55vh] overflow-y-auto pe-1">
+                      <div className="flex items-center justify-between px-1">
+                        <span className="text-[10px] font-black text-amber-500 dark:text-amber-400 uppercase tracking-wider">
+                          {l('فهرس الخدمات القانونية (6 فئات معتمدة)', 'Legal Services Index (6 Categories)')}
+                        </span>
+                        <Link
+                          to="/dashboard#services"
+                          onClick={() => setShowMoreMenu(false)}
+                          className="text-[10px] font-bold text-cyan-500 dark:text-cyan-400 hover:underline"
+                        >
+                          {l('الفهرس التفاعلي', 'Full Catalog')}
+                        </Link>
+                      </div>
+
+                      <div className="space-y-2.5">
+                        {SERVICE_CATEGORIES.map((cat, idx) => {
+                          const CatIcon = cat.icon;
+                          return (
+                            <div key={cat.id} className="p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 space-y-1">
+                              <div className="flex items-center gap-1.5 px-1 text-slate-900 dark:text-white font-bold text-xs">
+                                <CatIcon className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400 shrink-0" />
+                                <span>{idx + 1}. {l(cat.titleAr, cat.titleEn)}</span>
+                              </div>
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 pt-1">
+                                {cat.services.map((svc) => {
+                                  const SvcIcon = svc.icon;
+                                  return (
+                                    <Link
+                                      key={svc.id}
+                                      to={svc.route}
+                                      onClick={() => setShowMoreMenu(false)}
+                                      className={`flex items-center justify-between gap-1.5 text-xs font-semibold px-2 py-1.5 rounded-xl transition-all ${
+                                        pathname === svc.route
+                                          ? 'text-cyan-400 bg-cyan-500/10 border border-cyan-500/30 font-bold'
+                                          : 'text-slate-700 dark:text-slate-300 hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800'
+                                      }`}
+                                    >
+                                      <div className="flex items-center gap-1.5 min-w-0">
+                                        <SvcIcon className="w-3.5 h-3.5 text-cyan-400/80 shrink-0" />
+                                        <span className="truncate">{l(svc.titleAr, svc.titleEn)}</span>
+                                      </div>
+                                      <span className="text-[9px] px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-mono shrink-0">
+                                        {l(svc.badgeAr, svc.badgeEn)}
+                                      </span>
+                                    </Link>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
 
-                    {/* Subscriber Tools Section */}
+                    {/* Company & Institutional Pages Section */}
                     <div className="pt-2 border-t border-slate-200 dark:border-slate-800">
-                      <div className="flex items-center gap-1.5 px-2 mb-1.5">
-                        <Crown className="w-3.5 h-3.5 text-amber-400" />
-                        <span className="text-[10px] font-black text-amber-400 uppercase tracking-wider">
-                          {t('Nav.subscriberTools')}
-                        </span>
-                      </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-1">
-                        {SUBSCRIBER_LINKS.map(({ to, icon: Icon, key }) => (
-                          <Link key={to} to={to} onClick={() => setShowMoreMenu(false)}
-                            className={`flex items-center gap-2 text-xs font-semibold px-3 py-2 rounded-xl transition-all ${
+                      <span className="text-[10px] font-black text-slate-600 dark:text-slate-400 uppercase tracking-wider block px-1 mb-1.5">
+                        {l('روابط المنصة والامتثال', 'Platform & Compliance')}
+                      </span>
+                      <div className="grid grid-cols-2 gap-1">
+                        {COMPANY_LINKS.map(({ to, icon: Icon, ar, en }) => (
+                          <Link
+                            key={to}
+                            to={to}
+                            onClick={() => setShowMoreMenu(false)}
+                            className={`flex items-center gap-2 text-xs font-semibold px-2.5 py-1.5 rounded-xl transition-all ${
                               pathname === to
-                                ? 'text-cyan-400 bg-slate-100 dark:bg-slate-800 border border-cyan-500/20 font-bold'
-                                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/70'
-                            }`}>
-                            <Icon className="w-3.5 h-3.5 text-cyan-400/70 shrink-0" />
-                            <span className="leading-snug">{navText(key)}</span>
+                                ? 'text-cyan-400 bg-cyan-500/10 border border-cyan-500/30 font-bold'
+                                : 'text-slate-700 dark:text-slate-300 hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
+                            }`}
+                          >
+                            <Icon className="w-3.5 h-3.5 text-cyan-400/80 shrink-0" />
+                            <span className="truncate">{l(ar, en)}</span>
                           </Link>
                         ))}
                       </div>
@@ -577,40 +592,72 @@ export default function Navbar() {
 
             {/* Scrollable nav links */}
             <div className="flex-1 overflow-y-auto p-4 space-y-1">
-              <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest px-1 mb-2">
-                {t('Common.filter')}
+              <p className="text-[10px] font-black text-amber-500 dark:text-amber-400 uppercase tracking-widest px-1 mb-2">
+                {l('فهرس الخدمات (6 فئات معتمدة)', 'Services Directory (6 Categories)')}
               </p>
-              {VISITOR_LINKS.map(({ to, icon: Icon, key }) => (
-                <Link key={to} to={to} onClick={() => setIsOpen(false)}
-                  className={`flex items-center gap-3 text-sm font-semibold px-3.5 py-2.5 rounded-xl transition-all ${
-                    pathname === to
-                      ? 'text-cyan-400 bg-slate-800/80 border border-cyan-500/20'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-800/70'
-                  }`}>
-                  <Icon className="w-4 h-4 text-cyan-400 shrink-0" />
-                  {navText(key)}
-                </Link>
-              ))}
 
-              {/* Subscriber tools section */}
+              {/* 6 Category Services List */}
+              <div className="space-y-3 pb-2">
+                {SERVICE_CATEGORIES.map((cat, idx) => {
+                  const CatIcon = cat.icon;
+                  return (
+                    <div key={cat.id} className="space-y-1">
+                      <div className="flex items-center gap-1.5 px-2 py-1 text-[11px] font-black text-slate-400">
+                        <CatIcon className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                        <span>{idx + 1}. {l(cat.titleAr, cat.titleEn)}</span>
+                      </div>
+                      <div className="space-y-0.5 ps-2">
+                        {cat.services.map((svc) => {
+                          const SvcIcon = svc.icon;
+                          return (
+                            <Link
+                              key={svc.id}
+                              to={svc.route}
+                              onClick={() => setIsOpen(false)}
+                              className={`flex items-center justify-between gap-2 text-xs font-semibold px-3 py-2 rounded-xl transition-all ${
+                                pathname === svc.route
+                                  ? 'text-cyan-400 bg-slate-800/80 border border-cyan-500/20 font-bold'
+                                  : 'text-slate-300 hover:text-white hover:bg-slate-800/70'
+                              }`}
+                            >
+                              <div className="flex items-center gap-2 min-w-0">
+                                <SvcIcon className="w-3.5 h-3.5 text-cyan-400/80 shrink-0" />
+                                <span className="truncate">{l(svc.titleAr, svc.titleEn)}</span>
+                              </div>
+                              <span className="text-[8px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 font-mono shrink-0">
+                                {l(svc.badgeAr, svc.badgeEn)}
+                              </span>
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Platform & Company Links */}
               <div className="mt-3 pt-3 border-t border-slate-800/60">
-                <div className="flex items-center gap-1.5 px-1 mb-2">
-                  <Crown className="w-3.5 h-3.5 text-amber-400" />
-                  <p className="text-[10px] font-black text-amber-400 uppercase tracking-widest">
-                    {t('Nav.subscriberTools')}
-                  </p>
+                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest px-1 mb-2">
+                  {l('روابط المنصة والامتثال', 'Platform & Compliance')}
+                </p>
+                <div className="grid grid-cols-2 gap-1">
+                  {COMPANY_LINKS.map(({ to, icon: Icon, ar, en }) => (
+                    <Link
+                      key={to}
+                      to={to}
+                      onClick={() => setIsOpen(false)}
+                      className={`flex items-center gap-2 text-xs font-semibold px-2.5 py-2 rounded-xl transition-all ${
+                        pathname === to
+                          ? 'text-cyan-400 bg-slate-800 border border-cyan-500/20'
+                          : 'text-slate-300 hover:text-white hover:bg-slate-800/70'
+                      }`}
+                    >
+                      <Icon className="w-3.5 h-3.5 text-cyan-400/80 shrink-0" />
+                      <span className="truncate">{l(ar, en)}</span>
+                    </Link>
+                  ))}
                 </div>
-                {SUBSCRIBER_LINKS.map(({ to, icon: Icon, key }) => (
-                  <Link key={to} to={to} onClick={() => setIsOpen(false)}
-                    className={`flex items-center gap-3 text-sm font-semibold px-3.5 py-2.5 rounded-xl transition-all ${
-                      pathname === to
-                        ? 'text-cyan-400 bg-slate-800/80 border border-cyan-500/20'
-                        : 'text-slate-300 hover:text-white hover:bg-slate-800/70'
-                    }`}>
-                    <Icon className="w-4 h-4 text-cyan-400/70 shrink-0" />
-                    {navText(key)}
-                  </Link>
-                ))}
               </div>
 
               {/* WhatsApp & Admin */}

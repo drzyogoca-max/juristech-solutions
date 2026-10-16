@@ -5,6 +5,7 @@ import { MessageSquare, Headphones, Send, CheckCircle2, Lock, Mail, HelpCircle, 
 import { dispatchReceiptEmail } from '../lib/emailNotifier';
 import SEO from '../components/SEO';
 import EncryptedSupportMessengerModal from '../components/EncryptedSupportMessengerModal';
+import GlobalLegalDisclaimer from '../components/GlobalLegalDisclaimer';
 
 interface Ticket {
   id: string;
@@ -65,16 +66,40 @@ export default function SupportPage() {
 
   const FAQS = [
     {
-      qAr: 'كيف يعمل نظام التوافق التشريعي الجغرافي (GeoIP)؟',
-      qEn: 'How does the GeoIP Automated Legal Jurisdiction work?',
-      aAr: 'يتعرف النظام تلقائياً على دولة الزائر فور دخوله المنصة، ويقوم بتزويد جميع أدوات ومخرجات محرر العقود ومحلل المخاطر بالقوانين واللوائح المحلية المعتمدة في دولتك.',
-      aEn: 'The system auto-detects your country upon entry and feeds all contract generation & risk tools with local statutory laws.',
+      qAr: 'ما هي أنواع العقود ونطاق الخدمات التي تغطيها المنصة؟',
+      qEn: 'What types of contracts and scope does JurisTech cover?',
+      aAr: 'تغطي المنصة عقود الخدمات والتوريد، اتفاقيات عدم الإفصاح (NDA)، عقود العمل والتوظيف، عقود التأسيس والأنظمة الأساسية للشركات، اتفاقيات الشركاء، وعقود الاستحواذ والاندماج (M&A) وفق 15 نظاماً تشريعياً يشمل دول الخليج، مصر، بريطانيا، أمريكا والاتحاد الأوروبي.',
+      aEn: 'JurisTech covers commercial supply and service agreements, NDAs, employment contracts, Articles of Association, shareholder agreements, and M&A SPAs across 15+ statutory frameworks including GCC, Egypt, UK, US, and the EU.',
     },
     {
-      qAr: 'ما هي طرق الدفع المتاحة لرفع إيصالات التحويل البنكي (SWIFT)؟',
-      qEn: 'What payment options are available for Direct Bank Wire (SWIFT)?',
-      aAr: 'يمكنك الدفع الفوري عبر PayPal Commercial أو استخدام نافذة التحويل البنكي (SWIFT) لرفع الإيصال وتلقي التأكيد التلقائي والإشعار الفوري.',
-      aEn: 'You can pay via PayPal Commercial or upload bank wire receipts via the SWIFT modal with instant automated email dispatch.',
+      qAr: 'ما هي تقنيات ونماذج الذكاء الاصطناعي المشغلة للتحليل؟',
+      qEn: 'What AI models and technology architecture power the analysis?',
+      aAr: 'تعتمد المنصة على محرك قواعد تشريعية محلي للتحقق من النصوص القانونية، متكامل مع البنية التحتية السحابية لنموذج Google Gemini 2.0 Flash عبر اتصالات مشفرة مؤقتة بدون تخزين بيانات العقود لتدريب أي نماذج عامة.',
+      aEn: 'The platform combines a proprietary statutory rule engine with Google Gemini 2.0 Flash cloud infrastructure via encrypted transient processing, with zero customer contract retention for model training.',
+    },
+    {
+      qAr: 'هل تُعد مخرجات وتحليلات المنصة استشارة قانونية رسمية؟',
+      qEn: 'Does JurisTech output constitute formal legal advice?',
+      aAr: 'JurisTech أداة ذكاء اصطناعي مساعدة، ومخرجاتها ليست استشارة قانونية ولا تغني عن مراجعة محامٍ مرخّص في الدولة المعنية. المنصة توفر تدقيقاً مساعداً واقتراحات صياغة لدعم الفحص المكتبي الداخلي.',
+      aEn: 'JurisTech is an AI assistance tool; its outputs do not constitute legal advice and cannot substitute for consultation with a licensed attorney in the applicable jurisdiction. All outputs are intended for internal risk audit and drafting assistance.',
+    },
+    {
+      qAr: 'كيف يتم حماية وتشفير المستندات والعقود المرفوعة؟',
+      qEn: 'How are uploaded contracts stored and protected?',
+      aAr: 'تخضع جميع المستندات للتشفير أثناء النقل (TLS 1.3) والتشفير أثناء التخزين بنظام AES-256. تتم معالجة النصوص بشكل مؤقت أثناء التدقيق فقط دون مشاركة محتواها مع أي أطراف ثالثة خارج مزودي الخدمة المصرح بهم.',
+      aEn: 'All documents are protected with TLS 1.3 in transit and AES-256 at rest. Text processing is transient during the audit session and is never shared with unauthorized third parties.',
+    },
+    {
+      qAr: 'كيف يمكنني إدارة أو إلغاء الاشتراك وسياسة الاسترداد؟',
+      qEn: 'How do subscription management, cancellation, and refunds work?',
+      aAr: 'يمكنك إدارة أو إلغاء اشتراكك في أي وقت مباشرة عبر بوابة الفوترة (/billing). تخضع عمليات الدفع لشروط وضمانات سياسة الاسترداد الرسمية (/refund) مع إمكانية استرداد المبالغ وفق الحالات المحددة نظاماً.',
+      aEn: 'You can manage or cancel your subscription at any time via the Customer Billing portal (/billing). All purchases are governed by our transparent Refund Policy (/refund) with eligible refund guarantees.',
+    },
+    {
+      qAr: 'ما هي طرق الدفع المتاحة لتفعيل الاشتراكات؟',
+      qEn: 'What payment options are available for subscription checkout?',
+      aAr: 'تدعم المنصة الدفع الفوري بالبطاقات البنكية، بالإضافة إلى التحويل البنكي المباشر (SWIFT Wire)، العملات الرقمية عبر Binance Pay، وشبكة InstaPay المباشرة، مع إصدار فواتير شكلية معتمدة للشركات.',
+      aEn: 'We support instant Credit/Debit Card payments, direct SWIFT Bank Wire transfers, Binance Pay crypto, and InstaPay, alongside official Pro-Forma Tax Invoicing for enterprise accounts.',
     },
   ];
 
@@ -298,6 +323,9 @@ export default function SupportPage() {
             ))}
           </div>
         </div>
+
+        {/* Global Legal Disclaimer */}
+        <GlobalLegalDisclaimer variant="card" />
       </div>
 
       <EncryptedSupportMessengerModal
