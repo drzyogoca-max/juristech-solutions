@@ -278,32 +278,50 @@ export default function TermsPage() {
     },
     {
       num: 19, icon: <Globe className="w-5 h-5" />, accent: 'indigo',
-      enTitle: 'Governing Law', arTitle: 'القانون الحاكم',
-      enBody: <p>The governing law and dispute-resolution provisions applicable to the Service will depend on the legal structure and jurisdiction applicable to JURISTECH. Nothing in these Terms is intended to create rights that cannot lawfully be excluded.</p>,
-      arBody: <p>تعتمد أحكام القانون الحاكم وتسوية النزاعات المطبَّقة على الخدمة على الهيكل القانوني ونطاق الاختصاص القضائي المعمول به لجوريستك. لا يُقصد من أي بند في هذه الشروط إنشاء حقوق لا يمكن استثناؤها قانوناً.</p>,
+      enTitle: 'Governing Law and Dispute Resolution', arTitle: 'القانون الحاكم وفض النزاعات',
+      enBody: (
+        <div className="space-y-2">
+          <p>These Terms, and any dispute or claim arising out of or in connection with them or their subject matter, shall be governed by and construed in accordance with the laws of {'{{TODO_OWNER: governing law jurisdiction}}'}, subject to owner and legal counsel review.</p>
+          <div className="p-3 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs">
+            <strong>Applicable Forum:</strong> Any formal legal proceeding shall be subject to the exclusive jurisdiction of the competent courts in {'{{TODO_OWNER: governing law jurisdiction}}'}.
+          </div>
+        </div>
+      ),
+      arBody: (
+        <div className="space-y-2">
+          <p>تخضع هذه الشروط وأي نزاع أو مطالبة تنشأ عنها أو تتعلق بها أو بموضوعها وتُفسر وفقاً لأنظمة وقوانين {'{{TODO_OWNER: governing law jurisdiction}}'}، وتخضع للمراجعة والاعتماد النهائي من المالك ومستشاريه القانونيين.</p>
+          <div className="p-3 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs">
+            <strong>المحاكم المختصة:</strong> تخضع أي دعوى أو إجراء قضائي للاختصاص الحصري للمحاكم المختصة في {'{{TODO_OWNER: governing law jurisdiction}}'}.
+          </div>
+        </div>
+      ),
     },
     {
       num: 20, icon: <Mail className="w-5 h-5" />, accent: 'sky',
-      enTitle: 'Contact & Operations', arTitle: 'التواصل ونموذج التشغيل',
+      enTitle: 'Legal Entity & Contact Details', arTitle: 'الكيان القانوني وبيانات التواصل',
       enBody: (
         <div className="space-y-3">
-          <p>For questions regarding these Terms:</p>
-          <div className="space-y-1 text-sm text-slate-300">
-            <div className="font-bold text-white">JURISTECH</div>
-            <div>Operational Model: Global Digital Platform — Operated remotely</div>
-            <div>Website: <a href="https://juristech.solutions" className="text-sky-400 hover:text-sky-300">https://juristech.solutions</a></div>
-            <div>Email: <a href={`mailto:${SUPPORT_EMAIL}`} className="text-sky-400 hover:text-sky-300">{SUPPORT_EMAIL}</a></div>
+          <p>For questions or formal legal notices regarding these Terms:</p>
+          <div className="space-y-1.5 text-sm text-slate-300 p-4 rounded-xl bg-slate-900/60 border border-slate-800">
+            <div><strong className="text-white">Operating Entity:</strong> {'{{TODO_OWNER: legal entity name}}'}</div>
+            <div><strong className="text-white">Commercial Registration:</strong> {'{{TODO_OWNER: registration number}}'}</div>
+            <div><strong className="text-white">Registered Address:</strong> {'{{TODO_OWNER: registered business address}}'}</div>
+            <div><strong className="text-white">Operational Model:</strong> Global Digital Platform — Operated remotely</div>
+            <div><strong className="text-white">Website:</strong> <a href="https://juristech.solutions" className="text-sky-400 hover:text-sky-300">https://juristech.solutions</a></div>
+            <div><strong className="text-white">Email:</strong> <a href={`mailto:${SUPPORT_EMAIL}`} className="text-sky-400 hover:text-sky-300">{SUPPORT_EMAIL}</a></div>
           </div>
         </div>
       ),
       arBody: (
         <div className="space-y-3">
-          <p>للاستفسار عن هذه الشروط:</p>
-          <div className="space-y-1 text-sm text-slate-300">
-            <div className="font-bold text-white">JURISTECH</div>
-            <div>نموذج التشغيل: منصة رقمية عالمية تعمل عن بعد</div>
-            <div>الموقع: <a href="https://juristech.solutions" className="text-sky-400 hover:text-sky-300">https://juristech.solutions</a></div>
-            <div>البريد: <a href={`mailto:${SUPPORT_EMAIL}`} className="text-sky-400 hover:text-sky-300">{SUPPORT_EMAIL}</a></div>
+          <p>للاستفسارات أو الإخطارات القانونية الرسمية المتعلقة بهذه الشروط:</p>
+          <div className="space-y-1.5 text-sm text-slate-300 p-4 rounded-xl bg-slate-900/60 border border-slate-800">
+            <div><strong className="text-white">الكيان المشغّل:</strong> {'{{TODO_OWNER: legal entity name}}'}</div>
+            <div><strong className="text-white">رقم السجل التجاري / الترخيص:</strong> {'{{TODO_OWNER: registration number}}'}</div>
+            <div><strong className="text-white">المقر النظامي المسجل:</strong> {'{{TODO_OWNER: registered business address}}'}</div>
+            <div><strong className="text-white">نموذج التشغيل:</strong> منصة رقمية عالمية تعمل عن بعد</div>
+            <div><strong className="text-white">الموقع الإلكتروني:</strong> <a href="https://juristech.solutions" className="text-sky-400 hover:text-sky-300">https://juristech.solutions</a></div>
+            <div><strong className="text-white">البريد الإلكتروني:</strong> <a href={`mailto:${SUPPORT_EMAIL}`} className="text-sky-400 hover:text-sky-300">{SUPPORT_EMAIL}</a></div>
           </div>
         </div>
       ),
@@ -328,6 +346,17 @@ export default function TermsPage() {
             {ar ? 'بوصولك إلى جوريستك أو استخدامها، فإنك توافق على الالتزام بهذه الشروط.' : 'By accessing or using JURISTECH, you agree to be bound by these Terms.'}
           </p>
           <p className="text-xs text-slate-500 font-mono">{ar ? 'آخر تحديث:' : 'Last Updated:'} {LAST_UPDATED}</p>
+
+          {/* Mandatory Draft Notice */}
+          <div className="p-4 rounded-2xl bg-amber-500/10 border-2 border-amber-500/40 text-amber-200 text-xs sm:text-sm leading-relaxed flex items-center justify-center gap-3 max-w-2xl mx-auto shadow-sm">
+            <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0" />
+            <p className="font-bold m-0 text-center">
+              {ar
+                ? 'تنبيه: مسودة — تتطلب مراجعة من محامٍ مرخّص. هذه الوثيقة الاسترشادية مسودة خاضعة للاعتماد النظامي من المالك ومستشاريه القانونيين.'
+                : 'DRAFT — REQUIRES REVIEW BY A LICENSED LAWYER. This working draft document requires formal review and execution by licensed legal counsel.'}
+            </p>
+          </div>
+
           <div className="flex flex-wrap justify-center gap-3 pt-1">
             {[
               { to: '/pricing', label: ar ? 'الأسعار' : 'Pricing', active: false },

@@ -182,15 +182,17 @@ export default function RefundPage() {
     },
     {
       num: 10, icon: <Mail className="w-5 h-5" />, accent: 'sky',
-      enTitle: 'Contact', arTitle: 'التواصل',
+      enTitle: 'Contact & Billing Inquiries', arTitle: 'التواصل واستفسارات الفوترة',
       enBody: (
         <div className="space-y-3">
           <p>Refund and billing questions:</p>
-          <div className="space-y-1 text-sm text-slate-300">
-            <div className="font-bold text-white">JURISTECH</div>
-            <div>Website: <a href="https://juristech.solutions" className="text-sky-400 hover:text-sky-300">https://juristech.solutions</a></div>
-            <div>Email: <a href={`mailto:${SUPPORT_EMAIL}?subject=Refund Request`} className="text-sky-400 hover:text-sky-300">{SUPPORT_EMAIL}</a></div>
-            <div className="text-slate-400">Subject line: <span className="font-mono text-sky-300">"Refund Request"</span></div>
+          <div className="space-y-1.5 text-sm text-slate-300 p-4 rounded-xl bg-slate-900/60 border border-slate-800">
+            <div><strong className="text-white">Operating Entity:</strong> {'{{TODO_OWNER: legal entity name}}'}</div>
+            <div><strong className="text-white">Commercial Registration:</strong> {'{{TODO_OWNER: registration number}}'}</div>
+            <div><strong className="text-white">Registered Address:</strong> {'{{TODO_OWNER: registered business address}}'}</div>
+            <div><strong className="text-white">Website:</strong> <a href="https://juristech.solutions" className="text-sky-400 hover:text-sky-300">https://juristech.solutions</a></div>
+            <div><strong className="text-white">Email:</strong> <a href={`mailto:${SUPPORT_EMAIL}?subject=Refund Request`} className="text-sky-400 hover:text-sky-300">{SUPPORT_EMAIL}</a></div>
+            <div className="text-slate-400 pt-1">Subject line: <span className="font-mono text-sky-300">"Refund Request"</span></div>
           </div>
           <p className="text-slate-400 text-sm">We aim to review refund requests promptly and fairly, subject to applicable law and the terms governing the relevant transaction.</p>
         </div>
@@ -198,11 +200,13 @@ export default function RefundPage() {
       arBody: (
         <div className="space-y-3">
           <p>أسئلة الاسترداد والفوترة:</p>
-          <div className="space-y-1 text-sm text-slate-300">
-            <div className="font-bold text-white">JURISTECH</div>
-            <div>الموقع: <a href="https://juristech.solutions" className="text-sky-400 hover:text-sky-300">https://juristech.solutions</a></div>
-            <div>البريد: <a href={`mailto:${SUPPORT_EMAIL}?subject=Refund Request`} className="text-sky-400 hover:text-sky-300">{SUPPORT_EMAIL}</a></div>
-            <div className="text-slate-400">سطر الموضوع: <span className="font-mono text-sky-300">"Refund Request"</span></div>
+          <div className="space-y-1.5 text-sm text-slate-300 p-4 rounded-xl bg-slate-900/60 border border-slate-800">
+            <div><strong className="text-white">الكيان المشغّل:</strong> {'{{TODO_OWNER: legal entity name}}'}</div>
+            <div><strong className="text-white">رقم السجل التجاري / الترخيص:</strong> {'{{TODO_OWNER: registration number}}'}</div>
+            <div><strong className="text-white">المقر النظامي المسجل:</strong> {'{{TODO_OWNER: registered business address}}'}</div>
+            <div><strong className="text-white">الموقع:</strong> <a href="https://juristech.solutions" className="text-sky-400 hover:text-sky-300">https://juristech.solutions</a></div>
+            <div><strong className="text-white">البريد:</strong> <a href={`mailto:${SUPPORT_EMAIL}?subject=Refund Request`} className="text-sky-400 hover:text-sky-300">{SUPPORT_EMAIL}</a></div>
+            <div className="text-slate-400 pt-1">سطر الموضوع: <span className="font-mono text-sky-300">"Refund Request"</span></div>
           </div>
           <p className="text-slate-400 text-sm">نحن نهدف إلى مراجعة طلبات الاسترداد على الفور وبإنصاف، وفقاً للقانون المعمول به والشروط التي تحكم المعاملة ذات الصلة.</p>
         </div>
@@ -228,6 +232,17 @@ export default function RefundPage() {
             {ar ? 'كيفية التعامل مع عمليات استرداد المبالغ وإلغاء الاشتراكات في جوريستك.' : 'How refunds and subscription cancellations are handled for JURISTECH paid software subscriptions.'}
           </p>
           <p className="text-xs text-slate-500 font-mono">{ar ? 'آخر تحديث:' : 'Last Updated:'} {LAST_UPDATED}</p>
+
+          {/* Mandatory Draft Notice */}
+          <div className="p-4 rounded-2xl bg-amber-500/10 border-2 border-amber-500/40 text-amber-200 text-xs sm:text-sm leading-relaxed flex items-center justify-center gap-3 max-w-2xl mx-auto shadow-sm">
+            <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0" />
+            <p className="font-bold m-0 text-center">
+              {ar
+                ? 'تنبيه: مسودة — تتطلب مراجعة من محامٍ مرخّص. هذه الوثيقة الاسترشادية مسودة خاضعة للاعتماد النظامي من المالك ومستشاريه القانونيين.'
+                : 'DRAFT — REQUIRES REVIEW BY A LICENSED LAWYER. This working draft document requires formal review and execution by licensed legal counsel.'}
+            </p>
+          </div>
+
           <div className="flex flex-wrap justify-center gap-3 pt-1">
             {[
               { to: '/pricing', label: ar ? 'الأسعار' : 'Pricing', active: false },

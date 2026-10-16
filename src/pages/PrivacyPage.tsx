@@ -188,9 +188,25 @@ export default function PrivacyPage() {
     },
     {
       num: 6, icon: <Zap className="w-5 h-5" />, accent: 'purple',
-      enTitle: 'AI and Automated Processing', arTitle: 'الذكاء الاصطناعي والمعالجة الآلية',
-      enBody: <p>Certain JURISTECH features may use artificial intelligence or automated processing. Where information is processed by AI-enabled functionality, the processing is performed to provide the requested feature and related service functionality. Users should avoid submitting highly sensitive information unless such submission is necessary and appropriate for the requested service.</p>,
-      arBody: <p>قد تستخدم بعض ميزات جوريستك الذكاء الاصطناعي أو المعالجة الآلية. عندما تتم معالجة المعلومات بواسطة وظائف تدعم الذكاء الاصطناعي، يتم تنفيذ المعالجة لتقديم الميزة المطلوبة ووظائف الخدمة ذات الصلة. يجب على المستخدمين تجنب تقديم معلومات حساسة للغاية إلا إذا كان ذلك ضرورياً ومناسباً للخدمة المطلوبة.</p>,
+      enTitle: 'AI and Automated Processing (Sub-Processors)', arTitle: 'الذكاء الاصطناعي والمعالجة الآلية (المعالجات الفرعية)',
+      enBody: (
+        <div className="space-y-3">
+          <p>Certain JURISTECH features utilize artificial intelligence and automated legal processing. Our primary cloud AI sub-processor is Google LLC (Google Cloud / Google Generative AI, utilizing Gemini 2.0 Flash models), complemented by deterministic local statutory synthesis rules.</p>
+          <p className="text-slate-400">Data transmitted for AI analysis is encrypted in transit via TLS 1.3 and processed strictly to fulfill the requested contract analysis, legal research, or drafting query. User documents and proprietary contracts are not shared with advertisers or used to train third-party public models without explicit consent.</p>
+          <div className="p-3 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-300 text-xs font-semibold">
+            ℹ️ AI sub-processor: Google LLC (Gemini 2.0 Flash). Operational fallbacks: Local statutory rules engine.
+          </div>
+        </div>
+      ),
+      arBody: (
+        <div className="space-y-3">
+          <p>تستخدم بعض ميزات جوريستك تقنيات الذكاء الاصطناعي والمعالجة القانونية الآلية. المعالج السحابي الفرعي الأساسي لتقنيات الذكاء الاصطناعي هو شركة Google LLC (عبر Google Cloud / Google Generative AI بنماذج Gemini 2.0 Flash)، مدعوماً بمحرك قواعد واستدلال تشريعي محلي محكم.</p>
+          <p className="text-slate-400">يتم تشفير البيانات المرسلة لتحليل الذكاء الاصطناعي أثناء النقل عبر بروتوكول TLS 1.3 وتتم معالجتها حصراً لتقديم خدمة فحص العقود أو البحث التشريعي أو الصياغة المطلوبة. لا يتم بيع مستندات المستخدم أو مشاركتها مع معلنين أو استخدامها لتدريب نماذج عامة لطرف ثالث دون موافقة صريحة.</p>
+          <div className="p-3 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-300 text-xs font-semibold">
+            ℹ️ المعالج الفرعي للذكاء الاصطناعي: Google LLC (Gemini 2.0 Flash). المحرك الاحتياطي: قواعد الفحص التشريعي المحلي.
+          </div>
+        </div>
+      ),
     },
     {
       num: 7, icon: <Users className="w-5 h-5" />, accent: 'teal',
@@ -272,29 +288,35 @@ export default function PrivacyPage() {
     },
     {
       num: 15, icon: <Mail className="w-5 h-5" />, accent: 'sky',
-      enTitle: 'Contact', arTitle: 'التواصل',
+      enTitle: 'Data Controller & Contact Details', arTitle: 'الجهة المسؤولة عن معالجة البيانات وبيانات الاتصال',
       enBody: (
         <div className="space-y-3">
-          <p>For privacy questions or requests:</p>
-          <div className="space-y-1 text-sm text-slate-300">
-            <div className="font-bold text-white">JURISTECH</div>
-            <div>Website: <a href="https://juristech.solutions" className="text-sky-400 hover:text-sky-300">https://juristech.solutions</a></div>
-            <div>Email: <a href={`mailto:${DPO_EMAIL}`} className="text-sky-400 hover:text-sky-300">{DPO_EMAIL}</a></div>
-            <div className="text-slate-400">Subject line: <span className="font-mono text-sky-300">"Privacy Request"</span></div>
+          <p>For inquiries, privacy requests, or data subject access requests under applicable privacy frameworks (including GDPR, UK GDPR, and Saudi PDPL):</p>
+          <div className="space-y-1.5 text-sm text-slate-300 p-4 rounded-xl bg-slate-900/60 border border-slate-800">
+            <div><strong className="text-white">Data Controller:</strong> {'{{TODO_OWNER: legal entity name}}'}</div>
+            <div><strong className="text-white">Commercial Registration:</strong> {'{{TODO_OWNER: registration number}}'}</div>
+            <div><strong className="text-white">Registered Address:</strong> {'{{TODO_OWNER: registered business address}}'}</div>
+            <div><strong className="text-white">Governing Law & Jurisdiction:</strong> {'{{TODO_OWNER: governing law jurisdiction}}'}</div>
+            <div><strong className="text-white">DPO & Privacy Lead:</strong> <a href={`mailto:${DPO_EMAIL}`} className="text-sky-400 hover:text-sky-300">{DPO_EMAIL}</a></div>
+            <div><strong className="text-white">Official Website:</strong> <a href="https://juristech.solutions" className="text-sky-400 hover:text-sky-300">https://juristech.solutions</a></div>
+            <div className="text-slate-400 pt-1">Subject line: <span className="font-mono text-sky-300">"Privacy Request"</span></div>
           </div>
-          <p className="text-slate-400 text-sm">We will review privacy requests and respond in accordance with applicable law.</p>
+          <p className="text-slate-400 text-sm">We review verified privacy requests and respond within statutory deadlines (typically 30 calendar days) in accordance with applicable legislation.</p>
         </div>
       ),
       arBody: (
         <div className="space-y-3">
-          <p>للأسئلة أو الطلبات المتعلقة بالخصوصية:</p>
-          <div className="space-y-1 text-sm text-slate-300">
-            <div className="font-bold text-white">JURISTECH</div>
-            <div>الموقع: <a href="https://juristech.solutions" className="text-sky-400 hover:text-sky-300">https://juristech.solutions</a></div>
-            <div>البريد: <a href={`mailto:${DPO_EMAIL}`} className="text-sky-400 hover:text-sky-300">{DPO_EMAIL}</a></div>
-            <div className="text-slate-400">سطر الموضوع: <span className="font-mono text-sky-300">"Privacy Request"</span></div>
+          <p>للأسئلة أو طلبات ممارسة حقوق أصحاب البيانات بموجب اللوائح والأنظمة المعمول بها (بما فيها نظام حماية البيانات الشخصية السعودي PDPL واللائحة الأوروبية العامة GDPR):</p>
+          <div className="space-y-1.5 text-sm text-slate-300 p-4 rounded-xl bg-slate-900/60 border border-slate-800">
+            <div><strong className="text-white">الجهة المسؤولة عن البيانات (Data Controller):</strong> {'{{TODO_OWNER: legal entity name}}'}</div>
+            <div><strong className="text-white">رقم السجل التجاري / الترخيص:</strong> {'{{TODO_OWNER: registration number}}'}</div>
+            <div><strong className="text-white">المقر النظامي المسجل:</strong> {'{{TODO_OWNER: registered business address}}'}</div>
+            <div><strong className="text-white">النظام الحاكم والاختصاص القضائي:</strong> {'{{TODO_OWNER: governing law jurisdiction}}'}</div>
+            <div><strong className="text-white">مسؤول حماية البيانات (DPO):</strong> <a href={`mailto:${DPO_EMAIL}`} className="text-sky-400 hover:text-sky-300">{DPO_EMAIL}</a></div>
+            <div><strong className="text-white">الموقع الإلكتروني الرسمي:</strong> <a href="https://juristech.solutions" className="text-sky-400 hover:text-sky-300">https://juristech.solutions</a></div>
+            <div className="text-slate-400 pt-1">سطر الموضوع: <span className="font-mono text-sky-300">"Privacy Request"</span></div>
           </div>
-          <p className="text-slate-400 text-sm">سنراجع طلبات الخصوصية ونرد وفقاً للقانون المعمول به.</p>
+          <p className="text-slate-400 text-sm">سنراجع طلبات الخصوصية والتحقق من هوية مقدميها ونرد خلال المهل النظامية المقررة (عادة 30 يوماً تقويمياً) وفقاً للأنظمة المعمول بها.</p>
         </div>
       ),
     },
@@ -318,6 +340,17 @@ export default function PrivacyPage() {
             {ar ? 'كيف تجمع جوريستك المعلومات وتستخدمها وتخزنها وتحميها عند استخدام خدماتنا.' : 'How JURISTECH collects, uses, stores, and protects information when you access or use our services.'}
           </p>
           <p className="text-xs text-slate-500 font-mono">{ar ? 'آخر تحديث:' : 'Last Updated:'} {LAST_UPDATED}</p>
+
+          {/* Mandatory Draft Notice */}
+          <div className="p-4 rounded-2xl bg-amber-500/10 border-2 border-amber-500/40 text-amber-200 text-xs sm:text-sm leading-relaxed flex items-center justify-center gap-3 max-w-2xl mx-auto shadow-sm">
+            <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0" />
+            <p className="font-bold m-0 text-center">
+              {ar
+                ? 'تنبيه: مسودة — تتطلب مراجعة من محامٍ مرخّص. هذه الوثيقة الاسترشادية مسودة خاضعة للاعتماد النظامي من المالك ومستشاريه القانونيين.'
+                : 'DRAFT — REQUIRES REVIEW BY A LICENSED LAWYER. This working draft document requires formal review and execution by licensed legal counsel.'}
+            </p>
+          </div>
+
           <div className="flex flex-wrap justify-center gap-3 pt-1">
             {[
               { to: '/pricing', label: ar ? 'الأسعار' : 'Pricing', active: false },
