@@ -34,6 +34,7 @@ import { useSubscription } from '../hooks/useSubscription';
 import { useDailyQuota } from '../hooks/useDailyQuota';
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import SEO from '../components/SEO';
+import GlobalLegalDisclaimer from '../components/GlobalLegalDisclaimer';
 
 // UI Subcomponents
 import { AIAdvisorHeader } from '../components/ai-advisor/AIAdvisorHeader';
@@ -490,6 +491,9 @@ export default function AIAdvisorPage() {
           onUpgradeClick={() => handleUpgradeClick(isAr ? 'ترقية الباقة' : 'Daily AI Consultations', 'startup')}
           quota={isTrial ? dailyQuota : undefined}
         />
+
+        {/* Global Mandatory Legal Notice */}
+        <GlobalLegalDisclaimer variant="banner" />
 
         {/* Task & Jurisdiction Controls Bar */}
         <div className="w-full bg-white dark:bg-slate-900/40 border-b border-slate-200 dark:border-slate-800 px-4 sm:px-6 py-3">

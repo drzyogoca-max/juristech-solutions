@@ -18,6 +18,7 @@ import VoiceInput from '../components/VoiceInput';
 import ESignaturePad from '../components/ESignaturePad';
 import { incrementTrialUsage, isTrialLimitReached } from '../lib/trialLimits';
 import TrialUpgradeModal from '../components/TrialUpgradeModal';
+import GlobalLegalDisclaimer from '../components/GlobalLegalDisclaimer';
 import { analyzeContractGaps, ContractGapAnalysisResult } from '../lib/contractGapDetector';
 import SEO from '../components/SEO';
 import DigitalSignatureModal from '../components/DigitalSignatureModal';
@@ -1098,6 +1099,9 @@ Language: ${i18n.language === 'ar' ? 'Arabic (العربية الفصحى الق
                     </button>
                   </div>
                 </div>
+
+                {/* Export Legal Disclaimer Notice */}
+                <GlobalLegalDisclaimer variant="export" className="mt-3 mb-2" />
 
                 {/* Contract Body Viewport */}
                 <div className="relative p-6 sm:p-8 rounded-2xl bg-slate-950 border border-slate-800/80 font-mono text-xs sm:text-sm text-slate-200 leading-relaxed whitespace-pre-wrap max-h-[600px] overflow-y-auto select-text selection:bg-cyan-500 selection:text-slate-950">

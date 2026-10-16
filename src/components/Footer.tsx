@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { usePlatformLocale } from '../lib/universalTranslator';
 import LanguageSwitcher from './LanguageSwitcher';
+import GlobalLegalDisclaimer from './GlobalLegalDisclaimer';
 
 export default function Footer() {
   const { l, isRtl } = usePlatformLocale();
@@ -221,16 +222,8 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* 3. Mandatory Legal Disclaimer & Sovereign Independence */}
-        <div className="p-4 rounded-2xl bg-[#0D1F3C]/80 border border-[#D4AF37]/30 flex items-start gap-3 text-xs text-slate-300">
-          <AlertTriangle className="w-5 h-5 text-[#D4AF37] shrink-0 mt-0.5" />
-          <p className="leading-relaxed m-0 font-medium">
-            {l(
-              'تنبيه نظامي: منصة JurisTech Solutions هي منصة برمجيات تقنية قانونية (Legal Tech SaaS) تقدم أدوات أتمتة العقود والمساعدة التشريعية، ولا تُعد مكتب محاماة ولا تقدم استشارات أو تمثيلاً قانونياً ينشئ علاقة بين محامٍ وموكل. يُرجى مراجعة محامٍ مرخص في دائرتك القضائية للمراجعة والتمثيل الرسمي.',
-              'Statutory Notice: JurisTech Solutions is a legal technology SaaS platform providing automated workflows and statutory assistance. It is NOT a law firm and does not provide legal representation or create an attorney-client relationship. Consult licensed legal counsel in your jurisdiction for formal representation.'
-            )}
-          </p>
-        </div>
+        {/* 3. Mandatory Legal Disclaimer */}
+        <GlobalLegalDisclaimer variant="footer" className="my-2" />
 
         {/* 5. Bottom Copyright, Social Links, Language Switcher & Security Status */}
         <div className="pt-4 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500 border-t border-slate-800/60">

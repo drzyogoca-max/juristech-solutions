@@ -21,6 +21,7 @@ import { useContract } from '../context/ContractContext';
 import VoiceInput from '../components/VoiceInput';
 import AIResponseTrustBox from '../components/AIResponseTrustBox';
 import SEO from '../components/SEO';
+import GlobalLegalDisclaimer from '../components/GlobalLegalDisclaimer';
 import { searchRAGDatabase } from '../data/ragDatabase';
 import { trackChatInteraction } from '../lib/marketingTracker';
 import { getSystemContextForLanguage } from '../lib/languageHelper';
@@ -778,6 +779,8 @@ ${contractText}`;
     <main className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans" dir={isRtl ? 'rtl' : 'ltr'}>
       <SEO />
       <div className="max-w-4xl mx-auto space-y-4">
+        {/* Global Mandatory Legal Notice */}
+        <GlobalLegalDisclaimer variant="card" className="mb-2" />
 
         {/* ─── Header ─────────────────────────────────────────────────────── */}
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
