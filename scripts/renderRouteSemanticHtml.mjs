@@ -133,7 +133,7 @@ export function getSemanticHtmlForRoute(routePath, lang = 'ar') {
       </div>
       <div class="max-w-7xl mx-auto mt-8 pt-4 border-t border-slate-800 flex justify-between items-center flex-wrap gap-2 text-xs text-slate-500">
         <span>© 2026 JurisTech Solutions Sovereign Tech. جميع الحقوق محفوظة قانونياً.</span>
-        <span class="text-emerald-400 font-mono">آخر تحديث للنظام: 21 أغسطس 2026 (إصدار معتمد وحي)</span>
+        <span class="text-emerald-400 font-mono">آخر تحديث للنظام: 2026 (إصدار معتمد ومباشر)</span>
       </div>
     </footer>
   `;
