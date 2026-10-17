@@ -39,7 +39,7 @@ JurisTech Solutions is a sovereign, multi-jurisdictional AI-powered legal techno
 
 ## Pricing
 - Starter Plan: $49/month - Basic contract analysis and templates
-- Professional Plan: $149/month - Full platform access with AI advisor
+- Professional Plan: $139/month - Full platform access with AI advisor
 - Enterprise Plan: $349/month - Custom workflows, team management, priority support
 
 ## Key Differentiators

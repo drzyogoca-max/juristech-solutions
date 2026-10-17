@@ -106,7 +106,7 @@ Description: AI-powered B2B proposal generation and management system. Creates p
 - 1 user seat
 - 1 GB encrypted storage
 
-## Professional - $149/month
+## Professional - $139/month
 - Unlimited contract analyses
 - Unlimited templates
 - Full AI advisor access
