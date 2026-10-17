@@ -6,6 +6,7 @@ import {
   ExternalLink, Copy, Check, ArrowRight, ShieldCheck, Scale, Compass
 } from 'lucide-react';
 import SEO from '../components/SEO';
+import RelatedServices from '../components/RelatedServices';
 import { usePlatformLocale } from '../lib/universalTranslator';
 import {
   MEGA_CATEGORIES,
@@ -238,6 +239,9 @@ export default function TemplatesPage() {
             </p>
           </div>
         )}
+
+        {/* Cross-Service Discovery */}
+        <RelatedServices currentServiceId="templates" />
       </div>
 
       {/* Preview Modal */}

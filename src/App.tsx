@@ -4,6 +4,7 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 const VercelAnalyticsWrapper = lazy(() => import('./components/VercelAnalyticsWrapper'));
 const SpeedInsightsWrapper = lazy(() => import('./components/VercelSpeedInsights'));
 import Navbar from './components/Navbar';
+import Breadcrumbs from './components/Breadcrumbs';
 import StepWorkflowBanner from './components/StepWorkflowBanner';
 import LegalDisclaimerBanner from './components/LegalDisclaimerBanner';
 import ProtectedAdminRoute from './components/ProtectedAdminRoute';
@@ -300,6 +301,7 @@ function MainAppContent() {
           <Navbar />
 
         <main className="flex-1 min-h-[calc(100vh-80px)] w-full flex flex-col">
+          <Breadcrumbs />
           <Suspense fallback={<RouteFallback />}>
             <Routes>
               {/* Common Single-Source-of-Truth Route Definitions */}

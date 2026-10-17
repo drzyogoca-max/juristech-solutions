@@ -21,6 +21,7 @@ import { usePlatformLocale } from '../lib/universalTranslator';
 import { useSaaS } from '../context/SaaSContext';
 import PremiumFeatureGuard from '../components/PremiumFeatureGuard';
 import GlobalLegalDisclaimer from '../components/GlobalLegalDisclaimer';
+import RelatedServices from '../components/RelatedServices';
 import { SAMPLE_8_AXIS_REPORT } from '../data/sampleRiskReport';
 
 export default function RiskPage() {
@@ -525,6 +526,9 @@ Authorized by JurisTech Supreme Legal Architecture Engine.
 
         {/* Global Legal Disclaimer Card */}
         <GlobalLegalDisclaimer variant="card" />
+
+        {/* Cross-Service Discovery */}
+        <RelatedServices currentServiceId="risk-audit" />
       </div>
 
       {/* 🔍 Visual Redline Diff Modal */}

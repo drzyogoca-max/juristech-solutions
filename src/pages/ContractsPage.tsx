@@ -19,6 +19,7 @@ import ESignaturePad from '../components/ESignaturePad';
 import { incrementTrialUsage, isTrialLimitReached } from '../lib/trialLimits';
 import TrialUpgradeModal from '../components/TrialUpgradeModal';
 import GlobalLegalDisclaimer from '../components/GlobalLegalDisclaimer';
+import RelatedServices from '../components/RelatedServices';
 import { analyzeContractGaps, ContractGapAnalysisResult } from '../lib/contractGapDetector';
 import SEO from '../components/SEO';
 import DigitalSignatureModal from '../components/DigitalSignatureModal';
@@ -1351,6 +1352,10 @@ Language: ${i18n.language === 'ar' ? 'Arabic (العربية الفصحى الق
           })}
         </div>
       </section>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full mb-12">
+        <RelatedServices currentServiceId="contracts-analysis" />
+      </div>
 
       {/* ── MODALS ── */}
       {isEsignatureOpen && (

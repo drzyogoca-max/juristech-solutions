@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { addCompanyToQueue } from '../lib/reviewQueueService';
 import { usePlatformLocale } from '../lib/universalTranslator';
 import SEO from '../components/SEO';
+import RelatedServices from '../components/RelatedServices';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 type EntityType = 'llc' | 'sole' | 'simplified_corp' | null;
@@ -436,6 +437,9 @@ export default function CompanyFormationPage() {
           </div>
 
         </div>
+
+        {/* Cross-Service Discovery */}
+        <RelatedServices currentServiceId="corporate-structuring" />
 
       </div>
     </main>

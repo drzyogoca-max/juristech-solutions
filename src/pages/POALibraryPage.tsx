@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { Search, Download, FileText, Star, Globe, Shield, Eye, Copy, ChevronDown, ChevronUp, X } from 'lucide-react';
 import { POA_LIBRARY, searchPOALibrary, getPOAsByJurisdiction, POATemplate } from '../data/powerOfAttorneyLibrary';
 import { usePlatformLocale } from '../lib/universalTranslator';
+import RelatedServices from '../components/RelatedServices';
 
 // ── HELPER ───────────────────────────────────────────────────────────────────
 
@@ -181,6 +182,9 @@ const POALibraryPage: React.FC = () => {
             <p>{isRTL ? 'لا توجد نتائج مطابقة' : 'No matching POA types found'}</p>
           </div>
         )}
+
+        {/* Cross-Service Discovery */}
+        <RelatedServices currentServiceId="poa-library" />
       </div>
 
       {/* ── DOCUMENT VIEWER MODAL ─────────────────────────────────────────────── */}
