@@ -19,3 +19,4 @@ scratch_*.cjs
 test_resend*.cjs
 test_smtp*.cjs
 supabase/.temp/
+public/videos/tmp*/
