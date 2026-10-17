@@ -16,7 +16,8 @@
     "evolve:lexicon": "node scripts/evolve-legal-lexicon.mjs",
     "preview": "vite preview",
     "lint": "eslint src",
-    "security:truth-scan": "node scripts/security_truth_scan.mjs"
+    "security:truth-scan": "node scripts/security_truth_scan.mjs",
+    "test:routes": "node scripts/verify_route_access.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.110.7",
