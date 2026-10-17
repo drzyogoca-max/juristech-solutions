@@ -1,6 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Search, Download, FileText, Star, Globe, Shield, Eye, Copy, ChevronDown, ChevronUp, X } from 'lucide-react';
 import { POA_LIBRARY, searchPOALibrary, getPOAsByJurisdiction, POATemplate } from '../data/powerOfAttorneyLibrary';
+import { usePlatformLocale } from '../lib/universalTranslator';
 
 // ── HELPER ───────────────────────────────────────────────────────────────────
 
@@ -10,7 +11,8 @@ const ratingColor = (r: number) =>
 // ── MAIN PAGE ─────────────────────────────────────────────────────────────────
 
 const POALibraryPage: React.FC = () => {
-  const [lang, setLang] = useState<'ar' | 'en'>('ar');
+  const { lang: platformLang, isRtl: isRTL, changeLocale } = usePlatformLocale();
+  const lang = (platformLang === 'ar' ? 'ar' : 'en') as 'ar' | 'en';
   const [query, setQuery] = useState('');
   const [jurFilter, setJurFilter] = useState('ALL');
   const [selected, setSelected] = useState<POATemplate | null>(null);
@@ -18,7 +20,9 @@ const POALibraryPage: React.FC = () => {
   const [copied, setCopied] = useState(false);
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  const isRTL = lang === 'ar';
+  useEffect(() => {
+    setTemplateTab(lang);
+  }, [lang]);
 
   // Filtered list
   const items = useMemo(() => {
@@ -75,7 +79,7 @@ const POALibraryPage: React.FC = () => {
 
             {/* Lang toggle */}
             <button
-              onClick={() => setLang(l => l === 'ar' ? 'en' : 'ar')}
+              onClick={() => changeLocale(lang === 'ar' ? 'en' : 'ar')}
               className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-sm font-medium text-slate-700 dark:text-slate-200 transition-colors"
             >
               <Globe className="w-4 h-4 text-sky-500" />

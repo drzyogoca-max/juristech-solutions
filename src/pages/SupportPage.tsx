@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { MessageSquare, Headphones, Send, CheckCircle2, Lock, Mail, HelpCircle, ChevronDown, ChevronUp, Video, Play, ArrowUpRight } from 'lucide-react';
+import { usePlatformLocale } from '../lib/universalTranslator';
 import { dispatchReceiptEmail } from '../lib/emailNotifier';
 import SEO from '../components/SEO';
 import EncryptedSupportMessengerModal from '../components/EncryptedSupportMessengerModal';
@@ -16,8 +17,7 @@ interface Ticket {
 }
 
 export default function SupportPage() {
-  const { i18n } = useTranslation();
-  const isRtl = i18n.language === 'ar';
+  const { isRtl, l } = usePlatformLocale();
 
   const [subject, setSubject] = useState('');
   const [category, setCategory] = useState('Technical');

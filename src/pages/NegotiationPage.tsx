@@ -10,6 +10,7 @@ import { exportDocumentMultiFormat } from '../lib/documentExporter';
 import { extractPDFTextMultiStage, detectDocumentLanguage } from '../lib/pdfExtractor';
 import ESignaturePad from '../components/ESignaturePad';
 import VoiceInput from '../components/VoiceInput';
+import { usePlatformLocale } from '../lib/universalTranslator';
 import AdSponsorBanner from '../components/AdSponsorBanner';
 import SEO from '../components/SEO';
 
@@ -40,12 +41,11 @@ interface NegotiationItem {
 }
 
 export default function NegotiationPage() {
-  const { i18n } = useTranslation();
-  const isRtl = i18n.language === 'ar';
+  const { isRtl, l, i18n } = usePlatformLocale();
 
   const [clauseTitle, setClauseTitle] = useState('');
-  const [partyAName, setPartyAName] = useState('Party A (الطرف الأول)');
-  const [partyBName, setPartyBName] = useState('Party B (الطرف الثاني)');
+  const [partyAName, setPartyAName] = useState(isRtl ? 'الطرف الأول (أ)' : 'Party A');
+  const [partyBName, setPartyBName] = useState(isRtl ? 'الطرف الثاني (ب)' : 'Party B');
   const [partyAPosition, setPartyAPosition] = useState('');
   const [partyBPosition, setPartyBPosition] = useState('');
 

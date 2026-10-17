@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { usePlatformLocale } from '../lib/universalTranslator';
 import SEO from '../components/SEO';
 import { 
   Shield, 
@@ -83,8 +84,7 @@ interface DiagnosticResult {
 }
 
 export default function LegalCompliancePage() {
-  const { i18n } = useTranslation();
-  const isRtl = i18n.language === 'ar';
+  const { isRtl, l } = usePlatformLocale();
   
   const [activeTab, setActiveTab] = useState<'standards' | 'scanner'>('standards');
   const [openSections, setOpenSections] = useState<Record<number, boolean>>({

@@ -17,10 +17,10 @@ import { runSelfHealingMAAudit, EnterpriseAuditResult } from '../lib/ragEnterpri
 import { erpIntegrationService, ERPConfig } from '../lib/erpIntegrationService';
 import SEO from '../components/SEO';
 import PremiumFeatureGuard from '../components/PremiumFeatureGuard';
+import { usePlatformLocale } from '../lib/universalTranslator';
 
 export default function EnterpriseAuditPage() {
-  const { i18n } = useTranslation();
-  const isRtl = i18n.language === 'ar';
+  const { isRtl, l } = usePlatformLocale();
 
   const [contractText, setContractText] = useState('');
   const [fileName, setFileName] = useState('');

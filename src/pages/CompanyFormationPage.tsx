@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { addCompanyToQueue } from '../lib/reviewQueueService';
+import { usePlatformLocale } from '../lib/universalTranslator';
 import SEO from '../components/SEO';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
@@ -67,11 +68,11 @@ const ENTITY_TYPES = [
 ];
 
 const JURISDICTIONS = [
-  { id: 'SA' as Jurisdiction, nameAr: 'المملكة العربية السعودية', nameEn: 'Saudi Arabia', flag: '🇸🇦', descAr: 'نظام الشركات السعودي والمطابقة القانونية لعام 2026', descEn: 'Saudi Companies Law & Statutory AI Compliance 2026', cost: 'صياغة ذكية', recommended: true },
-  { id: 'AE' as Jurisdiction, nameAr: 'الإمارات العربية المتحدة', nameEn: 'United Arab Emirates', flag: '🇦🇪', descAr: 'نظام الشركات التجاري الإماراتي وأنظمة DIFC/ADGM', descEn: 'UAE Commercial Companies Law & DIFC/ADGM Standards', cost: 'صياغة ذكية', recommended: false },
-  { id: 'EG' as Jurisdiction, nameAr: 'جمهورية مصر العربية', nameEn: 'Egypt', flag: '🇪🇬', descAr: 'قانون الشركات المصري وحوكمة الحصص والأنظمة الأساسية', descEn: 'Egyptian Corporate Law & Equity Governance', cost: 'صياغة ذكية', recommended: false },
-  { id: 'JO' as Jurisdiction, nameAr: 'المملكة الأردنية الهاشمية', nameEn: 'Jordan', flag: '🇯🇴', descAr: 'قانون الشركات الأردني وصياغة العقود التأسيسية الذكية', descEn: 'Jordanian Companies Law & Smart AoA AI Drafting', cost: 'صياغة ذكية', recommended: false },
-  { id: 'KW' as Jurisdiction, nameAr: 'دولة الكويت ودول الخليج', nameEn: 'Kuwait & GCC', flag: '🇰🇼', descAr: 'الأنظمة القانونية للشركات ودول مجلس التعاون الخليجي', descEn: 'GCC Enterprise Legal Frameworks & AI Governance', cost: 'صياغة ذكية', recommended: false },
+  { id: 'SA' as Jurisdiction, nameAr: 'المملكة العربية السعودية', nameEn: 'Saudi Arabia', flag: '🇸🇦', descAr: 'نظام الشركات السعودي والمطابقة القانونية لعام 2026', descEn: 'Saudi Companies Law & Statutory AI Compliance 2026', costAr: 'صياغة ذكية', costEn: 'Smart AI Draft', recommended: true },
+  { id: 'AE' as Jurisdiction, nameAr: 'الإمارات العربية المتحدة', nameEn: 'United Arab Emirates', flag: '🇦🇪', descAr: 'نظام الشركات التجاري الإماراتي وأنظمة DIFC/ADGM', descEn: 'UAE Commercial Companies Law & DIFC/ADGM Standards', costAr: 'صياغة ذكية', costEn: 'Smart AI Draft', recommended: false },
+  { id: 'EG' as Jurisdiction, nameAr: 'جمهورية مصر العربية', nameEn: 'Egypt', flag: '🇪🇬', descAr: 'قانون الشركات المصري وحوكمة الحصص والأنظمة الأساسية', descEn: 'Egyptian Corporate Law & Equity Governance', costAr: 'صياغة ذكية', costEn: 'Smart AI Draft', recommended: false },
+  { id: 'JO' as Jurisdiction, nameAr: 'المملكة الأردنية الهاشمية', nameEn: 'Jordan', flag: '🇯🇴', descAr: 'قانون الشركات الأردني وصياغة العقود التأسيسية الذكية', descEn: 'Jordanian Companies Law & Smart AoA AI Drafting', costAr: 'صياغة ذكية', costEn: 'Smart AI Draft', recommended: false },
+  { id: 'KW' as Jurisdiction, nameAr: 'دولة الكويت ودول الخليج', nameEn: 'Kuwait & GCC', flag: '🇰🇼', descAr: 'الأنظمة القانونية للشركات ودول مجلس التعاون الخليجي', descEn: 'GCC Enterprise Legal Frameworks & AI Governance', costAr: 'صياغة ذكية', costEn: 'Smart AI Draft', recommended: false },
 ];
 
 const COST_ITEMS = [
@@ -133,8 +134,7 @@ function AgreementTeaser({ data, isRtl }: { data: FormData; isRtl: boolean }) {
 
 // ─── Main Component ──────────────────────────────────────────────────────────
 export default function CompanyFormationPage() {
-  const { i18n } = useTranslation();
-  const isRtl = i18n.language === 'ar';
+  const { isRtl, l } = usePlatformLocale();
   const [step, setStep] = useState(0);
   const [form, setForm] = useState<FormData>({
     entityType: null, jurisdiction: null, companyName: '', directorName: '', directorEmail: '', directorCountry: '', businessPurpose: '', capital: 10000,
@@ -316,7 +316,7 @@ export default function CompanyFormationPage() {
                         </div>
                         <p className="text-xs text-slate-600 dark:text-slate-400">{isRtl ? s.descAr : s.descEn}</p>
                       </div>
-                      <span className="text-xs font-bold text-cyan-400 shrink-0">{s.cost}</span>
+                      <span className="text-xs font-bold text-cyan-400 shrink-0">{isRtl ? s.costAr : s.costEn}</span>
                     </button>
                   );
                 })}

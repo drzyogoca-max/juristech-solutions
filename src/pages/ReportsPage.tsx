@@ -7,7 +7,7 @@ import {
 import { supabase } from '../lib/supabaseClient';
 import SEO from '../components/SEO';
 import { generateAndDownloadWordDocument } from '../utils/export-utils';
-
+import { usePlatformLocale } from '../lib/universalTranslator';
 
 interface RiskReport {
   id: string;
@@ -52,8 +52,8 @@ function RiskBadge({ score }: { score: number }) {
 }
 
 export default function ReportsPage() {
-  const { t, i18n } = useTranslation();
-  const isRtl = i18n.language === 'ar';
+  const { isRtl, l, i18n } = usePlatformLocale();
+  const { t } = useTranslation();
 
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<Stats>({

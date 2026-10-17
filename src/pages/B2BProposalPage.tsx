@@ -4,17 +4,17 @@ import { Building2, Sparkles, Download, Copy, Check, DollarSign, Loader2, Shield
 import { generateEnterpriseProposal, HighTicketProposal } from '../services/stealth-agents';
 import { exportLegalContractPDF } from '../lib/pdfExporter';
 import { dispatchSystemNotification } from '../services/engine-ai';
+import { usePlatformLocale } from '../lib/universalTranslator';
 import SEO from '../components/SEO';
 
 export default function B2BProposalPage() {
-  const { i18n } = useTranslation();
-  const isRtl = i18n.language === 'ar';
+  const { isRtl, l } = usePlatformLocale();
 
   const [companyName, setCompanyName] = useState('');
   const [industry, setIndustry] = useState('');
   const [teamSize, setTeamSize] = useState(15);
   const [contractVolume, setContractVolume] = useState(50);
-  const [jurisdiction, setJurisdiction] = useState('جمهورية مصر العربية / GCC');
+  const [jurisdiction, setJurisdiction] = useState(isRtl ? 'المملكة العربية السعودية / دول الخليج' : 'Delaware DGCL / UCC / International');
   const [loading, setLoading] = useState(false);
   const [proposal, setProposal] = useState<HighTicketProposal | null>(null);
   const [copied, setCopied] = useState(false);
