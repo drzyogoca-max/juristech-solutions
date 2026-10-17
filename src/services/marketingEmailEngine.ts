@@ -1,5 +1,6 @@
 import { callAI } from '../lib/api';
 import { verifyCustomerEmail } from './emailVerificationService';
+import { automatedClientAcquisitionEngine } from './automatedClientAcquisitionEngine';
 
 export interface EmailLead {
   id: string;
@@ -36,6 +37,12 @@ export async function sendOfficialEmail(
   if (!emailVerification.isValid) {
     console.warn(`[EmailEngine] BLOCKED SEND: Invalid customer email (${emailVerification.reason}) → ${target}`);
     return { success: false, messageId: '', reason: emailVerification.reason || 'invalid_email' };
+  }
+
+  // ── CRM Deduplication Gate (Zero Duplicate Outreach Guarantee) ──────────
+  if (automatedClientAcquisitionEngine.hasEmailBeenSent(target)) {
+    console.warn(`[EmailEngine] BLOCKED SEND: Duplicate outreach prevented (already sent) → ${target}`);
+    return { success: false, messageId: '', reason: 'duplicate_already_sent' };
   }
   
   console.log(`[SMTP TRACE] Connecting to Real Email Dispatcher for ${OFFICIAL_EMAIL} & Admin BCC ${MANDATORY_ADMIN_COPY}...`);
@@ -77,6 +84,8 @@ export async function sendOfficialEmail(
   } catch (err) {
     console.warn('[SMTP TRACE] Dispatch warning:', err);
   }
+
+  automatedClientAcquisitionEngine.registerDispatchedEmail(target);
 
   return {
     success: true,

@@ -2,6 +2,7 @@ import { callAI } from '../lib/api';
 import { dispatchReceiptEmail } from '../lib/emailNotifier';
 import { dispatchWhatsAppNotification } from './engine-ai';
 import { supabase } from '../lib/supabaseClient';
+import { automatedClientAcquisitionEngine } from './automatedClientAcquisitionEngine';
 
 export interface B2BLead {
   id: string;
@@ -36,6 +37,17 @@ export interface ClientDataPayload {
  */
 export const generateAndDispatchOffer = async (clientData: ClientDataPayload): Promise<{ success: boolean; generatedHtml: string; messageId?: string; error?: string }> => {
   const { name, requirement, email, jurisdiction } = clientData;
+
+  // ── CRM Deduplication Gate (Zero Duplicate Outreach Guarantee) ──────────
+  if (automatedClientAcquisitionEngine.hasEmailBeenSent(email)) {
+    console.warn(`[AI Dispatcher Engine] DEDUPLICATION BLOCKED: Lead already contacted previously → ${email}`);
+    return {
+      success: false,
+      generatedHtml: '',
+      error: 'duplicate_already_sent',
+    };
+  }
+
   console.log(`[AI Dispatcher Engine] 🚀 Triggering C-Suite executive proposal for: ${name} (${email}) | Jurisdiction: ${jurisdiction || 'Global'}`);
 
   // 1. Executive Subject Line for CEO & CFO
@@ -254,6 +266,9 @@ export const generateAndDispatchOffer = async (clientData: ClientDataPayload): P
       amountUSD: 5000,
       referenceId: `EXEC-OUT-${Date.now().toString().slice(-6)}`,
     });
+
+    // 4. Register dispatched email to guarantee zero future duplicate spam
+    automatedClientAcquisitionEngine.registerDispatchedEmail(email);
 
     return {
       success: true,

@@ -75,10 +75,10 @@ const JURISDICTIONS = [
 ];
 
 const COST_ITEMS = [
-  { labelAr: 'صياغة وتدقيق عقد التأسيس والنظام الأساسي بالذكاء الاصطناعي', labelEn: 'AI Articles of Association Drafting & Legal Audit', min: 'مشمول', max: 'ضمن الباقات' },
-  { labelAr: 'مطابقة الأنشطة التجارية وتوزيع الصلاحيات الإدارية والمالية', labelEn: 'Commercial Activities & Management Mandates Alignment', min: 'مشمول', max: 'فوري' },
-  { labelAr: 'حزمة الوثائق القانونية والقرارات التأسيسية المعتمدة', labelEn: 'Certified Formation Resolutions & Documentation Bundle', min: 'مشمول', max: 'PDF / Word' },
-  { labelAr: 'استشارة المساعد التشريعي الذكي للأنظمة واللوائح', labelEn: '24/7 AI Statutory Advisory & Regulatory Guide', min: 'مشمول', max: '24/7', optional: true },
+  { labelAr: 'صياغة وتدقيق عقد التأسيس والنظام الأساسي بالذكاء الاصطناعي', labelEn: 'AI Articles of Association Drafting & Legal Audit', minAr: 'مشمول', minEn: 'Included', maxAr: 'ضمن الباقات', maxEn: 'Included in Plans' },
+  { labelAr: 'مطابقة الأنشطة التجارية وتوزيع الصلاحيات الإدارية والمالية', labelEn: 'Commercial Activities & Management Mandates Alignment', minAr: 'مشمول', minEn: 'Included', maxAr: 'فوري', maxEn: 'Instant' },
+  { labelAr: 'حزمة الوثائق القانونية والقرارات التأسيسية المعتمدة', labelEn: 'Certified Formation Resolutions & Documentation Bundle', minAr: 'مشمول', minEn: 'Included', maxAr: 'PDF / Word', maxEn: 'PDF / Word' },
+  { labelAr: 'استشارة المساعد التشريعي الذكي للأنظمة واللوائح', labelEn: '24/7 AI Statutory Advisory & Regulatory Guide', minAr: 'مشمول', minEn: 'Included', maxAr: '24/7', maxEn: '24/7', optional: true },
 ];
 
 const STEPS_AR = ['نوع الكيان', 'دولة التأسيس', 'بيانات المؤسسين', 'معاينة الوثائق', 'التأكيد والتحميل'];
@@ -388,7 +388,7 @@ export default function CompanyFormationPage() {
                       <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
                       {isRtl ? item.labelAr : item.labelEn}
                     </span>
-                    <span className="font-bold text-cyan-400">{isRtl ? item.min : item.max}</span>
+                    <span className="font-bold text-cyan-400">{isRtl ? item.minAr : item.minEn}</span>
                   </div>
                 ))}
               </div>

@@ -276,12 +276,12 @@ Official Contact: founder@juristech.solutions | +201126674337
                       onChange={(e) => setSector(e.target.value)}
                       className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-200 focus:outline-none focus:border-cyan-500"
                     >
-                      <option value="Technology & SaaS">Technology, AI & SaaS (التقنية والبرمجيات)</option>
-                      <option value="E-Commerce & Supply Chain">E-Commerce & Logistics (التجارة وسلاسل الإمداد)</option>
-                      <option value="Fintech & Digital Banking">Fintech & Payments (التقنية المالية والمصرفية)</option>
-                      <option value="Real Estate & Construction">Real Estate & Contracting (العقارات والمقاولات)</option>
-                      <option value="Investment Fund & VC">Venture Capital & M&A (الاستثمار الجريء والدمج)</option>
-                      <option value="Healthcare & Pharma">Healthcare & Pharma (الرعاية الصحية والأدوية)</option>
+                      <option value="Technology & SaaS">{isRtl ? 'التقنية والبرمجيات (SaaS & AI)' : 'Technology, AI & SaaS'}</option>
+                      <option value="E-Commerce & Supply Chain">{isRtl ? 'التجارة وسلاسل الإمداد (E-Commerce)' : 'E-Commerce & Logistics'}</option>
+                      <option value="Fintech & Digital Banking">{isRtl ? 'التقنية المالية والمصرفية (Fintech)' : 'Fintech & Payments'}</option>
+                      <option value="Real Estate & Construction">{isRtl ? 'العقارات والمقاولات (Real Estate)' : 'Real Estate & Contracting'}</option>
+                      <option value="Investment Fund & VC">{isRtl ? 'الاستثمار الجريء والدمج (VC & M&A)' : 'Venture Capital & M&A'}</option>
+                      <option value="Healthcare & Pharma">{isRtl ? 'الرعاية الصحية والأدوية (Healthcare)' : 'Healthcare & Pharma'}</option>
                     </select>
                   </div>
 
