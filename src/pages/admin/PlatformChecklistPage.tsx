@@ -206,15 +206,15 @@ export default function PlatformChecklistPage() {
     },
     {
       categoryId: 'datalake',
-      categoryTitleAr: '4. مستودع العقود المليوني والتوليد التلقائي (1M+ Data Lake Engine)',
-      categoryTitleEn: '4. 1M+ Smart Contract Data Lake & FIDIC Drafting Engine',
+      categoryTitleAr: '4. مستودع العقود الذكية والتوليد التلقائي (Smart Contract Data Lake Engine)',
+      categoryTitleEn: '4. Curated Smart Contract Data Lake & FIDIC Drafting Engine',
       icon: Database,
       color: 'text-rose-400',
       items: [
         {
           id: 'dl-1',
-          titleAr: 'توليد عقود مكتملة الهيكل بنسبة 100% بتصنيف 10/10',
-          titleEn: '100% Comprehensive legal contract structure rated 10/10',
+          titleAr: 'توليد عقود مكتملة الهيكل بمطابقة شاملة وتصنيف 10/10',
+          titleEn: 'Comprehensive legal contract structure rated 10/10',
           descAr: 'ديباجة قانونية رسمية، مواد مفصلة، شروط SLA، وغرامات تأخير وتوقيعات سيادية.',
           descEn: 'Formal preambles, detailed statutory articles, SLAs, warranties & execution seals.',
           completed: true,
@@ -225,9 +225,9 @@ export default function PlatformChecklistPage() {
         {
           id: 'dl-2',
           titleAr: 'ربط الفهرسة الذكية المتجهة (HNSW Vector Data Lake)',
-          titleEn: 'HNSW Vector Cosine Similarity Search Engine for 1M+ Contracts',
-          descAr: 'بحث متجهي فائق السرعة < 10ms يربط أكثر من 1,000,000 عقد فريد.',
-          descEn: 'Sub-10ms vector retrieval indexing over 1,000,000 unique contract records.',
+          titleEn: 'HNSW Vector Cosine Similarity Search Engine for Legal Contracts',
+          descAr: 'بحث متجهي فائق السرعة < 10ms يربط سجلات العقود والنماذج المعتمدة.',
+          descEn: 'Sub-10ms vector retrieval indexing multi-jurisdiction verified contract records.',
           completed: true,
           statusTextAr: 'مكتمل ✅ (Vector Lake Sub-10ms)',
           statusTextEn: 'Completed ✅ (Vector Active)',
@@ -565,9 +565,9 @@ export default function PlatformChecklistPage() {
       addLog('    ↳ SHA-256 Web Crypto Verified ✅');
     }
 
-    // 3. 1M+ Data Lake Vector Query
+    // 3. Contract Data Lake Vector Query
     try {
-      addLog('📚 [Step 3/8] Executing Live Cosine Vector Similarity Query against 1M+ Data Lake...');
+      addLog('📚 [Step 3/8] Executing Live Cosine Vector Similarity Query against Contract Data Lake...');
       const t0 = performance.now();
       const dlRes = await smartContractDataLake.searchDataLake('عقد استثمار تجاري', i18n.language as any, 'SA');
       const ms = Math.round(performance.now() - t0);
@@ -747,7 +747,7 @@ export default function PlatformChecklistPage() {
             <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow">
               <span className="text-[11px] text-slate-400 block font-bold">{isRtl ? 'سرعة البحث المتجهي' : 'Vector Lake Latency'}</span>
               <span className="text-xl font-black text-cyan-400 font-mono">{vectorSpeedMs ? `${vectorSpeedMs} ms` : '< 10 ms'}</span>
-              <span className="text-[10px] text-slate-500 block">1,000,000+ Contract Lake</span>
+              <span className="text-[10px] text-slate-500 block">Verified Contract Lake</span>
             </div>
             <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow">
               <span className="text-[11px] text-slate-400 block font-bold">{isRtl ? 'حالة التخزين المؤقت SW' : 'Service Worker Cache'}</span>

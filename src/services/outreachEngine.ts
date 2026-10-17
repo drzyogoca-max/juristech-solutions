@@ -157,7 +157,7 @@ export const generateAndDispatchOffer = async (clientData: ClientDataPayload): P
                 <ul class="csuite-list">
                   <li><strong>Strict Liability Capping:</strong> Automated detection and neutral redlining of uncapped indemnities, one-sided warranties, and silent financial penalties.</li>
                   <li><strong>Direct P&L Impact:</strong> Replaces $350–$850/hr external legal retainer fees with an all-inclusive institutional subscription.</li>
-                  <li><strong>Mega-Repository Asset:</strong> Immediate unrestricted access to over 1,000,000+ verified, enforceable bilingual contract templates and governance instruments.</li>
+                  <li><strong>Curated Repository Asset:</strong> Immediate unrestricted access to 200+ verified, enforceable bilingual contract templates and governance instruments across 15+ jurisdictions.</li>
                 </ul>
               </div>
 
@@ -167,7 +167,7 @@ export const generateAndDispatchOffer = async (clientData: ClientDataPayload): P
             <div class="pricing-card">
               <div class="pricing-title">Institutional Enterprise Partnership Tier</div>
               <div class="pricing-amount">$5,000 – $10,000 <span style="font-size: 16px; color: #94a3b8; font-weight: normal;">/ Annual Enterprise Pass</span></div>
-              <div class="pricing-sub">✓ Unlimited C-Suite Seats • Complete 1M+ Contract Vault • Instant Autonomous Audits</div>
+              <div class="pricing-sub">✓ Unlimited C-Suite Seats • Complete Curated Contract Vault • Instant Autonomous Audits</div>
               <a href="https://www.juristech.solutions" class="cta-btn">Access Enterprise Infrastructure & Deploy AI &rarr;</a>
             </div>
 

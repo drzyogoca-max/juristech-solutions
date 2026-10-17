@@ -194,8 +194,8 @@ export const ENTERPRISE_CSUITE_DIRECTORY: EnterpriseCSuiteLead[] = [
     jurisdiction: 'Switzerland',
     countryFlag: '🇨🇭',
     industry: 'Private Banking & Wealth Preservation',
-    customValuePropositionEn: 'Swiss Code of Obligations (OR) trust agreements and military-grade E2EE AES-256 vault archiving.',
-    customValuePropositionAr: 'حوكمة عقود الصناديق الائتمانية بموجب قانون الالتزامات السويسري مع التشفير العسكري.',
+    customValuePropositionEn: 'Swiss Code of Obligations (OR) trust agreements and client-side AES-256 vault archiving.',
+    customValuePropositionAr: 'حوكمة عقود الصناديق الائتمانية بموجب قانون الالتزامات السويسري مع التشفير البنكي المتقدم AES-256.',
     estimatedAnnualContractValueUSD: 290000,
   },
   {

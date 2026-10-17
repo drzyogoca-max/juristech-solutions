@@ -188,11 +188,11 @@ export const PAGE_SEO: Record<string, PageSEO> = {
   '/about': {
     path: '/about',
     titleEn: 'About JurisTech Solutions & Sovereign AI Legal Ecosystem',
-    titleAr: 'عن المنصة والريادة التشريعية | JurisTech Solutions',
+    titleAr: 'عن المنصة والحلول القانونية الذكية | JurisTech Solutions',
     descriptionEn:
-      'Learn about JurisTech Solutions — pioneering sovereign legal AI infrastructure and automated contract governance globally.',
+      'Learn about JurisTech Solutions — providing enterprise legal AI software infrastructure and automated contract analysis tools globally.',
     descriptionAr:
-      'تعرّف على منصة JurisTech Solutions — الرائدة إقليمياً وعالمياً في حلول الذكاء الاصطناعي القانوني للشركات وتدقيق العقود التجارية والمؤسسية.',
+      'تعرّف على منصة JurisTech Solutions — المتخصصة في حلول الذكاء الاصطناعي القانوني للشركات وتدقيق وصياغة العقود التجارية والمؤسسية.',
     keywords: 'about JurisTech Solutions, sovereign legal AI, legaltech company profile',
     schemaType: 'AboutPage',
   },
@@ -214,7 +214,7 @@ export const PAGE_SEO: Record<string, PageSEO> = {
     descriptionEn:
       'Our commitment to client confidentiality, AES-256 encryption, Zero-Knowledge document security, and GDPR compliance.',
     descriptionAr:
-      'التزامنا الصارم بحماية سرية بياناتك وخصوصية مستنداتك القانونية وفق أعلى معايير التشفير العسكري AES-256 وحوكمة البيانات العالمية GDPR.',
+      'التزامنا الصارم بحماية سرية بياناتك وخصوصية مستنداتك القانونية وفق معايير التشفير القياسي المتقدم AES-256 وحوكمة البيانات العالمية GDPR.',
     keywords: 'legal privacy policy, data protection, AES-256 confidentiality',
     schemaType: 'WebPage',
   },

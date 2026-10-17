@@ -165,7 +165,7 @@ export default function ContractsPage({ initialTab }: { initialTab?: 'studio' | 
     };
   }, [user?.id]);
 
-  // Active View Tab: 'studio' (AI Drafting) vs 'vault' (1M+ Repository)
+  // Active View Tab: 'studio' (AI Drafting) vs 'vault' (Curated Templates Repository)
   const [activeTab, setActiveTab] = useState<'studio' | 'vault'>(
     initialTab || (searchParams.get('tab') === 'vault' ? 'vault' : 'studio')
   );
@@ -470,13 +470,13 @@ Language: ${i18n.language === 'ar' ? 'Arabic (العربية الفصحى الق
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-gradient-to-r from-cyan-500/20 via-indigo-500/20 to-emerald-500/20 border border-cyan-500/40 text-cyan-700 dark:text-cyan-300 text-xs font-black uppercase tracking-wider shadow-sm">
               <Sparkles className="w-3.5 h-3.5 text-cyan-500 dark:text-cyan-400 animate-pulse" />
-              <span>{l('المنظومة الموحدة لصياغة وخزينة العقود الذكية (Google AI Pro 1M+ Context Engine)', 'Sovereign AI Smart Contracts Studio & 1M+ Vault (Google AI Pro)')}</span>
+              <span>{l('المنظومة الموحدة لصياغة وخزينة العقود الذكية (Google AI Pro Engine)', 'Sovereign AI Smart Contracts Studio & Global Vault (Google AI Pro)')}</span>
             </div>
 
             <div className="flex items-center gap-3 text-xs font-mono text-slate-600 dark:text-slate-400">
               <span className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
                 <ShieldCheck className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
-                <span className="text-emerald-600 dark:text-emerald-400 font-bold">{formatNum(1000014)}+</span>
+                <span className="text-emerald-600 dark:text-emerald-400 font-bold">{formatNum(200)}+</span>
                 <span>{l('عقد ونموذج معتمد', 'Certified Templates')}</span>
               </span>
               <span className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
@@ -494,26 +494,26 @@ Language: ${i18n.language === 'ar' ? 'Arabic (العربية الفصحى الق
                 <>
                   صياغة العقود الذكية بالذكاء الاصطناعي السيادي{' '}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 via-amber-500 to-emerald-600 dark:from-cyan-400 dark:via-teal-300 dark:to-emerald-400">
-                    والخزينة القانونية المليونية
+                    والخزينة القانونية المعتمدة
                   </span>
                 </>
               ) : (
                 <>
                   Sovereign AI Smart Contract Drafting &{' '}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 via-amber-500 to-emerald-600 dark:from-cyan-400 dark:via-teal-300 dark:to-emerald-400">
-                    1M+ Global Templates Vault
+                    Curated Global Templates Vault
                   </span>
                 </>
               )}
             </h1>
             <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed max-w-3xl">
               {isRtl
-                ? 'المحرك التشريعي الأكثر تقدماً لصياغة وتدقيق العقود والاتفاقيات التجارية طبقاً للأنظمة السعودية والخليجية والأردنية والمصرية والأمريكية والبريطانية والصينية والأمم المتحدة (UNCITRAL / CISG 1980) مع تشفير AES-256 وأختام SHA-256 الرقمية.'
-                : 'Enterprise-grade multi-jurisdictional AI contract compiler harmonized across GCC, Jordan, Egypt, US (Delaware), UK, EU, China & UNCITRAL international trade frameworks with bank-grade encryption.'}
+                ? 'المحرك التشريعي الأكثر تقدماً لصياغة وتدقيق العقود والاتفاقيات التجارية طبقاً للأنظمة السعودية والخليجية والأردنية والمصرية والأمريكية والبريطانية والصينية وقواعد UNCITRAL النموذجية مع تشفير AES-256 وأختام SHA-256 الرقمية.'
+                : 'Enterprise-grade multi-jurisdictional AI contract compiler harmonized across GCC, Jordan, Egypt, US (Delaware), UK, EU, China & UNCITRAL Model Law frameworks with bank-grade encryption.'}
             </p>
           </div>
 
-          {/* View Switcher: AI Studio vs 1M+ Vault */}
+          {/* View Switcher: AI Studio vs Vault */}
           <div className="pt-2 flex flex-wrap items-center gap-3">
             <div className="p-1.5 rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 flex items-center gap-2 shadow-lg backdrop-blur-xl">
               <button
@@ -537,9 +537,9 @@ Language: ${i18n.language === 'ar' ? 'Arabic (العربية الفصحى الق
                 }`}
               >
                 <Layers className="w-4 h-4" />
-                <span>{l('📚 مستودع وخزينة العقود المليونية (1M+ Vault)', '📚 1M+ Curated Templates Vault')}</span>
+                <span>{l('📚 مستودع وخزينة النماذج المعتمدة (Templates Vault)', '📚 Curated Templates Vault')}</span>
                 <span className="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 text-[10px] font-mono border border-emerald-500/30">
-                  {formatNum(1000014)}
+                  {formatNum(200)}+
                 </span>
               </button>
             </div>
@@ -1143,7 +1143,7 @@ Language: ${i18n.language === 'ar' ? 'Arabic (العربية الفصحى الق
       )}
 
       {/* ══════════════════════════════════════════════════════════════════════ */}
-      {/* 📚 VIEW 2: 1M+ CURATED CONTRACTS REPOSITORY & VAULT EXPLORER           */}
+      {/* 📚 VIEW 2: CURATED CONTRACTS REPOSITORY & VAULT EXPLORER               */}
       {/* ══════════════════════════════════════════════════════════════════════ */}
       {activeTab === 'vault' && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-8">

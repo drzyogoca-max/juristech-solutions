@@ -285,7 +285,7 @@ export default function AIChatbotConcierge() {
 
 
       const dataLakeDirective = dataLakeResult && dataLakeResult.contracts.length > 0
-        ? `\n\n[SMART CONTRACT DATA LAKE VECTOR INDEX (1,000,000+ RECORDS - Top Match ${dataLakeResult.topMatchScorePercentage}% Score)]:\n` +
+        ? `\n\n[SMART CONTRACT DATA LAKE VECTOR INDEX (CURATED CONTRACT RECORDS - Top Match ${dataLakeResult.topMatchScorePercentage}% Score)]:\n` +
           dataLakeResult.contracts.slice(0, 2).map((c) => `- Template ID: [${c.id}] | ${c.titleAr} (${c.titleEn})\n   Clause Sample: ${c.templateTextAr.slice(0, 300)}...`).join('\n')
         : '';
 

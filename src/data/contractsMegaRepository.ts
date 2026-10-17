@@ -3320,10 +3320,10 @@ export function getContractsByCategory(categoryKey: string, limit = 12): MegaCon
 }
 
 /**
- * Get total "virtual" count for display (simulates 1M contracts)
+ * Get total verified contract templates count for display
  */
 export function getTotalVirtualContractCount(): string {
-  return '1,000,000+';
+  return `${MEGA_CONTRACT_TEMPLATES.length}+`;
 }
 
 /**

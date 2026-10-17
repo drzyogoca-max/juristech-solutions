@@ -372,7 +372,7 @@ export const UI_TRANSLATIONS: Record<AppLang, ModalTranslations> = {
       qArbitration: 'Please review dispute resolution, governing law, and arbitration clauses against international standards.',
       qRedlines: 'Please provide protective alternative redline clauses for all risky provisions in this contract.',
       pills: [
-        { label: '📜 Million+ Contracts & Jurisdiction Lock', query: 'How does the specialized 1,000,000+ contract generation and Jurisdiction Lock engine work?' },
+        { label: '📜 Multi-Jurisdiction Contracts & Lock', query: 'How does the specialized multi-jurisdiction contract generation and Jurisdiction Lock engine work?' },
         { label: '📄 Word DOCX & RTL/LTR Precision', query: 'Are Word (.docx) file downloads 100% compliant with language direction (RTL/LTR) and zero whitespace gaps?' },
         { label: '🏢 Enterprise Accounts & Custom SLAs', query: 'What are the steps to link Multi-Seat Enterprise corporate accounts and custom SME retainers?' },
         { label: '⚖️ Digital Negotiation Chambers', query: 'How do I maximize the use of Digital Negotiation Chambers to resolve contract disputes?' },

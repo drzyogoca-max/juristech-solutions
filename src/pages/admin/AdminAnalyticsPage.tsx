@@ -624,7 +624,7 @@ export default function AdminAnalyticsPage() {
 
                   <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-1">
                     <span className="text-slate-500 text-[10px] block font-sans">{isRtl ? 'مستودع Data Lake المتجهي:' : 'Vector Data Lake:'}</span>
-                    <span className="text-cyan-400 font-bold block">● ACTIVE (1M+ INDEXED)</span>
+                    <span className="text-cyan-400 font-bold block">● ACTIVE (VECTOR INDEXED)</span>
                   </div>
 
                   <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-1">

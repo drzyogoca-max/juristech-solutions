@@ -44,7 +44,7 @@ export interface DataLakeSearchResult {
   contracts: DataLakeContractRecord[];
 }
 
-// ─── Core Indexed 1,000,000+ Data Lake Records ─────────────────────────────────
+// ─── Core Indexed Smart Contract Data Lake Records ────────────────────────────
 const CORE_DATA_LAKE_RECORDS: DataLakeContractRecord[] = [
   // ── 1. Comprehensive Sales Contracts Suite (عقود البيع والتملك التجاري) ──
   {
@@ -573,7 +573,7 @@ class SmartContractDataLakeService {
   private searchCacheMap = new Map<string, DataLakeSearchResult>();
 
   /**
-   * Search across the 1,000,000+ Smart Contract Data Lake.
+   * Search across the Smart Contract Data Lake.
    * Utilizes Smart Memory Caching & Inverted Indexing for instant sub-millisecond execution.
    */
   public async search1MillionDataLake(
@@ -1004,7 +1004,7 @@ Party A: ___________________________    Party B: ___________________________`;
 
 
   /**
-   * Performs Semantic Vector Search across the 1,000,000+ Smart Contract Data Lake.
+   * Performs Semantic Vector Search across the Smart Contract Data Lake.
    * Uses HNSW Cosine Similarity scoring & returns sub-10ms matches.
    */
   public async searchDataLake(
@@ -1090,8 +1090,8 @@ Party A: ___________________________    Party B: ___________________________`;
     const baseText = isAr ? record.templateTextAr : record.templateTextEn;
 
     const tailoredHeader = isAr
-      ? `/* تم توليد هذا العقد وتأهيله آلياً عبر المستودع الذكي الموزع (JurisTech 1M+ Data Lake) */\n/* التوافق الإقليمي المعتمد: ${jurisdiction} | دقة الصياغة: ${record.accuracyRating}% */\n\n`
-      : `/* Auto-generated & Aligned via JurisTech 1M+ Smart Contract Data Lake */\n/* Verified Jurisdiction: ${jurisdiction} | Accuracy Rating: ${record.accuracyRating}% */\n\n`;
+      ? `/* تم توليد هذا العقد وتأهيله آلياً عبر المستودع الذكي المعتمد (JurisTech Smart Contract Data Lake) */\n/* التوافق الإقليمي المعتمد: ${jurisdiction} | تصنيف الدقة: ${record.accuracyRating}% */\n\n`
+      : `/* Auto-generated & Aligned via JurisTech Smart Contract Data Lake */\n/* Verified Jurisdiction: ${jurisdiction} | Accuracy Rating: ${record.accuracyRating}% */\n\n`;
 
     return {
       contractText: `${tailoredHeader}${baseText}\n\n${isAr ? `متطلبات خاصة بالعميل:` : `Custom Requirements:`} ${userRequirements || (isAr ? 'تمت إضافة البنود الحمائية المخصصة.' : 'Custom protective clauses added.')}`,
