@@ -1,0 +1,89 @@
+{
+  "timestamp": "2026-10-17T11:34:41Z",
+  "environment": "production",
+  "baseUrl": "https://www.juristech.solutions",
+  "typeScriptCheck": {
+    "status": "PASS",
+    "exitCode": 0,
+    "errorCount": 0
+  },
+  "endpoints": [
+    {
+      "url": "https://www.juristech.solutions/",
+      "status": 200,
+      "latencyMs": 16855,
+      "bytes": 34338,
+      "title": "AI Contract Analysis & Risk Audit | JurisTech Solutions"
+    },
+    {
+      "url": "https://www.juristech.solutions/risk",
+      "status": 200,
+      "latencyMs": 6711,
+      "bytes": 29218,
+      "title": "AI Contract Risk Scoring & Vulnerability Audit | JurisTech"
+    },
+    {
+      "url": "https://www.juristech.solutions/contracts",
+      "status": 200,
+      "latencyMs": 6772,
+      "bytes": 29530,
+      "title": "AI Commercial Contract Drafting Studio | JurisTech"
+    },
+    {
+      "url": "https://www.juristech.solutions/chat",
+      "status": 200,
+      "latencyMs": 6877,
+      "bytes": 29237,
+      "title": "24/7 AI Legal Counsel & Virtual Attorney | JurisTech"
+    },
+    {
+      "url": "https://www.juristech.solutions/payment",
+      "status": 200,
+      "latencyMs": 6712,
+      "bytes": 34988,
+      "title": "Enterprise Subscriptions & Secure Payments | JurisTech"
+    },
+    {
+      "url": "https://www.juristech.solutions/about",
+      "status": 200,
+      "latencyMs": 6869,
+      "bytes": 28378,
+      "title": "About JurisTech Solutions & Sovereign AI Legal Ecosystem"
+    },
+    {
+      "url": "https://www.juristech.solutions/privacy",
+      "status": 200,
+      "latencyMs": 6707,
+      "bytes": 31771,
+      "title": "Privacy Policy & Data Governance Mandate | JurisTech"
+    },
+    {
+      "url": "https://www.juristech.solutions/terms",
+      "status": 200,
+      "latencyMs": 6814,
+      "bytes": 31391,
+      "title": "Terms of Service & Usage Agreement | JurisTech Solutions"
+    },
+    {
+      "url": "https://www.juristech.solutions/refund",
+      "status": 200,
+      "latencyMs": 6709,
+      "bytes": 28223,
+      "title": "Refund Policy & Cancellation Terms | JurisTech Solutions"
+    },
+    {
+      "url": "https://www.juristech.solutions/sitemap.xml",
+      "status": 200,
+      "latencyMs": 6702,
+      "bytes": 6175,
+      "title": ""
+    },
+    {
+      "url": "https://www.juristech.solutions/robots.txt",
+      "status": 200,
+      "latencyMs": 6599,
+      "bytes": 1595,
+      "title": ""
+    }
+  ]
+}
