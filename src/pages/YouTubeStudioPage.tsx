@@ -25,6 +25,23 @@ export const YouTubeStudioPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'SCHEDULE' | 'SCRIPT_TELEPROMPTER' | 'OAUTH_SETUP' | 'GROWTH_CONNECTIONS'>('SCHEDULE');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
+  const [savedRefreshToken, setSavedRefreshToken] = useState<string>(() => {
+    return localStorage.getItem('juristech_yt_refresh_token') || '';
+  });
+  const [isPublishingBoardroom, setIsPublishingBoardroom] = useState<boolean>(false);
+  const [publishedVideoData, setPublishedVideoData] = useState<{
+    videoId: string;
+    url: string;
+    shortsUrl?: string;
+    title: string;
+  } | null>(() => {
+    const cached = localStorage.getItem('juristech_last_published_video');
+    if (cached) {
+      try { return JSON.parse(cached); } catch { return null; }
+    }
+    return null;
+  });
+
   // Auto-Exchange OAuth Code if redirected from Google
   useEffect(() => {
     if (oauthCode && !oauthResult && !oauthExchanging) {
@@ -40,7 +57,16 @@ export const YouTubeStudioPage: React.FC = () => {
         setOauthResult(data);
         setOauthExchanging(false);
         if (data.refreshToken) {
+          localStorage.setItem('juristech_yt_refresh_token', data.refreshToken);
+          setSavedRefreshToken(data.refreshToken);
           setToastMessage(isRtl ? '🎉 تم ربط قناة يوتيوب وتوليد رمز التفويض الدائم بنجاح!' : '🎉 YouTube channel authorized & Refresh Token generated!');
+        }
+        if (data.autoPublished) {
+          setPublishedVideoData(data.autoPublished);
+          localStorage.setItem('juristech_last_published_video', JSON.stringify(data.autoPublished));
+          setToastMessage(isRtl
+            ? `🎉 تم نشر الفيديو بنجاح على قناتك على يوتيوب! الرابط: ${data.autoPublished.url}`
+            : `🎉 Video published successfully to your YouTube channel! ${data.autoPublished.url}`);
         }
       })
       .catch((err) => {
@@ -151,6 +177,87 @@ export const YouTubeStudioPage: React.FC = () => {
     }
   };
 
+  const handlePublishBoardroomNow = async () => {
+    const activeToken = savedRefreshToken || oauthResult?.refreshToken;
+    if (!activeToken) {
+      setToastMessage(isRtl ? '⚠️ يجب منح تفويض يوتيوب أولاً لربط القناة وتفعيل النشر.' : '⚠️ Please grant YouTube Authorization first to connect channel.');
+      setActiveTab('OAUTH_SETUP');
+      return;
+    }
+
+    setIsPublishingBoardroom(true);
+    setToastMessage(isRtl
+      ? '🚀 جاري رفع فيديو أزمة العقود واجتماع مجلس الإدارة مباشرةً إلى قناتك على يوتيوب عبر Google Resumable Upload API...'
+      : '🚀 Uploading Boardroom Crisis Executive Video directly to your YouTube channel via Google Resumable Upload API...');
+
+    try {
+      const res = await fetch('/api/youtube-upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'publish_now',
+          refreshToken: activeToken,
+        })
+      });
+      const data = await res.json();
+
+      if (data.success && data.youtubeVideoId) {
+        const pubData = {
+          videoId: data.youtubeVideoId,
+          url: data.youtubeUrl || `https://www.youtube.com/watch?v=${data.youtubeVideoId}`,
+          shortsUrl: data.shortsUrl,
+          title: data.title || 'Enterprise Contract Crisis Solved: How C-Suite Uses AI Legal Review in 60s | JurisTech Solutions'
+        };
+        setPublishedVideoData(pubData);
+        localStorage.setItem('juristech_last_published_video', JSON.stringify(pubData));
+
+        const successText = isRtl
+          ? `🎉 تم نشر الفيديو بنجاح على قناتك على يوتيوب! شاهد الفيديو: ${pubData.url}`
+          : `🎉 Video published successfully to your YouTube channel! Watch: ${pubData.url}`;
+        setToastMessage(successText);
+
+        const newYtVideo: YouTubeVideoPost = {
+          id: `yt-live-${data.youtubeVideoId}`,
+          slot: 'EVENING',
+          publishTimeUtc: new Date().toLocaleTimeString(),
+          scheduledDate: new Date().toISOString().split('T')[0],
+          titleEn: pubData.title,
+          titleAr: 'حل أزمة العقود في اجتماع مجلس الإدارة: كيف تستخدم القيادة التنفيذية الذكاء الاصطناعي لحماية الصفقات',
+          descriptionEn: 'Live Boardroom Executive Brief published directly to YouTube',
+          descriptionAr: 'فيديو تنفيذي تم نشره مباشرة على قناة يوتيوب الرسمية',
+          tags: ['JurisTech', 'LegalTech', 'AI Contracts', 'Corporate Law', 'Risk Radar'],
+          category: 'Legal Technology',
+          durationSeconds: 60,
+          format: 'Full HD 1080p (16:9)',
+          scriptVoiceoverEn: 'Executive Boardroom Meeting: Resolving 50 contracts with JurisTech in 90s.',
+          scriptVoiceoverAr: 'اجتماع مجلس الإدارة: حل أزمة 50 عقداً عبر منصة JurisTech في 90 ثانية.',
+          dialogueLines: [],
+          visualStoryboard: [],
+          thumbnailPrompt: '',
+          status: 'PUBLISHED',
+          youtubeVideoId: data.youtubeVideoId,
+          youtubeUrl: pubData.url,
+          viewsCount: 1,
+          leadConversionsCount: 0,
+        };
+        setVideos(prev => [newYtVideo, ...prev]);
+        setSelectedVideo(newYtVideo);
+        setPlayerMode('YOUTUBE_EMBED');
+      } else {
+        const errMsg = data.error || data.errorDescription || 'Upload to YouTube failed';
+        setToastMessage(`❌ ${errMsg}`);
+        if (errMsg.toLowerCase().includes('authorized') || errMsg.toLowerCase().includes('token') || errMsg.toLowerCase().includes('invalid_grant')) {
+          setActiveTab('OAUTH_SETUP');
+        }
+      }
+    } catch (err: any) {
+      setToastMessage(`❌ Error: ${err.message}`);
+    } finally {
+      setIsPublishingBoardroom(false);
+      setTimeout(() => setToastMessage(null), 8000);
+    }
+  };
+
   return (
     <div dir={isRtl ? 'rtl' : 'ltr'} className="min-h-screen bg-[#070b14] text-slate-100 font-sans pb-20">
       <SEO
@@ -195,6 +302,14 @@ export const YouTubeStudioPage: React.FC = () => {
 
           <div className="flex items-center gap-3 flex-wrap">
             <button
+              onClick={handlePublishBoardroomNow}
+              disabled={isPublishingBoardroom}
+              className="bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-xs uppercase px-4 py-3 rounded-xl shadow-lg shadow-amber-500/20 transition flex items-center gap-2 cursor-pointer"
+            >
+              <Sparkles className={`w-4 h-4 text-slate-950 ${isPublishingBoardroom ? 'animate-spin' : ''}`} />
+              <span>{isPublishingBoardroom ? l('جاري النشر...', 'Publishing...') : l('🚀 نشر فيديو مجلس الإدارة على يوتيوب', '🚀 Publish Boardroom Video to YouTube')}</span>
+            </button>
+            <button
               onClick={() => handleGeneratePublish('MORNING')}
               disabled={isGenerating}
               className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-bold text-xs uppercase px-4 py-3 rounded-xl shadow-lg shadow-red-900/30 transition flex items-center gap-2"
@@ -213,10 +328,10 @@ export const YouTubeStudioPage: React.FC = () => {
             <button
               onClick={handleGoogleFlowTrigger}
               disabled={isGenerating || isGoogleFlowRunning}
-              className="bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 font-black text-xs uppercase px-4 py-3 rounded-xl shadow-lg shadow-amber-500/20 transition flex items-center gap-2 cursor-pointer"
+              className="bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-700 hover:to-slate-800 text-slate-200 font-bold text-xs uppercase px-4 py-3 rounded-xl border border-slate-700 transition flex items-center gap-2 cursor-pointer"
             >
-              <Cpu className="w-4 h-4 text-slate-950" />
-              <span>{l('Google Flow الذكي (بدون حقوق ملكية)', 'Google Flow AI Video (Zero Copyright)')}</span>
+              <Cpu className="w-4 h-4 text-cyan-400" />
+              <span>{l('Google Flow الذكي', 'Google Flow AI')}</span>
             </button>
           </div>
         </div>
@@ -288,6 +403,139 @@ export const YouTubeStudioPage: React.FC = () => {
             <div className="text-xs text-slate-400 mt-1 font-mono">
               {stats.officialEmail}
             </div>
+          </div>
+        </div>
+
+        {/* Master Boardroom Executive Video Direct Publishing Card */}
+        <div className="bg-gradient-to-br from-[#0D1F3C] via-[#071629] to-[#020B1A] border-2 border-[#D4AF37]/40 rounded-3xl p-6 sm:p-8 mb-8 shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#D4AF37]/5 rounded-full blur-3xl pointer-events-none" />
+          
+          <div className="relative z-10">
+            {/* Header / Badges */}
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="bg-[#D4AF37]/15 border border-[#D4AF37]/30 text-[#F5C842] text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
+                  {l('فيديو دعائي تنفيذي — اجتماع مجلس الإدارة (خالي 100% من حقوق الملكية)', 'C-Suite Boardroom Video — Zero-Copyright Enterprise Edition')}
+                </span>
+                <span className="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
+                  <Globe className="w-3.5 h-3.5" />
+                  {l('اللغة الإنجليزية + حوار شخصيات C-Suite + سيو شامل', 'Full English • Multi-Speaker Boardroom • SEO Boosted')}
+                </span>
+              </div>
+              <span className="text-xs font-mono text-slate-400">
+                {stats.officialEmail} (@JurisTechSolutions)
+              </span>
+            </div>
+
+            {/* Video Headline & Narrative Brief */}
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white mb-2 leading-tight">
+              Enterprise Contract Crisis Solved: How C-Suite Uses AI Legal Review in 60s
+            </h2>
+            <p className="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-4xl mb-6">
+              {l(
+                'سيناريو حقيقي لاجتماع طارئ بين الرئيس التنفيذي (CEO) والمدير المالي (CFO) والمستشارة القانونية (CLO): صفقة استحواذ بـ 10 ملايين دولار تغلق خلال 48 ساعة مع 50 عقداً غير مراجع وفاتورة محاماة خارجية بـ 60 ألف دولار. منصة JurisTech Solutions تحل الأزمة كاملة خلال 90 ثانية مع رادار المخاطر، DealShield 360، والتوقيع الرقمي المشفر SHA-256.',
+                'Real high-stakes crisis: CEO & CFO face an impending $10M deal deadline in 48 hours with 50 unreviewed agreements and a $60,000 outside counsel quote. Chief Legal Officer demonstrates how JurisTech Solutions audits all agreements, eliminates uncapped liability, and seals the deal in 90 seconds.'
+              )}
+            </p>
+
+            {/* Live Published Status OR Action Trigger */}
+            {publishedVideoData ? (
+              <div className="bg-emerald-500/10 border-2 border-emerald-500/40 rounded-2xl p-5 mb-4">
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                      <span className="text-sm font-black text-white">
+                        {l('🎉 تم نشر الفيديو بنجاح وهو متاح للمشاهدة الآن على قناتك على يوتيوب!', '🎉 Video Successfully Published & Live on YouTube!')}
+                      </span>
+                    </div>
+                    <div className="text-xs font-mono text-emerald-300 break-all">
+                      <a href={publishedVideoData.url} target="_blank" rel="noreferrer" className="underline hover:text-emerald-200">
+                        {publishedVideoData.url}
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3 flex-wrap">
+                    <a
+                      href={publishedVideoData.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="bg-red-600 hover:bg-red-500 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow-lg flex items-center gap-2 no-underline"
+                    >
+                      <Play className="w-4 h-4 fill-white" />
+                      <span>{l('مشاهدة الفيديو على يوتيوب 🔴', 'Watch Video on YouTube 🔴')}</span>
+                    </a>
+                    <button
+                      onClick={handlePublishBoardroomNow}
+                      disabled={isPublishingBoardroom}
+                      className="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs px-4 py-2.5 rounded-xl border border-slate-700 flex items-center gap-2 cursor-pointer"
+                    >
+                      <RefreshCw className={`w-3.5 h-3.5 ${isPublishingBoardroom ? 'animate-spin' : ''}`} />
+                      <span>{l('إعادة النشر / تحديث النسخة', 'Re-Publish / Update Video')}</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Direct Video Embed Frame */}
+                <div className="mt-4 rounded-xl overflow-hidden aspect-video max-w-2xl bg-black border border-slate-800">
+                  <iframe
+                    src={`https://www.youtube-nocookie.com/embed/${publishedVideoData.videoId}?autoplay=0&rel=0`}
+                    title="JurisTech Solutions Live YouTube Video"
+                    className="w-full h-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-slate-950/80 border border-slate-800 p-5 rounded-2xl">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <div className={`w-2.5 h-2.5 rounded-full ${savedRefreshToken || oauthResult?.refreshToken ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`} />
+                    <span className="text-xs font-bold text-white">
+                      {savedRefreshToken || oauthResult?.refreshToken
+                        ? l('القناة مفوضة ومربوطة بحساب جوجل — جاهزة للنشر المباشر', 'YouTube Channel Authorized & Connected — Ready to Publish')
+                        : l('يرجى منح التفويض مرة واحدة لربط القناة تلقائياً', 'Authorization Required to Upload Video Directly to YouTube')}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-slate-400">
+                    {l(
+                      'يتم رفع الفيديو مباشرةً إلى يوتيوب عبر Google Resumable Upload API بدون تخزين أي ملف على المنصة لحفظ السرعة الفائقة 100%.',
+                      'Direct cloud-to-YouTube binary upload with zero server disk footprint, preserving maximum website speed.'
+                    )}
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-3 w-full sm:w-auto">
+                  {savedRefreshToken || oauthResult?.refreshToken ? (
+                    <button
+                      onClick={handlePublishBoardroomNow}
+                      disabled={isPublishingBoardroom}
+                      className="w-full sm:w-auto bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-xs uppercase px-6 py-3.5 rounded-xl shadow-lg shadow-amber-500/20 transition flex items-center justify-center gap-2 cursor-pointer"
+                    >
+                      <Sparkles className={`w-4 h-4 text-slate-950 ${isPublishingBoardroom ? 'animate-spin' : ''}`} />
+                      <span>
+                        {isPublishingBoardroom
+                          ? l('جاري رفع الفيديو إلى يوتيوب الآن...', 'Uploading Video to YouTube Now...')
+                          : l('🚀 انشر فيديو مجلس الإدارة على يوتيوب الآن', '🚀 Publish Boardroom Video to YouTube Now')}
+                      </span>
+                    </button>
+                  ) : (
+                    <a
+                      href={`https://accounts.google.com/o/oauth2/auth?client_id=${stats.oauthClientId}&redirect_uri=${encodeURIComponent(stats.oauthRedirectUri)}&response_type=code&scope=${encodeURIComponent('https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/youtube.readonly')}&access_type=offline&prompt=consent`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="w-full sm:w-auto bg-red-600 hover:bg-red-500 text-white font-bold text-xs px-6 py-3.5 rounded-xl shadow-lg shadow-red-900/40 transition flex items-center justify-center gap-2 no-underline"
+                    >
+                      <Youtube className="w-4 h-4 fill-white" />
+                      <span>{l('منح تفويض جوجل لرفع الفيديو (1-Click)', 'Authorize YouTube Channel (1-Click)')}</span>
+                    </a>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -593,12 +841,20 @@ export const YouTubeStudioPage: React.FC = () => {
             {oauthResult && (
               <div className={`p-4 rounded-xl border mb-4 text-xs font-mono ${oauthResult.refreshToken ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300' : 'bg-amber-500/10 border-amber-500/30 text-amber-300'}`}>
                 {oauthResult.refreshToken ? (
-                  <div className="space-y-2">
-                    <p className="font-bold text-sm text-emerald-400">✅ {l('تم استخراج وحفظ رمز التفويض الدائم في قاعدة البيانات بنجاح!', 'Permanent Refresh Token Retrieved & Saved to Database!')}</p>
-                    <p className="text-slate-300 text-xs">{l('تم حفظ المفتاح تلقائياً في قاعدة البيانات السحابية (Supabase) لتفعيل النشر اليومي التلقائي الصباحي والمسائي بنجاح.', 'Key is automatically persisted to cloud database for autonomous daily morning and evening publishing.')}</p>
+                  <div className="space-y-3">
+                    <p className="font-bold text-sm text-emerald-400">✅ {l('تم استخراج وحفظ رمز التفويض الدائم بنجاح!', 'Permanent Refresh Token Retrieved & Saved!')}</p>
+                    <p className="text-slate-300 text-xs">{l('تم حفظ المفتاح تلقائياً في ذاكرة المتصفح وقاعدة البيانات السحابية لتفعيل النشر الفوري والمجدول.', 'Key is stored in browser and database for immediate and scheduled YouTube publishing.')}</p>
                     <div className="bg-slate-950 p-2.5 rounded-lg border border-slate-800 break-all select-all font-mono text-[11px] text-emerald-300">
                       {oauthResult.refreshToken}
                     </div>
+                    <button
+                      onClick={handlePublishBoardroomNow}
+                      disabled={isPublishingBoardroom}
+                      className="w-full bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-xs uppercase py-3 rounded-xl shadow-lg shadow-amber-500/20 transition flex items-center justify-center gap-2 cursor-pointer"
+                    >
+                      <Sparkles className={`w-4 h-4 text-slate-950 ${isPublishingBoardroom ? 'animate-spin' : ''}`} />
+                      <span>{isPublishingBoardroom ? l('جاري رفع الفيديو إلى يوتيوب الآن...', 'Uploading Video to YouTube Now...') : l('🚀 نشر فيديو مجلس الإدارة فوراً بهذا الرمز', '🚀 Publish Boardroom Video to YouTube Now With This Token')}</span>
+                    </button>
                   </div>
                 ) : (
                   <div>
@@ -607,6 +863,35 @@ export const YouTubeStudioPage: React.FC = () => {
                 )}
               </div>
             )}
+
+            {/* Manual Token Input & Direct Trigger */}
+            <div className="bg-slate-950 border border-slate-800 p-4 rounded-xl mb-4 space-y-2">
+              <label className="text-xs text-slate-300 font-bold flex items-center justify-between">
+                <span>{l('مفتاح التفويض الدائم المحفوظ (Stored Refresh Token):', 'Stored Active YouTube Refresh Token:')}</span>
+                {savedRefreshToken && <span className="text-emerald-400 font-mono text-[10px]">● READY</span>}
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={savedRefreshToken}
+                  onChange={(e) => {
+                    const val = e.target.value.trim();
+                    setSavedRefreshToken(val);
+                    if (val) localStorage.setItem('juristech_yt_refresh_token', val);
+                  }}
+                  placeholder="1//04..."
+                  className="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono text-cyan-300 focus:outline-none focus:border-cyan-500"
+                />
+                <button
+                  onClick={handlePublishBoardroomNow}
+                  disabled={isPublishingBoardroom || !savedRefreshToken}
+                  className="bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 hover:to-yellow-500 disabled:opacity-50 text-slate-950 font-black text-xs px-4 py-2 rounded-xl transition flex items-center gap-1.5 whitespace-nowrap cursor-pointer shadow-md"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-slate-950" />
+                  <span>{isPublishingBoardroom ? l('جاري الرفع...', 'Uploading...') : l('نشر الآن', 'Publish Now')}</span>
+                </button>
+              </div>
+            </div>
 
             <div className="space-y-4">
               <a

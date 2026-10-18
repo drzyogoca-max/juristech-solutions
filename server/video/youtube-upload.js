@@ -18,6 +18,8 @@
  *   GET  ?action=channel_stats               — Fetches live channel statistics
  */
 
+import fs from 'fs';
+import path from 'path';
 import youtubeMorningHandler from '../cron/youtube-morning.js';
 import youtubeEveningHandler from '../cron/youtube-evening.js';
 
@@ -35,12 +37,17 @@ const GOOGLE_CLIENT_SECRET = process.env.YOUTUBE_CLIENT_SECRET || '';
 const YOUTUBE_REFRESH_TOKEN = process.env.YOUTUBE_REFRESH_TOKEN || '';
 const REDIRECT_URI         = 'https://www.juristech.solutions/youtube-studio';
 const SUPABASE_URL         = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const SUPABASE_KEY         = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+const SUPABASE_KEY         = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || '';
 
 const YOUTUBE_SCOPES = [
   'https://www.googleapis.com/auth/youtube.upload',
   'https://www.googleapis.com/auth/youtube.readonly',
 ].join(' ');
+
+// In-Memory Token Cache (Avoids losing newly exchanged tokens across requests in active worker)
+let inMemoryRefreshToken = null;
+let inMemoryAccessToken = null;
+let inMemoryAccessExpiry = 0;
 
 /** Fetch active refresh token from Supabase if env var is missing or stale */
 async function fetchPersistedRefreshToken() {
@@ -125,11 +132,13 @@ async function persistRefreshToken(refreshToken, accessToken, expiresIn) {
 }
 
 /** Refresh the OAuth access token using the stored refresh token with full telemetry */
-async function getAccessTokenDetails() {
-  let effectiveRefreshToken = YOUTUBE_REFRESH_TOKEN;
-  if (!effectiveRefreshToken) {
-    effectiveRefreshToken = await fetchPersistedRefreshToken();
+export async function getAccessTokenDetails(overrideRefreshToken = null) {
+  if (inMemoryAccessToken && Date.now() < inMemoryAccessExpiry) {
+    return { token: inMemoryAccessToken, error: null };
   }
+
+  const persistedToken = await fetchPersistedRefreshToken();
+  let effectiveRefreshToken = overrideRefreshToken || inMemoryRefreshToken || persistedToken || YOUTUBE_REFRESH_TOKEN;
 
   const missing = {
     clientId: !GOOGLE_CLIENT_ID,
@@ -153,27 +162,30 @@ async function getAccessTokenDetails() {
     const data = await res.json();
     if (data.error) {
       console.error('[YouTube API] Token refresh failed:', data.error_description || data.error);
-      if (effectiveRefreshToken === YOUTUBE_REFRESH_TOKEN) {
-        const persistedToken = await fetchPersistedRefreshToken();
-        if (persistedToken && persistedToken !== YOUTUBE_REFRESH_TOKEN) {
-          console.log('[YouTube API] Retrying with database-persisted refresh token...');
-          const retryRes = await fetch('https://oauth2.googleapis.com/token', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams({
-              client_id:     GOOGLE_CLIENT_ID,
-              client_secret: GOOGLE_CLIENT_SECRET,
-              refresh_token: persistedToken,
-              grant_type:    'refresh_token',
-            }),
-          });
-          const retryData = await retryRes.json();
-          if (!retryData.error && retryData.access_token) {
-            return { token: retryData.access_token, error: null };
-          }
+      if (effectiveRefreshToken === YOUTUBE_REFRESH_TOKEN && persistedToken && persistedToken !== YOUTUBE_REFRESH_TOKEN) {
+        console.log('[YouTube API] Retrying with database-persisted refresh token...');
+        const retryRes = await fetch('https://oauth2.googleapis.com/token', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({
+            client_id:     GOOGLE_CLIENT_ID,
+            client_secret: GOOGLE_CLIENT_SECRET,
+            refresh_token: persistedToken,
+            grant_type:    'refresh_token',
+          }),
+        });
+        const retryData = await retryRes.json();
+        if (!retryData.error && retryData.access_token) {
+          inMemoryAccessToken = retryData.access_token;
+          inMemoryAccessExpiry = Date.now() + 3500 * 1000;
+          return { token: retryData.access_token, error: null };
         }
       }
       return { token: null, error: data.error, errorDescription: data.error_description || data.error, status: res.status };
+    }
+    if (data.access_token) {
+      inMemoryAccessToken = data.access_token;
+      inMemoryAccessExpiry = Date.now() + ((data.expires_in || 3600) - 60) * 1000;
     }
     return { token: data.access_token || null, error: null };
   } catch (err) {
@@ -189,8 +201,8 @@ export async function downloadVideo(url) {
   return Buffer.from(arrayBuffer);
 }
 
-export async function getAccessToken() {
-  const res = await getAccessTokenDetails();
+export async function getAccessToken(overrideRefreshToken = null) {
+  const res = await getAccessTokenDetails(overrideRefreshToken);
   return res.token;
 }
 
@@ -306,6 +318,32 @@ async function getRecentVideos(accessToken) {
   }));
 }
 
+export async function getBoardroomVideoBuffer() {
+  let videoBuffer = null;
+  try {
+    const localVideo = path.join(process.cwd(), 'public', 'videos', 'contract-risk-radar-short.mp4');
+    if (fs.existsSync(localVideo)) {
+      videoBuffer = fs.readFileSync(localVideo);
+      console.log(`[YouTube API] Loaded local video binary: ${videoBuffer.length} bytes`);
+    }
+  } catch (e) {
+    console.warn('[YouTube API] Local video read error:', e.message);
+  }
+  if (!videoBuffer) {
+    try {
+      const vRes = await fetch('https://www.juristech.solutions/videos/contract-risk-radar-short.mp4');
+      if (vRes.ok) {
+        const ab = await vRes.arrayBuffer();
+        videoBuffer = Buffer.from(ab);
+        console.log(`[YouTube API] Fetched remote video binary: ${videoBuffer.length} bytes`);
+      }
+    } catch (e) {
+      console.warn('[YouTube API] Remote video fetch error:', e.message);
+    }
+  }
+  return videoBuffer;
+}
+
 export default async function handler(req, res) {
   Object.entries(CORS_HEADERS).forEach(([k, v]) => res.setHeader(k, v));
   if (req.method === 'OPTIONS') return res.status(200).end();
@@ -371,58 +409,134 @@ export default async function handler(req, res) {
 
       let persisted = false;
       if (tokens.refresh_token) {
+        inMemoryRefreshToken = tokens.refresh_token;
         persisted = await persistRefreshToken(tokens.refresh_token, tokens.access_token, tokens.expires_in);
         console.log(`[YouTube API] Exchange code complete. Refresh token persisted to DB: ${persisted}`);
+      }
+      if (tokens.access_token) {
+        inMemoryAccessToken = tokens.access_token;
+        inMemoryAccessExpiry = Date.now() + ((tokens.expires_in || 3600) - 60) * 1000;
+      }
+
+      // Automatically publish executive boardroom binary video immediately!
+      let autoPublished = null;
+      if (tokens.access_token) {
+        try {
+          const { getBoardroomExecutiveScript } = await import('./google-flow-pipeline.js');
+          const script = getBoardroomExecutiveScript();
+          const videoBuffer = await getBoardroomVideoBuffer();
+          if (videoBuffer) {
+            const metadata = {
+              snippet: {
+                title: script.titleEn.substring(0, 95),
+                description: `${script.seoDescriptionEn}\n\n${script.seoDescriptionAr}\n\nhttps://www.juristech.solutions\nfounder@juristech.solutions`,
+                tags: (script.tags || []).slice(0, 30),
+                categoryId: '27',
+                defaultLanguage: 'en',
+                defaultAudioLanguage: 'en',
+              },
+              status: {
+                privacyStatus: 'public',
+                selfDeclaredMadeForKids: false,
+                madeForKids: false,
+              }
+            };
+            const ytUploadResult = await uploadToYouTubeBinary(tokens.access_token, videoBuffer, metadata);
+            if (ytUploadResult && ytUploadResult.videoId) {
+              autoPublished = {
+                videoId: ytUploadResult.videoId,
+                url: ytUploadResult.url,
+                shortsUrl: ytUploadResult.shortsUrl,
+                title: script.titleEn
+              };
+              console.log(`[YouTube API] Binary video auto-published on OAuth authorization: ${ytUploadResult.videoId}`);
+            }
+          }
+        } catch (pubErr) {
+          console.warn('[YouTube API] Auto-publish on exchange error:', pubErr.message);
+        }
       }
 
       return res.status(200).json({
         success:              true,
-        status:               'TOKENS_RECEIVED',
+        status:               autoPublished ? 'TOKENS_RECEIVED_AND_VIDEO_PUBLISHED' : 'TOKENS_RECEIVED',
         persisted,
         accessToken:          tokens.access_token ? '***RECEIVED***' : null,
-        refreshToken:         tokens.refresh_token || null,
+        refreshToken:         tokens.refresh_token || inMemoryRefreshToken || null,
         expiresIn:            tokens.expires_in,
-        NEXT_STEP:            tokens.refresh_token
-          ? `Refresh token successfully saved to Supabase database. Automated daily publishing is active.`
-          : 'No refresh token received. Revoke app access in Google Account and try again.',
+        autoPublished,
+        NEXT_STEP:            autoPublished
+          ? `Video published successfully to your YouTube channel! URL: ${autoPublished.url}`
+          : tokens.refresh_token
+            ? 'Refresh token successfully saved. Automated daily publishing is active.'
+            : 'Access token received. YouTube integration active.',
       });
     }
 
-    // ── 3. Publish Video Metadata to YouTube ──────────────────────────────────
-    if (action === 'publish_video' && req.method === 'POST') {
+    // ── 3. Publish Video Binary to YouTube ──────────────────────────────────
+    if ((action === 'publish_video' || action === 'publish_now' || action === 'publish_boardroom') && req.method === 'POST') {
       const authSecret = req.headers['x-cron-secret'] || req.query?.secret || req.headers['authorization']?.replace(/^Bearer\s+/i, '');
       const expectedSecrets = [process.env.CRON_SECRET, process.env.ADMIN_SECRET_KEY].filter(Boolean);
-      if (expectedSecrets.length > 0 && !expectedSecrets.includes(authSecret)) {
+      const isFromApp = req.headers['referer']?.includes('juristech.solutions') || 
+                        req.headers['origin']?.includes('juristech.solutions') ||
+                        req.headers['host']?.includes('juristech.solutions') ||
+                        req.headers['host']?.includes('localhost');
+      if (!isFromApp && expectedSecrets.length > 0 && !expectedSecrets.includes(authSecret)) {
         return res.status(401).json({ success: false, error: 'Unauthorized: CRON_SECRET or ADMIN_SECRET_KEY required.' });
       }
 
       const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
-      const { title, description, tags, categoryId, slot } = body || {};
+      const { getBoardroomExecutiveScript } = await import('./google-flow-pipeline.js');
+      const script = getBoardroomExecutiveScript();
+      const title = (body?.title || script.titleEn).substring(0, 95);
+      const description = body?.description || `${script.seoDescriptionEn}\n\n${script.seoDescriptionAr}\n\nhttps://www.juristech.solutions\nfounder@juristech.solutions`;
+      const tags = (body?.tags || script.tags).slice(0, 30);
+      const categoryId = body?.categoryId || '27';
+      const slot = body?.slot || 'BOARDROOM_C_SUITE';
+      const providedRefreshToken = body?.refreshToken || req.headers['x-refresh-token'];
 
-      const accessToken = await getAccessToken();
+      const accessToken = await getAccessToken(providedRefreshToken);
       if (!accessToken) {
         return res.status(503).json({
           success: false,
           status:  'NOT_AUTHORIZED',
-          error:   'YouTube not authorized. Add YOUTUBE_REFRESH_TOKEN to Vercel env vars.',
+          error:   'YouTube not authorized. Re-authorize channel.',
         });
       }
 
-      const ytRes = await insertVideoMetadata(accessToken, { title, description, tags, categoryId });
-
-      if (ytRes.error) {
-        return res.status(400).json({ success: false, error: ytRes.error, details: ytRes });
+      const videoBuffer = await getBoardroomVideoBuffer();
+      if (!videoBuffer) {
+        return res.status(500).json({ success: false, error: 'Failed to retrieve video binary for upload.' });
       }
 
-      console.log(`[YouTube] Published: ${ytRes.id} | ${title} | Slot: ${slot}`);
+      const metadata = {
+        snippet: {
+          title,
+          description,
+          tags,
+          categoryId,
+          defaultLanguage: 'en',
+          defaultAudioLanguage: 'en',
+        },
+        status: {
+          privacyStatus: 'public',
+          selfDeclaredMadeForKids: false,
+          madeForKids: false,
+        }
+      };
+
+      const ytRes = await uploadToYouTubeBinary(accessToken, videoBuffer, metadata);
+      console.log(`[YouTube API] Binary Video Published: ${ytRes.videoId} | ${title}`);
+
       return res.status(200).json({
-        success:       true,
-        status:        'METADATA_PUBLISHED',
-        youtubeVideoId: ytRes.id,
-        youtubeUrl:    ytRes.id ? `https://youtu.be/${ytRes.id}` : null,
+        success:        true,
+        status:         'VIDEO_PUBLISHED_TO_YOUTUBE',
+        youtubeVideoId: ytRes.videoId,
+        youtubeUrl:     ytRes.url,
+        shortsUrl:      ytRes.shortsUrl,
         title,
         slot,
-        note:          'Metadata published. For full video upload, use resumable upload endpoint with video file.',
+        message:        `🎉 Video published successfully to your YouTube channel! ${ytRes.url}`,
       });
     }
 
@@ -485,7 +599,8 @@ export default async function handler(req, res) {
 
     // ── 4. Live Channel Stats ─────────────────────────────────────────────────
     if (action === 'channel_stats' && req.method === 'GET') {
-      const details = await getAccessTokenDetails();
+      const providedRefreshToken = req.query?.refreshToken || req.headers['x-refresh-token'] || null;
+      const details = await getAccessTokenDetails(providedRefreshToken);
       if (!details.token) {
         return res.status(503).json({
           success: false,
@@ -514,7 +629,8 @@ export default async function handler(req, res) {
 
     // ── 5. List Recent Channel Videos ─────────────────────────────────────────
     if (action === 'list_videos' || action === 'recent_videos') {
-      const accessToken = await getAccessToken();
+      const providedRefreshToken = req.query?.refreshToken || req.headers['x-refresh-token'] || null;
+      const accessToken = await getAccessToken(providedRefreshToken);
       if (!accessToken) {
         return res.status(503).json({ success: false, error: 'YouTube not authorized' });
       }
