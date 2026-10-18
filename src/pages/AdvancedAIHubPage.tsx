@@ -242,6 +242,15 @@ export default function AdvancedAIHubPage() {
   const [isRefining, setIsRefining] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const refineTextareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const adjustRefineTextarea = () => {
+    if (refineTextareaRef.current) {
+      refineTextareaRef.current.style.height = 'auto';
+      const scrollHeight = refineTextareaRef.current.scrollHeight;
+      refineTextareaRef.current.style.height = `${Math.min(scrollHeight, 140)}px`;
+    }
+  };
 
   // File Upload Handler (PDF, DOCX, TXT, DOC, RTF)
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -322,6 +331,12 @@ export default function AdvancedAIHubPage() {
       const refinedResponse = await callAI(followUpPrompt);
       setResult(refinedResponse);
       setRefinementPrompt('');
+      if (refineTextareaRef.current) {
+        refineTextareaRef.current.style.height = 'auto';
+      }
+      if (typeof window !== 'undefined' && window.innerWidth < 768) {
+        refineTextareaRef.current?.blur();
+      }
 
       // Record RLHF Feedback for Continuous Learning
       recordLawyerRLHFFeedback({
@@ -737,13 +752,22 @@ export default function AdvancedAIHubPage() {
                         <span>{isRtl ? 'تطوير وتدريب النتيجة (طلب تعديل أو فحص إضافي):' : 'Refine & Re-train this Analysis:'}</span>
                       </div>
                       <div className="flex gap-2">
-                        <input
-                          type="text"
+                        <textarea
+                          ref={refineTextareaRef}
+                          rows={1}
                           value={refinementPrompt}
-                          onChange={(e) => setRefinementPrompt(e.target.value)}
-                          onKeyDown={(e) => e.key === 'Enter' && handleRefineModel()}
+                          onChange={(e) => {
+                            setRefinementPrompt(e.target.value);
+                            adjustRefineTextarea();
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' && !e.shiftKey) {
+                              e.preventDefault();
+                              handleRefineModel();
+                            }
+                          }}
                           placeholder={isRtl ? 'مثال: أعد الصياغة لتشديد سقف المسؤولية إلى 50%، أو أضف بند تحكيم خاص بـ DIAC...' : 'e.g. Tighten liability cap to 50%, or add DIAC arbitration venue clause...'}
-                          className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-cyan-500/40"
+                          className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 resize-none max-h-36 overflow-y-auto leading-relaxed"
                           dir={isRtl ? 'rtl' : 'ltr'}
                         />
                         <button

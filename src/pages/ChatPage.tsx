@@ -554,8 +554,15 @@ ${contractText}`;
   const paidUser = isPaidSubscriber();
 
   const bottomRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  const adjustTextareaHeight = () => {
+    if (inputRef.current) {
+      inputRef.current.style.height = 'auto';
+      inputRef.current.style.height = `${Math.min(inputRef.current.scrollHeight, 180)}px`;
+    }
+  };
   const [sessionId] = useState(() => {
     try { return crypto.randomUUID(); } catch { return Math.random().toString(36).slice(2); }
   });
@@ -618,6 +625,12 @@ ${contractText}`;
     const content = (text ?? prompt).trim();
     if (!content || loading || translating) return;
     setPrompt('');
+    if (inputRef.current) {
+      inputRef.current.style.height = 'auto';
+    }
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      inputRef.current?.blur();
+    }
     setContractPreviewContent(null);
     setMessages(prev => [...prev, { role: 'user', content, lang: activeLang }]);
   
@@ -751,7 +764,11 @@ ${contractText}`;
       setStatus('error');
     } finally {
       setLoading(false);
-      setTimeout(() => inputRef.current?.focus(), 50);
+      if (typeof window !== 'undefined' && window.innerWidth >= 768) {
+        setTimeout(() => inputRef.current?.focus(), 50);
+      } else {
+        inputRef.current?.blur();
+      }
     }
   }
 
@@ -863,7 +880,18 @@ ${contractText}`;
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
         >
-          <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
+          <div
+            ref={chatContainerRef}
+            onTouchStart={(e) => {
+              if (e.target !== inputRef.current) {
+                inputRef.current?.blur();
+              }
+            }}
+            onScroll={() => {
+              inputRef.current?.blur();
+            }}
+            className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4"
+          >
 
             {/* Empty state */}
             {messages.length === 0 && (
@@ -1042,27 +1070,36 @@ ${contractText}`;
                 className="hidden"
               />
             </label>
-            <input
+            <textarea
               ref={inputRef}
-              type="text"
+              rows={1}
               value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
+              onChange={(e) => {
+                setPrompt(e.target.value);
+                adjustTextareaHeight();
+              }}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
                   e.preventDefault();
                   if (prompt.trim() && !loading && !translating && remaining > 0) {
+                    if (window.innerWidth < 768) inputRef.current?.blur();
                     sendMessage();
                   }
                 }
               }}
               placeholder={remaining > 0 ? labels.placeholder : (isRtl ? 'انتهت الاستشارات المجانية — اشترك للمزيد' : 'Free queries used — subscribe for unlimited')}
               dir={isRtl ? 'rtl' : 'ltr'}
-              className="flex-1 p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-cyan-500 placeholder:text-slate-600"
+              className="flex-1 p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-cyan-500 placeholder:text-slate-600 resize-none max-h-48 overflow-y-auto leading-relaxed custom-scrollbar"
             />
             {remaining > 0 ? (
               <button type="submit"
                 disabled={!prompt.trim() || loading || translating}
-                className="p-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 disabled:opacity-40 text-slate-950 font-bold transition-all shrink-0 shadow-md shadow-cyan-500/30">
+                onClick={() => {
+                  if (typeof window !== 'undefined' && window.innerWidth < 768) {
+                    inputRef.current?.blur();
+                  }
+                }}
+                className="p-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 disabled:opacity-40 text-slate-950 font-bold transition-all shrink-0 shadow-md shadow-cyan-500/30 mb-0.5">
                 <Send className="w-4 h-4" />
               </button>
             ) : (

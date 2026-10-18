@@ -76,6 +76,16 @@ export default function AIChatbotConcierge() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatMessagesRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const adjustTextareaHeight = () => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      const scrollHeight = textareaRef.current.scrollHeight;
+      const maxHeight = 160;
+      textareaRef.current.style.height = `${Math.min(scrollHeight, maxHeight)}px`;
+    }
+  };
 
   // Clean, concise initial greeting per language
   const initialGreeting: Record<string, string> = {
@@ -117,6 +127,9 @@ export default function AIChatbotConcierge() {
     setAttachedFile(null);
     setAttachedText('');
     setInput('');
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+    }
     try {
       if (fileInputRef.current) fileInputRef.current.value = '';
       if (typeof sessionStorage !== 'undefined') {
@@ -213,6 +226,13 @@ export default function AIChatbotConcierge() {
 
     setInput('');
     removeAttachedFile();
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+    }
+    // Mobile keyboard dismissal on send
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      textareaRef.current?.blur();
+    }
 
     const displayUserMsg = userText || (fileName ? (isRtl ? `مستند: ${fileName}` : `File: ${fileName}`) : '');
     const activePromptLang = selectedLang === 'auto' ? platformLang : selectedLang;
@@ -525,7 +545,20 @@ ${currentAttachedText.slice(0, 4500)}
           </div>
 
           {/* Message Stream */}
-          <div ref={chatMessagesRef} className="flex-1 p-4 overflow-y-auto space-y-3 bg-slate-950">
+          <div
+            ref={chatMessagesRef}
+            onTouchStart={() => {
+              if (typeof window !== 'undefined' && window.innerWidth < 768) {
+                textareaRef.current?.blur();
+              }
+            }}
+            onScroll={() => {
+              if (typeof window !== 'undefined' && window.innerWidth < 768) {
+                textareaRef.current?.blur();
+              }
+            }}
+            className="flex-1 p-4 overflow-y-auto space-y-3 bg-slate-950"
+          >
             {messages.map((msg) => (
               <div
                 key={msg.id}
@@ -722,10 +755,14 @@ ${currentAttachedText.slice(0, 4500)}
 
               <VoiceInput onTranscript={(text) => setInput((prev) => (prev ? `${prev} ${text}` : text))} />
 
-              <input
-                type="text"
+              <textarea
+                ref={textareaRef}
+                rows={1}
                 value={input}
-                onChange={(e) => setInput(e.target.value)}
+                onChange={(e) => {
+                  setInput(e.target.value);
+                  adjustTextareaHeight();
+                }}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
@@ -735,7 +772,7 @@ ${currentAttachedText.slice(0, 4500)}
                   }
                 }}
                 placeholder={ui.chatbot.inputPlaceholder}
-                className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 font-sans"
+                className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 font-sans resize-none max-h-40 overflow-y-auto leading-relaxed"
               />
 
               <button

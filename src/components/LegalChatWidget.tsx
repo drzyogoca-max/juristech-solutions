@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, KeyboardEvent, FormEvent } from 'react';
+import { useState, useRef, useEffect, FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { callAI } from '../lib/api';
 
@@ -22,6 +22,16 @@ export default function LegalChatWidget() {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const chatBottomRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const adjustTextareaHeight = () => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      const scrollHeight = textareaRef.current.scrollHeight;
+      const maxHeight = 160;
+      textareaRef.current.style.height = `${Math.min(scrollHeight, maxHeight)}px`;
+    }
+  };
 
   useEffect(() => {
     chatBottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -33,6 +43,13 @@ export default function LegalChatWidget() {
 
     const userText = input.trim();
     setInput('');
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+    }
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      textareaRef.current?.blur();
+    }
+
     setMessages(prev => [...prev, { sender: 'user', text: userText }]);
     setLoading(true);
 
@@ -54,13 +71,6 @@ export default function LegalChatWidget() {
     }
   };
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault(); // منع القفز لنهاية الصفحة وإرسال الرسالة حصراً
-      handleSend();
-    }
-  };
-
   return (
     <div className="flex flex-col h-[550px] w-full max-w-4xl mx-auto bg-slate-950 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden p-4 font-sans text-slate-100" dir={isRtl ? 'rtl' : 'ltr'}>
       <div className="bg-slate-900 border-b border-slate-800 px-4 py-3 flex items-center justify-between rounded-t-xl">
@@ -73,7 +83,19 @@ export default function LegalChatWidget() {
         </span>
       </div>
 
-      <div className="flex-1 overflow-y-auto space-y-4 p-4 my-2 scrollbar-thin scrollbar-thumb-slate-800">
+      <div
+        onTouchStart={() => {
+          if (typeof window !== 'undefined' && window.innerWidth < 768) {
+            textareaRef.current?.blur();
+          }
+        }}
+        onScroll={() => {
+          if (typeof window !== 'undefined' && window.innerWidth < 768) {
+            textareaRef.current?.blur();
+          }
+        }}
+        className="flex-1 overflow-y-auto space-y-4 p-4 my-2 scrollbar-thin scrollbar-thumb-slate-800"
+      >
         {messages.map((m, idx) => (
           <div key={idx} className={`flex ${m.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
             <div className={`max-w-[85%] p-4 rounded-xl text-sm leading-relaxed ${m.sender === 'user' ? 'bg-blue-600 text-white rounded-br-none shadow-md shadow-blue-600/20' : 'bg-slate-900 text-slate-100 border border-slate-800 rounded-bl-none shadow-md'}`}>
@@ -93,13 +115,22 @@ export default function LegalChatWidget() {
       </div>
 
       <form onSubmit={handleSend} className="mt-auto pt-3 border-t border-slate-800 flex gap-2">
-        <input 
-          type="text"
+        <textarea
+          ref={textareaRef}
+          rows={1}
           value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={handleKeyDown}
+          onChange={(e) => {
+            setInput(e.target.value);
+            adjustTextareaHeight();
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();
+              handleSend();
+            }
+          }}
           placeholder={isRtl ? 'اكتب استفسارك القانوني للشركات أو العقود أو المخاطر...' : 'Ask about corporate contracts, jurisdiction rules, or risk mitigation...'}
-          className="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-amber-500 transition placeholder:text-slate-500"
+          className="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-amber-500 transition placeholder:text-slate-500 resize-none max-h-40 overflow-y-auto leading-relaxed"
         />
         <button
           type="submit"

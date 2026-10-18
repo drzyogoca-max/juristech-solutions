@@ -144,8 +144,15 @@ export default function AIAdvisorPage() {
   const [upgradeModalOpen, setUpgradeModalOpen] = useState(false);
   const [upgradeFeature, setUpgradeFeature] = useState('');
   const [requiredTierForModal, setRequiredTierForModal] = useState<UserTier>('startup');
-
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const adjustTextareaHeight = () => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 180)}px`;
+    }
+  };
 
   // Preload from navigation state (e.g. Onboarding Wizard) or safe search params
   // CRITICAL QUOTA RULE: DO NOT automatically execute the query!
@@ -230,6 +237,12 @@ export default function AIAdvisorPage() {
     }
 
     setInputQuery('');
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+    }
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      textareaRef.current?.blur();
+    }
     const userMsgId = `usr-${Date.now()}`;
     const newMessages: ChatItem[] = [
       ...messages,
@@ -532,7 +545,15 @@ export default function AIAdvisorPage() {
         </div>
 
         {/* Main Conversation & Workspace Container */}
-        <main className="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 flex flex-col justify-between space-y-6">
+        <main
+          onTouchStart={(e) => {
+            // Dismiss mobile keyboard when tapping outside input/buttons
+            if (e.target !== textareaRef.current) {
+              textareaRef.current?.blur();
+            }
+          }}
+          className="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 flex flex-col justify-between space-y-6"
+        >
           {wipeNotification && (
             <div className="w-full p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-bold flex items-center justify-between animate-in fade-in slide-in-from-top-2 duration-300">
               <div className="flex items-center gap-2">
@@ -698,12 +719,24 @@ export default function AIAdvisorPage() {
                   e.preventDefault();
                   handleSendMessage();
                 }}
-                className="flex items-center gap-2"
+                className="flex items-end gap-2"
               >
-                <input
-                  type="text"
+                <textarea
+                  ref={textareaRef}
+                  rows={1}
                   value={inputQuery}
-                  onChange={(e) => setInputQuery(e.target.value)}
+                  onChange={(e) => {
+                    setInputQuery(e.target.value);
+                    adjustTextareaHeight();
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      if (inputQuery.trim() && !isLoading) {
+                        handleSendMessage();
+                      }
+                    }
+                  }}
                   placeholder={
                     isTrial && dailyQuota.isExhausted
                       ? isAr
@@ -713,14 +746,19 @@ export default function AIAdvisorPage() {
                       ? 'اطرح استفسارك القانوني، أو الصق بنداً تعاقدياً، أو اطلب صياغة مسودة...'
                       : 'Ask a legal question, paste a contract clause, or request a document draft...'
                   }
-                  className="flex-1 bg-transparent px-3 py-2 text-xs sm:text-sm text-slate-200 placeholder-slate-500 focus:outline-none"
+                  className="flex-1 bg-transparent px-3 py-2 text-xs sm:text-sm text-slate-200 placeholder-slate-500 focus:outline-none resize-none max-h-48 overflow-y-auto leading-relaxed custom-scrollbar"
                   disabled={isLoading}
                 />
 
                 <button
                   type="submit"
                   disabled={!inputQuery.trim() || isLoading}
-                  className="p-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 disabled:opacity-40 text-slate-950 font-bold transition-all cursor-pointer shrink-0 shadow-md shadow-cyan-500/20"
+                  onClick={() => {
+                    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+                      textareaRef.current?.blur();
+                    }
+                  }}
+                  className="p-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 disabled:opacity-40 text-slate-950 font-bold transition-all cursor-pointer shrink-0 shadow-md shadow-cyan-500/20 mb-0.5"
                 >
                   {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className={`w-4 h-4 ${isRtl ? 'rotate-180' : ''}`} />}
                 </button>

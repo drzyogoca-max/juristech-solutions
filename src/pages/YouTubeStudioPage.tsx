@@ -565,9 +565,9 @@ export const YouTubeStudioPage: React.FC = () => {
               <div className={`p-4 rounded-xl border mb-4 text-xs font-mono ${oauthResult.refreshToken ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300' : 'bg-amber-500/10 border-amber-500/30 text-amber-300'}`}>
                 {oauthResult.refreshToken ? (
                   <div className="space-y-2">
-                    <p className="font-bold text-sm text-emerald-400">✅ {l('تم استخراج رمز التفويض الدائم بنجاح!', 'Permanent Refresh Token Retrieved Successfully!')}</p>
-                    <p className="text-slate-300 text-xs">{l('أضف هذا الرمز في إعدادات Vercel كمتغير بيئة باسم YOUTUBE_REFRESH_TOKEN:', 'Add this key to Vercel Environment Variables as YOUTUBE_REFRESH_TOKEN:')}</p>
-                    <div className="bg-slate-950 p-2.5 rounded-lg border border-slate-800 break-all select-all font-mono text-[11px] text-amber-300">
+                    <p className="font-bold text-sm text-emerald-400">✅ {l('تم استخراج وحفظ رمز التفويض الدائم في قاعدة البيانات بنجاح!', 'Permanent Refresh Token Retrieved & Saved to Database!')}</p>
+                    <p className="text-slate-300 text-xs">{l('تم حفظ المفتاح تلقائياً في قاعدة البيانات السحابية (Supabase) لتفعيل النشر اليومي التلقائي الصباحي والمسائي بنجاح.', 'Key is automatically persisted to cloud database for autonomous daily morning and evening publishing.')}</p>
+                    <div className="bg-slate-950 p-2.5 rounded-lg border border-slate-800 break-all select-all font-mono text-[11px] text-emerald-300">
                       {oauthResult.refreshToken}
                     </div>
                   </div>

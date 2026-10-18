@@ -543,15 +543,60 @@ export default function PaymentPage() {
 
                   <button
                     onClick={() => setSelectedProformaPlan(plan)}
-                    className="w-full py-1.5 rounded-xl bg-slate-950 hover:bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 text-[10px] font-bold transition-all cursor-pointer"
+                    className="w-full py-2.5 px-3 rounded-2xl bg-indigo-950/60 hover:bg-indigo-900/70 text-indigo-200 hover:text-white border border-indigo-500/40 text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-sm"
                   >
-                    {l('طلب فاتورة شكلية مبدئية (Proforma Invoice)', 'Request Proforma Invoice')}
+                    <Building2 className="w-4 h-4 text-indigo-400 shrink-0" />
+                    <span className="truncate">{l('طلب فاتورة ضريبية رسمية / تحويل بنكي (B2B VAT)', 'Request Corporate VAT Invoice / SWIFT')}</span>
                   </button>
                 </div>
 
               </div>
             );
           })}
+        </div>
+      </div>
+
+      {/* Institutional & Corporate Procurement Banner */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
+        <div className="p-6 rounded-3xl bg-gradient-to-r from-[#0D1F3C] via-[#142847] to-[#0D1F3C] border border-amber-400/30 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-4">
+            <div className="p-3.5 rounded-2xl bg-amber-500/10 text-amber-400 border border-amber-500/20 shrink-0">
+              <Building2 className="w-7 h-7" />
+            </div>
+            <div className="space-y-1">
+              <h3 className="text-base sm:text-lg font-black text-white flex items-center gap-2">
+                <span>{l('التعاقد المؤسسي المباشر للشركات والجهات الحكومية', 'Enterprise & Government Direct Procurement')}</span>
+                <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                  VAT Compliant 2026
+                </span>
+              </h3>
+              <p className="text-xs text-slate-300 leading-relaxed max-w-2xl">
+                {l(
+                  'هل تحتاج مؤسستك إلى فاتورة ضريبية رسمية معتمدة (VAT)، أو اتفاقية سرية NDA موقعة مسبقاً، أو عرض أسعار مخصص لمجموعة مستخدمين؟ فريقنا المالي يوفر كافة مستندات الشراء الرسمية مع السداد عبر التحويل البنكي المباشر (SWIFT).',
+                  'Does your organization require an official VAT invoice, mutual NDA, custom user-seat retainer, or flexible enterprise vendor onboarding? Our procurement desk provides full billing documentation and direct SWIFT settlement.'
+                )}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 shrink-0 w-full md:w-auto">
+            <button
+              onClick={() => setSelectedProformaPlan(plans[2] || plans[0])}
+              className="flex-1 md:flex-initial py-3 px-5 rounded-2xl bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-slate-950 font-black text-xs transition-all shadow-lg shadow-amber-500/20 cursor-pointer flex items-center justify-center gap-2"
+            >
+              <FileText className="w-4 h-4" />
+              <span>{l('طلب فاتورة ضريبية معتمدة', 'Request Official VAT Invoice')}</span>
+            </button>
+            <a
+              href="https://wa.me/201126674337?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D9%86%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D8%B7%D9%84%D8%A8%20%D8%B9%D8%B1%D8%B6%20%D8%B3%D8%B9%D8%B1%20%D9%85%D8%A4%D8%B3%D8%B3%D9%8A%20%D9%88%D9%81%D8%A7%D8%AA%D9%88%D8%B1%D8%A9%20%D8%B6%D8%B1%D9%8A%D8%A8%D9%8A%D8%A9%20%D9%84%D8%B4%D8%B1%D9%83%D8%AA%D9%86%D8%A7"
+              target="_blank"
+              rel="noreferrer"
+              className="py-3 px-4 rounded-2xl bg-slate-900 hover:bg-slate-800 text-emerald-400 border border-emerald-500/30 text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer no-underline"
+            >
+              <MessageSquare className="w-4 h-4" />
+              <span>{l('استشارة المشتريات', 'Procurement Desk')}</span>
+            </a>
+          </div>
         </div>
       </div>
 

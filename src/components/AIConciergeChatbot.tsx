@@ -28,6 +28,16 @@ export default function AIConciergeChatbot() {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
+  const adjustTextareaHeight = () => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      const scrollHeight = textareaRef.current.scrollHeight;
+      const maxHeight = 160;
+      textareaRef.current.style.height = `${Math.min(scrollHeight, maxHeight)}px`;
+    }
+  };
 
   // Initialize or update welcome greeting according to active language
   useEffect(() => {
@@ -50,7 +60,15 @@ export default function AIConciergeChatbot() {
     const queryToSend = customQuery || input.trim();
     if (!queryToSend || loading) return;
 
-    if (!customQuery) setInput('');
+    if (!customQuery) {
+      setInput('');
+      if (textareaRef.current) {
+        textareaRef.current.style.height = 'auto';
+      }
+      if (typeof window !== 'undefined' && window.innerWidth < 768) {
+        textareaRef.current?.blur();
+      }
+    }
 
     // 1. Immediately append User Query to State
     const userMsg: ChatbotMessage = {
@@ -145,7 +163,19 @@ User Inquiry: ${queryToSend}`;
             </div>
           )}
 
-          <div className="flex-1 p-4 overflow-y-auto space-y-3 bg-slate-950">
+          <div
+            onTouchStart={() => {
+              if (typeof window !== 'undefined' && window.innerWidth < 768) {
+                textareaRef.current?.blur();
+              }
+            }}
+            onScroll={() => {
+              if (typeof window !== 'undefined' && window.innerWidth < 768) {
+                textareaRef.current?.blur();
+              }
+            }}
+            className="flex-1 p-4 overflow-y-auto space-y-3 bg-slate-950"
+          >
             {messages.map((m) => (
               <div key={m.id} className={`flex gap-2 text-xs ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <div
@@ -231,10 +261,14 @@ User Inquiry: ${queryToSend}`;
               />
             </label>
 
-            <input
-              type="text"
+            <textarea
+              ref={textareaRef}
+              rows={1}
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={(e) => {
+                setInput(e.target.value);
+                adjustTextareaHeight();
+              }}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
                   e.preventDefault();
@@ -244,7 +278,7 @@ User Inquiry: ${queryToSend}`;
                 }
               }}
               placeholder={ui.chatbot.inputPlaceholder}
-              className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+              className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 resize-none max-h-40 overflow-y-auto leading-relaxed"
             />
             <button
               type="submit"

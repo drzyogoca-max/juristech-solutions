@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -26,6 +26,16 @@ export default function DashboardChatbotMagnet({ onContractUploaded }: Dashboard
   const [stagedFileName, setStagedFileName] = useState('');
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState('');
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
+  const adjustTextareaHeight = () => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      const scrollHeight = textareaRef.current.scrollHeight;
+      const maxHeight = 160;
+      textareaRef.current.style.height = `${Math.min(scrollHeight, maxHeight)}px`;
+    }
+  };
 
   const quickPrompts = [
     {
@@ -63,6 +73,16 @@ export default function DashboardChatbotMagnet({ onContractUploaded }: Dashboard
   async function handleSubmitQuery(customPrompt?: string) {
     const textToSubmit = customPrompt || inputQuery;
     if (!textToSubmit.trim()) return;
+
+    if (!customPrompt) {
+      setInputQuery('');
+      if (textareaRef.current) {
+        textareaRef.current.style.height = 'auto';
+      }
+      if (typeof window !== 'undefined' && window.innerWidth < 768) {
+        textareaRef.current?.blur();
+      }
+    }
 
     setLoading(true);
     setAiResponse(null);
@@ -170,18 +190,27 @@ export default function DashboardChatbotMagnet({ onContractUploaded }: Dashboard
         {/* Input & Upload Bar */}
         <div className="space-y-3">
           <div className="relative flex items-center bg-slate-950/80 rounded-2xl border border-indigo-500/30 focus-within:border-cyan-400 transition-all p-1.5 shadow-inner">
-            <input
-              type="text"
+            <textarea
+              ref={textareaRef}
+              rows={1}
               aria-label={isRtl ? 'حقل استشارة الذكاء الاصطناعي القانوني' : 'Legal AI Consultation Input'}
               value={inputQuery}
-              onChange={(e) => setInputQuery(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleSubmitQuery()}
+              onChange={(e) => {
+                setInputQuery(e.target.value);
+                adjustTextareaHeight();
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSubmitQuery();
+                }
+              }}
               placeholder={
                 isRtl
                   ? 'اكتب سؤالك القانوني هنا (مثال: ما صحة بند الشرط الجزائي عند فسخ العقد؟)...'
                   : 'Type your legal query (e.g. Is this penalty clause valid under commercial code?)...'
               }
-              className="w-full bg-transparent px-4 py-3 text-sm text-white placeholder-slate-400 focus:outline-none"
+              className="w-full bg-transparent px-4 py-3 text-sm text-white placeholder-slate-400 focus:outline-none resize-none max-h-40 overflow-y-auto leading-relaxed"
             />
 
             <div className={`flex items-center gap-1.5 ${isRtl ? 'pl-2' : 'pr-2'}`}>
