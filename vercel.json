@@ -240,6 +240,10 @@
       "destination": "/api/video?action=video-generate"
     },
     {
+      "source": "/api/google-flow",
+      "destination": "/api/video?action=google-flow"
+    },
+    {
       "source": "/api/send",
       "destination": "/api/send-email"
     },

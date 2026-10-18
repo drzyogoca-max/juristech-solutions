@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import {
   Video, Youtube, Play, Pause, CheckCircle2, RefreshCw, Calendar, Eye, Sparkles,
   Send, Lock, Globe, Clock, FileText, ArrowRight, Volume2, VolumeX, Download,
-  Share2, ShieldCheck, UserPlus, Layers, Activity
+  Share2, ShieldCheck, UserPlus, Layers, Activity, Cpu
 } from 'lucide-react';
 import SEO from '../components/SEO';
 import { youtubeChannelEngine, YouTubeVideoPost, YouTubeChannelStats } from '../services/youtubeChannelEngine';
@@ -130,6 +130,27 @@ export const YouTubeStudioPage: React.FC = () => {
     }, 1200);
   };
 
+  const [isGoogleFlowRunning, setIsGoogleFlowRunning] = useState(false);
+
+  const handleGoogleFlowTrigger = async () => {
+    setIsGoogleFlowRunning(true);
+    setToastMessage(isRtl ? '⚡ جاري تشغيل Google Flow لإنشاء فيديو دعائي ذكي خالي من حقوق الملكية...' : '⚡ Running Google Flow Video Generation (Zero-Copyright Safe)...');
+    try {
+      const res = await fetch('/api/google-flow', { method: 'POST' });
+      const data = await res.json();
+      if (data.success) {
+        setToastMessage(isRtl ? '✅ اكتمل سيناريو Google Flow بنجاح وتم تسجيله في طابور النشر المباشر!' : '✅ Google Flow Video Script & Storyboard queued successfully!');
+      } else {
+        setToastMessage(data.error || 'Failed to run Google Flow');
+      }
+    } catch (err: any) {
+      setToastMessage(err.message || 'Error executing Google Flow');
+    } finally {
+      setIsGoogleFlowRunning(false);
+      setTimeout(() => setToastMessage(null), 6000);
+    }
+  };
+
   return (
     <div dir={isRtl ? 'rtl' : 'ltr'} className="min-h-screen bg-[#070b14] text-slate-100 font-sans pb-20">
       <SEO
@@ -183,11 +204,19 @@ export const YouTubeStudioPage: React.FC = () => {
             </button>
             <button
               onClick={() => handleGeneratePublish('EVENING')}
-              disabled={isGenerating}
-              className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold text-xs uppercase px-4 py-3 rounded-xl shadow-lg shadow-cyan-900/30 transition flex items-center gap-2"
+              disabled={isGenerating || isGoogleFlowRunning}
+              className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold text-xs uppercase px-4 py-3 rounded-xl shadow-lg shadow-cyan-900/30 transition flex items-center gap-2 cursor-pointer"
             >
               <Sparkles className="w-4 h-4" />
               {l('نشر فيديو المساء (06:00 PM)', 'Publish Evening Video (6 PM UTC)')}
+            </button>
+            <button
+              onClick={handleGoogleFlowTrigger}
+              disabled={isGenerating || isGoogleFlowRunning}
+              className="bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 font-black text-xs uppercase px-4 py-3 rounded-xl shadow-lg shadow-amber-500/20 transition flex items-center gap-2 cursor-pointer"
+            >
+              <Cpu className="w-4 h-4 text-slate-950" />
+              <span>{l('Google Flow الذكي (بدون حقوق ملكية)', 'Google Flow AI Video (Zero Copyright)')}</span>
             </button>
           </div>
         </div>

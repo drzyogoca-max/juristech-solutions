@@ -7,6 +7,7 @@ import youtubeUploadHandler from '../server/video/youtube-upload.js';
 import heygenWebhookHandler from '../server/video/heygen-webhook.js';
 import heygenGenerateHandler from '../server/video/heygen-generate.js';
 import videoGenerateHandler from '../server/video/video-generate.js';
+import googleFlowHandler from '../server/video/google-flow-pipeline.js';
 
 export const config = {
   runtime: 'nodejs',
@@ -17,6 +18,14 @@ export default async function handler(req, res) {
   const url = req.url || '';
   const searchParams = new URL(url, 'http://localhost').searchParams;
   const action = searchParams.get('action') || '';
+
+  if (
+    action === 'google-flow' ||
+    action === 'google-flow-generate' ||
+    url.includes('google-flow')
+  ) {
+    return googleFlowHandler(req, res);
+  }
 
   if (
     action === 'youtube-upload' ||

@@ -1,26 +1,6 @@
 export const config = { runtime: 'nodejs', maxDuration: 300 };
 
-async function getYouTubeAccessToken() {
-  const clientId = process.env.YOUTUBE_CLIENT_ID || '420720999238-8hcb6ng6802jukmi9088uu8k5950etn5.apps.googleusercontent.com';
-  const clientSecret = process.env.YOUTUBE_CLIENT_SECRET;
-  const refreshToken = process.env.YOUTUBE_REFRESH_TOKEN;
-
-  if (!clientId || !clientSecret || !refreshToken) throw new Error('Missing YouTube credentials');
-
-  const res = await fetch('https://oauth2.googleapis.com/token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({
-      client_id: clientId,
-      client_secret: clientSecret,
-      refresh_token: refreshToken,
-      grant_type: 'refresh_token',
-    }),
-  });
-  const data = await res.json();
-  if (!data.access_token) throw new Error('Failed to refresh YouTube token');
-  return data.access_token;
-}
+import { getAccessToken } from './youtube-upload.js';
 
 async function getQueueItem(videoId) {
   const url = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -115,7 +95,7 @@ export default async function handler(req, res) {
         try { await updateQueueItem(queueItem.id, { status: 'uploading', video_url: shotstackUrl }); } catch (e) {}
       }
 
-      const accessToken = await getYouTubeAccessToken();
+      const accessToken = await getAccessToken();
       const isShort = queueItem ? (queueItem.slot === 'MORNING') : false;
       const rawTitle = queueItem?.title_en || queueItem?.title_ar || 'Sovereign AI Contract Analysis & Risk Audit Workflow — JurisTech Solutions';
       const title = rawTitle.length > 95 ? rawTitle.substring(0, 92) + '...' : rawTitle;
@@ -177,7 +157,7 @@ export default async function handler(req, res) {
     await updateQueueItem(queueItem.id, { status: 'uploading' });
 
     const videoBuffer = await downloadVideo(videoUrl);
-    const accessToken = await getYouTubeAccessToken();
+    const accessToken = await getAccessToken();
 
     let tags = [];
     try { tags = typeof queueItem.tags === 'string' ? JSON.parse(queueItem.tags) : queueItem.tags; } catch (e) {}
