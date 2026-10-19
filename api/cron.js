@@ -47,8 +47,13 @@ async function runSubHandler(handlerFn, req, queryOverrides = {}) {
 
 export default async function handler(req, res) {
   const url = req.url || '';
-  const searchParams = new URL(url, 'http://localhost').searchParams;
-  const task = searchParams.get('task') || '';
+  let task = (req.query && req.query.task) ? req.query.task : '';
+  if (!task) {
+    try {
+      const searchParams = new URL(url, 'http://localhost').searchParams;
+      task = searchParams.get('task') || '';
+    } catch (e) {}
+  }
 
   // ── Combined Morning Broadcast (YouTube Short #1 + Morning 10 Outreach) ────
   if (task === 'morning-broadcast' || url.includes('morning-broadcast')) {
@@ -125,7 +130,17 @@ export default async function handler(req, res) {
   return res.status(200).json({
     status: 'ok',
     service: 'JurisTech Unified Cron Engine',
-    availableTasks: ['youtube-morning', 'youtube-evening', 'autonomous-outreach', 'daily-audit', 'spider-linkedin'],
+    availableTasks: [
+      'morning-broadcast',
+      'midday-broadcast',
+      'evening-broadcast',
+      'youtube-morning',
+      'youtube-midday',
+      'youtube-evening',
+      'autonomous-outreach',
+      'daily-audit',
+      'spider-linkedin'
+    ],
     timestamp: new Date().toISOString(),
   });
 }
