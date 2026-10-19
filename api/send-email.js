@@ -603,7 +603,9 @@ export async function processEmailDispatch(targetEmail, emailSubject, text, html
   const cleanEmail = targetEmail?.toLowerCase()?.trim();
   const isAdminEmail = OFFICIAL_SYSTEM_EMAILS.includes(cleanEmail);
 
-  if (!forceSend && !isAdminEmail && cleanEmail && dispatchedRecipientsRegistry.has(cleanEmail)) {
+  const isBypassingGuards = Boolean(forceSend || isAdminEmail);
+
+  if (!isBypassingGuards && cleanEmail && dispatchedRecipientsRegistry.has(cleanEmail)) {
     console.log(`[Deduplication Guard] Skipping duplicate dispatch to ${cleanEmail}`);
     return {
       success: true,
@@ -615,7 +617,7 @@ export async function processEmailDispatch(targetEmail, emailSubject, text, html
   }
 
   // ── Layer 3: Durable Outreach Frequency Guard ──────────────────────────────
-  if (!forceSend && !isAdminEmail && cleanEmail) {
+  if (!isBypassingGuards && cleanEmail) {
     const guardResult = await outreachFrequencyGuard(cleanEmail, emailSubject);
     if (!guardResult.allowed) {
       console.log(`[FrequencyGuard] BLOCKED ${cleanEmail} — Reason: ${guardResult.reason} | ${guardResult.detail || ''}`);
