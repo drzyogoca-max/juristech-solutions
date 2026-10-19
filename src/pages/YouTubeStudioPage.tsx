@@ -188,10 +188,10 @@ export const YouTubeStudioPage: React.FC = () => {
     }
   };
 
-  const handleGeneratePublish = async (slot: 'MORNING' | 'EVENING') => {
+  const handleGeneratePublish = async (slot: 'MORNING' | 'MIDDAY' | 'EVENING') => {
     setIsGenerating(true);
     const msging = isRtl
-      ? `🚀 جاري إنشاء فيديو الذكاء الاصطناعي وتجهيزه للنشر التلقائي على يوتيوب (${slot === 'MORNING' ? 'فيديو الصباح' : 'إيجاز المساء'})...`
+      ? `🚀 جاري إنشاء فيديو الذكاء الاصطناعي وتجهيزه للنشر التلقائي على يوتيوب (${slot === 'MORNING' ? 'فيديو الصباح' : slot === 'MIDDAY' ? 'فيديو الظهيرة (وظائف المنصة)' : 'إيجاز المساء'})...`
       : `🚀 Generating AI Video & Publishing to YouTube Channel (${slot})...`;
     setToastMessage(msging);
 
@@ -202,7 +202,7 @@ export const YouTubeStudioPage: React.FC = () => {
       setSelectedVideo(published);
       setIsGenerating(false);
       const successMsg = isRtl
-        ? `✅ تم نشر ${slot === 'MORNING' ? 'فيديو الصباح' : 'فيديو المساء'} بنجاح على القناة الرسمية (${stats.officialEmail})!`
+        ? `✅ تم نشر ${slot === 'MORNING' ? 'فيديو الصباح' : slot === 'MIDDAY' ? 'فيديو الظهيرة (وظائف المنصة)' : 'فيديو المساء'} بنجاح على القناة الرسمية (${stats.officialEmail})!`
         : `✅ ${slot} Video published successfully to Official YouTube Channel (${stats.officialEmail})!`;
       setToastMessage(successMsg);
       setTimeout(() => setToastMessage(null), 5000);
@@ -335,7 +335,7 @@ export const YouTubeStudioPage: React.FC = () => {
               </span>
               <span className="bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5" />
-                {l('جدول النشر: 2 فيديو يومياً (صباحاً ومساءً)', '2x Videos / Day (Morning & Evening)')}
+                {l('جدول النشر: 3 فيديوهات يومياً (صباحاً، ظهيرة، مساءً)', '3x Videos / Day (Morning, Midday, Evening)')}
               </span>
               <span className="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5">
                 <ShieldCheck className="w-3.5 h-3.5" />
@@ -368,7 +368,15 @@ export const YouTubeStudioPage: React.FC = () => {
               className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-bold text-xs uppercase px-4 py-3 rounded-xl shadow-lg shadow-red-900/30 transition flex items-center gap-2"
             >
               <Sparkles className="w-4 h-4" />
-              {l('نشر فيديو الصباح (09:00 AM)', 'Publish Morning Video (9 AM UTC)')}
+              {l('نشر فيديو الصباح (08:00 AM)', 'Publish Morning Video (8 AM UTC)')}
+            </button>
+            <button
+              onClick={() => handleGeneratePublish('MIDDAY')}
+              disabled={isGenerating}
+              className="bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-bold text-xs uppercase px-4 py-3 rounded-xl shadow-lg shadow-emerald-900/30 transition flex items-center gap-2"
+            >
+              <Sparkles className="w-4 h-4" />
+              {l('نشر فيديو الظهيرة (01:00 PM)', 'Publish Midday Video (1 PM UTC)')}
             </button>
             <button
               onClick={() => handleGeneratePublish('EVENING')}
@@ -376,7 +384,7 @@ export const YouTubeStudioPage: React.FC = () => {
               className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold text-xs uppercase px-4 py-3 rounded-xl shadow-lg shadow-cyan-900/30 transition flex items-center gap-2 cursor-pointer"
             >
               <Sparkles className="w-4 h-4" />
-              {l('نشر فيديو المساء (06:00 PM)', 'Publish Evening Video (6 PM UTC)')}
+              {l('نشر فيديو المساء (07:00 PM)', 'Publish Evening Video (7 PM UTC)')}
             </button>
             <button
               onClick={handleGoogleFlowTrigger}
@@ -439,7 +447,7 @@ export const YouTubeStudioPage: React.FC = () => {
             </div>
             <div className="text-2xl font-black text-white">{stats.totalVideosPublished}</div>
             <div className="text-xs text-purple-400 mt-1 font-semibold">
-              {l('محدث يومياً صباحاً ومساءً', 'Updated 2x Daily')}
+              {l('محدث 3 مرات يومياً (صباح، ظهيرة، مساء)', 'Updated 3x Daily (Morning, Midday, Evening)')}
             </div>
           </div>
 
@@ -603,7 +611,7 @@ export const YouTubeStudioPage: React.FC = () => {
             }`}
           >
             <Calendar className="w-4 h-4" />
-            {l('جدول النشر اليومي 2x', '2x Daily Publishing Schedule')}
+            {l('جدول النشر اليومي 3x', '3x Daily Publishing Schedule')}
           </button>
           <button
             onClick={() => setActiveTab('SCRIPT_TELEPROMPTER')}
@@ -640,7 +648,7 @@ export const YouTubeStudioPage: React.FC = () => {
           </button>
         </div>
 
-        {/* TAB 1: 2x Daily Schedule & Interactive Video Player */}
+        {/* TAB 1: 3x Daily Schedule & Interactive Video Player */}
         {activeTab === 'SCHEDULE' && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             {/* Video List Column */}
@@ -670,12 +678,16 @@ export const YouTubeStudioPage: React.FC = () => {
                       className={`text-[10px] font-black uppercase px-2.5 py-0.5 rounded-md ${
                         vid.slot === 'MORNING'
                           ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30'
+                          : vid.slot === 'MIDDAY'
+                          ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
                           : 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30'
                       }`}
                     >
                       {vid.slot === 'MORNING'
-                        ? l('🌅 فيديو الصباح (9:00 AM UTC)', '🌅 Morning Briefing (9 AM UTC)')
-                        : l('🌆 إيجاز المساء (6:00 PM UTC)', '🌆 Evening Briefing (6 PM UTC)')}
+                        ? l('🌅 فيديو الصباح (08:00 AM UTC)', '🌅 Morning Briefing (8 AM UTC)')
+                        : vid.slot === 'MIDDAY'
+                        ? l('☀️ فيديو الظهيرة (01:00 PM UTC - وظائف المنصة)', '☀️ Midday (1 PM UTC - Platform Jobs)')
+                        : l('🌆 إيجاز المساء (07:00 PM UTC)', '🌆 Evening Briefing (7 PM UTC)')}
                     </span>
                     <span className="text-[10px] bg-slate-800 text-slate-300 font-mono px-2 py-0.5 rounded">
                       {vid.format}

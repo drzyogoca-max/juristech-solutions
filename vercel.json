@@ -267,11 +267,15 @@
   "crons": [
     {
       "path": "/api/cron?task=morning-broadcast",
-      "schedule": "0 9 * * *"
+      "schedule": "0 8 * * *"
+    },
+    {
+      "path": "/api/cron?task=midday-broadcast",
+      "schedule": "0 13 * * *"
     },
     {
       "path": "/api/cron?task=evening-broadcast",
-      "schedule": "0 18 * * *"
+      "schedule": "0 19 * * *"
     }
   ]
 }

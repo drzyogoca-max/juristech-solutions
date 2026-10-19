@@ -4,6 +4,7 @@
  */
 
 import youtubeMorningHandler from '../server/cron/youtube-morning.js';
+import youtubeMiddayHandler from '../server/cron/youtube-midday.js';
 import youtubeEveningHandler from '../server/cron/youtube-evening.js';
 import outreachHandler from '../server/cron/autonomous-outreach.js';
 import dailyAuditHandler from '../server/cron/daily-audit.js';
@@ -49,7 +50,7 @@ export default async function handler(req, res) {
   const searchParams = new URL(url, 'http://localhost').searchParams;
   const task = searchParams.get('task') || '';
 
-  // ── Combined Morning Broadcast (YouTube Short + Morning 10 Outreach Emails) ─
+  // ── Combined Morning Broadcast (YouTube Short #1 + Morning 10 Outreach) ────
   if (task === 'morning-broadcast' || url.includes('morning-broadcast')) {
     const ytResult = await runSubHandler(youtubeMorningHandler, req);
     const outreachResult = await runSubHandler(outreachHandler, req, { slot: 'morning' });
@@ -57,14 +58,32 @@ export default async function handler(req, res) {
     return res.status(200).json({
       success: true,
       cycle: 'MORNING_BROADCAST_CYCLE',
-      schedule: '09:00 UTC Daily',
+      slot: '1_OF_3_DAILY',
+      schedule: '08:00 UTC Daily (11:00 AM KSA)',
+      format: 'YouTube Shorts (9:16)',
       youtube: ytResult.data,
       outreach: outreachResult.data,
       timestamp: new Date().toISOString(),
     });
   }
 
-  // ── Combined Evening Broadcast (YouTube Full HD + Evening 10 Outreach Emails)
+  // ── Midday Broadcast (YouTube Short #2 - Platform Jobs & Capabilities) ──────
+  if (task === 'midday-broadcast' || url.includes('midday-broadcast') || task === 'youtube-midday' || url.includes('youtube-midday')) {
+    const ytResult = await runSubHandler(youtubeMiddayHandler, req);
+    res.setHeader('Content-Type', 'application/json');
+    return res.status(200).json({
+      success: true,
+      cycle: 'MIDDAY_BROADCAST_CYCLE',
+      slot: '2_OF_3_DAILY',
+      schedule: '13:00 UTC Daily (04:00 PM KSA)',
+      format: 'YouTube Shorts (9:16)',
+      focus: 'Platform Jobs & Core Legal Tech Solutions',
+      youtube: ytResult.data,
+      timestamp: new Date().toISOString(),
+    });
+  }
+
+  // ── Evening Broadcast (YouTube Full HD #3 - Executive Boardroom Briefing) ────
   if (task === 'evening-broadcast' || url.includes('evening-broadcast')) {
     const ytResult = await runSubHandler(youtubeEveningHandler, req);
     const outreachResult = await runSubHandler(outreachHandler, req, { slot: 'evening' });
@@ -72,7 +91,9 @@ export default async function handler(req, res) {
     return res.status(200).json({
       success: true,
       cycle: 'EVENING_BROADCAST_CYCLE',
-      schedule: '18:00 UTC Daily',
+      slot: '3_OF_3_DAILY',
+      schedule: '19:00 UTC Daily (10:00 PM KSA)',
+      format: 'Full HD 1080p (16:9)',
       youtube: ytResult.data,
       outreach: outreachResult.data,
       timestamp: new Date().toISOString(),

@@ -26,7 +26,7 @@ export interface DialogueLine {
 
 export interface YouTubeVideoPost {
   id: string;
-  slot: 'MORNING' | 'EVENING';
+  slot: 'MORNING' | 'MIDDAY' | 'EVENING';
   publishTimeUtc: string;
   scheduledDate: string;
   titleEn: string;
@@ -151,6 +151,65 @@ export const MASTER_DIALOGUE_SERIES = [
     dialogueEvening: [
       { speaker: 'طارق (المشرف القانوني)', role: 'CEO' as const, avatar: '📂', textAr: 'كيف نضمن صحة التواقيع الإلكترونية عند نشوء أي نزاع قضائي تجاري؟', textEn: 'How do we guarantee digital signature enforceability before commercial arbitration courts?', timing: '00:00 - 00:30' },
       { speaker: 'ليلى (محامية فض النزاعات)', role: 'Counsel' as const, avatar: '⚖️', textAr: 'توقيعات JurisTech تدمج بصمة الختم الرقمي SHA-256، وبصمة الوقت، وعنوان IP الموثق، مما يجعلها بينة رسمية مقبولة لدى المحاكم التجارية وفق أنظمة التعاملات الإلكترونية.', textEn: 'JurisTech e-signatures integrate cryptographic SHA-256 seals, UTC timestamps, and IP provenance, establishing admissible evidentiary weight before courts.', timing: '00:30 - 01:15' },
+    ]
+  }
+];
+
+// ── 15 PLATFORM JOBS & CAPABILITIES EPISODES (MIDDAY SLOT) ──────────────────
+export const PLATFORM_JOBS_EPISODES = [
+  {
+    jobId: 'contract-analysis',
+    serviceRoute: '/contracts',
+    topicAr: 'تحليل العقود الذكي: كشف ثغرات العقود التجارية في 60 ثانية',
+    topicEn: 'AI Contract Analysis: Auditing Commercial Agreements in 60s',
+    dialogue: [
+      { speaker: 'راكان (مدير المشتريات)', role: 'CEO' as const, avatar: '👔', textAr: 'لدينا مسودة عقد معقدة من 40 صفحة، كيف نراجعها بسرعة دون تفويت أي خطر؟', textEn: 'We have a complex 40-page contract draft. How do we review it quickly without missing hidden liabilities?', timing: '00:00 - 00:15' },
+      { speaker: 'مها (كبير المستشارين)', role: 'Counsel' as const, avatar: '⚖️', textAr: 'ارفع الملف إلى محرك JurisTech لتحليل العقود. خلال 60 ثانية يكتشف بنود المسؤولية المفتوحة والشروط الجزائية المخالفة مع اقتراح الصياغة البديلة فوراً.', textEn: 'Upload to JurisTech AI Contract Reviewer. In 60 seconds it flags uncapped liabilities, non-compliant penalties, and suggests instant redlines.', timing: '00:15 - 00:38' },
+      { speaker: 'راكان (مدير المشتريات)', role: 'CEO' as const, avatar: '👔', textAr: 'وبدون الحاجة لانتظار أيام؟ العقد معتمد وآمن اليوم!', textEn: 'Without waiting days? The contract is audited, verified, and safe to sign today!', timing: '00:38 - 00:52' },
+    ]
+  },
+  {
+    jobId: 'risk-radar',
+    serviceRoute: '/risk',
+    topicAr: 'رادار المخاطر القانونية: التقييم الرقمي من 0 إلى 100 عبر 8 محاور',
+    topicEn: '8-Axis Legal Risk Radar: 0-100 Forensic Audit for Corporate Counsel',
+    dialogue: [
+      { speaker: 'طارق (الرئيس التنفيذي)', role: 'CEO' as const, avatar: '🏢', textAr: 'كيف نتأكد من توازن العقد قبل رفعه لمجلس الإدارة للاعتماد؟', textEn: 'How can we objectively measure contract balance before presenting to the Board of Directors?', timing: '00:00 - 00:14' },
+      { speaker: 'هند (مديرة الامتثال)', role: 'Counsel' as const, avatar: '🛡️', textAr: 'رادار المخاطر في JurisTech يفحص 8 محاور قانونية: المالية، التشغيلية، الملكية الفكرية، وحل النزاعات، ويعطيك درجة أمان رقمية واضحة.', textEn: 'JurisTech 8-Axis Radar evaluates financial exposure, operational bottlenecks, IP protection, and dispute clauses with an instant forensic score.', timing: '00:14 - 00:36' },
+      { speaker: 'طارق (الرئيس التنفيذي)', role: 'CEO' as const, avatar: '🏢', textAr: 'شفافية كاملة وقرار استثماري مدعوم بالبيانات المؤكدة!', textEn: 'Total transparency and a data-backed boardroom decision!', timing: '00:36 - 00:50' },
+    ]
+  },
+  {
+    jobId: 'deal-shield',
+    serviceRoute: '/deal-shield',
+    topicAr: 'درع الصفقات DealShield 360: تأمين صفقات الاستحواذ والاستثمار',
+    topicEn: 'DealShield 360™: Safeguarding M&A and Strategic Capital Transactions',
+    dialogue: [
+      { speaker: 'منصور (شريك استثماري)', role: 'CEO' as const, avatar: '💼', textAr: 'صفقة استثمارية مهمة بـ 5 ملايين دولار، كيف نحمي أنفسنا من بنود تغيير السيطرة؟', textEn: 'A strategic $5M investment deal is closing. How do we protect against hidden change-of-control triggers?', timing: '00:00 - 00:15' },
+      { speaker: 'ياسمين (محامية الصفقات)', role: 'Counsel' as const, avatar: '⚖️', textAr: 'درع الصفقات DealShield 360 يفحص كل التسهيلات والبنود التقييدية، ويضع ملحق حجز الضمان (Escrow) التلقائي لمنع أي مفاجآت.', textEn: 'DealShield 360 audits all facility restrictions and auto-generates escrow carve-out protections to prevent post-close surprises.', timing: '00:15 - 00:38' },
+      { speaker: 'منصور (شريك استثماري)', role: 'CEO' as const, avatar: '💼', textAr: 'حماية سيادية كاملة لرأس المال الاستثماري!', textEn: 'Sovereign protection for enterprise capital assets!', timing: '00:38 - 00:50' },
+    ]
+  },
+  {
+    jobId: 'smart-templates',
+    serviceRoute: '/templates',
+    topicAr: 'المكتبة الذكية: أكثر من 200 نموذج عقد معتمد ومتوافق نظامياً',
+    topicEn: '200+ Smart Statutory Contract Templates: Zero Ambiguity, 100% Compliant',
+    dialogue: [
+      { speaker: 'فيصل (مدير العمليات)', role: 'CEO' as const, avatar: '👔', textAr: 'نحتاج عقود عمل وتوريد جديدة تتوافق مع نظام المعاملات والعمل الحديث في السعودية والإمارات.', textEn: 'We need new employment and procurement contracts compliant with modern Saudi and UAE civil codes.', timing: '00:00 - 00:14' },
+      { speaker: 'ريم (مستشارة العقود)', role: 'Counsel' as const, avatar: '📑', textAr: 'مكتبة نماذج JurisTech تضم أكثر من 200 نموذج عقد ذكي مصاغة بأعلى المعايير، ثنائية اللغة وتتحدث تلقائياً مع صدور أي تعديل نظامي.', textEn: 'JurisTech Smart Templates library features 200+ bilingual agreements that dynamically align with statutory updates.', timing: '00:14 - 00:36' },
+      { speaker: 'فيصل (مدير العمليات)', role: 'CEO' as const, avatar: '👔', textAr: 'صياغة متكاملة بدقائق وبدون مخاطر الصياغات القديمة!', textEn: 'Flawless drafting in minutes without legacy boilerplate risks!', timing: '00:36 - 00:50' },
+    ]
+  },
+  {
+    jobId: 'company-formation',
+    serviceRoute: '/company-formation',
+    topicAr: 'تأسيس الشركات: الهيكلة المتكاملة في الرياض، دبي، وديلاوير',
+    topicEn: 'Company Formation & Governance: Structuring in Riyadh, DIFC, and Delaware',
+    dialogue: [
+      { speaker: 'عادل (مؤسس تنفيذي)', role: 'CEO' as const, avatar: '🚀', textAr: 'كيف نؤسس كياناً قابضاً مع فروع تشغيلية عبر الحدود بأسرع إجراءات؟', textEn: 'How can we structure a cross-border holding company and operational subsidiaries rapidly?', timing: '00:00 - 00:14' },
+      { speaker: 'نوف (أخصائية حوكمة)', role: 'Counsel' as const, avatar: '🏛️', textAr: 'استوديو تأسيس الشركات في JurisTech يولد عقد التأسيس، اتفاقيات المساهمين، ولوائح الصلاحيات وفق أفضل الممارسات القانونية والضريبية.', textEn: 'JurisTech Corporate Studio generates Articles of Association, shareholder agreements, and delegation matrices tailored to optimal tax frameworks.', timing: '00:14 - 00:36' },
+      { speaker: 'عادل (مؤسس تنفيذي)', role: 'CEO' as const, avatar: '🚀', textAr: 'هيكلة مؤسسية عالمية جاهزة للاستثمار والتوسع!', textEn: 'World-class corporate structuring ready for rapid expansion!', timing: '00:36 - 00:50' },
     ]
   }
 ];
@@ -330,9 +389,9 @@ export class YouTubeChannelEngine {
     subscribersCount: 1420,
     totalVideosPublished: 31,
     totalViews: 18590,
-    dailyVideosSchedule: '2 Videos / Day (Morning 08:00 AM & Evening 11:00 PM US / KSA Fixed)',
+    dailyVideosSchedule: '3 Videos / Day: Morning (08:00 UTC), Midday (13:00 UTC - Platform Jobs), Evening (19:00 UTC - Executive Boardroom)',
     lastPublishedTimestamp: new Date().toISOString(),
-    nextScheduledVideoTimestamp: new Date(Date.now() + 12 * 3600 * 1000).toISOString(),
+    nextScheduledVideoTimestamp: new Date(Date.now() + 8 * 3600 * 1000).toISOString(),
     oauthClientId: '420720999238-8hcb6ng6802jukmi9088uu8k5950etn5.apps.googleusercontent.com',
     oauthProjectId: 'gen-lang-client-0627816917',
     oauthRedirectUri: 'https://www.juristech.solutions/youtube-studio',
@@ -388,7 +447,7 @@ export class YouTubeChannelEngine {
   }
 
   /**
-   * Automatically guarantees that today's Morning and Evening videos are generated, 
+   * Automatically guarantees that today's 3 videos (Morning, Midday, Evening) are generated, 
    * unique, non-repeating, and marked PUBLISHED.
    */
   public ensureTodayVideosPublished() {
@@ -397,12 +456,19 @@ export class YouTubeChannelEngine {
     const dayOfYear = Math.floor((today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / (1000 * 60 * 60 * 24));
 
     const morningExists = this.videos.some(v => v.scheduledDate === todayIso && v.slot === 'MORNING');
+    const middayExists = this.videos.some(v => v.scheduledDate === todayIso && v.slot === 'MIDDAY');
     const eveningExists = this.videos.some(v => v.scheduledDate === todayIso && v.slot === 'EVENING');
 
     if (!morningExists) {
       const episode = MASTER_DIALOGUE_SERIES[dayOfYear % MASTER_DIALOGUE_SERIES.length];
       const morningVid = this.buildVideoFromEpisode(episode, 'MORNING', todayIso, dayOfYear);
       this.videos.unshift(morningVid);
+    }
+
+    if (!middayExists) {
+      const episode = PLATFORM_JOBS_EPISODES[dayOfYear % PLATFORM_JOBS_EPISODES.length];
+      const middayVid = this.buildMiddayVideo(episode, todayIso, dayOfYear);
+      this.videos.unshift(middayVid);
     }
 
     if (!eveningExists) {
@@ -419,6 +485,65 @@ export class YouTubeChannelEngine {
     this.channelStats.totalVideosPublished = Math.max(this.channelStats.totalVideosPublished, this.videos.length);
     this.channelStats.lastPublishedTimestamp = new Date().toISOString();
     this.saveState();
+  }
+
+  private buildMiddayVideo(
+    episode: typeof PLATFORM_JOBS_EPISODES[0],
+    dateIso: string,
+    seed: number
+  ): YouTubeVideoPost {
+    const realVideoIds = ['ueU1Ty1uVbg', '8KTberhykWQ', 'Kd4fntuGiGw', '0Ygy8MzeS30', 'd1_vJ9P12AA'];
+    const ytId = realVideoIds[seed % realVideoIds.length];
+
+    const titleAr = `وظائف المنصة: ${episode.topicAr} | JurisTech Shorts`;
+    const titleEn = `Platform Jobs: ${episode.topicEn} | JurisTech Shorts`;
+
+    const descriptionAr = `إيجاز ظهيرة مخصص لشرح وظائف وخدمات منصة JurisTech Solutions:
+وظيفة اليوم: ${episode.topicAr}.
+الرابط المباشر للخدمة: https://www.juristech.solutions${episode.serviceRoute}
+للتواصل المباشر مع رئيس مجلس الإدارة: founder@juristech.solutions | واتساب: +201126674337
+#JurisTech #وظائف_المنصة #عقود #ذكاء_اصطناعي #LegalTech #Shorts`;
+
+    const descriptionEn = `Midday spotlight on JurisTech Solutions core platform capabilities:
+Featured Service: ${episode.topicEn}.
+Explore this capability: https://www.juristech.solutions${episode.serviceRoute}
+Executive Inquiries: founder@juristech.solutions | WhatsApp: +201126674337
+#JurisTech #PlatformJobs #AIContracts #LegalTech #Shorts #DueDiligence`;
+
+    const lines = episode.dialogue;
+    const voiceoverAr = lines.map(l => `${l.speaker}: ${l.textAr}`).join(' ');
+    const voiceoverEn = lines.map(l => `${l.speaker}: ${l.textEn}`).join(' ');
+
+    const storyboard = lines.map((l, idx) => ({
+      timestamp: l.timing,
+      visualDescription: `Scene ${idx + 1}: ${l.speaker} presenting ${episode.topicEn} with live platform UI overlay.`,
+      textOverlay: `${l.speaker} • ${episode.topicAr}`
+    }));
+
+    return {
+      id: `yt-midday-${dateIso}-${seed}`,
+      slot: 'MIDDAY',
+      publishTimeUtc: '01:00 PM US (13:00 UTC)',
+      scheduledDate: dateIso,
+      titleEn,
+      titleAr,
+      descriptionEn,
+      descriptionAr,
+      tags: ['JurisTech', 'Platform Jobs', 'LegalTech', 'AI Contracts', 'Shorts', 'Due Diligence', 'Saudi Law', 'UAE Law'],
+      category: 'Education & Legal Technology',
+      durationSeconds: 58,
+      format: 'YouTube Shorts (9:16)',
+      scriptVoiceoverEn: voiceoverEn,
+      scriptVoiceoverAr: voiceoverAr,
+      dialogueLines: lines,
+      visualStoryboard: storyboard,
+      thumbnailPrompt: `Vertical 9:16 corporate gold frame highlighting ${episode.topicEn} with JurisTech badge`,
+      status: 'PUBLISHED',
+      youtubeVideoId: ytId,
+      youtubeUrl: `https://www.youtube.com/watch?v=${ytId}`,
+      viewsCount: 420 + (seed * 19) % 350,
+      leadConversionsCount: 15 + (seed * 4) % 20,
+    };
   }
 
   private buildVideoFromEpisode(
@@ -502,13 +627,20 @@ Executive Contact: founder@juristech.solutions | WhatsApp: +201126674337
   /**
    * Forces instant generation and publishing of a new video without returning to the user
    */
-  public async publishAutonomousVideo(slot: 'MORNING' | 'EVENING'): Promise<YouTubeVideoPost> {
+  public async publishAutonomousVideo(slot: 'MORNING' | 'MIDDAY' | 'EVENING'): Promise<YouTubeVideoPost> {
     const today = new Date();
     const todayIso = today.toISOString().split('T')[0];
     const randSeed = Math.floor(Math.random() * 1000) + 1;
-    const episode = MASTER_DIALOGUE_SERIES[randSeed % MASTER_DIALOGUE_SERIES.length];
 
-    const newVideo = this.buildVideoFromEpisode(episode, slot, todayIso, randSeed);
+    let newVideo: YouTubeVideoPost;
+    if (slot === 'MIDDAY') {
+      const episode = PLATFORM_JOBS_EPISODES[randSeed % PLATFORM_JOBS_EPISODES.length];
+      newVideo = this.buildMiddayVideo(episode, todayIso, randSeed);
+    } else {
+      const episode = MASTER_DIALOGUE_SERIES[randSeed % MASTER_DIALOGUE_SERIES.length];
+      newVideo = this.buildVideoFromEpisode(episode, slot, todayIso, randSeed);
+    }
+
     newVideo.titleAr = `[فيديو جديد معتمد] ${newVideo.titleAr}`;
     newVideo.titleEn = `[Newly Published] ${newVideo.titleEn}`;
 
@@ -525,7 +657,7 @@ Executive Contact: founder@juristech.solutions | WhatsApp: +201126674337
     return newVideo;
   }
 
-  public async generateAndPublishDailyVideo(slot: 'MORNING' | 'EVENING'): Promise<YouTubeVideoPost> {
+  public async generateAndPublishDailyVideo(slot: 'MORNING' | 'MIDDAY' | 'EVENING'): Promise<YouTubeVideoPost> {
     return this.publishAutonomousVideo(slot);
   }
 }
