@@ -29,11 +29,20 @@ export default async function handler(req, res) {
 
   if (
     action === 'youtube-upload' ||
+    action === 'channel_stats' ||
+    action === 'list_videos' ||
+    action === 'recent_videos' ||
+    action === 'get_auth_url' ||
+    action === 'exchange_code' ||
+    action === 'publish_now' ||
+    action === 'publish_video' ||
     action === 'upload_short' ||
     action === 'upload_binary' ||
     action === 'upload_from_url' ||
     url.includes('youtube-upload') ||
-    url.includes('upload_short')
+    url.includes('upload_short') ||
+    url.includes('channel_stats') ||
+    url.includes('list_videos')
   ) {
     return youtubeUploadHandler(req, res);
   }
