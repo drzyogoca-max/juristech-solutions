@@ -62,6 +62,21 @@ export default function AdminAnalyticsPage() {
       const json = await res.json();
       if (json.ok) {
         setRealData(json);
+        if (json.visitors?.geoDistribution && json.visitors.geoDistribution.length > 0) {
+          const newRows: GeoAnalyticRow[] = json.visitors.geoDistribution.map((g: any) => ({
+            country: g.country,
+            countryAr: g.country,
+            city: g.topCity || 'National',
+            flagEmoji: '🌐',
+            visitors: g.uniqueVisitors || 0,
+            totalPageViews: g.pageViews || 0,
+            activeSubscriptions: 0,
+            revenueUSD: 0,
+            arpuUSD: 0,
+            adPriorityTier: 'Tier 1 Priority',
+          }));
+          setGeoData(newRows);
+        }
       } else {
         setRealDataError(json.error || 'API error');
       }
@@ -111,6 +126,27 @@ export default function AdminAnalyticsPage() {
         adTier: g.adPriorityTier,
       };
     });
+
+    // Also merge real database geo distribution if available
+    if (realData?.visitors?.geoDistribution) {
+      realData.visitors.geoDistribution.forEach((g) => {
+        if (!countryMap[g.country]) {
+          countryMap[g.country] = {
+            countryAr: g.country,
+            city: g.topCity || 'National',
+            flagEmoji: '🌐',
+            visitors: g.uniqueVisitors,
+            views: g.pageViews,
+            activeSubs: 0,
+            revenue: 0,
+            adTier: 'Tier 1 Priority',
+          };
+        } else {
+          countryMap[g.country].visitors = Math.max(countryMap[g.country].visitors, g.uniqueVisitors);
+          countryMap[g.country].views = Math.max(countryMap[g.country].views, g.pageViews);
+        }
+      });
+    }
 
     txns.forEach((t) => {
       const isSuccess = ['Success', 'Completed', 'Paid', 'Transferred'].includes(t.status);
