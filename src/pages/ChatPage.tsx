@@ -560,9 +560,24 @@ ${contractText}`;
   const adjustTextareaHeight = () => {
     if (inputRef.current) {
       inputRef.current.style.height = 'auto';
-      inputRef.current.style.height = `${Math.min(inputRef.current.scrollHeight, 180)}px`;
+      // Expand up to 300px (about 10 lines) so long messages are fully visible
+      inputRef.current.style.height = `${Math.min(inputRef.current.scrollHeight, 300)}px`;
     }
   };
+
+  // Auto-focus input on mobile when the chat page mounts (triggers keyboard)
+  useEffect(() => {
+    // Small delay to allow the page to fully render before focusing
+    const timer = setTimeout(() => {
+      if (inputRef.current && typeof window !== 'undefined') {
+        // Only auto-focus on mobile if the user hasn't started scrolling
+        if (window.innerWidth < 768) {
+          inputRef.current.focus({ preventScroll: true });
+        }
+      }
+    }, 600);
+    return () => clearTimeout(timer);
+  }, []);
   const [sessionId] = useState(() => {
     try { return crypto.randomUUID(); } catch { return Math.random().toString(36).slice(2); }
   });
@@ -1089,7 +1104,7 @@ ${contractText}`;
               }}
               placeholder={remaining > 0 ? labels.placeholder : (isRtl ? 'انتهت الاستشارات المجانية — اشترك للمزيد' : 'Free queries used — subscribe for unlimited')}
               dir={isRtl ? 'rtl' : 'ltr'}
-              className="flex-1 p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-cyan-500 placeholder:text-slate-600 resize-none max-h-48 overflow-y-auto leading-relaxed custom-scrollbar"
+              className="flex-1 p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-cyan-500 placeholder:text-slate-600 resize-none max-h-[300px] overflow-y-auto leading-relaxed custom-scrollbar"
             />
             {remaining > 0 ? (
               <button type="submit"

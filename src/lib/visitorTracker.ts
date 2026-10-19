@@ -368,6 +368,7 @@ export async function logVisitorSession(currentPath: string = typeof window !== 
   // Resilient write to Supabase & Enterprise Data Lake with offline queue failover
   const payload = {
     visitor_id: logEntry.visitorId,
+    session_id: logEntry.visitorId,
     country: logEntry.country,
     country_code: logEntry.countryCode,
     city: logEntry.city,
@@ -376,14 +377,41 @@ export async function logVisitorSession(currentPath: string = typeof window !== 
     isp: logEntry.isp,
     page_path: logEntry.pagePath,
     traffic_source: logEntry.trafficSource,
+    referrer: logEntry.referrerDomain,
     referrer_domain: logEntry.referrerDomain,
     device_type: logEntry.deviceType,
     browser: logEntry.browser,
     os: logEntry.os,
+    screen_res: logEntry.screenResolution,
+    is_admin: logEntry.isAdminVisit || false,
     utm_source: logEntry.utmSource,
+    utm_medium: logEntry.utmMedium,
     utm_campaign: logEntry.utmCampaign,
     created_at: logEntry.timestamp,
   };
+
+  // Primary: Use server-side edge API for accurate GeoIP (Vercel headers)
+  try {
+    await fetch('/api/track-visit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        sessionId: payload.session_id,
+        pagePath: payload.page_path,
+        referrer: payload.referrer,
+        deviceType: payload.device_type,
+        browser: payload.browser,
+        os: payload.os,
+        screenRes: payload.screen_res,
+        isAdmin: payload.is_admin,
+        utmSource: payload.utm_source,
+        utmMedium: payload.utm_medium,
+        utmCampaign: payload.utm_campaign,
+      }),
+    });
+  } catch (trackErr) {
+    console.warn('[VisitorTracker] Edge API call failed, falling back to direct Supabase:', trackErr);
+  }
 
   enterpriseDBGateway.executeResilientWrite('visitor_telemetry_logs', payload, async () => {
     const { error } = await supabase.from('visitor_logs').insert(payload);
@@ -725,12 +753,13 @@ export async function syncVisitorLogsWithSupabase(): Promise<VisitorLogEntry[]> 
     const mergedMap = new Map<string, VisitorLogEntry>();
 
     if (dbLogs) {
-        dbLogs.forEach((dbL: any) => {
-        const uniqueKey = dbL.id || `db_${dbL.created_at}_${dbL.visitor_id || 'unknown'}`;
-        if (!dbL.visitor_id || !dbL.created_at) return;
+      dbLogs.forEach((dbL: any) => {
+        const vId = dbL.visitor_id || dbL.session_id;
+        const uniqueKey = dbL.id || `db_${dbL.created_at}_${vId || 'unknown'}`;
+        if (!vId || !dbL.created_at) return;
         mergedMap.set(uniqueKey, {
           id: uniqueKey,
-          visitorId: dbL.visitor_id,
+          visitorId: vId,
           country: dbL.country || 'Unknown',
           countryCode: dbL.country_code || 'XX',
           city: dbL.city || 'Unknown',

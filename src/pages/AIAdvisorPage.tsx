@@ -150,11 +150,21 @@ export default function AIAdvisorPage() {
   const adjustTextareaHeight = () => {
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 180)}px`;
+      textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 300)}px`;
     }
   };
 
-  // Preload from navigation state (e.g. Onboarding Wizard) or safe search params
+  // Auto-focus textarea on mobile to trigger keyboard
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (textareaRef.current && typeof window !== 'undefined' && window.innerWidth < 768) {
+        textareaRef.current.focus({ preventScroll: true });
+      }
+    }, 700);
+    return () => clearTimeout(timer);
+  }, []);
+
+
   // CRITICAL QUOTA RULE: DO NOT automatically execute the query!
   useEffect(() => {
     if (initializedFromStateRef.current) return;
@@ -746,7 +756,7 @@ export default function AIAdvisorPage() {
                       ? 'اطرح استفسارك القانوني، أو الصق بنداً تعاقدياً، أو اطلب صياغة مسودة...'
                       : 'Ask a legal question, paste a contract clause, or request a document draft...'
                   }
-                  className="flex-1 bg-transparent px-3 py-2 text-xs sm:text-sm text-slate-200 placeholder-slate-500 focus:outline-none resize-none max-h-48 overflow-y-auto leading-relaxed custom-scrollbar"
+                  className="flex-1 bg-transparent px-3 py-2 text-xs sm:text-sm text-slate-200 placeholder-slate-500 focus:outline-none resize-none max-h-[300px] overflow-y-auto leading-relaxed custom-scrollbar"
                   disabled={isLoading}
                 />
 

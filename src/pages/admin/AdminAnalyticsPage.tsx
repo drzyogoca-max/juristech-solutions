@@ -41,6 +41,37 @@ export default function AdminAnalyticsPage() {
   const [autoRefresh, setAutoRefresh] = useState(true);
   const [triggeringCampaign, setTriggeringCampaign] = useState(false);
 
+  const [realData, setRealData] = useState<{
+    visitors?: { uniqueInPeriod: number; todayUnique: number; yesterdayUnique: number; allTimeTotal: number; geoDistribution: Array<{country: string; uniqueVisitors: number; pageViews: number; topCity: string}>; activeCountries: number };
+    subscriptions?: { active: number; activeList: Array<{plan: string; price: number; provider: string; since: string}>; newInPeriod: number; pendingAbandoned: number; planBreakdown: Record<string, number> };
+    revenue?: { totalUSD: number; successfulPayments: number };
+    customers?: { total: number; newInPeriod: number; verified: number; recentList: Array<{email: string; country: string; verified: boolean; source: string; joinedAt: string}> };
+    leads?: { total: number };
+  } | null>(null);
+  const [realDataError, setRealDataError] = useState<string | null>(null);
+  const [loadingReal, setLoadingReal] = useState(false);
+
+  async function fetchRealAnalytics(tf: 'Daily' | 'Weekly' | 'Monthly' | 'Yearly' = selectedTimeframe) {
+    setLoadingReal(true);
+    setRealDataError(null);
+    try {
+      const tfMap: Record<string, string> = { Daily: 'daily', Weekly: 'weekly', Monthly: 'monthly', Yearly: 'yearly' };
+      const res = await fetch(`/api/analytics?timeframe=${tfMap[tf] || 'monthly'}`, {
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const json = await res.json();
+      if (json.ok) {
+        setRealData(json);
+      } else {
+        setRealDataError(json.error || 'API error');
+      }
+    } catch (e: unknown) {
+      setRealDataError(e instanceof Error ? e.message : 'Network error');
+    } finally {
+      setLoadingReal(false);
+    }
+  }
+
   async function loadAnalyticsSSOT(tf: 'Daily' | 'Weekly' | 'Monthly' | 'Yearly' = selectedTimeframe) {
     setIsRefreshing(true);
     // 1. Compute financial summary from SSOT
@@ -134,11 +165,13 @@ export default function AdminAnalyticsPage() {
 
   useEffect(() => {
     loadAnalyticsSSOT(selectedTimeframe);
+    fetchRealAnalytics(selectedTimeframe);
     let interval: ReturnType<typeof setInterval> | null = null;
     if (autoRefresh) {
       interval = setInterval(() => {
         loadAnalyticsSSOT(selectedTimeframe);
-      }, 10000);
+        fetchRealAnalytics(selectedTimeframe);
+      }, 30000); // Changed from 10000 to 30000 (30 sec) to avoid hammering API
     }
     return () => {
       if (interval) clearInterval(interval);
@@ -148,6 +181,7 @@ export default function AdminAnalyticsPage() {
   function handleTimeframeChange(tf: 'Daily' | 'Weekly' | 'Monthly' | 'Yearly') {
     setSelectedTimeframe(tf);
     loadAnalyticsSSOT(tf);
+    fetchRealAnalytics(tf);
   }
 
   async function handleManualAdTrigger() {
@@ -256,11 +290,12 @@ export default function AdminAnalyticsPage() {
                 onClick={() => {
                   purgeAndSanitizeFinancialData();
                   loadAnalyticsSSOT();
+                  fetchRealAnalytics();
                 }}
-                disabled={isRefreshing}
+                disabled={isRefreshing || loadingReal}
                 className="px-4 py-2.5 rounded-2xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-400 text-xs font-bold flex items-center gap-2 transition-all active:scale-95 disabled:opacity-50"
               >
-                <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+                <RefreshCw className={`w-4 h-4 ${isRefreshing || loadingReal ? 'animate-spin' : ''}`} />
                 <span>{isRtl ? 'تحديث وتزامن' : 'Sync GeoIP Analytics'}</span>
               </button>
             </div>
@@ -276,9 +311,17 @@ export default function AdminAnalyticsPage() {
                 <span>{isRtl ? 'الزوار الفريدون (Unique)' : 'Unique Visitors'}</span>
                 <Users className="w-4 h-4 text-cyan-400" />
               </div>
-              <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-black text-cyan-400">{visitorSummary.uniqueVisitorsCount}</span>
-                <span className="text-xs text-emerald-400 font-bold">● {visitorSummary.activeUsersNow} {isRtl ? 'نشط الآن' : 'online'}</span>
+              <div className="flex items-baseline gap-2 flex-wrap">
+                <span className="text-3xl font-black text-cyan-400">
+                  {realData?.visitors?.uniqueInPeriod || visitorSummary.uniqueVisitorsCount}
+                </span>
+                {realData?.visitors ? (
+                  <div className="text-[11px] text-emerald-400 font-bold font-mono">
+                    📅 {isRtl ? 'اليوم:' : 'Today:'} {realData.visitors.todayUnique} | {isRtl ? 'أمس:' : 'Yday:'} {realData.visitors.yesterdayUnique}
+                  </div>
+                ) : (
+                  <span className="text-xs text-emerald-400 font-bold">● {visitorSummary.activeUsersNow} {isRtl ? 'نشط الآن' : 'online'}</span>
+                )}
               </div>
               <div className="flex items-center gap-3 text-[11px] text-slate-400 font-mono pt-1 border-t border-slate-800">
                 <span className="flex items-center gap-1"><Monitor className="w-3 h-3 text-cyan-400" /> {visitorSummary.deviceBreakdown.desktop.percentage}% Desk</span>
@@ -338,6 +381,103 @@ export default function AdminAnalyticsPage() {
               </div>
             </div>
           </div>
+
+          {/* ─── Live Supabase Real Data Panel ─── */}
+          {(realData || realDataError || loadingReal) && (
+            <div className="bg-gradient-to-r from-emerald-950/60 to-slate-900 p-6 rounded-3xl border border-emerald-500/30 shadow-xl space-y-4">
+              <div className="flex items-center justify-between flex-wrap gap-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
+                  <h3 className="font-extrabold text-sm text-white">
+                    {isRtl ? '📊 البيانات الحقيقية المباشرة من Supabase' : '📊 Live Supabase Real-Time Data'}
+                  </h3>
+                </div>
+                {loadingReal && <span className="text-xs text-slate-400 animate-pulse">{isRtl ? 'جاري التحميل...' : 'Loading...'}</span>}
+                {realDataError && <span className="text-xs text-rose-400">⚠️ {realDataError}</span>}
+              </div>
+
+              {realData && !loadingReal && (
+                <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3 text-xs font-mono">
+                  {/* Today Visitors */}
+                  <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800 space-y-1 text-center">
+                    <span className="text-[10px] text-slate-500 block">{isRtl ? 'زوار اليوم' : 'Today Visitors'}</span>
+                    <span className="text-xl font-black text-cyan-400 block">{realData.visitors?.todayUnique ?? 0}</span>
+                  </div>
+                  {/* Yesterday Visitors */}
+                  <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800 space-y-1 text-center">
+                    <span className="text-[10px] text-slate-500 block">{isRtl ? 'زوار أمس' : "Yesterday"}</span>
+                    <span className="text-xl font-black text-emerald-400 block">{realData.visitors?.yesterdayUnique ?? 0}</span>
+                  </div>
+                  {/* Total Period */}
+                  <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800 space-y-1 text-center">
+                    <span className="text-[10px] text-slate-500 block">{isRtl ? 'زوار الفترة' : 'Period Visitors'}</span>
+                    <span className="text-xl font-black text-white block">{realData.visitors?.uniqueInPeriod ?? 0}</span>
+                  </div>
+                  {/* Active Subscriptions */}
+                  <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800 space-y-1 text-center">
+                    <span className="text-[10px] text-slate-500 block">{isRtl ? 'اشتراكات فعالة' : 'Active Subs'}</span>
+                    <span className="text-xl font-black text-amber-400 block">{realData.subscriptions?.active ?? 0}</span>
+                  </div>
+                  {/* Total Revenue */}
+                  <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800 space-y-1 text-center">
+                    <span className="text-[10px] text-slate-500 block">{isRtl ? 'الإيرادات' : 'Revenue'}</span>
+                    <span className="text-xl font-black text-emerald-300 block">${realData.revenue?.totalUSD ?? 0}</span>
+                  </div>
+                  {/* Abandoned */}
+                  <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800 space-y-1 text-center">
+                    <span className="text-[10px] text-slate-500 block">{isRtl ? 'مدفوعات معلقة' : 'Pending Subs'}</span>
+                    <span className="text-xl font-black text-rose-400 block">{realData.subscriptions?.pendingAbandoned ?? 0}</span>
+                  </div>
+                </div>
+              )}
+
+              {/* Geo Distribution from real DB */}
+              {realData?.visitors?.geoDistribution && realData.visitors.geoDistribution.length > 0 && (
+                <div className="space-y-2">
+                  <h4 className="text-xs font-bold text-slate-400">{isRtl ? 'التوزيع الجغرافي الحقيقي من قاعدة البيانات:' : 'Real Geo Distribution from Database:'}</h4>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    {realData.visitors.geoDistribution.slice(0, 8).map((g, i) => (
+                      <div key={i} className="p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs">
+                        <span className="font-bold text-white block truncate">{g.country}</span>
+                        <span className="text-cyan-400 font-mono">{g.uniqueVisitors} {isRtl ? 'زائر' : 'visitors'}</span>
+                        {g.topCity && <span className="text-slate-500 text-[10px] block">{g.topCity}</span>}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Active Subscriptions List */}
+              {realData?.subscriptions?.activeList && realData.subscriptions.activeList.length > 0 && (
+                <div className="space-y-2">
+                  <h4 className="text-xs font-bold text-slate-400">{isRtl ? 'الاشتراكات الفعالة:' : 'Active Subscriptions:'}</h4>
+                  <div className="space-y-1.5">
+                    {realData.subscriptions.activeList.slice(0, 5).map((s, i) => (
+                      <div key={i} className="flex items-center justify-between p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono">
+                        <span className="text-amber-400 font-bold uppercase">{s.plan}</span>
+                        <span className="text-emerald-400">${s.price}/mo</span>
+                        <span className="text-slate-400">{s.provider}</span>
+                        <span className="text-slate-500">{new Date(s.since).toLocaleDateString()}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {realData?.subscriptions?.active === 0 && realData?.visitors?.allTimeTotal === 0 && (
+                <div className="text-center p-4 rounded-2xl bg-amber-500/5 border border-amber-500/20">
+                  <p className="text-xs text-amber-400 font-bold">
+                    {isRtl
+                      ? '⚠️ لا توجد بيانات زوار بعد. سيبدأ التتبع تلقائياً مع زيارة المستخدمين للمنصة.'
+                      : '⚠️ No visitor data yet. Tracking will start automatically as users visit the platform.'}
+                  </p>
+                  <p className="text-[11px] text-slate-400 mt-1">
+                    {isRtl ? 'تأكد من تطبيق migration قاعدة البيانات: 20261019_visitor_logs_table.sql' : 'Apply DB migration: 20261019_visitor_logs_table.sql in Supabase dashboard'}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Navigation Tabs */}
           <div className="flex items-center gap-2 border-b border-slate-800 pb-2 overflow-x-auto">
