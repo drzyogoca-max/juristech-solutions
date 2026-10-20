@@ -76,6 +76,30 @@ const ROUTE_METADATA = {
     descriptionAr: 'استوديو النماذج القانونية التفاعلي: صياغة وتخصيص وتدقيق المخاطر بالذكاء الاصطناعي وتصدير فوري بصيغة Word و PDF خالٍ من الفراغات وبدقة لغوية.',
     descriptionEn: 'Interactive Smart Legal Templates Studio with AI customizer, risk audit score, voice drafting, and instant PDF/Word exports for 50+ jurisdictions.',
   },
+  '/poa-library': {
+    titleAr: 'مكتبة الوكالات والتوكيلات الذكية | JurisTech Solutions',
+    titleEn: 'Power of Attorney (POA) Smart Enterprise Library | JurisTech',
+    descriptionAr: 'مكتبة الوكالات والتوكيلات القانونية والتجارية المعتمدة للشركات ورجال الأعمال في الخليج العربي ومصر والأنظمة الدولية.',
+    descriptionEn: 'Verified Power of Attorney (POA) templates for GCC, MENA, and international corporate governance with statutory notarization guidelines.',
+  },
+  '/acquisition': {
+    titleAr: 'استحواذ الكيانات والصفقات التجارية | JurisTech Solutions',
+    titleEn: 'Corporate Takeover & M&A Acquisition Studio | JurisTech',
+    descriptionAr: 'منظومة الاستحواذ المؤسسي والصفقات الاستثمارية — فحص غرف البيانات وكشف مخاطر تغير السيطرة وضمانات الاستحواذ.',
+    descriptionEn: 'Institutional M&A acquisition studio: data room forensics, change-of-control auditing, and cross-border buyout agreements.',
+  },
+  '/investigate': {
+    titleAr: 'غرفة الفحص الجنائي والتحقيق العقدي | JurisTech Solutions',
+    titleEn: 'Forensic Contract Investigation & Clause Inspection | JurisTech',
+    descriptionAr: 'غرفة التحقيق وفحص المستندات والعقود بالذكاء الاصطناعي لكشف التزوير وتعارض المصالح والبنود المخبأة.',
+    descriptionEn: 'Forensic contract investigation room: identify hidden liabilities, conflicting clauses, and statutory compliance mismatches.',
+  },
+  '/admin': {
+    titleAr: 'لوحة التحكم الإدارية والسيادية | JurisTech Solutions',
+    titleEn: 'Executive Admin & Governance Portal | JurisTech Solutions',
+    descriptionAr: 'لوحة التحكم المركزية لإدارة المنظومة ورصد حركة الزوار والاشتراكات والنشر الآلي.',
+    descriptionEn: 'Sovereign administrative governance portal for JurisTech platform operations and executive intelligence.',
+  },
   '/negotiation': {
     titleAr: 'غرف التفاوض والتوقيع الرقمي المشفر | JurisTech',
     titleEn: 'AI Contract Negotiation & Digital E-Signature | JurisTech',

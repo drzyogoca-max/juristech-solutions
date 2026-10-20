@@ -11,6 +11,8 @@ const PAGES = [
   { url: '/contracts', priority: '0.95', changefreq: 'daily' },
   { url: '/repository', priority: '1.0', changefreq: 'daily' },
   { url: '/templates', priority: '0.95', changefreq: 'daily' },
+  { url: '/poa-library', priority: '0.92', changefreq: 'daily' },
+  { url: '/investigate', priority: '0.90', changefreq: 'weekly' },
   { url: '/vault', priority: '0.95', changefreq: 'daily' },
   { url: '/risk', priority: '0.95', changefreq: 'daily' },
   { url: '/negotiation', priority: '0.90', changefreq: 'weekly' },

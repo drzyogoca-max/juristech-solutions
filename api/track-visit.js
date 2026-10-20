@@ -94,7 +94,7 @@ export default async function handler(req) {
     if (!insertRes.ok) {
       const errText = await insertRes.text();
       console.error('[track-visit] Insert failed:', errText);
-      return new Response(JSON.stringify({ ok: false, error: 'DB write failed' }), { status: 200 }); // 200 to not break frontend
+      return new Response(JSON.stringify({ ok: false, error: 'DB write failed', detail: errText }), { status: 200 }); // 200 to not break frontend
     }
 
     return new Response(JSON.stringify({ ok: true, country, city }), {
