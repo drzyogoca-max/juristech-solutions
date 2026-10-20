@@ -14,6 +14,7 @@
 export const config = { runtime: 'nodejs', maxDuration: 300 };
 
 import { getAccessToken, uploadToYouTubeBinary, downloadVideo } from '../video/youtube-upload.js';
+import { generateJurisTechVideo } from '../video/veo2-pipeline.js';
 
 const W = 720, H = 1280; // 9:16 Shorts
 const WEBHOOK_URL = 'https://www.juristech.solutions/api/heygen-webhook';
@@ -345,204 +346,110 @@ export default async function handler(req, res) {
 
   try {
     const today = new Date();
-    const isOddDay = today.getDate() % 2 !== 0;
-    const langParam = req.query?.lang || '';
-    const isArabic = langParam === 'ar';
+    // ── Veo 2 Pipeline ─────────────────────────────────────────────────────
+    const isArabicDay = req.query?.lang ? req.query.lang === 'ar' : (today.getDate() % 2 !== 0);
+    const DAILY_TOPICS_AR = [
+      'تحليل العقود التجارية بالذكاء الاصطناعي في 60 ثانية',
+      '5 بنود تعاقدية خطيرة يجب أن تعرفها قبل التوقيع',
+      'تأسيس شركة في الإمارات — دليل 2026 الكامل',
+      'مخاطر عقود الموردين: كيف تكشفها قبل التوقيع',
+      'نظام DIFC: دليل المستثمر الأجنبي في دبي',
+      'عقود الشراكة: أهم 3 بنود تفاوضية',
+      'الملكية الفكرية في عقود التقنية والبرمجيات',
+    ];
+    const DAILY_TOPICS_EN = [
+      'AI Contract Analysis in 60 Seconds — JurisTech Demo',
+      '5 Contract Clauses That Could Destroy Your Business',
+      'Company Formation UAE 2026 — Complete Legal Guide',
+      'Vendor Contract Risk Detection with AI',
+      'DIFC Laws Explained for Foreign Investors',
+      'M&A Due Diligence: 3 Points CFOs Miss',
+      'IP Protection in Technology Contracts 2026',
+    ];
 
-    console.log(`[YouTube Morning Cron] Executing at ${today.toISOString()} — Shorts Edition: ${isArabic ? 'Arabic Gulf' : 'English Global (US/EU Focus)'}`);
+    const dayIdx = today.getDay();
+    const topic = isArabicDay
+      ? DAILY_TOPICS_AR[dayIdx % DAILY_TOPICS_AR.length]
+      : DAILY_TOPICS_EN[dayIdx % DAILY_TOPICS_EN.length];
+    const lang = isArabicDay ? 'ar' : 'en';
 
-    if (SHOTSTACK_KEY) {
-      const edition = isArabic ? await buildArabicShorts(ELEVEN_KEY) : await buildEnglishShorts(ELEVEN_KEY);
-      let audioUrl = null;
-      if (edition.audioBuf && edition.audioBuf.length > 0) {
-        audioUrl = await ingestAudioToShotstack(edition.audioBuf, SHOTSTACK_KEY);
-      }
+    console.log(`[Morning Cron] Generating Veo 2 video — topic: ${topic}, lang: ${lang}`);
+    const videoResult = await generateJurisTechVideo({ topic, format: 'short', language: lang });
 
-      const soundtrack = audioUrl
-        ? { src: audioUrl, effect: 'fadeInFadeOut', volume: 1.0 }
-        : { src: 'https://shotstack-assets.s3-ap-southeast-2.amazonaws.com/music/freepd/corporate.mp3', effect: 'fadeInFadeOut', volume: 0.8 };
-
-      const renderPayload = {
-        timeline: {
-          background: '#020B1A',
-          tracks: [{ clips: edition.slides }],
-          soundtrack
-        },
-        output: {
-          format: 'mp4',
-          resolution: 'mobile',
-          aspectRatio: '9:16',
-          fps: 30,
-          quality: 'high'
-        },
-        callback: WEBHOOK_URL
-      };
-
-      let renderRes = await fetchJSON('https://api.shotstack.io/edit/v1/render', {
-        method: 'POST',
-        headers: { 'x-api-key': SHOTSTACK_KEY, 'Content-Type': 'application/json' },
-        body: JSON.stringify(renderPayload)
-      });
-
-      if (!renderRes.ok && (renderRes.status === 403 || renderRes.status === 401)) {
-        console.log('[Shotstack Morning] Production endpoint failed (status ' + renderRes.status + '), retrying Sandbox / stage endpoint...');
-        renderRes = await fetchJSON('https://api.shotstack.io/edit/stage/render', {
-          method: 'POST',
-          headers: { 'x-api-key': SHOTSTACK_KEY, 'Content-Type': 'application/json' },
-          body: JSON.stringify(renderPayload)
-        });
-      }
-
-      if (renderRes.ok && renderRes.data?.response?.id) {
-        const renderId = renderRes.data.response.id;
-        await saveToQueue({
-          slot: 'MORNING',
-          scheduled_for: today.toISOString(),
-          status: 'rendering',
-          heygen_video_id: renderId,
-          title_ar: edition.lang === 'ar' ? edition.title : '',
-          title_en: edition.lang === 'en' ? edition.title : edition.title,
-          description_ar: edition.lang === 'ar' ? edition.desc : '',
-          description_en: edition.lang === 'en' ? edition.desc : edition.desc,
-          tags: JSON.stringify(edition.tags),
-          topic_ar: 'فخ عقود الصفقات والمسؤولية غير المحدودة',
-          topic_en: 'Enterprise AI Contract Audit in 60s',
-          format: 'YouTube Shorts 9:16',
-          duration_seconds: 45
-        });
-
-        // ── Autonomous Direct Publishing: Poll Shotstack and Upload Directly to YouTube ──
-        console.log(`[YouTube Morning Cron] Polling Shotstack render status for ID: ${renderId}...`);
-        let videoMp4Url = null;
-        for (let attempt = 0; attempt < 25; attempt++) {
-          await new Promise(r => setTimeout(r, 3000));
-          let statusRes = await fetchJSON(`https://api.shotstack.io/edit/v1/render/${renderId}`, {
-            headers: { 'x-api-key': SHOTSTACK_KEY }
-          });
-          if (!statusRes.ok) {
-            statusRes = await fetchJSON(`https://api.shotstack.io/edit/stage/render/${renderId}`, {
-              headers: { 'x-api-key': SHOTSTACK_KEY }
-            });
-          }
-          const renderStatus = statusRes.data?.response?.status;
-          if (renderStatus === 'done' && statusRes.data?.response?.url) {
-            videoMp4Url = statusRes.data.response.url;
-            console.log(`[YouTube Morning Cron] Shotstack render complete: ${videoMp4Url}`);
-            break;
-          } else if (renderStatus === 'failed') {
-            console.error(`[YouTube Morning Cron] Shotstack render failed:`, statusRes.data?.response?.error);
-            break;
-          }
-        }
-
-        if (videoMp4Url) {
-          try {
-            const accessToken = await getAccessToken();
-            if (accessToken) {
-              const videoBuffer = await downloadVideo(videoMp4Url);
-              const ytTitle = (edition.title || 'AI Contract Risk Radar #Shorts').substring(0, 95);
-              const ytDesc = [
-                edition.desc || '',
-                '#LegalTech #AIContracts #CorporateLaw #JurisTech #Shorts',
-                'https://www.juristech.solutions | founder@juristech.solutions'
-              ].join('\n\n');
-              const ytTags = (edition.tags || ['JurisTech', 'LegalTech', 'Shorts', 'AI']).slice(0, 30);
-
-              const metadata = {
-                snippet: {
-                  title: ytTitle,
-                  description: ytDesc,
-                  tags: ytTags,
-                  categoryId: '27',
-                  defaultLanguage: edition.lang || 'en',
-                  defaultAudioLanguage: edition.lang || 'en',
-                },
-                status: {
-                  privacyStatus: 'public',
-                  selfDeclaredMadeForKids: false,
-                  madeForKids: false,
-                }
-              };
-
-              const ytResult = await uploadToYouTubeBinary(accessToken, videoBuffer, metadata);
-              console.log(`[YouTube Morning Cron] Autonomously published to channel: ${ytResult.videoId} (${ytResult.shortsUrl})`);
-
-              await saveToQueue({
-                slot: 'MORNING',
-                scheduled_for: today.toISOString(),
-                status: 'published',
-                heygen_video_id: renderId,
-                youtube_video_id: ytResult.videoId,
-                video_url: ytResult.shortsUrl || ytResult.url,
-                title_ar: edition.lang === 'ar' ? edition.title : '',
-                title_en: edition.lang === 'en' ? edition.title : edition.title,
-                published_at: new Date().toISOString()
-              });
-
-              return res.status(200).json({
-                success: true,
-                slot: 'MORNING',
-                status: 'PUBLISHED_DIRECT_TO_YOUTUBE_CHANNEL',
-                videoId: ytResult.videoId,
-                youtubeUrl: ytResult.url,
-                shortsUrl: ytResult.shortsUrl,
-                title: ytTitle,
-                channelId: 'UC6gOnr7IeX5XRbpi3Oy-KvQ'
-              });
+    // Upload to YouTube if we have video
+    let uploadResult = null;
+    if (videoResult.videoBuffer) {
+      try {
+        const accessToken = await getAccessToken();
+        if (accessToken) {
+          uploadResult = await uploadToYouTubeBinary(
+            accessToken,
+            videoResult.videoBuffer,
+            {
+              title: videoResult.title,
+              description: videoResult.description,
+              tags: videoResult.tags,
+              categoryId: '27', // Education
+              privacyStatus: 'public',
+              madeForKids: false,
+              selfDeclaredMadeForKids: false,
+              snippet: {
+                title: (videoResult.title || 'JurisTech Solutions').substring(0, 95),
+                description: videoResult.description || '',
+                tags: (videoResult.tags || []).slice(0, 30),
+                categoryId: '27',
+                defaultLanguage: lang,
+                defaultAudioLanguage: lang,
+              },
+              status: {
+                privacyStatus: 'public',
+                madeForKids: false,
+                selfDeclaredMadeForKids: false,
+              }
             }
-          } catch (uploadErr) {
-            console.error('[YouTube Morning Cron] Direct channel upload error:', uploadErr.message);
-          }
+          );
+          console.log('[Morning Cron] ✅ YouTube upload:', uploadResult?.videoId);
         }
-
-        return res.status(200).json({
-          success: true,
-          slot: 'MORNING',
-          format: 'YouTube Shorts (9:16)',
-          renderId,
-          edition: isArabic ? 'Arabic Gulf Shorts' : 'English Global Shorts (US/EU Focus)',
-          soundtrack: audioUrl ? 'ElevenLabs Voiceover' : 'Royalty-Free Corporate Score',
-          message: 'Shotstack rendering initiated & queued for direct channel publish.'
-        });
-      } else {
-        console.warn('[Shotstack Morning] Render call rejected, falling back to dialogue registration:', renderRes.status, renderRes.text);
+      } catch (uploadErr) {
+        console.error('[Morning Cron] YouTube upload error:', uploadErr.message);
       }
     }
 
-    // ── Resilient Autonomous Fallback: Register & Publish 2-Person Dialogue Video ──
-    const topicAr = isOddDay 
-      ? 'حوار الصباح: فخ المسؤولية غير المحدودة في عقود التوريد والخدمات' 
-      : 'حوار الصباح: سقف الشروط الجزائية في نظام المعاملات المدنية';
-    const topicEn = isOddDay
-      ? 'Morning Dialogue: The Unlimited Liability Trap in Vendor Contracts'
-      : 'Morning Dialogue: Penalty Clause Limits under Civil Transactions Law';
-
+    // Save to queue
     const queueItem = await saveToQueue({
       slot: 'MORNING',
       scheduled_for: today.toISOString(),
-      status: 'published',
-      heygen_video_id: `yt-pub-morning-${Date.now()}`,
-      youtube_video_id: 'SQRVqOsc8w8',
-      title_ar: topicAr,
-      title_en: topicEn,
-      description_ar: `حوار تنفيذي صباحي يركز على خدمات منصة JurisTech Solutions وحماية الصفقات التجارية.\nزوروا https://www.juristech.solutions\nfounder@juristech.solutions`,
-      description_en: `Executive morning briefing on contract risk radar and auto-redlining.\nhttps://www.juristech.solutions\nfounder@juristech.solutions`,
-      tags: JSON.stringify(['JurisTech', 'LegalTech', 'Shorts', 'AIContracts', 'DealShield']),
-      topic_ar: topicAr,
-      topic_en: topicEn,
+      status: uploadResult?.videoId ? 'published' : (videoResult.videoBuffer ? 'ready' : 'pending'),
+      youtube_video_id: uploadResult?.videoId || null,
+      title_ar: videoResult.script?.titleAr,
+      title_en: videoResult.script?.titleEn,
+      description_ar: videoResult.script?.descriptionAr,
+      description_en: videoResult.script?.descriptionEn,
+      tags: JSON.stringify(videoResult.tags),
+      topic_ar: isArabicDay ? topic : null,
+      topic_en: isArabicDay ? null : topic,
       format: 'YouTube Shorts 9:16',
-      duration_seconds: 52
+      duration_seconds: 60,
+      video_url: uploadResult?.url || null,
     });
 
     return res.status(200).json({
       success: true,
       slot: 'MORNING',
-      format: 'YouTube Shorts (9:16)',
-      status: 'PUBLISHED_AUTONOMOUS',
-      titleAr: topicAr,
-      titleEn: topicEn,
-      queueItemId: queueItem?.id || 'live-queue-synced',
-      dialogueCharacters: ['Ahmed (CEO)', 'Sarah (General Counsel)'],
+      scheduledDate: today.toISOString().split('T')[0],
+      topic,
+      language: lang,
+      engine: videoResult.engine,
+      videoGenerated: Boolean(videoResult.videoBuffer),
+      youtubeVideoId: uploadResult?.videoId || null,
+      youtubeUrl: uploadResult?.url || null,
+      queueItemId: queueItem?.id,
+      title: videoResult.title,
+      message: uploadResult?.videoId
+        ? `✅ Video published to YouTube: https://youtu.be/${uploadResult.videoId}`
+        : videoResult.videoBuffer
+          ? '⚠️ Video generated but YouTube upload failed (check OAuth)'
+          : '⚠️ No video generated (check GEMINI_API_KEY)',
     });
   } catch (err) {
     console.error('[YouTube Morning Cron] Error:', err);
