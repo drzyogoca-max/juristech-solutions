@@ -28,6 +28,12 @@ const ROUTE_METADATA = {
     descriptionAr: 'المنصة الذكية الأولى لتحليل العقود وكشف الثغرات والبنود التعسفية وإدارة المخاطر القانونية للشركات. صياغة العقود التجارية واستشارات قانونية فورية.',
     descriptionEn: 'Enterprise AI contract review dashboard. Instant clause redlining, liability cap analysis, and multi-jurisdictional compliance across US & GCC.',
   },
+  '/ai-advisor': {
+    titleAr: 'المستشار القانوني الذكي للشركات | JurisTech Solutions',
+    titleEn: '24/7 AI Legal Counsel & Virtual Attorney | JurisTech',
+    descriptionAr: 'مستشارك القانوني الذكي المتاح 24 ساعة: استشارات قانونية موثوقة لحل النزاعات العقدية، فحص شروط الاتفاقيات، وتدقيق أنظمة الشركات والعمل بالسعودية والخليج.',
+    descriptionEn: 'Ask Juris — 24/7 enterprise AI legal counsel for corporate disputes, commercial contract terms, Delaware statutes, Saudi Companies Law & GCC regulations.',
+  },
   '/chat': {
     titleAr: 'المستشار القانوني الذكي للشركات | JurisTech Solutions',
     titleEn: '24/7 AI Legal Counsel & Virtual Attorney | JurisTech',

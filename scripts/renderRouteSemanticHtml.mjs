@@ -467,7 +467,7 @@ export function getSemanticHtmlForRoute(routePath, lang = 'ar') {
   }
 
   // 2. Secondary Routes: Clean tool layouts with reserved Advertising / Sponsorship slot
-  if (routePath === '/chat') {
+  if (routePath === '/chat' || routePath === '/ai-advisor') {
     return `
       ${commonHeader}
       <main class="max-w-7xl mx-auto p-6 font-sans text-slate-100" dir="rtl">
@@ -1076,7 +1076,7 @@ export function getEnglishSemanticHtmlForRoute(routePath) {
     `;
   }
 
-  if (routePath === '/chat') {
+  if (routePath === '/chat' || routePath === '/ai-advisor') {
     return `
       ${commonHeader}
       <main class="max-w-7xl mx-auto p-6 font-sans text-slate-100" dir="ltr">

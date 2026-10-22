@@ -91,27 +91,89 @@ async function recordGumroadSale({
       return { success: true, isDatabaseBacked: true, ...data };
     }
 
-    // 2. Direct fallback to insert into transactions / user_subscriptions if RPC differs
-    const insertRes = await fetch(`${supabaseUrl}/rest/v1/billing_transactions`, {
-      method: 'POST',
-      headers: {
-        'apikey': serviceKey,
-        'Authorization': `Bearer ${serviceKey}`,
-        'Content-Type': 'application/json',
-        'Prefer': 'return=minimal',
-      },
-      body: JSON.stringify({
-        invoice_id: `GUM-${saleId.substring(0, 12)}`,
-        user_email: customerEmail,
-        plan_id: planTier,
-        amount_usd: amountUSD,
-        payment_method: 'Gumroad MoR (Card / Apple Pay)',
-        status: 'Paid',
-        sha256_hash: crypto.createHash('sha256').update(`${saleId}:${customerEmail}`).digest('hex'),
-      }),
-    });
+    // 2. Resilient Database Recording into customers, payments & subscriptions
+    let customerId = null;
+    try {
+      const custRes = await fetch(`${supabaseUrl}/rest/v1/customers?email=eq.${encodeURIComponent(customerEmail)}&select=id`, {
+        headers: { 'apikey': serviceKey, 'Authorization': `Bearer ${serviceKey}` }
+      });
+      if (custRes.ok) {
+        const custData = await custRes.json();
+        if (Array.isArray(custData) && custData.length > 0) customerId = custData[0].id;
+      }
+      if (!customerId) {
+        const createCust = await fetch(`${supabaseUrl}/rest/v1/customers`, {
+          method: 'POST',
+          headers: {
+            'apikey': serviceKey,
+            'Authorization': `Bearer ${serviceKey}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=representation'
+          },
+          body: JSON.stringify({
+            email: customerEmail,
+            name: payload.full_name || customerEmail.split('@')[0],
+            verified: true,
+            source: 'gumroad'
+          })
+        });
+        if (createCust.ok) {
+          const created = await createCust.json();
+          customerId = Array.isArray(created) ? created[0]?.id : created?.id;
+        }
+      }
 
-    return { success: insertRes.ok, isDatabaseBacked: true };
+      if (customerId) {
+        // Record completed payment
+        await fetch(`${supabaseUrl}/rest/v1/payments`, {
+          method: 'POST',
+          headers: {
+            'apikey': serviceKey,
+            'Authorization': `Bearer ${serviceKey}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({
+            customer_id: customerId,
+            provider: 'gumroad',
+            provider_payment_id: saleId,
+            amount_usd: amountUSD,
+            currency: currency || 'USD',
+            status: 'completed',
+            payment_method: 'card',
+            verified: true
+          })
+        });
+
+        // Activate customer subscription for 30 days
+        const now = new Date();
+        const nextMonth = new Date(now.getTime() + 30 * 24 * 3600 * 1000);
+        await fetch(`${supabaseUrl}/rest/v1/subscriptions`, {
+          method: 'POST',
+          headers: {
+            'apikey': serviceKey,
+            'Authorization': `Bearer ${serviceKey}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'resolution=merge-duplicates'
+          },
+          body: JSON.stringify({
+            customer_id: customerId,
+            provider: 'gumroad',
+            provider_subscription_id: payload.subscription_id || saleId,
+            plan_tier: planTier,
+            price_usd: amountUSD,
+            status: 'active',
+            verified: true,
+            current_period_start: now.toISOString(),
+            current_period_end: nextMonth.toISOString()
+          })
+        });
+      }
+    } catch (dbErr) {
+      console.warn('[Gumroad Webhook] DB write note:', dbErr.message);
+    }
+
+    return { success: true, isDatabaseBacked: Boolean(customerId) };
   } catch (err) {
     console.error('[Gumroad Database Error]:', err.message);
     return { success: false, isDatabaseBacked: false, error: 'DATABASE_CONNECTION_ERROR' };
