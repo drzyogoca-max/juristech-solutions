@@ -25,7 +25,7 @@ import GumroadPayModal from '../components/GumroadPayModal';
 import GlobalLegalDisclaimer from '../components/GlobalLegalDisclaimer';
 import { activateUserSubscription, BillingTransaction } from '../lib/financialGateway';
 import { usePlatformLocale } from '../lib/universalTranslator';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import SEO from '../components/SEO';
 
 export function buildWhatsAppConciergeUrl(
@@ -309,6 +309,28 @@ export default function PaymentPage() {
       ],
     },
   ];
+
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const planParam = searchParams.get('plan')?.toLowerCase();
+    const methodParam = searchParams.get('method')?.toLowerCase();
+    if (planParam) {
+      const matched = plans.find(p => p.id === planParam || p.id.includes(planParam));
+      if (matched) {
+        if (methodParam === 'wire') {
+          setSelectedWirePlan(matched);
+        } else if (methodParam === 'binance') {
+          setSelectedBinancePlan(matched);
+        } else if (methodParam === 'instapay') {
+          setSelectedInstaPayPlan(matched);
+        } else {
+          setSelectedCardPlan(matched);
+          setCardModalOpen(true);
+        }
+      }
+    }
+  }, [searchParams]);
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans pb-16 selection:bg-cyan-500 selection:text-slate-950" dir={isRtl ? 'rtl' : 'ltr'}>

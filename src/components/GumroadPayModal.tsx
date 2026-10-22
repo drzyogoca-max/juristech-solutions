@@ -68,8 +68,17 @@ export default function GumroadPayModal({
     : parseFloat(String(plan.price).replace(/[^0-9.]/g, '')) || planConfig.priceUSD;
 
   const handleCheckoutClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    openGumroadCheckout(plan.id, { email: email.trim() });
+    const gumroadGlobal = (window as unknown as { GumroadOverlay?: { open: (url: string) => void } })?.GumroadOverlay;
+    if (gumroadGlobal && typeof gumroadGlobal.open === 'function') {
+      try {
+        e.preventDefault();
+        gumroadGlobal.open(currentCheckoutUrl);
+        return;
+      } catch (err) {
+        console.warn('[Gumroad Gateway] Overlay failed, falling back to direct navigation:', err);
+      }
+    }
+    // Allow natural target="_blank" click to proceed directly to currentCheckoutUrl
   };
 
   const handleSaveCustomUrl = (e: React.FormEvent) => {
@@ -195,6 +204,8 @@ export default function GumroadPayModal({
           {/* Primary Action Button */}
           <a
             href={currentCheckoutUrl}
+            target="_blank"
+            rel="noopener noreferrer"
             onClick={handleCheckoutClick}
             data-gumroad-single-product="true"
             className="gumroad-button w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-cyan-500 via-sky-400 to-indigo-500 hover:from-cyan-400 hover:to-indigo-400 text-slate-950 font-black text-sm flex items-center justify-center gap-2 shadow-xl shadow-cyan-500/25 active:scale-95 transition-all cursor-pointer"

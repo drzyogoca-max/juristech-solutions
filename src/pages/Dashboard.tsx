@@ -931,7 +931,7 @@ export default function Dashboard() {
                   </ul>
                 </div>
                 <Link
-                  to="/payment"
+                  to="/payment?plan=startup"
                   className="w-full py-3.5 rounded-2xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs text-center transition-all shadow-lg shadow-cyan-500/20 active:scale-95 cursor-pointer block"
                 >
                   {l('اشتراك باقة الصغرى ($49)', 'Subscribe Startup ($49)')}
@@ -979,7 +979,7 @@ export default function Dashboard() {
                   </ul>
                 </div>
                 <Link
-                  to="/payment"
+                  to="/payment?plan=sme"
                   className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-slate-950 font-black text-xs text-center transition-all shadow-xl shadow-amber-500/25 active:scale-95 cursor-pointer block"
                 >
                   {l('اشتراك باقة المتوسطة ($139)', 'Subscribe SME ($139)')}
@@ -1024,7 +1024,7 @@ export default function Dashboard() {
                   </ul>
                 </div>
                 <Link
-                  to="/payment"
+                  to="/payment?plan=enterprise"
                   className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs text-center transition-all shadow-lg active:scale-95 cursor-pointer block"
                 >
                   {l('اشتراك باقة المؤسسات ($349)', 'Subscribe Enterprise ($349)')}

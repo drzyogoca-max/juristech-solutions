@@ -87,18 +87,23 @@ export default function BankWireModal({
 
   async function handleWireSubmission() {
     setAiScanError(null);
-    if (!companyName.trim() || !officialEmail.trim() || !customerPhone.trim() || !swiftCode.trim() || !senderBankName.trim() || !receiptFile) {
+    if (!officialEmail.trim() || !receiptFile) {
       alert(isRtl 
-        ? 'خطأ أمني: جميع الحقول البنكية (اسم الشركة، الهاتف، البريد الإلكتروني، اسم البنك المحول منه، كود SWIFT، وإرفاق إيصال التحويل) إلزامية بالكامل لتفادي أي محاولات تهرب مالي أو احتيال!' 
-        : 'Security Validation Error: Company name, email, phone, SWIFT code, sender bank, and the receipt upload are strictly mandatory to enforce traceability and prevent evasion!');
+        ? 'يرجى إدخال البريد الإلكتروني المعتمد وإرفاق إيصال التحويل لتأكيد اشتراككم.' 
+        : 'Please provide your official email and attach the bank transfer receipt to complete your subscription verification.');
       return;
     }
+
+    const cleanCompany = companyName.trim() || 'المؤسسة المحولة';
+    const cleanPhone = customerPhone.trim() || 'غير محدد';
+    const cleanSwift = swiftCode.trim() || 'BANK-WIRE';
+    const cleanBank = senderBankName.trim() || 'التحويل المصرفي';
 
     setUploading(true);
 
     try {
       // 1. PRE-UPLOAD AI OCR & DOCUMENT FORENSICS SCAN
-      setScanningStatus(isRtl ? 'جاري فحص المستند بالذكاء الاصطناعي والتحقق من صك السويفت البنكي...' : 'Running Pre-upload AI Scan & Document Forensics...');
+      setScanningStatus(isRtl ? 'جاري فحص المستند والتحقق من بيانات التحويل البنكي...' : 'Verifying Bank Transfer Receipt Details...');
       const ocrData = await extractReceiptData(receiptFile);
       const verification = await runDeepReceiptVerification(
         referenceCode,
@@ -109,14 +114,9 @@ export default function BankWireModal({
         receiptFile.name
       );
 
-      // 2. REJECT FAKE / NON-SWIFT / TAX FORMS / TAMPERED FILES
+      // 2. APPROVAL WORKFLOW — Never block legitimate paying customers abruptly.
       if (verification.verificationStatus === 'FRAUD_BLOCKED') {
-        const errorMsg = isRtl ? MANDATORY_REJECTION_MESSAGE_AR : MANDATORY_REJECTION_MESSAGE_EN;
-        setAiScanError(errorMsg);
-        alert(errorMsg);
-        setUploading(false);
-        setScanningStatus(null);
-        return;
+        verification.verificationStatus = 'NEEDS_ADMIN_REVIEW';
       }
 
       // 3. STRICT APPROVAL WORKFLOW (Pending Verification)
@@ -140,10 +140,10 @@ export default function BankWireModal({
       await saveFinancialReceipt({
         transaction_ref: referenceCode,
         user_email: officialEmail.trim(),
-        user_name: companyName.trim(),
-        company_name: companyName.trim(),
-        swift_code: swiftCode.trim(),
-        sender_bank_name: senderBankName.trim(),
+        user_name: cleanCompany,
+        company_name: cleanCompany,
+        swift_code: cleanSwift,
+        sender_bank_name: cleanBank,
         amount: packagePrice,
         plan_name: packageName,
         receipt_url: receiptUrl,
