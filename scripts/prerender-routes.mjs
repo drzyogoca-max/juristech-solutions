@@ -166,6 +166,12 @@ const ROUTE_METADATA = {
     descriptionAr: 'استخراج وتجهيز العروض الفنية والمالية للشركات الكبرى بالذكاء الاصطناعي مع تدقيق الالتزامات والشروط التعاقدية.',
     descriptionEn: 'Automated C-Suite B2B proposal generation and RFP compliance auditing for global enterprise clients.',
   },
+  '/blocked': {
+    titleAr: 'الوصول محظور | قيود جغرافية وعقوبات دولية | JurisTech Solutions',
+    titleEn: 'Access Restricted | Regional & Sanctions Compliance | JurisTech',
+    descriptionAr: 'الوصول لمنصة JurisTech Solutions محظور للزوار من النطاقات الجغرافية الخاضعة للعقوبات الاقتصادية والقيود الدولية المعتمدة.',
+    descriptionEn: 'Access to JurisTech Solutions is restricted in accordance with international economic sanctions and regulatory compliance policies.',
+  },
   '/payment/verify': {
     titleAr: 'التحقق من إيصالات السداد والاشتراك | JurisTech Solutions',
     titleEn: 'Payment Receipt Verification & Status | JurisTech Solutions',
