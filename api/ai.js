@@ -503,7 +503,6 @@ function generateHighPrecisionSynthesis(prompt, isAr) {
     return generateDynamicAuditReport(prompt, isAr);
   }
 
-  const p = prompt.toLowerCase().trim();
 
   // 0. Greetings
   const isGreeting = /^(hello|hi|hey|greetings|good\s*(morning|afternoon|evening)|مرحبا|مرحباً|أهلا|أهلاً|السلام\s*عليكم|سلام|كيفك|كيف\s*الحال)$/i.test(p);
