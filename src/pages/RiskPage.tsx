@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import {
   AlertTriangle, Loader2, ShieldAlert,
   Upload, FileText, X, Globe, Filter, Download, CheckCircle2, ShieldCheck, Copy, Check,
-  Sparkles, Scale, Layers, ArrowRight, Eye, RefreshCw
+  Sparkles, Scale, Layers, ArrowRight, Eye, RefreshCw, Lock, Crown, Zap, ExternalLink
 } from 'lucide-react';
 import { supabase } from '../lib/supabaseClient';
 import { detectVisitorJurisdiction, JurisdictionInfo, JURISDICTIONS } from '../lib/jurisdiction';
@@ -19,15 +20,24 @@ import VisualRedlineDiffModal from '../components/VisualRedlineDiffModal';
 import { aiAnalytics } from '../analytics/aiAnalytics';
 import { usePlatformLocale } from '../lib/universalTranslator';
 import { useSaaS } from '../context/SaaSContext';
-import PremiumFeatureGuard from '../components/PremiumFeatureGuard';
+import { useAuth } from '../lib/authContext';
+import { useSubscription } from '../hooks/useSubscription';
+import { TIER_WEIGHTS } from '../components/PremiumFeatureGuard';
 import GlobalLegalDisclaimer from '../components/GlobalLegalDisclaimer';
 import RelatedServices from '../components/RelatedServices';
 import { SAMPLE_8_AXIS_REPORT } from '../data/sampleRiskReport';
 
 export default function RiskPage() {
+  const navigate = useNavigate();
   const { l, isRtl } = usePlatformLocale();
   const { organization, workspace } = useSaaS();
   const { contractState, setContractData, updateAuditResults, clearContractData } = useContract();
+  const { user, isAdmin, isLawyer } = useAuth();
+  const { tier } = useSubscription();
+
+  const userRank = TIER_WEIGHTS[tier] ?? 0;
+  // Full access: Admin, Lawyer, or authenticated Subscriber with Startup tier (rank 1) or higher
+  const isAuthorized = Boolean(isAdmin || isLawyer || (user && userRank >= 1));
 
   const [contractText, setContractText] = useState(contractState.extractedText || '');
   const [fileName, setFileName] = useState(contractState.fileName || '');
@@ -162,6 +172,10 @@ export default function RiskPage() {
   }
 
   const handleExportFullAudit = (format: 'pdf' | 'docx') => {
+    if (!isAuthorized) {
+      document.getElementById('smart-risk-paywall')?.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
     if (!auditReport) return;
     const docTitle = auditReport.documentTitle || 'Legal_Contract_Audit_Report';
 
@@ -203,6 +217,11 @@ Authorized by JurisTech Supreme Legal Architecture Engine.
 
     exportDocumentMultiFormat(content, docTitle, 'JurisTech Legal', 'Client Corp', format, isRtl ? 'ar' : 'en');
   };
+
+  const singleAuditMsg = isRtl
+    ? `مرحباً د. محمد مصطفى، أرغب في شراء فحص فوري لعقد واحد ($19) لعقدي (${fileName || 'المرفق على المنصة'}) لفتح التقرير التشريعي الشامل وتنزيل ملفات PDF/Word.`
+    : `Hello Dr. Mohammad Mustafa, I would like to purchase a Single Contract Audit Pass ($19) for my contract (${fileName || 'uploaded agreement'}) to unlock the full 8-axis report and download certified PDF/Word files.`;
+  const singleAuditWhatsAppUrl = `https://wa.me/201126674337?text=${encodeURIComponent(singleAuditMsg)}`;
 
   return (
     <main className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans" dir={isRtl ? 'rtl' : 'ltr'}>
@@ -259,13 +278,8 @@ Authorized by JurisTech Supreme Legal Architecture Engine.
         {/* Global Legal Disclaimer Banner */}
         <GlobalLegalDisclaimer variant="banner" />
 
-        <PremiumFeatureGuard
-          requiredTier="Startup"
-          featureNameEn="8-Axis Statutory Contract Risk Audit"
-          featureNameAr="الفحص والتدقيق التشريعي للعقود بـ 8 محاور"
-        >
-          {/* Autonomous Proactive Compliance & Risk Engine Banner */}
-          <AutonomousRiskPanel />
+        {/* Autonomous Proactive Compliance & Risk Engine Banner */}
+        <AutonomousRiskPanel />
 
           {/* 30+ Country Jurisdiction Selector */}
           <div className="bg-white dark:bg-slate-900/90 p-5 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-3 shadow-sm dark:shadow-xl">
@@ -396,15 +410,27 @@ Authorized by JurisTech Supreme Legal Architecture Engine.
               <div className="flex flex-wrap items-center gap-2">
                 <button
                   onClick={() => handleExportFullAudit('pdf')}
-                  className="px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs flex items-center gap-1.5 transition-all shadow-lg shadow-emerald-500/20 cursor-pointer"
+                  className={`px-4 py-2.5 rounded-xl font-black text-xs flex items-center gap-1.5 transition-all shadow-lg cursor-pointer ${
+                    isAuthorized
+                      ? 'bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-emerald-500/20'
+                      : 'bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-emerald-500/30'
+                  }`}
                 >
-                  <Download className="w-4 h-4" /> {l('تصدير تقرير PDF رسمي', 'Official PDF Report')}
+                  {isAuthorized ? <Download className="w-4 h-4" /> : <Lock className="w-3.5 h-3.5 text-amber-400" />}
+                  <span>{l('تصدير تقرير PDF رسمي', 'Official PDF Report')}</span>
+                  {!isAuthorized && <span className="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded font-mono font-bold">PRO</span>}
                 </button>
                 <button
                   onClick={() => handleExportFullAudit('docx')}
-                  className="px-4 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs flex items-center gap-1.5 transition-all shadow-lg shadow-cyan-600/20 cursor-pointer"
+                  className={`px-4 py-2.5 rounded-xl font-bold text-xs flex items-center gap-1.5 transition-all shadow-lg cursor-pointer ${
+                    isAuthorized
+                      ? 'bg-cyan-600 hover:bg-cyan-500 text-white shadow-cyan-600/20'
+                      : 'bg-slate-800 hover:bg-slate-700 text-cyan-400 border border-cyan-500/30'
+                  }`}
                 >
-                  <Download className="w-4 h-4" /> {l('تصدير Word (.docx)', 'Word Document (.docx)')}
+                  {isAuthorized ? <Download className="w-4 h-4" /> : <Lock className="w-3.5 h-3.5 text-amber-400" />}
+                  <span>{l('تصدير Word (.docx)', 'Word Document (.docx)')}</span>
+                  {!isAuthorized && <span className="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded font-mono font-bold">PRO</span>}
                 </button>
               </div>
             </div>
@@ -443,86 +469,223 @@ Authorized by JurisTech Supreme Legal Architecture Engine.
 
             {/* 4. The 8-Axis Itemized Breakdown Grid */}
             <div className="space-y-4">
-              <h3 className="font-extrabold text-sm text-white flex items-center gap-2">
-                <Layers className="w-4 h-4 text-amber-400" />
-                <span>{l('فحص المحاور التشريعية الثمانية (8-Axis Statutory Breakdown):', '8-Axis Statutory Deep Breakdown:')}</span>
-              </h3>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <h3 className="font-extrabold text-sm text-white flex items-center gap-2">
+                  <Layers className="w-4 h-4 text-amber-400" />
+                  <span>{l('فحص المحاور التشريعية الثمانية (8-Axis Statutory Breakdown):', '8-Axis Statutory Deep Breakdown:')}</span>
+                </h3>
+                {!isAuthorized && (
+                  <span className="text-xs text-amber-400 font-bold flex items-center gap-1.5 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>{l('المحور الأول مفتوح كعينة حية — المحاور الـ 7 المتبقية مقفلة', 'Axis 1 unlocked as live sample — Remaining 7 locked')}</span>
+                  </span>
+                )}
+              </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {auditReport.axes.map((axis) => (
-                  <div
-                    key={axis.axisId}
-                    className="p-5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-slate-700 transition-all space-y-3 flex flex-col justify-between"
-                  >
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between gap-2">
-                        <h4 className="text-xs font-bold text-white">
-                          {isRtl ? axis.axisNameAr : axis.axisNameEn}
-                        </h4>
-                        <span className={`px-2 py-0.5 rounded text-[10px] font-black uppercase shrink-0 ${
-                          axis.severity === 'Critical' ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30' :
-                          axis.severity === 'High' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' :
-                          axis.severity === 'Medium' ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30' :
-                          'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                        }`}>
-                          {axis.score}/100
-                        </span>
-                      </div>
+                {auditReport.axes.map((axis, idx) => {
+                  const isAxisUnlocked = isAuthorized || idx === 0;
 
-                      <p className="text-[11px] text-indigo-300 font-mono line-clamp-2">
-                        {isRtl ? axis.statutoryBasisAr : axis.statutoryBasisEn}
-                      </p>
-
-                      <div className="space-y-1">
-                        {(isRtl ? axis.identifiedRisksAr : axis.identifiedRisksEn).slice(0, 1).map((risk, i) => (
-                          <span key={i} className="text-[11px] text-slate-400 block truncate">
-                            • {risk}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    <button
-                      onClick={() => {
-                        setSelectedAxisForDiff(axis);
-                        setShowDiffModal(true);
-                        aiAnalytics.trackEvent({
-                          eventName: 'REDLINE_VIEWED',
-                          feature: 'contract_analysis',
-                          userTier: 'pro',
-                          locale: isRtl ? 'ar' as any : 'en' as any,
-                          jurisdiction: (jurisdiction?.countryCode || 'UNKNOWN') as any,
-                          success: true,
-                        });
-                      }}
-                      className="w-full py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-bold text-cyan-400 hover:text-cyan-300 flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                  return (
+                    <div
+                      key={axis.axisId}
+                      className={`relative p-5 rounded-2xl bg-slate-950 border transition-all space-y-3 flex flex-col justify-between overflow-hidden ${
+                        isAxisUnlocked
+                          ? 'border-slate-800 hover:border-slate-700'
+                          : 'border-slate-800/80 bg-slate-950/60'
+                      }`}
                     >
-                      <Eye className="w-3.5 h-3.5" />
-                      <span>{l('عرض الصياغة البديلة والمقارنة', 'View Redline & Diff')}</span>
-                    </button>
-                  </div>
-                ))}
+                      {/* Live sample badge for Axis 1 in teaser mode */}
+                      {!isAuthorized && idx === 0 && (
+                        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold w-fit mb-1">
+                          <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                          <span>{l('محور عينة مفتوح بالكامل مجاناً', 'Free Live Sample Axis')}</span>
+                        </div>
+                      )}
+
+                      <div className={`space-y-2 ${!isAxisUnlocked ? 'filter blur-[2.5px] select-none pointer-events-none opacity-40' : ''}`}>
+                        <div className="flex items-center justify-between gap-2">
+                          <h4 className="text-xs font-bold text-white">
+                            {isRtl ? axis.axisNameAr : axis.axisNameEn}
+                          </h4>
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-black uppercase shrink-0 ${
+                            axis.severity === 'Critical' ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30' :
+                            axis.severity === 'High' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' :
+                            axis.severity === 'Medium' ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30' :
+                            'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                          }`}>
+                            {axis.score}/100
+                          </span>
+                        </div>
+
+                        <p className="text-[11px] text-indigo-300 font-mono line-clamp-2">
+                          {isRtl ? axis.statutoryBasisAr : axis.statutoryBasisEn}
+                        </p>
+
+                        <div className="space-y-1">
+                          {(isRtl ? axis.identifiedRisksAr : axis.identifiedRisksEn).slice(0, 1).map((risk, i) => (
+                            <span key={i} className="text-[11px] text-slate-400 block truncate">
+                              • {risk}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      {isAxisUnlocked ? (
+                        <button
+                          onClick={() => {
+                            setSelectedAxisForDiff(axis);
+                            setShowDiffModal(true);
+                            aiAnalytics.trackEvent({
+                              eventName: 'REDLINE_VIEWED',
+                              feature: 'contract_analysis',
+                              userTier: isAuthorized ? 'pro' : 'free',
+                              locale: isRtl ? 'ar' as any : 'en' as any,
+                              jurisdiction: (jurisdiction?.countryCode || 'UNKNOWN') as any,
+                              success: true,
+                            });
+                          }}
+                          className="w-full py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-bold text-cyan-400 hover:text-cyan-300 flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                        >
+                          <Eye className="w-3.5 h-3.5" />
+                          <span>{l('عرض الصياغة البديلة والمقارنة', 'View Redline & Diff')}</span>
+                        </button>
+                      ) : (
+                        <div className="absolute inset-0 bg-slate-950/75 backdrop-blur-[1px] p-4 flex flex-col items-center justify-center text-center gap-2 z-10">
+                          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[11px] font-bold">
+                            <Lock className="w-3.5 h-3.5" />
+                            <span>{isRtl ? axis.axisNameAr : axis.axisNameEn}</span>
+                          </div>
+                          <p className="text-[10px] text-slate-400 max-w-[220px]">
+                            {l('متاح بالصياغات البديلة المعتمدة في التقرير الشامل', 'Included with redlines in Full Audit Report')}
+                          </p>
+                          <button
+                            onClick={() => {
+                              document.getElementById('smart-risk-paywall')?.scrollIntoView({ behavior: 'smooth' });
+                            }}
+                            className="px-3.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 text-[11px] font-black flex items-center gap-1 transition-all shadow-md cursor-pointer active:scale-95"
+                          >
+                            <span>{l('فك القفل الآن', 'Unlock Axis')}</span>
+                            <ArrowRight className={`w-3 h-3 ${isRtl ? 'rotate-180' : ''}`} />
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
+            {/* SMART VALUE-FIRST PAYWALL (Teaser Gate) */}
+            {!isAuthorized && (
+              <div
+                id="smart-risk-paywall"
+                className="relative rounded-3xl p-6 sm:p-8 bg-gradient-to-br from-[#0c1933] via-[#091326] to-[#040915] border-2 border-amber-500/50 shadow-2xl shadow-amber-950/40 space-y-6 overflow-hidden"
+              >
+                <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+                <div className="absolute bottom-0 left-0 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+
+                <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                  <div className="space-y-3 max-w-2xl">
+                    <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-400 text-xs font-bold">
+                      <Crown className="w-4 h-4 text-amber-400" />
+                      <span>{l('بوابة فك الحظر والترقية الذكية (Smart Upgrade Gateway)', 'Smart Value-First Paywall')}</span>
+                    </div>
+
+                    <h3 className="text-xl sm:text-2xl font-black text-white">
+                      {l(
+                        'افتح التقرير التشريعي الشامل وكافة الصياغات البديلة المعتمدة',
+                        'Unlock Complete 8-Axis Statutory Audit & Certified Counter-Drafting'
+                      )}
+                    </h3>
+
+                    <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+                      {l(
+                        'لقد تم كشف المحور الأول كعينة حية. يتضمن التقرير الشامل تفكيك كافة الثغرات القانونية الخطيرة، الصياغات البديلة المعتمدة قضائياً، وتنزيل التقرير الرسمي بختم المنصة بصيغتي Word (.docx) و PDF.',
+                        'Axis 1 has been previewed. The certified full audit unlocks all 7 remaining statutory axes, litigation-tested counter clauses, and official signed PDF & Word (.docx) export.'
+                      )}
+                    </p>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2 text-xs">
+                      <div className="flex items-center gap-2 text-slate-200">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                        <span>{l('فتح المحاور الـ 7 المتبقية وكافة بنود الإذعان', 'Unlock all 7 remaining axes & adhesion traps')}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-slate-200">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                        <span>{l('صياغات بديلة مضادة (Redlines) جاهزة للتفاوض', 'Litigation-tested counter-drafting redlines')}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-slate-200">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                        <span>{l('تحميل التقرير الرسمي الشامل بـ Word و PDF', 'Download certified Word (.docx) & PDF reports')}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-slate-200">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                        <span>{l('التوصيات الاستراتيجية لإغلاق الصفقة بأمان', 'Strategic deal-closing recommendations')}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0 lg:w-80">
+                    <button
+                      onClick={() => navigate('/payment?plan=startup')}
+                      className="w-full p-4 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xl shadow-amber-500/25 active:scale-95 transition-all cursor-pointer"
+                    >
+                      <Crown className="w-4 h-4 text-slate-950" />
+                      <span>{l('باقة الشركات الناشئة ($49/شهرياً)', 'Startup Plan ($49/mo) — Best Value')}</span>
+                    </button>
+
+                    <a
+                      href={singleAuditWhatsAppUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full p-3.5 rounded-2xl bg-emerald-500/10 hover:bg-emerald-500/20 border-2 border-emerald-500/50 text-emerald-300 font-extrabold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer text-center"
+                    >
+                      <Zap className="w-4 h-4 text-emerald-400" />
+                      <span>{l('شراء فحص فوري لهذا العقد فقط ($19)', 'Single Audit Pass ($19 — One-Time)')}</span>
+                    </a>
+
+                    <span className="text-[11px] text-center text-slate-400">
+                      {l('تفعيل فوري وآمن 100% مع ضمان الخصوصية والسيادة', 'Instant activation • 100% sovereign & confidential')}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* 5. Strategic Recommendations List */}
-            <div className="bg-indigo-950/30 p-5 rounded-2xl border border-indigo-500/30 space-y-3">
+            <div className="bg-indigo-950/30 p-5 rounded-2xl border border-indigo-500/30 space-y-3 relative overflow-hidden">
               <h3 className="font-extrabold text-sm text-cyan-400 flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4" />
                 <span>{l('التوصيات الاستراتيجية لإغلاق الصفقة بأمان تام:', 'Strategic Deal Closing Recommendations:')}</span>
               </h3>
               <ul className="space-y-2 text-xs font-sans text-slate-200">
-                {(isRtl ? auditReport.strategicDealRecommendationsAr : auditReport.strategicDealRecommendationsEn).map((rec, i) => (
-                  <li key={i} className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                    <span>{rec}</span>
-                  </li>
-                ))}
+                {(isRtl ? auditReport.strategicDealRecommendationsAr : auditReport.strategicDealRecommendationsEn)
+                  .slice(0, isAuthorized ? undefined : 1)
+                  .map((rec, i) => (
+                    <li key={i} className="flex items-start gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                      <span>{rec}</span>
+                    </li>
+                  ))}
               </ul>
+              {!isAuthorized && (
+                <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between flex-wrap gap-2">
+                  <span className="text-xs text-slate-400">
+                    {l('هناك توصيات استراتيجية إضافية لإغلاق الصفقة متاحة في التقرير الشامل.', 'Additional strategic deal-closing recommendations available in Full Report.')}
+                  </span>
+                  <button
+                    onClick={() => document.getElementById('smart-risk-paywall')?.scrollIntoView({ behavior: 'smooth' })}
+                    className="text-xs text-amber-400 font-bold hover:underline flex items-center gap-1 cursor-pointer"
+                  >
+                    <span>{l('عرض كافة التوصيات', 'View All Recommendations')}</span>
+                    <ArrowRight className={`w-3.5 h-3.5 ${isRtl ? 'rotate-180' : ''}`} />
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         )}
-        </PremiumFeatureGuard>
 
         {/* Global Legal Disclaimer Card */}
         <GlobalLegalDisclaimer variant="card" />
