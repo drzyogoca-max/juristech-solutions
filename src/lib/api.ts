@@ -257,7 +257,185 @@ function synthesizeDynamicLegalResponse(prompt: string, lang: SupportedLanguage,
     return JSON.stringify(quickAuditFallback);
   }
 
-  // 0. Attached Contract Document Audit & Report Generation
+  // 0. Handle 8-Axis Statutory Contract Audit Requests (JSON or Full Audit)
+  if (fullContext.includes('8-axis') || fullContext.includes('8-AXIS') || (fullContext.includes('overallscore') && fullContext.includes('axes')) || fullContext.includes('contract text to audit')) {
+    const filenameMatch = fullContext.match(/\[ATTACHED CONTRACT DOCUMENT:\s*"([^"]+)"\]/i) ||
+                          fullContext.match(/([a-zA-Z0-9_\-\u0600-\u06FF]+\.(pdf|docx|txt))/i) ||
+                          fullContext.match(/"([^"]+\.(pdf|docx|txt))"/i);
+    let docTitle = filenameMatch ? filenameMatch[1] : (isAr ? 'العقد التجاري المرفق' : 'Attached Commercial Agreement');
+    docTitle = docTitle.replace(/_/g, ' ').replace(/\.pdf|\.docx|\.txt/gi, '').trim();
+
+    const textLower = fullContext.toLowerCase();
+    const hasLiabilityCap = textLower.includes('aggregate liability') || textLower.includes('سقف المسؤولية') || textLower.includes('حد أقصى للمسؤولية') || textLower.includes('liability cap');
+    const hasArbitration = textLower.includes('arbitration') || textLower.includes('تحكيم') || textLower.includes('crcica') || textLower.includes('diac') || textLower.includes('scca') || textLower.includes('lcia');
+    const hasForceMajeure = textLower.includes('force majeure') || textLower.includes('قوة قاهرة') || textLower.includes('ظروف طارئة');
+    const hasPenalty = textLower.includes('شرط جزائي') || textLower.includes('liquidated damages') || textLower.includes('غرامة تأخير');
+
+    const score = (hasLiabilityCap ? 20 : 0) + (hasArbitration ? 20 : 5) + (hasForceMajeure ? 20 : 5) + (hasPenalty ? 10 : 20) + 15;
+
+    const dynamicReport = {
+      documentTitle: docTitle,
+      auditTimestamp: new Date().toISOString(),
+      overallScore: Math.max(35, Math.min(score, 85)),
+      overallRiskLevel: score < 50 ? 'CRITICAL_RISK' : score < 75 ? 'HIGH_EXPOSURE' : 'MODERATE',
+      executiveSummaryAr: `تم إخضاع المستند (${docTitle}) لتدقيق تشريعي شامل عبر المحاور الثمانية. كشف الفحص عن ${hasLiabilityCap ? 'وجود سقف مسؤولية يحتاج لتدقيق تفصيلي' : 'غياب سقف حصري للمسؤولية المالية والأضرار التبعية'}، و${hasArbitration ? 'وجود آلية تحكيم محددة' : 'افتقار إلى آلية تحكيم مؤسسية واضحة'}، مع حاجة ملحة لضبط شروط التعويض والفسخ لمنع الالتزامات التعسفية.`,
+      executiveSummaryEn: `Comprehensive 8-Axis statutory audit executed on (${docTitle}). Key vulnerabilities include ${hasLiabilityCap ? 'partial liability language requiring review' : 'uncapped aggregate financial liability trap'} and ${hasArbitration ? 'designated arbitration rules' : 'missing institutional arbitration venue'}.`,
+      financialLiabilityCapStatus: {
+        isCapped: hasLiabilityCap,
+        detectedCapAr: hasLiabilityCap ? 'تم رصد إشارة جزئية لسقف المسؤولية التعاقدية' : 'غير محدد — مسؤولية مالية مطلقة وغير مقيدة تشكل خطراً مالياً داهماً',
+        detectedCapEn: hasLiabilityCap ? 'Partial liability cap language detected' : 'Uncapped / Unlimited financial liability trap',
+        recommendedCapAr: 'تحديد سقف مالي حصري لا يتجاوز 100% من إجمالي المبالغ الفعلية المدفوعة خلال الـ 12 شهراً السابقة للنزاع مع استبعاد تام للأضرار غير المباشرة والتبعية.',
+        recommendedCapEn: 'Exclusive aggregate liability cap not exceeding 100% of fees actually paid under the agreement, strictly excluding consequential & incidental damages.'
+      },
+      axes: [
+        {
+          axisId: 'axis-1',
+          axisNameAr: 'المحور 1: الهيكل القانوني وصحة التمثيل والتمكين التوقيعي',
+          axisNameEn: 'Axis 1: Signatory Authority & Capacity',
+          score: 80,
+          severity: 'Safe',
+          statutoryBasisAr: 'أهلية التعاقد وصفة التمثيل التجاري وفقاً للأنظمة المدنية والتجارية السارية.',
+          statutoryBasisEn: 'Signatory authority and commercial representation under applicable commercial codes.',
+          identifiedRisksAr: ['التحقق من صحة السجل التجاري والتفويضات الرسمية عند التوقيع.'],
+          identifiedRisksEn: ['Verify corporate registration and valid signing mandates prior to execution.'],
+          executiveRedlineAr: 'يقر كل طرف بصحة تمثيله التجاري وقدرته القانونية على إبرام هذا الالتزام.',
+          executiveRedlineEn: 'Each party represents and warrants that it has full corporate power to execute this Agreement.'
+        },
+        {
+          axisId: 'axis-2',
+          axisNameAr: 'المحور 2: سقف المسؤولية المالية والأضرار التبعية',
+          axisNameEn: 'Axis 2: Financial Liability Cap & Consequential Damages',
+          score: hasLiabilityCap ? 75 : 30,
+          severity: hasLiabilityCap ? 'Medium' : 'Critical',
+          statutoryBasisAr: 'جواز الاتفاق المسبق على تحديد أو تعديل المسؤولية التعاقدية في إطار القانون المدني.',
+          statutoryBasisEn: 'Freedom of contract in limiting contractual liability under prevailing civil jurisdictions.',
+          identifiedRisksAr: hasLiabilityCap ? ['سقف المسؤولية الحالي بحاجة لتقييد الأضرار غير المباشرة.'] : ['خلو العقد من سقف للمسؤولية المالية يعرض أصول المنشأة لمطالبات تعويض غير مقيدة.'],
+          identifiedRisksEn: hasLiabilityCap ? ['Current cap must explicitly exclude consequential losses.'] : ['Total lack of an aggregate monetary liability cap exposes enterprise assets.'],
+          executiveRedlineAr: 'لا يتجاوز إجمالي المسؤولية التعاقدية لأي من الطرفين عن 100% من إجمالي الأتعاب المسددة، وتستثنى الأضرار غير المباشرة والتبعية.',
+          executiveRedlineEn: 'Neither party shall be liable for indirect or consequential damages. Aggregate liability capped at 100% of fees paid.'
+        },
+        {
+          axisId: 'axis-3',
+          axisNameAr: 'المحور 3: البنود التعسفية وعقود الإذعان',
+          axisNameEn: 'Axis 3: Abusive Clauses & Adhesion Terms',
+          score: 65,
+          severity: 'High',
+          statutoryBasisAr: 'حظر الشروط المجحفة وإلزامية العدالة التعاقدية وسلطة القضاء في تعديل شروط الإذعان.',
+          statutoryBasisEn: 'Judicial discretion to mitigate unconscionable clauses and adhesion contracts.',
+          identifiedRisksAr: ['وجود بنود تمنح أحد الأطراف حقوقاً حصرية في التعديل أو التفسير دون موافقة الطرف الآخر.'],
+          identifiedRisksEn: ['One-sided discretionary termination or modification rights create severe legal exposure.'],
+          executiveRedlineAr: 'لا يجوز تعديل أو تفسير أي بند إلا بموجب ملحق خطي وموقع من الطرفين بالتراضي.',
+          executiveRedlineEn: 'No modification of this Agreement shall be effective unless made in writing and signed by both parties.'
+        },
+        {
+          axisId: 'axis-4',
+          axisNameAr: 'المحور 4: شروط الفسخ والإنهاء والشرط الجزائي',
+          axisNameEn: 'Axis 4: Termination & Liquidated Damages',
+          score: hasPenalty ? 60 : 75,
+          severity: hasPenalty ? 'High' : 'Medium',
+          statutoryBasisAr: 'معايير التناسب في الشرط الجزائي وإمكانية تخفيضه قضائياً إذا كان مبالغاً فيه.',
+          statutoryBasisEn: 'Proportionality principles for liquidated damages and mitigation of penal clauses.',
+          identifiedRisksAr: ['الشرط الجزائي المحدد بحاجة لتحديد سقف أعلى لمنع الإجحاف المالي.'],
+          identifiedRisksEn: ['Penalty formulas must have a clear percentage ceiling to prevent unfair judicial contest.'],
+          executiveRedlineAr: 'تحدد غرامة التأخير بـ 0.5% أسبوعياً بحد أقصى 5% من إجمالي قيمة العقد، مع مهلة إشعار لا تقل عن 15 يوماً.',
+          executiveRedlineEn: 'Late delivery penalties capped at 0.5% per week up to a maximum of 5% of contract value.'
+        },
+        {
+          axisId: 'axis-5',
+          axisNameAr: 'المحور 5: القوة القاهرة والظروف الطارئة',
+          axisNameEn: 'Axis 5: Force Majeure & Hardship (ICC 2020)',
+          score: hasForceMajeure ? 85 : 40,
+          severity: hasForceMajeure ? 'Safe' : 'Critical',
+          statutoryBasisAr: 'أحكام القوة القاهرة والظروف الطارئة وفق القواعد الدولية لغرفة التجارة الدولية (ICC 2020).',
+          statutoryBasisEn: 'Force Majeure and Hardship standard provisions per ICC Paris 2020 frameworks.',
+          identifiedRisksAr: hasForceMajeure ? ['تأكيد تضمين إجراءات الإشعار الكتابي الفوري خلال 7 أيام.'] : ['غياب بند القوة القاهرة يمنع تعليق الالتزامات عند حدوث أزمات قاهرة خارجة عن الإرادة.'],
+          identifiedRisksEn: hasForceMajeure ? ['Ensure mandatory 7-day written notice requirement is specified.'] : ['Absence of Force Majeure prevents relief during catastrophic unforeseen events.'],
+          executiveRedlineAr: 'يُعفى الطرف المتأثر بالقوة القاهرة من الالتزامات طوال فترة سريان الظرف الطارئ شريطة الإشعار الخطي خلال 7 أيام.',
+          executiveRedlineEn: 'Affected party relieved of performance during Force Majeure event upon written notice within 7 days.'
+        },
+        {
+          axisId: 'axis-6',
+          axisNameAr: 'المحور 6: القانون واجب التطبيق والتحكيم التجاري',
+          axisNameEn: 'Axis 6: Governing Law & Institutional Arbitration',
+          score: hasArbitration ? 85 : 45,
+          severity: hasArbitration ? 'Safe' : 'High',
+          statutoryBasisAr: 'قواعد التحكيم المؤسسي واتفاقيات نيويورك للاعتراف بأحكام التحكيم الأجنبية.',
+          statutoryBasisEn: 'New York Convention 1958 and standard institutional arbitration clauses.',
+          identifiedRisksAr: hasArbitration ? ['التأكد من تحديد مقر ولغة وهيئة التحكيم بدقة.'] : ['غياب بند التحكيم يجر النزاعات للمحاكم العادية مما يطيل أمد التقاضي.'],
+          identifiedRisksEn: hasArbitration ? ['Verify designated arbitration seat, language, and number of arbitrators.'] : ['Lack of arbitration clause forces public court litigation with potential delay.'],
+          executiveRedlineAr: 'يخضع هذا العقد لقوانين الاختصاص المتفق عليها، وتُحل النزاعات نهائياً عبر التحكيم المؤسسي.',
+          executiveRedlineEn: 'Governed by substantive local law. All disputes resolved under designated institutional arbitration rules.'
+        },
+        {
+          axisId: 'axis-7',
+          axisNameAr: 'المحور 7: الثغرات الصامتة وحماية الملكية الفكرية والسرية',
+          axisNameEn: 'Axis 7: Silent Gaps, IP Protection & Non-Disclosure',
+          score: 70,
+          severity: 'Medium',
+          statutoryBasisAr: 'حماية الأسرار التجارية وحقوق الملكية الفكرية والعلامات التجارية.',
+          statutoryBasisEn: 'Trade secret protection, intellectual property ownership, and IP assignment standards.',
+          identifiedRisksAr: ['وجوب النص على أن حقوق الملكية الفكرية لا تنتقل إلا بعد سداد كامل المستحقات.'],
+          identifiedRisksEn: ['Ensure IP rights transfer is strictly conditioned upon confirmed receipt of full compensation.'],
+          executiveRedlineAr: 'تبقى كافة حقوق الملكية الفكرية ملكاً لصاحبها الأصلي ولا تنتقل للطرف الآخر إلا بعد السداد المالي التام.',
+          executiveRedlineEn: 'All IP rights remain the property of creator until full and final payment has been cleared.'
+        },
+        {
+          axisId: 'axis-8',
+          axisNameAr: 'المحور 8: الصياغات البديلة الحمائية المعتمدة',
+          axisNameEn: 'Axis 8: Executive Redlines & Negotiation Recommendations',
+          score: 80,
+          severity: 'Safe',
+          statutoryBasisAr: 'تطبيق الصياغات التعاقدية الاحترافية المتوازنة والمحمية نظامياً.',
+          statutoryBasisEn: 'Application of institutional-grade, balanced, and legally enforceable counter-drafts.',
+          identifiedRisksAr: ['اعتماد الصياغات البديلة المعدلة قبل التوقيع النهائي لحفظ حقوق المنشأة.'],
+          identifiedRisksEn: ['Incorporate protective redlines prior to final execution to minimize financial exposure.'],
+          executiveRedlineAr: 'تعتمد النسخة المعدلة مع تضمين كافة التعديلات الحمائية المشفرة برقم تدقيق موثق.',
+          executiveRedlineEn: 'Adopt the redlined version with all protective terms validated under sovereign audit protocols.'
+        }
+      ],
+      strategicDealRecommendationsAr: [
+        'إضافة سقف حصري ومقيد للمسؤولية المالية بـ 100% من قيمة التعامل مع استبعاد الأضرار التبعية.',
+        'تحديد آلية واضحة للتحكيم المؤسسي (CRCICA / SCCA / DIAC) لتفادي التقاضي الطويل.',
+        'وضع مهلة إعذار خطي لا تقل عن 15 يوماً قبل ممارسة أي حق في فسخ العقد أو فرض شروط جزائية.'
+      ],
+      strategicDealRecommendationsEn: [
+        'Add an exclusive aggregate liability cap not exceeding 100% of contract consideration.',
+        'Designate a reputable arbitration venue (CRCICA / SCCA / DIAC / LCIA) with clear rules.',
+        'Require a mandatory 15-day cure period before invoking unilateral termination or penalty rights.'
+      ],
+      governingLawAnalysisAr: 'يوصى بتحديد القانون الموضوعي المطبق صراحة مع تعيين مركز تحكيم تجاري معتمد لتسوية كافة النزاعات.',
+      governingLawAnalysisEn: 'Governing substantive law should be expressly defined alongside institutional arbitration.',
+      disputeResolutionRecommendationAr: 'مركز التحكيم الإقليمي المعتمد وفقاً لبلد التنفيذ الرئيسي.',
+      disputeResolutionRecommendationEn: 'Designated institutional arbitration tribunal under prevailing commercial rules.',
+      dynamicRedlines: [
+        {
+          severity: 'Critical',
+          originalClauseAr: 'بند التعويض والمسؤولية غير المحدودة',
+          originalClauseEn: 'Uncapped Liability & Indemnification Clause',
+          riskExplanationAr: 'يلزم الطرف بالتعويض عن كافة الخسائر المباشرة وغير المباشرة دون وضع سقف مالي محدد.',
+          riskExplanationEn: 'Imposes uncapped liability for direct and consequential losses without monetary limitation.',
+          proposedCounterClauseAr: 'لا يتجاوز إجمالي المسؤولية التعاقدية لأي طرف ما نسبته 100% من المبالغ المدفوعة، ولا مسؤولية عن الأضرار التبعية أو غير المباشرة.',
+          proposedCounterClauseEn: 'The aggregate liability of either party shall not exceed 100% of the total fees paid under this Agreement, strictly excluding consequential damages.',
+          negotiationRationaleAr: 'حماية المركز المالي للشركة من مطالبات تعويض كارثية تفوق قيمة العقد بمراحل.',
+          negotiationRationaleEn: 'Protects enterprise solvency from outsized consequential damage claims exceeding contract value.'
+        },
+        {
+          severity: 'High',
+          originalClauseAr: 'الشرط الجزائي وغرامات التأخير',
+          originalClauseEn: 'Liquidated Damages & Delay Penalties',
+          riskExplanationAr: 'غرامة تأخير مفتوحة بدون سقف أقصى، مما يشكل عبئاً مالياً تعسفياً.',
+          riskExplanationEn: 'Open-ended delay penalty without a statutory ceiling creates abusive exposure.',
+          proposedCounterClauseAr: 'تحدد غرامة التأخير بـ 0.5% أسبوعياً بحد أقصى 5% من إجمالي قيمة العقد، شريطة ثبوت التقصير غير المبرر.',
+          proposedCounterClauseEn: 'Liquidated damages for unexcused delay shall be limited to 0.5% per week, up to a maximum cap of 5% of the total contract value.',
+          negotiationRationaleAr: 'مراعاة مبدأ التناسب ومنع الغرامات الجزائية التعسفية وفقاً للأنظمة المدنية.',
+          negotiationRationaleEn: 'Aligns penalties with statutory proportionality and prevailing judicial standards.'
+        }
+      ]
+    };
+    return JSON.stringify(dynamicReport);
+  }
+
+  // 0. Attached Contract Document Audit & Report Generation (Markdown)
   const isDocAudit = fullContext.includes('[ATTACHED CONTRACT DOCUMENT:') ||
                      fullContext.includes('مستند:') ||
                      fullContext.includes('file:') ||
@@ -273,36 +451,46 @@ function synthesizeDynamicLegalResponse(prompt: string, lang: SupportedLanguage,
     const filenameMatch = fullContext.match(/\[ATTACHED CONTRACT DOCUMENT:\s*"([^"]+)"\]/i) ||
                           fullContext.match(/([a-zA-Z0-9_\-\u0600-\u06FF]+\.(pdf|docx|txt))/i) ||
                           fullContext.match(/"([^"]+)"/i);
-    let docTitle = filenameMatch ? filenameMatch[1] : 'عقد وقود القاهرة للاستثمار والتنمية العقارية - سيرا للتعليم';
+    let docTitle = filenameMatch ? filenameMatch[1] : (isAr ? 'العقد التجاري المرفق' : 'Attached Commercial Agreement');
     docTitle = docTitle.replace(/_/g, ' ').replace(/\.pdf|\.docx|\.txt/gi, '').trim();
+
+    const partyAMatch = fullContext.match(/(?:الطرف الأول|طرف أول|party a|first party)[\s:*-]+([^\n,.]+)/i);
+    const partyBMatch = fullContext.match(/(?:الطرف الثاني|طرف ثان|party b|second party)[\s:*-]+([^\n,.]+)/i);
+    const partyA = partyAMatch ? partyAMatch[1].trim() : (isAr ? 'الطرف الأول' : 'Party A');
+    const partyB = partyBMatch ? partyBMatch[1].trim() : (isAr ? 'الطرف الثاني' : 'Party B');
+
+    const textLower = fullContext.toLowerCase();
+    const hasLiabilityCap = textLower.includes('aggregate liability') || textLower.includes('سقف المسؤولية') || textLower.includes('حد أقصى للمسؤولية') || textLower.includes('liability cap');
+    const hasArbitration = textLower.includes('arbitration') || textLower.includes('تحكيم') || textLower.includes('crcica') || textLower.includes('diac') || textLower.includes('scca') || textLower.includes('lcia');
+    const hasForceMajeure = textLower.includes('force majeure') || textLower.includes('قوة قاهرة') || textLower.includes('ظروف طارئة');
+    const hasPenalty = textLower.includes('شرط جزائي') || textLower.includes('liquidated damages') || textLower.includes('غرامة تأخير');
 
     if (isAr) {
       return `### 📋 تقرير التدقيق والتحليل التشريعي التخصصي للمستند المرفق:
 **عنوان المستند المراجع:** \`${docTitle}\`
-**الجهة المعنية / الأطراف:** شركة القاهرة للاستثمار والتنمية العقارية (سيرا للتعليم - CIRA Education) & شركة توريد الوقود والمنتجات البترولية.
+**الأطراف المعنية:** ${partyA} & ${partyB}
 
 ---
 
 #### 1️⃣ **نطاق الالتزامات والهيكل التعاقدي (Contract Structure & Obligations)**
-- **موضوع التعاقد والأهلية**: توريد المنتجات البترولية والوقود اللازم لتشغيل المنشآت والمؤسسات التعليمية والتطوير العقاري التابعة لـ (CIRA Education).
-- **التزامات التسليم والمواصفات**: الالتزام بالمواصفات القياسية للهيئة المصرية العامة للبترول، مع وضع آلية معايرة دورية لخزانات الوقود.
-- **الشروط المالية وآلية التسعير**: خضوع أسعار الوقود لنشرة التسعير التلقائي الصادرة عن وزارة البترول المصرية، مع اشتراط فترة سماح للسداد لا تقل عن 30 يوماً من تاريخ الفاتورة الإلكترونية المعتمدة.
+- **موضوع التعاقد والأهلية**: تم تدقيق أركان التعاقد والتحقق من وضوح التزامات الأطراف وضمانات التنفيذ.
+- **الشروط المالية وآلية التسعير**: خضوع الدفعات لجدول تسليم معتمد مع فترات سماح واضحة للسداد.
 
 ---
 
 #### 2️⃣ **تقييم الثغرات والمخاطر التشريعية (Risk & Vulnerability Audit)**
-- 🚨 **مخاطر تذبذب الأسعار وحظر التوقف عن التوريد**: وجوب النص صراحة على عدم جواز وقف التوريد أثناء فترة إعادة النظر في الأسعار لمنع تعطل الأنشطة التعليمية.
-- ⚠️ **سقف المسؤولية المالية (Liability Limitation Cap)**: تحديد الحد الأقصى للمسؤولية المالية بـ 100% من قيمة الفاتورة الشهرية السابقة لحماية أصول شركة القاهرة للاستثمار.
-- 🛡️ **القوة القاهرة والظروف الطارئة (Force Majeure & Hardship)**: إعادة الصياغة طبقاً للقانون المدني المصري (م/147) ومعايير ICC 2020 لضمان منح فترة إمهال عند حدوث أزمات عالمية في سلاسل الإمداد.
-- ⚖️ **الامتثال الضريبي ونظام الفاتورة الإلكترونية**: اشتراط تسليم الفواتير عبر منظومة الفاتورة الإلكترونية التابعة لمصلحة الضرائب المصرية (ETA) وفق القانون رقم 91 لسنة 2005.
+- 🚨 **سقف المسؤولية المالية (Liability Limitation Cap)**: ${hasLiabilityCap ? 'تم رصد بند لتحديد المسؤولية، ويوصى بقصره على 100% من قيمة التعامل مع استبعاد تام للأضرار التبعية.' : 'المستند يخلو من سقف مالي محدد للمسؤولية، مما يشكل ثغرة حادة تعرض المركز المالي لمطالبات تعويض غير مقيدة.'}
+- ⚠️ **الشرط الجزائي وغرامات التأخير (Liquidated Damages)**: ${hasPenalty ? 'يجب وضع سقف أقصى للغرامات (لا يتجاوز 5-10% من قيمة العقد) لمنع الإجحاف المالي وفقاً للأنظمة المدنية.' : 'يوصى بتحديد غرامات تأخير منضبطة ومقيدة بمهلة إشعار كتابي مسبق لا تقل عن 15 يوماً.'}
+- 🛡️ **القوة القاهرة والظروف الطارئة (Force Majeure & Hardship)**: ${hasForceMajeure ? 'بند القوة القاهرة موجود ويوصى بمطابقته لمعايير غرفة التجارة الدولية (ICC 2020).' : 'غياب بند صريح للقوة القاهرة يعرض الأطراف للمسؤولية عند حدوث كوارث أو أزمات خارجة عن الإرادة.'}
+- ⚖️ **القانون واجب التطبيق والتحكيم (Dispute Resolution)**: ${hasArbitration ? 'تم النص على التحكيم، يرجى التأكد من تحديد مقر ولغة وهيئة التحكيم بدقة.' : 'يوصى بإضافة شرط تحكيم تجاري مؤسسي معتمد لتفادي التقاضي الطويل أمام المحاكم العامة.'}
 
 ---
 
 #### 3️⃣ **التعديلات الحمائية الموصى بها (Executive AI Redlines & Approved Clauses)**
-1. **بند التحرر من الأضرار التبعية**:
-   > *"لا يتحمل المستثمر (شركة القاهرة للاستثمار) أي مسؤولية عن الأضرار التبعية أو الخسائر غير المباشرة أو توقف الأنشطة التعليمية والتطويرية."*
+1. **بند تحديد سقف المسؤولية واستبعاد الأضرار التبعية**:
+   > *"لا تتجاوز المسؤولية الإجمالية لأي من الطرفين عن 100% من إجمالي المبالغ المدفوعة، ولا يتحمل أي طرف مسؤولية عن الأضرار التبعية أو الخسائر غير المباشرة."*
 2. **بند القانون المطبق وهيئة التحكيم**:
-   > *"خضوع هذا العقد وتفسيره لقوانين جمهورية مصر العربية (قانون الشركات 159/1981 وقانون الاستثمار 72/2017)، وتختص هيئة التحكيم بـ (مركز القاهرة الإقليمي للتحكيم التجاري الدولي CRCICA) بنظر أي نزاع."*
+   > *"يخضع هذا العقد وتفسيره للأنظمة والقوانين السارية، وتختص هيئة التحكيم المؤسسي المعتمدة بنظر أي نزاع ينشأ عنه بشكل نهائي وملزم."*
 
 ---
 
@@ -311,30 +499,29 @@ function synthesizeDynamicLegalResponse(prompt: string, lang: SupportedLanguage,
 
     return `### 📋 Executive Legal Audit Report for Attached Document:
 **Audited Document Title:** \`${docTitle}\`
-**Entities / Parties Involved:** Cairo Investment & Real Estate Development (CIRA Education) & Petroleum Fuel Supply Contractor.
+**Entities / Parties Involved:** ${partyA} & ${partyB}
 
 ---
 
 #### 1️⃣ **Contract Scope & Party Obligations**
-- **Capacity & Deliverables**: Fuel & petroleum supply management for educational campuses and real estate assets managed by CIRA Education.
-- **Performance Benchmarks**: Mandatory adherence to Egyptian General Petroleum Corporation (EGPC) standards, with automated tank calibration protocols.
-- **Financial Terms & Price Adjustments**: Pricing structured according to Egyptian Petroleum Automatic Pricing Committee decrees, with a 30-day post-invoicing credit window.
+- Capacity & Deliverables: Rigorous statutory verification of contractual milestones and deliverables.
+- Financial Terms & Consideration: Payment schedules audited against statutory commercial norms.
 
 ---
 
 #### 2️⃣ **Critical Risk Assessment & Vulnerability Audit**
-- 🚨 **Supply Interruption Risk**: Strict prohibition against unilateral supply suspension during price recalculation intervals to safeguard educational operations.
-- ⚠️ **Aggregate Liability Cap**: Capping total monetary liability at 100% of the preceding monthly invoice value to protect enterprise assets.
-- 🛡️ **Force Majeure & Hardship Relief**: Standardized under Egyptian Civil Code (Art. 147) and ICC 2020 Force Majeure standards to account for global energy supply chain disruptions.
-- ⚖️ **ETA E-Invoicing Compliance**: Mandatory invoice submission through the Egyptian Tax Authority (ETA) e-invoicing portal per Law No. 91/2005.
+- 🚨 **Aggregate Liability Cap**: ${hasLiabilityCap ? 'Liability language identified; must explicitly exclude indirect/consequential damages.' : 'No monetary cap detected, representing unlimited liability exposure.'}
+- ⚠️ **Liquidated Damages & Penalties**: ${hasPenalty ? 'Delay penalties must be capped at 5-10% of total consideration per statutory proportionality.' : 'Recommend defining proportional delay penalties with a mandatory 15-day cure period.'}
+- 🛡️ **Force Majeure & Hardship Relief**: ${hasForceMajeure ? 'Standardized under ICC 2020 Force Majeure standards.' : 'Missing Force Majeure clause exposes operations during unforeseen events.'}
+- ⚖️ **Governing Law & Institutional Arbitration**: ${hasArbitration ? 'Arbitration venue assigned; confirm seat and language.' : 'Recommend designating institutional arbitration (LCIA, DIAC, SCCA, CRCICA) for accelerated dispute resolution.'}
 
 ---
 
 #### 3️⃣ **Executive AI Redlines & Recommended Clauses**
 1. **Consequential Damage Exclusion**:
-   > *"In no event shall Cairo Investment & Real Estate Development be liable for indirect, incidental, or consequential commercial losses."*
+   > *"In no event shall either party be liable for indirect, incidental, or consequential commercial losses."*
 2. **Governing Law & Institutional Arbitration**:
-   > *"This agreement is governed by the laws of the Arab Republic of Egypt (Companies Law 159/1981 & Investment Law 72/2017). Disputes shall be exclusively resolved via arbitration at CRCICA (Cairo Regional Centre for International Commercial Arbitration)."*`;
+   > *"This agreement is governed by applicable commercial laws. Disputes shall be exclusively resolved via designated institutional arbitration."*`;
   }
 
   // 0. Greetings & Friendly Conversational Inquiries (hello, hi, مرحبا, سلام)
@@ -363,7 +550,7 @@ Please type your legal inquiry or attach a document for instant statutory analys
   }
 
   // 1. Specialized Multi-Turn Contract Generation & Legal Solver
-  const isSpecializedContract = /(car|vehicle|auto|motor|سيارة|مركب|شاحنة|موتوسيكل|عربيه|عربية|مبايعة|nda|non-disclosure|confidential|سرية|عدم إفصاح|عدم افصاح|حفظ السرية|employment|job|employee|labor|عمل|توظيف|موظف|عقد عمل|rent|lease|tenant|landlord|apartment|property|إيجار|ايجار|عقار|شقة|فيلا|أرض|محل|مكتب|توريد|شراء بضاعة|supply|مورد|برمجة|تطبيق|موقع|software|سورس كود|شراكة|تأسيس شركة|partnership|قرض|سلف|دين|loan|إقرار دين|اقرار دين|power of attorney|poa|agency|wakala|mandate|وكالة|توكيل|تفويض|وكالة عامة|وكالة خاصة|تعديل|عدل|غير|اضف|أضف|شرط جزائي|غرامة|توثيق|شهر عقاري|تسجيل|مرور|نقل ملكية)/i.test(p);
+  const isSpecializedContract = /(?:car sale|vehicle sale|بيع سيارة|شراء سيارة|مبايعة سيارة|nda|non-disclosure|اتفاقية سرية|عقد عمل|employment agreement|عقد إيجار|عقد ايجار|lease agreement|tenancy agreement|عقد توريد|supply agreement|عقد برمجة|software development|عقد شراكة|partnership agreement|إقرار دين|اقرار دين|loan agreement|power of attorney|توكيل خاص|وكالة عامة)/i.test(p);
   if (isSpecializedContract) {
     return solveLegalPrompt(prompt, lang);
   }

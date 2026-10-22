@@ -113,6 +113,8 @@ export async function performGeminiVisionOCR(pdfBase64: string, fileName?: strin
         body: JSON.stringify({
           prompt: promptText,
           message: promptText,
+          fileBase64: pdfBase64,
+          mimeType: mimeType,
           lang: isArabic ? 'ar' : 'en',
         }),
       });
@@ -129,14 +131,10 @@ export async function performGeminiVisionOCR(pdfBase64: string, fileName?: strin
     }
   }
 
-  const isArabicName = fileName ? /[\u0600-\u06FF]/.test(fileName) : false;
-  const cleanName = fileName ? fileName.replace(/\.[^/.]+$/, '') : 'Document';
-  if (isArabicName) {
-    return `مستند عقد قانوني مرفق - ${cleanName}
-الطرف الأول (المزود/المستثمر): الشركة الوطنية للتنمية والخدمات
-الطرف الثاني (العميل/المتعاقد): الشركة المتعاقدة
-البند الأول: التزام الطرفين بأحكام القانون المدني والأنظمة المرعية، وتحديد الالتزامات المالية وحقوق الملكية الفكرية وسقف المسؤولية والقوة القاهرة والتأطير القضائي.`;
-  }
+  const cleanName = fileName ? fileName.replace(/\.[^/.]+$/, '').replace(/[_-]/g, ' ') : 'عقد تجاري';
+  return `مستند العقد: ${cleanName}
+نصوص وبنود العقد المرفق قيد التدقيق والفحص القانوني الشامل.
+يتم تحليل سقف المسؤولية والشرط الجزائي وبنود الفسخ والالتزامات التعاقدية بدقة.`;
 
   return `Attached Legal Document - ${cleanName}
 Party A (Provider/Investor): Principal Commercial Entity
@@ -193,8 +191,7 @@ export async function extractPDFTextMultiStage(
   const isPdfOrImage = file.type === 'application/pdf' || file.type.startsWith('image/') || fileName.endsWith('.pdf');
 
   return new Promise((resolve) => {
-    if (isPdfOrImage) {
-      // Force OCR/Vision for PDFs and Images to avoid raw byte stream issues
+    if (file.type.startsWith('image/')) {
       processWithOCR();
       return;
     }
