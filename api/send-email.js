@@ -593,8 +593,9 @@ async function outreachFrequencyGuard(cleanEmail, emailSubject) {
 
     return { allowed: true, reason: 'ALL_CHECKS_PASSED' };
   } catch (err) {
-    console.error('[FrequencyGuard] Error querying Supabase — FAIL OPEN:', err.message);
-    return { allowed: true, reason: 'QUERY_ERROR_FAIL_OPEN' };
+    console.error('[FrequencyGuard] Error querying Supabase — FAIL CLOSED (Strict Zero Duplicate Policy):', err.message);
+    // Strict Mandate: To guarantee zero duplicate emails to clients, never fail open on network error
+    return { allowed: false, reason: 'QUERY_ERROR_FAIL_CLOSED_PROTECT_CLIENT' };
   }
 }
 
@@ -614,6 +615,41 @@ export async function processEmailDispatch(targetEmail, emailSubject, text, html
       message: `✅ Skipped duplicate dispatch to ${cleanEmail} (Already contacted).`,
       timestamp: new Date().toISOString(),
     };
+  }
+
+  // ── Layer 2.5: Real Customer Email Radar & Disposable Filter ─────────────
+  if (!isAdminEmail && cleanEmail) {
+    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(cleanEmail) || cleanEmail.length < 6 || cleanEmail.length > 254) {
+      console.warn(`[RealEmailRadar] Rejected invalid email format: ${cleanEmail}`);
+      return {
+        success: false,
+        status: 'REJECTED_INVALID_FORMAT',
+        recipient: cleanEmail,
+        message: `🛑 Real Email Radar: Invalid email format rejected (${cleanEmail})`,
+        timestamp: new Date().toISOString(),
+      };
+    }
+
+    const domain = cleanEmail.split('@')[1] || '';
+    const DISPOSABLE_DOMAINS = [
+      'tempmail.com', 'throwaway.email', 'guerrillamail.com', 'mailinator.com',
+      'yopmail.com', 'temp-mail.org', 'fakeinbox.com', 'trashmail.com',
+      'sharklasers.com', '10minutemail.com', 'dispostable.com', 'maildrop.cc',
+      'spam4.me', 'trashmail.net', 'discard.email', 'filzmail.com',
+      'spamgourmet.com', 'getairmail.com', 'mailnull.com', 'spamevader.com',
+      'tempinbox.com', 'discardmail.com', 'mytempemail.com'
+    ];
+    if (DISPOSABLE_DOMAINS.some(d => domain === d || domain.endsWith('.' + d))) {
+      console.warn(`[RealEmailRadar] Rejected disposable email: ${cleanEmail}`);
+      return {
+        success: false,
+        status: 'REJECTED_DISPOSABLE_EMAIL',
+        recipient: cleanEmail,
+        message: `🛑 Real Email Radar: Disposable email blocked (${cleanEmail})`,
+        timestamp: new Date().toISOString(),
+      };
+    }
   }
 
   // ── Layer 3: Durable Outreach Frequency Guard ──────────────────────────────

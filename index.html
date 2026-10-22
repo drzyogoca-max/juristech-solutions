@@ -158,16 +158,40 @@
     </script>
 
 
-    <!-- Geofencing Script -->
+    <!-- Comprehensive Sanctions & Geofencing Shield (Libya & Sanctioned Jurisdictions) -->
     <script>
       (function() {
         try {
           var tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || '').toLowerCase();
-          var isBlocked = (tz.indexOf('tripoli') !== -1 || tz.indexOf('libya') !== -1) ||
-                          window.location.search.indexOf('geo=LY') !== -1 ||
-                          sessionStorage.getItem('juristech_geo_blocked') === 'LY';
+          var blockedTz = [
+            'tripoli', 'libya',
+            'damascus', 'syria',
+            'tehran', 'iran',
+            'pyongyang',
+            'havana', 'cuba',
+            'moscow',
+            'minsk', 'belarus',
+            'khartoum', 'sudan'
+          ];
+          var tzBlocked = blockedTz.some(function(b) { return tz.indexOf(b) !== -1; });
+
+          var langs = (navigator.languages || [navigator.language || '']).map(function(l) { return (l || '').toLowerCase(); });
+          var blockedLocales = ['-ly', '-sy', '-ir', '-kp', '-cu', '-by', '-sd'];
+          var localeBlocked = langs.some(function(l) {
+            return blockedLocales.some(function(bl) { return l.indexOf(bl) !== -1; });
+          });
+
+          var search = (window.location.search || '').toUpperCase();
+          var blockedCodes = ['LY', 'SY', 'IR', 'KP', 'CU', 'RU', 'BY', 'SD'];
+          var paramBlocked = blockedCodes.some(function(code) {
+            return search.indexOf('GEO=' + code) !== -1 || search.indexOf('COUNTRY=' + code) !== -1;
+          });
+          var storedBlocked = sessionStorage.getItem('juristech_geo_blocked') === 'SANCTIONED' ||
+                              sessionStorage.getItem('juristech_geo_blocked') === 'LY';
+
+          var isBlocked = tzBlocked || localeBlocked || paramBlocked || storedBlocked;
           if (isBlocked) {
-            sessionStorage.setItem('juristech_geo_blocked', 'LY');
+            sessionStorage.setItem('juristech_geo_blocked', 'SANCTIONED');
             if (window.location.pathname !== '/blocked') {
               window.location.replace('/blocked');
             }

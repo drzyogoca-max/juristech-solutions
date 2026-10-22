@@ -1,35 +1,67 @@
 import { detectVisitorJurisdiction } from './jurisdiction';
 
 /**
- * Enhanced Multi-Signal Libya & Geofencing Shield
- * Detects:
- * 1. IP Geolocation (Primary & Multiple Fallback Providers)
- * 2. System Timezone (Africa/Tripoli, Libya standard time, UTC+2 Libya offset anomalies)
- * 3. Browser locale / regional language telemetry (ar-LY)
- * 4. WebRTC local & public candidate leak scanning
- * 5. Screen / Network timezone mismatch (VPN signature detection)
+ * Blocked & Economically Sanctioned Jurisdictions (OFAC, UN, Regional Compliance):
+ * LY: Libya (Strict Mandate)
+ * SY: Syria (Comprehensive Sanctions)
+ * IR: Iran (Comprehensive Sanctions)
+ * KP: North Korea (Comprehensive Sanctions)
+ * CU: Cuba (Sanctions & Trade Embargo)
+ * RU: Russia (International Financial & Tech Sanctions)
+ * BY: Belarus (International Sanctions)
+ * SD: Sudan (Restricted Trade Embargo)
  */
-export async function checkLibyaGeoBlock(): Promise<boolean> {
+export const SANCTIONED_AND_BLOCKED_COUNTRIES: readonly string[] = [
+  'LY', 'SY', 'IR', 'KP', 'CU', 'RU', 'BY', 'SD',
+] as const;
+
+const BLOCKED_TIMEZONE_KEYWORDS: readonly string[] = [
+  'tripoli', 'libya',
+  'damascus', 'syria',
+  'tehran', 'iran',
+  'pyongyang',
+  'havana', 'cuba',
+  'moscow',
+  'minsk', 'belarus',
+  'khartoum', 'sudan',
+];
+
+const BLOCKED_LOCALE_SUFFIXES: readonly string[] = [
+  '-ly', '-sy', '-ir', '-kp', '-cu', '-by', '-sd',
+];
+
+/**
+ * Enhanced Multi-Signal Sanctions & Geofencing Shield
+ * Detects:
+ * 1. System Timezone (Africa/Tripoli, Asia/Damascus, Asia/Tehran, Asia/Pyongyang, etc.)
+ * 2. Browser locale / regional language telemetry (ar-LY, ar-SY, fa-IR, ko-KP, etc.)
+ * 3. URL Parameter or Storage Override Flag
+ * 4. IP Geolocation Multi-Provider Verification
+ * 5. Anti-Proxy / Secondary IP Check Fallback
+ */
+export async function checkSanctionedGeoBlock(): Promise<boolean> {
   // 1. Direct Timezone Detection (Bypasses standard VPN IP masks if system clock remains local)
   try {
-    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
-    const lowerTz = tz.toLowerCase();
-    if (
-      lowerTz.includes('tripoli') ||
-      lowerTz.includes('libya') ||
-      lowerTz === 'africa/tripoli'
-    ) {
-      console.warn('[GeoShield] Access blocked by system timezone fingerprint (Libya).');
+    const tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || '').toLowerCase();
+    if (BLOCKED_TIMEZONE_KEYWORDS.some((kw) => tz.includes(kw))) {
+      console.warn(`[GeoShield] Access blocked by system timezone fingerprint (${tz}).`);
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('juristech_geo_blocked', 'SANCTIONED');
+      }
       return true;
     }
   } catch {}
 
-  // 2. Browser Language / Locale regional tag (e.g. ar-LY)
+  // 2. Browser Language / Locale regional tags
   try {
     const languages = navigator.languages || [navigator.language || ''];
     for (const lang of languages) {
-      if (lang && lang.toLowerCase().includes('-ly')) {
-        console.warn('[GeoShield] Access blocked by regional locale flag (ar-LY).');
+      const lower = (lang || '').toLowerCase();
+      if (BLOCKED_LOCALE_SUFFIXES.some((sfx) => lower.includes(sfx))) {
+        console.warn(`[GeoShield] Access blocked by regional locale flag (${lang}).`);
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem('juristech_geo_blocked', 'SANCTIONED');
+        }
         return true;
       }
     }
@@ -38,11 +70,16 @@ export async function checkLibyaGeoBlock(): Promise<boolean> {
   // 3. URL Parameter or Storage Override Flag
   try {
     if (typeof window !== 'undefined') {
-      if (
-        window.location.search.includes('geo=LY') ||
-        window.location.search.includes('country=LY') ||
-        sessionStorage.getItem('juristech_geo_blocked') === 'LY'
-      ) {
+      const search = (window.location.search || '').toUpperCase();
+      const isParamBlocked = SANCTIONED_AND_BLOCKED_COUNTRIES.some(
+        (code) => search.includes(`GEO=${code}`) || search.includes(`COUNTRY=${code}`)
+      );
+      const isStoredBlocked =
+        sessionStorage.getItem('juristech_geo_blocked') === 'SANCTIONED' ||
+        sessionStorage.getItem('juristech_geo_blocked') === 'LY';
+
+      if (isParamBlocked || isStoredBlocked) {
+        sessionStorage.setItem('juristech_geo_blocked', 'SANCTIONED');
         return true;
       }
     }
@@ -51,23 +88,22 @@ export async function checkLibyaGeoBlock(): Promise<boolean> {
   // 4. IP Geolocation Multi-Provider Verification
   try {
     const jur = await detectVisitorJurisdiction();
-    if (jur.countryCode === 'LY') {
-      sessionStorage.setItem('juristech_geo_blocked', 'LY');
+    const code = (jur?.countryCode || '').toUpperCase();
+    if (SANCTIONED_AND_BLOCKED_COUNTRIES.includes(code)) {
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('juristech_geo_blocked', 'SANCTIONED');
+      }
+      console.warn(`[GeoShield] Access blocked by IP country code (${code}).`);
       return true;
     }
   } catch (err) {
-    console.warn('Geo-block check primary exception:', err);
+    console.warn('[GeoShield] Primary geo check exception:', err);
   }
-
-  // 5. Anti-Proxy / Secondary IP Check Fallback (uses cached unified geo)
-  try {
-    const data = await detectVisitorJurisdiction();
-    const country = (data.countryCode || '').toUpperCase();
-    if (country === 'LY') {
-      sessionStorage.setItem('juristech_geo_blocked', 'LY');
-      return true;
-    }
-  } catch {}
 
   return false;
 }
+
+/**
+ * Backward compatibility alias for existing callers
+ */
+export const checkLibyaGeoBlock = checkSanctionedGeoBlock;

@@ -77,7 +77,6 @@ export default async function handler(req) {
       utm_source: utmSource || null,
       utm_medium: utmMedium || null,
       utm_campaign: utmCampaign || null,
-      ip_hash: ipHash,
     };
 
     const insertRes = await fetch(`${SUPABASE_URL}/rest/v1/visitor_logs`, {

@@ -69,6 +69,9 @@ export default async function handler(req) {
 
   const countryName = countryNames[countryCode] || 'International';
 
+  const SANCTIONED_AND_BLOCKED = ['LY', 'SY', 'IR', 'KP', 'CU', 'RU', 'BY', 'SD'];
+  const isBlocked = SANCTIONED_AND_BLOCKED.includes(countryCode);
+
   return new Response(
     JSON.stringify({
       countryCode,
@@ -77,6 +80,7 @@ export default async function handler(req) {
       region,
       ip,
       timezone,
+      isBlocked,
     }),
     { status: 200, headers: CORS_HEADERS }
   );
