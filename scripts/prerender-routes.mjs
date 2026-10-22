@@ -166,6 +166,12 @@ const ROUTE_METADATA = {
     descriptionAr: 'استخراج وتجهيز العروض الفنية والمالية للشركات الكبرى بالذكاء الاصطناعي مع تدقيق الالتزامات والشروط التعاقدية.',
     descriptionEn: 'Automated C-Suite B2B proposal generation and RFP compliance auditing for global enterprise clients.',
   },
+  '/payment/verify': {
+    titleAr: 'التحقق من إيصالات السداد والاشتراك | JurisTech Solutions',
+    titleEn: 'Payment Receipt Verification & Status | JurisTech Solutions',
+    descriptionAr: 'تحقق من حالة إيصالات التحويل البنكي وتأكيد سداد الاشتراكات وتفعيل الحسابات المؤسسية بالذكاء الاصطناعي.',
+    descriptionEn: 'Verify bank wire receipts and confirm enterprise subscription payment status via JurisTech AI verification.',
+  },
   '/payment': {
     titleAr: 'خطط الاشتراك وباقات الشركات | JurisTech Solutions',
     titleEn: 'Enterprise Subscriptions & Secure Payments | JurisTech',

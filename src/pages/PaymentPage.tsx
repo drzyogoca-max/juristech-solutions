@@ -410,6 +410,40 @@ export default function PaymentPage() {
         />
       )}
 
+      {/* Payment Success Celebration Banner */}
+      {searchParams.get('success') === 'true' && (
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+          <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-emerald-950 via-[#0D1F3C] to-emerald-950 border-2 border-emerald-400/80 shadow-2xl shadow-emerald-500/25 text-center space-y-4">
+            <div className="inline-flex p-3 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+              <CheckCircle2 className="w-8 h-8" />
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-black text-white">
+              {l('🎉 تهانينا! تم استلام وتأكيد عملية الدفع بنجاح', '🎉 Congratulations! Your Payment Has Been Successfully Confirmed')}
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-300 max-w-2xl mx-auto leading-relaxed">
+              {l(
+                'تم تفعيل باقة اشتراككم فورياً. تم تسجيل دفعتكم في السجل المالي، وأصبحت كافة أدوات الذكاء الاصطناعي وصياغة العقود وفحص المخاطر متاحة لكم بالكامل.',
+                'Your subscription plan is now active. Your payment has been registered, and all AI contract tools, risk analysis, and legal advisory are now fully unlocked.'
+              )}
+            </p>
+            <div className="pt-2 flex items-center justify-center gap-3 flex-wrap">
+              <Link
+                to="/contracts"
+                className="px-6 py-3 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-slate-950 font-black text-xs sm:text-sm shadow-xl active:scale-95 transition-all cursor-pointer"
+              >
+                {l('بدء استخدام استوديو العقود', 'Start Using Contracts Studio')}
+              </Link>
+              <Link
+                to="/dashboard"
+                className="px-6 py-3 rounded-2xl bg-slate-900/90 hover:bg-slate-800 text-white border border-slate-700 font-bold text-xs sm:text-sm active:scale-95 transition-all cursor-pointer"
+              >
+                {l('الذهاب للوحة التحكم', 'Go to Dashboard')}
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Hero Header */}
       <div className="relative py-14 border-b border-white/10 overflow-hidden bg-gradient-to-b from-[#0D1F3C]/90 via-[#071629]/95 to-[#020B1A]">
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-[120px] pointer-events-none" />

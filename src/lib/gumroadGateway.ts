@@ -104,6 +104,10 @@ export function getGumroadCheckoutUrl(
     if (options?.referrer) {
       urlObj.searchParams.set('referrer', options.referrer);
     }
+    // Return URL after successful checkout
+    const retUrl = options?.returnUrl || 'https://www.juristech.solutions/payment?success=true';
+    urlObj.searchParams.set('redirect_to', retUrl);
+
     // Flag to enable Gumroad clean overlay behavior
     urlObj.searchParams.set('wanted', 'true');
     return urlObj.toString();
