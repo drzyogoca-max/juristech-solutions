@@ -63,20 +63,19 @@ export default async function handler(req) {
     }
 
     const payload = {
-      session_id: sessionId,
-      page_path: pagePath,
-      referrer: referrer || null,
-      country: decodeURIComponent(country || ''),
-      city: decodeURIComponent(city || '') || null,
-      region: region || null,
-      device_type: deviceType || 'Desktop',
-      browser: browser || null,
-      os: os || null,
-      screen_res: screenRes || null,
-      is_admin: false,
-      utm_source: utmSource || null,
-      utm_medium: utmMedium || null,
-      utm_campaign: utmCampaign || null,
+      visitor_id: String(sessionId).slice(0, 255),
+      page_path: String(pagePath || '/').slice(0, 255),
+      country: decodeURIComponent(country || 'Unknown').slice(0, 255),
+      country_code: (req.headers.get('x-vercel-ip-country') || '').slice(0, 10) || null,
+      city: decodeURIComponent(city || '').slice(0, 255) || null,
+      region: String(region || '').slice(0, 255) || null,
+      device_type: String(deviceType || 'Desktop').slice(0, 100),
+      browser: String(browser || '').slice(0, 100) || null,
+      os: String(os || '').slice(0, 100) || null,
+      traffic_source: referrer ? 'Referral' : 'Direct',
+      referrer_domain: referrer ? String(referrer).slice(0, 255) : null,
+      utm_source: utmSource ? String(utmSource).slice(0, 255) : null,
+      utm_campaign: utmCampaign ? String(utmCampaign).slice(0, 255) : null,
     };
 
     const insertRes = await fetch(`${SUPABASE_URL}/rest/v1/visitor_logs`, {

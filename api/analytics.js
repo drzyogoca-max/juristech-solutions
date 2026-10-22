@@ -95,11 +95,20 @@ export default async function handler(req, res) {
     let visitorAllTime = { data: [], count: 0 };
 
     try {
-      // Check if visitor_logs table exists by querying it
-      visitorData = await supabaseQuery('visitor_logs', `created_at=gte.${since}&select=country,city,device_type,page_path,session_id,created_at,is_admin&is_admin=eq.false&order=created_at.desc&limit=500`);
-      visitorToday = await supabaseQuery('visitor_logs', `created_at=gte.${todayStart}&is_admin=eq.false&select=country,city,session_id`);
-      visitorYesterday = await supabaseQuery('visitor_logs', `created_at=gte.${yesterday}&created_at=lt.${todayStart}&is_admin=eq.false&select=country,city,session_id`);
-      visitorAllTime = await supabaseQuery('visitor_logs', `is_admin=eq.false&select=session_id&limit=1`);
+      // Query visitor_logs with schema-compatible columns
+      visitorData = await supabaseQuery(
+        'visitor_logs',
+        `created_at=gte.${since}&select=id,visitor_id,country,country_code,city,device_type,page_path,created_at&order=created_at.desc&limit=500`
+      );
+      visitorToday = await supabaseQuery(
+        'visitor_logs',
+        `created_at=gte.${todayStart}&select=id,visitor_id,country,country_code,city,device_type,page_path,created_at&order=created_at.desc`
+      );
+      visitorYesterday = await supabaseQuery(
+        'visitor_logs',
+        `created_at=gte.${yesterday}&created_at=lt.${todayStart}&select=id,visitor_id,country,country_code,city`
+      );
+      visitorAllTime = await supabaseQuery('visitor_logs', 'select=id&limit=1');
     } catch (e) {
       console.warn('[Analytics] visitor_logs query failed:', e.message);
     }
@@ -108,10 +117,11 @@ export default async function handler(req, res) {
     const geoMap = {};
     for (const log of (visitorData.data || [])) {
       const country = log.country || 'Unknown';
+      const sessionId = log.visitor_id || log.id;
       if (!geoMap[country]) {
-        geoMap[country] = { sessions: new Set(), pageViews: 0, cities: new Set() };
+        geoMap[country] = { sessions: new Set(), pageViews: 0, cities: new Set(), countryCode: log.country_code || '' };
       }
-      geoMap[country].sessions.add(log.session_id);
+      geoMap[country].sessions.add(sessionId);
       geoMap[country].pageViews++;
       if (log.city) geoMap[country].cities.add(log.city);
     }
@@ -119,6 +129,7 @@ export default async function handler(req, res) {
     const geoDistribution = Object.entries(geoMap)
       .map(([country, d]) => ({
         country,
+        countryCode: d.countryCode,
         uniqueVisitors: d.sessions.size,
         pageViews: d.pageViews,
         topCity: [...d.cities][0] || '',
@@ -126,10 +137,10 @@ export default async function handler(req, res) {
       .sort((a, b) => b.uniqueVisitors - a.uniqueVisitors)
       .slice(0, 20);
 
-    const uniqueSessionsInPeriod = new Set((visitorData.data || []).map(r => r.session_id)).size;
-    const totalPageViews = visitorData.count || 0;
-    const todayUnique = new Set((visitorToday.data || []).map(r => r.session_id)).size;
-    const yesterdayUnique = new Set((visitorYesterday.data || []).map(r => r.session_id)).size;
+    const uniqueSessionsInPeriod = new Set((visitorData.data || []).map(r => r.visitor_id || r.id)).size;
+    const totalPageViews = visitorData.count || (visitorData.data || []).length;
+    const todayUnique = new Set((visitorToday.data || []).map(r => r.visitor_id || r.id)).size;
+    const yesterdayUnique = new Set((visitorYesterday.data || []).map(r => r.visitor_id || r.id)).size;
 
     // ── 2. Subscription Stats ────────────────────────────────────────────────
     let activeSubscriptions = { data: [], count: 0 };
@@ -200,6 +211,14 @@ export default async function handler(req, res) {
         allTimeTotal: visitorAllTime.count || 0,
         geoDistribution,
         activeCountries: Object.keys(geoMap).length,
+        todayVisitors: (visitorToday.data || []).slice(0, 50).map(v => ({
+          country: v.country,
+          countryCode: v.country_code,
+          city: v.city,
+          path: v.page_path,
+          device: v.device_type,
+          time: v.created_at,
+        })),
       },
 
       subscriptions: {
