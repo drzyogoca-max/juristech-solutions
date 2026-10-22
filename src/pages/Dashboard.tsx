@@ -356,7 +356,7 @@ export default function Dashboard() {
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-amber-400/30 backdrop-blur-xl shadow-lg">
               <Crown className="w-4 h-4 text-amber-400 shrink-0" />
               <span className="text-xs font-black uppercase tracking-wider text-amber-300">
-                {l('المنظومة السيادية الأولى للذكاء الاصطناعي القانوني وتدقيق العقود', 'Sovereign AI Legal Intelligence & Enterprise Contract OS')}
+                {l('منصة الذكاء الاصطناعي لمراجعة وتدقيق العقود القانونية', 'AI Legal Intelligence & Enterprise Contract Audit Platform')}
               </span>
               <span className="hidden sm:inline-block w-1 h-1 rounded-full bg-amber-400/60" />
               <span className="hidden sm:inline-block text-[11px] font-bold text-slate-300">
@@ -366,9 +366,9 @@ export default function Dashboard() {
 
             {/* Hero Main Heading */}
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.15]">
-              {l('احمِ استثماراتك وعقودك بالذكاء الاصطناعي ', 'Sovereign Legal Intelligence for ')}
+              {l('راجع عقودك واحمِ استثماراتك بدقة الذكاء الاصطناعي ', 'Review Contracts & Safeguard Deals with AI ')}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500">
-                {l('السيادي فائق الدقة', 'High-Stakes Contracts')}
+                {l('القانوني عالي الدقة', 'High-Stakes Contracts')}
               </span>
             </h1>
 
@@ -408,7 +408,7 @@ export default function Dashboard() {
               </div>
               <div className="flex items-center justify-center gap-1.5 py-1">
                 <Scale className="w-4 h-4 text-amber-400 shrink-0" />
-                <span className="font-semibold">{l('تغطية 15 ولاية قضائية', '15+ Sovereign Frameworks')}</span>
+                <span className="font-semibold">{l('تغطية 15 نظاماً قانونياً', '15+ Statutory Frameworks')}</span>
               </div>
               <div className="flex items-center justify-center gap-1.5 py-1">
                 <Lock className="w-4 h-4 text-cyan-400 shrink-0" />

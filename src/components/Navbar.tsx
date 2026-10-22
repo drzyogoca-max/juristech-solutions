@@ -162,7 +162,7 @@ export default function Navbar() {
                 </span>
               </div>
               <span className="text-[9px] font-sans text-slate-500 dark:text-slate-400 block font-bold tracking-wider uppercase mt-0.5">
-                {l('المنظومة القانونية والذكاء الاصطناعي الشامل', 'Sovereign Legal Intelligence & Contract OS')}
+                {l('منصة الذكاء الاصطناعي ومراجعة العقود', 'AI Legal Intelligence & Contract Platform')}
               </span>
             </div>
           </Link>
@@ -193,12 +193,12 @@ export default function Navbar() {
             {/* Quick Action: Book 15-Minute Contract Audit & Demo */}
             <button
               onClick={() => setShowConsultationModal(true)}
-              aria-label={isRtl ? 'افحص عقدك الأول مجاناً خلال 15 دقيقة' : 'Audit your first contract free in 15 mins'}
+              aria-label={l('افحص عقدك الأول مجاناً خلال 15 دقيقة', 'Audit your first contract free in 15 mins')}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#10B981]/15 hover:bg-[#10B981]/25 text-[#10B981] border border-[#10B981]/35 text-xs font-black transition-all shadow-sm cursor-pointer"
-              title={isRtl ? 'افحص عقدك الأول مجاناً خلال 15 دقيقة' : 'Audit your first contract free in 15 mins'}
+              title={l('افحص عقدك الأول مجاناً خلال 15 دقيقة', 'Audit your first contract free in 15 mins')}
             >
               <Mail className="w-3.5 h-3.5 text-[#10B981]" />
-              {isRtl ? 'افحص عقدك الأول مجاناً خلال 15 دقيقة' : 'Audit Contract Free (15 Mins)'}
+              {l('افحص عقدك مجاناً (15 دقيقة)', 'Audit Contract Free (15 Mins)')}
             </button>
 
             {/* Quick Action: Custom Themes & Fonts */}

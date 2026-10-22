@@ -38,7 +38,7 @@ export async function GET(req) {
   }
 
   // ── Universal Server-Side Auth Guard ─────────────────────────────────────────
-  const auth = await authenticateRequest(req, { corsHeaders: CORS_HEADERS });
+  const auth = await authenticateRequest(req, { corsHeaders: CORS_HEADERS, allowGuestDemo: true });
   if (!auth.authenticated) {
     return auth.response;
   }
@@ -56,7 +56,7 @@ async function handleEdgeRequest(req) {
   }
 
   // ── Universal Server-Side Auth Guard ─────────────────────────────────────────
-  const auth = await authenticateRequest(req, { corsHeaders: CORS_HEADERS });
+  const auth = await authenticateRequest(req, { corsHeaders: CORS_HEADERS, allowGuestDemo: true });
   if (!auth.authenticated) {
     return auth.response;
   }
@@ -130,7 +130,7 @@ async function handleNodeRequest(req, res) {
   }
 
   // ── Universal Server-Side Auth Guard ─────────────────────────────────────────
-  const auth = await authenticateRequest(req, { corsHeaders: CORS_HEADERS });
+  const auth = await authenticateRequest(req, { corsHeaders: CORS_HEADERS, allowGuestDemo: true });
   if (!auth.authenticated) {
     return res.status(401).json(auth.error);
   }
