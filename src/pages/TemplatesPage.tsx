@@ -22,6 +22,20 @@ import { generateAndDownloadWordDocument } from '../utils/export-utils';
 
 type ActiveLibraryTab = 'sovereign' | 'operational';
 
+const SOVEREIGN_SECTORS = [
+  { key: 'all', nameAr: 'كافة القطاعات (101)', nameEn: 'All Sectors (101)' },
+  { key: 'Corporate_MA', nameAr: 'حوكمة واستحواذ (M&A)', nameEn: 'Corporate & M&A' },
+  { key: 'Cloud_Tech_Data', nameAr: 'التقنية والذكاء الاصطناعي', nameEn: 'Tech & AI' },
+  { key: 'Venture_Investment', nameAr: 'الاستثمار الجريء والأسهم', nameEn: 'Venture & PE' },
+  { key: 'EPC_Construction', nameAr: 'المقاولات والإنشاءات (EPC)', nameEn: 'EPC & Construction' },
+  { key: 'Energy_Infrastructure', nameAr: 'الطاقة والنفط والمتجددة', nameEn: 'Energy & Renewables' },
+  { key: 'Trade_SupplyChain', nameAr: 'التجارة الدولية واللوجستيات', nameEn: 'Trade & Supply Chain' },
+  { key: 'Islamic_Finance', nameAr: 'التمويل المصرفي والإسلامي', nameEn: 'Banking & Islamic Finance' },
+  { key: 'Executive_Governance', nameAr: 'التوظيف التنفيذي والحوكمة', nameEn: 'Executive & Governance' },
+  { key: 'Agency_Franchise', nameAr: 'الامتياز التجاري والوكالات', nameEn: 'Franchise & Agency' },
+  { key: 'RealEstate_Assets', nameAr: 'العقارات وإدارة الأصول', nameEn: 'Real Estate & Assets' },
+];
+
 export default function TemplatesPage() {
   const { l, isRtl, formatNum } = usePlatformLocale();
 
@@ -30,6 +44,9 @@ export default function TemplatesPage() {
 
   // Sovereign Country Filter
   const [selectedCountry, setSelectedCountry] = useState<string>('ALL');
+
+  // Sovereign Sector/Category Filter
+  const [selectedSovereignCategory, setSelectedSovereignCategory] = useState<string>('all');
 
   // Operational Category Filter
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -70,6 +87,7 @@ export default function TemplatesPage() {
     const query = deferredSearchQuery.toLowerCase().trim();
     return SOVEREIGN_MILLION_CONTRACTS.filter((c) => {
       const matchesCountry = selectedCountry === 'ALL' || c.countryCode === selectedCountry;
+      const matchesCategory = selectedSovereignCategory === 'all' || c.category === selectedSovereignCategory;
       const matchesSearch =
         !query ||
         c.titleAr.toLowerCase().includes(query) ||
@@ -82,9 +100,9 @@ export default function TemplatesPage() {
         c.countryNameAr.toLowerCase().includes(query) ||
         c.countryNameEn.toLowerCase().includes(query) ||
         c.tags.some((t) => t.toLowerCase().includes(query));
-      return matchesCountry && matchesSearch;
+      return matchesCountry && matchesCategory && matchesSearch;
     });
-  }, [selectedCountry, deferredSearchQuery]);
+  }, [selectedCountry, selectedSovereignCategory, deferredSearchQuery]);
 
   // Filter Operational Templates
   const filteredOperationalTemplates = useMemo(() => {
@@ -280,6 +298,26 @@ export default function TemplatesPage() {
                       >
                         {formatNum(jur.contractCount)}
                       </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Sector Selector Pills */}
+              <div className="flex items-center gap-1.5 flex-wrap pt-1">
+                {SOVEREIGN_SECTORS.map((sec) => {
+                  const isActive = selectedSovereignCategory === sec.key;
+                  return (
+                    <button
+                      key={sec.key}
+                      onClick={() => setSelectedSovereignCategory(sec.key)}
+                      className={`px-3 py-1.5 rounded-xl text-[11px] font-bold transition-all cursor-pointer border ${
+                        isActive
+                          ? 'bg-amber-400 text-slate-950 border-amber-300 font-black shadow-sm'
+                          : 'bg-white/60 dark:bg-[#071629] text-slate-600 dark:text-slate-400 hover:text-white border-slate-200 dark:border-slate-800'
+                      }`}
+                    >
+                      {isRtl ? sec.nameAr : sec.nameEn}
                     </button>
                   );
                 })}
