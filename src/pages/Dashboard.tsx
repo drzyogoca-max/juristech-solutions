@@ -234,6 +234,7 @@ export default function Dashboard() {
       loadDashboardData();
       // Live Telemetry Tick  starts after data load, pauses on hidden tab
       if (!isAuthenticated && !isAdmin) return;
+      // Throttled 30s poll to maintain smooth INP
       liveTickTimer = setInterval(async () => {
         if (typeof document !== 'undefined' && document.hidden) return;
         const summary = getVisitorAnalyticsSummary();
@@ -244,7 +245,7 @@ export default function Dashboard() {
           totalVisits: summary.totalPageViewsCount || prev.totalVisits,
           activeUsers: leadsCount,
         }));
-      }, 10000);
+      }, 30000);
     };
 
     let idleHandle: number | null = null;
@@ -470,14 +471,16 @@ export default function Dashboard() {
         {/* ──────────────────────────────────────────────────────────────────── */}
         {/* SECTION 1: 🗺️ GLOBAL INTERACTIVE SAAS MAP & CUSTOMER JOURNEY         */}
         {/* ──────────────────────────────────────────────────────────────────── */}
-        <section id="sec-map" className="space-y-6 pt-2 min-h-[580px] overflow-hidden" style={{ contain: 'layout style' }}>
-          {/* World-Class SaaS Interactive Map  wrapped in ErrorBoundary & Suspense to prevent page crash */}
+        <section id="sec-map" className="space-y-6 pt-2 overflow-hidden" style={{ contain: 'layout style' }}>
+          {/* World-Class SaaS Interactive Map wrapped in ErrorBoundary & Suspense */}
           <Suspense fallback={<div className="min-h-[580px] w-full rounded-3xl bg-slate-900/50 animate-pulse border border-slate-800 flex items-center justify-center text-slate-500 text-xs font-mono">Loading Global SaaS Map...</div>}>
             <ErrorBoundary>
               <InteractiveSassGlobalMap />
             </ErrorBoundary>
+          </Suspense>
 
-            {/* 5-Stage Customer Journey Roadmap */}
+          {/* 5-Stage Customer Journey Roadmap with dedicated layout reservation */}
+          <Suspense fallback={<div className="min-h-[380px] w-full rounded-3xl bg-slate-900/50 animate-pulse border border-slate-800 flex items-center justify-center text-slate-500 text-xs font-mono">Loading Customer Journey Roadmap...</div>}>
             <ErrorBoundary>
               <InteractiveCustomerJourneyMap />
             </ErrorBoundary>
@@ -490,14 +493,18 @@ export default function Dashboard() {
         {/* ──────────────────────────────────────────────────────────────────── */}
         <section id="sec-studio" className="space-y-6 pt-2">
 
-          {/* Top AI Chatbot Magnet  deferred after first paint */}
-          {showDeferredWidgets && (
-            <Suspense fallback={null}>
-              <DashboardChatbotMagnet
-                onContractUploaded={(text, filename) => executeInlineAudit(text, filename)}
-              />
-            </Suspense>
-          )}
+          {/* Top AI Chatbot Magnet — Fixed reservation prevents 260px CLS */}
+          <div className="min-h-[220px]">
+            {showDeferredWidgets ? (
+              <Suspense fallback={<div className="min-h-[220px] w-full rounded-3xl bg-slate-900/40 border border-slate-800/60 animate-pulse" />}>
+                <DashboardChatbotMagnet
+                  onContractUploaded={(text, filename) => executeInlineAudit(text, filename)}
+                />
+              </Suspense>
+            ) : (
+              <div className="min-h-[220px] w-full rounded-3xl bg-slate-900/40 border border-slate-800/60 animate-pulse" />
+            )}
+          </div>
 
           {/* Session Workspace & Recent Audits Card */}
           <div className="card-lawtech-lux rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-2xl space-y-4 font-sans">
@@ -732,14 +739,16 @@ export default function Dashboard() {
               </div>
             </div>
 
-            {/* Quick Audit Drag & Drop Uploader  deferred after first paint */}
-            {showDeferredWidgets ? (
-              <Suspense fallback={null}>
-                <QuickAuditWidget />
-              </Suspense>
-            ) : (
-              <div className="h-32 rounded-2xl bg-slate-900/50 border border-slate-800 animate-pulse" />
-            )}
+            {/* Quick Audit Drag & Drop Uploader — Layout reserved */}
+            <div className="min-h-[140px]">
+              {showDeferredWidgets ? (
+                <Suspense fallback={<div className="min-h-[140px] rounded-2xl bg-slate-900/50 border border-slate-800 animate-pulse" />}>
+                  <QuickAuditWidget />
+                </Suspense>
+              ) : (
+                <div className="min-h-[140px] rounded-2xl bg-slate-900/50 border border-slate-800 animate-pulse" />
+              )}
+            </div>
 
             {/* Workflow Steps Guide */}
             <WorkflowDashboard />
@@ -854,7 +863,7 @@ export default function Dashboard() {
         {/* ──────────────────────────────────────────────────────────────────── */}
         {/* SECTION 3: ️️ 18 SOVEREIGN LEGAL SERVICES DIRECTORY                  */}
         {/* ──────────────────────────────────────────────────────────────────── */}
-        <section id="sec-services" className="space-y-6 pt-2">
+        <section id="sec-services" className="space-y-6 pt-2" style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 600px' }}>
           {/* Complete 18 Services Catalog  deferred after first paint */}
           {showDeferredWidgets ? (
             <Suspense fallback={<div className="h-64 rounded-3xl bg-slate-900/50 border border-slate-800 animate-pulse" />}>
@@ -875,7 +884,7 @@ export default function Dashboard() {
         {/* ──────────────────────────────────────────────────────────────────── */}
         {/* SECTION 4: 💼 REAL CASE STUDIES & SUBSCRIPTION TIERS (30% DISCOUNT)  */}
         {/* ──────────────────────────────────────────────────────────────────── */}
-        <section id="sec-cases" className="space-y-6 pt-2" style={{ contain: 'layout style' }}>
+        <section id="sec-cases" className="space-y-6 pt-2" style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 800px', contain: 'layout style' }}>
           {/* Real-World Multimillion Dollar Dispute Case Studies */}
           <Suspense fallback={<div className="min-h-[300px] w-full rounded-3xl bg-slate-900/50 animate-pulse border border-slate-800" />}>
             <CaseStudiesSection />
@@ -1038,7 +1047,7 @@ export default function Dashboard() {
         {/* ──────────────────────────────────────────────────────────────────── */}
         {/* SECTION 5: 🛡️ SECURITY GOVERNANCE & ENCRYPTION CERTIFICATIONS       */}
         {/* ──────────────────────────────────────────────────────────────────── */}
-        <section id="sec-security" className="space-y-6 pt-2">
+        <section id="sec-security" className="space-y-6 pt-2" style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 600px' }}>
           <div className="card-lawtech-lux rounded-3xl p-6 sm:p-8 border border-emerald-500/20 shadow-2xl space-y-6">
             
             <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-5 flex-wrap gap-4">

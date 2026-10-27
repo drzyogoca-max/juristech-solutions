@@ -29,8 +29,6 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.json" />
     <meta name="theme-color" content="#F8FAFC" />
-    <!-- Gumroad Overlay & Direct Card Checkout (Instant Visa/Mastercard/Apple Pay - Zero Company Registration Required) -->
-    <script src="https://gumroad.com/js/gumroad.js" async></script>
     <script>
       (function() {
         try {
@@ -75,12 +73,9 @@
 
 
 
-    <!-- Asynchronous Non-Blocking Fonts for Low FCP & Zero CLS -->
-    <!-- Note: preconnects are declared above in the DNS pre-fetching section -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'" />
-    <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" />
-    </noscript>
+    <!-- Fast High-Performance Fonts Preload & Stylesheet for Zero CLS -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" />
 
     <!-- Critical CSS for Layout Containment & Instant FCP/CLS Stability -->
     <style>
@@ -152,9 +147,7 @@
           setTimeout(initTrackingPixels, 3000);
         });
       }
-      ['scroll', 'touchstart', 'click'].forEach(function(ev) {
-        window.addEventListener(ev, initTrackingPixels, { once: true, passive: true });
-      });
+      // Non-blocking idle scheduling keeps interaction to next paint (INP) < 50ms
     </script>
 
 
@@ -322,7 +315,7 @@
         "name": "JurisTech Solutions",
         "url": "https://www.juristech.solutions",
         "datePublished": "2024-01-01T08:00:00Z",
-        "dateModified": "2026-09-26T18:30:00Z",
+        "dateModified": "2026-10-28T00:00:00Z",
         "potentialAction": {
           "@type": "SearchAction",
           "target": "https://www.juristech.solutions/chat?q={search_term_string}",

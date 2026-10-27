@@ -120,6 +120,26 @@ export function getGumroadCheckoutUrl(
 }
 
 /**
+ * Loads the Gumroad JS script on demand (only when checkout modal opens).
+ * Prevents synchronous Gumroad loading from degrading initial page speed / RES.
+ */
+export function loadGumroadScript(): Promise<void> {
+  return new Promise((resolve) => {
+    if (typeof window === 'undefined') return resolve();
+    if (document.getElementById('gumroad-js-script') || (window as any).GumroadOverlay) {
+      return resolve();
+    }
+    const script = document.createElement('script');
+    script.id = 'gumroad-js-script';
+    script.src = 'https://gumroad.com/js/gumroad.js';
+    script.async = true;
+    script.onload = () => resolve();
+    script.onerror = () => resolve();
+    document.body.appendChild(script);
+  });
+}
+
+/**
  * Sets a custom Gumroad URL in localStorage for real-time testing or admin updates
  */
 export function setGumroadCustomUrl(planId: string, url: string): void {

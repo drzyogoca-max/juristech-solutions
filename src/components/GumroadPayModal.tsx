@@ -17,7 +17,8 @@ import {
   GUMROAD_PLANS,
   getGumroadCheckoutUrl,
   openGumroadCheckout,
-  setGumroadCustomUrl
+  setGumroadCustomUrl,
+  loadGumroadScript
 } from '../lib/gumroadGateway';
 
 interface PlanProps {
@@ -50,6 +51,7 @@ export default function GumroadPayModal({
 
   useEffect(() => {
     if (!isOpen) return;
+    loadGumroadScript().catch(() => {});
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose();

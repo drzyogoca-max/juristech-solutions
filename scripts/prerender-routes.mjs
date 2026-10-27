@@ -52,12 +52,6 @@ const ROUTE_METADATA = {
     descriptionAr: 'فحص وتدقيق المخاطر القانونية للشركات وكشف البنود التعسفية وثغرات المسؤولية المالية والشرط الجزائي بالذكاء الاصطناعي مع اقتراح الصياغات البديلة المعتمدة.',
     descriptionEn: 'Instant AI contract risk scoring: detect indemnification traps, uncapped liabilities, penalty clauses, and statutory compliance gaps.',
   },
-  '/company-formation': {
-    titleAr: 'الهندسة القانونية وصياغة عقود التأسيس للشركات | JurisTech Solutions',
-    titleEn: 'Corporate Structuring & Articles of Association AI | JurisTech',
-    descriptionAr: 'صياغة عقود التأسيس والأنظمة الأساسية واتفاقيات الشركاء بالذكاء الاصطناعي وفق أحدث أنظمة الشركات وحوكمة الكيانات في السعودية والإمارات والخليج وأمريكا.',
-    descriptionEn: 'AI-powered corporate structuring, Articles of Association drafting, and statutory compliance across GCC & US.',
-  },
   '/corporate-structuring': {
     titleAr: 'الهندسة القانونية وصياغة عقود التأسيس للشركات | JurisTech Solutions',
     titleEn: 'Corporate Structuring & Articles of Association AI | JurisTech',
@@ -148,18 +142,6 @@ const ROUTE_METADATA = {
     descriptionAr: 'استوديو الإدارة التلقائية لقناة يوتيوب الرسمية لمنصة JurisTech Solutions — توليد ونشر فيديوهات قانونية يومية صباحاً ومساءً 100% بالذكاء الاصطناعي.',
     descriptionEn: 'Official YouTube Channel Studio for founder@juristech.solutions. Automated 2x daily morning & evening video publishing engine.',
   },
-  '/youtube': {
-    titleAr: 'قناة يوتيوب الرسمية واستوديو الفيديوهات | JurisTech YouTube Channel',
-    titleEn: 'Official YouTube Channel & Video Studio | JurisTech Solutions',
-    descriptionAr: 'قناة يوتيوب الرسمية لمنصة JurisTech Solutions — مشاهدة الفيديوهات القانونية اليومية وإيجاز الإدارة العليا للشركات.',
-    descriptionEn: 'Official YouTube Channel for JurisTech Solutions. Watch daily legal tech briefings and AI contract audit guides.',
-  },
-  '/youtube-channel': {
-    titleAr: 'قناة يوتيوب الرسمية واسـتوديو الفيديوهات | JurisTech YouTube Channel',
-    titleEn: 'Official YouTube Channel & Video Studio | JurisTech Solutions',
-    descriptionAr: 'قناة يوتيوب الرسمية لمنصة JurisTech Solutions — مشاهدة الفيديوهات القانونية اليومية وإيجاز الإدارة العليا للشركات.',
-    descriptionEn: 'Official YouTube Channel for JurisTech Solutions. Watch daily legal tech briefings and AI contract audit guides.',
-  },
   '/b2b-proposals': {
     titleAr: 'منصة العروض التنافسية للشركات | JurisTech',
     titleEn: 'Enterprise B2B Proposal Engine & AI RFP Hub | JurisTech',
@@ -232,12 +214,6 @@ const ROUTE_METADATA = {
     descriptionAr: 'السياسة الرسمية لاسترداد المبالغ وإلغاء الاشتراكات الرقمية لدى JurisTech Solutions.',
     descriptionEn: 'Official Refund Policy and cancellation terms for digital software subscriptions at JurisTech Solutions.',
   },
-  '/pricing': {
-    titleAr: 'خطط الأسعار والاشتراكات المؤسسية | JurisTech Solutions',
-    titleEn: 'Pricing Plans & Enterprise Subscriptions | JurisTech Solutions',
-    descriptionAr: 'استعرض خطط الأسعار والاشتراكات المؤسسية الشفافة لمنظومة JurisTech Solutions القانونية الذكية.',
-    descriptionEn: 'Explore transparent pricing plans and enterprise subscription tiers for JurisTech Solutions legal AI.',
-  },
   '/billing': {
     titleAr: 'إدارة الفوترة والاشتراك والبطاقات | JurisTech Solutions',
     titleEn: 'Account Billing & Subscription Management | JurisTech Solutions',
@@ -301,7 +277,7 @@ function prerenderRoutes() {
         'name': pageTitle,
         'description': pageDesc,
         'url': canonicalUrl,
-        'dateModified': '2026-08-21T18:30:00Z',
+        'dateModified': new Date().toISOString(),
         'inLanguage': 'en',
         'isPartOf': {
           '@type': 'WebSite',

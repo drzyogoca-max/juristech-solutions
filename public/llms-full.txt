@@ -1,172 +1,134 @@
 # JurisTech Solutions - Complete Platform Documentation
-## Version 10.5.1 | Updated: September 2026
+## Version 11.0.0 | Updated: October 2026
 ## URL: https://www.juristech.solutions
 
 # ABOUT
-JurisTech Solutions is the leading sovereign AI legal technology platform for the MENA region and global markets. Founded by Dr. Mohammad Mustafa (AI Risk Architect), the platform serves enterprises, law firms, government entities, and individual business owners across 50+ countries.
+JurisTech Solutions is the leading sovereign AI legal technology platform for the MENA region, the United States, Europe, and Asia. Founded by Dr. Mohammad Mustafa (Senior Counsel & AI Risk Architect), the platform serves enterprises, law firms, investment consortiums, and businesses across 50+ countries.
 
-Mission: Democratize access to high-quality legal services through AI automation while maintaining sovereign data control and multi-jurisdictional compliance.
+Mission: Deliver sovereign, institutional-grade AI contract audit, clause redlining, and cross-border regulatory compliance while maintaining 100% client confidentiality and zero public training on user data.
 
 # CORE PLATFORM CAPABILITIES
 
 ## 1. AI Contract Analysis
 URL: /contracts
-Description: Upload any contract (PDF, Word, or paste text) for instant AI analysis. The engine identifies:
-- Risky clauses and unfair terms
-- Unlimited liability provisions
-- Penalty clauses exceeding legal limits
-- Missing mandatory clauses
-- Jurisdiction mismatches
-- Force majeure gaps
-Output: Detailed report with risk score (0-100), highlighted clauses, and suggested redlines in Arabic and English.
+Description: Upload any contract (PDF, Word, or raw text) for instant AI audit. The engine identifies:
+- Risky clauses, unfair terms, and unilateral termination provisions
+- Unlimited liability traps and uncapped indemnification
+- Penalty clauses exceeding statutory legal ceilings
+- Governing law mismatches and unadvisable dispute resolution venues
+- Force majeure and pandemic/cyber risk coverage gaps
+Output: Granular report with 0-100 risk score, highlighted hazardous clauses, and suggested compliant redlines in Arabic, English, German, Turkish, Chinese, and French.
 
 ## 2. Legal Risk Radar
 URL: /risk
-Description: Comprehensive legal risk scoring system that analyzes contracts against jurisdiction-specific regulations. Provides:
-- Overall risk score (0-100, color-coded)
-- Breakdown by risk category (Financial, Operational, IP, Regulatory)
-- Severity classification (Critical, High, Medium, Low)
-- Actionable remediation suggestions
-- Automated risk report generation (PDF/Word)
+Description: Comprehensive multi-axis risk scoring system assessing contracts against specific local statutes:
+- Overall risk score (0-100, color-coded green/amber/red)
+- Breakdown across 4 primary risk vectors: Financial, Operational, IP, and Regulatory
+- Severity classification: Critical, High, Medium, Low
+- Actionable statutory remediation recommendations
+- Exportable executive audit reports (PDF & Microsoft Word .docx)
 
-## 3. Smart Contract Templates
+## 3. Sovereign Institutional Contract Templates (101 Master Contracts)
 URL: /templates
-Description: 200+ professionally crafted, legally vetted contract templates including:
-- Employment agreements (Saudi Arabia, UAE, Egypt, international)
-- Service agreements and SLAs
-- Partnership and joint venture agreements
-- Non-disclosure agreements (NDAs)
-- Sales and distribution contracts
-- Real estate contracts
-- Franchise agreements
-- Technology and software licenses
+Description: 101 professionally crafted, legally vetted institutional master contracts across 10 strategic sectors and 15 jurisdictions:
+- Technology, SaaS, and Cloud Infrastructure (SLAs, EULAs, Master Services)
+- Corporate, M&A, Private Equity, and Joint Ventures
+- International Trade, Supply Chain, and Distribution (UNCITRAL / Incoterms 2020)
+- Banking, FinTech, and Structured Finance
+- Real Estate, EPC, and Infrastructure (FIDIC aligned)
+- Employment, Executive Retention, and Non-Compete
+- Intellectual Property, Patent Licensing, and Technology Transfer
+- Healthcare, Pharma, and Biotech Compliance
+- Energy, CleanTech, and Utilities
+- Commercial Agency and Franchise Agreements
 
-## 4. Power of Attorney (POA) Library
+## 4. Power of Attorney (POA) Smart Library
 URL: /poa-library
-Description: Comprehensive collection of Power of Attorney templates for GCC and international markets. Covers general POA, specific POA, real estate POA, business management POA, with notarization guidance.
+Description: Comprehensive repository of verified Power of Attorney instruments for GCC and international jurisdictions. Includes general POA, commercial litigation POA, corporate management POA, and real estate disposition POA with statutory notarization guidance.
 
-## 5. Contract Negotiation Assistant
+## 5. Contract Negotiation Studio
 URL: /negotiation
-Description: AI-powered negotiation support featuring:
-- Clause-by-clause negotiation tracking
-- Counter-proposal generation
-- Integrated e-signature capabilities
-- Version control and audit trail
-- Multi-party collaboration
+Description: AI-assisted negotiation environment featuring:
+- Clause-by-clause position tracking
+- Balanced counter-proposal formulation
+- Certified SHA-256 digital e-signatures
+- Complete audit trail and version diff comparison
 
-## 6. Deal Shield
+## 6. Deal Shield 360™
 URL: /deal-shield
-Description: Comprehensive transaction protection and due diligence tool. Analyzes deal terms, identifies deal-breakers, provides structured due diligence checklist, and generates risk assessment reports.
+Description: Cross-border transaction security and statutory clash simulator. Analyzes multi-party deal terms against diverging legal frameworks (e.g., Saudi Civil Transactions Law vs. Delaware DGCL vs. English Common Law), highlighting irreconcilable clauses before signing.
 
 ## 7. Corporate Structuring & Articles of Association AI
-URL: /corporate-structuring (Alias: /company-formation)
-Description: AI-driven corporate structuring, constitutional drafting, and governance compliance:
-- Articles of Association (عقد التأسيس) drafting for KSA, UAE, Egypt, UK, and US Delaware entities
-- Corporate bylaws and shareholder agreements aligned with modern companies laws
-- Distribution of administrative and financial signing mandates
-- Statutory compliance review before notary/registry execution
-*Disclaimer: JurisTech Solutions is a sovereign legal AI software platform. It does NOT physically register entities, act as a government registrar, or issue trade licenses.*
+URL: /corporate-structuring
+Description: AI constitutional engineering for business entities:
+- Automated drafting of Articles of Association (عقد التأسيس) for KSA LLCs, UAE Free Zone & Mainland entities, Delaware LLCs/C-Corps, and UK Private Limited Companies
+- Shareholder governance agreements and board voting mandates
+- Administrative and financial signing authority structuring
 
-## 8. Encrypted Document Vault
+## 8. Sovereign Encrypted Document Vault
 URL: /vault
-Description: Bank-grade AES-256 encrypted document storage with:
-- End-to-end encryption (client-side)
-- Access control and permissions
-- Version history
-- Secure sharing with audit trail
-- GDPR-compliant data handling
+Description: Bank-grade AES-GCM 256-bit encrypted document repository with client-side zero-knowledge architecture, automated expiration tracking, and multi-tenant isolation.
 
-## 9. AI Legal Advisor
-URL: /ai-advisor
-Description: 24/7 AI legal consultation chatbot trained on legal databases from 15+ jurisdictions. Answers questions about contract law, corporate legal structuring, regulatory compliance, and dispute resolution in Arabic and English.
+## 9. AI Legal Advisor (Ask Juris)
+URL: /chat (or /ai-advisor)
+Description: 24/7 sovereign legal consultation chatbot grounded in legal statutes and precedents across 15+ legal frameworks.
 
-## 10. Enterprise Audit
+## 10. Enterprise Compliance Audit
 URL: /enterprise-audit
-Description: Comprehensive legal and compliance audit for enterprises. Reviews existing contracts, identifies compliance gaps, generates executive board reports, and tracks remediation progress.
+Description: Comprehensive corporate governance audit reviewing company-wide contractual exposure against US SEC, EU GDPR, EU AI Act, Saudi PDPL, and UNCITRAL mandates.
 
-## 11. Contract Repository
-URL: /repository
-Description: Centralized contract management system with:
-- Full-text search across all contracts
-- Metadata tagging and categorization
-- Expiration alerts and renewal reminders
-- Status tracking (draft, review, signed, expired)
-- Analytics and reporting dashboard
+# TARGETED REGIONAL LEGAL INTELLIGENCE & KEYWORDS
 
-## 12. B2B Proposals
-URL: /b2b-proposals
-Description: AI-powered B2B proposal generation and management system. Creates professional, personalized proposals for enterprise clients with pricing, scope of work, and terms.
+## 1. Gulf & Middle East (GCC / MENA)
+- **Jurisdictions**: Saudi Arabia (Civil Transactions Law 1444H / Royal Decree M/191, Companies Law M/132), UAE (Federal Decree-Law No. 50/2022, DIFC, ADGM), Egypt, Qatar, Kuwait, Bahrain, Oman, Jordan.
+- **Key Terms**: فحص العقود بالذكاء الاصطناعي, كشف البنود التعسفية, نظام المعاملات المدنية السعودي, صياغة عقد التأسيس, تدقيق الشرط الجزائي, حوكمة الشركات, محامي ذكاء اصطناعي.
+
+## 2. United States & International Common Law
+- **Jurisdictions**: Delaware General Corporation Law (DGCL), Uniform Commercial Code (UCC), New York Commercial Division, English Common Law.
+- **Key Terms**: AI Contract Review, Legal Risk Scoring, Unlimited Liability Traps, Indemnification Caps, M&A Due Diligence, SaaS Master Service Agreement, Delaware Articles of Incorporation.
+
+## 3. Germany & DACH Region (Deutschland, Österreich, Schweiz)
+- **Jurisdictions**: Bürgerliches Gesetzbuch (BGB), Handelsgesetzbuch (HGB), GmbH-Gesetz, Aktiengesetz, DSGVO / EU GDPR, EU AI Act.
+- **Key Terms**: KI Vertragsanalyse, AGB Prüfung Künstliche Intelligenz, Haftungsbeschränkung Vertrag, Gesellschaftsvertrag Entwurf, Rechtliche Risikoprüfung, Legal Tech Software Deutschland.
+
+## 4. Türkiye (Turkish Market)
+- **Jurisdictions**: Türk Ticaret Kanunu (TTK - Kanun No. 6102), Türk Borçlar Kanunu (TBK - Kanun No. 6098), KVKK.
+- **Key Terms**: Yapay Zeka Sözleşme Analizi, Hukuki Risk Tespiti, Şirket Ana Sözleşmesi Hazırlama, Ağırlaştırılmış Cezai Şart İncelemesi, Ticari Sözleşmeler Hukuk Teknolojisi.
+
+## 5. China & East Asia (中国市场)
+- **Jurisdictions**: 中华人民共和国民法典 (PRC Civil Code), 中华人民共和国公司法 (Company Law), UNCITRAL Model Law, CISG.
+- **Key Terms**: AI合同审查, 商业合同风险评估, 涉外经济合同, 违约金条款法律合规, 公司章程起草AI, 跨国并购尽职调查.
 
 # PRICING TIERS
 
-## Starter - $49/month
-- 10 contract analyses per month
-- 50 template downloads
-- Basic AI advisor access
-- 1 user seat
-- 1 GB encrypted storage
+## Starter Plan - $49/month
+- 10 full AI contract audits per month
+- Access to 101 master contract templates
+- Basic AI Legal Advisor access
+- 1 user seat & 1 GB encrypted storage
 
-## Professional - $139/month
-- Unlimited contract analyses
-- Unlimited templates
-- Full AI advisor access
-- 5 user seats
-- 10 GB encrypted storage
-- Company formation assistance
-- Priority support
+## Professional Plan - $139/month
+- Unlimited AI contract risk audits & redlines
+- Full 101 template library with instant Word (.docx) & PDF exports
+- 24/7 AI Legal Advisor & DealShield 360™
+- 5 team seats & 10 GB encrypted storage
+- Priority customer support
 
-## Enterprise - $349/month
-- Everything in Professional
-- Unlimited user seats
-- Unlimited storage
-- Custom API integration
-- Dedicated account manager
-- Custom workflows
-- SLA guarantee
-- White-label options
+## Enterprise Plan - $349/month
+- Full institutional capabilities with unlimited seats & storage
+- Multi-jurisdictional M&A due diligence suite
+- Custom statutory compliance rule engine
+- Dedicated account manager & SLA guarantee
 
-# JURISDICTIONS & LEGAL FRAMEWORKS
-
-## GCC & MENA
-- Saudi Arabia: Civil Transactions Law (1443H), Companies Law, Sharia principles
-- UAE: Federal Civil Code, DIFC Law, ADGM Regulations, Free Zone laws
-- Egypt: Civil Code (Law 131/1948), Commercial Law
-- Kuwait: Civil Code, Commercial Law No. 68/1980
-- Qatar: Civil Code No. 22/2004, Commercial Companies Law
-- Bahrain: Civil Code, Commercial Companies Law
-- Oman: Civil Transactions Law, Commercial Law
-- Jordan: Civil Law No. 43/1976
-
-## International
-- USA: Uniform Commercial Code (UCC), Delaware General Corporation Law
-- UK: Companies Act 2006, English Contract Law
-- EU: GDPR, Brussels Regulation, Rome I and II
-- International: UNCITRAL Model Law, ICC Rules, CISG
-
-# SECURITY & COMPLIANCE
-- AES-256 client-side encryption
-- Two-Factor Authentication (2FA/TOTP)
-- Row-Level Security (RLS) in database
-- GDPR Article 28 compliant
-- SOC2 Type II controls
-- Data residency controls
-- Zero-trust architecture
-- Regular penetration testing
-
-# LANGUAGE SUPPORT
-- Arabic (العربية) - Full RTL support, primary language
-- English - Full support
-- French (Français)
-- German (Deutsch)
-- Spanish (Español)
-- Chinese (中文)
-- Turkish (Türkçe)
+# SECURITY & CONFIDENTIALITY
+- Client-side AES-GCM 256-bit encryption
+- Zero retention & zero training policy on customer contracts
+- SOC2 Type II, ISO 27001, and EU GDPR Article 28 compliance
+- End-to-end multi-tenant cryptographic isolation
 
 # CONTACT INFORMATION
-Founder: Dr. Mohammad Mustafa
-Title: Founder & Chairman | AI Risk Architect
-Email: founder@juristech.solutions
-Phone: +201126674337
+Founder & Chairman: Dr. Mohammad Mustafa (Senior Counsel & AI Risk Architect)
 Website: https://www.juristech.solutions
-LinkedIn: https://www.linkedin.com/in/juristech-solutions-14954b427/
-Twitter/X: https://x.com/JurisTechAI
+Official Email: founder@juristech.solutions
+Direct WhatsApp: +201126674337
+Social Profiles: LinkedIn, X (Twitter) @JurisTechAI
