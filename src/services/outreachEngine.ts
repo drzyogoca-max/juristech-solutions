@@ -227,8 +227,6 @@ export const generateAndDispatchOffer = async (clientData: ClientDataPayload): P
       body: JSON.stringify({
         transactionalType: 'B2B_OUTREACH',
         to: email,
-        bcc: ['founder@juristech.solutions'],
-        adminCopy: 'founder@juristech.solutions',
         replyTo: 'founder@juristech.solutions',
         subject: dynamicSubject,
         text: `CONFIDENTIAL EXECUTIVE PROPOSAL FOR ${name.toUpperCase()}\n\nOBJECT: Strategic Legal AI Infrastructure & Financial Risk Mitigation\n\nAddressed to: Chief Executive Officer & Chief Financial Officer\nOffered by: Dr. Mohammad Mustafa, Chairman & Chief Legal Architect | JurisTech Solutions\n\nExecutive Inquiries: founder@juristech.solutions\nOfficial Portal: https://www.juristech.solutions`,

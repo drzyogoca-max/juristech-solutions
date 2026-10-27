@@ -55,8 +55,6 @@ export async function sendOfficialEmail(
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         to: target,
-        bcc: [MANDATORY_ADMIN_COPY, OFFICIAL_EMAIL],
-        adminCopy: MANDATORY_ADMIN_COPY,
         replyTo: OFFICIAL_EMAIL,
         subject: template.subject,
         text: template.body,
@@ -70,13 +68,18 @@ export async function sendOfficialEmail(
               ${template.body}
             </div>
             <div style="margin-top: 30px; padding-top: 15px; border-top: 1px solid #334155; font-size: 12px; color: #64748b; text-align: center;">
-              Official Communication from <strong>${OFFICIAL_EMAIL}</strong> | Admin Monitored (${MANDATORY_ADMIN_COPY}) | <a href="https://www.juristech.solutions" style="color: #06b6d4;">www.juristech.solutions</a>
+              Official Communication from <strong>${OFFICIAL_EMAIL}</strong> | <a href="https://www.juristech.solutions" style="color: #06b6d4;">www.juristech.solutions</a>
             </div>
           </div>
         `,
       }),
     });
 
+    const resData = await res.json().catch(() => ({}));
+    if (resData.blocked || (resData.status && resData.status.startsWith('BLOCKED'))) {
+      console.warn(`[EmailEngine] BLOCKED by Server: ${resData.status} → ${target}`);
+      return { success: false, messageId: '', reason: resData.status };
+    }
 
     if (res.ok) {
       console.log(`[SMTP TRACE] Email successfully dispatched via real /api/send-email to ${recipients}`);

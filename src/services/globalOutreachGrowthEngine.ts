@@ -93,25 +93,12 @@ class GlobalOutreachGrowthEngine {
   }
 
   /**
-   * Starts the 24-hour autonomous distribution engine.
-   * Dispatches 1 lead every ~86 seconds (1000 leads / 24 hours) automatically.
+   * Centralized Cron Controls: high-frequency browser intervals permanently disabled to prevent spam.
+   * All outreach runs exclusively through /api/cron with strict single-contact deduplication.
    */
   start24HourAutonomousScheduler() {
-    if (this.timerRef) {
-      clearInterval(this.timerRef);
-    }
-
-    this.state.autonomousModeActive = true;
-    this.state.status = 'Autonomous_24H_Active';
-    this.saveState();
-
-    const intervalMs = (this.state.intervalSeconds || 86) * 1000;
-
-    this.timerRef = setInterval(async () => {
-      await this.dispatchNextAutonomousLead();
-    }, intervalMs);
-
-    console.log(`[24H Growth Scheduler] 🚀 Autonomous 24-Hour Lead Distribution Engine Started. Dispatches every ${this.state.intervalSeconds}s.`);
+    console.warn('[24H Growth Scheduler] High-frequency browser loop disabled by Admin directive: all B2B outreach is strictly managed via centralized server cron at exactly 20 unique leads/day.');
+    this.stopAutonomousScheduler();
   }
 
   /**

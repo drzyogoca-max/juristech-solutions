@@ -147,6 +147,9 @@ async function recordEmailDispatch(targetEmail, subject, provider) {
 
   if (!SUPABASE_URL || !SUPABASE_KEY) return;
 
+  const clean = (targetEmail || '').toLowerCase().trim();
+  dispatchedRecipientsRegistry.add(clean);
+
   try {
     await fetch(`${SUPABASE_URL}/rest/v1/email_dispatch_log`, {
       method: 'POST',
@@ -157,12 +160,31 @@ async function recordEmailDispatch(targetEmail, subject, provider) {
         Prefer: 'return=minimal',
       },
       body: JSON.stringify({
-        recipient: targetEmail,
+        recipient: clean,
         subject,
         provider,
         dispatched_at: new Date().toISOString(),
       }),
     });
+
+    // If it's a real send (not an audit block record), permanently lock in crm_suppression_list
+    if (subject && !subject.startsWith('[BLOCKED:')) {
+      await fetch(`${SUPABASE_URL}/rest/v1/crm_suppression_list`, {
+        method: 'POST',
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${SUPABASE_KEY}`,
+          'Content-Type': 'application/json',
+          Prefer: 'return=minimal',
+        },
+        body: JSON.stringify({
+          email: clean,
+          reason: 'PERMANENT_SINGLE_CONTACT_DISPATCHED',
+          created_at: new Date().toISOString(),
+        }),
+      }).catch(() => {});
+    }
+
     // Bust the cache so the next request gets a fresh count from Supabase
     invalidateQuotaCache();
   } catch (e) {
@@ -513,14 +535,56 @@ async function outreachFrequencyGuard(cleanEmail, emailSubject) {
   const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
   const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
 
+  if (!cleanEmail) {
+    return { allowed: false, reason: 'INVALID_EMPTY_EMAIL' };
+  }
+
+  // Fast In-Memory Check first
+  if (dispatchedRecipientsRegistry.has(cleanEmail)) {
+    return {
+      allowed: false,
+      reason: 'RECIPIENT_ALREADY_CONTACTED_IN_MEMORY_REGISTRY',
+      detail: `Permanently blocked: ${cleanEmail} already contacted in active session.`
+    };
+  }
+
   if (!SUPABASE_URL || !SUPABASE_KEY) {
-    console.warn('[FrequencyGuard] Supabase not configured — FAIL OPEN');
-    return { allowed: true, reason: 'SUPABASE_NOT_CONFIGURED' };
+    console.warn('[FrequencyGuard] Supabase not configured — FAIL CLOSED to protect client');
+    return { allowed: false, reason: 'SUPABASE_NOT_CONFIGURED_PROTECT_CLIENT' };
   }
 
   try {
+    // 1. Check permanent suppression list first
+    try {
+      const suppRes = await fetch(
+        `${SUPABASE_URL}/rest/v1/crm_suppression_list?email=eq.${encodeURIComponent(cleanEmail)}&select=email,reason&limit=1`,
+        {
+          method: 'GET',
+          headers: {
+            apikey: SUPABASE_KEY,
+            Authorization: `Bearer ${SUPABASE_KEY}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      if (suppRes.ok) {
+        const suppData = await suppRes.json();
+        if (Array.isArray(suppData) && suppData.length > 0) {
+          dispatchedRecipientsRegistry.add(cleanEmail);
+          return {
+            allowed: false,
+            reason: 'RECIPIENT_IN_CRM_SUPPRESSION_LIST',
+            detail: `Permanently blocked in CRM suppression: ${suppData[0].reason || 'Already contacted'}`
+          };
+        }
+      }
+    } catch (suppErr) {
+      console.warn('[FrequencyGuard] Suppression table check warning:', suppErr.message);
+    }
+
+    // 2. Query complete historical dispatch log for ANY previous email to this recipient
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/email_dispatch_log?recipient=eq.${encodeURIComponent(cleanEmail)}&order=dispatched_at.desc`,
+      `${SUPABASE_URL}/rest/v1/email_dispatch_log?recipient=eq.${encodeURIComponent(cleanEmail)}&select=id,subject,dispatched_at&order=dispatched_at.desc&limit=10`,
       {
         method: 'GET',
         headers: {
@@ -532,58 +596,22 @@ async function outreachFrequencyGuard(cleanEmail, emailSubject) {
     );
 
     if (!res.ok) {
-      console.warn(`[FrequencyGuard] Supabase returned ${res.status} — FAIL OPEN`);
-      return { allowed: true, reason: 'SUPABASE_ERROR_FAIL_OPEN' };
+      console.warn(`[FrequencyGuard] Supabase returned ${res.status} — FAIL CLOSED to guarantee zero duplicate emails`);
+      return { allowed: false, reason: 'SUPABASE_QUERY_ERROR_FAIL_CLOSED' };
     }
 
     const records = await res.json();
 
     if (!records || records.length === 0) {
-      return { allowed: true, reason: 'NO_PRIOR_HISTORY' };
+      return { allowed: true, reason: 'NO_PRIOR_HISTORY_NEW_PROSPECT' };
     }
 
-    // 1. Permanent Suppression: BOUNCED or UNSUBSCRIBED
-    const suppressed = records.find(r =>
-      r.subject && (r.subject.includes('[BOUNCED]') || r.subject.includes('[UNSUBSCRIBED]'))
-    );
-    if (suppressed) {
-      return { allowed: false, reason: 'RECIPIENT_PERMANENTLY_SUPPRESSED', detail: suppressed.subject };
-    }
-
-    // 2. Active Engagement: REPLIED, CLICKED, MEETING, PROPOSAL → stop automation
-    const engaged = records.find(r =>
-      r.subject && (
-        r.subject.includes('[REPLIED]') ||
-        r.subject.includes('[CLICKED]') ||
-        r.subject.includes('[MEETING]') ||
-        r.subject.includes('[PROPOSAL]')
-      )
-    );
-    if (engaged) {
-      return { allowed: false, reason: 'ACTIVE_ENGAGEMENT_STOP', detail: engaged.subject };
-    }
-
-    // 3. Duplicate Campaign: same subject already sent to same recipient
-    const normalizedSubject = (emailSubject || '').toLowerCase().trim();
-    const duplicate = records.find(r => {
-      const existingSubject = (r.subject || '').toLowerCase().trim();
-      // Skip system tags like [BOUNCED], [BLOCKED:...] etc.
-      if (existingSubject.startsWith('[')) return false;
-      return existingSubject === normalizedSubject;
-    });
-    if (duplicate) {
-      return { allowed: false, reason: 'DUPLICATE_CAMPAIGN_BLOCKED', detail: duplicate.subject };
-    }
-
-    const now = Date.now();
-    const cooldownCutoff = now - (COOLDOWN_DAYS * 24 * 60 * 60 * 1000);
-    const sequenceCutoff = now - (ACTIVE_SEQUENCE_DAYS * 24 * 60 * 60 * 1000);
-
-    // Filter to real sends only (exclude system tags)
-    const realSends = records.filter(r => r.subject && !r.subject.startsWith('['));
+    // 3. Filter to real sends (exclude failed block records like [BLOCKED:...])
+    const realSends = records.filter(r => r.subject && !r.subject.startsWith('[BLOCKED:'));
 
     // 4. Strict Mandate: Permanent single-contact rule (zero repeated emails)
     if (realSends.length > 0) {
+      dispatchedRecipientsRegistry.add(cleanEmail);
       return {
         allowed: false,
         reason: 'RECIPIENT_ALREADY_CONTACTED_PERMANENT_NO_REPEAT',
@@ -604,15 +632,18 @@ export async function processEmailDispatch(targetEmail, emailSubject, text, html
   const cleanEmail = targetEmail?.toLowerCase()?.trim();
   const isAdminEmail = OFFICIAL_SYSTEM_EMAILS.includes(cleanEmail);
 
-  const isBypassingGuards = Boolean(forceSend || isAdminEmail);
+  // 🔒 STRICT MANDATE: Customer outreach can NEVER bypass the permanent single-contact rule.
+  // ONLY internal system communications addressed to official admin mailboxes (e.g., 2FA OTP, admin alerts) bypass guards.
+  const isBypassingGuards = Boolean(isAdminEmail);
 
   if (!isBypassingGuards && cleanEmail && dispatchedRecipientsRegistry.has(cleanEmail)) {
     console.log(`[Deduplication Guard] Skipping duplicate dispatch to ${cleanEmail}`);
     return {
-      success: true,
+      success: false,
+      blocked: true,
       status: 'SKIPPED_DUPLICATE',
       recipient: cleanEmail,
-      message: `✅ Skipped duplicate dispatch to ${cleanEmail} (Already contacted).`,
+      message: `🛑 Blocked duplicate dispatch to ${cleanEmail} (Already contacted).`,
       timestamp: new Date().toISOString(),
     };
   }
@@ -662,7 +693,8 @@ export async function processEmailDispatch(targetEmail, emailSubject, text, html
         await recordEmailDispatch(cleanEmail, `[BLOCKED:${guardResult.reason}] ${emailSubject || ''}`, 'FREQUENCY_GUARD');
       } catch (_) { /* audit best-effort */ }
       return {
-        success: true,
+        success: false,
+        blocked: true,
         status: `BLOCKED_${guardResult.reason}`,
         recipient: cleanEmail,
         message: `🛑 Outreach blocked for ${cleanEmail}: ${guardResult.reason}`,
